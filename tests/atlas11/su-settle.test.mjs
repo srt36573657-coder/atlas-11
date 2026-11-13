@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, emptySettle, okSettle, listsOf, stepSettle, siteSettle} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle} from '../../scripts/atlas11/next/su21_settle.mjs';
 import {forwardTo} from '../../site/su/su-data.js';
 import {screenHits, ruinHits} from '../../site/next/words.js';
 
@@ -32,13 +32,13 @@ test('날마다 목록 — 여섯은 days.json · 그날 기록이 없으면 su2
   const sbook = {days: [{board: '2026-11-06', picks: [{place: 2, code: '000002'}, {place: 1, code: '000001'}, {place: 3, code: '000003'}]}]};
   const su = {asOf: {board: '2026-11-07'}, lists: {hot: C('000007'), bloom: C('000001'), money: C('000002'), quiet: C('000008'), hotNext: C('000099')}};
   const suNext = {lists: {hotNext: C('000009'), bloomNext: C('000010'), moneyNext: C('000011')}};
-  const L = listsOf({days, sbook, su, suNext, quiet: {'2026-11-07': ['000008']}});
+  const L = listsOf({days, sbook, su, suNext, quiet: {'2026-11-07': ['000008']}, start: '2026-11-01'});
   assert.deepEqual(Object.keys(L), ['2026-11-05', '2026-11-06', '2026-11-07'], '날 차례');
   assert.deepEqual(L['2026-11-05'], {hot: ['000001', '000002'], bloom: ['000003'], hotNext: ['000004'], bloomNext: ['000005'], moneyNext: ['000006']}, '빈 목록 · 번호 꼴이 아닌 것은 뺌');
   assert.deepEqual(L['2026-11-06'], {hot: ['000002'], bloom: ['000003'], money: ['000001'], top3: ['000001', '000002', '000003']}, '1 · 2 · 3등은 등수 차례');
   assert.deepEqual(L['2026-11-07'], {hot: ['000007'], bloom: ['000001'], money: ['000002'], hotNext: ['000009'], bloomNext: ['000010'], moneyNext: ['000011'], quiet: ['000008']}, '그날 기록이 없으면 su21(될 듯은 su21-next)');
   // 그날 기록이 있으면 su21 목록을 쓰지 않음
-  const L2 = listsOf({days: {days: {...days.days, '2026-11-07': {how: 'kept', lists: {hot: ['000012']}}}}, sbook, su, suNext, quiet: {}});
+  const L2 = listsOf({days: {days: {...days.days, '2026-11-07': {how: 'kept', lists: {hot: ['000012']}}}}, sbook, su, suNext, quiet: {}, start: '2026-11-01'});
   assert.deepEqual(L2['2026-11-07'], {hot: ['000012']});
 });
 
@@ -56,7 +56,7 @@ test('장부 한 걸음 — 조용한 힘 그날 한 번 · 이름 · 업종 · 
     {code: '000007', name: '카타', date: D1, close: 7000},
     {code: '000099', name: '파하', date: D1, close: 9900, group: {industry: '없음'}}]};
   const frozen = JSON.stringify({sbook, stored, board});
-  const {book, added, lists} = stepSettle(null, {su, board, stored, sbook, days});
+  const {book, added, lists} = stepSettle(null, {su, board, stored, sbook, days, start: '2026-10-01'});
   assert.ok(okSettle(book)); assert.equal(added, D1);
   assert.deepEqual(book.quiet, {[D1]: ['000006', '000007']}, '조용한 힘 일곱은 그날 판 날로');
   assert.deepEqual(Object.keys(lists), [D0, D1]);
@@ -75,11 +75,11 @@ test('장부 한 걸음 — 조용한 힘 그날 한 번 · 이름 · 업종 · 
   assert.equal(JSON.stringify({sbook, stored, board}), frozen, '들어온 자료는 바뀌지 않음');
   // 다음 걸음 — 같은 날 조용한 힘이 달라져도 처음 것 그대로 · 같은 날 값이 달라져도 처음 값 그대로 · 들어온 장부는 바뀌지 않음
   const b0 = JSON.stringify(book);
-  const s2 = stepSettle(book, {su: {...su, lists: {...su.lists, quiet: C('000008')}}, board: {...board, companies: board.companies.map(c => ({...c, close: c.close + 1}))}, stored, sbook, days});
+  const s2 = stepSettle(book, {su: {...su, lists: {...su.lists, quiet: C('000008')}}, board: {...board, companies: board.companies.map(c => ({...c, close: c.close + 1}))}, stored, sbook, days, start: '2026-10-01'});
   assert.equal(s2.added, null); assert.deepEqual(s2.book.quiet, book.quiet); assert.equal(s2.book.px['000002'][D1], 2020);
   assert.equal(JSON.stringify(book), b0);
   // 21 값 — su21 cd 끝 날이 오늘 판 날과 다르면 채우지 않음
-  const s3 = stepSettle(null, {su: {...su, lists: {...su.lists, hot: [{code: '000002', cd: d21('2026-11-05')}]}}, board, stored, sbook, days});
+  const s3 = stepSettle(null, {su: {...su, lists: {...su.lists, hot: [{code: '000002', cd: d21('2026-11-05')}]}}, board, stored, sbook, days, start: '2026-10-01'});
   assert.deepEqual(Object.keys(s3.book.px['000002']), [D0, D1]);
 });
 
@@ -88,7 +88,8 @@ test('화면 자료 — 산 셈 줄(날 · 묶음 · 번호 · 산 값) · 값 �
     px: {'000001': {'2026-11-05': 1000, '2026-11-06': 1100, '2026-11-09': 1300}, '000002': {'2026-11-06': 2000}, '000003': {'2026-11-05': 3000}}};
   const L = {'2026-11-05': {hot: ['000001', '000003'], bloom: ['000002']}, '2026-11-06': {top3: ['000002', '000001'], moneyNext: ['000001']}, '2026-11-09': {hot: ['000003']}};
   const days = {days: {'2026-11-05': {how: 'replay'}, '2026-11-06': {how: 'kept'}}};
-  const S = siteSettle(B, L, '2026-11-06', days);
+  const S = siteSettle(B, L, '2026-11-06', days, '2026-11-01');
+  assert.equal(S.start, '2026-11-01');
   assert.equal(S.schema, SCHEMA); assert.equal(S.qty, 10); assert.equal(S.asOf, '2026-11-06'); assert.deepEqual(S.kinds, [...KINDS]);
   assert.deepEqual(S.buys, [['2026-11-05', 1, '000001', 1000], ['2026-11-05', 1, '000003', 3000], ['2026-11-06', 0, '000002', 2000], ['2026-11-06', 0, '000001', 1100], ['2026-11-06', 7, '000001', 1100]],
     '날 차례 · 묶음 차례 · 목록 차례 · 판 날 뒤 날은 뺌');
@@ -98,6 +99,34 @@ test('화면 자료 — 산 셈 줄(날 · 묶음 · 번호 · 산 값) · 값 �
   assert.equal(S.replayTo, '2026-11-05');
   assert.deepEqual(S.co, {'000001': ['가나', '반도체'], '000002': ['다라', null], '000003': ['마바', '은행']});
   assert.ok(!JSON.stringify(S).includes('%'));
+});
+
+test('새로 시작(주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」) — 첫날 11월 12일 · 그 전 조용한 힘 · 값 · 이름 지움 · 묵은 su21 로 조용한 힘을 적지 않음', () => {
+  assert.equal(START, '2026-11-12', '받은 날 판');
+  const book0 = {...emptySettle(), quiet: {'2026-11-06': ['000001'], '2026-11-12': ['000007']},
+    px: {'000001': {'2026-11-06': 100, '2026-11-12': 110}, '000002': {'2026-11-11': 200}, '000007': {'2026-11-12': 700}, '000009': {'2026-11-05': 900}},
+    co: {'000001': ['가나', '반도체'], '000002': ['다라', null], '000007': ['카타', '은행'], '000009': ['파하', null]}};
+  const days = {days: {'2026-11-05': {how: 'replay', lists: {hot: ['000009']}}, '2026-11-11': {how: 'kept', lists: {hot: ['000002']}}, '2026-11-12': {how: 'kept', lists: {hot: ['000001'], bloom: ['000003']}}}};
+  const sbook = {days: [{board: '2026-11-11', picks: [{place: 1, code: '000002'}]}, {board: '2026-11-12', picks: [{place: 1, code: '000001'}]}], px: {'000002': [['2026-11-11', 200]], '000001': [['2026-11-12', 110]]}};
+  const board = {asOf: '2026-11-12', companies: [{code: '000001', name: '가나', date: '2026-11-12', close: 110, group: {industry: '반도체'}}, {code: '000003', name: '마바', date: '2026-11-12', close: 300}]};
+  const stale = {asOf: {board: '2026-11-06'}, lists: {quiet: C('000008')}};
+  const frozen = JSON.stringify(book0);
+  const {book, added, lists, cut} = stepSettle(book0, {su: stale, board, stored: {}, sbook, days});
+  assert.equal(added, null, 'su21 판 날(11월 6일)이 오늘 판 날과 달라 조용한 힘을 적지 않음');
+  assert.deepEqual(book.quiet, {'2026-11-12': ['000007']}, '첫날 전 조용한 힘은 지움');
+  assert.deepEqual(Object.keys(lists), ['2026-11-12'], '첫날 전 목록(다시 센 날 · 그날 적은 날 · 달력)은 정산에 안 들어감');
+  assert.deepEqual(lists['2026-11-12'], {hot: ['000001'], bloom: ['000003'], top3: ['000001'], quiet: ['000007']});
+  assert.deepEqual(book.px, {'000001': {'2026-11-12': 110}, '000003': {'2026-11-12': 300}, '000007': {'2026-11-12': 700}}, '첫날 전 값은 지움 · 첫날 값만');
+  assert.deepEqual(Object.keys(book.co).sort(), ['000001', '000003', '000007'], '쓰지 않는 회사 이름은 지움');
+  assert.deepEqual(cut, {quiet: 1, px: 3, co: 2});
+  assert.equal(JSON.stringify(book0), frozen, '들어온 장부는 바뀌지 않음');
+  const S = siteSettle(book, lists, board.asOf, days);
+  assert.equal(S.start, START); assert.equal(S.replayTo, null, '다시 센 지난 날 없음');
+  assert.ok(S.buys.length === 4 && S.buys.every(b => b[0] === '2026-11-12'), '첫날 산 셈만');
+  assert.deepEqual(S.from, {top3: '2026-11-12', hot: '2026-11-12', bloom: '2026-11-12', quiet: '2026-11-12'});
+  // 다음 날 — su21 판 날 = 오늘 판 날이면 조용한 힘을 적음
+  const s2 = stepSettle(book, {su: {asOf: {board: '2026-11-13'}, lists: {quiet: C('000005')}}, board: {asOf: '2026-11-13', companies: []}, stored: {}, sbook, days});
+  assert.equal(s2.added, '2026-11-13'); assert.deepEqual(s2.book.quiet, {'2026-11-12': ['000007'], '2026-11-13': ['000005']});
 });
 
 /** 화면 셈 모듈 — 그리기 도구를 빈 것으로 바꿔 셈만 봄(달력 셈 모듈도 같은 방법) */
@@ -157,6 +186,8 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t
   assert.ok(pk.includes("'scripts/atlas11/next/su21_settle.mjs'") && pk.includes("'--book', path.join(root, 'reports/atlas11/su21/settle.json')") && /su21_settle\.mjs[^\n]*\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶을 때 화면 자료 · 장부는 올리기 작업만 씀');
   assert.ok(pk.indexOf('su21_days.mjs') < pk.indexOf('su21_settle.mjs'), '그날 목록을 적은 뒤에 정산');
   assert.ok(ck.includes("'28곳 지도 멈춤 기록 달력 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 여섯 · 정산 쪽');
+  assert.ok(ck.includes("import {START as SETTLE_START} from './su21_settle.mjs';") && ck.includes('㉓ 정산 첫날') && ck.includes("부터 센 정산이에요."), '검사 — 정산 첫날(주문 1112-2042)');
+  assert.ok(st.includes("text: md(D.start) + '부터 센 정산이에요.'"), '쪽 — 맨 위 첫날 한 줄');
   assert.ok(/#\\\/r\\\/\[mwdynkicst\]/.test(ck), '검사 고리 꼴에 #/r/t');
   assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(st), '보안 규칙 — innerHTML · 글 속 style 없음');
   assert.ok(css.includes('.st-replay') && css.includes('.st-rest'), '꾸밈');

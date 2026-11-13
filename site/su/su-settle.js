@@ -94,6 +94,7 @@ export async function vSettle(X) {
   const late = new Set(rows.filter(r => lateOf(r, D.asOf)).map(r => r.code)).size;
   const hero = h('div', {class: 'su-hero bk st', 'data-g': 'su-settle', 'data-n': String(rows.length), 'data-days': String(new Set(rows.map(r => r.day)).size), 'data-miss': String(miss)},
     h('p', {class: 'bk-intro', text: '큐피트가 날마다 고른 여덟 묶음을 가짜 돈으로 주식 10주씩 산 셈이에요.'}),
+    D.start ? h('p', {class: 'bk-intro st-replay st-start', text: md(D.start) + '부터 센 정산이에요.'}) : null, // 주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」
     D.replayTo ? h('p', {class: 'bk-intro st-replay', text: md(D.replayTo) + '까지는 지금 고르는 법으로 지난 날을 다시 센 기록이에요.'}) : null,
     moneyCard(T, D.asOf),
     h('p', {class: 'bk-cap st-cap', text: capText(rows, miss, late)}),
@@ -104,8 +105,9 @@ export async function vSettle(X) {
     h('ul', {class: 'bk-ul'}, ['여덟 묶음은 1 · 2 · 3등, 불장, 꽃이 될, 돈이 몰리는, 조용한데 힘이 모이는 곳, 불장이 될 듯, 꽃이 될 듯, 돈이 몰릴 듯이에요.',
       '묶음마다 고른 회사를 고른 날 마지막 값으로 ' + (D.qty ?? 10) + '주씩 산 셈이에요.', '산 돈은 산 날 값에 ' + (D.qty ?? 10) + '주를 곱한 돈이에요. 지금은 가장 늦은 마지막 값에 ' + (D.qty ?? 10) + '주를 곱해요.',
       '같은 회사가 여러 묶음이나 여러 날에 들면 그때마다 따로 산 셈이에요.', '산 뒤에는 팔지 않고 들고 있다고 쳐요.',
+      D.start ? '정산은 ' + md(D.start) + '부터 셌어요. 그 전 날은 세지 않아요.' : null,
       '1 · 2 · 3등은 달력과 같은 날 · 같은 값이에요.', D.replayTo ? md(D.replayTo) + '까지 날은 지금 고르는 법으로 지난 판을 다시 센 기록이에요. 그 뒤는 그날 적은 기록이에요.' : null,
-      D.from?.quiet ? '조용한데 힘이 모이는 곳은 ' + md(D.from.quiet) + '부터 적었어요.' : '조용한데 힘이 모이는 곳은 아직 적은 날이 없어요.',
+      D.from?.quiet ? (D.from.quiet !== D.start ? '조용한데 힘이 모이는 곳은 ' + md(D.from.quiet) + '부터 적었어요.' : null) : '조용한데 힘이 모이는 곳은 아직 적은 날이 없어요.',
       miss ? '그날 값을 찾지 못한 산 셈 ' + NF.format(miss) + '번은 세지 않았어요.' : null,
       late ? '오늘 판에 없는 회사 ' + NF.format(late) + '곳은 가장 늦게 찾은 날 값으로 셌어요. 회사마다 줄에 그 날을 적었어요.' : null,
       '업종과 회사는 산 돈이 큰 차례예요. 늘고 준 크기 차례가 아니에요.', '셋은 장이 끝난 뒤에 골라요. 그 값에 실제로 살 수는 없었어요.', '수수료와 세금은 빼지 않았어요.',

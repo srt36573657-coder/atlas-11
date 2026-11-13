@@ -17,6 +17,7 @@ import fs from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import {screenHits, ruinHits} from '../../../site/next/words.js'; // 화면 낱말 · 망치는 길(수익 자랑 gainHits 는 보내는 글 잣대 — 화면 %는 사실 글)
 import {essenceData, essenceLines} from '../../../site/next/essence.js'; // 본질 세 줄(첫 화면)
+import {START as SETTLE_START} from './su21_settle.mjs'; // 정산 첫날(주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -1235,6 +1236,9 @@ function bookMoney(BK) {
   const KS = ['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext'], DAYs = /^\d{4}-\d{2}-\d{2}$/, CODEs = /^[0-9A-Z]{6}$/;
   const KNAME = {top3: '1 · 2 · 3등', hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는', quiet: '조용한데 힘이 모이는', hotNext: '불장이 될 듯', bloomNext: '꽃이 될 듯', moneyNext: '돈이 몰릴 듯'};
   const okD = !!ST && ST.schema === 'su21-settle-1' && ST.qty === 10 && JSON.stringify(ST.kinds) === JSON.stringify(KS) && Array.isArray(ST.buys) && ST.buys.length > 0 && DAYs.test(ST.asOf ?? '');
+  // 주문 1112-2042 — 첫날 = 11월 12일 판 · 그 전 산 셈 0 · 다시 센 지난 날 0
+  check(okD && ST.start === SETTLE_START && ST.buys.every(b => b[0] >= ST.start) && (ST.replayTo == null || ST.replayTo >= ST.start), '㉓ 정산 첫날 ' + SETTLE_START + '(주문 1112-2042) — 그 전 산 셈 0 · 다시 센 지난 날 0',
+    JSON.stringify({start: ST?.start ?? null, before: (ST?.buys ?? []).filter(b => b[0] < (ST?.start ?? SETTLE_START)).length, replayTo: ST?.replayTo ?? null}));
   const bad0 = [], seen = new Set();
   if (okD) for (const b of ST.buys) {
     const [d, ki, code, px] = b ?? [];
@@ -1250,7 +1254,7 @@ function bookMoney(BK) {
     for (const [d, , code, px] of ST.buys) if (d === ST.asOf && bco.has(code) && bco.get(code) !== px) badB.push('산 값 ' + code);
     for (const [code, [v, d]] of Object.entries(ST.now ?? {})) if (d === ST.asOf && bco.has(code) && bco.get(code) !== v) badB.push('지금 ' + code);
   } else badB.push('판 날 ' + (BDs?.asOf ?? null) + ' · 정산 판 날 ' + (ST?.asOf ?? null));
-  const t3want = (BKs?.days ?? []).filter(d => d.board <= (ST?.asOf ?? '')).flatMap(d => (d.picks ?? []).map(p => d.board + ' ' + p.code + ' ' + p.px)).sort();
+  const t3want = (BKs?.days ?? []).filter(d => d.board <= (ST?.asOf ?? '') && d.board >= (ST?.start ?? SETTLE_START)).flatMap(d => (d.picks ?? []).map(p => d.board + ' ' + p.code + ' ' + p.px)).sort();
   const t3got = (ST?.buys ?? []).filter(b => b[1] === 0).map(b => b[0] + ' ' + b[2] + ' ' + b[3]).sort();
   if (JSON.stringify(t3want) !== JSON.stringify(t3got)) badB.push('1 · 2 · 3등 ≠ 달력 장부(' + t3got.length + ' · ' + t3want.length + ')');
   check(!badB.length, '㉓ 정산 값 — 오늘 판 날 산 값 · 지금 = 판 마지막 값 · 1 · 2 · 3등 = 달력 장부(날 · 회사 · 값)', badB.slice(0, 4).join(' / '));
@@ -1290,11 +1294,12 @@ function bookMoney(BK) {
           open: [...t.querySelectorAll('.bk-drows > .st-row')].length, rest: sum ? cell(sum) : null, tot: (() => { const x = t.querySelector('.bk-dtot'); return x ? cell(x) : null; })()}; };
       const m = hero?.querySelector('.st-money');
       return {money: m ? {h: [txt(m.querySelector('.bk-mh b')), txt(m.querySelector('.bk-mh span'))], c: txt(m.querySelector('.bk-mcost b')), v: txt(m.querySelector('.bk-mval b')), r: txt(m.querySelector('.bk-mres')), sh: m.querySelector('.bk-mres [data-shape]')?.getAttribute('data-shape') ?? '', m100: txt(m.querySelector('.bk-m100'))} : null,
-        cap: txt(hero?.querySelector('.st-cap')), kinds: tab('.st-kinds'), inds: tab('.st-inds'), cos: tab('.st-cos'), tab: document.querySelector('.su-tabs [aria-current="page"]')?.textContent?.trim() ?? '', h1: txt(document.querySelector('#su h1')),
+        cap: txt(hero?.querySelector('.st-cap')), start: txt(hero?.querySelector('.st-start')), kinds: tab('.st-kinds'), inds: tab('.st-inds'), cos: tab('.st-cos'), tab: document.querySelector('.su-tabs [aria-current="page"]')?.textContent?.trim() ?? '', h1: txt(document.querySelector('#su h1')),
         text: [...document.querySelectorAll('#su main .su-hero.st, #su main .bk-how')].map(e => { const c = e.cloneNode(true); for (const x of c.querySelectorAll('.su-gl')) x.remove(); return c.innerText; }).join('\n')}; });
     check(g.tab === '정산' && g.h1 === '정산', W + '아래 탭 「정산」 켜짐 · 큰 제목', JSON.stringify({tab: g.tab, h1: g.h1}));
     const mOk = {h: JSON.stringify(g.money?.h) === JSON.stringify(['지금까지', mdM(ST?.asOf ?? '0000-00-00') + ' 값까지']), c: g.money?.c === wonM(TS.cost), v: g.money?.v === wonM(TS.val), r: g.money?.r === TS.said && g.money?.sh === SHM[TS.st], m100: g.money?.m100 === (TS.one ? '' : '모두 합치면 ' + hundM(TS.val, TS.cost))};
     check(okD && !!g.money && Object.values(mOk).every(Boolean), W + '맨 위 「지금까지」 — 산 돈 · 지금 · 늘었나 줄었나 · 모두 합치면 100원이 ○원 = 따로 셈', JSON.stringify(mOk));
+    check(okD && g.start === mdM(ST.start ?? '0000-00-00') + '부터 센 정산이에요.', W + '맨 위 「○월 ○일부터 센 정산이에요」(주문 1112-2042)', JSON.stringify(g.start));
     check(okD && g.cap === capW, W + '맨 위 작은 줄 — 첫날 · 산 셈 수 · 고른 날 수 · 못 센 수 · 앞 날 값으로 센 회사 수(숨기지 않음)', JSON.stringify([g.cap, capW]));
     const totW = ['모두', wonM(TS.cost), TS.res, SHM[TS.st]];
     const kOk = !!g.kinds && JSON.stringify(g.kinds.head) === JSON.stringify(['묶음 · 산 셈', '산 돈', '늘었나 줄었나']) && g.kinds.rows.length === 8 && g.kinds.rows.every((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(kindW[i]) && r[5] === null) && JSON.stringify(g.kinds.tot) === JSON.stringify(totW);

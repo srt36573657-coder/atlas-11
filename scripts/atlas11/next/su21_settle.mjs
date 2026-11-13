@@ -7,6 +7,9 @@
 //          · quiet = 이 장부(그날 su21.json 넷째 창 일곱 · 처음 적은 날부터 · 올리기 작업만 씀)
 //   값 — 회사마다 날마다 그날 마지막 값: 달력 장부 값(su21-book.json px) → 저장된 판(reports/atlas11/su21/boards/<날>.json.gz close) → 오늘 판(board.json close · 21 값은 su21.json cd 날이 판과 같을 때만)
 //        · 한 번 적은 값은 고치지 않음(장부 px) · 지금 = 그 회사 값 줄의 오늘 판 날까지 가장 늦은 값 · 값이 없는 산 셈은 세지 않고 수만 남김(miss)
+//   주문 1112-2042(사장님 2026-11-12 20:42 「자 정산을 오늘 부터 한다 그동안에 기록은 다 지운다」 · 11-13 08:55 「뭐해」 — docs/design/settle-2026-11-12/order-2042.txt)
+//     첫날 START = 11월 12일 판 · 그 전 날 산 셈 · 값 · 조용한 힘 · 이름은 장부에서 지움(다시 센 지난 날도) · 조용한 힘은 su21 판 날 = 오늘 판 날일 때만 적음(묵은 su21 로 지난 날을 적지 않음)
+//     · 달력(1 · 2 · 3등 · 조용한 힘)은 그대로(그 장부는 이 파일이 쓰지 않음)
 //   쓰는 곳: reports/atlas11/su21/settle.json(장부 — 올리기 작업 site · daily · evening 만 --keep) · <su>/su21-settle.json(화면)
 //   쓰는 법: node scripts/atlas11/next/su21_settle.mjs --su <dist/su/data> --board <board.json> --days <reports/atlas11/su21/days.json> --book <reports/atlas11/su21/settle.json>
 //            [--boards <reports/atlas11/su21/boards>] [--keep] [--out <파일>]
@@ -16,6 +19,8 @@ import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
 
 export const SCHEMA = 'su21-settle-1', BOOK_SCHEMA = 'su21-settle-book-1', QTY = 10;
+/** 정산 첫날(주문 1112-2042 「정산을 오늘 부터 한다」 — 받은 날 11월 12일 판) */
+export const START = '2026-11-12';
 export const KINDS = Object.freeze(['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext']);
 const SIX = ['hot', 'bloom', 'money', 'hotNext', 'bloomNext', 'moneyNext'];
 const DAY = /^\d{4}-\d{2}-\d{2}$/, CODE = /^[0-9A-Z]{6}$/;
@@ -33,8 +38,8 @@ export function okSettle(B) {
 const indOf = c => c?.group?.industry ?? c?.group?.label ?? c?.ind ?? null;
 
 /** 날마다 묶음 목록 — {날: {묶음: [번호…]}} · 여섯은 days.json(그날 판 날이 없고 su21 이 그 판이면 그날 su21 목록) · top3 = 달력 장부 · quiet = 장부 */
-export function listsOf({days, sbook, su, suNext, quiet}) {
-  const out = {}, put = (d, k, cs) => { if (!DAY.test(d ?? '') || !Array.isArray(cs) || !cs.length) return; ((out[d] ??= {})[k] = cs.filter(c => CODE.test(c))); };
+export function listsOf({days, sbook, su, suNext, quiet, start = START}) {
+  const out = {}, put = (d, k, cs) => { if (!DAY.test(d ?? '') || d < start || !Array.isArray(cs) || !cs.length) return; ((out[d] ??= {})[k] = cs.filter(c => CODE.test(c))); };
   for (const [d, x] of Object.entries(days?.days ?? {})) for (const k of SIX) put(d, k, x?.lists?.[k]);
   const sd = su?.asOf?.board;
   if (DAY.test(sd ?? '') && !days?.days?.[sd]) for (const k of SIX) put(sd, k, ((k.endsWith('Next') ? suNext?.lists?.[k] ?? su?.lists?.[k] : su?.lists?.[k]) ?? []).map(c => c.code));
@@ -43,16 +48,21 @@ export function listsOf({days, sbook, su, suNext, quiet}) {
   return Object.fromEntries(Object.keys(out).sort().map(d => [d, out[d]]));
 }
 
-/** 장부 한 걸음 — 조용한 힘 그날 일곱 · 이름 · 업종 · 값 적기 · {book, added}(들어온 장부는 바꾸지 않음)
- *  su = su21.json · board = 오늘 판(board.json) · stored = {날: 저장된 판} · sbook = su21-book.json · days = days.json */
-export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days}) {
+/** 장부 한 걸음 — 조용한 힘 그날 일곱 · 이름 · 업종 · 값 적기 · {book, added, cut}(들어온 장부는 바꾸지 않음)
+ *  su = su21.json · board = 오늘 판(board.json) · stored = {날: 저장된 판} · sbook = su21-book.json · days = days.json · start = 정산 첫날 */
+export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, start = START}) {
   const B = JSON.parse(JSON.stringify(okSettle(book0) ? book0 : emptySettle()));
   let added = null;
-  // ① 조용한 힘 일곱 — 그날 판(su21.json asOf.board)으로 한 번 적음(먼저 적은 날은 그대로)
+  // ⓪ 첫날 전 기록은 지움(주문 1112-2042) — 조용한 힘 · 값(이름은 ② 뒤에 쓰는 회사만 남김)
+  const cut = {quiet: Object.keys(B.quiet).filter(d => d < start).length, px: Object.values(B.px).reduce((a, m) => a + Object.keys(m).filter(d => d < start).length, 0)};
+  B.quiet = Object.fromEntries(Object.entries(B.quiet).filter(([d]) => d >= start));
+  for (const code of Object.keys(B.px)) { B.px[code] = Object.fromEntries(Object.entries(B.px[code]).filter(([d]) => d >= start)); if (!Object.keys(B.px[code]).length) delete B.px[code]; }
+  // ① 조용한 힘 일곱 — 그날 판(su21.json asOf.board)으로 한 번 적음(먼저 적은 날은 그대로) · su21 판 날 = 오늘 판 날일 때만(묵은 su21 로 지난 날을 적지 않음 — 11-13 08:59 묵은 판이 11월 6일을 적은 일)
   const sd = su?.asOf?.board, q = (su?.lists?.quiet ?? []).map(c => c?.code).filter(c => CODE.test(c ?? ''));
-  if (DAY.test(sd ?? '') && q.length && !B.quiet[sd]) { B.quiet[sd] = q; added = sd; B.quiet = Object.fromEntries(Object.keys(B.quiet).sort().map(d => [d, B.quiet[d]])); }
-  const L = listsOf({days, sbook, su, suNext, quiet: B.quiet});
+  if (DAY.test(sd ?? '') && sd >= start && sd === board?.asOf && q.length && !B.quiet[sd]) { B.quiet[sd] = q; added = sd; B.quiet = Object.fromEntries(Object.keys(B.quiet).sort().map(d => [d, B.quiet[d]])); }
+  const L = listsOf({days, sbook, su, suNext, quiet: B.quiet, start});
   const need = new Set(Object.values(L).flatMap(x => Object.values(x).flat()));
+  for (const code of Object.keys(B.co)) if (!need.has(code)) { delete B.co[code]; cut.co = (cut.co ?? 0) + 1; }
   // ② 이름 · 업종 — 오늘 판 → 저장된 판(늦은 날 먼저) → 그대로
   const co = new Map((board?.companies ?? []).map(c => [c.code, c]));
   for (const code of need) {
@@ -60,7 +70,7 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days})
     if (c?.name) B.co[code] = [String(c.name), indOf(c) ?? B.co[code]?.[1] ?? null];
   }
   // ③ 값 — 한 번 적은 값은 그대로(??=)
-  const mark = (code, d, v) => { if (!need.has(code) || !DAY.test(d ?? '') || !fin(v)) return; (B.px[code] ??= {})[d] ??= v; };
+  const mark = (code, d, v) => { if (!need.has(code) || !DAY.test(d ?? '') || d < start || !fin(v)) return; (B.px[code] ??= {})[d] ??= v; };
   for (const [code, ser] of Object.entries(sbook?.px ?? {})) for (const [d, v] of (Array.isArray(ser) ? ser : Object.entries(ser ?? {}))) mark(code, d, v);
   for (const [d, b] of Object.entries(stored)) for (const c of b?.companies ?? []) if (c?.date === d) mark(c.code, d, c.close);
   const cd = [su?.lists ?? {}, suNext?.lists ?? {}].flatMap(x => Object.values(x).flat()).find(x => Array.isArray(x?.cd) && x.cd.length === 21 && x.cd[20] === board?.asOf)?.cd ?? null;
@@ -71,11 +81,11 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days})
   for (const code of Object.keys(B.px)) B.px[code] = Object.fromEntries(Object.entries(B.px[code]).sort(([a], [b]) => a.localeCompare(b)));
   B.px = Object.fromEntries(Object.keys(B.px).sort().map(c => [c, B.px[c]]));
   B.co = Object.fromEntries(Object.keys(B.co).sort().map(c => [c, B.co[c]]));
-  return {book: B, added, lists: L};
+  return {book: B, added, lists: L, cut};
 }
 
 /** 화면 자료 — 산 셈(날 · 묶음 · 번호 · 산 값) · 지금(회사마다 오늘 판 날까지 가장 늦은 값 · 그 날) · 묶음 첫날 · 다시 센 날 끝 · 못 센 수 */
-export function siteSettle(B, L, asOf, days) {
+export function siteSettle(B, L, asOf, days, start = START) {
   const buys = [], miss = Object.fromEntries(KINDS.map(k => [k, 0])), from = {}, now = {};
   for (const [d, x] of Object.entries(L)) {
     if (asOf && d > asOf) continue;
@@ -91,8 +101,8 @@ export function siteSettle(B, L, asOf, days) {
     const last = Object.entries(B.px[code]).filter(([d]) => !asOf || d <= asOf).sort(([a], [b]) => a.localeCompare(b)).pop();
     now[code] = [last[1], last[0]];
   }
-  const replay = Object.entries(days?.days ?? {}).filter(([, x]) => x?.how === 'replay').map(([d]) => d).sort();
-  return {schema: SCHEMA, qty: B.qty, asOf: asOf ?? null, kinds: [...KINDS], from, replayTo: replay[replay.length - 1] ?? null,
+  const replay = Object.entries(days?.days ?? {}).filter(([d, x]) => x?.how === 'replay' && d >= start).map(([d]) => d).sort();
+  return {schema: SCHEMA, qty: B.qty, asOf: asOf ?? null, start, kinds: [...KINDS], from, replayTo: replay[replay.length - 1] ?? null,
     co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss};
 }
 
@@ -113,12 +123,13 @@ function main() {
   const S = readJson(path.join(su, 'su21.json')), N = readJson(path.join(su, 'su21-next.json')), board = readJson(boardF), days = readJson(daysF), sbook = readJson(path.join(su, 'su21-book.json'));
   if (!board || !Array.isArray(board.companies)) { console.error('판을 못 읽음'); process.exit(1); }
   const stored = storedBoards(boardsDir);
-  const {book, added, lists} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days});
+  const {book, added, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days});
   const site = siteSettle(book, lists, board.asOf, days);
   if (out) fs.writeFileSync(out, JSON.stringify(site) + '\n');
   if (keep) { const tmp = bookF + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(book, null, 1) + '\n'); fs.renameSync(tmp, bookF); }
   const nk = Object.fromEntries(KINDS.map(k => [k, site.buys.filter(b => KINDS[b[1]] === k).length]));
   console.log(`정산 장부 — 날 ${Object.keys(lists).length} · 산 셈 ${site.buys.length}번(${KINDS.map(k => k + ' ' + nk[k]).join(' · ')}) · 값 없음 ${Object.values(site.miss).reduce((x, y) => x + y, 0)} · 저장된 판 ${Object.keys(stored).length} · 판 ${board.asOf}`
+    + ' · 첫날 ' + START + (cut.quiet || cut.px || cut.co ? ` · 첫날 전 기록 지움(조용한 힘 ${cut.quiet}날 · 값 ${cut.px}개 · 이름 ${cut.co ?? 0}곳)` : '')
     + (added ? ' · 조용한 힘 새로 적음 ' + added : '') + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)'));
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
