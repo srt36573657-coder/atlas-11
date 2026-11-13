@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T16:08:10.471Z",
+ "at": "2026-11-13T17:52:41.387Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1684,
+  "pass": 1687,
   "fail": 0
  },
  "fails": [],
@@ -19,7 +19,7 @@
    ]
   },
   "home": {
-   "screens": 19.28,
+   "screens": 22.44,
    "links": 322
   },
   "t21": {
@@ -36,7 +36,7 @@
     "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 322,
+    "labels": 329,
     "mucha": [],
     "anim": 32,
     "need": 0,
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 1268,
+   "lcp": 1124,
    "cls": 0.121,
-   "pic": 1940
+   "pic": 1730
   },
   "white": {
    "light #/": {
@@ -227,7 +227,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -243,7 +243,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -259,7 +259,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -275,7 +275,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -339,7 +339,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -1443,7 +1443,22 @@
    "sn": true,
    "same": true,
    "empty": [],
-   "data": "2026-11-13"
+   "data": "2026-11-13",
+   "days": {
+    "from": "2026-11-13",
+    "max": 1,
+    "n2": 0,
+    "q": [
+     2,
+     2,
+     2,
+     2,
+     1,
+     1,
+     1
+    ],
+    "qFrom": "2026-11-12"
+   }
   }
  },
  "ok": true
