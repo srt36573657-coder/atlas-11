@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T15:48:32.529Z",
+ "at": "2026-11-13T17:12:14.170Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1680,
+  "pass": 1683,
   "fail": 0
  },
  "fails": [],
@@ -156,7 +156,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 1,
-    "orn": 7
+    "orn": 5
    }
   ],
   "hard": 0,
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 2288,
+   "lcp": 2396,
    "cls": 0.143,
-   "pic": 3263
+   "pic": 3452
   },
   "white": {
    "light #/": {
@@ -1443,7 +1443,22 @@
    "sn": false,
    "same": false,
    "empty": null,
-   "data": null
+   "data": null,
+   "days": {
+    "from": null,
+    "max": 0,
+    "n2": 0,
+    "q": [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "qFrom": null
+   }
   }
  },
  "ok": true
