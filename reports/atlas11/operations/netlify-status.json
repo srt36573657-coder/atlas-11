@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-13T09:04:53.197Z",
+  "at": "2026-11-13T10:04:33.429Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-11-13T09:04:52.277Z",
+    "publishedAt": "2026-11-13T10:04:32.373Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-11-13-c7a4c18c\",\"generatedAt\":\"2026-11-13T08:59:11.708Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-11-13\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-11-13-16316b60\",\"generatedAt\":\"2026-11-13T09:59:40.700Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-11-13\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-11-13T09:01:16Z\",\"asOf\":\"2026-11-13\",\"base\":\"2026-10-16\",\"days\":20,\"pickAsOf\":\"2026-11-13\",\"kPick\":20,\"sincePick\":0,\"provisional\":true,\"roll\":{\"files\":1,\"added\":58769,\"mismatch\":0,\"rebased\":28},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 14일 모음 + 날마다 이어 받음(11월 13일 종"
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-11-13T10:01:23Z\",\"asOf\":\"2026-11-13\",\"base\":\"2026-10-16\",\"days\":20,\"pickAsOf\":\"2026-11-13\",\"kPick\":20,\"sincePick\":0,\"provisional\":true,\"roll\":{\"files\":1,\"added\":58769,\"mismatch\":0,\"rebased\":28},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 14일 모음 + 날마다 이어 받음(11월 13일 종"
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
