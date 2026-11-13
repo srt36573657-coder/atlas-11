@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns} from '../../scripts/atlas11/next/su21_settle.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import {forwardTo} from '../../site/su/su-data.js';
@@ -159,6 +159,27 @@ test('서른여섯 꾀(주문 1113-2224 「36가지 유형 … 정산하고 연�
   const so = stepSettle(old, {su, board, stored: {}, sbook: {days: []}, days: {days: {}}, start: '2026-11-12'});
   assert.deepEqual(Object.keys(so.book.s36), [D1]); assert.equal(so.book.t11, undefined); assert.equal(so.cut.t11, 1);
   assert.ok(Object.values(so.lists).every(x => Object.keys(x).every(k => !k.startsWith('t_'))), '산 셈에 특징 열하나 0');
+});
+
+test('며칠째(주문 1114-0151 「301 게 이게 며칠째 이렇게 됐는지도 좀 기록」) — 장부 서른여섯 꾀 · 조용한 힘 기록으로 회사마다 이어진 날 · 첫 발견 · 기록 첫날까지면 since · 판 날이 같을 때만 붙임', () => {
+  const B = {...emptySettle(),
+    s36: {'2026-11-12': {g01: ['000001', '000002'], g13: ['000009']}, '2026-11-13': {g01: ['000001', '000003']}, '2026-11-16': {g01: ['000001', '000003', '000004'], g13: ['000009']}},
+    quiet: {'2026-11-12': ['000005'], '2026-11-13': ['000005', '000006'], '2026-11-16': ['000005', '000006']}};
+  const trade = ['2026-11-11', '2026-11-12', '2026-11-13', '2026-11-16'];
+  const R = runsOf(B, trade, '2026-11-16');
+  assert.deepEqual(R.s36.g01, {'000001': {days: 3, found: '2026-11-12', since: true}, '000003': {days: 2, found: '2026-11-13', since: false}, '000004': {days: 1, found: '2026-11-16', since: false}}, '11월 12 · 13 · 16일 이어짐(주말은 장이 열린 날이 아님)');
+  assert.deepEqual(R.s36.g13, {'000009': {days: 1, found: '2026-11-16', since: false}}, '13일에 그 꾀 기록이 없으면 끊김(거래량 다섯 — 받지 못한 날)');
+  assert.deepEqual(R.quiet, {'000005': {days: 3, found: '2026-11-12', since: true}, '000006': {days: 2, found: '2026-11-13', since: false}});
+  assert.deepEqual([R.from36, R.fromQ], ['2026-11-12', '2026-11-12'], '기록 첫날');
+  const g = {asOf: {board: '2026-11-16'}, lists: {g01: [{code: '000001'}, {code: '000003'}, {code: '000007'}]}}, su = {asOf: {board: '2026-11-16'}, lists: {quiet: [{code: '000005'}, {code: '000006'}]}};
+  assert.deepEqual(markRuns(R, g, su, '2026-11-16'), {n36: 2, nq: 2});
+  assert.deepEqual(g.lists.g01.map(c => c.days ?? null), [3, 2, null], '장부 오늘 목록에 없는 회사는 붙이지 않음'); assert.equal(g.daysFrom, '2026-11-12');
+  assert.deepEqual(su.lists.quiet.map(c => c.days), [3, 2]); assert.deepEqual(su.quietDays, {from: '2026-11-12'});
+  const g2 = {asOf: {board: '2026-11-13'}, lists: {g01: [{code: '000001'}]}};
+  assert.deepEqual(markRuns(R, g2, null, '2026-11-16'), {n36: 0, nq: 0}, '판 날이 다르면 붙이지 않음'); assert.equal(g2.lists.g01[0].days, undefined);
+  assert.ok(/'--cal', path\.join\(dd, 'days\.json'\)/.test(rd('scripts/atlas11/package.mjs')), '묶을 때 장이 열린 날을 넘김');
+  const ap = rd('site/su/su-apple.js');
+  assert.ok(ap.includes("h('span', {class: 's36-cd', text: dz + '일째'})") && ap.includes("it.qd ? T(x + 6, y + 154 + o, it.qd + '일째', 'sa-days sa-qd', {'font-size': 17}) : null") && ap.includes("' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.'"), '처음 쪽 — 꾀 단추 · 조용한 힘 칸마다 며칠째 · 기록 첫날');
 });
 
 test('서른여섯 꾀 셈(su21_s36.py 스스로 시험 · 이름 = 화면 · 검사) · 거래량 받기(su21_vol.mjs — 꾸민 일봉) · 묶기는 올리기 작업만 받음', async () => {

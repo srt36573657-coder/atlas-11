@@ -182,3 +182,6 @@
 .su-news > .su-hero[data-g="su-apple"] .s36-none { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 600; color: #6E6E73; }
 .su-news > .su-hero[data-g="su-apple"] .s36-go { display: flex; align-items: center; min-height: 52px; padding: 0 16px; border: 1px solid #D2D2D7; border-radius: 14px; color: #7A3E00; font-size: 18px; font-weight: 700; text-decoration: none; }
 .su-news > .su-hero[data-g="su-apple"] .s36.s36-wait { padding: 0; border: 0; min-height: 0; } /* 꾀 칸 자료를 받기 전 빈 자리(받으면 바뀜 · 못 받으면 지움) */
+.su-news > .su-hero[data-g="su-apple"] .s36-c b { font-weight: 700; }
+.su-news > .su-hero[data-g="su-apple"] .s36-cd { margin-left: 6px; font-size: 17px; font-weight: 600; color: #B45309; } /* 며칠째(주문 1114-0151) */
+.su-apple .sa-qd { fill: #B45309; } /* 조용한 힘 며칠째(주문 1114-0151) */

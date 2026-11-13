@@ -44,14 +44,16 @@ export function section36(g, day) {
     h('div', {class: 's36-top'},
       h('p', {class: 's36-h'}, h('b', {text: '서른여섯 꾀'}), h('span', {text: ' ' + N + '곳'})),
       h('p', {class: 's36-lead', text: '손자병법과 함께 내려오는 서른여섯 가지 꾀마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
-      h('p', {class: 's36-day', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.'})),
+      h('p', {class: 's36-day', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')})),
     ...sets.map(st => h('div', {class: 's36-set', 'data-set': st.name},
       h('h3', {class: 's36-sh', text: st.name}),
       ...st.ks.map(k => { const L = (g.lists[k] ?? []).slice(0, 7);
         return h('div', {class: 's36-g', 'data-k': k, 'data-n': String(L.length)},
           h('p', {class: 's36-gh'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})),
           h('p', {class: 's36-gs', text: g.say?.[k] ?? ''}),
-          L.length ? h('ul', {class: 's36-co'}, ...L.map(c => h('li', {}, h('a', {class: 's36-c', href: '#/c/' + encodeURIComponent(String(c.code ?? '')), 'data-code': String(c.code ?? ''), text: String(c.name ?? NEED)}))))
+          L.length ? h('ul', {class: 's36-co'}, ...L.map(c => { const dz = Number.isInteger(c.days) && c.days >= 1 ? c.days : null; // 며칠째(주문 1114-0151)
+            return h('li', {}, h('a', {class: 's36-c', href: '#/c/' + encodeURIComponent(String(c.code ?? '')), 'data-code': String(c.code ?? ''), 'data-days': dz ? String(dz) : null, 'aria-label': String(c.name ?? NEED) + (dz ? ' · ' + dz + '일째' : '')},
+              h('b', {text: String(c.name ?? NEED)}), dz ? h('span', {class: 's36-cd', text: dz + '일째'}) : null)); }))
             : h('p', {class: 's36-none', text: none36(g.why?.[k])})); }))),
     h('a', {class: 's36-go', href: '#/r/t', text: '서른여섯 꾀 정산 보기 ›'}));
 }
@@ -389,7 +391,7 @@ function draw(d, opt) {
   const spOf = c => (Array.isArray(c?.c) && c.c.length === 21 && c.c.every(v => fin(v) && v > 0) && pxOf(c) === c.c[20] ? c.c : null); // 21 마지막 값 · 끝 = 현재가일 때만
   const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => { const key = nx ? NXK[k] : k, v = valText(c, k, nx);
     return {k: key, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: v, lab: valLab(v, key), star: !nx && ovs.has(String(c.name)), px: pxOf(c), sp: spOf(c), days: c.days, found: c.found, fomo: c.fomo, sx: MARK && c.sx === true, r3: RANK && [1, 2, 3].includes(c.r3) ? c.r3 : null}; });
-  const QL = opt.mode === 'next' ? [] : (L.quiet ?? []).slice(0, 7).map(c => ({k: 'quiet', kind: KIND.quiet, code: String(c.code ?? ''), name: String(c.name ?? NEED), px: pxOf(c), sp: spOf(c), w: c.why ?? {}, r3q: [1, 2, 3].includes(c.r3q) ? c.r3q : null})); // 넷째 창 조용한데 힘이 모이는(주문 1111-1334) — 처음 쪽에만
+  const QL = opt.mode === 'next' ? [] : (L.quiet ?? []).slice(0, 7).map(c => ({k: 'quiet', kind: KIND.quiet, code: String(c.code ?? ''), name: String(c.name ?? NEED), px: pxOf(c), sp: spOf(c), w: c.why ?? {}, r3q: [1, 2, 3].includes(c.r3q) ? c.r3q : null, qd: Number.isInteger(c.days) && c.days >= 1 ? c.days : null})); // 넷째 창 조용한데 힘이 모이는(주문 1111-1334) — 처음 쪽에만 · qd = 며칠째(주문 1114-0151)
   const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0) + Math.min(7, (L.quiet ?? []).length), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
   const ROW = 140, HEADH = 58, GAP = 26, CW = MID - PAD - 3; // 줄 넷째 · 다섯째 = 첫 발견 · 며칠째와 포모지수(주문 0123)
   const STRICT = !!d?.strict && d.strict.mode !== 'mark'; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움) — 옛 판 자료만
@@ -401,7 +403,8 @@ function draw(d, opt) {
   const tagOf = c => c?.sx || c?.r3; // 칸 맨 위 표(수르 계산법 · 1등 · 2등 · 3등)
   const rowH = (k, i) => ROW + (tagOf(items(k, false)[i]) || tagOf(items(k, true)[i]) ? BX : 0); // 표가 붙은 칸이 있는 줄만 표 높이만큼 더
   const nSx = MARK ? KEY.reduce((a, k) => a + items(k, false).filter(c => c.sx).length + items(k, true).filter(c => c.sx).length, 0) : 0;
-  const qRows = Math.ceil(QL.length / 2), qRowH = i => ROW + (QL[2 * i]?.r3q || QL[2 * i + 1]?.r3q ? BX : 0); // 넷째 창 — 한 줄에 둘(왼 · 오른) · 등수 표가 붙은 줄만 표 높이만큼 더
+  const QDH = QL.some(c => c.qd) ? 26 : 0; // 며칠째 한 줄(주문 1114-0151)
+  const qRows = Math.ceil(QL.length / 2), qRowH = i => ROW + QDH + (QL[2 * i]?.r3q || QL[2 * i + 1]?.r3q ? BX : 0); // 넷째 창 — 한 줄에 둘(왼 · 오른) · 등수 표가 붙은 줄만 표 높이만큼 더
   const LIST1 = LIST0 + HOWH; // 쉬운 판(주문 1112-0253) — 「칸 하나 읽는 법」 아래에서 묶음이 시작
   const H = LIST1 + KEY.reduce((a, k) => a + HEADH + MEANH + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + (QL.length ? HEADH + 30 + Array.from({length: qRows}, (_, i) => qRowH(i)).reduce((b, v) => b + v, 0) + GAP : 0) + 24;
   const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H + TOT}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
@@ -491,7 +494,7 @@ function cellQ(it, x, y, w, h) {
   const o = it.r3q ? BX : 0, say = (it.px != null ? ' · 현재가 ' + price : '') + (it.sp ? ' · 한 달 전 ' + won(it.sp[0]) : '');
   it.val = span; // 장 중 현재가(relive)가 이름표 · 제목을 고칠 때 씀
   const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'sa-cell sa-now sa-q' + (it.r3q ? ' sa-x sa-r' + it.r3q : ''), 'data-k': 'quiet', 'data-name': it.name, 'data-px': it.px ?? '', 'data-code': it.code, 'data-r3q': it.r3q ? String(it.r3q) : '',
-    'aria-label': (it.r3q ? '조용한 힘 ' + it.r3q + '등 · ' : '') + '지금 ' + it.kind + ' · ' + it.name + ' · ' + span + say + ' · 이만큼 조용하기 ' + rare + ' · ' + fl});
+    'aria-label': (it.r3q ? '조용한 힘 ' + it.r3q + '등 · ' : '') + '지금 ' + it.kind + ' · ' + it.name + (it.qd ? ' · ' + it.qd + '일째' : '') + ' · ' + span + say + ' · 이만큼 조용하기 ' + rare + ' · ' + fl});
   a.append(s('title', {text: it.name + ' · ' + span + say}),
     s('rect', {x, y: y + 1, width: w, height: h - 2, rx: 12, class: 'sa-hit' + (it.r3q ? ' sa-hitx' : '')}),
     it.r3q ? sxTag(x + 6, y + 8, it.r3q + '등', 'sa-r3') : null,
@@ -500,6 +503,7 @@ function cellQ(it, x, y, w, h) {
     T(x + 6, y + 78 + o, price, 'sa-px' + (it.px != null ? '' : ' sa-need'), {'font-size': pfs}),
     T(x + 6, y + 104 + o, rare, 'sa-found' + (fin(q.p) ? '' : ' sa-need'), {'font-size': 17}),
     T(x + 6, y + 128 + o, fl, 'sa-days', {'font-size': 17}),
+    it.qd ? T(x + 6, y + 154 + o, it.qd + '일째', 'sa-days sa-qd', {'font-size': 17}) : null, // 며칠째(주문 1114-0151 — 조용한 힘에 든 날 수 · 장부 기록으로 셈)
     spark(it.sp, sx, y + 40 + o, SW, 34, 'now'));
   CELL.set(a, {it, side: 'now', sx, sy: y + 40 + o, room, say0: say}); // 장 중 현재가(주문 2011)도 다른 칸과 같이 바뀜
   return a;

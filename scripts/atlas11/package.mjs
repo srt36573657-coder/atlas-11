@@ -95,7 +95,7 @@ export async function buildDist() {
     // 정산 장부(주문 1112-1728 · 사장님 2026-11-12 17:28 「정산 페이지를 하나 만들어 … 일 이 삼 등 매일 사 그담에 불 장인 것도 사고 모든 여덟 개를 종류별로 업종별로 다 사는거별로 분류 별별로」)
     //   여덟 묶음(1 · 2 · 3등 · 지금 넷 · 될 듯 셋)을 고른 날 마지막 값으로 10주씩 산 셈(가짜 돈) — 목록 days.json · 달력 장부 · 조용한 힘 일곱(이 장부) · 값 = 달력 장부 · 저장된 판 · 오늘 판
     //   장부 reports/atlas11/su21/settle.json(올리기 작업만 씀) · 화면 su/data/su21-settle.json — 1 · 2 · 3등 장부 뒤(달력과 같은 값을 씀)
-    try { const {stdout} = await run('node', [path.join(root, 'scripts/atlas11/next/su21_settle.mjs'), '--su', suData, '--board', path.join(dist, 'data/atlas11/view/board.json'), '--days', daysFile, '--book', path.join(root, 'reports/atlas11/su21/settle.json'), '--boards', path.join(root, 'reports/atlas11/su21/boards'), ...(keepJob ? ['--keep'] : [])], {maxBuffer: 1e7}); console.log('수르 ' + String(stdout).trim().slice(0, 300)); }
+    try { const {stdout} = await run('node', [path.join(root, 'scripts/atlas11/next/su21_settle.mjs'), '--su', suData, '--board', path.join(dist, 'data/atlas11/view/board.json'), '--days', daysFile, '--book', path.join(root, 'reports/atlas11/su21/settle.json'), '--boards', path.join(root, 'reports/atlas11/su21/boards'), '--cal', path.join(dd, 'days.json'), ...(keepJob ? ['--keep'] : [])], {maxBuffer: 1e7}); console.log('수르 ' + String(stdout).trim().slice(0, 300) + ' … ' + String(stdout).trim().slice(-40)); } // --cal = 며칠째(주문 1114-0151)
     catch (e) { console.warn('정산 장부 못 함 — 정산 쪽은 「받지 못했어요」: ' + String(e.stderr || e.stdout || e.message).trim().slice(-300)); }
   }
   // 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 판 묶음이 있으면 같은 화면 코드를 /us/ 에

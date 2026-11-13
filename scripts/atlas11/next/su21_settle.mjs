@@ -22,6 +22,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
+import {calendarOf, runOf} from './su21_days.mjs'; // 며칠째 셈(주문 1114-0151 — 42칸과 같은 셈)
 
 export const SCHEMA = 'su21-settle-1', BOOK_SCHEMA = 'su21-settle-book-1', QTY = 10;
 /** 정산 첫날(주문 1112-2042 「정산을 오늘 부터 한다」 — 받은 날 11월 12일 판) */
@@ -130,6 +131,29 @@ export function siteSettle(B, L, asOf, days, start = START) {
     co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss};
 }
 
+/** 며칠째(주문 1114-0151 · 사장님 2026-11-14 01:51 「지금 이렇게 301 게 이게 며칠째 이렇게 됐는지도 좀 기록 하게 해 봐」)
+ *  장부의 서른여섯 꾀 · 조용한 힘 기록(그날 판마다 한 번 적은 목록)으로 오늘 목록 회사마다 {days, found, since} — 42칸(su21_days.mjs)과 같은 셈
+ *  · 며칠째 = 오늘부터 거꾸로 장이 열린 날마다 그 묶음에 들어 있던 날 수(오늘 포함) · 판이 빠진 날은 앞뒤 기록에 모두 들어 있으면 이어진 것 · 첫 발견 = 이어진 날 맨 앞 · since = 기록 첫날까지 이어짐
+ *  trade = 장이 열린 날(atlas/data/days.json dates) · today = 오늘 판 날 */
+export function runsOf(B, trade, today) {
+  const rec36 = {days: Object.fromEntries(Object.entries(B?.s36 ?? {}).map(([d, x]) => [d, {lists: x}]))};
+  const recQ = {days: Object.fromEntries(Object.entries(B?.quiet ?? {}).map(([d, cs]) => [d, {lists: {quiet: cs}}]))};
+  const s36 = {}, quiet = {};
+  if (DAY.test(today ?? '')) {
+    const cal36 = calendarOf(trade, rec36, today), calQ = calendarOf(trade, recQ, today);
+    for (const k of S36) for (const c of B?.s36?.[today]?.[k] ?? []) (s36[k] ??= {})[c] = runOf(rec36, cal36, today, k, c);
+    for (const c of B?.quiet?.[today] ?? []) quiet[c] = runOf(recQ, calQ, today, 'quiet', c);
+  }
+  return {s36, quiet, from36: Object.keys(B?.s36 ?? {}).sort()[0] ?? null, fromQ: Object.keys(B?.quiet ?? {}).sort()[0] ?? null};
+}
+/** 화면 자료에 며칠째를 붙임 — su21-s36.json 꾀마다 회사 · su21.json 조용한 힘(그 파일 판 날 = 오늘 판 날일 때만 · 장부 오늘 목록에 있는 회사만) · 붙인 수 */
+export function markRuns(R, g, su, today) {
+  let n36 = 0, nq = 0;
+  if (g && g.asOf?.board === today) { for (const k of S36) for (const c of g.lists?.[k] ?? []) { const r = R.s36[k]?.[c?.code]; if (r) { Object.assign(c, r); n36++; } } g.daysFrom = R.from36; }
+  if (su && su.asOf?.board === today) { for (const c of su.lists?.quiet ?? []) { const r = R.quiet[c?.code]; if (r) { Object.assign(c, r); nq++; } } su.quietDays = {from: R.fromQ}; }
+  return {n36, nq};
+}
+
 /** 저장된 판 — {날: 판}(파일 이름 날 = 판 asOf 일 때만) */
 export function storedBoards(dir) {
   const out = {};
@@ -141,7 +165,7 @@ export function storedBoards(dir) {
 function main() {
   const a = process.argv.slice(2), arg = k => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : null; };
   const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
-  const su = arg('--su'), boardF = arg('--board'), daysF = arg('--days'), bookF = arg('--book'), keep = a.includes('--keep');
+  const su = arg('--su'), boardF = arg('--board'), daysF = arg('--days'), bookF = arg('--book'), keep = a.includes('--keep'), calF = arg('--cal'); // --cal = 장이 열린 날(atlas/data/days.json · 며칠째 — 주문 1114-0151)
   const boardsDir = arg('--boards') ?? path.join(ROOT, 'reports/atlas11/su21/boards'), out = arg('--out') ?? (su ? path.join(su, 'su21-settle.json') : null);
   if (!su || !boardF || !daysF || !bookF) { console.error('--su · --board · --days · --book 이 필요함'); process.exit(2); }
   const S = readJson(path.join(su, 'su21.json')), N = readJson(path.join(su, 'su21-next.json')), board = readJson(boardF), days = readJson(daysF), sbook = readJson(path.join(su, 'su21-book.json'));
@@ -152,10 +176,15 @@ function main() {
   const site = siteSettle(book, lists, board.asOf, days);
   if (out) fs.writeFileSync(out, JSON.stringify(site) + '\n');
   if (keep) { const tmp = bookF + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(book, null, 1) + '\n'); fs.renameSync(tmp, bookF); }
+  // 며칠째(주문 1114-0151) — 서른여섯 꾀(su21-s36.json) · 조용한 힘(su21.json)에 회사마다 days · found · since
+  const trade = calF ? readJson(calF)?.dates ?? [] : [], R = runsOf(book, trade, board.asOf), w = (f, o) => { const tmp = f + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(o)); fs.renameSync(tmp, f); };
+  const M = markRuns(R, s36, S, board.asOf);
+  if (M.n36) w(path.join(su, 'su21-s36.json'), s36);
+  if (M.nq) w(path.join(su, 'su21.json'), S);
   const nk = Object.fromEntries(KINDS.map(k => [k, site.buys.filter(b => KINDS[b[1]] === k).length]));
   console.log(`정산 장부 — 날 ${Object.keys(lists).length} · 산 셈 ${site.buys.length}번(${KINDS.map(k => k + ' ' + nk[k]).join(' · ')}) · 값 없음 ${Object.values(site.miss).reduce((x, y) => x + y, 0)} · 저장된 판 ${Object.keys(stored).length} · 판 ${board.asOf}`
     + ' · 첫날 ' + START + (cut.quiet || cut.px || cut.co ? ` · 첫날 전 기록 지움(조용한 힘 ${cut.quiet}날 · 값 ${cut.px}개 · 이름 ${cut.co ?? 0}곳)` : '') + (cut.t11 ? ` · 특징 열하나 기록 지움(${cut.t11}날)` : '')
     + (added ? ' · 조용한 힘 새로 적음 ' + added : '') + (added36.length ? ' · 서른여섯 꾀 새로 적음 ' + board.asOf + '(' + added36.length + '꾀)' : ' · 서른여섯 꾀 새로 적은 꾀 0(판 ' + (s36?.asOf?.board ?? '없음') + ' · 자료 ' + (s36?.asOf?.data ?? '없음') + ')')
-    + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)'));
+    + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)') + ' · 며칠째 꾀 ' + M.n36 + '곳 · 조용한 힘 ' + M.nq + '곳');
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
