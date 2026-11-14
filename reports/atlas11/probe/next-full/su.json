@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T23:50:34.146Z",
+ "at": "2026-11-14T02:55:07.707Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1695,
+  "pass": 1700,
   "fail": 0
  },
  "fails": [],
@@ -19,8 +19,8 @@
    ]
   },
   "home": {
-   "screens": 28.26,
-   "links": 355
+   "screens": 16.62,
+   "links": 152
   },
   "t21": {
    "listed": 2557,
@@ -38,7 +38,7 @@
     "two": 2,
     "labels": 329,
     "mucha": [],
-    "anim": 32,
+    "anim": 125,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -63,14 +63,14 @@
     "orn": 5
    },
    {
-    "h1": "소재 · 건설 · 자동차부품 땅",
+    "h1": "K-소비재 · 콘텐츠 땅",
     "heroShare": 72.4,
     "share": 89,
     "outside": 13,
     "two": 2,
-    "labels": 31,
+    "labels": 33,
     "mucha": [],
-    "anim": 31,
+    "anim": 28,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -79,14 +79,14 @@
     "orn": 7
    },
    {
-    "h1": "삼성E&A",
+    "h1": "롯데칠성",
     "heroShare": 72.4,
-    "share": 178,
+    "share": 173,
     "outside": 12,
     "two": 2,
-    "labels": 26,
+    "labels": 20,
     "mucha": [],
-    "anim": 6,
+    "anim": 5,
     "need": 1,
     "means": 6,
     "hard": 0,
@@ -95,7 +95,7 @@
     "orn": 5
    },
    {
-    "h1": "삼성E&A 출목표",
+    "h1": "롯데칠성 한 달 하루씩",
     "heroShare": 72.4,
     "share": 178,
     "outside": 13,
@@ -107,7 +107,7 @@
     "means": 4,
     "hard": 0,
     "hardWords": "",
-    "glossed": 4,
+    "glossed": 5,
     "orn": 5
    },
    {
@@ -148,14 +148,14 @@
     "share": 79,
     "outside": 13,
     "two": 2,
-    "labels": 19,
+    "labels": 15,
     "mucha": [],
     "anim": 13,
     "need": 0,
     "means": 1,
     "hard": 0,
     "hardWords": "",
-    "glossed": 1,
+    "glossed": 0,
     "orn": 5
    }
   ],
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 1120,
+   "lcp": 1980,
    "cls": 0.121,
-   "pic": 1736
+   "pic": 1965
   },
   "white": {
    "light #/": {
@@ -339,7 +339,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -390,7 +390,7 @@
     "note": [
      "현재가는 11월 13일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "될 듯은 그렇게 되기 바로 앞 모습이에요.",
+     "될 듯은 지난 기록의 앞 모습이에요.",
      "지난 기록 차례예요. 앞날은 몰라요."
     ]
    },
@@ -400,7 +400,7 @@
     "note": [
      "현재가는 11월 13일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "될 듯은 그렇게 되기 바로 앞 모습이에요.",
+     "될 듯은 지난 기록의 앞 모습이에요.",
      "지난 기록 차례예요. 앞날은 몰라요."
     ]
    }
@@ -1252,7 +1252,7 @@
     ]
    },
    "daysFrom": "2026-10-02",
-   "screens": 3.6,
+   "screens": 3.95,
    "pages": 42,
    "reasons": 1512
   },
@@ -1334,15 +1334,15 @@
   "bookFold": {
    "320": {
     "lim": 716,
-    "name": 762,
-    "line": 2312,
-    "money": 526
+    "name": 721,
+    "line": 2657,
+    "money": 485
    },
    "390": {
     "lim": 716,
-    "name": 650,
-    "line": 1842,
-    "money": 440
+    "name": 636,
+    "line": 2135,
+    "money": 426
    }
   },
   "bookLedger": {

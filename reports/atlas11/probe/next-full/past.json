@@ -1,5 +1,5 @@
 {
- "made": "2026-11-14T00:11:23.210Z",
+ "made": "2026-11-14T03:16:04.629Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -37,6 +37,8 @@
   }
  },
  "counts": {
+  "fail": 2,
+  "값이 바뀌어 다시 맞댐": 1,
   "맞댄 칸": 191750,
   "숫자 낱말": 406888,
   "맨 위 결 한 줄": 7670,
@@ -44,24 +46,33 @@
   "화면(기간)": 7671,
   "회사": 2557,
   "기간 값 없음": 1,
-  "옛 쪽 다시 열림": 1,
   "없는 번호": 1,
   "폭 화면": 120
  },
- "fails": [],
+ "fails": [
+  [
+   "망 막힘",
+   "옛 쪽 첫 열림 · 166초 동안 9번 열어 봄 · 오류 쪽 net::ERR_CONNECTION_RESET /atlas/"
+  ],
+  [
+   "옛 쪽 첫 열림",
+   "003060"
+  ]
+ ],
  "warn": [
+  "값이 바뀌어 다시 맞댐 003060 2건 · 첫 줄 망 막힘 옛 쪽 003060 · 188초 동안 6번 열어 봄 · 오류 쪽 net::ERR_CONNECTION_RESET /atlas/",
   "기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일",
   "옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
  ],
- "sec": 949,
+ "sec": 991,
  "time": {
-  "old": 407.1,
-  "new": 563,
-  "wall": 949.3,
-  "opensOld": 25572,
-  "opensNew": 33281,
-  "oldPct": 42.9,
-  "oldShare": 42
+  "old": 529,
+  "new": 417.7,
+  "wall": 990.6,
+  "opensOld": 25571,
+  "opensNew": 33283,
+  "oldPct": 53.4,
+  "oldShare": 55.9
  },
  "net": {
   "req": 2560,
@@ -70,10 +81,13 @@
   "why": {},
   "cut": 0,
   "page": {
-   "retry": 0,
-   "waitSec": 0,
-   "blocked": 0,
-   "why": {}
+   "retry": 13,
+   "waitSec": 234,
+   "blocked": 2,
+   "why": {
+    "net::ERR_": 1,
+    "오류 쪽": 14
+   }
   }
  }
 }
