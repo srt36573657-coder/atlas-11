@@ -47,7 +47,7 @@
 .su-co-jobs .cj-link:focus-visible .cj-hit { stroke: #0071E3; stroke-width: 2; }
 
 /* 글 크기(셈한 크기 18 넘게) */
-.su-co-jobs .cj-f18 { font-size: 18px; } .su-co-jobs .cj-f20 { font-size: 20px; } .su-co-jobs .cj-f22 { font-size: 22px; } .su-co-jobs .cj-f24 { font-size: 24px; }
+.su-co-jobs .cj-f17 { font-size: 17px; } .su-co-jobs .cj-f18 { font-size: 18px; } .su-co-jobs .cj-f20 { font-size: 20px; } .su-co-jobs .cj-f22 { font-size: 22px; } .su-co-jobs .cj-f24 { font-size: 24px; }
 .su-co-jobs .cj-f26 { font-size: 26px; } .su-co-jobs .cj-f28 { font-size: 28px; } .su-co-jobs .cj-f30 { font-size: 30px; }
 
 /* 움직임 — 처음 한 번(1.2초 안) · 그 뒤 끝 점 빛만 천천히 숨 쉼(투명도만) · 줄이기면 끝 모습 */

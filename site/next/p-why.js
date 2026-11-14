@@ -9,7 +9,7 @@
    2026-10-18 「72개와 카톡 두 번 가입」 [5] 1 ~ 9 · [9] 8 · [2] 7(일꾼 S1 → S1c · 잣대 docs/design/godori-2026-10-18/accept/S1c.md · 검사 check_why.mjs --quick):
      ① 고르기 전에는 답 색을 숨김(빈 테두리) — 고른 뒤에만 색 · 한마디 ② 결과 = 판정 글이 가장 큼 · 「준비 n / 22」는 그 밑에 작게
      ③ 답 한 번 = 다음 질문(「다음」 단추 없음 · 앞 답 한마디 + 격언은 다음 장 맨 위(머리 바로 밑) · 3번 「클 일이 있다」만 날짜 칸 + 다음 · keepQ = 답 셋이 위 막대와 아래 단추 줄 사이에 오게) ④ 뒤로 = 「‹ 앞 질문」
-     ⑤ 준비 = 22 − 옛 점수(기록은 옛 꼴 그대로 · 보일 때 바꿈) · 막대는 준비된 만큼 참 ⑥ 4번 「거의 다·빌린 돈」 · 9번 「곧」 = 점수와 상관없이 「오늘은 쉬어 가자」
+     ⑤ 준비 = 22 − 옛 점수(기록은 옛 꼴 그대로 · 보일 때 바꿈) · 막대는 준비된 만큼 참 ⑥ 4번 「거의 다·빌린 돈」 · 9번 「곧」 · 7번 「안 정함」(주문 1114-1306 ④) = 점수와 상관없이 「오늘은 쉬어 가자」
      ⑦ todayResult() = 오늘(서울 날짜) 가장 새 기록 {at, code, verdict: go · wait · rest, ready, of: 22} 또는 null(일꾼 S9 고도리 칸)
      ⑧ 한 달(장 스무 번) 지난 기록 = 「그날 정한 대로 했어?」 먼저 · 답은 그 기록에 kept {a: yes · no, at} 로 남김(지우지 않음) · 값은 답한 뒤
      ⑨ 값 = 시작 날 종가 → 스무 번째 장 날 종가(날짜 박음 · co/<번호>.json close + k0 를 days.json 날짜 줄에 맞춤) · 같은 때 코스피(home.json) · 모든 회사 가운데 값(/next/data/median20.json) · 없으면 「?」
@@ -43,15 +43,22 @@ export const QS = [
 export const GROUPS = [['이유', [1, 2, 3]], ['돈', [4, 9, 11]], ['때', [5, 6]], ['마음', [7, 8, 10]]];
 /** 가장 큰 점수(질문 열한 개 × 2) — 준비 = MAX − 점수([5] 5 · 높을수록 좋음) */
 export const MAX = QS.length * 2;
-/** 쉬어 가는 답([5] 6) — [질문 자리, 답 자리] · 4번 「거의 다·빌린 돈」 · 9번 「곧」 */
-export const REST_AT = [[3, QS[3].a.findIndex(a => a[1] === '거의 다·빌린 돈')], [8, QS[8].a.findIndex(a => a[1] === '곧')]];
+/** 쉬어 가는 답([5] 6 · 주문 1114-1306 ④) — [질문 자리, 답 자리] · 돈 둘(4번 「거의 다·빌린 돈」 · 9번 「곧」) · 팔 곳 하나(7번 「떨어지면?」에 「안 정함」 — 바로 쉬어)
+ *  큐피트 site/su/su-why.js WHY_MONEY · WHY_SELL 과 같음(시험 tests/atlas11/su.test.mjs 가 맞댐) · 질문 차례는 그대로(기록 열쇠 · 답 자리가 이어짐) */
+export const REST_MONEY = [[3, QS[3].a.findIndex(a => a[1] === '거의 다·빌린 돈')], [8, QS[8].a.findIndex(a => a[1] === '곧')]];
+export const REST_SELL = [6, QS[6].a.findIndex(a => a[1] === '안 정함')];
+export const REST_AT = [...REST_MONEY, REST_SELL];
 const stopOf = ans => REST_AT.some(([q, k]) => k >= 0 && ans?.[q] === k);
-/** 점수 · 🔴 수 · 묶음 · 판정(명령 6 · [5] 6) — ans = 답 자리(0 ~ 2) 열한 개 · ready = 준비(높을수록 좋음) · stop = 쉬어 가는 답을 고름 */
+const moneyOf = ans => REST_MONEY.some(([q, k]) => k >= 0 && ans?.[q] === k), noSellOf = ans => REST_SELL[1] >= 0 && ans?.[REST_SELL[0]] === REST_SELL[1];
+/** 결과 쪽 안내 한 줄 — 7번에 「안 정함」일 때(큐피트 su-why.js WHY_SELL_SAY 와 같은 글) */
+const SELL_SAY = '팔 곳을 정하기 전에는 사지 않아요.';
+/** 점수 · 🔴 수 · 묶음 · 판정(명령 6 · [5] 6) — ans = 답 자리(0 ~ 2) 열한 개 · ready = 준비(높을수록 좋음) · stop = 쉬어 가는 답을 고름
+ *  판정 이름(주문 1114-1306 ④) — 「좋아, 정해 둔 대로만」은 사도 된다는 말로 읽혀 「준비됐어, 정해 둔 대로만」으로 · 옛 이름으로 남은 기록은 V_CODE · VTONE · vShow 가 그대로 읽음 */
 export function judge(ans) {
   const pts = ans.map((k, i) => PT[QS[i].a[k][0]]);
   const score = pts.reduce((s, x) => s + x, 0), reds = pts.filter(x => x === 2).length, stop = stopOf(ans);
   const groups = Object.fromEntries(GROUPS.map(([n, qs]) => [n, qs.reduce((s, q) => s + pts[q - 1], 0)]));
-  const verdict = stop || score >= 12 || reds >= 4 ? '오늘은 쉬어 가자' : score >= 6 ? '반만 준비됐어' : '좋아, 정해 둔 대로만';
+  const verdict = stop || score >= 12 || reds >= 4 ? '오늘은 쉬어 가자' : score >= 6 ? '반만 준비됐어' : '준비됐어, 정해 둔 대로만';
   return {score, ready: MAX - score, reds, groups, verdict, stop};
 }
 /** 기록의 준비 수(옛 기록은 점수만 있음 — 보일 때 바꿈) · 못 읽으면 null */
@@ -79,7 +86,8 @@ function offerOnce() {
 /** 열한 질문을 끝낸 적이 있나 — 고도리 칸 문([6] 1 · 일꾼 D) */
 export function doneOnce() { return doneNow || records().some(fullRec); }
 const seoulDay = ms => new Date(ms + 9 * 36e5).toISOString().slice(0, 10); // 서울 날짜(보는 기계 시간대와 상관없이)
-const V_CODE = {'좋아, 정해 둔 대로만': 'go', '반만 준비됐어': 'wait', '오늘은 쉬어 가자': 'rest'};
+const V_OLD = '좋아, 정해 둔 대로만', V_GO = '준비됐어, 정해 둔 대로만'; // 옛 이름(이미 남은 기록 · 읽기만) → 새 이름(주문 1114-1306 ④)
+const V_CODE = {[V_GO]: 'go', '반만 준비됐어': 'wait', '오늘은 쉬어 가자': 'rest', [V_OLD]: 'go'};
 /** 오늘(서울 날짜) 끝낸 가장 새 기록의 판정([5] 7 · 일꾼 S9 이 'rest' 면 고도리 칸을 닫음) — {at, code, verdict: 'go' | 'wait' | 'rest', ready, of: 22} · 없으면 null */
 export function todayResult() {
   const today = seoulDay(Date.now());
@@ -105,9 +113,10 @@ const TONE = {g: '좋음', y: '주의', r: '위험'};
 const dot = c => h('span', {class: 'wy-dot wy-' + c}, h('span', {class: 'wy-sr', text: TONE[c]}));
 /** 내가 쓴 글 — 남의 글(쓰지 않을 말 셈 밖 · 영어로 바꾸지 않음) */
 const mine = t => h('q', {class: 'wy-mine', 'data-proper': '', lang: /[가-힣]/.test(t) ? 'ko' : null, text: t});
-const VTONE = {'좋아, 정해 둔 대로만': 'g', '반만 준비됐어': 'y', '오늘은 쉬어 가자': 'r'};
-/** 보이는 판정 글 — 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 5)로 그림처럼 단정 · 사장님 판정 글 그대로(옛 10-19 [화면] 4 물음 꼴은 이 칸에서 풂) */
-const vShow = v => String(v ?? '?');
+const VTONE = {[V_GO]: 'g', '반만 준비됐어': 'y', '오늘은 쉬어 가자': 'r', [V_OLD]: 'g'};
+/** 보이는 판정 글 — 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 5)로 그림처럼 단정 · 사장님 판정 글 그대로(옛 10-19 [화면] 4 물음 꼴은 이 칸에서 풂)
+ *  옛 기록의 「좋아, 정해 둔 대로만」은 새 이름 「준비됐어, 정해 둔 대로만」으로 보임(기록은 바꾸지 않음 · 주문 1114-1306 ④) */
+const vShow = v => (v === V_OLD ? V_GO : String(v ?? '?'));
 /** 묶음 막대 넷 — 묶음 준비 ÷ 묶음 최대([5] 5 · 준비된 만큼 참 · 색은 그 묶음 점수로) */
 function bars(groups, small) {
   return h('div', {class: 'wy-bars' + (small ? ' sm' : '')}, ...GROUPS.map(([n, qs]) => {
@@ -269,7 +278,7 @@ export function whyCard(G, {page = false, code = null, onDone = null, autoFocus 
     tally(V_CODE[J.verdict] === 'rest' ? 'stop_rest' : 'stop'); // 합계 칸 ① 멈춤(KD · [10] 1)
   };
   const resView = () => {
-    const J = last, v = V_CODE[J.verdict] ?? 'wait', T = TYPE_OF[v], quote = v === 'rest' && stopOf(J.answers) ? T.stopQ : T.q;
+    const J = last, v = V_CODE[J.verdict] ?? 'wait', T = TYPE_OF[v], sell = noSellOf(J.answers), quote = v === 'rest' && moneyOf(J.answers) ? T.stopQ : v === 'rest' && sell ? T.sellQ : T.q; // 쉬어 가는 까닭 — 돈 답 · 팔 곳 안 정함 · 그 밖
     live.textContent = vShow(J.verdict);
     const share = h('button', {class: 'wy-share', type: 'button'}, lookIcon('share', 20), h('span', {text: '공유하기'}));
     share.addEventListener('click', () => shareRes(share, T.name, quote));
@@ -279,6 +288,7 @@ export function whyCard(G, {page = false, code = null, onDone = null, autoFocus 
       h('div', {class: 'wy-rhead'}, share,
         h('p', {class: 'wy-verdict', 'data-v': v, tabindex: '-1'}, h('span', {class: 'wy-vk', text: '당신은'}), h('b', {}, h('span', {class: 'wy-vt', text: T.name}), h('span', {class: 'wy-ve', text: '예요'}))), // 화면에서 가장 큰 글([5] 2)
         h('p', {class: 'wy-type'}, h('span', {text: '“'}), h('span', {text: quote}), h('span', {text: '”'})),
+        sell ? h('p', {class: 'wy-rule', text: SELL_SAY}) : null, // 7번 「안 정함」 — 안내 한 줄(주문 1114-1306 ④)
         sceneArt(true)),
       h('div', {class: 'wy-sheet'}, tendCard(J), mindCard(J), detb, ...hubNodes(page),
         h('p', {class: 'wy-note', text: saved ? (page ? '오늘 답을 아래 매매일지에 날짜와 함께 쌓았어요.' : '오늘 답을 매매일지에 날짜와 함께 쌓았어요.') : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),

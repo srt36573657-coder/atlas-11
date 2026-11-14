@@ -240,8 +240,8 @@ const links = new Set(home.links || []);
 const chips = [...new Set((home.links || []).filter(h => /^#\/f\/[a-z]+$/.test(h)))];
 const firstOf = re => (home.links || []).find(h => re.test(h)) || null;
 let chI = firstOf(/^#\/ch\/i\//), chG = firstOf(/^#\/ch\/g\//);
-const LIST = [...chips, '#/today', '#/shorts', '#/why', '#/why/005930', '#/sub', '#/me', '#/gdr', '#/w/005930', '#/w/005930/past', '#/w/005930/rivals', '#/w/005930/grow', '#/w/005930/range',
-  '@chI', '@chG', '#/surge', '#/cal', '#/cond', '#/talk', '#/s/005930/2026-10-13/234000/s/7J206rGwIOyWtOuVjD8', '/letter.html', '/hello.html'];
+const LIST = [...chips, '#/shorts', '#/why', '#/why/005930', '#/sub', '#/me', '#/gdr', '#/w/005930', '#/w/005930/past', '#/w/005930/rivals', '#/w/005930/grow', '#/w/005930/range',
+  '@chI', '@chG', '#/cond', '#/s/005930/2026-10-13/234000/s/7J206rGwIOyWtOuVjD8', '/letter.html', '/hello.html'];
 for (let s of LIST) {
   if (s === '@chI' || s === '@chG') {
     if (s === '@chI' && !chI) chI = Object.values(out.screens).flatMap(r => r.links || []).find(h => /^#\/ch\/i\//.test(h)) || null;
@@ -268,7 +268,7 @@ out.owner = [
   ['편지 쪽 돌아가기 단추 높이 px', 25, S['/letter.html']?.letter?.back?.h], ['15px 글이 있는 화면 수', 8, sizeScreens('15').length], ['14px 글(시황)', '있음', S['#/shorts']?.under17Sizes?.['14'] ? '있음 ' + S['#/shorts'].under17Sizes['14'].n : '없음'],
   ['13px 글(소개 쪽)', '있음', S['/hello.html']?.under17Sizes?.['13'] ? '있음 ' + S['/hello.html'].under17Sizes['13'].n : '없음'], ['첫 화면 글씨 가짓수(#view · 문서 모두)', 11, `${S['#/']?.fontKinds} · ${S['#/']?.fontKindsPage}`],
   ['왼쪽 줄 첫 화면(모두 · 함께 쓰는)', 12, `${S['#/']?.leftLines} · ${S['#/']?.leftShared}`], ['왼쪽 줄 회사 #/w/005930', 10, `${S['#/w/005930']?.leftLines} · ${S['#/w/005930']?.leftShared}`],
-  ['왼쪽 줄 채널 ' + (chKey || '?'), 10, chKey ? `${S[chKey].leftLines} · ${S[chKey].leftShared}` : '?'], ['왼쪽 줄 달력 #/cal', 12, `${S['#/cal']?.leftLines} · ${S['#/cal']?.leftShared}`],
+  ['왼쪽 줄 채널 ' + (chKey || '?'), 10, chKey ? `${S[chKey].leftLines} · ${S[chKey].leftShared}` : '?'], // 옛 「왼쪽 줄 달력 #/cal」 줄은 달력 쪽을 닫아 뺌(주문 1114-1306)
   ['첫 화면 카드 높이 px', '286–313', cardAll ? `${cardAll.min}–${cardAll.max}` : '?'], ['시황 빈 곳 px(48 넘는 잉크 빈 곳)', '115 · 277 · 231', shortGaps.join(' · ') || '없음']
 ].map(([what, owner, now]) => ({what, owner, now}));
 

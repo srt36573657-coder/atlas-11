@@ -7,10 +7,10 @@
  *   · 2026-10-17 15:48 「이름을 변경하자 아틀란스에서 보드리로 모두 변경해」 · 17:34 「보드리를 고도리로 변경하자」 — 영어 이름은 site/next/brand.js 한 곳(지금 Godori):
  *     화면에 옛 영어 이름(brand.js was — 지금 Bodri · ATLAS · 대소문자 그대로 낱말)이 보이면 실패 「옛 이름 <그 이름> 남음」
  *     (회사 이름 Atlas Link 같은 보통 글자는 안 셈 · lang="ko" 원문 빼고 · 글 · 속성 · 창 제목 · 꾸밈 글 · 확인 창)
- *   여는 곳: /next/?dev=1&lang=en (app.js EN_NEXT 가 false 인 동안 새 화면 영어는 ?dev=1 로만 열림 · --dev 0 이면 ?lang=en 만)
- *   길: 홈 · 칩 일곱(#/f/rise|surge|lead|pick|group|ind|us) · 쇼츠(+ #/shorts/<n> 한 장씩) · 구독 · 나 · 찾기(+ #/find/<말>) · 지수 둘(#/w/KOSPI · KOSDAQ)
+ *   여는 곳: /next/?dev=1&lang=en (--dev 0 이면 ?lang=en 만 · 옛 app.js EN_NEXT 갈림은 지움 — 주문 1114-1306)
+ *   길: 홈 · 칩 여섯(#/f/rise|lead|pick|group|ind|us — 급등 칩은 닫음 · 주문 1114-1306) · 쇼츠(+ #/shorts/<n> 한 장씩) · 구독 · 나 · 찾기(+ #/find/<말>) · 지수 둘(#/w/KOSPI · KOSDAQ)
  *       · 보는 화면(회사 표본 — 지수 둘과 합쳐 --limit 60 · --all 이면 모든 회사) · 업종 채널 모두 · 갈래 채널 모두 · 없는 회사 · 없는 채널
- *       · --modules 면 옮긴 쪽(#/w/<번호>/past|rivals|grow|range · #/surge(+ /10 ~ /40) · #/cal(+ 종목 파일) · #/cond(+ 고르기) · #/talk · #/up · #/time · #/info · #/x/<번호>
+ *       · --modules 면 옮긴 쪽(#/w/<번호>/past|rivals|grow|range · #/cond(+ 고르기) · #/up · #/time · #/info · #/x/<번호> — 시황 talk · 급등 surge · 달력 cal · 오늘 시장 today 는 닫음(주문 1114-1306 · next_check ⑪ 이 큐피트 첫 쪽으로 가는지 봄)
  *         · 고도리(규칙 77) #/why — 질문 열한 개의 답 단추를 모두 눌러 보고(고도리 한마디 · 격언) 다음 › 으로 결과까지 · #/gdr · #/gdr/1 — 내 돈을 바꾸고 칸 하나를 엶)
  *         · 「나」 칸(#/me)에 들기 전 왜 사? 기록 둘을 심음(오늘 · 40일 전 — 한 달 뒤 결과까지) · 새 창 하나는 고도리 칸 자료(/next/data/gdr.json)도 못 받게 함
  *         · --mods why,gdr = 그 쪽만(고치는 동안 빨리 — full 이 아님)
@@ -70,7 +70,7 @@ const t0 = Date.now(), secs = {}, mark = (k, s) => { secs[k] = Math.round((Date.
 //   net.mjs fetchJSON = 끊김 · 시간 넘음 · 몸 끊김 · 429 · 5xx 를 1 · 2 · 4 · 8 · 16 · 30초(흔들기 · Retry-After) 뒤 다시 · 2분 30초 안 — 앞 판은 429 · 몸 끊김을 다시 받지 않았음
 const fetchRetry = (url, opt = {}) => fetchJSON(url, url, {as: 'response', init: opt}).catch(e => { if (e.http) return {ok: false, status: e.http}; throw e; });
 const getJ = f => fetchJSON(base + '/atlas/data/' + f, f).catch(() => null);
-const [core, mkt, home, surge, cond, surgetr, names] = await Promise.all(['core.json', 'mkt.json', 'home.json', 'surge.json', 'cond.json', 'surgetr.json', 'names.json'].map(getJ));
+const [core, mkt, home, cond, names] = await Promise.all(['core.json', 'mkt.json', 'home.json', 'cond.json', 'names.json'].map(getJ)); // 급등 · 달력 자료는 쪽을 닫아 받지 않음(주문 1114-1306)
 if (!core || !mkt || !home) { console.error('자료(core · mkt · home)를 못 받음 — 시험 서버 ' + base); process.exit(1); }
 const CO = mkt.companies, codes = Object.keys(CO).sort();
 const HAN = /[가-힣ㄱ-ㅎㅏ-ㅣ]/;
@@ -83,7 +83,7 @@ const miss = new Map(); // 틀 → {ex, at}
 const avChars = new Set(); // 동그라미 글자(이름 첫 한글 한 글자) — 엔진은 이것도 「사전에 없는 틀」로 셈 → 사전 일이 아니라 app.js 일이라 따로 셈
 
 /* ── 길 ── */
-const CHIPS = ['rise', 'surge', 'lead', 'pick', 'group', 'ind', 'us'];
+const CHIPS = ['rise', 'lead', 'pick', 'group', 'ind', 'us']; // 급등 칩은 닫음(주문 1114-1306)
 const FIND_WORDS = ['삼성', '전자', '반도체', '005930', 'SK', '0', 'Samsung', 'zzqq']; // 없는 말은 한글 아닌 것(찾는 말을 「…」로 되돌려 보여 주는 글은 쓴 사람 글 그대로)
 function sample() {
   if (ALL) return codes;
@@ -113,17 +113,15 @@ add('chan', '#/ch/i/' + enc('없는업종')); add('chan', '#/ch/g/zz');
 /* 옮긴 쪽(--modules) — 모듈 파일(/next/p-<이름>.js)이 없으면 「모듈 없음」 실패
    · 2026-10-17 고도리(규칙 77): why = 「친구야, 왜 사?」 질문 열한 개(#/why — 답 단추를 모두 눌러 보고 다음 › 으로 결과까지) · gdr = 고도리 칸(#/gdr · #/gdr/1 — 내 돈을 바꾸고 칸 하나를 엶)
    · --mods why,gdr = 그 쪽만(고치는 동안 빨리 — full 이 아님) */
-const MODS = ['past', 'rivals', 'grow', 'range', 'surge', 'cal', 'cond', 'talk', 'up', 'time', 'info', 'x', 'co', 'chx', 'today', 'why', 'gdr', 'share', 'hold', 'theme', 'sage', 'roman']; // theme = 테마 시계 쪽(#/t/… · 사장님 2026-10-19 16:54 · p-theme.js) // share = 친구가 연 보내기(#/s/…) · hold = 보유종목 점검(#/me 맨 위) — 2026-10-17 21:10 [4] · [5]
+const MODS = ['past', 'rivals', 'grow', 'range', 'cond', 'up', 'time', 'info', 'x', 'co', 'chx', 'why', 'gdr', 'share', 'hold', 'theme', 'sage', 'roman']; // 닫은 쪽(surge · cal · talk · today)은 뺌 — 주문 1114-1306 // theme = 테마 시계 쪽(#/t/… · 사장님 2026-10-19 16:54 · p-theme.js) // share = 친구가 연 보내기(#/s/…) · hold = 보유종목 점검(#/me 맨 위) — 2026-10-17 21:10 [4] · [5]
 const MODS_ONLY = arg('--mods', null)?.split(',').map(s => s.trim()).filter(Boolean) ?? null;
 const modHave = {};
 if (MODULES || DEV) await Promise.all(MODS.map(async m => { try { const r = await fetchRetry(base + '/next/p-' + m + '.js', {method: 'HEAD'}); modHave[m] = r.ok; } catch { modHave[m] = false; } })); // 잠깐 막힘에 「모듈 없음」이 되면 몫마다 일감 목록이 달라짐 — 다시 받기
 if (MODULES && on('mod')) {
   const mc = ALL ? codes : [...new Set(['005930', ...WATCH])].slice(0, 12);
   const R = {past: mc.map(c => `#/w/${c}/past`), rivals: mc.map(c => `#/w/${c}/rivals`), grow: mc.map(c => `#/w/${c}/grow`), range: mc.map(c => `#/w/${c}/range`),
-    surge: ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'],
-    cal: ['#/cal', ...((surgetr?.cases ?? []).map(r => r[0]).slice(0, ALL ? Infinity : 20).map(c => '#/cal/' + c))],
     cond: ['#/cond', '#/cond/rise-top3-spike', '#/cond/up-f3-loss', '#/cond/dn-pick-all', '#/cond/all-all-all'],
-    talk: ['#/talk'], up: ['#/up'], time: ['#/time'], info: ['#/info'],
+    up: ['#/up'], time: ['#/time'], info: ['#/info'],
     x: (names?.rows ?? []).filter(r => r.k).slice(0, ALL ? 40 : 6).map(r => '#/x/' + r.c),
     why: ['#/why', '#/why/005930'], gdr: ['#/gdr', '#/gdr/1'], // 매매일지(둘 다 시작 화면부터 — 종목 찾기 칸 없음 · <번호>는 조용히 기록에만 · order-1011 「어 그렇게 해」)
     theme: await (async () => { // 테마 시계 열아홉 쪽 — 싹 첫 업종 · 그 업종 앞선 회사(자료를 못 받으면 업종 · 회사 없는 쪽만)
@@ -208,7 +206,7 @@ async function go(q, hash) {
 function judgeText(OLD) {
   const HN = /[가-힣ㄱ-ㅎㅏ-ㅣ]/;
   const vis = el => { if (!el) return false; const s = getComputedStyle(el); if (s.visibility === 'hidden' || s.display === 'none') return false; if (!el.getClientRects().length) return false; if (el.closest('details:not([open]) > :not(summary)')) return false; return true; };
-  const MODH = /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/|why|gdr)/; // 쪽 모듈 길(p-*.js)
+  const MODH = /^#\/(w\/[^/]+\/|cond|up|time|info|x\/|why|gdr)/; // 쪽 모듈 길(p-*.js)
   const han = [], attrs = [], pseudo = [], key = s => { try { return window.__atlasI18n.templateOf(s).key; } catch { return s; } };
   // 옛 영어 이름(brand.js was — 지금 Bodri · ATLAS) — 대소문자 그대로 낱말만(회사 이름 Atlas Link 는 안 셈) · w = 남은 이름
   const AT = OLD.length ? new RegExp('\\b(?:' + OLD.map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b') : /(?!)/, atlas = [], ow = s => (String(s).match(AT) || [''])[0];
@@ -260,7 +258,7 @@ async function judge(p, where, {widths = true} = {}) {
   // 사전에 없는 틀 — 엔진이 처음 본 차례대로 쌓음 · 쪽 모듈 칸(.co-d · .chx-d · .today-d) 안의 글이면 「[모듈]」
   const ms = await p.evaluate(seen => (window.__atlasI18n?.missing() ?? []).filter(m => !seen.includes(m.key)).map(m => ({...m,
     mod: [...document.querySelectorAll('.co-d, .chx-d, .today-d, .wy, .wy-me, .gdr')].some(s => s.textContent.includes(m.ex) || [...s.querySelectorAll('[aria-label]')].some(e => e.getAttribute('aria-label').includes(m.ex)))})), [...miss.keys()]);
-  for (const m of ms) if (!miss.has(m.key)) miss.set(m.key, {ex: m.ex, at: (m.mod || /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/|why|gdr)/.test(where) ? '[모듈] ' : '') + where});
+  for (const m of ms) if (!miss.has(m.key)) miss.set(m.key, {ex: m.ex, at: (m.mod || /^#\/(w\/[^/]+\/|cond|up|time|info|x\/|why|gdr)/.test(where) ? '[모듈] ' : '') + where});
   if (widths) {
     await p.evaluate(async () => { try { await Promise.race([document.fonts?.ready, new Promise(r => setTimeout(r, 5000))]); } catch { /* 글꼴 없음 */ } }); // 글꼴이 다 온 뒤에 잼(실제 사이트는 글꼴이 늦게 와 바뀌는 사이 「칸 안에서 넘친 글」 둘 — 2026-10-20 live-fix 7/11 · 다섯 초까지)
     for (const w of WIDTHS) {
@@ -602,7 +600,7 @@ if (p) { // 창을 닫기 전에 엔진이 마지막 화면 뒤에 쌓은 틀까
 /* ── ⑤ 새 창 — 자료 파일을 못 받을 때(받은 것을 화면 안에서 바꿀 수 없는 칸: 몸값 · 급등 · 모든 자료) ── 일감 @newwin(맡은 몫만) */
 tS = Date.now();
 if (NEWWIN_MINE && EDGE && on('edge')) {
-  for (const [nm, block, hs] of [['몸값 · 급등 · 첫 화면 · 큐피트 칸 자료 못 받음', ['cond.json', 'surge.json', 'home.json', '/next/data/gdr.json'], ['#/', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/us', '#/shorts', '#/w/KOSPI', '#/w/005930', ...(modHave.gdr ? ['#/gdr'] : []), ...(modHave.why ? ['#/why'] : [])]],
+  for (const [nm, block, hs] of [['몸값 · 첫 화면 · 큐피트 칸 자료 못 받음', ['cond.json', 'home.json', '/next/data/gdr.json'], ['#/', '#/f/lead', '#/f/pick', '#/f/us', '#/shorts', '#/w/KOSPI', '#/w/005930', ...(modHave.gdr ? ['#/gdr'] : []), ...(modHave.why ? ['#/why'] : [])]],
     ['모든 자료 못 받음', ['core.json', 'mkt.json'], ['#/', '#/f/rise', '#/f/ind', '#/shorts', '#/w/005930', '#/w/KOSPI', '#/ch/g/semi', '#/ch/i/' + enc('반도체'), '#/sub', '#/me', '#/find']]]) {
     let q = null;
     try {

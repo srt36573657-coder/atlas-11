@@ -200,7 +200,7 @@ export async function render(arg) {
   nodes.push(growNotes(C, S), ...next7(code), ...foot());
   return {title: name + ' — 앞으로 클까?', nodes};
 }
-/** 없는 주소 — 지금 아틀란스 viewMissing 과 같은 글 · 펀드 · 우선주 같은 밖 칸의 이름 · 까닭은 지금 아틀란스 밖 칸으로 */
+/** 없는 주소 — 지금 아틀란스 viewMissing 과 같은 글 · 펀드 · 우선주 같은 밖 칸의 이름 · 까닭은 이 앱의 밖 칸(#/x/ · p-x.js)으로 — 옛 /atlas/ 화면 길은 끊음(주문 1114-1306 ② · 점검 DISCARD 17) */
 /** 맨 아래 — 지금 아틀란스 foot 의 자료 줄(출처 · 기준일 · 바탕 회사) · 아직 바뀔 수 있는 값 「?」 · 안전 문장(옛 「투자 상담사가 아닙니다」 글 자리 — 새 화면 말) */
 function footOf(C) {
   return [h('footer', {class: 'pgrow-foot'},
@@ -212,6 +212,6 @@ function missing(C, code) {
   const ok = /^[0-9A-Z]{6}$/.test(code);
   return {title: '없는 주소입니다', nodes: [h('h1', {class: 'wt', text: '없는 주소입니다'}),
     h('p', {class: 'pgrow-none', text: code ? `「${code}」는 지금 ${pickName(C)}에 없습니다. 찾기로 이름을 쳐 보세요.` : '주소가 바뀌었거나 잘못 들어왔습니다.'}),
-    h('a', {class: 'more', href: '#/find', text: '회사 찾기 ›'}), ok ? h('a', {class: 'more', href: (NX.ready?.('x') ? '#/x/' : '/atlas/#/x/') + code, text: '이름 · 까닭 보기 ›'}) : null, h('a', {class: 'more', href: '#/', text: '처음 화면으로 ›'}),
+    h('a', {class: 'more', href: '#/find', text: '회사 찾기 ›'}), ok ? h('a', {class: 'more', href: '#/x/' + code, text: '이름 · 까닭 보기 ›'}) : null, h('a', {class: 'more', href: '#/', text: '처음 화면으로 ›'}),
     ...footOf(C)].filter(Boolean)};
 }

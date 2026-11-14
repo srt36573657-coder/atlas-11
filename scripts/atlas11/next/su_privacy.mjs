@@ -20,8 +20,8 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 const icon = d => `<svg viewBox="0 0 24 24" aria-hidden="true" class="suw-i"><path d="${esc(d)}"/></svg>`;
 
 export function bar(g = G) {
-  const back = `<a class="suw-back" href="/su/#/g/${g}"><img src="/media/makbi-icon.svg" alt="" width="34" height="34"><span class="suw-bk">큐피트로</span><b>${esc(GROUPS[g])} 길</b><i aria-hidden="true">›</i></a>`;
-  const find = `<a class="suw-find" href="/su/#/g/guide" aria-label="종목 찾기 · 길잡이">${icon(FIND_D)}<span>찾기</span></a>`;
+  const back = `<a class="suw-back" href="/su/#/"><img src="/media/makbi-icon.svg" alt="" width="34" height="34"><span class="suw-bk">큐피트로</span><b>첫 쪽</b><i aria-hidden="true">›</i></a>`; // 옛 기능 쪽 「셋의 길」(#/g)은 버림 — 큐피트 첫 쪽으로(주문 1114-1306 ⑧ · su-wrap.js wrapBar 와 같은 꼴)
+  const find = `<a class="suw-find" href="/next/?su=guide#/find" aria-label="종목 찾기">${icon(FIND_D)}<span>찾기</span></a>`;
   const tabs = `<nav class="suw-tabs" aria-label="큐피트 탭">${TABS.map(([t, href, d]) => `<a href="${esc(href)}">${icon(d)}<span>${esc(t)}</span></a>`).join('')}</nav>`;
   return `<div class="suw-bar" id="suw" role="navigation" aria-label="큐피트 길"><div class="suw-row">${back}${find}</div>${tabs}</div>`;
 }

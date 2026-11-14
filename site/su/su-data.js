@@ -7,17 +7,19 @@ export const CODE = /^[0-9A-Z]{6}$/;
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const str = v => (typeof v === 'string' && v ? v : null);
 
-/** 31.93 → 「+31.9%」 · −5.67 → 「−5.7%」(빼기는 U+2212 · 지금 사이트와 같음) */
-export function pct(v) {
+/* 옛 pct(「+31.9%」) · moreLess(「8.9% 더」)는 지움 — 부르는 곳이 모두 won100 · more100 으로 바뀜(주문 1114-1306 · 화면에 「%」 없음) */
+/** 「%」 대신 쓰는 말(사장님 2026-11-14 「「몇 %」를 「100원이 ○원」으로 바꾸는 일 … 다 해」 · 주문 1114-1306) — 31.93 → 「100원이 131.9원」 · −5.67 → 「100원이 94.3원」 · 0 → 「100원이 100원」
+ *  값 글 하나(쪽마다 같은 말 · 검사 check_su won100Of 와 같은 셈) */
+export function won100(v) {
   if (!fin(v)) return '?';
-  const a = Math.abs(v).toFixed(1);
-  return a === '0.0' ? '0.0%' : (v > 0 ? '+' : '−') + a + '%';
+  const t = Math.round((100 + v) * 10) / 10;
+  return '100원이 ' + t.toLocaleString('ko-KR', {maximumFractionDigits: 1}) + '원';
 }
-/** 업종 · 회사가 시장보다 — 8.87 → 「8.9% 더」 · −32.15 → 「32% 덜」(10 넘으면 자연수) */
-export function moreLess(v) {
+/** 업종 · 회사가 시장보다 — 8.87 → 「100원에 8.9원 더」 · −32.15 → 「100원에 32원 덜」(10 넘으면 자연수 · 앞에 「시장보다」는 부르는 쪽이 붙임) */
+export function more100(v) {
   if (!fin(v)) return '?';
   const a = Math.abs(v), t = a < 10 ? a.toFixed(1) : String(Math.round(a));
-  return t + '% ' + (v >= 0 ? '더' : '덜');
+  return '100원에 ' + t + '원 ' + (v >= 0 ? '더' : '덜');
 }
 /** '2026-11-03' → 「11월 3일」 */
 export function dateKo(d) {

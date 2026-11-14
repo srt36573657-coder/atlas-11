@@ -239,6 +239,10 @@ button { font: inherit; color: inherit; }
 .su-src { margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--line); display: grid; gap: 2px; }
 .su-src p { margin: 0; font-size: 17px; color: var(--mute); line-height: 1.5; }
 .su-src b { color: var(--ink); }
+/* 꼭 있어야 할 길 둘(개인정보 처리방침 · 고객센터 — 옛 기능 쪽 #/g 에서 옮김 · 주문 1114-1306 ⑧) — 누르는 곳 48 넘게 */
+.su-src .su-srcl { display: flex; flex-wrap: wrap; gap: 0 16px; }
+.su-srcl a { display: inline-flex; align-items: center; gap: 4px; min-height: 48px; min-width: 48px; color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.su-srcl i { font-style: normal; color: var(--mute); text-decoration: none; }
 
 /* ── 다음 단추 + 진행 막대(탭 위에 늘 · 엄지 자리) ── */
 .su-dock { position: fixed; left: 0; right: 0; bottom: calc(64px + env(safe-area-inset-bottom, 0px)); z-index: 30; padding: 0 max(12px, env(safe-area-inset-right, 0px)) 8px max(12px, env(safe-area-inset-left, 0px)); background: linear-gradient(to top, var(--bg) 70%, transparent); }

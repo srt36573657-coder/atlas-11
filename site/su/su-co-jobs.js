@@ -6,10 +6,10 @@
         첫 페이지 42칸 회사는 칸과 같은 21 마지막 값 · 같은 날짜(주문 0806 — boardRoad · 장 중에는 liveRoad 로 칸과 똑같이 밀림)
         끝값 이름표(su-lg-c · su-lg-i · 값 tspan.v — 검사가 회사 자료와 맞대 봄) · 아래 처음 날 · 끝 날
      ③ 「왜 여기 있나」 — 가는 선으로 나눈 줄: 업종 줄(누르면 그 업종 · 옛 부품과 같은 주소 · 같은 aria-label) → 목록마다 「불장 7곳에 들었어요」 · 기간 · 업종 값 · 회사 값(su-21.js whyRoad 와 같은 값)
-   숫자는 자료 그대로(새 셈 없음 — su-data.js coLine · idxLine · pct 그대로) · 빈 값은 「확인 필요」
+   숫자는 자료 그대로(새 셈 없음 — su-data.js coLine · idxLine 그대로 · 값 글은 won100 · more100 「100원이 ○원」 · 「100원에 ○원 더」) · 빈 값은 「확인 필요」
    그리기: s() 만(createElementNS · setAttribute) · 색 · 움직임은 su-co-jobs.css 에만(움직임 줄이기면 끝 모습) · 아무 수 0 · 옛 아이폰 사파리를 위해 뒤돌아보기 글꼴 · .at() · ??= 없음 */
 import {s} from '/su/su-fig.js';
-import {CODE, pct, dateKo, coLine, idxLine} from '/su/su-data.js';
+import {CODE, won100, more100, dateKo, coLine, idxLine} from '/su/su-data.js';
 import {NEED, num, joEok} from '/su/su-six.js';
 import {KIND} from '/su/su-21.js';
 
@@ -18,9 +18,10 @@ const W = 390, PAD = 20, MID = W / 2, HMIN = 660, KEY = ['hot', 'bloom', 'money'
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const r1 = v => Math.round(v * 10) / 10;
 const lastOf = a => (Array.isArray(a) && a.length ? a[a.length - 1] : null);
-/* 값 글 — 늘고 준 몫은 su-data.js pct 하나로(쪽마다 같은 말 · 한 곳만 고치면 모두 바뀜) · 시장보다 앞선 만큼은 whyRoad 와 같은 sgn */
-const sgn = x => (fin(x) ? (x > 0 ? '+' : x < 0 ? '−' : '') + num(Math.abs(Math.round(x * 10) / 10)) : NEED);
-const sgnP = x => (fin(x) ? pct(x) : NEED);
+/* 값 글 — 늘고 준 몫은 su-data.js won100 하나로(「100원이 150.5원」 · 쪽마다 같은 말 · 한 곳만 고치면 모두 바뀜) · 시장보다 앞선 만큼은 more100(「100원에 18원 더」 · 앞에 「시장보다」)
+   화면에 「%」를 쓰지 않음(주문 1114-1306 · 사장님 2026-11-14 13:06 「「몇 %」를 「100원이 ○원」으로 바꾸는 일이 가장 커요 다 해」) */
+const wonP = x => (fin(x) ? won100(x) : NEED);
+const moreP = x => (fin(x) ? more100(x) : NEED);
 const indHref = n => '#/i/' + encodeURIComponent(n);
 const dk = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) ? dateKo(d) : null);
 let SEQ = 0;
@@ -66,7 +67,7 @@ export async function load(get, code) {
   return {code: c, co, H, T: T21, N: N21};
 }
 
-/** 자료 → 그릴 값(새 셈 없음 — su-data.js coLine · idxLine · pct 와 whyRoad 의 값 그대로 · 기간은 자료 날짜에서 · 현재가 = 회사 자료 c.price 그대로) */
+/** 자료 → 그릴 값(새 셈 없음 — su-data.js coLine · idxLine · won100 · more100 과 whyRoad 의 값 그대로 · 기간은 자료 날짜에서 · 현재가 = 회사 자료 c.price 그대로) */
 function model(d) {
   const code = d && typeof d.code === 'string' ? d.code : null, co = d ? d.co : null, c = co ? co.c : null, H = d ? d.H : null, T21 = d ? d.T : null;
   if (!c || typeof c.name !== 'string' || !c.name) return {ok: false, code};
@@ -77,9 +78,9 @@ function model(d) {
     // 기간: 불장 업종 = 20거래일(why.to) · 회사 = 20거래일(그날 값 날짜) · 시장보다 = 한 달(theme 자료 날짜) · 회사 크기 = 20거래일(mkt 자료 날짜) — 옛 부품과 같음
     const ivp = k === 'hot' ? (fin(w.ind20) ? ['20거래일', dk(w.to) || dk(x.date)] : null) : (fin(w.indX) ? ['한 달', dk(asOf.data)] : null);
     const cvp = k === 'money' ? (fin(w.gain) ? ['20거래일', dk(asOf.mkt)] : null) : k === 'hot' ? (fin(x.ch20) ? ['20거래일', dk(x.date)] : null) : null;
-    const ivL = k === 'hot' ? '업종' : '시장보다', ivN = k === 'hot' ? sgnP(w.ind20) : sgn(w.indX);
+    const ivL = k === 'hot' ? '업종' : '시장보다', ivN = k === 'hot' ? wonP(w.ind20) : moreP(w.indX);
     return {k, kind: KIND[k], n: lists[k].length, ind: x.ind || ind || NEED, iv: ivL + ' ' + ivN, ivL, ivN,
-      name: x.name || c.name, cv: k === 'money' ? (fin(w.gain) ? '+' + joEok(w.gain) : NEED) : k === 'bloom' ? '아직 싹' : sgnP(x.ch20), ivp, cvp};
+      name: x.name || c.name, cv: k === 'money' ? (fin(w.gain) ? '+' + joEok(w.gain) : NEED) : k === 'bloom' ? '아직 싹' : wonP(x.ch20), ivp, cvp};
   });
   // 현재가 = 첫 페이지 칸과 같은 값(주문 0200 · 사장님 2026-11-09 02:00 「어」 — 물음 「회사 쪽 현재가도 첫 페이지와 같은 날 값으로 맞출까요?」)
   //   42칸에 든 회사는 그날 판 값(su21.json · su21-next.json 의 close · date = asOf.board) · 아니면 회사 자료 c.price 그대로 · 장 중에는 live() 가 1분마다 바꿈
@@ -134,18 +135,19 @@ function topG(m, P) {
 }
 
 /* ═══ ② 한 달 꺾은선 — 회색 줄 · 한 달 전 옅은 가로줄 · 끝 점(호박색 · 흰 고리 · 숨 쉬는 빛) · 끝값 이름표 · 처음 날 · 끝 날 ═══ */
-const VPX = [24, 22, 20, 18], LWMAX = 116;
+/* 끝값 이름표 — 값 = 「100원이 150.5원」 한 줄(한 달 전 값 = 100 · 끝 값) · 넘치면 글씨를 17까지 줄이고 이름표 칸을 그만큼 넓힘(꺾은선 칸은 190 아래로 안 줄어듦) · 이름은 116 에서 줄 나눔 */
+const VPX = [24, 22, 20, 18, 17], LWMAX = 116, VMAX = 140;
 function labPlan(m) {
   const ca = m.cl ? [dk(m.from), dk(m.to)] : null, ia = m.il ? [dk(m.il.from), dk(m.il.to)] : null;
   const same = !ca || !ia || (ca[0] === ia[0] && ca[1] === ia[1]), axis = (same ? ca || ia : ca) || [null, null];
   const labs = [];
-  if (m.cl) labs.push({k: 'c', cls: 'su-lg-c', val: pct(m.last), name: m.name, proper: true, per: []});
-  labs.push({k: 'i', cls: 'su-lg-i', val: m.il ? pct(m.ilast) : NEED, name: m.il ? m.il.name : '시장', proper: false,
+  if (m.cl) labs.push({k: 'c', cls: 'su-lg-c', val: wonP(m.last), name: m.name, proper: true, per: []});
+  labs.push({k: 'i', cls: 'su-lg-i', val: m.il ? wonP(m.ilast) : NEED, name: m.il ? m.il.name : '시장', proper: false,
     per: !same && ia ? [ia[0] ? ia[0] + ' ~' : '', ia[1] || ''].filter(Boolean) : []});
   for (const b of labs) {
-    b.px = VPX.find(q => tw(b.val, q) <= LWMAX) || 18;
+    b.px = VPX.find(q => tw(b.val, q) <= VMAX) || 17;
     b.names = wrap(b.name, 18, LWMAX);
-    b.w = Math.min(LWMAX, Math.max(tw(b.val, b.px), ...b.names.map(t => tw(t, 18)), ...b.per.map(t => tw(t, 18))));
+    b.w = Math.min(VMAX, Math.max(tw(b.val, b.px), ...b.names.map(t => tw(t, 18)), ...b.per.map(t => tw(t, 18))));
     b.h = 26 + (b.names.length + b.per.length) * 22;
   }
   const LX = W - PAD - Math.max(...labs.map(b => b.w)), PR = Math.max(214, Math.min(280, LX - 24));
@@ -296,7 +298,7 @@ export function picture(d, opt = {}) {
 function labelOf(m) {
   const per = m.from && m.to ? ' · ' + dk(m.from) + ' ~ ' + dk(m.to) : '';
   return m.name + ' 현재가 ' + (m.price != null ? num(m.price) + '원' + (m.plab ? '(' + m.plab + ')' : m.pday ? '(' + m.pday + ' 마지막 값)' : '') : NEED)
-    + ' · 한 달 줄 ' + (m.cl ? pct(m.last) : NEED) + ' · ' + (m.il ? m.il.name + ' ' + pct(m.ilast) : '시장 ' + NEED) + per
+    + ' · 한 달 줄 ' + (m.cl ? wonP(m.last) : NEED) + ' · ' + (m.il ? m.il.name + ' ' + wonP(m.ilast) : '시장 ' + NEED) + per
     + (m.roads.length ? ' · 든 목록 ' + m.roads.map(r => r.ind + (r.k === 'hot' ? ' ' : ' 업종 ') + r.iv + (r.ivp && r.ivp[1] ? ' ' + r.ivp[0] + ' ' + r.ivp[1] + '까지' : '') + ' → ' + r.name + ' ' + r.cv
       + (r.cvp && r.cvp[1] ? ' ' + r.cvp[0] + ' ' + r.cvp[1] + '까지' : '') + ' → ' + r.kind + ' ' + r.n + '곳').join(' · ') : m.ind ? ' · ' + m.ind + ' 업종' : '');
 }

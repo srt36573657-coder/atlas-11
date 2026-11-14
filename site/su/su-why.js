@@ -1,7 +1,7 @@
 /* 큐피트 — 「왜 사?」 열한 질문(7) · 내 매매일지(8 · 끝) — 빈 파일에서 새로 쓴 쪽(주문 1616 · docs/design/su-full-2026-11-04/order-1616.txt)
    질문 · 답 · 한마디 · 왜 묻나 · 판정 셈 · 기록 열쇠와 꼴 · 한 달 뒤 셈은 예전 앱 /next/p-why.js · why-look.js 와 글자 그대로(시험 tests/atlas11/su.test.mjs 가 맞댐 — 바꾸면 안 되는 약속)
    화면(꽃잎 열하나 · 한 달 뒤 활 · 기록 시간 줄 · 판정 기둥)은 새로 씀(시안 11 「사기 전에 멈춤」) · 주문 1807: 값마다 「그래서」 뜻 줄 · 「전문가용 자세히」(점수 셈 · 판정 문턱 · 기록 줄) */
-import {CODE, pct, dateKo} from '/su/su-data.js';
+import {CODE, won100, dateKo} from '/su/su-data.js';
 import {NEED, val, eQuizResult, eJournal} from '/su/su-six.js';
 import {h, s, fig, bars, tally3} from '/su/su-fig.js';
 import {tally} from '/next/tally.js'; // 합계 칸 신호(① 멈춤 · 약속) — 예전 앱 「왜 사?」와 같은 한 곳
@@ -42,21 +42,28 @@ export const WHY_WHY = Object.freeze([
   '급한 마음이 가장 비싼 값을 치르게 해요. 지금 마음은 충동 매매를 알아보는 데 중요한 요소예요.',
   '분산 투자는 위험을 줄이는 중요한 방법이에요. 하나가 넘어져도 다른 곳이 버텨 줘요.',
 ]);
-export const WHY_TYPE = Object.freeze({go: ['신중한 준비형 투자자', '내 이유로 따져 보고, 정해 둔 대로 움직이는 편이에요.'], wait: ['반쯤 준비된 투자자', '이유는 있지만, 가끔 마음이 앞설 때가 있어요.'], rest: ['오늘은 쉬어 갈 투자자', '준비가 덜 된 곳이 많아요. 오늘은 하루 쉬어 가요.', '빌린 돈이나 곧 쓸 돈이라면, 오늘은 쉬어 가는 게 좋아요.']});
+export const WHY_TYPE = Object.freeze({go: ['신중한 준비형 투자자', '내 이유로 따져 보고, 정해 둔 대로 움직이는 편이에요.'], wait: ['반쯤 준비된 투자자', '이유는 있지만, 가끔 마음이 앞설 때가 있어요.'], rest: ['오늘은 쉬어 갈 투자자', '준비가 덜 된 곳이 많아요. 오늘은 하루 쉬어 가요.', '빌린 돈이나 곧 쓸 돈이라면, 오늘은 쉬어 가는 게 좋아요.', '팔 곳을 아직 정하지 않았어요. 오늘은 하루 쉬어 가요.']});
 const WHY_PT = {g: 0, y: 1, r: 2}, WHY_MAX = WHY_QS.length * 2, WHY_KEY = 'atlas:godori-why';
-const WHY_REST = [[3, WHY_A[3].findIndex(a => a[1] === '거의 다·빌린 돈')], [8, WHY_A[8].findIndex(a => a[1] === '곧')]];
+/* 쉬어 가는 답(점수와 상관없이 「오늘은 쉬어 가자」 — p-why.js REST_MONEY · REST_SELL 과 같음 · 시험이 맞댐) — 돈 둘(4번 「거의 다·빌린 돈」 · 9번 「곧」)
+   · 팔 곳 하나(7번 「떨어지면?」에 「안 정함」 — 주문 1114-1306 ④ 「떨어지면? 안 정함은 바로 쉬어」) · 질문 차례는 그대로(기록 열쇠 · 답 자리가 이어짐) */
+const WHY_MONEY = [[3, WHY_A[3].findIndex(a => a[1] === '거의 다·빌린 돈')], [8, WHY_A[8].findIndex(a => a[1] === '곧')]];
+const WHY_SELL = [6, WHY_A[6].findIndex(a => a[1] === '안 정함')];
+const WHY_REST = [...WHY_MONEY, WHY_SELL];
+const WHY_SELL_SAY = '팔 곳을 정하기 전에는 사지 않아요.'; // 결과 쪽 안내 한 줄(7번에 「안 정함」일 때 — 큰 값 밑 「그래서」 줄 · p-why.js SELL_SAY 와 같은 글)
 const WHY_BIG = [2, WHY_A[2].findIndex(a => a[1] === '클 일이 있다')];
-export const WHY_V = Object.freeze({'좋아, 정해 둔 대로만': 'go', '반만 준비됐어': 'wait', '오늘은 쉬어 가자': 'rest'});
-/** 판정 문턱 풀이 — judgeWhy 셈 그대로(「이상」 · 쉬어 가는 답 둘) · 판정 짧은 이름은 쉬어 · 반만 · 준비됨(손실 먼저 차례) */
-const JUDGE_HOW = '「얼마 넣어?」에 거의 다·빌린 돈, 「언제 쓸 돈?」에 곧이라고 답하면 점수와 상관없이 쉬어 · 답 점수가 12 이상이거나 빨간 답이 넷 이상이면 쉬어 · 6 이상이면 반만 · 그보다 낮으면 준비됨';
+/* 판정 이름 셋(주문 1114-1306 ④ — 「좋아, 정해 둔 대로만」은 사도 된다는 말로 읽혀 「준비됐어, 정해 둔 대로만」으로 · 「반만 준비됐어」 · 「오늘은 쉬어 가자」 그대로)
+   마지막 옛 이름은 이미 남은 기록을 읽을 때만(기록 열쇠 · 꼴은 그대로 — 화면에는 shownV 로 새 이름) */
+export const WHY_V = Object.freeze({'준비됐어, 정해 둔 대로만': 'go', '반만 준비됐어': 'wait', '오늘은 쉬어 가자': 'rest', '좋아, 정해 둔 대로만': 'go'});
+/** 판정 문턱 풀이 — judgeWhy 셈 그대로(「이상」 · 쉬어 가는 답 셋 — 질문 차례대로) · 판정 짧은 이름은 쉬어 · 반만 · 준비됨(손실 먼저 차례) */
+const JUDGE_HOW = '「얼마 넣어?」에 거의 다·빌린 돈, 「떨어지면?」에 안 정함, 「언제 쓸 돈?」에 곧이라고 답하면 점수와 상관없이 쉬어 · 답 점수가 12 이상이거나 빨간 답이 넷 이상이면 쉬어 · 6 이상이면 반만 · 그보다 낮으면 준비됨';
 const VSHORT = {rest: '쉬어', wait: '반만', go: '준비됨'};
-/** 판정 — 점수 · 빨간 답 수 · 묶음 · 판정 글(p-why.js judge 와 같은 셈) */
+/** 판정 — 점수 · 빨간 답 수 · 묶음 · 판정 글(p-why.js judge 와 같은 셈) · money = 돈 답으로 쉬어 · sell = 팔 곳을 안 정함 */
 export function judgeWhy(ans) {
   const pts = ans.map((k, i) => WHY_PT[WHY_A[i][k][0]]);
   const score = pts.reduce((s, x) => s + x, 0), reds = pts.filter(x => x === 2).length, stop = WHY_REST.some(([q, k]) => k >= 0 && ans[q] === k);
   const groups = Object.fromEntries(WHY_GROUPS.map(([n, qs]) => [n, qs.reduce((s, q) => s + pts[q - 1], 0)]));
-  const verdict = stop || score >= 12 || reds >= 4 ? '오늘은 쉬어 가자' : score >= 6 ? '반만 준비됐어' : '좋아, 정해 둔 대로만';
-  return {score, ready: WHY_MAX - score, reds, groups, verdict, stop};
+  const verdict = stop || score >= 12 || reds >= 4 ? '오늘은 쉬어 가자' : score >= 6 ? '반만 준비됐어' : '준비됐어, 정해 둔 대로만';
+  return {score, ready: WHY_MAX - score, reds, groups, verdict, stop, money: WHY_MONEY.some(([q, k]) => k >= 0 && ans[q] === k), sell: WHY_SELL[1] >= 0 && ans[WHY_SELL[0]] === WHY_SELL[1]};
 }
 /** 매매일지에 한 줄 더함(예전 앱 p-why.js save 와 같은 열쇠 · 같은 꼴 · 200줄까지) — 남겼나 */
 function saveWhy(rec) {
@@ -74,7 +81,9 @@ export const seoulDay = ms => new Date(ms + 9 * 36e5).toISOString().slice(0, 10)
 const dayOf = r => { const x = Date.parse(r?.at); return Number.isFinite(x) ? seoulDay(x) : null; };
 const won = n => Math.floor(n).toLocaleString('ko-KR') + '원';
 const toneOf = v => (v === 'go' ? 'g' : v === 'rest' ? 'r' : 'y');
-const VNAME = {go: '좋아, 정해 둔 대로만', wait: '반만 준비됐어', rest: '오늘은 쉬어 가자'};
+const VNAME = {go: '준비됐어, 정해 둔 대로만', wait: '반만 준비됐어', rest: '오늘은 쉬어 가자'};
+/** 기록의 판정 글을 화면에 — 옛 이름(「좋아, 정해 둔 대로만」)도 새 이름으로 보임(기록은 바꾸지 않음) · 모르는 글은 그대로 · 없으면 null */
+const shownV = v => VNAME[WHY_V[v]] ?? (v == null ? null : String(v));
 /** 그날 정한 대로 했나 — 그 기록에만 남김(지우지 않음 · p-why.js keep 과 같은 꼴) · 남겼나 */
 function keepWhy(r, yes) {
   const v = {a: yes ? 'yes' : 'no', at: new Date().toISOString()};
@@ -186,17 +195,19 @@ export async function vQuiz(code0, X) {
     const J = Q.J, v = WHY_V[J.verdict], T = WHY_TYPE[v], rows = groupRowsOf(J.groups);
     const weak = rows.filter(r => r.ready < r.max).sort((a, b) => a.ready / a.max - b.ready / b.max)[0] ?? null;
     const e = eQuizResult({score: J.ready, max: WHY_MAX, verdict: J.verdict, reds: J.reds, type: T[0], day: seoulDay(Date.now()), name});
-    return {title: '왜 사? 결과', tab: 3, step: 6, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 결과', h1: J.verdict, big: e.big,
+    const big = J.sell ? Object.freeze({...e.big, mean: WHY_SELL_SAY}) : e.big; // 7번 「안 정함」 — 큰 값 밑 「그래서」 줄(그림 밖에 보이는 설명 두 줄)이 안내 한 줄(주문 1114-1306 ④)
+    return {title: '왜 사? 결과', tab: 3, step: 6, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 결과', h1: J.verdict, big,
       ...pic(WHY_QS.length, WHY_QS.length, petals(tonesNow(), {label: '내 답 꽃잎 열하나와 한 달 뒤', hero: true, arc: '한 달 뒤 · 장 스무 번',
         cap: ['질문 열한 개에 모두 답했어요.', '준비는 ' + WHY_MAX + '점 가운데 ' + J.ready + '점이에요.',
-          J.stop ? '그런데 내 돈 거의 다나 빌린 돈, 곧 쓸 돈이라고 답했어요.' : weak ? '그런데 ' + weak.n + ' 묶음이 가장 덜 준비됐어요.' : '그런데 답은 오늘 마음일 뿐이에요.',
+          J.money && J.sell ? '그런데 빌린 돈이나 곧 쓸 돈이고, 팔 곳도 안 정했어요.' : J.money ? '그런데 내 돈 거의 다나 빌린 돈, 곧 쓸 돈이라고 답했어요.' : J.sell ? '그런데 떨어질 때 팔 곳을 안 정했다고 답했어요.'
+            : weak ? '그런데 ' + weak.n + ' 묶음이 가장 덜 준비됐어요.' : '그런데 답은 오늘 마음일 뿐이에요.',
           v === 'go' ? '그래서 정해 둔 대로만 해요.' : v === 'wait' ? '그래서 덜 된 묶음부터 채워요.' : '그래서 오늘은 하루 쉬어 가요.']})),
       mids: e.mids,
       figs: [groupBars(rows, '네 묶음 · 준비된 만큼')],
       pro: [{k: '준비 점수', v: J.ready + ' / ' + WHY_MAX, how: '답마다 ● 0 · ▲ 1 · ■ 2 를 더한 값을 ' + WHY_MAX + '에서 뺌'}, {k: '빨간 답', v: J.reds + '개', how: '■ 멈춰요 쪽 답'},
         ...WHY_GROUPS.map(([g, qs]) => ({k: g + ' 묶음 점수', v: (J.groups[g] ?? 0) + ' / ' + qs.length * 2, how: '질문 ' + qs.join(' · ') + '번 · 낮을수록 준비됨'})),
         {k: '판정 문턱', v: '쉬어 · 반만 · 준비됨', how: JUDGE_HOW}],
-      body: [h('p', {class: 'su-quote', text: '“' + (v === 'rest' && J.stop ? T[2] : T[1]) + '”'}),
+      body: [h('p', {class: 'su-quote', text: '“' + (v === 'rest' && J.money ? T[2] : v === 'rest' && J.sell ? T[3] : T[1]) + '”'}), // 쉬어 가는 까닭 — 돈 답 · 팔 곳 안 정함 · 그 밖(점수 · 빨간 답)
         h('p', {class: 'su-note', text: '이 판정은 사도 된다는 뜻이 아니에요. 내 마음이 준비됐는지만 봐요.'}),
         h('section', {class: 'su-why', 'aria-label': '내 답'}, h('h2', {class: 'su-ft', text: '내 답 열한 개'}), h('ol', {class: 'su-myans'}, WHY_QS.map((q, k) => { const [tone, label] = WHY_A[k][Q.ans[k]];
           return h('li', {}, h('span', {class: 'su-mq', text: (k + 1) + ' · ' + q}), h('b', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label}))); }))),
@@ -231,20 +242,21 @@ function dueBox(dues, X) {
   const rd = readyOfRec(r);
   return h('section', {class: 'su-why su-due', 'aria-label': '한 달 전 약속'}, h('h2', {class: 'su-ft', text: '한 달 전 약속'}),
     h('p', {class: 'su-lead'}, h('b', {text: dateKo(dayOf(r))}), r.name || r.code ? h('span', {text: ' · '}) : null, r.name || r.code ? h('span', {'data-proper': '', text: String(r.name || r.code)}) : null,
-      h('span', {text: ' · 준비 ' + (rd ?? '?') + ' / ' + WHY_MAX + ' · ' + (r.verdict ?? '?')})),
+      h('span', {text: ' · 준비 ' + (rd ?? '?') + ' / ' + WHY_MAX + ' · ' + (shownV(r.verdict) ?? '?')})),
     h('p', {class: 'su-kq', text: '그날 정한 대로 했어?'}), h('div', {class: 'su-kbs', role: 'group', 'aria-label': '그날 정한 대로 했어?'}, b1, b2),
     dues.length > 1 ? h('p', {class: 'su-note', text: '한 달 지난 약속이 ' + (dues.length - 1) + '개 더 있어요.'}) : null);
 }
-const pctSpan = x => h('b', {class: 'su-lv' + (x != null && x < 0 ? ' dn' : ''), text: x == null ? NEED : pct(x)});
+/** 한 달 뒤 값 — 「100원이 ○원」(주문 1114-1306 ① · su-data.js won100 한 곳 · 쪽마다 같은 말) · 줄었으면 dn · 못 찾으면 「확인 필요」 */
+const wonSpan = x => h('b', {class: 'su-lv' + (x != null && x < 0 ? ' dn' : ''), text: x == null ? NEED : won100(x)});
 function recCard(r, W, L) {
   const rd = readyOfRec(r), tone = toneOf(WHY_V[r.verdict]);
   return h('li', {class: 'su-jr'},
-    h('p', {class: 'su-jrh'}, h('b', {text: dateKo(dayOf(r))}), h('span', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: r.verdict ?? '?'}))),
+    h('p', {class: 'su-jrh'}, h('b', {text: dateKo(dayOf(r))}), h('span', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: shownV(r.verdict) ?? '?'}))),
     h('p', {class: 'su-jrs'}, h('span', {text: '준비 ' + (rd ?? '?') + ' / ' + WHY_MAX}), r.code || r.name ? h('span', {text: ' · '}) : null, r.code || r.name ? h('span', {'data-proper': '', text: String(r.name || r.code)}) : null,
       r.code || r.name ? h('span', {text: r.price > 0 ? ' · 그날 값 ' + won(r.price) : ' · 그날 값 ' + NEED}) : null),
     r.kept ? h('p', {class: 'su-jrk ' + (r.kept.a === 'yes' ? 'g' : 'r')}, h('i', {'aria-hidden': 'true', text: r.kept.a === 'yes' ? SHAPE.g : SHAPE.r}), h('span', {text: r.kept.a === 'yes' ? '한 달 뒤 — 정한 대로 했어요.' : '한 달 뒤 — 정한 대로 못 했어요.'})) : null,
-    r.kept && L ? h('p', {class: 'su-jrv'}, h('span', {text: dateKo(L.s) + ' → ' + dateKo(L.e) + ' · '}), r.code || r.name ? h('span', {text: '이 회사 '}) : null, r.code || r.name ? pctSpan(L.co) : null,
-      h('span', {text: ' · 코스피 '}), pctSpan(L.kospi), h('span', {text: ' · 모든 회사 가운데 값 '}), pctSpan(L.med)) : null,
+    r.kept && L ? h('p', {class: 'su-jrv'}, h('span', {text: dateKo(L.s) + ' → ' + dateKo(L.e) + ' · '}), r.code || r.name ? h('span', {text: '이 회사 '}) : null, r.code || r.name ? wonSpan(L.co) : null,
+      h('span', {text: ' · 코스피 '}), wonSpan(L.kospi), h('span', {text: ' · 모든 회사 가운데 값 '}), wonSpan(L.med)) : null,
     !r.kept && !W?.e ? h('p', {class: 'su-note', text: '한 달이 지나면 그날 정한 대로 했는지 먼저 물어요.'}) : null);
 }
 /** 8 내 매매일지(결 · 끝) */
@@ -275,6 +287,6 @@ export async function vJournal(X) {
     pro: [{k: '쌓인 기록', v: full.length + '번', how: '이 휴대폰에만 · 틀린 것도 지우지 않음 · 최근 200줄까지 남고 저장 공간을 비우면 사라짐'}, {k: '판정 · 쉬어 · 반만 · 준비됨', v: vc.rest + ' · ' + vc.wait + ' · ' + vc.go, how: '「왜 사?」 결과 판정을 센 값 · 쉬어 간 날은 싸우지 않고 지킨 날이에요'},
       {k: '한 달 뒤 물은 기록 · 못 한 기록 · 한 기록', v: asked + ' · ' + (asked - kept) + ' · ' + kept, how: '한 달 = 장이 열린 날 스무 번(달력으로 서른 날이 먼저 지나면 그날) · 한 달이 지난 기록에만 물어요 · 지금 물을 기록 ' + dues.length + '번'},
       ...WHY_GROUPS.map(([n]) => ({k: n + ' 묶음 평균', v: Number.isFinite(avg[n]) ? String(Math.round(avg[n] * 10) / 10) : NEED, how: '기록마다 묶음 점수의 평균 · 준비된 만큼'})),
-      ...full.slice(0, 30).map(r => ({k: (dayOf(r) ?? NEED) + (r.name ? ' · ' + r.name : ''), v: (readyOfRec(r) ?? NEED) + ' / ' + WHY_MAX + ' · ' + (r.verdict ?? NEED), how: '그날 값 ' + (r.price > 0 ? won(r.price) : NEED) + ' · 빨간 답 ' + (Number.isFinite(r.reds) ? r.reds : NEED) + ' · 한 달 뒤 ' + (r.kept ? (r.kept.a === 'yes' ? '정한 대로 함' : '못 함') : '아직')}))],
+      ...full.slice(0, 30).map(r => ({k: (dayOf(r) ?? NEED) + (r.name ? ' · ' + r.name : ''), v: (readyOfRec(r) ?? NEED) + ' / ' + WHY_MAX + ' · ' + (shownV(r.verdict) ?? NEED), how: '그날 값 ' + (r.price > 0 ? won(r.price) : NEED) + ' · 빨간 답 ' + (Number.isFinite(r.reds) ? r.reds : NEED) + ' · 한 달 뒤 ' + (r.kept ? (r.kept.a === 'yes' ? '정한 대로 함' : '못 함') : '아직')}))],
     next: {href: '#/f', label: '친구에게 건네기', step: 8}, asOf, S, note: '기록은 이 휴대폰에만 있어요. 이름도 열쇠도 받지 않아요. 친구에게 건넬 때도 내 기록은 보내지 않아요.'};
 }

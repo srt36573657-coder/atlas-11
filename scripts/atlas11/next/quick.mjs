@@ -309,10 +309,9 @@ const FOR = [
   [/^site\/next\/p-hold\.(js|css)$/, ['#/me']],
   [/^site\/next\/p-co\.(js|css)$/, ['#/w/005930']],
   [/^site\/next\/p-chx\.(js|css)$/, ['#/f/ind']],
-  [/^site\/next\/p-today\.(js|css)$/, ['#/today', '#/']],
+  [/^site\/next\/p-(talk|surge|cal|today)\.(js|css)$/, ['#/']], // 닫은 쪽(주문 1114-1306) — 파일은 지움 · 바뀐 것은 첫 화면 고리(띠 · 전부 보기 · 칩)
   [/^site\/next\/p-share\.(js|css)$/, ['#/me']],
   [/^site\/next\/p-(past|rivals|grow|range)\.(js|css)$/, m => ['#/w/005930/' + m[1]]],
-  [/^site\/next\/p-surge\.(js|css)$/, ['#/surge', '#/surge/10']],
   [/^site\/next\/p-([a-z]+)\.(js|css)$/, m => ['#/' + m[1]]],
   [/^site\/next\/(app\.js|app\.css|index\.html|brand\.js|words\.js|glossary\.js|kakao\.js)$/, ['#/', '#/why', '#/w/005930', '#/me', '#/sub', '#/shorts']],
   [/^site\/(letter)\.(html|css|js)$/, ['/letter.html']],

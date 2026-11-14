@@ -275,10 +275,10 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t
   assert.ok(st.includes("return {title: '정산', tab: 5,"), '정산 쪽을 열면 정산 탭이 켜짐');
   assert.ok(pk.includes("'scripts/atlas11/next/su21_settle.mjs'") && pk.includes("'--book', path.join(root, 'reports/atlas11/su21/settle.json')") && /su21_settle\.mjs[^\n]*\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶을 때 화면 자료 · 장부는 올리기 작업만 씀');
   assert.ok(pk.indexOf('su21_days.mjs') < pk.indexOf('su21_settle.mjs'), '그날 목록을 적은 뒤에 정산');
-  assert.ok(ck.includes("'301곳 지도 멈춤 기록 달력 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 여섯 · 정산 쪽');
+  assert.ok(ck.includes("'오늘 지도 멈춤 기록 달력 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 여섯(첫 탭 「오늘」 — 주문 1114-1306 ⑤) · 정산 쪽');
   assert.ok(ck.includes("import {START as SETTLE_START} from './su21_settle.mjs';") && ck.includes('㉓ 정산 첫날') && ck.includes("부터 센 정산이에요."), '검사 — 정산 첫날(주문 1112-2042)');
   assert.ok(st.includes("text: md(D.start) + '부터 센 정산이에요.'"), '쪽 — 맨 위 첫날 한 줄');
-  assert.ok(/#\\\/r\\\/\[mwdynkicst\]/.test(ck), '검사 고리 꼴에 #/r/t');
+  assert.ok(/#\\\/r\\\/\[mwdykicst\]/.test(ck), '검사 고리 꼴에 #/r/t(가까운 회사 쪽 #/r/n 은 버림 — 주문 1114-1306 ⑧)');
   assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(st), '보안 규칙 — innerHTML · 글 속 style 없음');
   assert.ok(css.includes('.st-replay') && !css.includes('.st-rest'), '꾸밈 — 접은 줄 꾸밈은 뺌(주문 1113-1623)');
   assert.ok(st.includes("table('st-kinds', '묶음마다', '묶음', byRate(K, SHOW).map(g => row(g, KIND_NAME[g.key] ?? g.key, mxOf(K))), T)") && !/st-inds|st-cos|restFold|'#\/c\/'/.test(st), '쪽 — 표는 묶음마다 하나(업종 · 회사 표 · 회사 고리 0) · 여덟 묶음도 수익률 높은 차례(주문 1114-0922)');
@@ -292,8 +292,8 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t
 });
 
 test('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 값 셈 · su21.py 한 달 값 · 단추 그림 · 검사 ㉔ · 선 모양 = 42칸', async () => {
-  const ap = rd('site/su/su-apple.js'), stub = ap.replace("import {s, h} from '/su/su-fig.js';", 'const s = () => null, h = () => null;');
-  assert.ok(!/^import /m.test(stub), '그리기 도구를 바꿈');
+  const ap = rd('site/su/su-apple.js'), stub = ap.replace("import {s, h} from '/su/su-fig.js';", 'const s = () => null, h = () => null;').replace("'/su/su-data.js'", JSON.stringify(new URL('../../site/su/su-data.js', import.meta.url).href)); // 값 글(주문 1114-1306 「%」 대신 100원 말)은 그 파일 그대로
+  assert.ok(!stub.includes('/su/su-fig.js') && (stub.match(/^import /gm) ?? []).length === 1, '그리기 도구를 바꿈(남은 부름은 값 글 su-data.js 하나)');
   const A = await import('data:text/javascript;base64,' + Buffer.from(stub).toString('base64'));
   const c21 = Array.from({length: 21}, (_, i) => 1000 + i * 10), D = '2026-11-13';
   const g = {asOf: {board: D}, line: {'000001': {c: c21, close: 1200, date: D}, '000002': {c: c21, close: 1199, date: D}, '000003': {c: c21, close: 1200, date: '2026-11-12'},
@@ -354,7 +354,7 @@ test('겹친 곳(주문 1114-0802 「… 36개 정도 겹치는 그 종목을 �
   const st = rd('site/su/su-settle.js');
   assert.ok(st.indexOf("table('st-kinds'") < st.indexOf("table('st-ovl', '겹친 곳', '묶음'") && st.indexOf("table('st-ovl'") < st.indexOf("table('st-s36'"), '묶음마다 → 겹친 곳 → 서른여섯 꾀 차례');
   // 첫 화면 — 꾀 칸 머리 바로 아래 한 묶음 · 칸 = 꾀 칸과 같은 꼴 + 든 묶음 수
-  const ap = rd('site/su/su-apple.js'), stub = ap.replace("import {s, h} from '/su/su-fig.js';", 'const s = () => null, h = () => null;');
+  const ap = rd('site/su/su-apple.js'), stub = ap.replace("import {s, h} from '/su/su-fig.js';", 'const s = () => null, h = () => null;').replace("'/su/su-data.js'", JSON.stringify(new URL('../../site/su/su-data.js', import.meta.url).href)); // 값 글은 그 파일 그대로(주문 1114-1306)
   const A = await import('data:text/javascript;base64,' + Buffer.from(stub).toString('base64'));
   assert.ok(A.okOv({ovl: {rule: 'ovl-v1', need: 3, list: [{code: '000001', n: 3}]}}) && !A.okOv({ovl: {rule: 'ovl-v1', need: 3, list: [{code: '000001', n: 2}]}}) && !A.okOv({}) && A.okOv({ovl: {rule: 'x', need: 3, list: []}}));
   assert.ok(ap.includes("h('h3', {class: 's36-oh', text: '겹친 곳'})") && ap.includes("h('b', {text: '세 묶음 이상에 든 곳'})") && ap.includes("...OV.map(c => chip36(g, c, bd, true))") && ap.includes("...L.map(c => chip36(g, c, bd, false))"), '겹친 곳 머리 · 칸 = 꾀 칸과 같은 단추');

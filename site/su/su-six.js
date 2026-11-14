@@ -4,7 +4,8 @@
    8. 쉽게 하려고 정보를 빼지 마라 9. 전문가용 자세한 값은 눌러야 열리게 해라」(원문 docs/design/su-easy-2026-11-04/order-1807.txt)
    값 하나 = {v, v2, unit, label, six: 여섯 칸, mean: 그래서 무슨 뜻(학생 말 한 줄)} · 쪽 하나 = {big, mids, rows, say(기승전결 넷), pro(전문가 숫자 — 이름 · 값 · 셈과 출처)}
    숫자는 모두 자료(네이버 증권 종가로 수르가 센 기록) 그대로 · 뜻 줄의 셈은 100 빼기 · 100 더하기 같은 한 걸음만 · 빈 칸은 null → 화면 「확인 필요」 */
-import {pct, moreLess, dateKo, jo} from './su-data.js';
+import {won100, more100, dateKo, jo} from './su-data.js'; // 「%」 대신 100원 말(주문 1114-1306 · 사장님 2026-11-14 13:06 「「몇 %」를 「100원이 ○원」으로 바꾸는 일이 가장 커요 다 해」)
+import {easy} from './su-word.js'; // 자료 글(달마다 조건)도 화면에 내기 전에 쉬운 말 · 100원 말로
 
 export const SIX = Object.freeze(['누가', '언제', '어디서', '무엇을', '어떻게', '왜']);
 export const NEED = '확인 필요';
@@ -88,7 +89,7 @@ export function eHome({S, B, bl, mo, asOf}) {
       무엇을: num(hon.n) + '번 가운데 ' + num(hon.hits) + '번 꽃이 됐어요', 어떻게: '아무 회사나 고르면 100번에 ' + r0(hon.base) + '번이었어요',
       왜: (t => (t.n ? tallySay(t) : null))(monthTally(B))}, {v2: String(r0(hon.base)), mean: vsMean(hon.rate, hon.base, '조건에 맞은 회사', hon.n)}) : null,
     val(mo?.length ?? 0, '곳', '돈이 몰린 업종의 대장', {누가: (mo ?? []).map(r => r.name).join(' · ') || null, 언제: d && d + '까지 한 달', 어디서: (mo ?? []).map(r => r.ind).join(' · ') || null,
-      무엇을: '시장보다 더 오른 업종에서 회사 크기가 가장 많이 는 회사예요', 어떻게: mo?.[0] ? mo[0].ind + ' 업종이 시장보다 ' + moreLess(mo[0].x) + ' 올랐어요' : null, 왜: mo?.[0]?.why?.line ?? null},
+      무엇을: '시장보다 더 오른 업종에서 회사 크기가 가장 많이 는 회사예요', 어떻게: mo?.[0] ? mo[0].ind + ' 업종이 시장보다 ' + more100(mo[0].x) + ' 올랐어요' : null, 왜: mo?.[0]?.why?.line ?? null},
       {mean: '돈이 몰린 업종이 ' + (mo?.length ?? 0) + '곳 있었다는 뜻이에요. 앞으로 오른다는 뜻은 아니에요.'})].filter(Boolean);
   const rows = cs.map((t, i) => { const ok = near ? t !== bl.miss : pick ? true : null;
     return val(ok == null ? null : ok ? '맞음' : '못 맞음', '', t, {누가: '이달 꽃 조건 ' + (ORD[i + 1] ?? i + 1), 언제: ym(B?.today?.rule?.month), 어디서: '코스피 · 코스닥', 무엇을: t,
@@ -120,28 +121,28 @@ export function eCo({co, rs = [], cl = null, il = null, asOf, rec = null, bl = n
   const why = r?.kind === 'pick' ? '이달 꽃 조건에 모두 맞아서 여기 있어요' : r?.kind === 'near' ? (r.no?.[0] ? '「' + r.no[0] + '」 조건 하나만 못 맞아 가까운 회사로 여기 있어요' : null)
     : r?.kind === 'money' ? (r.why?.line ?? r.ind + ' 업종에 돈이 몰려서 여기 있어요') : null;
   const dd = day(from) && day(to) ? day(from) + '부터 ' + day(to) + '까지' : null; // 큰 값 이름에 기간(같은 회사의 다른 기간 값과 헷갈리지 않게 — 점검 X2)
-  const big = val(c != null ? pct(c) : null, '', dd ? dd + ' 움직인 만큼' : '한 달 동안 움직인 만큼', {누가: co.name, 언제: span(from, to), 어디서: where, 무엇을: c != null ? (dd ?? '한 달 동안') + ' ' + pct(c) + ' 움직였어요' : null,
-    어떻게: i != null ? '같은 때 ' + jo(il.name, '은') + ' ' + pct(i) + ' 움직였어요' : null, 왜: why}, {mean: lineMean(c, co.name, from, to)});
+  const big = val(c != null ? won100(c) : null, '', dd ? dd + ' 움직인 만큼' : '한 달 동안 움직인 만큼', {누가: co.name, 언제: span(from, to), 어디서: where, 무엇을: c != null ? (dd ?? '한 달 동안') + ' ' + won100(c) + '이 됐어요' : null,
+    어떻게: i != null ? '같은 때 ' + jo(il.name, '은') + ' ' + won100(i) + '이 됐어요' : null, 왜: why}, {mean: lineMean(c, co.name, from, to)});
   const mids = [
-    val(i != null ? pct(i) : null, '', (il?.name ?? '시장') + ' 한 달', {누가: il?.name ?? null, 언제: span(from, to), 어디서: mk, 무엇을: i != null ? '한 달 동안 ' + pct(i) + ' 움직였어요' : null,
+    val(i != null ? won100(i) : null, '', (il?.name ?? '시장') + ' 한 달', {누가: il?.name ?? null, 언제: span(from, to), 어디서: mk, 무엇을: i != null ? '한 달 동안 ' + won100(i) + '이 됐어요' : null,
       어떻게: '이 회사와 같은 날들로 셌어요', 왜: '회사 움직임을 시장과 견주려고 함께 봐요'},
       {mean: c != null && i != null ? (c > i ? '이 회사가 시장보다 더 올랐다는 뜻이에요.' : c < i ? '이 회사가 시장보다 더 내렸다는 뜻이에요.' : '이 회사와 시장이 같이 움직였다는 뜻이에요.') : null}),
     r?.kind === 'pick' || r?.kind === 'near' ? val((r.ok?.length ?? 0) + ' / ' + ((r.ok?.length ?? 0) + (r.no?.length ?? 0)), '', '맞은 꽃 조건', {누가: co.name, 언제: day(asOf), 어디서: where,
       무엇을: '이달 꽃 조건 ' + kn((r.ok?.length ?? 0) + (r.no?.length ?? 0)) + ' 가운데 ' + kn(r.ok?.length ?? 0) + '에 맞았어요', 어떻게: r.no?.[0] ? '못 맞은 조건은 「' + r.no[0] + '」예요' : '못 맞은 조건이 없어요', 왜: why},
       {mean: r.no?.length ? '조건 하나가 모자라 큐피트가 고른 회사는 아니라는 뜻이에요.' : '조건에 다 맞았다는 뜻이에요. 그래도 꽃이 된다는 뜻은 아니에요.'})
-      : r?.kind === 'money' ? val(moreLess(r.x), '', r.ind + ' 업종 · 시장보다', {누가: r.ind + ' 업종', 언제: day(asOf) && day(asOf) + '까지 한 달', 어디서: mk, 무엇을: '한 달 동안 시장보다 ' + moreLess(r.x) + ' 올랐어요',
+      : r?.kind === 'money' ? val(more100(r.x), '', r.ind + ' 업종 · 한 달 동안 시장보다', {누가: r.ind + ' 업종', 언제: day(asOf) && day(asOf) + '까지 한 달', 어디서: mk, 무엇을: '한 달 동안 시장보다 ' + more100(r.x) + ' 올랐어요',
         어떻게: jo(co.name, '은') + ' 이 업종의 대장이에요', 왜: r.why?.line ?? null}, {mean: '이 회사가 있는 업종에 한 달 동안 돈이 몰렸다는 뜻이에요. 앞으로 오른다는 뜻은 아니에요.'}) : null,
     recOk(rec) ? val(r0(rec.rate), '번', '지난 기록 · 100번에 꽃이 된 횟수', {누가: r?.kind === 'pick' ? '조건에 맞았던 회사' : '조건에 가까웠던 회사', 언제: '지난 기록', 어디서: '코스피 · 코스닥',
       무엇을: (fin(rec.n) ? rec.n + '번 가운데 ' : '') + (fin(rec.hits) ? rec.hits + '번 꽃이 됐어요' : '꽃이 된 횟수를 셌어요'), 어떻게: '아무 회사는 100번에 ' + r0(rec.base) + '번이었어요', 왜: null},
       {v2: String(r0(rec.base)), mean: vsMean(rec.rate, rec.base, r?.kind === 'pick' ? '조건에 맞았던 회사' : '조건에 가까웠던 회사', rec.n)}) : null].filter(Boolean);
   const say = [jo(co.name, '은') + ' ' + (where ? where + ' 회사예요.' : '이런 회사예요.'),
-    c != null ? '한 달 동안 ' + pct(c) + ' 움직였어요.' + (i != null ? ' 같은 때 ' + jo(il.name, '은') + ' ' + pct(i) + '였어요.' : '') : '한 달 움직임을 아직 못 받았어요.',
+    c != null ? '한 달 동안 ' + won100(c) + '이 됐어요.' + (i != null ? ' 같은 때 ' + jo(il.name, '은') + ' ' + won100(i) + '이 됐어요.' : '') : '한 달 움직임을 아직 못 받았어요.',
     r?.kind === 'near' && r.no?.[0] ? '그런데 「' + r.no[0] + '」 조건은 못 맞았어요.' : r?.kind === 'money' ? '그런데 돈이 몰린 것은 지난 한 달의 일이에요.' : r?.kind === 'pick' ? '그런데 조건에 맞아도 꽃이 안 된 적이 더 많았어요.' : '그런데 오늘 꽃 조건 목록과 돈이 몰린 회사 목록에는 없어요.',
     '그래서 이 회사가 있는 업종을 함께 봐요.'];
   const pro = [P('회사 번호', co.code, '한국거래소 종목 번호'), P('시장', mk, null), P('업종', co.ind, '네이버 증권 업종'), P('한 달 줄 처음 · 끝', cl ? '100 · ' + r1(cl[cl.length - 1]) : null, '처음 날을 100으로 · ' + SRC),
     P('시장 한 달 줄 처음 · 끝', il ? '100 · ' + r1(il.line[il.line.length - 1]) : null, (il?.name ?? '지수') + ' · 같은 날들'), P('센 날', span(from, to), null),
-    r?.kind === 'near' ? P('업종이 시장보다(한 달)', fin(r.ix) ? r1(r.ix) : null, '넘어야 할 선 ' + (fin(bl?.min) ? bl.min : NEED)) : null,
-    r?.kind === 'money' ? P('업종이 시장보다(한 달)', r1(r.x), '돈이 몰린 업종 셈') : null,
+    r?.kind === 'near' ? P('업종이 시장보다(한 달)', fin(r.ix) ? more100(r.ix) : null, '업종이 넘어야 할 선 ' + (fin(bl?.min) ? '시장보다 100원에 ' + bl.min + '원 더' : NEED)) : null, // 「%」 대신 100원 말(주문 1114-1306)
+    r?.kind === 'money' ? P('업종이 시장보다(한 달)', fin(r.x) ? more100(r.x) : null, '돈이 몰린 업종 셈') : null,
     recOk(rec) ? P('기록 고른 횟수 · 꽃', rec.n + ' · ' + rec.hits, bloomHow(r?.kind === 'pick' ? '그날 고른 회사' : '조건에 가까웠던 회사')) : null].filter(Boolean);
   return {big, mids, rows: [], say, why, pro};
 }
@@ -158,23 +159,23 @@ export function eCondRows({co, bl, rs = [], asOf, B}) {
 /* ── 3 업종(승) ── */
 export function eInd({name, x = null, wy = null, rows = [], asOf, cur = null, min = null}) {
   const known = rows.filter(r => fin(r.c)), up = known.filter(r => r.c > 0).length, d = day(asOf), lost = known.filter(r => r.c <= 0);
-  const big = val(fin(x) ? moreLess(x) : rows.length, fin(x) ? '' : '곳', fin(x) ? '한 달 동안 시장보다' : '이 업종 회사', {누가: name + ' 업종', 언제: d && d + '까지 한 달', 어디서: '코스피 · 코스닥',
-    무엇을: fin(x) ? '한 달 동안 시장보다 ' + moreLess(x) + ' 올랐어요' : '회사 ' + rows.length + '곳이에요', 어떻게: known.length ? '값을 아는 회사 ' + known.length + '곳 가운데 ' + up + '곳이 올랐어요' : null, 왜: wy?.line ?? null},
-    {mean: fin(x) ? (x >= 0 ? '이 업종이 한 달 동안 시장보다 더 올랐다는 뜻이에요.' : '이 업종이 한 달 동안 시장보다 덜 올랐다는 뜻이에요.') + (fin(min) && x < min ? ' 꽃 조건의 선 ' + min + '에는 못 미쳤어요.' : '') : null});
+  const big = val(fin(x) ? more100(x) : rows.length, fin(x) ? '' : '곳', fin(x) ? '한 달 동안 시장보다' : '이 업종 회사', {누가: name + ' 업종', 언제: d && d + '까지 한 달', 어디서: '코스피 · 코스닥',
+    무엇을: fin(x) ? '한 달 동안 시장보다 ' + more100(x) + ' 올랐어요' : '회사 ' + rows.length + '곳이에요', 어떻게: known.length ? '값을 아는 회사 ' + known.length + '곳 가운데 ' + up + '곳이 올랐어요' : null, 왜: wy?.line ?? null},
+    {mean: fin(x) ? (x >= 0 ? '이 업종이 한 달 동안 시장보다 더 올랐다는 뜻이에요.' : '이 업종이 한 달 동안 시장보다 덜 올랐다는 뜻이에요.') + (fin(min) && x < min ? ' 업종이 넘어야 할 선(시장보다 100원에 ' + min + '원 더)에는 못 미쳤어요.' : '') : null}); // 업종 선 15 = 회사 꽃의 선 5 와 다른 선(점검 W1)
   const mids = [
     val(rows.length, '곳', '이 업종 회사', {누가: name + ' 업종', 언제: d, 어디서: '코스피 · 코스닥', 무엇을: '회사 ' + rows.length + '곳이 있어요', 어떻게: '업종 이름이 같은 회사를 모두 셌어요', 왜: null},
       {mean: '하는 일이 비슷한 회사가 ' + rows.length + '곳 모여 있다는 뜻이에요.'}),
     known.length ? val(up, '곳', '한 달 동안 오른 회사', {누가: name + ' 업종 회사', 언제: d && d + '까지 한 달', 어디서: null, 무엇을: known.length + '곳 가운데 ' + up + '곳이 올랐어요', 어떻게: '한 달 움직임을 하나씩 봤어요', 왜: null},
       {mean: up === known.length ? '값을 아는 회사가 모두 올랐다는 뜻이에요.' : up * 2 > known.length ? '이 업종에서 절반 넘는 회사가 올랐다는 뜻이에요.' : up * 2 === known.length ? '이 업종에서 딱 절반이 올랐다는 뜻이에요.' : '이 업종에서 오른 회사가 절반이 안 된다는 뜻이에요.'}) : null,
-    cur && fin(cur.c) ? val(pct(cur.c), '', '보던 회사 · ' + cur.name, {누가: cur.name, 언제: d && d + '까지 한 달', 어디서: name + ' 업종', 무엇을: '한 달 동안 ' + pct(cur.c) + ' 움직였어요', 어떻게: '업종 안 다른 회사와 같은 잣대예요', 왜: null},
+    cur && fin(cur.c) ? val(won100(cur.c), '', '보던 회사 · ' + cur.name, {누가: cur.name, 언제: d && d + '까지 한 달', 어디서: name + ' 업종', 무엇을: '한 달 동안 ' + won100(cur.c) + '이 됐어요', 어떻게: '업종 안 다른 회사와 같은 잣대예요', 왜: null},
       {mean: lineMean(cur.c, cur.name, null, asOf)}) : null].filter(Boolean);
   const t12 = rows.slice(0, 12), shown = [...t12, ...lost.filter(r => !t12.includes(r))]; // 많이 오른 열둘 + 못 오른 곳은 늘(잘라서 숨기지 않게 — 점검 J2)
-  const top = shown.map(r => val(fin(r.c) ? pct(r.c) : null, '', r.name, {누가: r.name, 언제: d && d + '까지 한 달', 어디서: name + ' 업종', 무엇을: fin(r.c) ? '한 달 동안 ' + pct(r.c) + ' 움직였어요' : null, 어떻게: '한 달 동안 많이 오른 회사부터 줄 세웠어요', 왜: null},
+  const top = shown.map(r => val(fin(r.c) ? won100(r.c) : null, '', r.name, {누가: r.name, 언제: d && d + '까지 한 달', 어디서: name + ' 업종', 무엇을: fin(r.c) ? '한 달 동안 ' + won100(r.c) + '이 됐어요' : null, 어떻게: '한 달 동안 많이 오른 회사부터 줄 세웠어요', 왜: null},
     {code: r.code, c: r.c, mean: lineMean(r.c, r.name, null, asOf)}));
-  const say = [name + ' 업종 회사 ' + rows.length + '곳이에요.', fin(x) ? '한 달 동안 시장보다 ' + moreLess(x) + ' 올랐어요.' : known.length ? '한 달 동안 ' + up + '곳이 올랐어요.' : '한 달 움직임을 아직 못 받았어요.',
+  const say = [name + ' 업종 회사 ' + rows.length + '곳이에요.', fin(x) ? '한 달 동안 시장보다 ' + more100(x) + ' 올랐어요.' : known.length ? '한 달 동안 ' + up + '곳이 올랐어요.' : '한 달 움직임을 아직 못 받았어요.',
     lost.length ? '그런데 ' + lost.slice(0, 3).map(r => r.name).join(' · ') + (lost.length > 3 ? ' 등 ' : ' ') + lost.length + '곳은 오르지 못했어요.' : '그런데 업종이 올랐다고 회사마다 꽃이 되지는 않았어요.', '그래서 지난 기록을 함께 봐요.'];
-  const pro = [P('업종이 시장보다(한 달)', fin(x) ? r1(x) : null, '업종 회사들의 한 달 움직임 ÷ 시장 · ' + SRC), P('업종 회사 수', rows.length, '업종 이름이 같은 회사'), P('값을 아는 회사', known.length, null),
-    P('한 달 동안 오른 회사', known.length ? up : null, null), fin(min) ? P('꽃 조건의 선(업종)', min, '이달 조건') : null, P('돈이 몰린 이유(자료)', wy?.items?.length ? wy.items.length + '가지' : null, '외국인 · 기관 · 소식 자료')].filter(Boolean);
+  const pro = [P('업종이 시장보다(한 달)', fin(x) ? more100(x) : null, '업종 회사들의 한 달 움직임 ÷ 시장 · ' + SRC), P('업종 회사 수', rows.length, '업종 이름이 같은 회사'), P('값을 아는 회사', known.length, null),
+    P('한 달 동안 오른 회사', known.length ? up : null, null), fin(min) ? P('업종이 넘어야 할 선', '시장보다 100원에 ' + min + '원 더', '이달 조건 · 회사 꽃의 선(100원에 5원)과 다른 선') : null, P('돈이 몰린 이유(자료)', wy?.items?.length ? wy.items.length + '가지' : null, '외국인 · 기관 · 소식 자료')].filter(Boolean);
   return {big, mids, rows: top, say, pro};
 }
 
@@ -196,8 +197,8 @@ export function eHub({B, mine = [], lastDay = null}) {
     recOk(hon) && fin(all?.fall) ? '그래서 꽃이 된 때만큼 크게 덜 오른 때도 많았어요. 100번에 ' + r0(hon.rate) + '번 대 ' + r0(all.fall) + '번이에요.' : '그래서 꽃이 된 때보다 못 된 때를 먼저 봐요.']; // 결 = 결론 한 줄(점검 X11)
   const pro = [...honestPro(hon),
     P('2023년부터 · 고른 횟수', all?.n, '2023년부터 모든 날로 다시 센 값'), P('2023년부터 · 100번에 꽃', r1(all?.rate), calc(all?.hits, all?.n, '꽃이 된 횟수 ÷ 고른 횟수 × 100', all?.rate)), P('2023년부터 · 아무 회사 100번에 꽃', r1(all?.base), calc(all?.baseHits, all?.baseN, '같은 날 셀 수 있던 모든 회사로 같은 셈 · 고른 회사가 없던 해도 들어 있어요', all?.base)),
-    P('고른 회사가 시장보다 더 오른 평균', fin(all?.ex) ? r1(all.ex) : null, '한 달 · 시장보다 몇 만큼 · 회사마다 위아래 50에서 자른 값 · 자르지 않은 평균은 자료에 없어요'), P('아무 회사가 시장보다 더 오른 평균', fin(all?.exBase) ? r1(all.exBase) : null, '같은 셈'),
-    P('100번에 시장보다 5 넘게 덜 오름', fin(all?.fall) ? r1(all.fall) : null, '한 달 뒤 · 고른 회사 · 시장보다 100원에 5원 넘게 덜 오른 때'), P('아무 회사 · 100번에 5 넘게 덜 오름', fin(all?.fallBase) ? r1(all.fallBase) : null, '같은 셈'),
+    P('고른 회사가 시장보다 더 오른 평균', fin(all?.ex) ? more100(all.ex) : null, '한 달 · 회사마다 위아래 100원에 50원에서 자른 값 · 자르지 않은 평균은 자료에 없어요'), P('아무 회사가 시장보다 더 오른 평균', fin(all?.exBase) ? more100(all.exBase) : null, '같은 셈'),
+    P('100번에 · 시장보다 100원에 5원 넘게 덜 오름', fin(all?.fall) ? r1(all.fall) : null, '한 달 뒤 · 고른 회사 · 시장보다 100원에 5원 넘게 덜 오른 때'), P('아무 회사 · 100번에 · 100원에 5원 넘게 덜 오름', fin(all?.fallBase) ? r1(all.fallBase) : null, '같은 셈'),
     P('plain(뜻 확인 필요)', fin(all?.plain) ? r1(all.plain) + ' · ' + num(all.plainN) : null, '자료 이름만 있고 뜻이 적혀 있지 않음'), P('old(뜻 확인 필요)', fin(all?.old) ? r1(all.old) + ' · ' + num(all.oldN) : null, '자료 이름만 있고 뜻이 적혀 있지 않음')]; // 두 줄은 시험이 「빼지 않음」으로 지킴
   return {big, mids, rows: [], say, all, pro};
 }
@@ -210,11 +211,12 @@ export function eMonths({B}) {
     무엇을: tallySay(tt), 어떻게: '달마다 그달 조건으로 고른 회사와 아무 회사를 견줬어요', 왜: null},
     {mean: '조건이 늘 통하지는 않았다는 뜻이에요. ' + down + '달은 아무 회사가 더 나았어요.'});
   const best = ms.slice().sort((a, b) => b.rec.rate - a.rec.rate)[0], worst = ms.slice().sort((a, b) => (a.rec.rate - a.rec.base) - (b.rec.rate - b.rec.base))[0];
+  const why = m => (Array.isArray(m.say) ? m.say : []).map(easy).join(' · ') || null; // 그달 조건(자료 글 「위 20% 회사」 · 「15% 넘게」)도 쉬운 말 · 100원 말로(회사 쪽 조건과 같은 말)
   const mval = (m, label) => val(r0(m.rec.rate), '번', label + ' · ' + ym(m.month), {누가: '그달 조건에 맞은 회사', 언제: ym(m.month), 어디서: '코스피 · 코스닥', 무엇을: m.rec.n + '번 가운데 ' + m.rec.h + '번 꽃이 됐어요',
-    어떻게: '아무 회사는 100번에 ' + r0(m.rec.base) + '번이었어요', 왜: (m.say ?? []).join(' · ') || null}, {v2: String(r0(m.rec.base)), mean: vsMean(m.rec.rate, m.rec.base, '그달 고른 회사', m.rec.n)});
+    어떻게: '아무 회사는 100번에 ' + r0(m.rec.base) + '번이었어요', 왜: why(m)}, {v2: String(r0(m.rec.base)), mean: vsMean(m.rec.rate, m.rec.base, '그달 고른 회사', m.rec.n)});
   const mids = [worst ? mval(worst, '아무 회사보다 가장 못한 달') : null, best ? mval(best, '가장 많이 꽃이 된 달') : null].filter(Boolean); // 못한 달 먼저(점검 X8)
   const rows = any.slice().reverse().map(m => val(r0(m.rec.rate), '번', ym(m.month), {누가: '그달 조건에 맞은 회사', 언제: ym(m.month), 어디서: '코스피 · 코스닥', 무엇을: m.rec.n + '번 가운데 ' + m.rec.h + '번 꽃이 됐어요',
-    어떻게: '아무 회사는 100번에 ' + r0(m.rec.base) + '번이었어요' + (m.rec.complete === true ? '' : ' 아직 한 달이 다 안 지나 세는 중이에요'), 왜: (m.say ?? []).join(' · ') || null},
+    어떻게: '아무 회사는 100번에 ' + r0(m.rec.base) + '번이었어요' + (m.rec.complete === true ? '' : ' 아직 한 달이 다 안 지나 세는 중이에요'), 왜: why(m)},
     {v2: String(r0(m.rec.base)), month: m.month, up: r0(m.rec.rate) > r0(m.rec.base) ? true : r0(m.rec.rate) < r0(m.rec.base) ? false : null, open: m.rec.complete !== true,
       mean: m.rec.complete !== true ? '아직 세는 중이라 숫자가 바뀔 수 있다는 뜻이에요.' : (d => (d > 0 ? '그달은 아무 회사보다 ' + d + '번 더 꽃이 됐다는 뜻이에요.' : d < 0 ? '그달은 아무 회사보다 ' + -d + '번 덜 꽃이 됐다는 뜻이에요.' : '그달은 아무 회사와 같았다는 뜻이에요.'))(r0(m.rec.rate) - r0(m.rec.base))})); // 보이는 두 수의 차이로(33번 대 33번을 「1번 덜」이라 하지 않게 — 점검 X5)
   const say = ['달마다 그달 꽃 조건으로 고른 회사를 셌어요.', '다 센 ' + tt.n + '달 가운데 ' + down + '달은 아무 회사보다 못했어요.' + (same ? ' ' + same + '달은 비슷했어요.' : ''),
@@ -272,7 +274,7 @@ export function eYears({B}) {
   const say = ['해마다 지난 기록을 나눠 봤어요.', all && fin(all.rate) && fin(bb) ? '고른 해를 모두 합치면 100번에 ' + r0(all.rate) + '번 꽃이 됐어요. 같은 해 아무 회사는 ' + r0(bb) + '번이었어요.' : '모두 합친 기록을 아직 못 셌어요.',
     none.length ? '그런데 ' + none.join(' · ') + '에는 고른 적이 없어요. 그해는 아무 회사 기록만 있어요.' : '그런데 해마다 달랐어요.', '그래서 한 해만 보고 판단하지 말아요.'];
   const pro = ys.map(([y, v]) => P(y + '년', (fin(v?.n) ? num(v.n) : NEED) + ' · ' + (fin(v?.hits) ? num(v.hits) : NEED) + ' · ' + (fin(v?.rate) ? r1(v.rate) : NEED) + ' 대 ' + (fin(v?.base) ? r1(v.base) : NEED),
-    '고른 횟수 · 꽃 · 100번에 꽃 대 아무 회사 · 시장보다 더 오른 평균 ' + (fin(v?.ex) ? r1(v.ex) : NEED) + ' 대 ' + (fin(v?.exBase) ? r1(v.exBase) : NEED) + ' · 5 넘게 덜 오름 ' + (fin(v?.fall) ? r1(v.fall) : NEED) + ' 대 ' + (fin(v?.fallBase) ? r1(v.fallBase) : NEED)));
+    '고른 횟수 · 꽃 · 100번에 꽃 대 아무 회사 · 시장보다 더 오른 평균(100원에 ○원) ' + (fin(v?.ex) ? r1(v.ex) : NEED) + ' 대 ' + (fin(v?.exBase) ? r1(v.exBase) : NEED) + ' · 100원에 5원 넘게 덜 오른 때(100번에) ' + (fin(v?.fall) ? r1(v.fall) : NEED) + ' 대 ' + (fin(v?.fallBase) ? r1(v.fallBase) : NEED)));
   return {big, mids: [], rows, say, ys, pro};
 }
 

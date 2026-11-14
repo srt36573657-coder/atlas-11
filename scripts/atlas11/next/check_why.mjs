@@ -79,15 +79,18 @@ else for (const t of ['1. 고르기 전에는 답 색을 숨겨라. 고른 뒤�
   if (!ORDER3.includes(t)) fail('기준 글이 바뀜(order-0015.txt [5] · [9] 8 · [2] 7 — 이 검사의 셈을 고칠 것)', t);
 const PTS = {g: 0, y: 1, r: 2}, MAX = QS.length * 2;
 const GROUPS = [['이유', [1, 2, 3]], ['돈', [4, 9, 11]], ['때', [5, 6]], ['마음', [7, 8, 10]]];
-const V_OK = '좋아, 정해 둔 대로만', V_HALF = '반만 준비됐어', V_REST = '오늘은 쉬어 가자', V_CODE = {[V_OK]: 'go', [V_HALF]: 'wait', [V_REST]: 'rest'};
+/* 판정 이름 셋 — 주문 1114-1306 ④(docs/design/rest9-2026-11-14/order-1306.txt 「판정 이름 「좋아」가 사도 된다는 말로 읽히지 않게」)로 「좋아, 정해 둔 대로만」 → 「준비됐어, 정해 둔 대로만」
+   V_OK_OLD = 옛 이름(사장님 원문 brief.md 글 · 이미 남은 기록 — 화면에는 새 이름으로 보이고 기록은 그대로) */
+const V_OK = '준비됐어, 정해 둔 대로만', V_OK_OLD = '좋아, 정해 둔 대로만', V_HALF = '반만 준비됐어', V_REST = '오늘은 쉬어 가자', V_CODE = {[V_OK]: 'go', [V_OK_OLD]: 'go', [V_HALF]: 'wait', [V_REST]: 'rest'};
 /** 보이는 판정 글 — 사장님 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 5 「~예요」 단정)로 사장님 판정 글 그대로
- *  (옛 2026-10-19 02:03 [화면] 4 물음 꼴 「… 할까?」는 이 칸에서 풂) · 기록 값(V_OK · V_HALF · V_REST) · V_CODE · todayResult · stop_rest 셈은 그대로 맞댐 */
-const vShow = v => String(v ?? '?');
+ *  (옛 2026-10-19 02:03 [화면] 4 물음 꼴 「… 할까?」는 이 칸에서 풂) · 기록 값(V_OK · V_HALF · V_REST) · V_CODE · todayResult · stop_rest 셈은 그대로 맞댐 · 옛 기록 V_OK_OLD 는 V_OK 로 보임 */
+const vShow = v => (v === V_OK_OLD ? V_OK : String(v ?? '?'));
+const SELL_SAY = '팔 곳을 정하기 전에는 사지 않아요.'; // 주문 1114-1306 ④ — 7번 「떨어지면?」에 「안 정함」이면 결과 머리에 안내 한 줄(p.wy-rule)
 const TONE = {g: '좋음', y: '주의', r: '위험'}; // [9] 8 색 점의 읽어 주는 글(사장님 예 「위험」 · 잣대 accept/S1c.md)
 /* 기준 ④ — 2026-10-28 그림 그대로 판(사장님 09:46 「360가지 분석해 먼저」 · 10:11 「어 그렇게 해」 — docs/design/why-mock-2026-10-28/order-1011.txt · brief.md) — 이 검사가 맞대는 새 꼴의 글 · 셈(brief 에 글자 그대로 있는지 먼저 봄)
    바뀌면 이 검사의 셈도 고칠 것 · 그림 말투 질문 · 안내 · 풀이(why-look.js LOOK)는 화면 글이라 쪽에서 읽어 제자리만 맞댐 */
 const TYPE = {go: {name: '신중한 준비형 투자자', q: '내 이유로 따져 보고, 정해 둔 대로 움직이는 편이에요.'}, wait: {name: '반쯤 준비된 투자자', q: '이유는 있지만, 가끔 마음이 앞설 때가 있어요.'},
-  rest: {name: '오늘은 쉬어 갈 투자자', q: '준비가 덜 된 곳이 많아요. 오늘은 하루 쉬어 가요.', stopQ: '빌린 돈이나 곧 쓸 돈이라면, 오늘은 쉬어 가는 게 좋아요.'}}; // 판정 → 유형 이름 · 따옴표 한 줄(쉬어 가는 답이면 stopQ)
+  rest: {name: '오늘은 쉬어 갈 투자자', q: '준비가 덜 된 곳이 많아요. 오늘은 하루 쉬어 가요.', stopQ: '빌린 돈이나 곧 쓸 돈이라면, 오늘은 쉬어 가는 게 좋아요.', sellQ: '팔 곳을 아직 정하지 않았어요. 오늘은 하루 쉬어 가요.'}}; // 판정 → 유형 이름 · 따옴표 한 줄(돈 답이면 stopQ · 7번 「안 정함」이면 sellQ — 주문 1114-1306 ④)
 const START_H = '나의 투자 성향,지금은 어떤 상태일까?', START_SUB = '투자 심리와 실제 매매 습관을 함께 분석해나에게 맞는 투자 가이드를 드려요.'; // 줄바꿈(<br>)은 글이 없어 붙어 읽힘
 const START_HL = ['11개의 질문으로 간단하게', '투자 심리 + 실제 매매 습관 분석', '나에게 맞는 행동 가이드 제공'], START_TIME = '약 2분 소요 · 기록은 이 기기에만 남아요';
 const MIND = ['안정', '초조', '불안']; // 10번 「마음은?」 답 차례(차분 · 놓칠까 급함 · 본전 생각) → 현재 심리 상태
@@ -101,7 +104,7 @@ const TEND = [['신중함', [1, 2, 6, 7], false], ['감정적 매매', [0, 4, 9]
   if (!B4.trim() || !O4.trim()) fail('기준 파일을 못 읽음', 'docs/design/why-mock-2026-10-28/brief.md · order-1011.txt(사장님 원문) — 저장소에 함께 올릴 것');
   else {
     if (!O4.includes('「어 그렇게 해」')) fail('기준 글이 바뀜(order-1011.txt — 이 검사의 셈을 고칠 것)', '「어 그렇게 해」');
-    for (const t of [`go(「${V_OK}」) → 「${TYPE.go.name}」 · 「“${TYPE.go.q}”」`, `wait(「${V_HALF}」) → 「${TYPE.wait.name}」 · 「“${TYPE.wait.q}”」`,
+    for (const t of [`go(「${V_OK_OLD}」) → 「${TYPE.go.name}」 · 「“${TYPE.go.q}”」`, `wait(「${V_HALF}」) → 「${TYPE.wait.name}」 · 「“${TYPE.wait.q}”」`,
       `rest(「${V_REST}」) → 「${TYPE.rest.name}」 · 쉬어 가는 답을 골랐으면 「“${TYPE.rest.stopQ}”」 · 아니면 「“${TYPE.rest.q}”」`,
       '「나의 투자 성향,」<br><em>지금은</em>「 어떤 상태일까?」', '「투자 심리와 실제 매매 습관을 함께 분석해」<br>「나에게 맞는 투자 가이드를 드려요.」', START_HL.map(x => `「${x}」`).join(' · '), '「시작하기 ›」', `「${START_TIME}」`,
       '「다음으로 ›」', '「‹ 이전」 + 「결과 보기 ›」', '「답을 하나 골라 줘.」', '「그 일이 언제인지 날짜를 적어 줘.」', '「오늘이나 그 뒤 날짜를 적어 줘.」', '「왜 이런 질문을 하나요?」(11번은 「이런 점을 확인해요」)',
@@ -111,16 +114,23 @@ const TEND = [['신중함', [1, 2, 6, 7], false], ['감정적 매매', [0, 4, 9]
       if (!B4.includes(t)) fail('기준 글이 바뀜(why-mock brief.md — 이 검사의 셈을 고칠 것)', t);
   }
 }
+/* 기준 ⑤ — 2026-11-14 주문 1114-1306 ④(docs/design/rest9-2026-11-14/order-1306.txt) — 「떨어지면? 안 정함」은 바로 쉬어 · 판정 이름 「좋아」가 사도 된다는 말로 읽히지 않게(바뀌면 이 검사의 셈도 고칠 것) */
+{
+  const O5 = (await fs.readFile(path.join(ROOT, 'docs/design/rest9-2026-11-14/order-1306.txt'), 'utf8').catch(() => '')).replace(/\s+/g, ' ');
+  if (!O5.trim()) fail('기준 파일을 못 읽음', 'docs/design/rest9-2026-11-14/order-1306.txt(사장님 원문) — 저장소에 함께 올릴 것');
+  else for (const t of ['「떨어지면? 안 정함」은 바로 쉬어', '판정 이름 「좋아」가 사도 된다는 말로 읽히지 않게']) if (!O5.includes(t)) fail('기준 글이 바뀜(order-1306.txt ④ — 이 검사의 셈을 고칠 것)', t);
+}
 const BIG_Q = 2, BIG_A = QS[BIG_Q].a.findIndex(a => a[1] === '클 일이 있다');
 if (BIG_A < 0) { console.error('3번 답에 「클 일이 있다」가 없음(brief.md)'); process.exit(1); }
-/** [5] 6 쉬어 가는 답 — 4번 「거의 다·빌린 돈」 · 9번 「곧」(답 글은 brief.md 원문 · 명령문은 「거의 다 · 빌린 돈」으로 띄어 씀) */
-const REST_AT = [[3, '거의 다·빌린 돈'], [8, '곧']].map(([q, t]) => [q, QS[q].a.findIndex(a => a[1] === t)]);
-if (REST_AT.some(([, k]) => k < 0)) { console.error('4번 「거의 다·빌린 돈」 · 9번 「곧」 답을 brief.md 에서 못 찾음'); process.exit(1); }
-/** 답 자리(0 ~ 2) 열한 개 → 점수 · 준비 · 빨강 수 · 묶음 · 판정(원문 명령 5 · 6 + 0015 [5] 5 · 6) */
+/** [5] 6 쉬어 가는 답 — 4번 「거의 다·빌린 돈」 · 9번 「곧」(답 글은 brief.md 원문 · 명령문은 「거의 다 · 빌린 돈」으로 띄어 씀) + 7번 「떨어지면?」에 「안 정함」(주문 1114-1306 ④ — 질문 차례는 그대로) */
+const REST_MONEY = [[3, '거의 다·빌린 돈'], [8, '곧']].map(([q, t]) => [q, QS[q].a.findIndex(a => a[1] === t)]), REST_SELL = [6, QS[6].a.findIndex(a => a[1] === '안 정함')];
+const REST_AT = [...REST_MONEY, REST_SELL];
+if (REST_AT.some(([, k]) => k < 0) || QS[6].q !== '떨어지면?') { console.error('4번 「거의 다·빌린 돈」 · 7번 「떨어지면?」 「안 정함」 · 9번 「곧」 답을 brief.md 에서 못 찾음'); process.exit(1); }
+/** 답 자리(0 ~ 2) 열한 개 → 점수 · 준비 · 빨강 수 · 묶음 · 판정(원문 명령 5 · 6 + 0015 [5] 5 · 6 + 주문 1114-1306 ④) · money = 돈 답으로 쉬어 · sell = 7번 「안 정함」 */
 function judge(ks) {
   const p = ks.map((k, i) => PTS[QS[i].a[k][0]]), score = p.reduce((s, x) => s + x, 0), reds = p.filter(x => x === 2).length, stop = REST_AT.some(([q, k]) => ks[q] === k);
   const groups = Object.fromEntries(GROUPS.map(([n, qs]) => [n, qs.reduce((s, q) => s + p[q - 1], 0)]));
-  return {score, ready: MAX - score, reds, groups, stop, verdict: stop || score >= 12 || reds >= 4 ? V_REST : score >= 6 ? V_HALF : V_OK};
+  return {score, ready: MAX - score, reds, groups, stop, money: REST_MONEY.some(([q, k]) => ks[q] === k), sell: ks[REST_SELL[0]] === REST_SELL[1], verdict: stop || score >= 12 || reds >= 4 ? V_REST : score >= 6 ? V_HALF : V_OK};
 }
 /** 팔 약속 기본값([3] 5 · 원 아래 버림) · 약속 글(「만약 ~이면 ~한다」 꼴) */
 const SELL = p => Math.floor(p * 9 / 10), HALF = p => Math.floor(p * 12 / 10);
@@ -134,7 +144,7 @@ const PATHS = [
   ['모두 초록', 'ggggggggggg', 0, V_OK, {empty: true}],
   ['빨강 넷 · 합 12 밑', 'rrrrggggggg', 8, V_REST],
   ['노랑 여섯 · 합 6', 'yyyyyyggggg', 6, V_HALF, {date: 'bad', stock: 'cx'}],
-  ['빨강 셋 · 합 6', 'ggggrgrggRg', 6, V_HALF],
+  ['빨강 셋 · 합 6', 'rgggrggggRg', 6, V_HALF], // 7번 빨강(「안 정함」)은 이제 바로 쉬어(주문 1114-1306 ④) — 빨강 셋을 1 · 5 · 10번으로 옮김
   ['합 5', 'gygygygyygg', 5, V_OK, {last: true}],
   ['9번 곧 · 빨강 셋 노랑 다섯 · 합 11', 'yyryyyggrRg', 11, V_REST],
   ['빨강 셋 노랑 여섯 · 합 12', 'ryyyyryyggr', 12, V_REST],
@@ -142,10 +152,13 @@ const PATHS = [
   ['모두 빨강', 'rrrrrrrrrrr', 22, V_REST, {empty: true}],
   ['쉬어 가자 4번 · 합 2', 'gggrggggggg', 2, V_REST],
   ['쉬어 가자 9번 · 합 2', 'ggggggggrgg', 2, V_REST],
+  ['쉬어 가자 7번 · 합 2', 'ggggggrgggg', 2, V_REST], // 주문 1114-1306 ④ — 「떨어지면? → 안 정함」만 빨강이어도 바로 쉬어 · 안내 한 줄
+  ['쉬어 가자 4번 · 7번 · 합 4', 'gggrggrgggg', 4, V_REST], // 돈 답과 「안 정함」이 함께 — 따옴표 줄은 돈 까닭(stopQ) · 안내 한 줄도
 ].map(([name, spec, score, verdict, o]) => ({name, spec, ks: [...spec].map((c, i) => idxOf(i, c)), score, verdict, ...(o || {})}));
 for (const P of PATHS) { const J = judge(P.ks); if (J.score !== P.score || J.verdict !== P.verdict) { console.error('길 자체가 틀림', P.name, J); process.exit(1); } }
-for (const n of ['쉬어 가자 4번 · 합 2', '쉬어 가자 9번 · 합 2']) { const J = judge(PATHS.find(P => P.name === n).ks); if (!(J.stop && J.score < 6 && J.reds < 4)) { console.error('쉬어 가자 길이 점수로도 쉬어 감 — 길을 바꿀 것', n, J); process.exit(1); } }
-const SHORT = ['모두 초록', '섞음 · 뒤로 단추', '모두 빨강', '쉬어 가자 4번 · 합 2', '쉬어 가자 9번 · 합 2'];
+for (const n of ['쉬어 가자 4번 · 합 2', '쉬어 가자 9번 · 합 2', '쉬어 가자 7번 · 합 2', '쉬어 가자 4번 · 7번 · 합 4']) { const J = judge(PATHS.find(P => P.name === n).ks); if (!(J.stop && J.score < 6 && J.reds < 4)) { console.error('쉬어 가자 길이 점수로도 쉬어 감 — 길을 바꿀 것', n, J); process.exit(1); } }
+if (!(judge(PATHS.find(P => P.name === '쉬어 가자 7번 · 합 2').ks).sell && !judge(PATHS.find(P => P.name === '쉬어 가자 7번 · 합 2').ks).money)) { console.error('7번 길이 「안 정함」만으로 쉬지 않음 — 길을 바꿀 것'); process.exit(1); }
+const SHORT = ['모두 초록', '섞음 · 뒤로 단추', '모두 빨강', '쉬어 가자 4번 · 합 2', '쉬어 가자 9번 · 합 2', '쉬어 가자 7번 · 합 2', '쉬어 가자 4번 · 7번 · 합 4'];
 if (!PATHS.some(P => P.ks[BIG_Q] === BIG_A)) { console.error('길에 3번 「클 일이 있다」가 없음'); process.exit(1); }
 
 const KEY = 'atlas:godori-why', REC_KEYS = ['answers', 'asOf', 'at', 'bigDay', 'code', 'day', 'groups', 'name', 'picks', 'price', 'promise', 'reds', 'score', 'verdict', 'why'];
@@ -358,7 +371,7 @@ const READR = sel => { // ③ 결과(그림 4 · 7)
   const m = sheet?.querySelector('.wy-mind'), hi = sheet?.querySelector('.wy-hi'), mc = sheet?.querySelector('.wy-moodc'), lk = sheet?.querySelector(':scope > .wy-nav a.wy-link');
   return {step: s.dataset.step ?? null, kids: [...r.children].map(e => String(e.className).split(' ')[0]), share: head?.querySelector('button.wy-share')?.textContent.trim() ?? null,
     v: vp?.dataset.v ?? null, vk: vp?.querySelector('.wy-vk')?.textContent ?? null, vt: vb?.querySelector('.wy-vt')?.textContent ?? null, ve: vb?.querySelector('.wy-ve')?.textContent ?? null, vb: vb?.textContent ?? null,
-    type: head?.querySelector('p.wy-type')?.textContent ?? null, scene: head?.querySelector('.wy-scene.res')?.getAttribute('aria-hidden') === 'true',
+    type: head?.querySelector('p.wy-type')?.textContent ?? null, rule: head?.querySelector('p.wy-rule')?.textContent ?? null, scene: head?.querySelector('.wy-scene.res')?.getAttribute('aria-hidden') === 'true',
     vfs: vb ? parseFloat(getComputedStyle(vb).fontSize) : 0, bigCard: big(inCard), bigView: big(inView), sizes: [...new Set(inView.map(x => x.fs))].sort((a, b) => a - b),
     tendK: sheet?.querySelector('.wy-tend .wy-ck')?.textContent ?? null,
     tend: [...(sheet?.querySelectorAll('.wy-tend .wy-trow') ?? [])].map(row => { const f = row.querySelector('.wy-tt2 > i.wy-tf'), t = row.querySelector('.wy-tt2'); return {n: row.querySelector('.wy-tn')?.textContent ?? '', v: row.querySelector('b.num')?.textContent ?? '', w: f?.style.width ?? '', fw: f ? f.getBoundingClientRect().width : -1, tw: t ? t.getBoundingClientRect().width : -1, hid: t?.getAttribute('aria-hidden') ?? null}; }),
@@ -587,7 +600,7 @@ function checkSeen(s, qi, T) {
 /* ③ 결과 · ④ 상세 분석 맞대기 */
 const tendOf = ks => TEND.map(([n, qs, inv]) => { let a = 0, m = 0; for (const q of qs) { const v = {g: 2, y: 1, r: 0}[QS[q].a[ks[q]][0]]; a += inv ? 2 - v : v; m += 2; } return [n, Math.round(a / m * 100)]; });
 function checkRes(r, ks, T, {page = true, store = 'ok', st = null} = {}) {
-  const J = judge(ks), v = V_CODE[J.verdict], ty = TYPE[v], quote = v === 'rest' && J.stop ? ty.stopQ : ty.q;
+  const J = judge(ks), v = V_CODE[J.verdict], ty = TYPE[v], quote = v === 'rest' && J.money ? ty.stopQ : v === 'rest' && J.sell ? ty.sellQ : ty.q; // 쉬어 가는 까닭 — 돈 답 · 7번 「안 정함」 · 그 밖(주문 1114-1306 ④)
   if (!r) { fail('결과 칸 없음', T); return; }
   if (r.step !== 'res' || r.q) fail('결과 장(data-step=res · 질문 칸 없음)', `${T} 「${r.step}」 ${r.q}`);
   if (!eq(r.kids, ['wy-rhead', 'wy-sheet'])) fail('결과 = 짙은 머리 + 크림 판(brief ③)', `${T} ${JSON.stringify(r.kids)}`);
@@ -595,6 +608,8 @@ function checkRes(r, ks, T, {page = true, store = 'ok', st = null} = {}) {
   else if (J.stop && J.score < 12 && J.reds < 4) bump('[5] 6 쉬어 가자(점수와 상관없이)');
   if (r.vk !== '당신은' || r.vt !== ty.name || r.ve !== '예요' || r.vb !== ty.name + '예요') fail('「당신은 / ○○ 투자자예요」(유형 · 단정 · order-1011 5)', `${T} 「${r.vk}」「${r.vb}」 ≠ 「${ty.name}예요」`);
   if (r.type !== `“${quote}”`) fail('따옴표 한 줄(단정 · 쉬어 가는 답이면 그 까닭)', `${T} 「${r.type}」 ≠ 「“${quote}”」`);
+  if ((r.rule ?? null) !== (J.sell ? SELL_SAY : null)) fail('7번 「떨어지면? → 안 정함」이면 결과 머리에 안내 한 줄 「' + SELL_SAY + '」 · 아니면 없음(주문 1114-1306 ④)', `${T} 「${r.rule}」 · 7번 안 정함 ${J.sell}`); else if (J.sell) bump('④ 팔 곳 안내 한 줄');
+  if (r.text.includes(V_OK_OLD)) fail('판정 이름 「좋아, 정해 둔 대로만」이 결과에 남음(사도 된다는 말로 읽힘 · 주문 1114-1306 ④)', T);
   if (!r.scene) fail('결과 장면 그림(aria-hidden)', T);
   if (r.share !== '공유하기') fail('공유하기 단추', `${T} 「${r.share}」`);
   if (!(r.vfs > (r.bigCard?.fs ?? 0) && r.vfs > (r.bigView?.fs ?? 0))) fail('[5] 2 판정(유형) 글이 가장 큰 글씨', `${T} 판정 ${r.vfs}px · 칸 안 ${JSON.stringify(r.bigCard)} · 화면 ${JSON.stringify(r.bigView)}`);
@@ -829,7 +844,8 @@ async function checkList(p, tag, {expectN = null, home = p._home, blocked = p._b
     const x = recs[i]; if (!x) continue;
     const at = Date.parse(x.at), J = Array.isArray(x.answers) && x.answers.length === QS.length ? judge(x.answers) : null, T = `${tag} ${i + 1}줄`;
     if (row.day !== dayTxt(at)) fail('목록 날짜', `${T} 「${row.day}」 ≠ 「${dayTxt(at)}」`);
-    if (!row.rest.includes(Number.isFinite(x.score) ? `준비 ${MAX - x.score} / ${MAX}` : '준비 ?') || !row.rest.includes(vShow(x.verdict)) || /점수 \d/.test(row.rest) || /\?\s*$/.test(row.rest.trim())) fail('[5] 5 목록 준비 · 판정(사장님 판정 글 그대로 · 물음표 없음 — order-1011 5)', `${T} 「${row.rest}」 · 점수 ${x.score}`);
+    if (!row.rest.includes(Number.isFinite(x.score) ? `준비 ${MAX - x.score} / ${MAX}` : '준비 ?') || !row.rest.includes(vShow(x.verdict)) || row.rest.includes(V_OK_OLD) || /점수 \d/.test(row.rest) || /\?\s*$/.test(row.rest.trim())) fail('[5] 5 목록 준비 · 판정(사장님 판정 글 그대로 · 옛 「좋아, 정해 둔 대로만」은 새 이름으로 — 주문 1114-1306 ④ · 물음표 없음 — order-1011 5)', `${T} 「${row.rest}」 · 점수 ${x.score} · 기록 판정 ${x.verdict}`);
+    if (x.verdict === V_OK_OLD) bump('④ 옛 판정 이름 기록 → 새 이름으로 보임');
     if (J && J.score !== x.score) fail('쌓인 기록의 점수(답으로 다시 셈)', `${T} ${x.score}`);
     if (!eq(row.bars, GROUPS.map(([nm, qs]) => `${qs.length * 2 - (x.groups?.[nm] ?? 0)} / ${qs.length * 2}`))) fail('[5] 5 목록 막대 준비 숫자', `${T} ${JSON.stringify(row.bars)}`);
     if (x.code || x.name) { // 종목 있는 기록(#/why/<번호> · 옛 꼴) — 종목 · 그날 값 · 날짜
@@ -889,7 +905,7 @@ async function checkDue(p, tag, doneNow = false) {
   if (!d.shown || d.head !== wantHead || (nm && d.name !== String(nm)) || d.kq !== '그날 정한 대로 했어?' || !eq(d.kb, ['했어', '안 했어']) || (d.more ?? null) !== wantMore || !eq(d.lines, wantLines)) fail('B17 맨 위 「한 달 전 약속」(가장 오래된 것 · 두 줄 · 묻기 · 남은 수)', `${tag} ${JSON.stringify(d)} · 기대 「${wantHead}」 ${JSON.stringify(wantLines)} 「${wantMore}」`);
   else bump('B17 맞댄 맨 위 칸');
 }
-const oldRec = (daysAgo, picks = []) => ({at: new Date(Date.now() - daysAgo * 864e5).toISOString(), asOf: '2026-09-01', answers: PATHS[0].ks, score: 0, reds: 0, verdict: V_OK, groups: {이유: 0, 돈: 0, 때: 0, 마음: 0}, picks}); // 옛 꼴(종목 · 두 줄 없음)
+const oldRec = (daysAgo, picks = []) => ({at: new Date(Date.now() - daysAgo * 864e5).toISOString(), asOf: '2026-09-01', answers: PATHS[0].ks, score: 0, reds: 0, verdict: V_OK_OLD, groups: {이유: 0, 돈: 0, 때: 0, 마음: 0}, picks}); // 옛 꼴(종목 · 두 줄 없음 · 옛 판정 이름 — 목록에는 새 이름 · 주문 1114-1306 ④)
 /** 한 달 뒤 시험 기록 — 장 날 k 의 오전 10시(서울)에 쓴 기록(day = 그날 값 날짜) · o = 덧붙일 열쇠 */
 const recAt = (k, st, o = {}) => ({at: new Date(Date.parse(DD[k] + 'T01:00:00Z')).toISOString(), asOf: DD[k], code: st?.code ?? null, name: st?.name ?? null, price: st?.price ?? null, day: st ? DD[k] : null,
   answers: PATHS[4].ks, score: 5, reds: 0, verdict: V_OK, groups: judge(PATHS[4].ks).groups, bigDay: null, why: '한 달 뒤 시험', promise: {sell: 1000, half: 2000, text: promiseTxt(1000, 2000)}, picks: [], ...o});

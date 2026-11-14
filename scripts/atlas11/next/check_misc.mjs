@@ -1,10 +1,11 @@
-// 새 아틀란스(/next/) 쪽 다섯 맞대기 — 이야기(#/talk) · 업데이트 기록(#/up) · 봉인(#/time) · 도움말(#/info) · 밖 칸(#/x/<번호>)
+// 새 아틀란스(/next/) 쪽 넷 맞대기 — 업데이트 기록(#/up) · 봉인(#/time) · 도움말(#/info) · 밖 칸(#/x/<번호>)
+//   이야기(#/talk · 시황 · 대가 한마디)는 쪽을 닫아 이 검사에서 뺌(사장님 2026-11-14 13:06 주문 1114-1306 ② · FIX N1 — 큐피트 첫 쪽으로 가는지는 next_check ⑪)
 //   사장님 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 · 04:23 「정말 빠르면서도 정밀하게 · 에이전트 총 동원해」 · 규칙 74
 //   쓰는 법: node scripts/atlas11/next/check_misc.mjs --base http://127.0.0.1:8826 [--pw /opt/node-tools/] [--all | --limit N] [--out 파일]
 //   ① 옛 쪽(/atlas/#/…)과 새 쪽(/next/?dev=1#/…)을 같은 자료로 열어 — 옛 쪽의 모든 줄(접은 칸 글 포함 · 「?」 줄 · 정직 글 · 출처 줄)이 새 쪽에 글자 그대로 있는지 ·
 //      숫자 낱말이 빠짐없는지 · 고리(새 주소로 바꾼 것 · 밖 고리의 새 창 · rel)가 같은지 · 남의 말(data-proper)이 같은지 · 깔때기 멈춘 줄이 같은지
 //      (옛 쪽 맨 아래 「… 매수 · 매도 …」 글은 쓰지 않을 말이라 새 안전 문장 두 줄이 있어야 함)
-//   ② 자료를 바꿔치기한 길 — talk.json · mkt.json · home.json · surge.json 못 받음 · 지수 받은 값 · 급등 기록 · 실패 회차 · 빈 기록 · 봉인 0거래일 · 봉인 없음 · 장 중 값 · co7 없음 — 옛 쪽 · 새 쪽 함께 맞댐
+//   ② 자료를 바꿔치기한 길 — 업데이트 기록의 급등 기록 · 실패 회차 · 빈 기록 · 봉인 0거래일 · 봉인 없음 · 장 중 값 · co7 없음 — 옛 쪽 · 새 쪽 함께 맞댐
 //   ③ 새 쪽만 — 자료 파일(core · updates · time · names)을 못 받으면 「?」 줄 · 화면 오류 없음
 //      ③-2 업데이트 기록 맨 위 「요즘 바뀐 것」(총정리 2026-10-22 D19) — /changelog.json 시험 자료로 최신 업데이트 줄 셋 · 못 받으면 「?」 한 줄
 //   ④ 세 폭(320 · 360 · 390) + 320 폭 「아주 크게」 글씨(zoom) — 가로 넘침 0 · 봉인 그림 눈금 글 = 눈금선 높이 · 글 17px 넘게 · 누르는 자리 44px 넘게 · 화면 오류 0 · 쓰지 않을 말 0(남의 말 밖) · 캔버스 0 · 접은 칸을 펼쳐도 넘침 0
@@ -25,7 +26,7 @@ const require = createRequire(arg('--pw', '/opt/node-tools/'));
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, '');
 const ALL = argv.includes('--all'), LIMIT = Number(arg('--limit', '0')) || 0, OUT = arg('--out', null);
-const ONLY = new Set(String(arg('--only', 'talk,up,time,info,x')).split(',')); // 고치는 동안 빨리(예: --only time,x) — 마지막엔 모두
+const ONLY = new Set(String(arg('--only', 'up,time,info,x')).split(',')); // 고치는 동안 빨리(예: --only time,x) — 마지막엔 모두
 const on = pg => ONLY.has(pg);
 const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0);
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, x]); };
@@ -33,9 +34,9 @@ const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 
 /* 자료 — 시험 서버에서 그대로(바꿔치기 길의 바탕) */
 const getJ = f => fetchJSON(base + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
-const [core, mkt, names, updates, time, home, surge, talk] = await Promise.all(['/atlas/data/core.json', '/atlas/data/mkt.json', '/atlas/data/names.json', '/atlas/data/updates.json', '/atlas/data/time.json', '/atlas/data/home.json', '/atlas/data/surge.json', '/atlas/talk.json']
+const [core, mkt, names, updates, time] = await Promise.all(['/atlas/data/core.json', '/atlas/data/mkt.json', '/atlas/data/names.json', '/atlas/data/updates.json', '/atlas/data/time.json']
   .map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
-if (!core || !mkt || !names || !updates || !time || !talk) { console.error('자료를 못 받음', fails); process.exit(1); }
+if (!core || !mkt || !names || !updates || !time) { console.error('자료를 못 받음', fails); process.exit(1); }
 const SUMJ = await fetchJSON(base + '/next/data/home-summary.json', 'home-summary.json').catch(() => null); // 첫 화면 요약(fourADay — 못 받으면 새 쪽도 참인 말 · 일꾼 KC)
 const clone = x => JSON.parse(JSON.stringify(x));
 
@@ -134,7 +135,7 @@ async function openNew0(p, hash, pg, a = null, {nav = false} = {}) {
 const realErrs = p => p._errs.filter(e => !/Failed to load resource/.test(e));
 
 /* ① 같은 자료로 옛 쪽 · 새 쪽 — 쪽 넷 */
-const PAGES = [['#/talk', 'talk'], ['#/up', 'up'], ['#/time', 'time'], ['#/info', 'info']].filter(([, pg]) => on(pg));
+const PAGES = [['#/up', 'up'], ['#/time', 'time'], ['#/info', 'info']].filter(([, pg]) => on(pg));
 if (PAGES.length) {
   const po = await newPage(390), pn = await newPage(390);
   for (const [hash, pg] of PAGES) {
@@ -147,14 +148,6 @@ if (PAGES.length) {
       await openNew(pn, '#/up', 'up');
       const nLi = await pn.evaluate(() => document.querySelectorAll('#view li.pup-r').length);
       if (nLi !== updates.records.length) fail('업데이트 회차 수', `새 ${nLi} · 자료 ${updates.records.length}`); else bump('업데이트 회차', nLi);
-    }
-    if (on('talk')) {
-      await openNew(pn, '#/talk', 'talk');
-      const yt = await pn.evaluate(() => [...document.querySelectorAll('#view ul.ptalk-yt a')].map(a => [a.getAttribute('href'), a.target, a.rel]));
-      if (yt.length !== talk.youtube.length) fail('유튜브 수', `새 ${yt.length} · 자료 ${talk.youtube.length}`);
-      for (const [href, tg, rel] of yt) if (!/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/.test(href) || tg !== '_blank' || rel !== 'noopener noreferrer') fail('유튜브 고리', href);
-      const qn = await pn.evaluate(() => document.querySelectorAll('#view figure.ptalk-qt').length);
-      if (qn !== talk.maxims.length + 1) fail('격언 수', `새 ${qn} · 자료 ${talk.maxims.length} + 그날 하나`);
     }
     if (realErrs(pn).length) fail('화면 오류(새)', realErrs(pn).slice(0, 3).join(' | '));
     if (realErrs(po).length) bump('옛 쪽 화면 오류(참고 · 실패 아님)', realErrs(po).length);
@@ -223,10 +216,6 @@ async function layout(pn, tag) {
 
 /* ② 자료를 바꿔치기한 길 — 옛 쪽 · 새 쪽을 같은 바꾼 자료로 */
 const VAR = [];
-VAR.push(['talk · talk.json 못 받음', '#/talk', 'talk', {'/atlas/talk.json': 404}]);
-VAR.push(['talk · mkt.json 못 받음', '#/talk', 'talk', {'/atlas/data/mkt.json': 404}]);
-VAR.push(['talk · home · surge 못 받음', '#/talk', 'talk', {'/atlas/data/home.json': 404, '/atlas/data/surge.json': 404}]);
-if (home) { const H = clone(home); delete H.stale; VAR.push(['talk · 지수 받은 값(3달 꼭대기와 바닥)', '#/talk', 'talk', {'/atlas/data/home.json': H}]); }
 { // 업데이트 기록 — 급등 기록 다섯 꼴 · 실패 회차 · 새 값 없는 회차 · 네 눈 걸림 · 모든 회사 1등 갈래 · 시장 판독 없음
   const U = clone(updates), R = U.records, inF = [{c: '000001', n: '가나다'}, {c: '000002', n: '라마바'}];
   R[0].surge = {kind: 'first', n: 36, bands: {kind: 'first'}};
@@ -262,7 +251,7 @@ for (const [tag, hash, pg, routes, a] of VAR) {
 
 /* ③ 새 쪽만 — 자료 파일을 못 받으면 「?」 줄 · 멈추지 않음(옛 쪽은 「자료를 못 읽었습니다」 · 시트는 「? 이 이름표를 못 찾았습니다」) */
 for (const [tag, hash, pg, file, a] of [['up · updates.json', '#/up', 'up', 'updates.json'], ['time · time.json', '#/time', 'time', 'time.json'], ['x · names.json', '#/x/' + xCodes[0], 'x', 'names.json', xCodes[0]],
-  ['info · core.json', '#/info', 'info', 'core.json'], ['talk · core.json', '#/talk', 'talk', 'core.json'], ['x · core.json', '#/x/' + xCodes[0], 'x', 'core.json']]) {
+  ['info · core.json', '#/info', 'info', 'core.json'], ['x · core.json', '#/x/' + xCodes[0], 'x', 'core.json']]) {
   if (!on(pg)) continue;
   const pn = await newPage(360, {['/atlas/data/' + file]: 404});
   try { const N = await openNew(pn, hash, pg, a ?? null); bump('못 받은 길'); await layout(pn, '360 못 받음 ' + tag);

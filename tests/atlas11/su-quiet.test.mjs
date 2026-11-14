@@ -119,7 +119,7 @@ test('길 · 서랍 · 그림 · 묶기 · 검사(주문 1111-1334)', () => {
   assert.ok(su.includes("a === 's' ? await (await import('/su/su-book.js')).vBook(X21, 'quiet')"), '길 #/r/s');
   assert.ok(su.includes("drawer('#/r/s', '조용한 힘 달력'"), '기록 쪽 서랍');
   assert.ok(ap.includes("'data-k': 'quiet'") && ap.includes('function cellQ') && /nNow = [^\n]*quiet/.test(ap), '처음 쪽 그림 넷째 창 칸 · 지금 수에 일곱');
-  assert.ok(s21.includes("'넷째 창 조용한데 힘이 모이는 ' + nq + '곳을 더해 ' + (21 + nq) + '곳이에요.'") && s21.includes("'aria-label': '지금 28곳 · 될 듯 21곳'"), '21곳 쪽 글 · 지금 28곳');
+  assert.ok(s21.includes("'넷째 창 조용한 힘 ' + nq + '칸을 더하면 ' + (21 + nq) + '칸이에요.'") && s21.includes("'aria-label': '지금 28칸 · 될 듯 21칸'") && !s21.includes('지금 28곳'), '21곳 쪽 글 · 지금 28칸(칸 수를 회사 수처럼 「곳」으로 부르지 않음 — 주문 1114-1306 ⑤)');
   assert.ok(p21.includes('import su21_quiet as QU') && p21.includes("'quiet': QUIET"), 'su21.py 가 넷째 창을 셈');
   assert.ok(/'--rank', 'quiet'[\s\S]{0,300}reports\/atlas11\/su21\/qbook\.json[\s\S]{0,100}\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶기 — 따로 된 장부 · 올리기 작업만 저장');
   assert.ok(ck.includes('㉒ 넷째 창 자료') && ck.includes('㉒ 조용한 힘 장부 자료') && ck.includes('#/s 줄 일곱 = 자료 차례') && ck.includes('#/r/s 조용한 힘 달력'), '검사 ㉒');
