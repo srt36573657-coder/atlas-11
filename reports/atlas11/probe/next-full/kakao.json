@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-14T02:56:57.838Z",
+ "at": "2026-11-14T06:15:23.301Z",
  "base": "https://aaa7377.com",
  "all": true,
  "limit": null,
@@ -12,121 +12,44 @@
  "click": true,
  "shard": null,
  "units": {
-  "total": 251,
-  "mine": 251,
-  "hash": "a78d247009d305c3",
+  "total": 241,
+  "mine": 241,
+  "hash": "3aaab5144872f810",
   "kinds": {
    "r": {
-    "total": 251,
-    "mine": 251
+    "total": 241,
+    "mine": 241
    }
   }
  },
- "seconds": 143,
+ "seconds": 123,
  "counts": {
-  "routes": 251,
-  "rows": 9828,
-  "btns": 9828,
-  "links": 13298,
-  "clicks": 479,
+  "routes": 241,
+  "rows": 5168,
+  "btns": 5168,
+  "links": 6030,
+  "clicks": 461,
   "fail": 0,
   "places": {
    "chip.card": {
-    "rows": 3,
-    "btns": 3,
-    "surge": 1,
-    "share": 2,
-    "routes": 3
-   },
-   "chip.row": {
-    "rows": 166,
-    "btns": 166,
-    "surge": 35,
-    "share": 131,
-    "routes": 3
-   },
-   "surge.board": {
-    "rows": 167,
-    "btns": 167,
-    "surge": 167,
-    "share": 0,
-    "routes": 5
-   },
-   "surge.row": {
-    "rows": 36,
-    "btns": 36,
-    "surge": 36,
-    "share": 0,
-    "routes": 1
-   },
-   "surge.track": {
-    "rows": 908,
-    "btns": 908,
-    "surge": 908,
-    "share": 0,
-    "routes": 5
-   },
-   "surge.gone": {
-    "rows": 5,
-    "btns": 5,
-    "surge": 5,
-    "share": 0,
-    "routes": 5
-   },
-   "cal.alert": {
     "rows": 2,
     "btns": 2,
-    "surge": 2,
-    "share": 0,
-    "routes": 1
+    "surge": 0,
+    "share": 2,
+    "routes": 2
    },
-   "cal.row": {
-    "rows": 671,
-    "btns": 671,
-    "surge": 671,
-    "share": 0,
-    "routes": 1
-   },
-   "cal.ev": {
-    "rows": 2827,
-    "btns": 2827,
-    "surge": 2827,
-    "share": 0,
-    "routes": 1
-   },
-   "cal.gone": {
-    "rows": 1,
-    "btns": 1,
-    "surge": 1,
-    "share": 0,
-    "routes": 1
+   "chip.row": {
+    "rows": 131,
+    "btns": 131,
+    "surge": 0,
+    "share": 131,
+    "routes": 2
    },
    "cond.row": {
     "rows": 2,
     "btns": 2,
     "surge": 0,
     "share": 2,
-    "routes": 1
-   },
-   "today.mv": {
-    "rows": 3,
-    "btns": 3,
-    "surge": 0,
-    "share": 3,
-    "routes": 1
-   },
-   "talk.card": {
-    "rows": 1,
-    "btns": 1,
-    "surge": 0,
-    "share": 1,
-    "routes": 1
-   },
-   "talk.fact": {
-    "rows": 3,
-    "btns": 3,
-    "surge": 0,
-    "share": 3,
     "routes": 1
    },
    "hold.news": {
@@ -201,21 +124,11 @@
    }
   },
   "skipped": {
-   "그날 들고 난 이름 목록(이름 글 — 줄 · 카드 아님)": 2607,
-   "종목 파일 쪽의 길 단추 「회사 보기 ›」(쪽 자체가 그 종목)": 1,
    "고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사)": 112,
    "7단 길 고리 — 그 회사 쪽끼리 오가는 길(줄 · 카드 아님)": 750,
    "글 속 이름(선을 못 그린 회사 — 문장 안)": 1
   },
   "list": [
-   {
-    "route": "#/f/surge",
-    "rows": 36,
-    "btns": 36,
-    "links": 36,
-    "clicked": "chip.card",
-    "fail": 0
-   },
    {
     "route": "#/f/lead",
     "rows": 77,
@@ -233,83 +146,11 @@
     "fail": 0
    },
    {
-    "route": "#/surge",
-    "rows": 291,
-    "btns": 291,
-    "links": 769,
-    "clicked": "surge.board",
-    "fail": 0
-   },
-   {
-    "route": "#/surge/10",
-    "rows": 371,
-    "btns": 371,
-    "links": 1497,
-    "clicked": "surge.board",
-    "fail": 0
-   },
-   {
-    "route": "#/surge/20",
-    "rows": 215,
-    "btns": 215,
-    "links": 773,
-    "clicked": "surge.board",
-    "fail": 0
-   },
-   {
-    "route": "#/surge/30",
-    "rows": 152,
-    "btns": 152,
-    "links": 473,
-    "clicked": "surge.board",
-    "fail": 0
-   },
-   {
-    "route": "#/surge/40",
-    "rows": 87,
-    "btns": 87,
-    "links": 211,
-    "clicked": "surge.board",
-    "fail": 0
-   },
-   {
-    "route": "#/cal",
-    "rows": 3501,
-    "btns": 3501,
-    "links": 3501,
-    "clicked": "cal.alert",
-    "fail": 0
-   },
-   {
-    "route": "#/cal/200710",
-    "rows": 0,
-    "btns": 0,
-    "links": 1,
-    "clicked": "",
-    "fail": 0
-   },
-   {
     "route": "#/cond",
     "rows": 2,
     "btns": 2,
     "links": 2,
     "clicked": "cond.row",
-    "fail": 0
-   },
-   {
-    "route": "#/today",
-    "rows": 3,
-    "btns": 3,
-    "links": 3,
-    "clicked": "today.mv",
-    "fail": 0
-   },
-   {
-    "route": "#/talk",
-    "rows": 4,
-    "btns": 4,
-    "links": 4,
-    "clicked": "talk.card",
     "fail": 0
    },
    {

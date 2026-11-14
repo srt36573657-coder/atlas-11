@@ -1,10 +1,10 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-14T02:57:06.783Z",
+ "at": "2026-11-14T06:16:03.891Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
-  "pass": 427,
+  "pass": 357,
   "fail": 0
  },
  "fails": [],
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 127,
    "blocks": {
-    "ess": 5735,
+    "ess": 5528,
     "find": 776,
-    "today": 3704,
-    "gdr": 5029,
-    "all": 5465
+    "today": 3610,
+    "gdr": 4876,
+    "all": 5288
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -217,11 +217,11 @@
    "bodyLum": 1,
    "chars": 127,
    "blocks": {
-    "ess": 5405,
+    "ess": 5612,
     "find": 776,
-    "today": 3610,
-    "gdr": 4876,
-    "all": 5288
+    "today": 3704,
+    "gdr": 5029,
+    "all": 5465
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -425,12 +425,6 @@
    "kakao": 0
   },
   "pages": {
-   "#/today 390": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
    "#/shorts 390": {
     "low": 0,
     "ui": 0,
@@ -467,31 +461,7 @@
     "small": 0,
     "ruin": 0
    },
-   "#/surge 390": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
-   "#/surge/10 390": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
-   "#/cal 390": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
    "#/cond 390": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
-   "#/talk 390": {
     "low": 0,
     "ui": 0,
     "small": 0,
@@ -575,12 +545,6 @@
     "small": 0,
     "ruin": 0
    },
-   "#/today 320": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
    "#/shorts 320": {
     "low": 0,
     "ui": 0,
@@ -617,31 +581,7 @@
     "small": 0,
     "ruin": 0
    },
-   "#/surge 320": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
-   "#/surge/10 320": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
-   "#/cal 320": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
    "#/cond 320": {
-    "low": 0,
-    "ui": 0,
-    "small": 0,
-    "ruin": 0
-   },
-   "#/talk 320": {
     "low": 0,
     "ui": 0,
     "small": 0,
@@ -727,17 +667,14 @@
    }
   },
   "speed": {
-   "lcp": 1336,
-   "inp": 40,
+   "lcp": 1260,
+   "inp": 32,
    "cls": 0.003
   }
  },
  "net": {
-  "retry": 6,
-  "why": {
-   "HTTP 403": 2,
-   "열기 실패": 4
-  }
+  "retry": 0,
+  "why": {}
  },
  "ok": true,
  "enforced": true

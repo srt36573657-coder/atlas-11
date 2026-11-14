@@ -1,2 +1,15 @@
-느린 4G 첫 화면 — 가장 큰 칠함 1980ms · 무하 큰 그림 1965ms
-큐피트 두 길 검사 — 통과 1700 · 실패 0
+느린 4G 첫 화면 — 가장 큰 칠함 1712ms · 무하 큰 그림 1704ms
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — hotNext 안랩 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — hotNext 동아지질 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — hotNext 제주항공 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — hotNext 대한항공 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — hotNext 티에스이 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — hotNext RFHIC — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — bloomNext 티에스이 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — bloomNext 케이씨텍 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — bloomNext 이수페타시스 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — bloomNext 일진전기 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — bloomNext 주성엔지니어링 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — bloomNext 선익시스템 — {"folds":[false,false,false,false],"screens":4.01}
+실패 ⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — bloomNext 대덕전자 — {"folds":[false,false,false,false],"screens":4.01}
+큐피트 두 길 검사 — 통과 1654 · 실패 13
