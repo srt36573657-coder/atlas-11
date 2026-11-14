@@ -7,7 +7,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-14T05:40:19.685Z",
+ "at": "2026-11-14T06:09:41.789Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,20 +32,20 @@
    }
   }
  },
- "seconds": 59,
- "secondsSum": 176,
+ "seconds": 78,
+ "secondsSum": 234,
  "time": {
-  "old": 143.7,
-  "new": 146,
-  "wall": 58.8,
-  "wallSum": 176.1,
+  "old": 188.1,
+  "new": 188.4,
+  "wall": 78,
+  "wallSum": 233.7,
   "opensOld": 7684,
   "opensNew": 10286,
-  "oldPct": 81.6,
-  "oldShare": 49.6
+  "oldPct": 80.5,
+  "oldShare": 50
  },
  "net": {
-  "req": 2684,
+  "req": 5280,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -66,7 +66,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "검사 · 브라우저 · 목록이 바뀜",
+   "why": "바뀐 파일 1개(/su/su-wrap.js)",
    "made": null,
    "inputs": 2596,
    "reads": 2557,
@@ -82,7 +82,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 58,
+   "seconds": 78,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -95,7 +95,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 59,
+   "seconds": 78,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -108,7 +108,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 59,
+   "seconds": 78,
    "mine": 856,
    "kinds": {
     "c": 852,
