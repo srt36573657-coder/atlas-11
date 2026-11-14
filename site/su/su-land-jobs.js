@@ -7,7 +7,7 @@
    덜어냄: 여인 · 아치 · 덩굴 · 꽃 · 금 테 · 별 그림 · 그림자 덩어리 · 흐림 필터 · 아무 수 0(같은 자료 → 같은 그림)
    그리기는 s() 만(createElementNS · setAttribute) · 색 · 움직임은 su-land-jobs.css(움직임 줄이기면 끝 모습) */
 import {s} from '/su/su-fig.js';
-import {won100} from '/su/su-data.js';
+import {pct} from '/su/su-data.js';
 
 export const CSS = '/su/su-land-jobs.css';
 const MAP = '/su/data/su21-map.json';
@@ -15,7 +15,7 @@ const W = 390, MID = W / 2, PAD = 20, NEED = '확인 필요';
 const fin = x => typeof x === 'number' && Number.isFinite(x);
 const f1 = v => Math.round(v * 10) / 10, f2 = v => Math.round(v * 100) / 100; // f2 = 막대 길이(같은 값 → 같은 길이를 0.01 까지)
 const isStar = c => Array.isArray(c?.in) && c.in.length > 0;
-const sgnP = v => (fin(v) ? won100(v) : NEED); // 값 글 = su-data.js won100 하나(「100원이 70.6원」 · 쪽마다 같은 말 · 화면에 「%」 없음 — 주문 1114-1306 · 기간 「20거래일 동안」은 맨 위 부제가 말함)
+const sgnP = v => (fin(v) ? pct(v) : NEED); // 값 글 = su-data.js pct 하나(쪽마다 같은 말 · 한 곳만 고치면 모두 바뀜)
 const KO = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열', '열한', '열두'];
 let UID = 0;
 

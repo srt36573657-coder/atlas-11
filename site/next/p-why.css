@@ -100,7 +100,6 @@
 .wy-vt { color: var(--wm-mint); }
 .wy-ve { color: #FFFFFF; }
 .wy-type { font-size: var(--fs-2); line-height: 1.55; color: #D5E3E0; text-wrap: balance; }
-.wy-rule { font-size: var(--fs-2); line-height: 1.55; font-weight: 700; color: #FFFFFF; text-wrap: balance; } /* 7번 「안 정함」 안내 한 줄(주문 1114-1306 ④) — 따옴표 줄 바로 밑 · 더 밝고 굵게 */
 .wy-scene.res { height: 210px; }
 .wy-sheet { position: relative; display: grid; gap: var(--sp-2); padding: var(--sp-3) var(--sp-2) var(--sp-3); /* 그림 4 — 크림 판 위 모서리 둥긂(뒤 = 머리 끝 색 구석 그림 둘) */
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M0 0H28A28 28 0 0 0 0 28Z' fill='%232D4E4A'/%3E%3C/svg%3E") left top / 28px 28px no-repeat,

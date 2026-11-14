@@ -6,8 +6,8 @@
 //   ① 옛 3단 #view 글(접은 칸 펼침 · 위치 줄 · 7단 칸 이름 · 그림 눈금 · 사이트 맨 아래 고리 · 옛 맺음 글만 뺌)의 줄이 새 main#view 에 빠짐없이 — 숫자 낱말 · 「?」는 수까지
 //   ② 자료로 따로 셈 — 7단 중 3단 · 시장 · 번호 · 1주 값 · 고른 곳 줄 · 세 숫자 · 100만 원 줄 · 출처 · 범례 · 고른 날 금빛 세로선(고른 곳만) · 업종 평균 점선(2곳 넘는 업종만) ·
 //      그림 눈금(옛 쪽과 같은 수) · 왜 들었나요?(해마다 값) / 왜 밖인가요?(멈춘 자리 · 까닭 · 깔때기 두 가지) · 다음 단 고리 · 자료 줄 · 안전 문장
-//   ⑤ 머리(2026-10-18 [7] 1 ~ 4 · [10] 1 · 2 · 일꾼 S3p) — 길 표시(큰 업종 › 업종 · 고리 둘) · 이름 · 오늘 값 · 하루 %(자료에서 따로 셈) · 날 줄 · 든 목록 꼬리표(고도리 칸 n번 · 대장주 ·
-//      고른 곳 — gdr.json · cond.json · mkt p 로 따로 셈 · 급등 칸 꼬리표는 급등 쪽을 닫아 없음) · 탭 넷(4 ~ 7단) · 큰 선 ▶ 없음 · 옛 일곱 칸(.chaps) 없음 · 「챕터」 0 · 옛 낱말(갈래 · 몸값 · 20거래일 …) 0(글 · aria-label · title · alt · 창 제목)
+//   ⑤ 머리(2026-10-18 [7] 1 ~ 4 · [10] 1 · 2 · 일꾼 S3p) — 길 표시(큰 업종 › 업종 · 고리 둘) · 이름 · 오늘 값 · 하루 %(자료에서 따로 셈) · 날 줄 · 든 목록 꼬리표(고도리 칸 n번 · 급등 칸 ·
+//      급등 n%대 칸 · 고른 곳 — gdr.json · surge.json · mkt p 로 따로 셈) · 탭 넷(4 ~ 7단) · 큰 선 ▶ 없음 · 옛 일곱 칸(.chaps) 없음 · 「챕터」 0 · 옛 낱말(갈래 · 몸값 · 20거래일 …) 0(글 · aria-label · title · alt · 창 제목)
 //      옛 3단 글은 낱말표(OLDMAP)로 바꿔 견줌: 20거래일 → 한 달 · 멍거 · 린치 갈래 → 조건 · 몸값 → 회사 크기
 //      + 쉬운 말 줄표(REWORD · 사장님 2026-10-29 15:08 「응」 「회사 쪽 글도 이렇게 쉽게」 · docs/design/babo-2026-10-29/order-1508.txt): 「7단 중 3단 · 회사 · 기록」 · 밖 회사 「… 7단까지 볼 수 있습니다」 뺌 ·
 //        「9월 9일 = 100」 → 「9월 9일」 · 범례 「위 빨강 · 아래 파랑」 → 「오르면 빨강, 내리면 파랑」 · 「가장 깊이 빠짐(한 달)」 → 「한 달 중 가장 크게 내린 폭」 · 「4단 지나온 길」 → 「지나온 길」 ·
@@ -51,6 +51,7 @@ const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 
 const [core, mkt, comp, lines, names] = await Promise.all(['core.json', 'mkt.json', 'comp.json', 'lines.json', 'names.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!core || !mkt || !comp || !lines || !names) { console.error('자료를 못 받음'); process.exit(1); }
 const CO = mkt.companies, codes = Object.keys(CO), COMP = comp.companies, LINES = lines.lines;
+const surge = await getJ('surge.json').catch(e => { fail('자료', e.message); return null; }); // 꼬리표(급등 칸) 따로 셈
 const GDR = await fetchJSON(base + '/next/data/gdr.json', 'gdr.json').catch(e => { fail('자료', 'gdr.json ' + e.message); return null; }); // 꼬리표(고도리 칸 n번) 따로 셈
 const cond = await getJ('cond.json').catch(e => { fail('자료', e.message); return null; });
 const TCO = await fetchJSON(base + '/next/data/theme-co.json', 'theme-co.json').catch(() => null); // 테마 시계 자리 한 줄(결정표 9 · 2026-10-20 「맞아 정말 맞아」 박승혁 님 생각) — 파일 값 그대로 보이는지(셈 자체는 verify_theme_co.py 가 따로 셈) · 파일이 없으면 줄 없음 // 꼬리표(대장주) 따로 셈 — 칸 줄(c · rk · r5 · l5)을 이 검사가 직접 읽음
@@ -193,12 +194,15 @@ const lineChg = l => (l?.[0] > 0 && l[l.length - 1] > 0 ? (l[l.length - 1] / l[0
 const c20 = o => (Number.isFinite(o.c) ? o.c : lineChg(o.l));
 const clsOf = v => (v == null || !Number.isFinite(v) ? 'q' : R1(v) > 0 ? 'up' : R1(v) < 0 ? 'dn' : 'fl');
 const deepNorm = x => (typeof x === 'string' ? norm(x) : Array.isArray(x) ? x.map(deepNorm) : x);
+const BANDS = [['b10', '10%대', '10'], ['b20', '20%대', '20'], ['b30', '30%대', '30'], ['b40', '40% 이상', '40']];
 const WHY_DONE_HERE = false; // 이 검사는 매매일지 기록(atlas:godori-why)을 넣지 않음 = 열한 질문 전 기기
-/** 든 목록 꼬리표 — 이 검사가 자료에서 따로 센 것(차례: 고도리 칸 → 대장주 → 고른 곳 · 급등 칸 · 급등 n%대 칸 꼬리표는 급등 쪽을 닫아 없음 — 주문 1114-1306) */
+/** 든 목록 꼬리표 — 이 검사가 자료에서 따로 센 것(차례: 고도리 칸 → 급등 칸 → 급등 n%대 칸 → 대장주 → 고른 곳) */
 function wantTags(code, o) {
   const t = [];
   // 칸 번호 꼬리표는 열한 질문을 끝낸 기기에서만(본질 문 ④ · app.js wTags open · 일꾼 KI) — 이 검사의 칸들은 매매일지 기록이 없어 늘 뺌(끝낸 기기는 next_check 「질문 뒤」가 봄)
   if (WHY_DONE_HERE) for (const p of GDR?.picks ?? []) if (p.code === code) t.push([NEW_NAME + ' 칸 ' + p.no + '번', '#/gdr/' + p.no, false]);
+  if (surge?.members?.some(m => m.c === code)) t.push(['급등 칸', '#/surge', false]);
+  for (const [k, nm, n] of BANDS) if (surge?.bands?.[k]?.members?.some(m => m.c === code)) t.push(['급등 ' + nm + ' 칸', '#/surge/' + n, false]);
   if (LEAD.has(code)) t.push(['대장주', '#/f/lead', false]);
   if (o.p) t.push(['고른 곳', '#/f/pick', true]);
   return t;
@@ -222,7 +226,7 @@ function headCheck(nw, code, o, c, where) {
   w('꼬리표', H.tags, wantTags(code, o));
   w('탭 넷 이름', H.tabs.map(x => x[0]), STEPS.map(x => x[1]));
   w('탭 넷 이름(aria)', H.tabsLabel, '7단 중 4 ~ 7단');
-  H.tabs.forEach((x, k) => { bump('머리 셈'); const st = STEPS[k]?.[0]; if (!st || x[1] !== '#/w/' + code + '/' + st) fail('탭 고리', where + ' ' + x[0] + ' ' + x[1]); });
+  H.tabs.forEach((x, k) => { bump('머리 셈'); const st = STEPS[k]?.[0]; if (!st || (x[1] !== '#/w/' + code + '/' + st && x[1] !== '/atlas/#/c/' + code + '/' + st)) fail('탭 고리', where + ' ' + x[0] + ' ' + x[1]); });
   // 테마 시계 자리 한 줄(결정표 9 · 2026-10-20) — theme-co.json 값 그대로(자리 이름 · %p 첫째 자리 · 시계 읽는 법 고리 · 탭 아래) · 셀 수 없으면 「?」 줄 · 파일이 없으면 줄 없음
   const zv = TCO?.co?.[code];
   if (!TCO) w('시장과 견준 줄(자료 없음 → 줄 없음)', H.wz, null);
@@ -409,7 +413,7 @@ for (const code of SH.part('c', list)) {
       want('접은 칸 이름', JSON.stringify(nw.sums), JSON.stringify(['어디서 멈췄는지 보기'])); // 멈춘 자리 · 까닭 · 깔때기 두 가지 · 고른 때를 한 칸에(2026-10-29 15:08 「쉽게」)
     }
   }
-  const nextOk = nw.next[0] === '#/w/' + code + '/past'; // 옛 /atlas/ 화면 고리는 받지 않음(주문 1114-1306 · DISCARD 17)
+  const nextOk = nw.next[0] === '#/w/' + code + '/past' || nw.next[0] === '/atlas/#/c/' + code + '/past';
   if (!nextOk || !norm(nw.next[1]).includes('지나온 길') || /\d단/.test(norm(nw.next[1])) || !norm(nw.next[1]).includes('1년 · 3년 주가 · 해마다 번 돈 · 회사 크기') || !norm(nw.next[1]).startsWith('다음')) fail('다음 단', where + ' ' + JSON.stringify(nw.next));
   want('자료 줄', nw.foot[0], FOOT);
   if (core.provisional) warnCheck(nw, where); // 장 중 값: 「?」 한 줄 + 누르면 펼침
@@ -417,7 +421,7 @@ for (const code of SH.part('c', list)) {
   headCheck(nw, code, o, c, where);
   for (const [k, n] of Object.entries(nw.words)) fail('옛 낱말 남음', where + ' 「' + k + '」 ' + n + '번(글 · aria-label · title · alt · 창 제목)');
   for (const w of BANNED) if (nw.pco.includes(w)) fail('쓰지 않을 말', where + ' 「' + w + '」');
-  for (const hr of nw.hrefs) { bump('고리'); if (hr !== '#/w/' + code + '/past') fail('모르는 고리', where + ' ' + hr); }
+  for (const hr of nw.hrefs) { bump('고리'); if (!(hr === '#/w/' + code + '/past' || hr === '/atlas/#/c/' + code + '/past')) fail('모르는 고리', where + ' ' + hr); }
   if (nw.canvas) fail('캔버스', where);
   if (pn._errs.length) { fail('화면 오류', where + ' ' + pn._errs.join(' | ').slice(0, 200)); pn._errs.length = 0; }
   po._errs.length = 0;

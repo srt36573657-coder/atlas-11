@@ -36,9 +36,9 @@ function icon(d) {
 }
 /** 아래 막대 — 앵무새 단추(그 묶음 길로) + 탭 넷 */
 export function wrapBar(g) {
-  const back = el('a', {class: 'suw-back', href: '/su/#/'}, el('img', {src: '/media/makbi-icon.svg', alt: '', width: '34', height: '34'}), // 옛 기능 쪽 「셋의 길」(#/g)은 버림 — 큐피트 첫 쪽으로(주문 1114-1306 ⑧)
-    el('span', {class: 'suw-bk'}, '큐피트로'), el('b', {}, '첫 쪽'), el('i', {'aria-hidden': 'true'}, '›'));
-  const find = el('a', {class: 'suw-find', href: '/next/?su=guide#/find', 'aria-label': '종목 찾기'}, icon(FIND_D), el('span', {}, '찾기'));
+  const back = el('a', {class: 'suw-back', href: '/su/#/g/' + g}, el('img', {src: '/media/makbi-icon.svg', alt: '', width: '34', height: '34'}),
+    el('span', {class: 'suw-bk'}, '큐피트로'), el('b', {}, GROUPS[g] + ' 길'), el('i', {'aria-hidden': 'true'}, '›'));
+  const find = el('a', {class: 'suw-find', href: '/su/#/g/guide', 'aria-label': '종목 찾기 · 길잡이'}, icon(FIND_D), el('span', {}, '찾기'));
   const tabs = el('nav', {class: 'suw-tabs', 'aria-label': '큐피트 탭'}, TABS.map(([t, href, d]) => el('a', {href}, icon(d), el('span', {}, t))));
   return el('div', {class: 'suw-bar', role: 'navigation', 'aria-label': '큐피트 길'}, el('div', {class: 'suw-row'}, back, find), tabs);
 }

@@ -1,7 +1,7 @@
 // 새 아틀란스 시험판(/next/ · 규칙 74) 빠짐없이 도는 검사 — 사장님 2026-10-17 02:38 「정교하게 만들어라」
 //   쓰는 법: node scripts/atlas11/next/next_check.mjs --base http://127.0.0.1:8826 [--pw /opt/node-tools/] [--out reports/atlas11/verify/next-check-latest.json] [--limit N]
 //   ① 세 폭(320 · 360 · 390)에서 화면 열여섯 — 오류 0 · 가로 넘침 0 · 「여는 중」 남음 0 · 누르는 자리 44px 넘게 · 쓰지 않을 말 0
-//   ② 모든 회사 보는 화면 — 이름 · 한 달 % · 하루 % 를 이 검사가 자료에서 따로 셈한 값과 맞댐 · 길 표시(큰 업종 › 업종) · 탭 넷(4 ~ 7단) · 든 목록 꼬리표(고도리 칸 n번 · 대장주 · 고른 곳 — gdr.json · cond.json · mkt p 로 따로 셈) ·
+//   ② 모든 회사 보는 화면 — 이름 · 한 달 % · 하루 % 를 이 검사가 자료에서 따로 셈한 값과 맞댐 · 길 표시(큰 업종 › 업종) · 탭 넷(4 ~ 7단) · 든 목록 꼬리표(고도리 칸 n번 · 급등 칸 · 급등 n%대 칸 · 고른 곳 — gdr.json · surge.json · mkt p 로 따로 셈) ·
 //      큰 선 ▶ 없음 · 옛 일곱 칸 없음 · 「챕터」 0(2026-10-18 [7] 1 ~ 4 · [10] 2 · 일꾼 S3p) · 다음 볼 것
 //   ③ 모든 업종 · 갈래 채널 — 회사 수 · 한 회사 한 표 · 큰 회사는 크게 · 처음 칸 수
 //   ④ 쇼츠 사실 — 오른 곳 · 내린 곳 수 · 1주 1등 업종 · 가장 센 · 약한 갈래 · 가장 많이 오른 회사(하루 30% 튐 · 빈 날 · 사흘 그대로 뺌) · 급등 1등 · 고른 곳 오름 수 · 미국 · 지수
@@ -14,9 +14,7 @@
 //      사장님 편지 · 열면 고도리 · 친구 소개 · 상품권은 「나」 칸(#/me — 편지를 처음 그릴 때 한 번) · 「나」 칸 왜 사? 기록(section.wy-me) · 새 길 #/why · #/gdr · #/gdr/<번호>
 //      (질문 · 고도리 칸의 글 · 숫자 맞대기는 check_why.mjs · check_gdr.mjs) · 이름은 rename.mjs(brand.js 한 곳 — 글자를 박지 않음)
 //   ⑩ 첫 화면 한 화면 · 칩 쪽(2026-10-18 명령문 0015 [6] 1 ~ 7 · 9 · [7] 5 · [9] 7 · 일꾼 S2x) — 차례(칩 → 이야기 입구 → 띠 → 질문 칸 → 고도리 칸 → 더 보기 → 안전 한 줄) · 띠 #/today · 날짜 하나 · 「!」 띠 안 ·
-//      오늘 시장 칸 · 급등 카드 0 · 「더 보기」 세 줄(큰 숫자 하나 + 까닭 한 줄) · 띠 숫자 되풀이 0 · mkt · cond 안 받음 · 요약 없이도 그림 · 칩 큰 카드 하나 · 한 줄 10줄 · 「나머지 n곳 보기」
-//   ⑪ 닫은 쪽(사장님 2026-11-14 13:06 주문 1114-1306 ② · FIX N1 · N2 · DISCARD 16) — 시황 #/talk · 급등 #/surge(/10 ~ /40 · 칩 #/f/surge) · 급등 달력 #/cal(/<번호>) · 오늘 시장 #/today 로 오면
-//      (?dev=1 · ?lang=en 이 붙어도 · 쪽 안에서 주소만 바꿔도) 큐피트 첫 쪽 /su/#/ 로 감 · 그 쪽이 그려짐 · 화면 오류 0 · 첫 화면 띠 · 「오늘 시장 자세히」 = /su/#/ · 어느 쪽에도 닫은 쪽 · 옛 /atlas/ 화면 고리 0(모르는 고리)
+//      오늘 시장 칸 · 급등 카드 0 · 「더 보기」 세 줄(큰 숫자 하나 + 까닭 한 줄) · 띠 숫자 되풀이 0 · mkt · cond 안 받음 · 요약 없이도 그림 · 칩 큰 카드 하나 · 한 줄 10줄 · 「나머지 n곳 보기」 · 급등 「1등」 0 · 반값 한 줄 N · n
 //   실패가 하나라도 있으면 끝 코드 1 · 결과 파일에 실패 목록
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -49,7 +47,7 @@ const P2 = v => (v == null || !Number.isFinite(v) ? '?' : (v > 0 ? '+' : v < 0 ?
 const MD = d => (+d.slice(5, 7)) + '월 ' + (+d.slice(8, 10)) + '일';
 const N = n => Number(n).toLocaleString('ko-KR');
 const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
-const [core, mkt, home, cond] = await Promise.all(['core.json', 'mkt.json', 'home.json', 'cond.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
+const [core, mkt, home, surge, cond] = await Promise.all(['core.json', 'mkt.json', 'home.json', 'surge.json', 'cond.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!core || !mkt) { console.error('자료를 못 받음'); process.exit(1); }
 const CO = mkt.companies, codes = Object.keys(CO);
 const ind = new Map(core.industries.map(i => [i.name, i])), grp = new Map(core.groups.map(g => [g.id, g]));
@@ -65,12 +63,9 @@ if (SCREEN.length < 16) { console.error('words.js SCREEN 이 모자람', SCREEN.
 const banned = t => [...screenHits(t), ...OLD36.filter(w => t.includes(w))];
 /** 「왜 사?」 칸(section.wy) 안 글 — WHY_OK(「매수」)만 뺌 · 다른 쓰지 않을 말 · 지운 36곳 글은 그대로(사장님 2026-10-28 10:11 · docs/design/why-mock-2026-10-28/order-1011.txt) */
 const bannedWhy = t => [...screenHits(t).filter(w => !WHY_OK.includes(w)), ...OLD36.filter(w => t.includes(w))];
-// 새 화면으로 옮긴 쪽(app.js READY · 2026-10-17 04:23 「에이전트 총 동원해」) — 옛 /atlas/ 화면으로 넘기는 길은 지움(주문 1114-1306 · DISCARD 17 — 옛 oldOr 기대값도 뺌)
+// 새 화면으로 옮긴 쪽(app.js READY) — 옮긴 쪽은 새 주소(#/…), 아직이면 지금 아틀란스(/atlas/#/…)를 기대함(2026-10-17 04:23 「에이전트 총 동원해」)
 const READY = new Set(((/const READY = new Set\(\[([^\]]*)\]\);/.exec(await fs.readFile(path.join(ROOT, 'site/next/app.js'), 'utf8')) || [, ''])[1].match(/'([a-z]+)'/g) || []).map(x => x.slice(1, -1)));
-/** 닫은 쪽(주문 1114-1306 ②) — 이 검사가 따로 적은 주소(app.js SHUT 를 읽지 않음) · 가는 곳 = 큐피트 첫 쪽 */
-const SHUT_ROUTES = ['#/talk', '#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40', '#/f/surge', '#/cal', '#/cal/005930', '#/today'], SU_HOME = '/su/#/';
-const SHUT_RE = /^(\/next\/(\?[^#]*)?)?#\/(talk|surge|cal|today|f\/surge)(\/|$)/;
-for (const k of ['talk', 'surge', 'cal', 'today']) if (READY.has(k)) fail('닫은 쪽이 READY 에 남음(주문 1114-1306)', k);
+const oldOr = (k, h) => (READY.has(k) ? h : '/atlas/' + h);
 // 고도리 칸 자료(/next/data/gdr.json — 2026-10-17 17:54 「고도리 만들기 · 한 장 명령문」) — #/gdr/<번호> 고리 · 첫 화면 칸 수에 씀(못 받으면 첫 화면은 「?」 줄)
 const GDR = await fetchJSON(base + '/next/data/gdr.json', 'gdr.json').catch(() => null);
 const SAGE = await fetchJSON(base + '/next/data/sage39.json', 'sage39.json').catch(() => null); // 서른아홉 스승(#/sage · 2026-10-29 19:14) — 사람 이름(id)이 자료에 있어야 아는 고리
@@ -133,9 +128,7 @@ const knownHref = h => {
   if (h === '/' || h === '/letter.html' || h === '/hello.html' || h === '/us/') return true; // /us/ = 미국 판(규칙 54 그대로)
   if (h === '/hello.html#hp-vid') return VIDEO.ready; // 첫 화면 세 줄 칸 밑 「골똘이의 고민 1분 보기 ›」 = 소개 쪽 영상 칸(새 영상이 오른 뒤에만 · [5] 5)
   if (/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(h)) return true; // 바깥 출처 고리(유튜브 · 기사 · 네이버 증권 · 공시) — 쪽 검사가 자료와 맞대 봄
-  if (SHUT_RE.test(h)) return false; // 닫은 쪽(시황 · 급등 · 급등 달력 · 오늘 시장 — 주문 1114-1306)으로 가는 고리는 남으면 안 됨
-  if (h === SU_HOME) return true; // 큐피트 첫 쪽 맨 위 형세 보고(첫 화면 띠 · 「오늘 시장 자세히」 — 닫은 #/today 대신)
-  let mm = /^#\/(cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|up|time|info)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
+  let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
   if (h === '/privacy.html#en') return true; // 영어 화면의 처리방침 고리 = 그 쪽 영어 칸(총정리 2026-10-22 D23 — app.js enPrivacy · 한국어 화면은 아래 /privacy.html 그대로)
   if (h === '#/gift' || h === '/privacy.html' || h === 'sms:01090117377' || h === 'tel:01090117377') return true; // 상품권 방(사장님 2026-10-22 03:38 · 위 막대 금빛 선물 단추 · p-gift.js) · 그 쪽 맨 밑 개인정보 처리방침 고리 · 다 본 뒤 나오는 문자 · 전화(사장님 번호 — 소개 쪽 상품권 칸과 같음)
   if (h === '#/dori' || h === '#/why/later') return true; // 돌이 단추 안 · 한 달 뒤(아래 단추 넷 · 2026-10-26 14:40 「어 넣어」)
@@ -151,17 +144,18 @@ const knownHref = h => {
   if (h === '#/why') return READY.has('why'); // 매매일지(왜 사? 열한 질문 — 가운데 단추)
   if ((mm = /^#\/why\/([0-9A-Z]{6})$/.exec(h))) return READY.has('why') && !!CO[mm[1]]; // 「이 회사로 왜 사?」(회사 화면 a.why-go · 보유종목 「이 회사로 왜 사? 적기」 — [3] 2)
   if ((mm = /^#\/gdr(?:\/(\d+))?$/.exec(h))) return READY.has('gdr') && (mm[1] == null || !!GDR?.picks?.some(x => String(x.no) === mm[1])); // 고도리 칸 · 카드 하나(번호는 gdr.json 에 있어야)
+  if ((mm = /^#\/cal\/([0-9A-Z]{6})$/.exec(h))) return READY.has('cal'); // 종목 파일 — check_cal 이 자료와 맞대 봄
   if ((mm = /^#\/w\/([0-9A-Z]{6})\/(past|rivals|grow|range)$/.exec(h))) return READY.has(mm[2]) && !!CO[mm[1]];
   if ((mm = /^#\/x\/(.+)$/.exec(h))) return READY.has('x');
-  let m = /^#\/(?:f\/(rise|lead|pick|group|ind|us)|shorts(?:\/\d+)?|sub|me|find(?:\/.*)?)?$/.exec(h); if (m) return true;
-  if (/^\/atlas\/(\?[^#]*)?#/.test(h)) return false; // 옛 /atlas/ 화면으로 가는 고리 0(주문 1114-1306 · DISCARD 17 — 자료 /atlas/data 는 고리가 아님)
+  let m = /^#\/(?:f\/(rise|surge|lead|pick|group|ind|us)|shorts(?:\/\d+)?|sub|me|find(?:\/.*)?)?$/.exec(h); if (m) return true;
+  if ((m = /^\/atlas\/(#\/.*)$/.exec(h))) h = '/' + m[1]; // 아직 지금 아틀란스에서 여는 쪽(/atlas/#/…) — 아래 같은 잣대로
   if ((m = /^#\/w\/(.+)$/.exec(h))) return m[1] === 'KOSPI' || m[1] === 'KOSDAQ' || !!CO[m[1]];
   if ((m = /^#\/ch\/([ig])\/(.+)$/.exec(h))) { const v = decodeURIComponent(m[2]); return m[1] === 'i' ? ind.has(v) : grp.has(v); }
   if ((m = /^\/#\/g\/(.+)$/.exec(h))) return grp.has(decodeURIComponent(m[1]));
   if ((m = /^\/#\/i\/(.+)$/.exec(h))) return ind.has(decodeURIComponent(m[1]));
   if ((m = /^\/#\/c\/([0-9A-Z]{6})(\/(past|rivals|grow|range))?$/.exec(h))) return !!CO[m[1]];
   if ((m = /^\/#\/x\/([0-9A-Z]{6})$/.exec(h))) return true; // 밖 칸(펀드 · 우선주 …) — 지금 아틀란스
-  return /^\/#\/(cond|find|time|up|info)$/.test(h);
+  return /^\/#\/(surge|cal|cond|talk|find|time|up|info|today)$/.test(h);
 };
 function checkScan(where, s, p) {
   if (s.sw > s.vw) fail('가로 넘침', where + ' ' + s.sw + '>' + s.vw + (s.wide?.length ? ' · ' + s.wide.join(' · ') : ''));
@@ -174,8 +168,8 @@ function checkScan(where, s, p) {
 
 /* ① 세 폭 */
 const firstCo = codes[0], g0 = core.groups[0].id, i0 = core.industries[0].name, g0id = () => g0;
-const ROUTES = ['#/', '#/f/rise', '#/f/lead', '#/f/pick', '#/f/group', '#/f/ind', '#/f/us', '#/shorts', '#/sub', '#/me', '#/find', '#/find/삼성', '#/w/KOSPI', '#/w/KOSDAQ', '#/w/' + firstCo, '#/ch/g/' + g0, '#/ch/i/' + encodeURIComponent(i0)];
-const MODR = {cond: ['#/cond'], up: ['#/up'], time: ['#/time'], info: ['#/info'], x: ['#/x/005935'], past: ['#/w/005930/past', '#/w/' + firstCo + '/past'], rivals: ['#/w/005930/rivals'], grow: ['#/w/005930/grow', '#/w/' + firstCo + '/grow'], range: ['#/w/005930/range', '#/w/' + firstCo + '/range'],
+const ROUTES = ['#/', '#/f/rise', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/group', '#/f/ind', '#/f/us', '#/shorts', '#/sub', '#/me', '#/find', '#/find/삼성', '#/w/KOSPI', '#/w/KOSDAQ', '#/w/' + firstCo, '#/ch/g/' + g0, '#/ch/i/' + encodeURIComponent(i0)];
+const MODR = {surge: ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'], cal: ['#/cal'], cond: ['#/cond'], talk: ['#/talk'], up: ['#/up'], time: ['#/time'], info: ['#/info'], today: ['#/today'], x: ['#/x/005935'], past: ['#/w/005930/past', '#/w/' + firstCo + '/past'], rivals: ['#/w/005930/rivals'], grow: ['#/w/005930/grow', '#/w/' + firstCo + '/grow'], range: ['#/w/005930/range', '#/w/' + firstCo + '/range'],
   why: ['#/why', '#/why/005930', '#/why/' + firstCo], gdr: ['#/gdr', ...(GDR?.picks?.length ? ['#/gdr/' + GDR.picks[0].no] : [])]}; // 고도리 한 장 명령문 — 매매일지(종목을 고르고 연 길 포함) · 고도리 칸 · 카드 하나 열린 길
 // 친구가 연 보내기(#/s/<번호>/<보낸 날>/<그날 값>/<s|a> — [4] 6 · 7 · 8 · p-share) · 깨진 주소
 ROUTES.push('#/gift'); // 상품권 방(2026-10-22 03:38) — 세 폭 · 쓰지 않을 말 · 44px · 고리
@@ -186,8 +180,9 @@ for (const [k, rs] of Object.entries(MODR)) if (READY.has(k)) ROUTES.push(...rs)
 for (const w of [320, 360, 390]) {
   const p = await page(w); if (await first(p, base + '/next/#/') === false) fail('여는 중 남음', w + ' 처음 열기');
   for (const r of ROUTES) { await go(p, r); await p.waitForTimeout(80); checkScan(w + ' ' + r, await scan(p), p); if (w === 390) await guard(p, r); bump('화면'); }
-  if (w === 390) { // ⑧ 옛 이름 — 세 폭 길에 없는 쪽도(조건 고른 주소 · 쇼츠 한 장 · 없는 주소 — 달력 종목 파일은 쪽을 닫아 뺌)
-    for (const r of [...(READY.has('cond') ? ['#/cond/all-all-all'] : []), '#/shorts/1', '#/w/ZZZZZZ', '#/ch/i/' + encodeURIComponent('없는 업종')]) { await go(p, r); await p.waitForTimeout(80); await guard(p, r); }
+  if (w === 390) { // ⑧ 옛 이름 — 세 폭 길에 없는 쪽도(달력 종목 파일 · 조건 고른 주소 · 쇼츠 한 장 · 없는 주소)
+    const tr = await getJ('surgetr.json').catch(() => null), c0 = tr?.cases?.[0]?.[0];
+    for (const r of [...(READY.has('cal') && c0 ? ['#/cal/' + c0] : []), ...(READY.has('cond') ? ['#/cond/all-all-all'] : []), '#/shorts/1', '#/w/ZZZZZZ', '#/ch/i/' + encodeURIComponent('없는 업종')]) { await go(p, r); await p.waitForTimeout(80); await guard(p, r); }
   }
   await p.context().close();
 }
@@ -214,11 +209,11 @@ for (const w of [320, 360, 390]) {
   for (const t of [...(MSG || []), PROMO]) if (OLD_NAME_RE.test(t ?? '')) fail(OLD_NAME_FAIL, '편지 · 상품권 줄 「' + t + '」');
   const q = await page(390, 844), qReq = []; q.on('request', r => qReq.push(r.url()));
   if (await first(q, base + '/next/#/', () => !!document.querySelector('#view [data-w="find"]') && !document.querySelector('#view .boot')) === false) fail('첫 화면 찾기 칸', '20초 안에 안 나옴');
-  /* 첫 화면 한 화면(2026-10-18 명령문 0015 [6] 1 ~ 5 · 9 · [9] 7 · 일꾼 S2x) — 고르기 칩 → 이야기 입구 → 한 줄 띠(큐피트 첫 쪽 /su/#/ — 옛 #/today 닫음 · 날짜 한 번 · 코스피 · 코스닥 하루 · 큰 날 「!」 띠 안) → 질문 칸 → 고도리 칸 → 「더 보기」(닫힘) → 안전 한 줄
-     닫은 채 보이는 날짜 하나(띠) · 「오늘 한 줄」 · 오늘 시장 칸(.today-d · .ptoday) · 급등 카드 0 · 「더 보기」 안 = 세 줄(큰 숫자 하나 + 까닭 한 줄) + 큐피트 첫 쪽 고리(/su/#/) · 띠 숫자를 되풀이하지 않음 · mkt · cond 를 받지 않음(요약이 새것일 때) */
+  /* 첫 화면 한 화면(2026-10-18 명령문 0015 [6] 1 ~ 5 · 9 · [9] 7 · 일꾼 S2x) — 고르기 칩 → 이야기 입구 → 한 줄 띠(#/today · 날짜 한 번 · 코스피 · 코스닥 하루 · 큰 날 「!」 띠 안) → 질문 칸 → 고도리 칸 → 「더 보기」(닫힘) → 안전 한 줄
+     닫은 채 보이는 날짜 하나(띠) · 「오늘 한 줄」 · 오늘 시장 칸(.today-d · .ptoday) · 급등 카드 0 · 「더 보기」 안 = 세 줄(큰 숫자 하나 + 까닭 한 줄) + #/today 고리 · 띠 숫자를 되풀이하지 않음 · mkt · cond 를 받지 않음(요약이 새것일 때) */
   const SUMJ = await fetchJSON(base + '/next/data/home-summary.json', 'home-summary.json').catch(() => null), sumFresh = !!(SUMJ?.schema === 'godori-home-summary-1' && home && SUMJ.src?.home === home.kst);
   /* 흰 첫 화면(사장님 2026-10-19 02:03 「골똘이 대공사 · 구글과 잡스 판」 · 고른 시안 w3-b · 일꾼 C 다시 겨눔 — 옛 2026-10-18 [6] 세 덩이 잣대를 새 차례로 옮김 · 지키던 것은 하나도 빼지 않음)
-     본질 카드([data-w=ess] · section.ess) → (한 달 된 기록이 있을 때만 금빛 a.w-month) → 앵무새 물음(div.w-say) → 「친구야, 왜 사?」 찾기 칸(form.w-find) → 오늘 장 한 줄(a.hm-band → 큐피트 첫 쪽 /su/#/)
+     본질 카드([data-w=ess] · section.ess) → (한 달 된 기록이 있을 때만 금빛 a.w-month) → 앵무새 물음(div.w-say) → 「친구야, 왜 사?」 찾기 칸(form.w-find) → 오늘 장 한 줄(a.hm-band → #/today)
      → 바로 가기 넷(nav.w-go4 · 골똘이 칸은 열한 질문 뒤에만 #/gdr · 그 전 #/why) → 「전부 보기」(details.w-all · 처음 닫힘 · 한 줄에 하나 · 안에 옛 「더 보기」 세 줄 · 봉인 · 약속) → 시황 사실(section.w-news) → 안전 한 줄
      옛 잣대 → 새 자리: 칩 줄 「달력」 「조건 찾기」 → 바로 가기 · 이야기 입구 → 전부 보기 줄 · 질문 칸(section.wy) → 찾기 칸(회사를 치면 #/why/<번호>) · 칸 자리(section.gdr) → 바로 가기 + #/gdr · 칩 줄 끝 흐림(마스크) → 칩 줄이 없어 뺌 */
   /* 돌 판 첫 화면(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」 · 시안 platform3/home · 규칙 82) — 큰 제목 + 돌 그림 → 돌이 물음 → 읽는 곳 셋(① 본질 카드 ② 오늘 장 한 줄 + 시황 사실 ③ 한 달 된 기록 금빛 줄 또는 「한 달 뒤 물어볼게요」)
@@ -228,7 +223,7 @@ for (const w of [320, 360, 390]) {
      → 사기 전에 확인하기(section.nh-why = [data-w="gdr"] · 첫 고리 질문 전 #/why · 질문 뒤 #/gdr — 본질 문 ④ 그대로 · 한 달 된 기록이면 그 안 a.w-month) → 찾기 칸(form.w-find) → 모든 화면 보기(details.w-all) → 안내 칸 안 본질 세 줄(section.ess)
      뺀 것: 큰 제목 s-hd · 둘이 물음 줄 w-say(물음은 업종 칸 제목 data-say) · 테마 시계 th-home · 바로 가기 넷 nav.w-go4(그 몫 = [data-w="gdr"]) · 진화 줄 s-evo · 「한 달 뒤 물어볼게요」 s-ghost */
   const HOME_ORDER = ['section.nh-hero', 'section.nh-rec', 'section.nh-map', 'a.hm-band', 'section.w-news', 'section.nh-why', 'a.w-month', 'form.w-find', 'details.w-all', 'section.ess'];
-  const ALL_WANT = ['#/f/rise', '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', '#/game']; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7 · 급등 · 오늘의 이야기 줄은 쪽을 닫아 뺌 — 주문 1114-1306)
+  const ALL_WANT = ['#/f/rise', oldOr('surge', '#/surge'), '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', oldOr('talk', '#/talk'), '#/game']; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7)
   const g = await q.evaluate(ord => {
     const kids = [...document.querySelectorAll('#view *')].filter(e => ord.some(s => e.matches(s)) && !e.closest('.w-allin')), gd = document.querySelector('#view section.gdr');
     const band = document.querySelector('#view a.hm-band.w-today'), more = document.querySelector('#view details.w-all'), go4 = document.querySelector('#view [data-w="gdr"]'), fi = document.querySelector('#view form.w-find input'); // go4 = 둘이 칸 바로 가기 자리(2026-10-28 — 옛 nav.w-go4 · 이제 사기 전에 확인하기 칸)
@@ -263,42 +258,41 @@ for (const w of [320, 360, 390]) {
     else { const r = await z.evaluate(() => { const s = document.querySelector('#view section.ess'), d = s?.querySelector('details'); return {open: !!d?.open, shown: [...(s?.querySelectorAll('[data-ess]') || [])].map(e => e.checkVisibility()), h: Math.round(s?.getBoundingClientRect().height ?? 0)}; });
       if (r.open || r.shown.join() !== 'true,false,false') fail('본질 세 줄 — 다시 온 기기는 한 줄로 접힘([5] 1)', JSON.stringify(r)); }
     await z.context().close(); }
-  if (g.today) fail('첫 화면에 오늘 시장 칸이 남음([6] 4)', String(g.today));
+  if (g.today) fail('첫 화면에 오늘 시장 칸이 남음([6] 4 → #/today)', String(g.today));
   if (g.surgeCards) fail('첫 화면에 급등 카드([6] 5)', String(g.surgeCards));
   const hix = [['KOSPI', '코스피'], ['KOSDAQ', '코스닥']].filter(([k]) => home?.idx?.[k]);
-  if (!g.band || g.band.href !== SU_HOME) fail('한 줄 띠([6] 1 — 큐피트 첫 쪽 /su/#/ · 옛 #/today 닫음)', JSON.stringify(g.band));
+  if (!g.band || g.band.href !== '#/today') fail('한 줄 띠([6] 1 — #/today)', JSON.stringify(g.band));
   else for (const [k, nm] of hix) if (!g.band.t.includes(nm) || !g.band.t.includes(P2(home.idx[k].day))) fail('한 줄 띠 숫자([6] 1)', `${nm} ${P2(home.idx[k].day)} 없음 「${g.band.t.replace(/\n/g, ' ')}」`);
   const bandDay = home?.stale?.idx && /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(home.stale.idx) ? home.stale.idx.slice(0, 10) : (home?.idx?.KOSPI ?? home?.idx?.KOSDAQ)?.date;
   if (g.band && bandDay && !g.band.t.includes(MD(bandDay))) fail('한 줄 띠 날짜', MD(bandDay) + ' 없음');
   if (g.dates.length !== 1) fail('보이는 날짜는 띠에 한 번([6] 2)', JSON.stringify(g.dates));
   if (g.moreOpen) fail('「전부 보기」는 처음 닫힘([화면] 7 — 오르는 것은 한 번 더 눌러야)', '');
   const wantAl = ['big', 'usual'].filter(w => (home?.alerts ?? []).some(a => a.kind === 'idx' && (a.why ?? 'usual') === w)).length;
-  // 흰 첫 화면은 큰 날 줄을 하나로 줄여 「! 크게 움직인 날」(읽어 주기 · 누르면 큐피트 첫 쪽 형세 보고) — 있으면 한 줄 · 없으면 0
+  // 흰 첫 화면은 큰 날 줄을 하나로 줄여 「! 크게 움직인 날」(읽어 주기 · 자세한 글은 #/today) — 있으면 한 줄 · 없으면 0
   if (g.al.length !== Math.min(wantAl, 1) || g.al.some(a => !a.inBand || !a.t.startsWith('!')) || g.top) fail('큰 날 「!」 = 띠 안([6] 1)', JSON.stringify({n: g.al.length, want: wantAl, out: g.al.filter(a => !a.inBand).length, top: g.top}));
   // 둘이 칸 바로 가기(옛 바로 가기 넷 nav.w-go4 · [6] 7) — 2026-10-28 새 첫 화면: 사기 전에 확인하기 칸([data-w="gdr"])의 고리 = 질문 전 「「왜 사?」 시작하기」 #/why 하나(달력 · 조건 찾기 · 대장주는 「모든 화면 보기」 · 위 단추로 — 안쪽에서만 쓰는 말이라 첫 화면에서 뺌 · order-1112)
   if (JSON.stringify(g.go4) !== JSON.stringify(['#/why'])) fail(NEW_NAME + ' 칸 바로 가기(질문 전 = 「왜 사?」 시작하기 #/why 하나)', g.go4.join(' '));
-  // 「전부 보기」 열기 — 한 줄에 하나(오르는 업종 · 큰 업종 · … · 가짜 돈 연습) + 옛 「더 보기」 그대로: 세 줄 · 큰 숫자 하나 + 까닭 한 줄 · 큐피트 첫 쪽 고리(/su/#/) · 띠 숫자 되풀이 없음 · 봉인 줄 · 약속 · 자료 요청(mkt · cond 0 — 요약이 새것일 때)
+  // 「전부 보기」 열기 — 한 줄에 하나(오르는 업종 · 급등 · … · 이야기) + 옛 「더 보기」 그대로: 세 줄 · 큰 숫자 하나 + 까닭 한 줄 · #/today 고리 · 띠 숫자 되풀이 없음 · 봉인 줄 · 약속 · 자료 요청(mkt · cond 0 — 요약이 새것일 때)
   await q.click('#view summary[data-w="all"]').catch(e => fail('「전부 보기」 누름', e.message));
   await q.waitForFunction(() => !!document.querySelector('#view .w-allin .m4-seal-box, #view .w-allin .empty'), null, {timeout: 15000}).catch(() => fail('「전부 보기」 안', '15초 안에 안 그려짐'));
   const hmo = await q.evaluate(() => { const r = document.querySelector('#view details.w-all'); if (!r) return null; const W0 = r.getBoundingClientRect().width;
     return {li: [...r.querySelectorAll('.hm-sum > li')].map(x => ({k: x.dataset.k, big: x.querySelectorAll('.hm-big').length, why: x.querySelectorAll('.hm-why').length, tag: x.querySelector('.hm-tag')?.textContent ?? ''})),
       rows: [...r.querySelectorAll('ul.w-rows > li > a')].map(a => ({href: a.getAttribute('href'), w: a.getBoundingClientRect().width, h: a.getBoundingClientRect().height})), W0,
-      today: !!r.querySelector('a.more[href="/su/#/"]'), shut: [...r.querySelectorAll('a[href]')].map(a => a.getAttribute('href')).filter(x => /#\/(today|talk|surge|cal)(\/|$)|^\/atlas\//.test(x)), t: r.innerText.replace(/ /g, ' '), mr: r.querySelector('a.m4-mr')?.getAttribute('href') ?? null, seal: !!r.querySelector('.m4-seal-box'), cards: r.querySelectorAll('a.card').length}; });
+      today: !!r.querySelector('a[href="#/today"]'), t: r.innerText.replace(/ /g, ' '), mr: r.querySelector('a.m4-mr')?.getAttribute('href') ?? null, seal: !!r.querySelector('.m4-seal-box'), cards: r.querySelectorAll('a.card').length}; });
   if (!hmo) fail('「전부 보기」 칸 없음', 'details.w-all');
   else {
     const rh = hmo.rows.map(x => x.href).filter(x => !/^\/hello\.html/.test(x));
     const vid = hmo.rows.filter(x => /^\/hello\.html/.test(x.href));
     if (vid.length !== (VIDEO.ready ? 1 : 0) || (vid[0] && vid[0].href !== '/hello.html#hp-vid')) fail('「' + VIDEO.title + ' 보기」 줄은 새 영상이 오른 뒤에만([5] 5 · 흰 첫 화면 = 전부 보기 안)', JSON.stringify(vid));
     if (VIDEO.ready && !hmo.t.includes(VIDEO.title + ' 보기')) fail('「' + VIDEO.title + ' 보기」 글', '전부 보기 안에 없음');
-    if (JSON.stringify(rh) !== JSON.stringify(ALL_WANT)) fail('「전부 보기」 줄(오르는 업종 · 큰 업종 · 업종 · 미국 · 고른 곳 · 가짜 돈 연습)', rh.join(' '));
+    if (JSON.stringify(rh) !== JSON.stringify(ALL_WANT)) fail('「전부 보기」 줄(오르는 업종 · 급등 · 큰 업종 · 업종 · 미국 · 고른 곳 · 오늘의 이야기)', rh.join(' '));
     if (hmo.rows.some(x => x.w < 0.85 * hmo.W0 || x.h < 43.5)) fail('「전부 보기」 한 줄에 하나(네모 칸 0 · 44px)', JSON.stringify(hmo.rows.map(x => [Math.round(x.w), Math.round(x.h)])));
     if (hmo.li.length !== 3 || hmo.li.some(x => x.big !== 1 || x.why !== 1)) fail('오늘 시장 세 줄 = 큰 숫자 하나 + 까닭 한 줄([6] 4 · 9)', JSON.stringify(hmo.li));
-    if (!hmo.today) fail('「전부 보기」 안 「오늘 시장 자세히」 = 큐피트 첫 쪽 /su/#/ 고리([6] 4 · 옛 #/today 닫음)', '');
-    if (hmo.shut.length) fail('「전부 보기」 안 닫은 쪽 · 옛 /atlas/ 화면 고리(주문 1114-1306)', hmo.shut.join(' '));
+    if (!hmo.today) fail('「전부 보기」 안 #/today 고리([6] 4)', '');
     for (const [k, nm] of hix) if (hmo.t.includes(P2(home.idx[k].day))) fail('띠 숫자가 「전부 보기」에 또 나옴([6] 3)', nm + ' ' + P2(home.idx[k].day));
     if (home?.us?.date && bandDay && home.us.date !== bandDay && !hmo.li.find(x => x.k === 'us')?.tag) fail('띠 날과 다른 날 꼬리표([6] 2)', '미국 ' + home.us.date + ' ≠ ' + bandDay);
     if (hmo.cards) fail('「전부 보기」 안 큰 카드(한 줄 목록으로)', String(hmo.cards));
-    if (core.time?.opens?.[0]?.date && hmo.mr !== '#/time') fail('봉인 줄', String(hmo.mr));
+    if (core.time?.opens?.[0]?.date && hmo.mr !== oldOr('time', '#/time')) fail('봉인 줄', String(hmo.mr));
     if (!hmo.seal) fail(NEW_NAME + ' 약속', '');
   }
   const heavy = qReq.filter(u => /\/atlas\/data\/(mkt|cond)\.json/.test(u) || /\/atlas\/data\/co\//.test(u));
@@ -397,42 +391,19 @@ for (const w of [320, 360, 390]) {
   await q.evaluate(() => { location.hash = '#/me'; }); await q.waitForSelector('#view .m4-letter', {timeout: 20000}).catch(() => {});
   if (await q.evaluate(() => document.querySelector('#view .m4-letter')?.classList.contains('intro') !== false)) fail('열면 ' + NEW_NAME + ' 두 번 나옴', '「나」 칸을 다시 열어도 처음 그림');
   bump('「나」 칸 편지');
-  // 옛 주소 — 이 앱 쪽으로(옛 /atlas/ 화면으로는 보내지 않음 — 주문 1114-1306 · DISCARD 17 · 모르는 꼬리는 그 회사 쪽)
-  for (const [from, want] of [['#/c/005930', '#/w/005930'], ['#/c/005930/zzz', '#/w/005930'], ['#/w/005930/zzz', '#/w/005930'], ['#/g/' + g0id(), '#/ch/g/' + g0id()], ['#/list', '#/f/ind'], ['#/36', '#/']]) {
+  // 옛 주소 — 새 화면으로 · 아직 안 옮긴 쪽은 /atlas/
+  for (const [from, want] of [['#/c/005930', '#/w/005930'], ['#/g/' + g0id(), '#/ch/g/' + g0id()], ['#/list', '#/f/ind'], ['#/36', '#/']]) {
     await q.evaluate(hh => { location.hash = hh; }, from); await q.waitForTimeout(250);
-    const got = await q.evaluate(() => location.hash); if (got !== want || !/\/next\//.test(q.url())) fail('옛 주소', from + ' → ' + q.url() + ' ≠ ' + want);
+    const got = await q.evaluate(() => location.hash); if (got !== want) fail('옛 주소', from + ' → ' + got + ' ≠ ' + want);
   }
+  if (READY.has('surge')) { await q.evaluate(() => { location.hash = '#/surge'; }); await q.waitForTimeout(400); if (!/\/next\/(\?[^#]*)?#\/surge$/.test(q.url())) fail('옮긴 쪽 주소', '#/surge → ' + q.url()); } // ?seed=1 = 위에서 질문 뒤 꼴로 새로 연 주소
+  else { await q.evaluate(() => { location.hash = '#/surge'; }); await q.waitForURL(/\/atlas\/#\/surge$/, {timeout: 15000}).catch(() => fail('옛 주소', '#/surge → /atlas/#/surge 아님 ' + q.url())); }
   for (const k of ['past', 'rivals', 'grow', 'range'].filter(k => READY.has(k))) { await q.goto(base + '/next/#/c/005930/' + k); await q.waitForTimeout(500); if (!q.url().endsWith('#/w/005930/' + k)) fail('옛 7단 주소', k + ' → ' + q.url()); }
   bump('첫 화면 붙박이');
   await q.context().close();
 }
-/* ⑪ 닫은 쪽(사장님 2026-11-14 13:06 주문 1114-1306 ② · FIX N1 · N2 · DISCARD 16 — 본질 「사고팔기를 권하지 않음 · 급등 자랑 0 · 손실 먼저」에 어긋난 넷)
-   시황 #/talk · 급등 #/surge(/10 ~ /40 · 칩 #/f/surge) · 급등 달력 #/cal(/<번호>) · 오늘 시장 #/today — 바로 열어도 · ?dev=1 · ?lang=en 이 붙어도 · 쪽 안에서 주소만 바꿔도
-   → 큐피트 첫 쪽 /su/#/(주소가 그것으로 바뀜 · 쪽이 그려짐 = #su 안 칸 · 「여는 중」 남음 0 · 화면 오류 0) · 주소 목록은 이 검사가 따로 적음(SHUT_ROUTES — app.js 를 읽지 않음) */
-{
-  const CASES = [...SHUT_ROUTES.map(r => '/next/' + r), '/next/?dev=1#/today', '/next/?dev=1#/surge/10', '/next/?lang=en#/talk', '/next/?lang=en#/cal', '/next/?su=hot#/surge'];
-  const p = await page(390, 844), atSu = u => u.pathname === '/su/' && u.hash === '#/';
-  const drawn = q => q.waitForFunction(() => !!document.querySelector('#su') && !document.querySelector('#su .su-boot') && document.querySelectorAll('#su *').length > 20, null, {timeout: 20000}).then(() => true, () => false);
-  for (const u of CASES) {
-    await p.goto(base + u, {waitUntil: 'load'}).catch(e => fail('닫은 쪽 열기', u + ' ' + e.message));
-    if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) { fail('닫은 쪽 → 큐피트 첫 쪽 /su/#/(주문 1114-1306)', u + ' → ' + p.url().replace(base, '')); continue; }
-    if (!await drawn(p)) fail('닫은 쪽 → 큐피트 첫 쪽이 그려지지 않음(빈 쪽)', u);
-    if (p._errs.length) { fail('화면 오류', '닫은 쪽 ' + u + ' ' + p._errs.join(' | ').slice(0, 200)); p._errs.length = 0; }
-    bump('닫은 쪽 → 큐피트 첫 쪽');
-  }
-  // 쪽 안에서 주소만 바꿈(옛 고리 · 주소 칸에 친 주소) — 첫 화면에서 넷 모두
-  for (const r of ['#/today', '#/talk', '#/surge/20', '#/cal']) {
-    if (await first(p, base + '/next/#/') === false) { fail('닫은 쪽 — 첫 화면 처음 열기', r); continue; }
-    await p.evaluate(h => { location.hash = h; }, r);
-    if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) fail('닫은 쪽(쪽 안에서 주소 바꿈) → 큐피트 첫 쪽 /su/#/', r + ' → ' + p.url().replace(base, ''));
-    else if (!await drawn(p)) fail('닫은 쪽(쪽 안에서 주소 바꿈) → 큐피트 첫 쪽이 그려지지 않음', r);
-    if (p._errs.length) { fail('화면 오류', '닫은 쪽 ' + r + ' ' + p._errs.join(' | ').slice(0, 200)); p._errs.length = 0; }
-    bump('닫은 쪽 → 큐피트 첫 쪽');
-  }
-  await p.context().close();
-}
-/* ①-2b 칩 쪽(2026-10-18 명령문 0015 [6] 5 · 6 · [7] 5 · [9] 7 · 일꾼 S2x) — 360×640 · 칩마다 큰 카드 하나까지 · 보이는 한 줄 10줄까지 · 나머지는 「나머지 n곳 보기」(누르면 모두) · 대장주 3 화면 이하
-   급등 칩은 닫음(주문 1114-1306 — 칩 줄에 급등 · 달력 0 · #/f/surge 는 ⑪ 이 큐피트 첫 쪽으로 가는지 봄) */
+/* ①-2b 칩 쪽(2026-10-18 명령문 0015 [6] 5 · 6 · [7] 5 · [9] 7 · 일꾼 S2x) — 360×640 · 칩마다 큰 카드 하나까지 · 보이는 한 줄 10줄까지 · 나머지는 「나머지 n곳 보기」(누르면 모두)
+   급등: 「1등」 0 · 보내기 0 · 「N곳 중 n곳이 지난 1년 안에 반값 아래로 …」 N = 목록 수 · n = 요약 chips.surge.half(요약이 그 급등 판으로 만든 때) · 회사 파일(/atlas/data/co/) 0 · 대장주 · 급등 3 화면 이하 */
 {
   const SUMJ = await fetchJSON(base + '/next/data/home-summary.json', 'home-summary.json').catch(() => null);
   // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」 — 업종 · 대장주 칩은 「많이 오른 차례」 대신 테마 시계 자리 차례) — 이 검사가 theme.json order 로 따로 셈(app.js sproutRank 를 쓰지 않음)
@@ -444,11 +415,8 @@ for (const w of [320, 360, 390]) {
   const IND0 = SPR.size ? [...core.industries].sort((p, q) => q.chg - p.chg).sort((p, q) => sprAt(p.name) - sprAt(q.name))[0] : [...core.industries].sort((p, q) => q.chg - p.chg)[0];
   const z = await page(360, 640), zReq = []; z.on('request', r => zReq.push(r.url()));
   if (await first(z, base + '/next/#/f/rise') === false) fail('칩 쪽', '처음 열기');
-  for (const id of ['rise', 'lead', 'pick', 'group', 'ind', 'us']) {
+  for (const id of ['rise', 'surge', 'lead', 'pick', 'group', 'ind', 'us']) {
     zReq.length = 0; await go(z, '#/f/' + id); await z.waitForTimeout(80);
-    { const chips = await z.evaluate(() => [...document.querySelectorAll('#view .chips a.chip')].map(a => [a.getAttribute('href'), a.textContent.trim()]));
-      const want = [['#/', '전체'], ['#/f/rise', '오르는 업종'], ['#/f/lead', '대장주'], ['#/f/pick', '고른 곳'], ['#/f/group', '큰 업종'], ['#/f/ind', '업종'], ['#/f/us', '미국'], ['#/cond', '조건 찾기']].map(([h]) => h); // 칩 줄 고리 차례(급등 · 달력 칩 0 — 주문 1114-1306 · app.js CHIPS 와 따로 적음)
-      if (JSON.stringify(chips.map(x => x[0])) !== JSON.stringify(want)) fail('칩 줄 고리(급등 · 달력 칩 0 · 주문 1114-1306)', id + ' ' + chips.map(x => x.join(' ')).join(' / ')); }
     const c = await z.evaluate(() => { const v = document.querySelector('#view'), li = [...v.querySelectorAll('ul.clist > li')], more = [...v.querySelectorAll('button.more')].map(b => b.textContent);
       return {cards: v.querySelectorAll('a.card, div.card').length, shown: li.filter(e => !e.hidden).length, hid: li.filter(e => e.hidden).length, all: li.length, more, t: v.innerText.replace(/\u00a0/g, ' '), H: Math.max(document.documentElement.scrollHeight, document.body.scrollHeight),
         share: [...v.querySelectorAll('button, a')].filter(e => !e.closest('.kk-btn') && /보내기|공유/.test(e.textContent)).length, // 카톡 단추(.kk-btn · 글자 「카톡 보내기」)는 셈 밖 — order-1639 [6] 8 이 급등 줄 카톡 단추를 되살림 · 2026-10-25 12:00 「진짜모든곳에」 글자로
@@ -456,10 +424,11 @@ for (const w of [320, 360, 390]) {
     if (c.cards > 1) fail('칩 큰 카드는 하나([7] 5)', id + ' ' + c.cards);
     // [6] 8 「큰 숫자는 늘 마지막 날 하루 값 · 기간 숫자는 작게」 — 큰 카드 큰 숫자 = 맨 앞 줄의 마지막 날 하루(이 검사가 자료에서 따로 셈) · 기간 %는 아래 작은 칸
     if (id !== 'us') {
-      const top = (xs, f) => [...xs].sort(f)[0], gs = id === 'group' ? core.groups : core.industries;
+      const top = (xs, f) => [...xs].sort(f)[0], gs = id === 'group' ? core.groups : core.industries, miss = new Set(SUMJ?.chips?.surge?.miss || []);
       const want = id === 'rise' ? lineDay(core.rise?.list?.[0]?.v)
         : id === 'ind' ? lineDay(IND0?.v) // 싹 먼저 차례 맨 앞 업종(사장님 2026-10-22 09:41 — 옛 기대: 한 달 많이 오른 맨 앞)
         : id === 'group' ? lineDay(top(gs, (p, q) => q.chg - p.chg)?.v)
+        : id === 'surge' ? top((surge?.members || []).filter(m => m && !miss.has(m.c) && Number.isFinite(m.r5)), (p, q) => q.r5 - p.r5)?.d1
         : id === 'pick' ? (home?.s365?.list || []).filter(([k]) => CO[k])[0]?.[1]
         : LEADS?.ls?.length ? lineDay(CO[LEADS.ls[0][0]].l) : null; // 대장주 = 싹 먼저 차례 맨 앞(사장님 2026-10-22 09:41 — 옛 기대: 5일 많이 오른 맨 앞)
       // 닷새 동안 오른 업종이 하나도 없는 날(2026-10-26 월요일 아침 진짜 자료 — 전체 검사 3/11 rise 큰 「」)은 큰 카드 없이 빈 글 한 줄이 맞음(app.js chip 'rise' · 「닷새 동안 오른 업종이 없어요.」)
@@ -482,8 +451,16 @@ for (const w of [320, 360, 390]) {
     if (c.shown > 10) fail('칩 한 줄 목록 10줄까지([7] 5)', id + ' ' + c.shown);
     if (c.hid && !c.more.some(t => t.includes('나머지 ' + N(c.hid)))) fail('「나머지 n곳 보기」([7] 5)', `${id} 숨김 ${c.hid} · ${c.more.join(' / ')}`);
     if (c.hid) { await z.click('#view button.more'); const k = await z.evaluate(() => [...document.querySelectorAll('#view ul.clist > li')].filter(e => e.hidden).length); if (k) fail('「나머지 보기」 누르면 모두', id + ' 남은 숨김 ' + k); }
-    if (c.t.includes('1등')) fail('칩 「1등」 말([6] 5)', id);
-    if (id === 'lead' && c.H > 3 * 640) fail('칩 쪽 3 화면 이하([7] 5 · 360×640)', `${id} ${c.H}px`);
+    if (id === 'surge') {
+      if (c.t.includes('1등')) fail('급등 칩 「1등」 말([6] 5)', '');
+      if (c.share) fail('급등 칩 보내기([6] 5)', String(c.share));
+      const hm = /(\d[\d,]*)곳 중 (\d[\d,]*)곳이 지난 1년 안에 반값 아래로 떨어진 적 있어요/.exec(c.t), nList = c.cards + c.all;
+      if (!hm) fail('급등 반값 한 줄([6] 6)', '없음');
+      else { if (+hm[1].replace(/,/g, '') !== nList) fail('급등 반값 N = 목록 수([6] 6)', hm[1] + ' ≠ ' + nList);
+        if (SUMJ?.chips?.surge && SUMJ.src?.surge === surge?.kst && +hm[2].replace(/,/g, '') !== SUMJ.chips.surge.half) fail('급등 반값 n = 요약 half([6] 6)', hm[2] + ' ≠ ' + SUMJ.chips.surge.half); }
+      const co = zReq.filter(u => /\/atlas\/data\/co\//.test(u)); if (co.length) fail('급등 칩이 회사 파일을 받음([6] 6)', String(co.length));
+    }
+    if ((id === 'surge' || id === 'lead') && c.H > 3 * 640) fail('칩 쪽 3 화면 이하([7] 5 · 360×640)', `${id} ${c.H}px`);
     bump('칩 쪽');
   }
   if (z._errs.length) fail('화면 오류', '칩 쪽 ' + z._errs.join(' | ').slice(0, 200));
@@ -542,7 +519,7 @@ for (const code of list) {
   if (!/^(\d{1,3}(,\d{3})*원|\?)$/.test(g.wp)) fail('오늘 값', code + ' 「' + g.wp + '」');
   if (!g.ws.includes(MD(mkt.asOf) + ' 마감')) fail('마감 날', code);
   const I = ind.get(o.i), G = I ? grp.get(I.g) : null;
-  const sub = k => '#/w/' + code + '/' + k; // 4 ~ 7단 = 이 앱 쪽만(옛 /atlas/ 화면 고리 0 — 주문 1114-1306 · DISCARD 17)
+  const sub = k => (READY.has(k) ? '#/w/' + code + '/' + k : '/atlas/#/c/' + code + '/' + k);
   // 길 표시(큰 업종 › 업종 · 고리 둘) · 탭 넷(4 ~ 7단 · 한 줄) · 꼬리표 · 큰 선 ▶ 없음 · 옛 일곱 칸 없음 · 「챕터」 0
   const wantPath = [G ? [G.short || G.name, '#/ch/g/' + encodeURIComponent(G.id)] : null, I ? [I.name + ' 업종', '#/ch/i/' + encodeURIComponent(I.name)] : null].filter(Boolean);
   if (JSON.stringify(g.path) !== JSON.stringify(wantPath) || g.pathN !== 2) fail('길 표시', code + ' ' + JSON.stringify(g.path));
@@ -551,7 +528,8 @@ for (const code of list) {
   const wantTags = [];
   // 칸 번호 꼬리표는 열한 질문을 끝낸 기기에서만(본질 문 ④ · app.js wTags open · 일꾼 KI) — 이 390 쪽은 매매일지 기록이 없어 늘 뺌 · 끝낸 기기의 꼬리표는 위 「질문 뒤」 쪽에서 봄
   if (WHY_DONE_HERE) for (const q of GDR?.picks ?? []) if (q.code === code) wantTags.push([NEW_NAME + ' 칸 ' + q.no + '번', '#/gdr/' + q.no]);
-  // 급등 칸 · 급등 n%대 칸 꼬리표는 없음(급등 쪽을 닫음 — 주문 1114-1306 · 본질 「급등 자랑 0」 · 남으면 아래 맞댐이 「든 목록 꼬리표」로 걸림)
+  if (surge?.members?.some(m => m.c === code)) wantTags.push(['급등 칸', '#/surge']);
+  for (const [k, nm] of [['b10', '10%대'], ['b20', '20%대'], ['b30', '30%대'], ['b40', '40% 이상']]) if (surge?.bands?.[k]?.members?.some(m => m.c === code)) wantTags.push(['급등 ' + nm + ' 칸', '#/surge/' + k.slice(1)]);
   // 대장주 = 업종 안 회사 크기 1등 · 5일 선이 있고 5일 오름이 숫자 · cond 가 시장과 같은 날(#/f/lead 칩과 같은 걸름 — cond.json 칸 줄을 직접 읽음)
   if (cond?.asOf === mkt.asOf && cond?.co?.c) { const k = cond.co.c.indexOf(code); if (k >= 0 && cond.co.rk?.[k] === 1 && Array.isArray(cond.co.l5?.[k]) && Number.isFinite(cond.co.r5?.[k])) wantTags.push(['대장주', '#/f/lead']); }
   if (o.p) wantTags.push(['고른 곳', '#/f/pick']);

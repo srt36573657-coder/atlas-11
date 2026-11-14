@@ -31,9 +31,9 @@ const A = process.argv.slice(2), arg = (k, d = null) => { const i = A.indexOf('-
 const BASE = String(arg('base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), OUT = arg('out'), LABEL = arg('label', 'now');
 const VW = Number(arg('w', 360)), VH = Number(arg('h', 640));
 if (!OUT) { console.error('쓰는 법: node scripts/atlas11/next/measure_type.mjs --out <파일.json> [--label before|after] [--only …] [--no-en] [--no-ko]'); process.exit(2); }
-const ROUTES = ['#/', '#/f/rise', '#/f/lead', '#/f/pick', '#/f/group', '#/f/ind', '#/f/us', '#/shorts', '#/why', '#/why/005930', '#/sub', '#/me', '#/find', '#/find/삼성', '#/gdr',
+const ROUTES = ['#/', '#/f/rise', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/group', '#/f/ind', '#/f/us', '#/today', '#/shorts', '#/why', '#/why/005930', '#/sub', '#/me', '#/find', '#/find/삼성', '#/gdr',
   '#/w/KOSPI', '#/w/005930', '#/w/005930/past', '#/w/005930/rivals', '#/w/005930/grow', '#/w/005930/range', '#/ch/g/semi', '#/ch/i/' + encodeURIComponent('해운'),
-  '#/cond', '#/up', '#/time', '#/info', '#/x/005935', '/letter.html', '/hello.html'];
+  '#/surge', '#/surge/10', '#/cal', '#/cond', '#/talk', '#/up', '#/time', '#/info', '#/x/005935', '/letter.html', '/hello.html'];
 const ONLY = arg('only') ? arg('only').split(',') : null;
 const routes = ONLY ?? ROUTES;
 const T0 = Date.now(), log = (...a) => console.log(`[${((Date.now() - T0) / 1000).toFixed(1)}s]`, ...a);

@@ -18,7 +18,7 @@
      ① 본질 파일 · 명령문 파일 sha256 = 잠금 파일의 마지막 줄 · 잠금 줄마다 at(날짜) · words(사장님 원문) · sha256 이 있음                         정적
      ② 첫 화면 본질 세 줄 — 글 틀은 명령문 파일 [5] 2 ① ② ③ 에서 읽음(잠긴 사장님 글) · 회사 수 n = atlas/data/mkt.json 회사 칸을 따로 셈 ·
         받은 때 = 저장소 업데이트 기록(reports/atlas11/t365/updates · 네이버 일봉을 받아 굴린 회차)에서 at 이 그 자료 home.json made 와 같은 것을 따로 찾음
-        (없으면 셋째 줄 = [5] 2 ③ 에서 받은 때 문장을 뺀 숫자 없는 꼴 · 빈 「?」 0 — 점검 E1 · 주문 1114-1306 ⑥) → essence.js 가 첫 화면과 같은 길(요약 파일 · sumOk)로 만든 세 줄과 맞댐 · app.js 가 essenceBox 를 첫 화면(vHomeAll)에서
+        (없으면 「?」) → essence.js 가 첫 화면과 같은 길(요약 파일 · sumOk)로 만든 세 줄과 맞댐 · app.js 가 essenceBox 를 첫 화면(vHomeAll)에서
         이야기 입구 위에 그림 · 소개 쪽 · 창 설명에 박힌 회사 수도 자료와 같음                                                                       정적 + 화면
      ③ 망치는 길 낱말 0 — next/*.js 글(rename.mjs jsStrings) · next/*.html · /hello.html · /letter.html · /invite.html · /privacy.html(+ 그 쪽 스크립트 글) ·
         next/data/*.json 글 · next/i18n/en.json 값 — words.js RUIN(갈래 = 본질 파일의 망치는 길 여덟과 같아야 함) · words.js 자신은 셈 밖           정적
@@ -29,7 +29,7 @@
      ⑥ 보내는 글에 수익률 0 — 줄의 카톡 단추(share-btn.js shareButtons → pack)와 글상자(p-share.js open)를 브라우저 없는 가짜 쪽에서 진짜로 돌려
         오른 종목(제목에 「+31.2%」) · 급등(반값 한 줄) · 같이 따져 줘 · 시황 쪽을 보냄 → 보낸 제목 · 글 · 주소(풀어서) · 주소 속 말 · 카톡 카드에
         수익률 · 수익 숫자(words.js gainHits) 0 · 거르는 말(sendHits)이 수익 숫자를 아직 막는지                                                    정적(가짜 쪽)
-     ⑦ 오래된 날짜에 「?」 — essence.js OLD_HOURS 가 12 ~ 120시간 · 30일 전 받은 때를 넣으면 「?」 · 10분 전이면 「?」 없음 · 모르면 숫자 없는 꼴(빈 「?」 0 · 점검 E1) ·
+     ⑦ 오래된 날짜에 「?」 — essence.js OLD_HOURS 가 12 ~ 120시간 · 30일 전 받은 때를 넣으면 「?」 · 10분 전이면 「?」 없음 · 모르면 「?」 ·
         실제 자료로 낸 줄도 따로 센 나이와 맞음                                                                                                       정적 + 화면
    보지 않는 것: 영상 · 예약 작업 · 진화 칸(사장님 기기) — 다른 일꾼의 검사 */
 import fs from 'node:fs';
@@ -302,15 +302,15 @@ export function recount(dir, {root = ROOT} = {}) {
   r.home = H.v ?? null; r.sum = S.v ?? null;
   if (!H.v) r.problems.push('atlas/data/home.json 을 못 읽음');
   const made = typeof H.v?.made === 'string' ? H.v.made : null;
-  // 기록 파일 이름 = 받은 때(UTC) · 같은 날 앞뒤 하루 안 파일만 열어 봄(빠르게) — 못 찾으면 받은 때 모름(첫 화면 셋째 줄은 숫자 없는 꼴이 맞음 · 점검 E1)
+  // 기록 파일 이름 = 받은 때(UTC) · 같은 날 앞뒤 하루 안 파일만 열어 봄(빠르게) — 못 찾으면 받은 때 모름(첫 화면 「?」가 맞음)
   const ud = path.join(root, UPDATES_DIR);
-  let names = []; try { names = fs.readdirSync(ud).filter(f => /^\d{8}T\d{6}Z\.json$/.test(f)); } catch { r.notes.push(`업데이트 기록 폴더가 없음(${UPDATES_DIR}) — 받은 때 모름(셋째 줄은 숫자 없는 꼴이어야 함)`); }
+  let names = []; try { names = fs.readdirSync(ud).filter(f => /^\d{8}T\d{6}Z\.json$/.test(f)); } catch { r.notes.push(`업데이트 기록 폴더가 없음(${UPDATES_DIR}) — 받은 때는 「?」여야 함`); }
   if (made && Number.isFinite(Date.parse(made))) {
     const ms = Date.parse(made), near = new Set([-1, 0, 1].map(k => new Date(ms + k * 864e5).toISOString().slice(0, 10).replace(/-/g, '')));
     const hit = names.filter(f => near.has(f.slice(0, 8))).sort().reverse().map(f => [f, readJson(path.join(ud, f)).v]).find(([, v]) => gotFresh(v) && v.at === made);
     if (hit) { r.fetchedMs = Date.parse(hit[1].at); r.fetchedFile = UPDATES_DIR + '/' + hit[0]; r.src.fetched = r.fetchedFile; }
-    else r.notes.push(`home.json made ${made} 와 같은 받은 기록이 없음 — 받은 때 모름(셋째 줄은 숫자 없는 꼴이어야 함)`);
-  } else if (H.v) r.notes.push('home.json made 가 없음 — 받은 때 모름(셋째 줄은 숫자 없는 꼴이어야 함)');
+    else r.notes.push(`home.json made ${made} 와 같은 받은 기록이 없음 — 받은 때는 「?」여야 함`);
+  } else if (H.v) r.notes.push('home.json made 가 없음 — 받은 때는 「?」여야 함');
   return r;
 }
 /** 첫 화면이 요약 파일을 쓰나(app.js sumOk 와 같은 셈 — 요약 꼴 · src.home = home.json kst) */
@@ -666,9 +666,6 @@ export function judgeShare(P) {
 export function appSumSchema(dir) { return /\bconst\s+SUM_SCHEMA\s*=\s*'([^']+)'/.exec(readText(path.join(dir, 'next/app.js')) ?? '')?.[1] ?? SUM_SCHEMA; }
 /** 셋째 줄의 받은 때 자리 — 틀 앞뒤를 떼고 남은 것 · 틀과 안 맞으면 null */
 const atPart = (line, tpl3) => { const [pre, post] = tpl3.split('○월 ○일 ○시'); return post != null && line.startsWith(pre) && line.endsWith(post) ? line.slice(pre.length, line.length - post.length).trim() : null; };
-/** 셋째 줄의 숫자 없는 꼴 — 틀에서 받은 때 문장(○월 ○일 ○시가 든 끝 문장)을 뺀 글 · 받은 때를 모를 때 화면이 써야 하는 글(빈 「?」 대신 · 점검 E1 · 주문 1114-1306 ⑥)
- *  잠긴 사장님 글에서 따로 셈(essence.js ESSENCE_PLAIN 을 믿지 않음) · 못 찾으면 null */
-const plainOf = tpl3 => { const t = String(tpl3 ?? ''), i = t.indexOf('○월 ○일 ○시'), cut = i < 0 ? -1 : t.lastIndexOf('. ', i); return cut < 0 ? null : t.slice(0, cut + 1); };
 export function judgeEssence(P, R, {root = ROOT, now = Date.now(), schema = SUM_SCHEMA} = {}) {
   const c2 = mk(2, 'static'), c7 = mk(7, 'static');
   if (!P || P.error) { cant(c2, P?.error ?? '가짜 쪽 시험 결과 없음'); cant(c7, P?.error ?? '가짜 쪽 시험 결과 없음'); return [c2, c7]; }
@@ -688,32 +685,30 @@ export function judgeEssence(P, R, {root = ROOT, now = Date.now(), schema = SUM_
   if (s2 == null) bad(c2, '명령문 [5] 2 ② 에서 「n곳」 자리를 못 찾음');
   else if (R.n == null) cant(c2, '회사 수를 자료로 셀 수 없음');
   else if (L[1] !== `${p2} ${comma(R.n)}곳${s2}`) bad(c2, `둘째 줄 「${L[1]}」 ≠ 자료로 센 「${p2} ${comma(R.n)}곳${s2}」(${R.src.n})`);
-  const ap = atPart(L[2], T[2]), H = E.oldHours, plain3 = plainOf(T[2]);
-  if (plain3 == null) bad(c2, '명령문 [5] 2 ③ 에서 받은 때 문장을 못 찾음');
-  if (!Number.isFinite(R.fetchedMs)) { // 받은 기록이 없음 — 셋째 줄 = 숫자 없는 꼴(지어낸 때 0 · 빈 「?」 0 — 점검 E1)
-    if (plain3 != null && L[2] !== plain3) bad(c2, `받은 기록이 없는데(${R.notes.join(' · ') || '받은 때 모름'}) 셋째 줄이 숫자 없는 꼴이 아님 「${L[2]}」 — 「${plain3}」여야 함`);
-  } else if (ap == null) bad(c2, L[2] === plain3 ? `받은 기록(${R.fetchedFile})이 있는데 셋째 줄에 받은 때가 없음 「${L[2]}」` : `셋째 줄이 명령문 [5] 2 ③ 틀과 다름 「${L[2]}」`);
+  const ap = atPart(L[2], T[2]), H = E.oldHours;
+  if (ap == null) bad(c2, `셋째 줄이 명령문 [5] 2 ③ 틀과 다름 「${L[2]}」`);
   else {
     const m = /^(\?)?\s*(\d{1,2})월 (\d{1,2})일 (\d{1,2})시$/.exec(ap), q = ap === '?' || !!m?.[1];
-    const ex = whenWords(R.fetchedMs), shown = m ? `${+m[2]}월 ${+m[3]}일 ${+m[4]}시` : null, age = (now - R.fetchedMs) / 36e5;
-    if (shown !== ex) bad(c2, `받은 때 「${ap}」 ≠ 자료로 찾은 ${ex}(${R.fetchedFile})`);
-    if (H != null) { if (age > H && !q) bad(c7, `받은 때가 ${Math.round(age)}시간 전(잣대 ${H}시간)인데 「?」가 없음 「${L[2]}」`); if (age <= H && q) bad(c7, `받은 때가 ${Math.round(age)}시간 전(잣대 ${H}시간 안)인데 「?」가 붙음`); }
-    c7.counts.ageH = Math.round(age);
+    if (Number.isFinite(R.fetchedMs)) {
+      const ex = whenWords(R.fetchedMs), shown = m ? `${+m[2]}월 ${+m[3]}일 ${+m[4]}시` : null, age = (now - R.fetchedMs) / 36e5;
+      if (shown !== ex) bad(c2, `받은 때 「${ap}」 ≠ 자료로 찾은 ${ex}(${R.fetchedFile})`);
+      if (H != null) { if (age > H && !q) bad(c7, `받은 때가 ${Math.round(age)}시간 전(잣대 ${H}시간)인데 「?」가 없음 「${L[2]}」`); if (age <= H && q) bad(c7, `받은 때가 ${Math.round(age)}시간 전(잣대 ${H}시간 안)인데 「?」가 붙음`); }
+      c7.counts.ageH = Math.round(age);
+    } else if (ap !== '?') bad(c2, `받은 기록이 없는데(${R.notes.join(' · ') || '받은 때 모름'}) 받은 때 「${ap}」를 보임 — 「?」여야 함`);
+    c2.counts.fetched = Number.isFinite(R.fetchedMs) ? whenWords(R.fetchedMs) : '?';
   }
-  c2.counts.fetched = Number.isFinite(R.fetchedMs) ? whenWords(R.fetchedMs) : '?';
   c2.counts.n = R.n; c2.counts.lines = L;
   // ⑦ 잣대 · 넣어 본 받은 때
   if (H == null) bad(c7, 'essence.js 에 OLD_HOURS(오래됨 잣대)가 없음');
   else if (H < STALE_H_RANGE[0] || H > STALE_H_RANGE[1]) bad(c7, `오래됨 잣대 ${H}시간이 ${STALE_H_RANGE[0]} ~ ${STALE_H_RANGE[1]}시간 밖`);
   const at3 = x => (Array.isArray(x) && typeof x[2] === 'string' ? atPart(x[2], T[2]) : null);
   const qOf = s => s === '?' || /^\?\s*\d{1,2}월/.test(s ?? '');
-  const u3 = Array.isArray(E.unknown) && typeof E.unknown[2] === 'string' ? E.unknown[2] : null; // 받은 때를 모를 때 셋째 줄 통째(숫자 없는 꼴이라 받은 때 자리가 없음 · 점검 E1)
-  const o = at3(E.old), f = at3(E.fresh), eo = at3(E.edgeOld), en = at3(E.edgeNew);
-  if (o == null || f == null || u3 == null) cant(c7, '받은 때를 바꿔 넣어 세 줄을 다시 만들지 못함');
+  const o = at3(E.old), f = at3(E.fresh), u = at3(E.unknown), eo = at3(E.edgeOld), en = at3(E.edgeNew);
+  if (o == null || f == null || u == null) cant(c7, '받은 때를 바꿔 넣어 세 줄을 다시 만들지 못함');
   else {
     if (!qOf(o)) bad(c7, `30일 전에 받은 자료로 만든 셋째 줄에 「?」가 없음 「${o}」`);
     if (qOf(f)) bad(c7, `10분 전에 받은 자료로 만든 셋째 줄에 「?」가 붙음(늘 「?」면 뜻이 없음) 「${f}」`);
-    if (plain3 == null || u3 !== plain3) bad(c7, `받은 때를 모르는데 셋째 줄이 숫자 없는 꼴이 아님 「${u3}」(빈 「?」 대신 받은 때 문장을 뺌 — 점검 E1)`);
+    if (u !== '?') bad(c7, `받은 때를 모르는데 「?」가 아님 「${u}」`);
     if (eo != null && !qOf(eo)) bad(c7, `잣대보다 한 시간 더 지난 받은 때에 「?」가 없음 「${eo}」`);
     if (en != null && qOf(en)) bad(c7, `잣대보다 한 시간 덜 지난 받은 때에 「?」가 붙음 「${en}」`);
   }
@@ -823,19 +818,14 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
       ran.push(u); log('· ' + u);
       if (u === 'r2-home') { // ② 첫 화면 세 줄 — 처음 온 기기(세 줄이 펼쳐 보임) · 다시 온 기기(접혀도 숫자 같음) · 숫자 = 올린 자료
         const c = checks[2], {p, ctx, errs} = await page();
-        const at3 = Number.isFinite(fetchedMs) ? whenWords(fetchedMs) : null, plain3 = plainOf(orderLines()?.[2]); // 숫자 없는 꼴 = 잠긴 틀에서 받은 때 문장을 뺀 글(점검 E1)
+        const at3 = Number.isFinite(fetchedMs) ? whenWords(fetchedMs) : null;
         const look = (E, label) => {
           const m = /회사 ([\d,?]+)곳/.exec(E.text);
           if (n != null) { if (!m) bad(c, `${label} 세 줄에 회사 수가 없음`); else if (m[1] !== num(n)) bad(c, `${label} 화면 회사 ${m[1]}곳 ≠ 자료 ${num(n)}곳${sumOn ? '' : '(요약 파일이 옛것 — src.home ≠ home.json kst)'}`); }
           const w = /마지막으로 받은 때:\s*(\?)?\s*(?:(\d{1,2})월 (\d{1,2})일 (\d{1,2})시)?/.exec(E.text);
-          if (at3) { // 자료에 받은 때가 있음 — 「마지막으로 받은 때: ○월 ○일 ○시」 그대로
-            if (!w) bad(c, `${label} 자료에 받은 때(${at3})가 있는데 세 줄에 「마지막으로 받은 때:」가 없음`);
-            else if (w[2] == null || `${+w[2]}월 ${+w[3]}일 ${+w[4]}시` !== at3) bad(c, `${label} 화면 받은 때 「${w[0].replace(/^.*:\s*/, '')}」 ≠ 자료 ${at3}`);
-          } else { // 자료에 받은 때가 없음 — 셋째 줄 = 숫자 없는 꼴(빈 「?」 · 지어낸 때 0 — 점검 E1)
-            if (w) bad(c, `${label} 자료에 받은 때가 없는데 세 줄에 「${w[0].trim()}」가 보임 — 셋째 줄은 숫자 없는 꼴이어야 함`);
-            else if (!plain3) bad(c, `명령문 [5] 2 ③ 에서 받은 때 문장을 못 찾음`);
-            else if (E.lines?.[2] == null || E.lines[2].trim() !== plain3) bad(c, `${label} 셋째 줄 「${E.lines?.[2]}」 ≠ 숫자 없는 꼴 「${plain3}」`);
-          }
+          if (!w) bad(c, `${label} 세 줄에 「마지막으로 받은 때:」가 없음`);
+          else if (at3 && (w[2] == null || `${+w[2]}월 ${+w[3]}일 ${+w[4]}시` !== at3)) bad(c, `${label} 화면 받은 때 「${w[0].replace(/^.*:\s*/, '')}」 ≠ 자료 ${at3}`);
+          else if (!at3 && w[2] != null) bad(c, `${label} 자료에 받은 때가 없는데 화면이 ${+w[2]}월 ${+w[3]}일 ${+w[4]}시를 보임`);
         };
         try {
           await go(p, '#/'); const E = await essenceText(p);

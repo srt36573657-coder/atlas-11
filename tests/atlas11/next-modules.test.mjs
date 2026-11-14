@@ -1,6 +1,5 @@
 // 새 아틀란스 쪽 모듈 지킴(사장님 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 · 04:23 「에이전트 총 동원해」 · 규칙 74 ⑧)
-//   ① READY 에 든 쪽은 p-<이름>.js(render 내보냄) · p-<이름>.css 가 있고 맞대는 검사 check_<이름>.mjs 가 있음(co · chx 처럼 다른 화면 안에 끼는 쪽 포함)
-//      닫은 쪽 넷(시황 talk · 급등 surge · 급등 달력 cal · 오늘 시장 today — 주문 1114-1306)은 READY · OLD_KINDS 에 없고 모듈 · 모양 · 검사 파일도 없음 · app.js 가 큐피트 첫 쪽(/su/#/)으로 보냄
+//   ① READY 에 든 쪽은 p-<이름>.js(render 내보냄) · p-<이름>.css 가 있고 맞대는 검사 check_<이름>.mjs 가 있음(co · chx · today 처럼 다른 화면 안에 끼는 쪽 포함)
 //   ② 보안 규칙(CSP style-src · script-src 'self') — 글 속 HTML 넣기 · 글로 쓴 꾸밈 · eval 없음
 //   ③ 입체 없음(규칙 50) — 캔버스 · 원근 · 3D 돌리기 · 그림자 필터 없음
 //   ④ 옛 주소를 받는 쪽(OLD_KINDS)은 모두 모듈 파일이 있음 — 켜면 바로 열리게
@@ -23,9 +22,8 @@ const js = fs.readdirSync(NEXT).filter(f => f.endsWith('.js')), css = fs.readdir
 const src = f => fs.readFileSync(path.join(NEXT, f), 'utf8');
 const code = s => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"\\])\/\/[^\n]*/g, '$1'); // 풀이 글은 빼고 셈
 
-/** 쪽 → 맞대는 검사 파일 — 네 쪽(up · time · info · x)은 한 파일 check_misc · 고도리 한 장 명령문(2026-10-17 17:54)의 why · gdr 은 제 파일 · 나머지는 check_<이름> */
-const CHECK_OF = {up: 'check_misc.mjs', time: 'check_misc.mjs', info: 'check_misc.mjs', x: 'check_misc.mjs', why: 'check_why.mjs', gdr: 'check_gdr.mjs'};
-const SHUT = ['talk', 'surge', 'cal', 'today']; // 닫은 쪽(주문 1114-1306 · 본질 「사고팔기를 권하지 않음 · 급등 자랑 0」)
+/** 쪽 → 맞대는 검사 파일 — 다섯 쪽(up · time · info · x · talk)은 한 파일 check_misc · 고도리 한 장 명령문(2026-10-17 17:54)의 why · gdr 은 제 파일 · 나머지는 check_<이름> */
+const CHECK_OF = {up: 'check_misc.mjs', time: 'check_misc.mjs', info: 'check_misc.mjs', x: 'check_misc.mjs', talk: 'check_misc.mjs', why: 'check_why.mjs', gdr: 'check_gdr.mjs'};
 const checkOf = k => CHECK_OF[k] ?? `check_${k}.mjs`;
 test('① READY 쪽마다 모듈 · 모양 · 맞대는 검사', () => {
   for (const k of READY) {
@@ -65,19 +63,9 @@ test('③ 입체 없음 — 캔버스 · 원근 · 3D 돌리기 · 그림자 필
 });
 
 test('④ 옛 주소를 받는 쪽은 모두 모듈 파일이 있음', () => {
-  assert.ok(OLD.length >= 7, 'OLD_KINDS 를 못 읽음'); // cond · up · time · x · info · why · gdr(닫은 넷을 뺀 뒤 일곱)
+  assert.ok(OLD.length >= 9, 'OLD_KINDS 를 못 읽음');
   for (const k of OLD) assert.ok(fs.existsSync(path.join(NEXT, `p-${k}.js`)), `p-${k}.js 없음`);
   for (const k of ['co', 'past', 'rivals', 'grow', 'range', 'chx']) assert.ok(fs.existsSync(path.join(NEXT, `p-${k}.js`)), `p-${k}.js 없음`);
-});
-
-test('④-2 닫은 쪽 넷은 READY · OLD_KINDS 밖 · 모듈 · 모양 · 검사 파일 없음 · app.js 가 큐피트 첫 쪽으로 보냄(주문 1114-1306)', () => {
-  for (const k of SHUT) {
-    assert.ok(!READY.includes(k) && !OLD.includes(k), `${k} 가 READY · OLD_KINDS 에 남음`);
-    for (const f of [path.join(NEXT, `p-${k}.js`), path.join(NEXT, `p-${k}.css`), path.join(CHK, `check_${k}.mjs`)]) assert.ok(!fs.existsSync(f), `${path.relative(ROOT, f)} 가 남음`);
-  }
-  assert.match(app, /const SHUT = new Set\(\['talk', 'surge', 'cal', 'today'\]\), SU_HOME = '\/su\/#\/';/, 'app.js 닫은 쪽 표(SHUT · SU_HOME)');
-  assert.match(code(app), /if \(shutHash\(hash\)\) \{ location\.replace\(SU_HOME\); return; \}/, 'route() 가 닫은 쪽을 큐피트 첫 쪽으로 보내지 않음');
-  assert.doesNotMatch(code(app), /#\/(talk|surge|cal|today)['\/]|oldOr|'\/atlas\/#\/|'\/atlas\/' \+|\/atlas\/\?lang/, 'app.js 에 닫은 쪽 · 옛 /atlas/ 화면 고리가 남음');
 });
 
 /** 소스에서 옛 이름 자리 — .js · .mjs = 따옴표 · 틀 글만(풀이 글 · 정규식 밖) · .html = 풀이 글(<!-- -->) 밖 모든 줄 · .css = 풀이 글 밖 따옴표 글(content: '…') */

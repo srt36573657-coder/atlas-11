@@ -5,7 +5,6 @@
    머리: 어깨 아래로 S 로 흘러 끝이 말리는 굵은 다발(부품 strands) · 아치 글씨 셋은 한 호 위에 같은 크기 · 같은 간격(글 넓이를 재어 사이를 고르게)
    보안 규칙: createElementNS · setAttribute 만(글 속 style 없음) · 꾸밈은 su-women-e.css 와 부품 꾸밈 클래스 */
 import {s} from '/su/su-fig.js';
-import {won100, more100} from '/su/su-data.js'; // 「%」 대신 쓰는 말(주문 1114-1306 ① — 첫 페이지 칸과 같은 말)
 import {taper, strands, face, hair, sleeve, rays} from './su-mucha-kit.js';
 
 export const CSS = '/su/su-women-e.css';
@@ -26,21 +25,19 @@ export async function load(get, arg = null) { // arg(회사 번호)는 이 그�
   try { return (await get(D)) ?? null; } catch { return null; }
 }
 
-/* ── 값 글(첫 페이지 su-apple.js valText 와 같은 셈 · 「%」 대신 「100원이 ○원」 — 주문 1114-1306 ①) ── */
+/* ── 값 글(옛 21곳 그림과 같은 셈) ── */
+const pct = x => (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x).toFixed(1) + '%';
 function valText(c, k, nx = false) {
-  if (nx) { // 될 듯 — 불장이 될 듯 = 20거래일 동안 100원이 얼마가 됐나 · 돈이 몰릴 듯 = 늘어난 회사 크기 · 꽃이 될 듯 = 닷새 동안 시장보다 100원에 몇 원 더(주문 1103)
+  if (nx) { // 될 듯 — 불장이 될 듯 = 20거래일 오른 만큼 · 돈이 몰릴 듯 = 늘어난 회사 크기 · 꽃이 될 듯 = 닷새 동안 시장보다 앞선 만큼(주문 1103)
     const w = c?.why ?? {};
-    if (k === 'hot') return fin(w.r20) ? won100(w.r20) : NEED;
+    if (k === 'hot') return fin(w.r20) ? pct(w.r20) : NEED;
     if (k === 'money') return fin(w.gain) ? (w.gain >= 0 ? '+' : '−') + NF.format(Math.abs(Math.round(w.gain))) + '억' : NEED;
-    return fin(w.x5) ? more100(w.x5) : NEED;
+    return fin(w.x5) ? pct(w.x5) : NEED;
   }
-  if (k === 'hot') return fin(c?.ch20) ? won100(c.ch20) : NEED;
+  if (k === 'hot') return fin(c?.ch20) ? (c.ch20 > 0 ? '+' : c.ch20 < 0 ? '−' : '') + Math.abs(c.ch20).toFixed(1) + '%' : NEED;
   if (k === 'money') { const g = c?.why?.gain; return fin(g) ? (g >= 0 ? '+' : '−') + NF.format(Math.abs(Math.round(g))) + '억' : NEED; }
   return c?.why?.full === true ? '꽃' : '싹';
 }
-/** 소리 이름표 — 값의 말 이름까지(「한 달 100원이 150.5원」 · 「닷새 동안 시장보다 100원에 33원 더」 · 첫 페이지 칸과 같은 말) */
-const VLAB = Object.freeze({hot: '한 달 ', bloomNext: '닷새 동안 시장보다 ', hotNext: '한 달 '});
-const valSay = (it, nx) => (it.val === NEED ? it.val : (VLAB[nx ? ({hot: 'hotNext', bloom: 'bloomNext', money: 'moneyNext'})[it.k] : it.k] ?? '') + it.val);
 /** 글 넓이 어림(굵은 글 · 잰 값에 맞춤) — 한글 0.94 · 대문자 0.7 · 숫자 0.64 */
 function est(t, px) {
   let w = 0;
@@ -470,7 +467,7 @@ export function picture(d, opt = {}) {
   /** 이름 하나 — 누르는 자리 = 칸 전체(투명 · 높이 60 넘게) · 글은 판 위에 가운데 맞춤 · cyT = 글 덩이 가운데 · lhT = 줄 사이 · 빈 줄은 자리만 */
   const tag = (it, x0, y0, w, hh, L, cyT, lhT) => {
     const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'we-tag we-tag-' + it.k, 'data-k': it.k, 'data-name': it.name,
-      'aria-label': it.name + ' · ' + KN[it.k] + ' · ' + valSay(it, nx) + (it.star ? ' · 두 목록에 함께' : '')});
+      'aria-label': it.name + ' · ' + KN[it.k] + ' · ' + it.val + (it.star ? ' · 두 목록에 함께' : '')});
     a.append(s('rect', {x: r1(x0), y: r1(y0), width: r1(w), height: r1(hh), rx: 9, class: 'we-hit'}));
     const nW = w - 2 * PAD, n = L.rows.length, cx = x0 + w / 2;
     L.rows.forEach((row, j) => {

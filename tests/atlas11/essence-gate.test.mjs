@@ -81,8 +81,6 @@ const WRONG = [
   [5, '친구 말 칸을 질문 앞에 둠', ({site}) => must(path.join(site, 'next/p-share.js'), 'nodes: [top,', 'nodes: [top, after,')],
   [6, '보내는 글의 수익 숫자 거름(noGain)을 비움', ({site}) => must(path.join(site, 'next/p-share.js'), /const noGain = s => [^\n]*/, "const noGain = s => String(s ?? '');")],
   [7, '오래된 받은 때에도 「?」를 안 붙임', ({site}) => must(path.join(site, 'next/essence.js'), "(d.old ? '? ' : '')", "''")],
-  // 받은 때를 모르면 셋째 줄은 숫자 없는 꼴(빈 「?」 대신 · 점검 E1 · 주문 1114-1306 ⑥) — 옛 「마지막으로 받은 때: ?.」로 되돌리면 막힘
-  [7, '받은 때를 모르면 「마지막으로 받은 때: ?.」로 둠', ({site}) => must(path.join(site, 'next/essence.js'), "if (!isIso(d.at)) return [ESSENCE[0], ESSENCE[1].replace('{n}', n), ESSENCE_PLAIN[2]];", "if (!isIso(d.at)) return [ESSENCE[0], ESSENCE[1].replace('{n}', n), ESSENCE[2].replace('{at}', '?')];")],
   // 새 첫 화면(수르 두 길 · site/su/ — 사장님 2026-11-03 19:47(+04) 「응」 진화가 이 쪽을 고침 · 주문 0047) — 진화 대안이 망치면 막힘
   [3, '새 첫 화면 글에 망치는 길 낱말', ({site}) => must(path.join(site, 'su/su.js'), "text: '찾기'", "text: '지금이 기회예요. 놓치지 마세요.'")], // 자리는 지금 su.js 글(주문 0054 — 옛 「두 가지예요」 줄은 2044 판에서 빠짐)
   [2, '새 첫 화면에서 본질 세 줄 칸을 뺌', ({site}) => must(path.join(site, 'su/su.js'), 'after: [essBox(S)]', 'after: []')],
@@ -98,17 +96,6 @@ for (const [i, [no, name, wreck]] of WRONG.entries()) {
     console.log(`틀린 판 ${no} 막힘 — ${c.reasons[0]}`);
   });
 }
-
-test('받은 때 모름(받은 기록 · 요약 받은 때 없음) — 셋째 줄은 숫자 없는 꼴 · 빈 「?」 0 · 일곱 모두 지나감(점검 E1)', async () => {
-  const v = variant('unknown');
-  fs.rmSync(path.join(v.root, UPDATES_DIR), {recursive: true, force: true});
-  const sp = path.join(v.site, 'next/data/home-summary.json'), S = readJ(sp); S.fetchedAt = null; writeJ(sp, S);
-  const r = await essenceGate({dist: v.site, root: v.root, now: v.now});
-  assert.equal(r.code, 0, why(r));
-  const L3 = r.result.checks.find(c => c.no === 2).counts.lines[2], T3 = orderLines(v.root)[2];
-  assert.equal(L3, T3.slice(0, T3.lastIndexOf('. ', T3.indexOf('○월 ○일 ○시')) + 1), '셋째 줄 = 잠긴 틀에서 받은 때 문장을 뺀 글');
-  assert.ok(!L3.includes('?') && !L3.includes('받은 때'), L3);
-});
 
 test('지킴 파일 — 진화 가지가 건드리면 막힘 · 옛 이름 길 · 옮김 · git 따옴표 · NFD', () => {
   assert.deepEqual(protectedTouched(['site/next/app.js', 'site/next/p-today.js', 'docs/ATLAS_원칙.md']), []);

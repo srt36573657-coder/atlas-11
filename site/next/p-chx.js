@@ -25,9 +25,8 @@ const NP = C => C?.funnel?.picked ?? '?';
 const pickName = C => `${C?.rules?.name ?? '고른'} ${NP(C)}곳`;
 const lyDay = C => (C?.rules?.lyDay ? md(C.rules.lyDay) : '모음 날');
 const pickHow = C => `멍거 갈래는 3년 성적표만, 린치 갈래는 3년 성적표와 ${lyDay(C)} 값으로 골랐습니다`;
-/** 회사 고리 — 모든 회사에 회사 파일이 있으면(core.co7) 보는 화면 · 옛 자료면 고른 곳만 보는 화면 · 나머지는 이 앱의 밖 칸(#/x/ · p-x.js)
- *  옛 /atlas/ 화면으로 가던 길은 끊음(주문 1114-1306 ② · 점검 DISCARD 17) */
-const cHref = (C, c, pk) => (C?.co7 || pk ? '#/w/' : '#/x/') + NX.enc(c);
+/** 회사 고리 — 모든 회사에 회사 파일이 있으면(core.co7) 보는 화면 · 옛 자료면 고른 곳만 보는 화면 · 나머지는 지금 아틀란스 밖 칸 */
+const cHref = (C, c, pk) => (C?.co7 || pk ? '#/w/' + NX.enc(c) : (NX.ready?.('x') ? '#/x/' : '/atlas/#/x/') + NX.enc(c));
 /** 업종 고리 — 1곳뿐인 업종은 그 회사로(atlas.js hrefInd 그대로) */
 const hrefInd = (C, i) => (i.n === 1 ? cHref(C, i.members[0], !C?.mkt || i.pk) : '#/ch/i/' + NX.enc(i.name));
 

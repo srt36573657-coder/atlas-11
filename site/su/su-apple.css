@@ -18,7 +18,7 @@
 .su-apple .sa-kh { font-size: 21px; font-weight: 800; fill: #1D1D1F; letter-spacing: -0.4px; }
 .su-apple .sa-name { font-weight: 700; fill: #1D1D1F; letter-spacing: -0.3px; }
 .su-apple .sa-val { font-size: 18px; font-weight: 600; }
-.su-apple .sa-val.sa-v17 { font-size: 17px; } /* 쉬운 판(주문 1112-0253) — 이름 붙인 값(「꽃 · 핌」)과 18 로 칸에 안 드는 긴 값(「100원이 ○원」 · 주문 1114-1306) */
+.su-apple .sa-val.sa-v17 { font-size: 17px; } /* 쉬운 판(주문 1112-0253) — 이름 붙인 값(「한 달 +33.9%」)이 18 로 자리에 안 들 때 */
 .su-apple .sa-howbox { fill: #FFFFFF; stroke: #AEAEB2; stroke-width: 1.5; stroke-dasharray: 6 5; } /* 칸 하나 읽는 법 — 본보기 칸(점선 = 진짜 칸 아님) */
 .su-apple .sa-howl { font-size: 17px; font-weight: 600; fill: #3A3A3C; }
 .su-apple .sa-val-now { fill: #B4570A; }
@@ -160,7 +160,6 @@
 .su-apple .sa-up3ct { font-size: 18px; font-weight: 700; fill: #7A3E00; }
 /* 서른여섯 꾀(주문 1114-0004 「36 까지 … 종류별로 다 모아가지고 그 총 개수를 정리」) — 구슬 아래 모두 몇 곳 한 줄 · 그림 바로 아래 꾀마다 일곱 곳(HTML · 누름 48 · 글 17 넘게) */
 .su-apple .sa-tot { font-size: 18px; font-weight: 700; fill: #1D1D1F; }
-.su-apple .sa-tot.sa-tot2 { font-weight: 500; fill: #3A3A3C; } /* 구슬 아래 칸 수 풀이 세 줄(주문 1114-1306 ⑤) — 회사 수 첫 줄만 굵게 */
 .su-news > .su-hero[data-g="su-apple"] .s36 { display: grid; gap: 22px; padding: 8px max(16px, env(safe-area-inset-left, 0px)) 16px max(16px, env(safe-area-inset-right, 0px)); border-top: 1px solid #D2D2D7; color: #1D1D1F; }
 .su-news > .su-hero[data-g="su-apple"] .s36-top { display: grid; gap: 6px; padding-top: 12px; }
 .su-news > .su-hero[data-g="su-apple"] .s36-h { margin: 0; font-size: 24px; line-height: 1.3; letter-spacing: -0.4px; }

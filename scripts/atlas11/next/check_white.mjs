@@ -278,9 +278,8 @@ try {
     }
     // ⑤ 다른 쪽도 흰 판(둘째 올림 · 실패할 길 1 「옛 쪽 글이 흰 바탕에 안 보임」을 막는 줄) — 쪽마다 흰 바탕 · 글 대비 · 단추 테두리 · 누름 48 · 망치는 길 0 · 옆 넘침 0(390 · 320)
     //   바둑판 셈은 첫 화면만(급등 36점 · 업데이트 막대는 자료 그림 <svg> — 칸 깔기가 아님)
-    //   닫은 쪽(오늘 시장 · 급등 · 달력 · 이야기 — 주문 1114-1306)은 뺌 · 큐피트 첫 쪽으로 가는지는 next_check ⑪
     if (!argv.includes('--home-only')) {
-      const PAGES = ['#/shorts', '#/why', '#/why/005930', '#/sub', '#/me', '#/find/삼성', '#/cond', '#/up', '#/time', '#/info', '#/jinhwa', '#/gdr', '#/w/005930', '#/w/005930/past', '#/w/005930/rivals', '#/w/005930/grow', '#/w/005930/range', '#/f/rise', '#/f/lead', '#/x/005935'];
+      const PAGES = ['#/today', '#/shorts', '#/why', '#/why/005930', '#/sub', '#/me', '#/find/삼성', '#/surge', '#/surge/10', '#/cal', '#/cond', '#/talk', '#/up', '#/time', '#/info', '#/jinhwa', '#/gdr', '#/w/005930', '#/w/005930/past', '#/w/005930/rivals', '#/w/005930/grow', '#/w/005930/range', '#/f/rise', '#/f/lead', '#/x/005935'];
       R.m.pages = {};
       for (const vw of [390, 320]) {
         const ctx = await ctxOf(false, vw === 320 ? {viewport: {width: 320, height: 568}} : {});

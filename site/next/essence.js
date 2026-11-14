@@ -17,8 +17,7 @@
           mkt 없이 부르면 요약(/next/data/home-summary.json)의 coN — 올릴 때 build_data.mjs 가 같은 coCount 로 넣음
      at = 요약의 fetchedAt(ISO · UTC) — 올릴 때 build_data.mjs 가 「이 자료를 만든 업데이트 기록」의 받은 때를 넣음
           (reports/atlas11/t365/updates/<받은 때>.json 가운데 served rolled · 네이버 일봉을 받음(fetch.ok > 0) · 실패 아님 · at = 자료 home.json 의 made)
-          못 찾으면 null → 셋째 줄은 숫자 없는 꼴(ESSENCE_PLAIN[2] — 빈 「?」를 보이지 않음 · 점검 E1 · 주문 1114-1306 ⑥) · 보일 때는 서울 시각 「10월 18일 16시」 ·
-          now 보다 OLD_HOURS(72시간) 넘게 지났으면 앞에 「? 」([2] 5 ⑦ 오래된 날짜에 「?」 — 이것은 그대로)
+          못 찾으면 null → 「?」 · 보일 때는 서울 시각 「10월 18일 16시」 · now 보다 OLD_HOURS(72시간) 넘게 지났으면 앞에 「? 」([2] 5 ⑦ 오래된 날짜에 「?」)
      fourADay = 요약의 fourADay === true(지난 7일 업데이트 기록의 평일마다 받은 수 = 4 · 그 넷이 정해진 업데이트 — build_data.mjs) — 아니면 「업데이트 때마다」 같은 참인 말 */
 
 /** 세 줄 틀 — 사장님 글자 그대로([5] 2) · {n} = 회사 수 · {at} = 마지막으로 받은 때 */
@@ -27,8 +26,7 @@ export const ESSENCE = Object.freeze([
   '앞날을 맞히지 않아요. 코스피와 코스닥 회사 {n}곳의 지난 기록만 보여 줘요.',
   '사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: {at}.',
 ]);
-/** 숫자 없는 꼴 — 그려지지 않는 글(소개 쪽 site/hello.html · 설명 글 · 미리보기 설명 · site/next/index.html)은 n · 받은 때를 셀 수 없어 숫자 자리를 뺌([5] 6)
- *  그려지는 세 줄도 받은 때를 모르면 셋째 줄은 이 꼴(essenceLines · 점검 E1) — 둘째 줄 「?곳」은 그대로 */
+/** 숫자 없는 꼴 — 그려지지 않는 글(소개 쪽 site/hello.html · 설명 글 · 미리보기 설명 · site/next/index.html)은 n · 받은 때를 셀 수 없어 숫자 자리를 뺌([5] 6) */
 export const ESSENCE_PLAIN = Object.freeze([
   ESSENCE[0],
   '앞날을 맞히지 않아요. 코스피와 코스닥 회사의 지난 기록만 보여 줘요.',
@@ -60,11 +58,10 @@ export function essenceData({mkt = null, summary = null, now = Date.now()} = {})
   const old = at != null && Number.isFinite(t) && t - Date.parse(at) > OLD_HOURS * 36e5;
   return {n, at, old};
 }
-/** 세 줄 글(화면 그대로) — 받은 때를 모르면 셋째 줄 = ESSENCE_PLAIN[2](「마지막으로 받은 때: ?.」 대신 · 점검 E1) · 알면 「마지막으로 받은 때: 11월 6일 16시.」 */
+/** 세 줄 글(화면 그대로) */
 export function essenceLines(d = {}) {
   const n = Number.isInteger(d.n) && d.n > 0 ? comma(d.n) : '?';
-  if (!isIso(d.at)) return [ESSENCE[0], ESSENCE[1].replace('{n}', n), ESSENCE_PLAIN[2]];
-  const at = (d.old ? '? ' : '') + kstText(d.at);
+  const at = isIso(d.at) ? (d.old ? '? ' : '') + kstText(d.at) : '?';
   return [ESSENCE[0], ESSENCE[1].replace('{n}', n), ESSENCE[2].replace('{at}', at)];
 }
 /** 요약이 자료와 맞나 — 어긋난 것 글 목록(빈 = 맞음 · 본질 문 ② · next_check 가 부름) */

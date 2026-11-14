@@ -7,7 +7,7 @@
    자료 = su21.json top3(우량주 365곳 · 넷 고른 섞기 · 판 날 값 · 21 마지막 값) · 처음 뽑힌 날 = su21-book.json(새 잣대 판 날만) · 그리기는 h · s 만(글 속 style 없음) */
 import {h, s} from '/su/su-fig.js';
 import {NEED, num} from '/su/su-six.js';
-import {dateKo, won100} from '/su/su-data.js'; // 「%」 대신 「100원이 ○원」(주문 1114-1306 ① — 첫 페이지 1 · 2 · 3등 칸과 같은 말)
+import {dateKo} from '/su/su-data.js';
 import {load21} from '/su/su-21.js';
 
 export const CSS = '/su/su-up3.css';
@@ -25,7 +25,7 @@ export const SAYS = Object.freeze([
 export const sz = v => (fin(v) ? (v >= 0.5 ? '높아요' : v <= -0.5 ? '낮아요' : '보통이에요') : NEED);
 const ord = n => (n === 1 ? '첫 번째' : n + '번째');
 const won = v => (fin(v) ? num(Math.round(v)) + '원' : NEED);
-const w100 = x => (fin(x) ? won100(x) : NEED); // 한 달 동안 100원이 얼마가 됐나(옛 「한 달 −42.2%」)
+const pct = x => (fin(x) ? (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x).toFixed(1) + '%' : NEED);
 const day = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) ? dateKo(d) : NEED);
 const ym = d => (/^\d{4}-\d{2}/.test(d ?? '') ? d.slice(0, 4) + '년 ' + +d.slice(5, 7) + '월' : NEED);
 const f1 = v => Math.round(v * 10) / 10;
@@ -45,7 +45,7 @@ function bigLine(name, sp, from, to, ch) {
   const px = i => X0 + ((X1 - X0) * i) / (n - 1), py = v => (hi === lo ? (Y0 + Y1) / 2 : Y1 - ((v - lo) / (hi - lo)) * (Y1 - Y0));
   const ex = f1(px(n - 1)), ey = f1(py(sp[n - 1])), sy = f1(py(sp[0]));
   return s('svg', {class: 'u3-line', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet',
-    'aria-label': name + ' 한 달 꺾은선 · ' + day(from) + ' ' + won(sp[0]) + ' → ' + day(to) + ' ' + won(sp[n - 1]) + ' · 한 달 ' + w100(ch)},
+    'aria-label': name + ' 한 달 꺾은선 · ' + day(from) + ' ' + won(sp[0]) + ' → ' + day(to) + ' ' + won(sp[n - 1]) + ' · 한 달 ' + pct(ch)},
     s('text', {x: X0, y: 24, class: 'u3-lt', text: '한 달 전 ' + won(sp[0])}),
     s('path', {d: `M${X0} ${sy}H${X1}`, class: 'u3-l0'}),
     s('path', {d: 'M' + sp.map((v, i) => f1(px(i)) + ' ' + f1(py(v))).join('L'), class: 'u3-lp'}),
@@ -100,7 +100,7 @@ export async function vUp3(X, code) {
   const board = T?.asOf?.board ?? null, how = (Array.isArray(t3.how) && t3.how.length === 4 ? t3.how : HOW).map(t => EASYHOW[t] ?? t), parts = Array.isArray(me.parts) ? me.parts : [];
   const {px, sp, ch} = facts(me, board), name = String(me.name ?? NEED), P = t3.past ?? {};
   const head = h('section', {class: 'yw-sum u3-sum', 'aria-label': '현재가 · 한 달 · 업종'},
-    chip('현재가', won(px), 'u3-px'), chip('한 달', sp ? w100(ch) : NEED, sp && ch >= 0 ? 'u3-pos' : ''), chip('업종', String(me.ind ?? NEED)));
+    chip('현재가', won(px), 'u3-px'), chip('한 달', sp ? pct(ch) : NEED, sp && ch >= 0 ? 'u3-pos' : ''), chip('업종', String(me.ind ?? NEED)));
   const graph = sp ? h('figure', {class: 'u3-fig', 'aria-label': '한 달 꺾은선'}, bigLine(name, sp, me.cFrom, me.date, ch),
     h('figcaption', {class: 'yw-s u3-cap', text: '꺾은선은 한 달 동안 날마다 마지막 값이에요. 옅은 줄은 한 달 전 값이에요.'}))
     : h('p', {class: 'yw-s u3-need', text: '한 달 꺾은선은 ' + NEED + '이에요.'});
@@ -120,7 +120,7 @@ export async function vUp3(X, code) {
   const others = rank.filter(r => r?.code !== code).sort((a, z) => a.place - z.place).map(r => {
     const o = facts(r, board);
     return h('a', {class: 'su-ask u3-other', href: '#/c/' + r.code + '/t', 'data-place': String(r.place), 'data-code': String(r.code)},
-      h('b', {text: r.place + '등 ' + r.name + ' ›'}), h('span', {text: '현재가 ' + won(o.px) + ' · 한 달 ' + (o.sp ? w100(o.ch) : NEED)}));
+      h('b', {text: r.place + '등 ' + r.name + ' ›'}), h('span', {text: '현재가 ' + won(o.px) + ' · 한 달 ' + (o.sp ? pct(o.ch) : NEED)}));
   });
   const go = h('nav', {class: 'yw-go u3-go', 'aria-label': '다음에 볼 곳'},
     h('a', {class: 'su-ask', href: '#/r/c'}, h('b', {text: '1 · 2 · 3등 달력 보기'}), h('span', {text: '날마다 뽑힌 셋을 뽑힌 날부터 따라가요.'})),

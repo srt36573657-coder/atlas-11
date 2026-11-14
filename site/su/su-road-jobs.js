@@ -1,40 +1,51 @@
 /* 큐피트 그림 부품 — su-road-jobs(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
-   옛 무하 판(친구에게)을 첫 페이지 잡스 판(su-apple)과 같은 말투로 새로 그림 — 흰 바탕 · 검정 · 회색 · 호박색 하나 · 흐림 필터 0
-   친구에게(#/f · arg 'friend') — 부제 두 줄 → 구슬 둘(환한 구슬 = 큐피트가 찾은 곳 · 맑은 유리 구슬 = 친구 · 호박색 점이 건너감)
-      → 「찾은 곳 21곳 | 친구에게 4가지」(21곳 = 그날 판의 세 목록 칸 수 · 내가 열어 본 곳이 아님) → 건네는 칸(두 줄 · 가는 선 · 주소 · aria-label · data-gift 는 옛 판 그대로)
-   주문 1114-1306(사장님 2026-11-14 13:06 「… 다 해」) ⑧ — 옛 기능 쪽 「셋의 길」(#/g)을 버려 그 그림(고리 · 여덟 칸)도 지움 · 옛 무하 판 파일(su-road-art)도 지움
-   자료는 su21.json 셋 목록 수뿐 · 빈 값은 「확인 필요」 · 지어낸 숫자 0
+   옛 무하 판 su-road-art(친구에게 · 셋의 길)를 첫 페이지 잡스 판(su-apple)과 같은 말투로 새로 그림 — 흰 바탕 · 검정 · 회색 · 호박색 하나 · 흐림 필터 0
+   ① 친구에게(#/f · arg 'friend') — 부제 두 줄 → 구슬 둘(환한 구슬 = 큐피트가 찾은 곳 · 맑은 유리 구슬 = 친구 · 호박색 점이 건너감)
+      → 「찾은 곳 21곳 | 친구에게 6가지」(21곳 = 그날 판의 세 목록 칸 수 · 내가 열어 본 곳이 아님) → 건네는 여섯 칸(두 줄 셋 · 가는 선 · 주소 · aria-label · data-gift 는 옛 판 그대로)
+   ② 셋의 길(#/g · #/g/<묶음> · arg 'roads') — 부제 두 줄 → 옛 기능 수 큰 숫자를 감싼 가는 고리(여덟 갈래 · 길이 = 갈래마다 기능 수 · 셋을 돕는 세 갈래만 호박색)
+      → 여덟 칸(두 줄 넷 · 주소 · aria-label · data-road 는 옛 판 그대로) · opt.g(있으면) = 지금 보는 갈래 칸을 옅은 회색으로
+   자료는 옛 판과 같음(su21.json 셋 목록 수 · su-roads.js feats = su-feat.js 명단) · 빈 값은 「확인 필요」 · 지어낸 숫자 0
    그리기는 s()(createElementNS · setAttribute)만 · 색 · 움직임은 /su/su-road-jobs.css(움직임 줄이기면 끝 모습) */
 import {s} from '/su/su-fig.js';
+import {feats, ORDER, SHORT, HEAD} from '/su/su-roads.js';
 
 export const CSS = '/su/su-road-jobs.css';
 const W = 390, MID = W / 2, PAD = 20, NEED = '확인 필요';
-/** 친구에게 건네는 넷 — 이름 · 주소는 친구 쪽 카드(su-21.js vFriend)와 같음 · 읽는 차례(왼쪽 → 오른쪽, 위 → 아래)
+/** 친구에게 건네는 넷 — 이름 · 주소는 옛 판(su-road-art FRIEND · vFriend 카드) 그대로 · 읽는 차례(왼쪽 → 오른쪽, 위 → 아래)
  *  주문 1114-0922(사장님 2026-11-14 08:27 「… 과거 찌꺼기 버릴것은 버리고」) — 보상 칸 「선물 · 상품권 받기」 「커피 쿠폰」을 뺌(친구 쪽 카드와 같이 · 본질에 없는 보상)
- *  넷 모두 닫히지 않는 옛 앱 쪽(카톡 보내기 · 내 종목 · 진화)과 소개 쪽 — 닫히는 옛 쪽(시황 · 급등 · 급등 달력 · 오늘 시장)과 /atlas/ 화면으로 가는 고리 0(주문 1114-1306 ②)
  *  say = vFriend 카드 글을 줄인 한 줄(숫자 없음) */
 const FRIEND = Object.freeze([
   {t: '카톡 보내기', href: '/next/?su=guest#/share', say: '한 곳을 보내요'},
   {t: '소개 영상', href: '/hello.html?su=guest', say: '큐피트가 하는 일'},
   {t: '내 종목', href: '/next/?su=stop#/me', say: '같은 잣대로'},
   {t: '진화', href: '/next/?su=back#/jinhwa', say: '큐피트가 고친 것'}]);
+/** 셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 세 갈래 — 고리 · 점이 호박색 */
+const CORE = Object.freeze(['hot', 'bloom', 'money']);
 let UID = 0;
 
-/** 자료 — 친구에게(arg 'friend') · 찾은 곳 수 = 그날 판 세 목록 칸 수(su21.json) · 못 받으면 null(「확인 필요」) */
-export async function load(get) {
-  let T = null;
-  try { T = typeof get === 'function' ? await get('/su/data/su21.json') : null; } catch { T = null; }
-  const n = ['hot', 'bloom', 'money'].reduce((a, k) => a + (Array.isArray(T?.lists?.[k]) ? T.lists[k].length : 0), 0);
-  return {which: 'friend', items: FRIEND, n: n || null};
+/** 자료 — which = 'roads'(셋의 길) | 'friend'(친구에게) · 옛 판 load 와 같은 셈 */
+export async function load(get, which = 'roads') {
+  if (which === 'friend') {
+    let T = null;
+    try { T = typeof get === 'function' ? await get('/su/data/su21.json') : null; } catch { T = null; }
+    const n = ['hot', 'bloom', 'money'].reduce((a, k) => a + (Array.isArray(T?.lists?.[k]) ? T.lists[k].length : 0), 0);
+    return {which: 'friend', items: FRIEND, n: n || null};
+  }
+  let F = [];
+  try { F = await feats(); } catch { F = []; }
+  if (!Array.isArray(F)) F = [];
+  return {which: 'roads', total: F.length || null,
+    rows: ORDER.map(k => ({g: k, name: SHORT[k], head: HEAD[k], n: F.length ? F.filter(f => f.group === k).length : null}))};
 }
 
 /** 그림 — load 가 준 것으로 <svg viewBox="0 0 390 H"> 하나 */
-export function picture(d) {
-  return friend(d);
+export function picture(d, opt = {}) {
+  return (d?.which ?? opt?.which) === 'friend' ? friend(d) : roads(d, opt);
 }
 
 /* ── 작은 손 ── */
 const f1 = v => Math.round(v * 10) / 10;
+const P = (x, y) => f1(x) + ' ' + f1(y);
 const T = (x, y, text, cls, extra = {}) => s('text', {x: f1(x), y: f1(y), class: cls, ...extra, text});
 const MA = {'text-anchor': 'middle'};
 const fin = v => typeof v === 'number' && Number.isFinite(v);
@@ -137,7 +148,7 @@ function pair(PY, cols) {
   return g;
 }
 
-/* ── 친구에게 ── */
+/* ── ① 친구에게 ── */
 function friend(d) {
   const items = Array.isArray(d?.items) && d.items.length === FRIEND.length ? d.items : FRIEND;
   const n = fin(d?.n) ? d.n : null, rows = Math.ceil(items.length / 2);
@@ -147,10 +158,10 @@ function friend(d) {
   // 물건 하나 — 환한 구슬(찾은 곳) · 맑은 유리 구슬(친구) · 빛이 건너감
   const FL = 224, A = {x: 118, y: FL - 2 - 62, r: 62}, B = {x: 284, y: FL - 2 - 40, r: 40};
   svg.append(orbs(id, A, B, FL, 32), hop(A, B));
-  // 찾은 곳 21곳 | 친구에게 4가지
+  // 찾은 곳 21곳 | 친구에게 6가지
   const PY = FL + 36;
   svg.append(pair(PY, [{dot: 'A', k: '찾은 곳', v: n, unit: '곳'}, {dot: 'C', k: '친구에게', v: items.length, unit: '가지'}]));
-  // 건네는 칸 — 이름 · 한 줄(옛 판과 같은 주소 · aria-label · data-gift · 차례)
+  // 건네는 여섯 칸 — 이름 · 한 줄(옛 판과 같은 주소 · aria-label · data-gift · 차례)
   const Y0 = PY + 118, ROW = Math.round(76 * 3 / rows); // 세 줄 자리(228)를 줄 수로 나눔 — 넷이면 두 줄 · 칸 114
   const cells = s('g', {class: 'srj-cells srj-fade'}, lines(Y0, rows, ROW), items.map((it, i) => { const c = cellAt(i, Y0, ROW);
     return s('a', {href: it.href, class: 'srj-a srj-cell', 'aria-label': it.t, 'data-gift': String(i)},
@@ -161,3 +172,61 @@ function friend(d) {
   return svg;
 }
 
+/* ── ② 셋의 길 ── */
+/** 고리 한 토막(시계 방향 · 도 단위 · 위 = -90) */
+function arcD(cx, cy, r, a0, a1) {
+  const p = a => [f1(cx + r * Math.cos(a * Math.PI / 180)), f1(cy + r * Math.sin(a * Math.PI / 180))], [x0, y0] = p(a0), [x1, y1] = p(a1);
+  return `M${x0} ${y0}A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1} ${y1}`;
+}
+/** 옛 기능 큰 숫자를 감싼 가는 고리 — 여덟 갈래(ORDER 차례 · 위에서 시계 방향) · 토막 길이 = 갈래마다 기능 수 · 셋을 돕는 세 갈래만 호박색 · 그 둘레 빛이 숨 쉼 */
+function ring(id, C, R, rows, total) {
+  const sum = rows.reduce((a, r) => a + (fin(r.n) ? r.n : 0), 0), ok = sum > 0 && rows.every(r => fin(r.n));
+  const g = s('g', {class: 'srj-ring', 'aria-hidden': 'true'});
+  if (!ok) g.append(s('circle', {cx: C.x, cy: C.y, r: R, class: 'srj-track'}));
+  else {
+    const GAP = 2.6, arcs = [];
+    let a = -90, c0 = null, c1 = null;
+    for (const r of rows) {
+      const a1 = a + 360 * r.n / sum, core = CORE.includes(r.g);
+      if (r.n > 0) arcs.push(s('path', {d: arcD(C.x, C.y, R, a + GAP / 2, a1 - GAP / 2), class: core ? 'srj-arcA' : 'srj-arcB', 'data-arc': r.g}));
+      if (core && r.n > 0) { c0 ??= a; c1 = a1; }
+      a = a1;
+    }
+    if (c0 != null) { // 호박색 토막 둘레 빛 — 고리 가운데에서 퍼지는 둥근 빛을 호박색 토막 쪽 부채꼴로만(끝은 두 걸음으로 옅어짐 · 밝기 차만 · 흐림 필터 없음 · 숨 쉼)
+      const RO = R + 34, at = a => P(C.x + (RO + 4) * Math.cos(a * Math.PI / 180), C.y + (RO + 4) * Math.sin(a * Math.PI / 180));
+      const fan = (a0, a1) => `M${C.x} ${C.y}L${at(a0)}A${RO + 4} ${RO + 4} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${at(a1)}Z`;
+      const parts = [[c0, c1, 'srj-gw0'], [c0 - 5, c0, 'srj-gw1'], [c1, c1 + 5, 'srj-gw1'], [c0 - 10, c0 - 5, 'srj-gw2'], [c1 + 5, c1 + 10, 'srj-gw2']];
+      g.append(s('defs', {}, s('radialGradient', {id: id + 'gl', cx: C.x, cy: C.y, r: RO, gradientUnits: 'userSpaceOnUse'},
+        [[(R - 16) / RO, 'srj-gl0'], [R / RO, 'srj-gl1'], [(R + 10) / RO, 'srj-gl2'], [1, 'srj-gl3']].map(([o, c]) => s('stop', {offset: f1(o * 1000) / 1000, class: c}))),
+        parts.map(([a0, a1], j) => s('clipPath', {id: id + 'w' + j}, s('path', {d: fan(a0, a1)})))),
+        s('g', {class: 'srj-halo'}, parts.map(([, , c], j) => s('circle', {cx: C.x, cy: C.y, r: RO, fill: `url(#${id}gl)`, 'clip-path': `url(#${id}w${j})`, class: c}))));
+    }
+    g.append(...arcs);
+  }
+  const inner = s('g', {class: 'srj-in srj-in2'});
+  if (fin(total)) inner.append(big(C.x, C.y + 12, total, '가지'));
+  else inner.append(T(C.x, C.y + 8, NEED, 'srj-need', MA));
+  inner.append(T(C.x, C.y + 44, '옛 기능 모두', 'srj-d', MA));
+  return [g, inner];
+}
+function roads(d, opt = {}) {
+  const rows = ORDER.map(k => d?.rows?.find(r => r.g === k) ?? {g: k, name: SHORT[k], head: HEAD[k], n: null});
+  const total = fin(d?.total) ? d.total : null, on = ORDER.includes(opt?.g) ? opt.g : null;
+  const id = 'srj' + (++UID), H = 666;
+  const svg = root('roads', H, '셋의 길 · 옛 기능 ' + (total != null ? total + '가지' : NEED) + ' · 여덟 갈래 · 칸을 누르면 그 길');
+  svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'srj-bg'}), sub('옛 기능을 여덟 묶음으로 나눴어요.', '호박색은 셋을 돕는 세 묶음이에요.'));
+  // 물건 하나 — 큰 숫자를 감싼 여덟 갈래 고리
+  svg.append(s('g', {class: 'srj-ringg'}, ring(id, {x: MID, y: 196}, 84, rows, total)));
+  // 여덟 칸 — 점 · 이름 · 기능 수(옛 판과 같은 주소 · aria-label · data-road · 차례)
+  const Y0 = 318, ROW = 72;
+  const cells = s('g', {class: 'srj-cells srj-fade'}, lines(Y0, 4, ROW), rows.map((r, i) => {
+    const c = cellAt(i, Y0, ROW), core = CORE.includes(r.g), name = r.name ?? NEED, cnt = fin(r.n) ? r.n + '가지' : NEED;
+    return s('a', {href: '#/g/' + r.g, class: 'srj-a srj-cell' + (on === r.g ? ' srj-on' : ''), 'aria-label': (r.head ?? name) + ' · ' + cnt, 'data-road': r.g},
+      s('rect', {x: c.x, y: c.y + 3, width: c.w, height: c.h - 6, rx: 12, class: 'srj-hit'}),
+      dot(c.x + 14, c.y + 28, core ? 'A' : 'C'),
+      T(c.x + 29, c.y + 35, name, 'srj-name'),
+      T(c.x + 29, c.y + 60, cnt, 'srj-cnt' + (core ? ' srj-cntA' : '') + (fin(r.n) ? '' : ' srj-needc')));
+  }));
+  svg.append(cells, T(MID, Y0 + 4 * ROW + 42, '셋을 돕는 묶음이 맨 위예요.', 'srj-d srj-in srj-in3', MA));
+  return svg;
+}

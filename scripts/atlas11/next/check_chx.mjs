@@ -102,7 +102,7 @@ const knownHref = h => {
   if ((m = /^#\/ch\/g\/(.+)$/.exec(h))) { try { return GRP.has(decodeURIComponent(m[1])); } catch { return false; } }
   return false;
 };
-const mapHref = h => { let m; if ((m = /^#\/i\/(.+)$/.exec(h))) return '#/ch/i/' + m[1]; if ((m = /^#\/c\/([0-9A-Z]{6})$/.exec(h))) return '#/w/' + m[1]; if ((m = /^#\/x\/(.+)$/.exec(h))) return '#/x/' + m[1]; if ((m = /^#\/g\/(.+)$/.exec(h))) return '#/ch/g/' + m[1]; return '?' + h; }; // 밖 칸 = 이 앱의 #/x/(옛 /atlas/ 화면 길은 끊음 · 주문 1114-1306 ② · 점검 DISCARD 17)
+const mapHref = h => { let m; if ((m = /^#\/i\/(.+)$/.exec(h))) return '#/ch/i/' + m[1]; if ((m = /^#\/c\/([0-9A-Z]{6})$/.exec(h))) return '#/w/' + m[1]; if ((m = /^#\/x\/(.+)$/.exec(h))) return '/atlas/#/x/' + m[1]; if ((m = /^#\/g\/(.+)$/.exec(h))) return '#/ch/g/' + m[1]; return '?' + h; };
 
 // 화면 옮기기 — 앞 화면 칸에 표를 달고 바꿈 → 표 없는 새 칸이 그려질 때까지(같은 이름의 갈래 · 업종 — 「반도체」 — 을 앞 화면으로 잘못 읽지 않게)
 //   망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle — 새로 고친 뒤 같은 주소면 #/~ 를 거쳐 다시 그림) · 망 탈 없이 못 그리면 앞과 같은 실패 · 여는 데 쓴 때를 쪽마다 셈(tm)
@@ -185,8 +185,6 @@ function selfTest(O, N, pg, mode) {
 function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math.floor(Math.abs(x) * 10 + 0.5 + 1e-7) / 10; if (r === 0) return '0.0%'; return (x > 0 ? '+' : '−') + (r >= 100 ? Math.floor(r + 0.5 + 1e-7).toLocaleString('ko-KR') : r.toFixed(1)) + '%'; }
 
 for (const x of cssRules('site/next/p-chx.css')) fail('글 규칙(css)', x);
-// 옛 /atlas/ 화면으로 가는 고리 0(주문 1114-1306 ② · 점검 DISCARD 17) — 화면 검사는 ?dev=1(모든 쪽이 있다고 봄)이라 「새 쪽이 없을 때」 길을 못 탐 → 모듈 글에서 따로 셈
-{ const n = ((await fs.readFile(path.join(ROOT, 'site/next/p-chx.js'), 'utf8')).match(/['"`]\/atlas\/#/g) ?? []).length; if (n) fail('새 화면에 옛 화면(/atlas/#) 고리', `site/next/p-chx.js ${n}곳`); else bump('새 화면 옛 고리 0'); }
 
 /* ①②③④ 맞대기 — 두 보기 */
 {

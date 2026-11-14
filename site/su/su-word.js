@@ -53,25 +53,10 @@ export const has = (t, w) => { const x = (NOT_IN[w] ?? []).reduce((a, o) => a.sp
 const EASY_MAP = new Map(EASY);
 const bat = w => { const c = String(w).charCodeAt(String(w).length - 1) - 0xac00; return c >= 0 && c <= 11171 && c % 28 !== 0; };
 const JO = [['이', '가'], ['은', '는'], ['을', '를'], ['과', '와'], ['으로', '로'], ['이에요', '예요'], ['이라', '라']];
-/** 자료 글의 「%」를 100원 말로(주문 1114-1306 · 사장님 2026-11-14 13:06 「「몇 %」를 「100원이 ○원」으로 바꾸는 일이 가장 커요 다 해」)
- *  자료(theme-bloom.json 조건 글 · flow-why.json 까닭 글)는 예전 앱(/next/ 테마 쪽)도 같은 글을 쓰므로 자료는 두고 큐피트 화면에 내기 직전에만 바꿈
- *  「큰 쪽 위 20% 회사」 → 「위에서 다섯에 하나 안에 드는 회사」 · 「가장 높은 값의 95% 이상」 → 「가장 높은 값을 100원으로 치면 95원 이상」
- *  「+4.7%」(부호 붙은 오르내림) → 「100원이 104.7원」 · 그 밖의 「15%」(시장보다 앞선 만큼 · 오른 만큼) → 「100원에 15원」 · 뒤 토씨는 「원」 받침에 맞춤 */
-const PART = Object.freeze({10: '열에 하나', 20: '다섯에 하나', 25: '넷에 하나', 50: '둘에 하나'});
-const WON_JO = Object.freeze({예요: '이에요', 가: '이', 는: '은', 를: '을', 와: '과', 로: '으로', 라: '이라', 였: '이었'});
-const won1 = v => (Math.round(v * 10) / 10).toLocaleString('ko-KR', {maximumFractionDigits: 1});
-export function pctWords(t) {
-  if (typeof t !== 'string' || !t.includes('%')) return t;
-  return t.replace(/(?:(?:큰|작은) 쪽 )?(위|아래) (\d+)% 회사/g, (m, a, n) => a + '에서 ' + (PART[n] ?? '100곳에 ' + n + '곳') + ' 안에 드는 회사')
-    .replace(/값의 (\d+(?:\.\d+)?)% /g, (m, n) => '값을 100원으로 치면 ' + n + '원 ')
-    .replace(/(\d[\d,]*(?:\.\d+)?)% (이상|넘게) (\d[\d,]*(?:\.\d+)?)% (아래|미만|이하)/g, (m, a, x, b, y) => '100원에 ' + a + '원 ' + x + ' ' + b + '원 ' + y) // 「2% 이상 5% 아래」 → 「100원에 2원 이상 5원 아래」
-    .replace(/([+−-])(\d[\d,]*(?:\.\d+)?)%(예요|가|는|를|와|로|라|였)?/g, (m, sg, n, j) => '100원이 ' + won1(100 + (sg === '+' ? 1 : -1) * Number(n.replace(/,/g, ''))) + '원' + (j ? WON_JO[j] : ''))
-    .replace(/(\d[\d,]*(?:\.\d+)?)%(예요|가|는|를|와|로|라|였)?/g, (m, n, j) => '100원에 ' + n + '원' + (j ? WON_JO[j] : ''));
-}
-/** 글 한 줄을 쉬운 말로(자료에서 온 글 · 조건 글 · 까닭 글) — 바꾼 말 뒤 토씨도 받침에 맞춤 · 「%」는 100원 말로(pctWords) */
+/** 글 한 줄을 쉬운 말로(자료에서 온 글 · 조건 글 · 까닭 글) — 바꾼 말 뒤 토씨도 받침에 맞춤 */
 export function easy(t) {
   if (typeof t !== 'string') return t;
-  return pctWords(t).replace(new RegExp('(' + EASY.map(([a]) => esc(a)).join('|') + ')(이에요|예요|으로|이라|이|가|은|는|을|를|과|와|로|라)?(?![가-힣])?', 'g'), (m, w, j) => {
+  return t.replace(new RegExp('(' + EASY.map(([a]) => esc(a)).join('|') + ')(이에요|예요|으로|이라|이|가|은|는|을|를|과|와|로|라)?(?![가-힣])?', 'g'), (m, w, j) => {
     const r = EASY_MAP.get(w) ?? w;
     if (!j) return r;
     const pair = JO.find(p => p.includes(j));

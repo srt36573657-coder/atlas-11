@@ -15,7 +15,7 @@
      · 이름은 site/next/brand.js 의 BRAND.ko 와 같은 글자 — 이름을 바꾸면 scripts/atlas11/next/brand_apply.mjs FILES 에 이 파일도 넣어 함께 바꿈
      · 보안 규칙: 스크립트 0 · 글 속 style 0 · 바깥 주소 0(이 쪽 meta 는 사이트 머리말보다 더 좁힘 — 둘 다 지켜야 열림)
      · 코드와 맞대 쓴 글: 이 기기 기록 = site/next/*.js · site/next/kakao.js(K2c) 저장 열쇠 · 편지 여는 밤 = lib/atlas11/letter.mjs · 선물 초대장 = lib/atlas11/invite.mjs · 카카오 서버 = brief4 「주고받는 꼴」 · lib/atlas11/kakao.mjs(K1c)
-     · 아직 정하지 못한 것(서버가 있는 나라 · 편지와 선물 초대장을 지우는 날)은 빈 「?」 대신 「아직 정하지 못했어요. 정하면 여기에 먼저 알려요.」(점검 P1 · 주문 1114-1306 ⑥ — 저장소에 정해진 값 없음: netlify.toml 에 함수 지역 없음 · lib/atlas11/letter.mjs · invite.mjs 에 저절로 지우는 날 없음(초대장은 180일 뒤 안 열림만)) — 사장님 몫 docs/design/godori-2026-10-18/kakao-signup.md 61 · 62
+     · 모르는 것은 「?」(연락처 · 서버가 있는 나라 · 지우는 날) — 사장님 몫 docs/design/godori-2026-10-18/kakao-signup.md
      · 다른 쪽이 거는 고리: /privacy.html#device(이 기기 기록) · #kakao(카카오가 받는 것) · #delete · #withdraw(탈퇴) · #en(영어) -->
 </head>
 <body>
@@ -127,12 +127,12 @@
 <p>쿠키는 <code>__Host-kk_login</code>(180일), <code>__Host-kk_state</code>(10분) 둘이에요. 둘 다 HttpOnly, Secure, SameSite=Lax 예요.</p>
 </details>
 <h3 id="server">서버</h3>
-<p>미국 회사 넷리파이(Netlify)의 서버에 둬요. 서버가 있는 나라는 아직 정하지 못했어요. 정하면 여기에 먼저 알려요.</p>
+<p>미국 회사 넷리파이(Netlify)의 서버에 둬요. 서버가 있는 나라는 ? 예요.</p>
 <p>카카오로 시작하면 회원 번호와 기록 넷이 이 서버로 가요. 가입할 때와 기록이 바뀔 때, 암호화된 연결로 보내요.</p>
 <ul class="pv-list">
 <li>카카오 회원 기록: 탈퇴할 때까지 둬요. 탈퇴하면 바로 지워요.</li>
 <li>로그인 기록: 내 쿠키로만 열리게 잠근 회원 번호가 들어 있어요. 탈퇴 때 카카오 연결을 끊는 데 써요. 180일이 지나면 저절로 끝나요.</li>
-<li>편지, 선물 초대장: 지우는 날은 아직 정하지 못했어요. 정하면 여기에 먼저 알려요. 지워 달라고 하면 지워요.</li>
+<li>편지, 선물 초대장: 지우는 날은 ? 예요. 지워 달라고 하면 지워요.</li>
 <li>상품권 전화번호: 상품권을 보내면 바로 지워요. 보내지 못한 번호도 60일이 지나면 지워요.</li>
 <li>친구 소개 세기: 상품권을 드리는 데 필요한 동안 둬요. 지워 달라고 하면 지워요.</li>
 <li>고객센터 글: 남긴 날부터 1년이 지나면 지워요. 내가 「지우기」를 누르면 바로 지워요.</li>
@@ -210,7 +210,7 @@
 <li>With “Start with Kakao” we receive only your Kakao member number — no nickname, photo, phone, birthday or email. We store it as a one-way hash, and Kakao’s short-lived access pass is thrown away right after the check. We keep a copy of those four records on our server. Your “my money” amount is never uploaded.</li>
 <li>We count friends who finish signing up through your card, never their names. Letter Opening Night (invited only) keeps your nickname, letters and replies. Gift invitations keep the names and message you typed. The help center keeps the notes and questions you send, the kind and tone you picked, the name of the screen you came from and the time — no name, phone or email; your device is linked only by a one-way hash, and each note is deleted after a year or as soon as you tap Delete twice. So the operator can read them quickly, each note (its text, kind, screen and time — never your device link) is also passed as is to the operator’s own KakaoTalk chat. Gift card: we count how many other devices opened your shared link (and whether inside KakaoTalk) using a random number made on your device, stored only as a one-way hash — no names. The phone number you agree to give is shown only to the operator, deleted as soon as the gift is sent (only its last four digits are kept), and deleted after 60 days if never sent. When a request comes in, the operator’s own KakaoTalk chat gets a short notice with only the time, the friend count and the last four digits. With “Give me the gift card” we take no phone number at all: only devices whose link three friends opened see the operator’s phone number and a four-digit check number, and the notice has only the time, the friend count and that check number.</li>
 <li>Use: only for your own records and these features. Your records are shown to you only. No ads. We never sell or share records. The KakaoTalk channel is for notices only, with 1:1 chat off.</li>
-<li>Where and how long: records stay in this browser until you delete them. Member data sits on servers of Netlify, a US company (server country: not decided yet; we will post it here first), until you withdraw; the login record, which holds your member number locked so only your cookie can open it, ends after 180 days. Two cookies only, both HttpOnly and Secure: the login proof (180 days) and a sign-in check (10 minutes).</li>
+<li>Where and how long: records stay in this browser until you delete them. Member data sits on servers of Netlify, a US company (server country: ?), until you withdraw; the login record, which holds your member number locked so only your cookie can open it, ends after 180 days. Two cookies only, both HttpOnly and Secure: the login proof (180 days) and a sign-in check (10 minutes).</li>
 <li>Delete: withdraw in two taps at the bottom of Holdings › Shortcuts. We delete the server copy and unlink Kakao. Disconnecting us in your Kakao settings deletes the server copy too. Records on this device stay until you clear this site’s data in your browser.</li>
 <li>Daily tally: to see whether people really stop before buying, we keep daily totals only — journals finished (and how many ended in “Let’s sit today out”), one-month answers (and how many said “I did”), and, for reference only, site opens, finished shares and finished sign-ups. Your browser sends one word naming the counter; no name, device ID, cookie, stock or answer. The tally keeps only numbers per Seoul date, with no internet address or time, and they are used only to check that the site helps people pause.</li>
 <li>Refuse: every screen works without signing up. You may ask us at any time to show, fix, delete or stop using your data. Contact: Shin Daegeun, srt36573657@gmail.com</li>

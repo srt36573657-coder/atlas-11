@@ -75,7 +75,7 @@ test('바뀐 쪽 검사: 첫 화면 파일 → check_white · 흰 첫 화면 문
     assert.ok(k.includes('check_white'), `${f} → check_white`);
     assert.ok(k.includes('white-gate'), `${f} → white-gate`);
   }
-  assert.ok(!C.checksFor('site/next/p-co.js').includes('check_white')); // 다른 쪽 모듈은 흰 첫 화면 검사 밖(옛 본보기 p-cal.js 는 쪽을 닫아 지움 — 주문 1114-1306)
+  assert.ok(!C.checksFor('site/next/p-cal.js').includes('check_white'));
   assert.ok(C.checksFor('site/next/home.css').includes('next_check'), 'home.css 도 첫 화면 짝 검사(next_check)');
 });
 

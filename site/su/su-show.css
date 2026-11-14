@@ -1,0 +1,211 @@
+/* 쇼 판 합친 판(final · s04 바탕) — 잡스 발표 무대(art.js 와 짝) · 검은 무대 · 조명 셋 · 빛 기둥 둘 · 흑백 트위드에 금 한 점
+   어두운 판 · 밝은 판 모두 같은 검은 무대(쇼 장면이라 늘 밤) · 움직임은 transform · opacity 만 · 움직임 줄이기면 끝 모습 */
+.sh { display: block; width: 100%; height: auto; overflow: hidden; }
+.sh .sh-bg { fill: #0A0810; }
+
+/* 무대 — 빛 점 벽 · 조명 · 후광 · 바닥 · 아치 */
+.sh .sh-wash { fill: url(#shwash); }
+.sh .sh-ws0 { stop-color: #8E3FB0; stop-opacity: .42; }
+.sh .sh-ws1 { stop-color: #5B2378; stop-opacity: .2; }
+.sh .sh-ws2 { stop-color: #2A1038; stop-opacity: 0; }
+.sh .sh-led { fill: #FFFFFF; fill-opacity: .09; }
+.sh .sh-led2 { fill: #FFFFFF; fill-opacity: .5; }
+.sh .sh-st0 { stop-color: #FFF6FF; stop-opacity: .5; }
+.sh .sh-st1 { stop-color: #E7D2FF; stop-opacity: .2; }
+.sh .sh-st2 { stop-color: #D7BFFF; stop-opacity: .07; }
+.sh .sh-beam { fill: url(#shcone); }
+.sh .sh-ps0 { stop-color: #FFFFFF; stop-opacity: .55; }
+.sh .sh-ps1 { stop-color: #E7D2FF; stop-opacity: 0; }
+.sh .sh-pool { fill: url(#shpool); }
+.sh .sh-hs0 { stop-color: #FFF9FF; stop-opacity: .34; }
+.sh .sh-hs1 { stop-color: #EBDCFA; stop-opacity: .16; }
+.sh .sh-hs2 { stop-color: #D9C4F2; stop-opacity: .08; }
+.sh .sh-halo { fill: url(#shhalo); }
+.sh .sh-hrim { fill: none; stroke: #C9A24A; stroke-width: 1.4; }
+.sh .sh-hrim2 { fill: none; stroke: #E8CF8A; stroke-width: .7; }
+.sh .sh-hring { fill: none; stroke: #2A1638; stroke-opacity: .55; stroke-width: 8; }
+.sh .sh-hq { fill: #D9B45A; }
+.sh .sh-hd { fill: #F6E9FF; }
+.sh .mk-ray { fill: #F3E3B0; fill-opacity: .12; }
+.sh .sh-floor { fill: #120E19; }
+.sh .sh-fline { fill: none; stroke: #4A3F5C; stroke-width: .8; }
+.sh .sh-refl { opacity: .22; }
+.sh .sh-seam { fill: none; stroke: #FFFFFF; stroke-opacity: .06; stroke-width: .8; }
+.sh .sh-cur { fill: #4E0F3C; }
+.sh .sh-curf { fill: none; stroke: #24061C; stroke-width: 2.2; stroke-linecap: round; stroke-opacity: .75; }
+.sh .sh-tie { fill: none; stroke: #D9B65E; stroke-width: 3; stroke-linecap: round; }
+.sh .sh-valc { fill: #3A0C33; stroke: #C9A24A; stroke-width: .6; }
+.sh .sh-vbulb { fill: #FFF3C8; }
+.sh .sh-lamp { fill: #2B2533; stroke: #6A5F78; stroke-width: .6; }
+.sh .sh-bulb { fill: #FFF8E6; }
+.sh .sh-arch { fill: none; stroke: #C9A24A; stroke-width: 2; stroke-linecap: round; }
+.sh .sh-arch2 { fill: none; stroke: #E3C77A; stroke-width: .7; stroke-linecap: round; }
+
+/* 기둥 — 검은 판 · 금 테 · 가장자리 전구 */
+.sh .sh-pil { fill: #16121D; }
+.sh .sh-pil-nx { fill: #18121F; }
+.sh .sh-pfr { fill: none; stroke: #B08A3A; stroke-width: 1.2; stroke-linejoin: round; }
+.sh .sh-sep { fill: #C9A24A; fill-opacity: .5; stroke: #C9A24A; stroke-opacity: .32; stroke-width: .8; }
+
+/* 글씨 — 기둥 머리(지금 · 될 듯 + 큰 숫자) · 칸 머리 · 이름 · 값 */
+.sh .sh-hl { font-size: 21px; font-weight: 800; letter-spacing: .12em; fill: #E3C77A; }
+.sh .sh-num { font-size: 50px; font-weight: 800; letter-spacing: -.02em; fill: #FFFFFF; font-variant-numeric: tabular-nums; }
+.sh .sh-need { font-size: 21px; }
+.sh .sh-ch { font-size: 20px; font-weight: 900; letter-spacing: .02em; stroke: #000000; stroke-width: 4.6px; stroke-linejoin: round; paint-order: stroke fill; }
+.sh .sh-bl { font-size: 21px; font-weight: 800; letter-spacing: .14em; fill: #F6E6B8; }
+.sh .sh-pearlbig { fill: #FBF6EC; stroke: #B9A887; stroke-width: .6; }
+.sh .sh-ring { fill: none; stroke: #FBF6EC; stroke-width: 2; }
+.sh .sh-ch-hot, .sh .sh-ch-bloom, .sh .sh-ch-money { fill: #FFE14D; }
+.sh .sh-name { font-weight: 800; fill: #FFF8EC; stroke: #12081A; stroke-width: 4.2px; stroke-linejoin: round; paint-order: stroke fill; }
+.sh .sh-f20 { font-size: 20px; }
+.sh .sh-f196 { font-size: 19.6px; }
+.sh .sh-f18 { font-size: 18px; }
+.sh .sh-val { font-weight: 800; font-variant-numeric: tabular-nums; stroke: #12081A; stroke-width: 4.2px; stroke-linejoin: round; paint-order: stroke fill; }
+.sh .sh-v-hot, .sh .sh-v-bloom, .sh .sh-v-money { fill: #FFD84A; }
+.sh .sh-hit { fill: #FFFFFF; fill-opacity: 0; pointer-events: all; }
+.sh .sh-tag { cursor: pointer; }
+.sh .sh-tag:focus { outline: none; }
+.sh .sh-tag:focus-visible .sh-hit { stroke: #FFFFFF; stroke-width: 2.5; }
+
+/* 옷 — 트위드 결(검정 · 흰) · 땋은 테 · 금 단추 · 검정 원피스 · 흰 깃 */
+.sh .sh-twb0 { fill: #1D1A21; }
+.sh .sh-twb1 { fill: #ECE5D8; fill-opacity: .5; }
+.sh .sh-twb2 { fill: #6E6878; }
+.sh .sh-twg { fill: #C9A24A; fill-opacity: .8; }
+.sh .sh-tww0 { fill: #F4EFE6; }
+.sh .sh-tww1 { fill: #1D1A21; fill-opacity: .4; }
+.sh .sh-tww2 { fill: #BEB6A7; }
+.sh .sh-tw-b { fill: url(#shtwB); }
+.sh .sh-tw-w { fill: url(#shtwW); }
+.sh .sh-br0-w { fill: none; stroke: #1D1A21; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.sh .sh-br1-w { fill: none; stroke: #F4EFE6; stroke-width: 1.1; stroke-dasharray: 1.3 1.5; }
+.sh .sh-br0-b { fill: none; stroke: #EFE8DA; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.sh .sh-br1-b { fill: none; stroke: #1D1A21; stroke-width: 1.1; stroke-dasharray: 1.3 1.5; }
+.sh .sh-btn { fill: #D4AF55; stroke: #8A6A22; stroke-width: .4; }
+.sh .sh-sheen { fill: #FFFFFF; fill-opacity: .1; }
+.sh .sh-fold-b { fill: #FFFFFF; fill-opacity: .13; }
+.sh .sh-dress { fill: #17151B; }
+.sh .sh-belt { fill: #2C2833; }
+.sh .sh-collar { fill: #F7F2E9; stroke: #CFC5B2; stroke-width: .5; }
+.sh .sh-leg { fill: url(#shleg); stroke: #120E14; stroke-width: .5; }
+.sh .sh-lg0 { stop-color: #1C1520; }
+.sh .sh-lg1 { stop-color: #4E3B47; }
+.sh .sh-lg2 { stop-color: #9A7A88; }
+.sh .sh-blush { fill: #F4879E; fill-opacity: .34; }
+.sh .sh-lip1 { fill: #C8344F; }
+.sh .sh-lip2 { fill: #E0566E; }
+.sh .sh-liph { fill: #FFD3DC; fill-opacity: .8; }
+.sh .sh-liner { fill: #1A1016; }
+.sh .sh-legl { fill: #FBE3EE; fill-opacity: .36; }
+.sh .sh-shoe { fill: #E6D4B4; stroke: #8E7A5C; stroke-width: .4; }
+.sh .sh-toe { fill: #121015; }
+.sh .sh-bow { fill: #0F0D12; stroke: #5A5266; stroke-width: .5; }
+.sh .sh-bow2 { fill: #2B2632; }
+.sh .sh-pearl { fill: #FBF6EC; stroke: #B9A887; stroke-width: .3; }
+.sh .sh-pearlh { fill: #FFFFFF; }
+/* 팔(부품 소매) — 검정 트위드 · 흰 트위드 · 검정 원피스 소매 */
+.sh .sh-cl-b .mk-cl-cream { fill: url(#shtwB); }
+.sh .sh-cl-b .mk-cld-cream { fill: #FFFFFF; fill-opacity: .12; }
+.sh .sh-cl-b .mk-sleeve .mk-gold { fill: #EFE8DA; }
+.sh .sh-w-bloom .sh-cl-b .mk-cl-cream { fill: #17151B; }
+.sh .sh-w-bloom .sh-cl-b .mk-sleeve .mk-gold { fill: #F7F2E9; }
+.sh .sh-cl-w .mk-cl-ivory { fill: url(#shtwW); }
+.sh .sh-cl-w .mk-sleeve .mk-gold { fill: #1D1A21; }
+
+/* 든 것 — 금 횃불 · 흰 동백 · 누빔 가방(금 사슬) */
+.sh .sh-gold { fill: #D4AF55; }
+.sh .sh-fire { fill: #F2894F; stroke: #8C3D1B; stroke-width: .8; stroke-linejoin: round; }
+.sh .sh-fire2 { fill: #FFD98A; }
+.sh .sh-cam1 { fill: #FFFDF8; stroke: #C9BBA0; stroke-width: .5; }
+.sh .sh-cam2 { fill: #F2EBDD; stroke: #C9BBA0; stroke-width: .4; }
+.sh .sh-leaf { fill: #3F5B3B; stroke: #263A24; stroke-width: .4; }
+.sh .sh-chain { fill: none; stroke: #D9B25E; stroke-width: 1.7; stroke-dasharray: 2.2 1.1; stroke-linecap: round; }
+.sh .sh-bagb { fill: #141217; stroke: #5A5266; stroke-width: .7; }
+.sh .sh-quilt { fill: none; stroke: #3F3948; stroke-width: .8; }
+.sh .sh-flap { fill: none; stroke: #5A5266; stroke-width: .8; }
+
+/* 쇼 — 조명 셋 차례로 → 지금 이름 위에서부터 → 될 듯 기둥이 아래에서 떠오름(2.4초 안 한 번) · 그 뒤 조명 · 빛 점만 느리게 */
+@media (prefers-reduced-motion: no-preference) {
+  .sh .sh-cone { animation: sh-on .7s ease-out both, sh-breath 7s ease-in-out 2.4s infinite alternate; }
+  .sh .sh-c1 { animation-delay: .3s, 2.7s; }
+  .sh .sh-c2 { animation-delay: .55s, 3s; }
+  .sh .sh-bulb { animation: sh-on .5s ease-out both; }
+  .sh .sh-b1 { animation-delay: .3s; }
+  .sh .sh-b2 { animation-delay: .55s; }
+  .sh .sh-w { animation: sh-on .9s ease-out .1s both; }
+  .sh .sh-sway { transform-box: fill-box; transform-origin: 50% 100%; animation: sh-sway 6s ease-in-out 1s infinite alternate; }
+  .sh .sh-sw-hot { animation-duration: 7s; animation-direction: alternate-reverse; }
+  .sh .sh-sw-money { animation-duration: 6.6s; }
+  .sh .sh-now .sh-tag, .sh .sh-head { animation: sh-on .5s ease-out .4s both; }
+  .sh .sh-now .sh-i1 { animation-delay: .5s; }
+  .sh .sh-now .sh-i2 { animation-delay: .6s; }
+  .sh .sh-now .sh-i3 { animation-delay: .7s; }
+  .sh .sh-now .sh-i4 { animation-delay: .8s; }
+  .sh .sh-now .sh-i5 { animation-delay: .9s; }
+  .sh .sh-now .sh-i6 { animation-delay: 1s; }
+  .sh .sh-pnx { animation: sh-rise 1s cubic-bezier(.2, .8, .2, 1) 1.3s both; }
+  .sh .sh-led2 { animation: sh-tw 3.2s ease-in-out infinite alternate; }
+  .sh .sh-curtain { transform-box: fill-box; animation: sh-open 1.6s cubic-bezier(.2, .7, .2, 1) both; }
+  .sh .sh-cur-l { transform-origin: 0 50%; }
+  .sh .sh-cur-r { transform-origin: 100% 50%; }
+  .sh .sh-vbulb { animation: sh-tw 1.8s ease-in-out 2.4s infinite alternate; }
+}
+@keyframes sh-on { from { opacity: .4; } to { opacity: 1; } }
+@keyframes sh-breath { from { opacity: 1; } to { opacity: .7; } }
+@keyframes sh-sway { from { transform: rotate(-1.1deg); } to { transform: rotate(1.1deg); } }
+@keyframes sh-rise { from { opacity: .4; transform: translateY(46px); } to { opacity: 1; transform: none; } }
+@keyframes sh-open { from { transform: scaleX(3); } to { transform: none; } }
+@keyframes sh-tw { from { opacity: 1; } to { opacity: .45; } }
+
+/* 깃털 날개(사장님 13:38 「아주 아주 섹시하게 빅토리아 시크릿 모델 처럼」 — 무대 쇼 날개 · 상표 무늬 없음) */
+.sh .sh-wf0 { fill: #F1EAF6; stroke: #D9B866; stroke-width: .7; }
+.sh .sh-wf1 { fill: #FFFFFF; stroke: #CFC6DA; stroke-width: .3; }
+.sh .sh-wf2 { fill: #E9E2F0; stroke: #B9AEC6; stroke-width: .3; }
+.sh .sh-wshaft { fill: none; stroke: #BFB3CF; stroke-width: .45; stroke-linecap: round; }
+.sh .sh-wk-money .sh-wshaft { stroke: #7C7090; }
+.sh .sh-wk-money .sh-wf0 { fill: #1B1720; stroke: #6E6380; }
+.sh .sh-wk-money .sh-wf1 { fill: #2A2431; stroke: #7C7090; }
+.sh .sh-wk-money .sh-wf2 { fill: #15121A; stroke: #5E5470; }
+@media (prefers-reduced-motion: no-preference) {
+  .sh .sh-wing { transform-box: fill-box; animation: sh-flap 3.4s ease-in-out 1.2s infinite alternate; }
+  .sh .sh-wing-l { transform-origin: 100% 45%; }
+  .sh .sh-wing-r { transform-origin: 0% 45%; animation-direction: alternate-reverse; }
+}
+@keyframes sh-flap { from { transform: rotate(-2.2deg); } to { transform: rotate(2.2deg); } }
+
+/* ── 섹시 · 환상 · 고급(사장님 13:42 「깊게 자료 수집한 후 다시」 · docs/design/su-show-2026-11-08/research-1342.md) ── */
+/* 입술 붉기 대비(Stephen · McKeegan 2010) · 얼굴 대비(Russell 2009) */
+.sh .sh-lip1 { fill: #A50F2B; }
+.sh .sh-lip2 { fill: #CC1F3D; }
+.sh .sh-liph { fill: #FFD6DE; fill-opacity: .85; }
+.sh .sh-liner { fill: #0E080B; }
+.sh .sh-blush { fill: #F27593; fill-opacity: .3; }
+/* 빛 — 밝기 차로 스스로 빛나 보이게(눈부심 착시 · Zavagno 1999 · Facchin 2017) */
+.sh .sh-gl0 { stop-color: #FFF4FF; stop-opacity: .5; }
+.sh .sh-gl1 { stop-color: #D9C2FF; stop-opacity: .16; }
+.sh .sh-gl2 { stop-color: #D9C2FF; stop-opacity: 0; }
+.sh .sh-glow { fill: url(#shglow); }
+.sh .sh-wg0 { stop-color: #FFFFFF; }
+.sh .sh-wg1 { stop-color: #E6DAF6; }
+.sh .sh-wf1 { fill: url(#shwg); }
+.sh .sh-wk-money .sh-wf1 { fill: #2A2431; }
+.sh .sh-spk { fill: #FFF3C9; }
+.sh .sh-petal { fill: #FFFFFF; fill-opacity: .8; }
+/* 고급 — 덜어냄(빈 자리가 품격 · Pracejus 외 2006) · 빛 점 벽과 이음매를 낮춤 */
+.sh .sh-led { fill-opacity: .32; }
+.sh .sh-seam { stroke-opacity: .35; }
+@media (prefers-reduced-motion: no-preference) {
+  /* 걸음의 엉덩이 흔들림(허리 아래가 좌우로 · Johnson · Tassinary 2005) */
+  .sh .sh-sway { animation: sh-hip 3.2s ease-in-out 1s infinite alternate; }
+  .sh .sh-sw-hot { animation-duration: 3.6s; animation-direction: alternate-reverse; }
+  .sh .sh-sw-money { animation-duration: 3.4s; }
+  .sh .sh-spk { animation: sh-twinkle 2.6s ease-in-out infinite alternate; }
+  .sh .sh-spk1 { animation-delay: .9s; }
+  .sh .sh-spk2 { animation-delay: 1.7s; }
+  .sh .sh-petal { transform-box: fill-box; transform-origin: 50% 50%; animation: sh-fall 9s linear infinite; }
+  .sh .sh-pt1 { animation-delay: 1.8s; } .sh .sh-pt2 { animation-delay: 3.6s; } .sh .sh-pt3 { animation-delay: 5.4s; } .sh .sh-pt4 { animation-delay: 7.2s; }
+}
+@media (prefers-reduced-motion: reduce) { .sh .sh-petal { opacity: .6; } }
+@keyframes sh-hip { from { transform: rotate(-1.5deg) translateX(-0.8px); } to { transform: rotate(1.5deg) translateX(0.8px); } }
+@keyframes sh-twinkle { from { opacity: .25; } to { opacity: 1; } }
+@keyframes sh-fall { 0% { transform: translate(0, 0) rotate(0deg); opacity: 0; } 12% { opacity: .9; } 100% { transform: translate(14px, 330px) rotate(220deg); opacity: 0; } }

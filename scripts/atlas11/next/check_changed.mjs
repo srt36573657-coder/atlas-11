@@ -22,7 +22,7 @@ export function changedFiles() {
   for (const l of git(['status', '--porcelain']).split('\n')) { const f = l.slice(3).trim(); if (f) s.add(f.replace(/^"|"$/g, '')); }
   return [...s].sort();
 }
-const MISC = new Set(['up', 'time', 'info', 'x']); // 이야기(talk)는 쪽을 닫아 뺌(주문 1114-1306)
+const MISC = new Set(['up', 'time', 'info', 'x', 'talk']);
 /** 파일 하나 → 짝 검사들(이름 · 명령) */
 export function checksFor(f) {
   const out = [], page = n => out.push(MISC.has(n) ? 'check_misc' : 'check_' + n);
