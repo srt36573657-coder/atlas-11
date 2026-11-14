@@ -1,12 +1,17 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-14T02:38:13.294Z",
+ "at": "2026-11-14T05:27:33.487Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1696,
-  "fail": 0
+  "pass": 1661,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  [
+   "느린 4G 가장 큰 그림 2.5초 안",
+   "2560ms"
+  ]
+ ],
  "m": {
   "dropped": [],
   "data": {
@@ -19,8 +24,8 @@
    ]
   },
   "home": {
-   "screens": 7.45,
-   "links": 69
+   "screens": 7.66,
+   "links": 71
   },
   "t21": {
    "listed": 2557,
@@ -34,11 +39,11 @@
     "h1": "요즘 눈에 띄는 회사",
     "heroShare": 72.4,
     "share": 89,
-    "outside": 19,
+    "outside": 21,
     "two": 2,
-    "labels": 318,
+    "labels": 322,
     "mucha": [],
-    "anim": 28,
+    "anim": 29,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -50,7 +55,7 @@
     "h1": "땅 지도",
     "heroShare": 72.4,
     "share": 77,
-    "outside": 13,
+    "outside": 15,
     "two": 2,
     "labels": 49,
     "mucha": [],
@@ -66,7 +71,7 @@
     "h1": "K-소비재 · 콘텐츠 땅",
     "heroShare": 72.4,
     "share": 89,
-    "outside": 13,
+    "outside": 15,
     "two": 2,
     "labels": 41,
     "mucha": [],
@@ -82,7 +87,7 @@
     "h1": "KT&G",
     "heroShare": 72.4,
     "share": 178,
-    "outside": 12,
+    "outside": 14,
     "two": 2,
     "labels": 26,
     "mucha": [],
@@ -98,7 +103,7 @@
     "h1": "KT&G 한 달 하루씩",
     "heroShare": 72.4,
     "share": 178,
-    "outside": 13,
+    "outside": 15,
     "two": 2,
     "labels": 32,
     "mucha": [],
@@ -108,13 +113,13 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 5,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "왜 사?",
     "heroShare": 72.4,
     "share": 78,
-    "outside": 15,
+    "outside": 17,
     "two": 2,
     "labels": 30,
     "mucha": [],
@@ -130,9 +135,9 @@
     "h1": "내 매매일지",
     "heroShare": 72.4,
     "share": 82,
-    "outside": 13,
+    "outside": 15,
     "two": 2,
-    "labels": 15,
+    "labels": 17,
     "mucha": [],
     "anim": 11,
     "need": 0,
@@ -140,13 +145,13 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "친구에게",
     "heroShare": 72.4,
     "share": 79,
-    "outside": 13,
+    "outside": 15,
     "two": 2,
     "labels": 15,
     "mucha": [],
@@ -173,17 +178,16 @@
     "h1": "해마다 지난 기록",
     "share": 66,
     "moving": 1
-   },
-   "#/r/n": {
-    "h1": "가까운 회사의 지난 기록",
-    "share": 70,
-    "moving": 1
    }
   },
+  "nearYears": {
+   "has": true,
+   "lines": 5
+  },
   "speed": {
-   "lcp": 2420,
+   "lcp": 2560,
    "cls": 0.143,
-   "pic": 3410
+   "pic": 3661
   },
   "white": {
    "light #/": {
@@ -266,7 +270,7 @@
      "#FFFFFF"
     ]
    },
-   "light #/g": {
+   "light #/r/y": {
     "clean": true,
     "body": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -362,7 +366,7 @@
      "#FFFFFF"
     ]
    },
-   "dark #/g": {
+   "dark #/r/y": {
     "clean": true,
     "body": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -415,7 +419,7 @@
    "shape": true
   },
   "old": {
-   "light /next/?su=hot#/surge": {
+   "light /next/?su=guide#/find": {
     "cls": "m4 white space su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
@@ -425,43 +429,13 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.01,
-    "darkSel": "a.psurge-chip",
+    "darkMax": 0,
+    "darkSel": "",
     "low": [],
     "lowN": 0
    },
-   "light /next/?su=stop#/sage": {
-    "cls": "m4 white space su-jobs su-wrapped pg-sage",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(253, 249, 245)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0.047,
-    "darkSel": "button.sg-allb",
-    "low": [],
-    "lowN": 0
-   },
-   "light /next/?su=guide#/roman": {
-    "cls": "m4 white space su-jobs su-wrapped pg-roman",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(253, 249, 245)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0.041,
-    "darkSel": "button.rm-allb",
-    "low": [],
-    "lowN": 0
-   },
-   "light /next/?su=stop#/why": {
-    "cls": "m4 white space su-jobs su-wrapped pg-why",
+   "light /next/?su=guest#/share": {
+    "cls": "m4 white space su-jobs su-wrapped home",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -470,8 +444,23 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.05,
-    "darkSel": "button.wy-go",
+    "darkMax": 0.012,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=stop#/me": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.011,
+    "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
    },
@@ -505,6 +494,21 @@
     "low": [],
     "lowN": 0
    },
+   "light /next/?su=back#/help": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "button.hp-vb",
+    "low": [],
+    "lowN": 0
+   },
    "light /hello.html?su=guest": {
     "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
@@ -517,36 +521,6 @@
     ],
     "darkMax": 0.023,
     "darkSel": "a.hp-go",
-    "low": [],
-    "lowN": 0
-   },
-   "light /letter.html?su=guest": {
-    "cls": "su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": null,
-    "top": null,
-    "bar": "rgb(255, 255, 255)",
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0,
-    "darkSel": "",
-    "low": [],
-    "lowN": 0
-   },
-   "light /invite.html?su=guest": {
-    "cls": "su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": null,
-    "top": null,
-    "bar": "rgb(255, 255, 255)",
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0,
-    "darkSel": "",
     "low": [],
     "lowN": 0
    },
@@ -565,7 +539,7 @@
     "low": [],
     "lowN": 0
    },
-   "dark /next/?su=hot#/surge": {
+   "dark /next/?su=guide#/find": {
     "cls": "m4 white space su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
@@ -575,43 +549,13 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.01,
-    "darkSel": "a.psurge-chip",
+    "darkMax": 0,
+    "darkSel": "",
     "low": [],
     "lowN": 0
    },
-   "dark /next/?su=stop#/sage": {
-    "cls": "m4 white space su-jobs su-wrapped pg-sage",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(253, 249, 245)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0.047,
-    "darkSel": "button.sg-allb",
-    "low": [],
-    "lowN": 0
-   },
-   "dark /next/?su=guide#/roman": {
-    "cls": "m4 white space su-jobs su-wrapped pg-roman",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(253, 249, 245)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0.041,
-    "darkSel": "button.rm-allb",
-    "low": [],
-    "lowN": 0
-   },
-   "dark /next/?su=stop#/why": {
-    "cls": "m4 white space su-jobs su-wrapped pg-why",
+   "dark /next/?su=guest#/share": {
+    "cls": "m4 white space su-jobs su-wrapped home",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -620,8 +564,23 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.05,
-    "darkSel": "button.wy-go",
+    "darkMax": 0.012,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=stop#/me": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.011,
+    "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
    },
@@ -655,6 +614,21 @@
     "low": [],
     "lowN": 0
    },
+   "dark /next/?su=back#/help": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "button.hp-vb",
+    "low": [],
+    "lowN": 0
+   },
    "dark /hello.html?su=guest": {
     "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
@@ -667,36 +641,6 @@
     ],
     "darkMax": 0.023,
     "darkSel": "a.hp-go",
-    "low": [],
-    "lowN": 0
-   },
-   "dark /letter.html?su=guest": {
-    "cls": "su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": null,
-    "top": null,
-    "bar": "rgb(255, 255, 255)",
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0,
-    "darkSel": "",
-    "low": [],
-    "lowN": 0
-   },
-   "dark /invite.html?su=guest": {
-    "cls": "su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": null,
-    "top": null,
-    "bar": "rgb(255, 255, 255)",
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0,
-    "darkSel": "",
     "low": [],
     "lowN": 0
    },
@@ -714,22 +658,6 @@
     "darkSel": "",
     "low": [],
     "lowN": 0
-   },
-   "direct light /next/#/surge": {
-    "cls": "m4 white space su-jobs",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": null,
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0.01,
-    "darkSel": "a.psurge-chip",
-    "low": [],
-    "lowN": 0,
-    "tabs": "rgb(255, 255, 255)"
    },
    "direct light /next/#/sage": {
     "cls": "m4 white space su-jobs pg-sage",
@@ -871,22 +799,6 @@
     ],
     "darkMax": 0,
     "darkSel": "",
-    "low": [],
-    "lowN": 0,
-    "tabs": "rgb(255, 255, 255)"
-   },
-   "direct dark /next/#/surge": {
-    "cls": "m4 white space su-jobs",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": null,
-    "frame": "normal",
-    "tc": [
-     "#FFFFFF"
-    ],
-    "darkMax": 0.01,
-    "darkSel": "a.psurge-chip",
     "low": [],
     "lowN": 0,
     "tabs": "rgb(255, 255, 255)"
@@ -1254,7 +1166,7 @@
     ]
    },
    "daysFrom": "2026-10-02",
-   "screens": 3.67,
+   "screens": 3.73,
    "pages": 42,
    "reasons": 1512
   },
@@ -1287,15 +1199,28 @@
    "2:티에스이:6.85:",
    "3:삼성전기:5.56:"
   ],
+  "v42": {
+   "cells": 49,
+   "bad": 0,
+   "cap": [
+    "bloomNext:닷새 동안 시장보다",
+    "quiet:한 달 흔들림",
+    "quiet:한 달 흔들림"
+   ],
+   "eg": [
+    "100원이 150.5원",
+    "100원이 95.8원"
+   ]
+  },
   "kr7": {
    "cards": 7,
    "rows": 7,
-   "screens": 17.35
+   "screens": 17.41
   },
   "ant11": {
    "cards": 11,
    "rows": 11,
-   "screens": 20.04
+   "screens": 20.09
   },
   "coLive": {
    "a": {
@@ -1304,7 +1229,7 @@
     "from": "2026-10-12",
     "to": "2026-11-09",
     "ix": false,
-    "lab": "+53.3%"
+    "lab": "100원이 153.3원"
    },
    "shape": true
   },
@@ -1477,5 +1402,5 @@
    }
   }
  },
- "ok": true
+ "ok": false
 }

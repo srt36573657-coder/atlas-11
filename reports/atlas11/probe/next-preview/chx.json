@@ -1,24 +1,24 @@
 {
  "schema": "atlas11-next-chx-1",
- "at": "2026-11-14T02:38:02.987Z",
+ "at": "2026-11-14T05:30:03.506Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-11-13",
  "pages": 87,
  "of": 87,
  "widthPages": 87,
  "full": true,
- "seconds": 33,
+ "seconds": 203,
  "time": {
-  "old": 0.1,
-  "new": 23.2,
-  "wall": 33.1,
-  "opensOld": 1,
+  "old": 163.9,
+  "new": 28,
+  "wall": 202.9,
+  "opensOld": 698,
   "opensNew": 703,
-  "oldPct": 0.2,
-  "oldShare": 0.3
+  "oldPct": 80.8,
+  "oldShare": 85.4
  },
  "net": {
-  "req": 17,
+  "req": 2,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -31,6 +31,7 @@
   }
  },
  "counts": {
+  "새 화면 옛 고리 0": 1,
   "줄": 5266,
   "글": 2382,
   "숫자 낱말": 8838,
@@ -39,12 +40,12 @@
   "자체 시험": 8,
   "맞댄 화면": 174,
   "oldSnap": {
-   "use": true,
-   "why": "",
-   "made": "2026-11-14T02:19:35.974Z",
+   "use": false,
+   "why": "검사 · 브라우저 · 목록이 바뀜",
+   "made": null,
    "inputs": 15,
    "reads": 174,
-   "note": "기준값 다시 씀"
+   "note": "기준값 새로 씀(파일 15개 · 값 174개)"
   },
   "세 폭 화면": 265,
   "소리 글": 1,

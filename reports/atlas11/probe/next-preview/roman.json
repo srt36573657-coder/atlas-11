@@ -1,14 +1,14 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-11-14T02:36:58.658Z",
+ "at": "2026-11-14T05:26:24.476Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 758,
+  "pass": 721,
   "fail": 0
  },
  "fails": [],
  "m": {
-  "rooms": 37,
+  "rooms": 33,
   "art": {
    "n": 72,
    "bytes": 245728
@@ -24,8 +24,8 @@
    5,
    11
   ],
-  "links": 37,
-  "linkPages": 37
+  "links": 33,
+  "linkPages": 33
  },
  "brand": "큐피트"
 }
