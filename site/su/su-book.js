@@ -262,13 +262,15 @@ export async function vBook(X, which = 'top3') {
   cal = calendar(C, go);
   // 표 밑 두 조각(사장님 2026-11-14 08:22 「앞뒤가 맞게」 · 점검 U14) — 옛 기준 · 새 기준을 한 합에 더했음을 밝힘 · 가장 크게 줄어든 줄을 먼저, 늘어난 줄을 다음에(합을 흔든 한 줄과 같으면 그 칸에만)
   const from = which === 'top3' ? up3From(B) : null, before = from ? C.days.filter(d => d < from) : [];
-  const oldNote = before.length ? h('p', {class: 'bk-key', 'data-from': from, text: md(before[before.length - 1]) + '까지는 옛 기준, ' + md(from) + '부터는 새 기준으로 골랐어요. 「지금까지」와 「모두」는 둘을 함께 더한 값이에요.'}) : null;
+  // 새 기준 풀이도 이 한 칸에(맨 위에 두면 「지금까지」와 첫 회사 이름이 첫 화면 아래로 밀림 — 주문 1111-0938 「종목이 보이게」 · 검사 ㉑)
+  const ruleNew = '새 기준은 우량주 365곳 가운데 1년 오르다 요즘 쉬거나 내린 곳이에요. 크게 내린 곳도 숨기지 않아요.';
+  const oldNote = from ? h('p', {class: 'bk-key', 'data-from': from, text: (before.length ? md(before[before.length - 1]) + '까지는 옛 기준, ' + md(from) + '부터는 새 기준으로 골랐어요. ' : md(from) + '부터는 새 기준으로 골라요. ') + ruleNew
+    + (before.length ? ' 「지금까지」와 「모두」는 둘을 함께 더한 값이에요.' : '')}) : null;
   const E = edges(C), edgeLines = [['lo', '줄어든'], ['hi', '늘어난']].map(([k, what]) => { const r = E[k];
     return r && r !== sw?.r ? h('p', {class: 'bk-spl', 'data-edge': k, 'data-st': r.st, text: '가장 크게 ' + what + ' 것은 ' + md(r.day) + ' ' + r.place + '등 ' + r.name + ' ' + C.qty + '주예요. ' + moved(r.val - r.cost) + '.'}) : null; });
   const hero = h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-book': which === 'quiet' ? 'quiet' : 'top3', 'data-days': String(C.days.length), 'data-n': String(C.rows.length), 'data-diff': String(Math.round(C.diff)),
     'data-up': String(C.n.up), 'data-dn': String(C.n.dn), 'data-eq': String(C.n.eq), 'data-one': String(C.n.one), 'data-y': String(R)},
-    h('p', {class: 'bk-intro', text: K.intro}),
-    which === 'top3' && up3From(B) ? h('p', {class: 'bk-intro bk-new', 'data-from': up3From(B), text: md(up3From(B)) + '부터는 새 기준으로 골라요. 우량주 365곳에서 1년 오르다 요즘 쉬거나 내린 곳을 봐요. 크게 내린 곳도 숨기지 않아요.'}) : null, // 주문 1111-1857
+    h('p', {class: 'bk-intro', text: K.intro}), // 새 기준 풀이(주문 1111-1857)는 표 밑 bk-key 한 칸에
     moneyCard(C), // 주문 1112-1304 — 맨 위 「지금까지」 → 「날짜마다」 → 합을 흔든 한 줄 → 산 셈 하나씩(세 칸) → 달력 → 판
     ledger(C, go),
     oldNote,

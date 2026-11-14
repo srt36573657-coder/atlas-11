@@ -376,7 +376,7 @@ function legendUp3(y, rank, day, how) {
   const R = n => (rank ?? []).find(r => r?.place === n);
   const head = [s('circle', {cx: PAD + 7, cy: y - 7, r: 6, class: 'sa-dotA sa-in sa-in3'}), T(PAD + 20, y, '오늘의 1 · 2 · 3등', 'sa-kh sa-up3h sa-in sa-in3'),
     T(W - PAD, y, '누르면 이유 ›', 'sa-d sa-up3t sa-in sa-in3', {'text-anchor': 'end'}),
-    T(PAD, y + 28, '1년 오르다 요즘 쉬거나 내린 곳이에요.', 'sa-mean sa-m17 sa-in sa-in3', {'data-mean': 'up3'})]; // 달력 쪽 첫 줄과 같은 뜻 · 첫 화면 안이라 짧게 17(가장 큰 칠함이 되지 않게)
+    T(PAD, y + 28, '1년 오르다 요즘 쉬거나 내린 곳이에요.', 'sa-mean sa-m17 sa-in sa-in3', {'data-mean': 'up3'})]; // 달력 쪽 새 기준 풀이와 같은 뜻 · 첫 화면 안이라 짧게 17(가장 큰 칠함이 되지 않게)
   const rows = [1, 2, 3].map((n, i) => up3Row(R(n), n, y + 16 + UPM + i * (UPR + UPG), day, how));
   const yb = y + 16 + UPM + 3 * (UPR + UPG) - UPG; // 칸 셋 아래
   const cal = s('a', {href: '#/r/c', class: 'sa-up3c', 'aria-label': '1 · 2 · 3등 달력 보기 — 날마다 뽑힌 셋'},
