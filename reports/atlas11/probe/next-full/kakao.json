@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-14T06:15:23.301Z",
+ "at": "2026-11-14T07:12:17.163Z",
  "base": "https://aaa7377.com",
  "all": true,
  "limit": null,
@@ -22,7 +22,7 @@
    }
   }
  },
- "seconds": 123,
+ "seconds": 122,
  "counts": {
   "routes": 241,
   "rows": 5168,
