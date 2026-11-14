@@ -1,10 +1,10 @@
-/* 수르 — 기록 탭의 큰 그림 둘 · 잡스 판(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
+/* 큐피트 — 기록 탭의 큰 그림 둘 · 잡스 판(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
    옛 무하 판(su-rec-art.js)과 같은 자료 · 같은 셈 · 같은 서랍 주소 — 그림만 첫 페이지(su-apple.js) 말투로 다시 그림
-   ① 기록 한곳(#/r · arg 'hub') — 부제 두 줄 → 물건 하나: 100칸 구슬 판 둘(조건에 맞은 회사 = 호박색 빛나는 구슬 · 아무 회사 = 맑은 유리 구슬)
+   ① 기록 한곳(#/r · arg 'hub') — 부제 두 줄(물음 → 빈 고리 = 꽃이 못 된 때 · 못 된 쪽을 먼저 숨기지 않음) → 물건 하나: 100칸 구슬 판 둘(조건에 맞은 회사 = 호박색 빛나는 구슬 · 아무 회사 = 맑은 유리 구슬)
       su-fig.js waffle 과 같은 값 · 같은 칸 수 · 위 줄 왼쪽부터 채움 → 큰 숫자 둘(가는 세로선으로 나눔) → 짧은 안전 줄 → 서랍 여섯(두 칸씩 세 줄 · 가는 선)
       서랍 차례(토론으로 정함 · 그대로): 달마다 → 한 달 뒤 → 내 매매일지 → 못 된 까닭 → 날마다 → 옛 기록 더 보기(누르면 #/r/y)
       서랍 값은 su.js vHub 서랍과 같은 셈(su-six.js eMonths · eDays · eYears) · 한 달 뒤 = 매매일지의 「한 달 뒤 물은 기록」 수(su-why.js)
-   ② 달마다(#/r/m · arg 'months') — 부제 두 줄 → 범례 한 줄 → 해마다 한 칸(굵은 선 · 해 이름) · 달마다 가는 막대 둘(호박색 = 고른 회사 · 회색 유리 = 아무 회사)
+   ② 달마다(#/r/m · arg 'months') — 부제 두 줄 → 범례 한 줄 → 해마다 한 칸(굵은 선 · 해 이름) · 달마다 가는 막대 둘(호박색 = 조건에 맞은 회사 · 회색 유리 = 아무 회사)
       su-fig.js cols 와 같은 값 · 같은 차례 · 같은 높이 비(막대 = 단 높이 × 값 ÷ 끝 값) · 아무 회사보다 못한 달 = 빈 호박색 막대(색만으로 가르지 않음) · 세는 중 = 고리 점(◎)
    부품 꼴(옛 부품과 같음): load(get, 'hub'|'months') · picture(d, opt) → svg 하나 · CSS
    그리기: s() 만(createElementNS · setAttribute) · 색 · 움직임은 su-rec-jobs.css(움직임 줄이기면 끝 모습) · 흐림 필터 · 아무 수 0 · 사람 그림 · 덩굴 · 꽃 · 금 테 0 */
@@ -86,8 +86,8 @@ function need(kind, id, label) {
 function hub(d, id) {
   const H = 668;
   const okA = fin(d.rate), okB = fin(d.base), A = okA ? Math.round(d.rate) : 0, Bn = okB ? Math.round(d.base) : 0; // su-fig.js waffle 과 같은 반올림
-  const tA = okA ? A + '번' : NEED, tB = okB ? Bn + '번' : NEED;
-  const svg = root('hub', H, '기록 한곳 · 100번에 몇 번 꽃이 됐나 · 조건에 맞은 회사 ' + tA + ' · 아무 회사 ' + tB + ' · 아래에 기록 서랍 여섯');
+  const tA = okA ? A + '번' : NEED, tB = okB ? Bn + '번' : NEED, mA = okA ? '꽃이 못 된 때 ' + (100 - A) + '번' : '꽃이 못 된 때 ' + NEED, mB = okB ? '꽃이 못 된 때 ' + (100 - Bn) + '번' : '꽃이 못 된 때 ' + NEED;
+  const svg = root('hub', H, '기록 한곳 · 100번에 몇 번 꽃이 됐나 · 조건에 맞은 회사 ' + tA + '(' + mA + ') · 아무 회사 ' + tB + '(' + mB + ') · 빈 고리는 꽃이 못 된 때 · 아래에 기록 서랍');
   const u = k => `url(#${id}${k})`;
   svg.append(s('defs', {},
     rg(id + 'h', haloStops),
@@ -95,10 +95,10 @@ function hub(d, id) {
     rg(id + 'g', [[0, 'rj-g0'], [0.55, 'rj-g1'], [0.8, 'rj-g2'], [0.94, 'rj-g3'], [1, 'rj-g4']], {cx: '46%', cy: '42%', r: '58%', fx: '40%', fy: '34%'})),
   s('rect', {x: 0, y: 0, width: W, height: H, class: 'rj-bg'}));
 
-  /* 1 부제 두 줄 */
+  /* 1 부제 두 줄 — 물음 → 빈 고리가 무엇인지(꽃이 못 된 때를 찬 구슬과 같은 칸 · 같은 크기로 보임 · 지난 기록이라는 말은 맨 아래 안전 줄) */
   svg.append(s('g', {class: 'rj-top rj-in rj-in1'},
-    T(MID, 42, '지난 기록으로 셌어요.', 'rj-sub', MIDA),
-    T(MID, 70, '100번에 몇 번 꽃이 됐나?', 'rj-sub', MIDA)));
+    T(MID, 42, '100번에 몇 번 꽃이 됐나?', 'rj-sub', MIDA),
+    T(MID, 70, '빈 고리는 꽃이 못 된 때예요.', 'rj-sub', MIDA)));
 
   /* 2 물건 하나 — 100칸 구슬 판 둘(위 줄 왼쪽부터 · 찬 칸 = 구슬 · 빈 칸 = 가는 고리) */
   const P = 17, R = 7, FY = 142, CX = [102, 288], KY = 116;
@@ -160,7 +160,7 @@ function months(d, id) {
   const hB = Math.max(96, Math.floor((642 - FOOT0 - TOP0 - nY * (HEAD + FOOT) - (nY - 1) * GAP) / nY)); // 단 높이(두 해면 150 — 첫 화면 390 × 844 안에 두 해 모두) · 막대 높이 비는 그대로(높이 = hB × 값 ÷ 끝 값)
   const tops = years.map((_, i) => TOP0 + i * (HEAD + hB + FOOT + GAP)), H = TOP0 + nY * (HEAD + hB + FOOT) + (nY - 1) * GAP + FOOT0;
   const anyOpen = rows.some(r => r.open);
-  const svg = root('months', H, '달마다 꽃이 된 횟수 · 해마다 한 칸 · 호박색 막대는 고른 회사 · 회색 유리 막대는 아무 회사 · 아무 회사보다 못한 달은 빈 막대' + (anyOpen ? ' · 세는 중인 달은 고리 점' : ''));
+  const svg = root('months', H, '달마다 꽃이 된 횟수 · 해마다 한 칸 · 호박색 막대는 조건에 맞은 회사 · 회색 유리 막대는 아무 회사 · 아무 회사보다 못한 달은 빈 막대' + (anyOpen ? ' · 세는 중인 달은 고리 점' : ''));
   const u = k => `url(#${id}${k})`;
   svg.append(s('defs', {},
     lg(id + 'ra', [[0, 'rj-ra0'], [0.36, 'rj-ra1'], [1, 'rj-ra2']]),
@@ -173,8 +173,8 @@ function months(d, id) {
     T(MID, 42, '달마다 100번에 몇 번 꽃이 됐나,', 'rj-sub', MIDA),
     T(MID, 70, '아무 회사와 나란히 놓았어요.', 'rj-sub', MIDA)));
 
-  /* 2 범례 한 줄 — 찬 호박색 = 고른 회사 · 회색 유리 = 아무 회사 · 빈 호박색 = 못한 달 */
-  const LG = [['a', '고른 회사'], ['g', '아무 회사'], ['h', '못한 달']], IW = 16, LGAP = 22, LY = 110;
+  /* 2 범례 한 줄 — 찬 호박색 = 조건에 맞은 회사(기록 한곳 그림과 같은 이름) · 회색 유리 = 아무 회사 · 빈 호박색 = 못한 달 · 사이 18(한 줄이 390 안 20 ~ 370) */
+  const LG = [['a', '조건에 맞은 회사'], ['g', '아무 회사'], ['h', '못한 달']], IW = 16, LGAP = 18, LY = 110;
   const lw = LG.map(([, t]) => IW + est(t, 18)), tot = lw.reduce((a, b) => a + b, 0) + LGAP * (LG.length - 1);
   const legend = s('g', {class: 'rj-legend rj-in rj-in2'});
   let lx = MID - tot / 2;

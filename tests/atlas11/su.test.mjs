@@ -677,7 +677,7 @@ test('이름 큐피트 · 천사 단추 · 꽃이 될 듯은 빚투 · 본전을
   assert.equal(NAME, '큐피트'); assert.equal(NAME_EN, 'Cupid'); assert.equal(BRAND.was[0].ko, '수르'); assert.equal(BRAND.was[0].en, 'Sur');
   assert.ok(fs.existsSync(path.join(ROOT, 'docs/큐피트_본질.md')) && !fs.existsSync(path.join(ROOT, 'docs/수르_본질.md')), '본질 파일 이름 따라감');
   const lock = JSON.parse(rd('config/atlas11/essence.lock.json')), rows = lock.files['docs/큐피트_본질.md'];
-  assert.ok(rows && rows.at(-1).words.includes('수르를 큐피트로 변경하고') && rows.at(-1).sha256 === crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, 'docs/큐피트_본질.md'))).digest('hex'), '잠금 — 오늘 말씀 · 새 해시');
+  assert.ok(rows && rows.some(r => r.words.includes('수르를 큐피트로 변경하고')) && rows.at(-1).sha256 === crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, 'docs/큐피트_본질.md'))).digest('hex'), '잠금 — 이름 바꾼 말씀 줄 · 마지막 줄 = 지금 해시(뒤에 손자병법 틀 8번 줄 — 주문 1114-0922)');
   const su = rd('site/su/su.js'), s21 = rd('site/su/su-21.js'), feat = rd('site/su/su-feat.js'), hn = rd('site/next/home-new.js'), boot = rd('site/next/boot-home.js');
   assert.ok(su.includes("'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'})") && s21.includes("card('https://shin-yxy.gino.im/', '천사',") && feat.includes("name: '천사 단추'")
     && hn.includes("h('span', {text: EN ? 'Angel' : '천사'})") && boot.includes("ms.append(el('span', null, '천사')"), '천사 단추 — 같은 바깥 주소');

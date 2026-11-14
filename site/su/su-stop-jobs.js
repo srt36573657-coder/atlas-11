@@ -1,4 +1,4 @@
-/* 수르 — 「멈춤」 탭 큰 그림 둘 · 잡스 판(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
+/* 큐피트 — 「멈춤」 탭 큰 그림 둘 · 잡스 판(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
    옛 무하 판(su-stop-art.js — 보름달 여인 · 돌 의자 여인 · 아치 틀)을 덜어 내고 첫 페이지 잡스 판(su-apple.js)과 같은 말투로 새로 그림
    ① 「왜 사?」(#/q) — 흰 바탕에 열한 구슬이 말굽 꼴로 둘러섬 · 답한 구슬은 호박빛으로 켜짐 · 지금 구슬은 크게(아직이면 속에 불씨)
       가운데 큰 숫자 「N번째 질문」과 그 질문(WHY_QS 글자 그대로) · 아래로 답한 질문 | 남은 질문 두 칸 · 네 묶음(WHY_GROUPS 차례 그대로) 한 줄
@@ -135,7 +135,7 @@ function quizPic(d, opt, id) {
   /* 가운데 — 지금 질문(묶음 · 큰 번호 · 질문 글) · 모두 답했으면 답한 수 */
   const grp = cur && groups ? groups.find(([, l]) => Array.isArray(l) && l.includes(cur)) : null;
   const top = cur ? (grp ? grp[0] + ' 묶음' : NEED) : '답한 질문';
-  const line = cur ? (qs && typeof qs[cur - 1] === 'string' ? qs[cur - 1] : NEED) : all ? '모두 답했어요' : '열한 질문 가운데';
+  const line = cur ? (qs && typeof qs[cur - 1] === 'string' ? qs[cur - 1] : NEED) : all ? '모두 답했어요' : '아직 다 답하지 않았어요'; // 「답한 질문 · 3 / 11」 아래 — 끊긴 말 없이 한 문장
   const center = s('g', {class: 'ssj-in ssj-in2'},
     T(MID, 214, top, 'ssj-d', MIDA),
     cur ? numText(MID, 282, cur, '번째 질문', 'ssj-big') : numText(MID, 282, done, '/ ' + n, 'ssj-big'),
