@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T19:33:48.307Z",
+ "at": "2026-11-13T23:50:34.146Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1690,
+  "pass": 1695,
   "fail": 0
  },
  "fails": [],
@@ -19,8 +19,8 @@
    ]
   },
   "home": {
-   "screens": 26.14,
-   "links": 322
+   "screens": 28.26,
+   "links": 355
   },
   "t21": {
    "listed": 2557,
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 1164,
+   "lcp": 1120,
    "cls": 0.121,
-   "pic": 1775
+   "pic": 1736
   },
   "white": {
    "light #/": {
@@ -275,7 +275,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -1375,7 +1375,7 @@
    "days": 4
   },
   "settle": {
-   "buys": 356,
+   "buys": 389,
    "kinds": [
     6,
     14,
@@ -1433,7 +1433,9 @@
    "cos": 61,
    "miss": 0,
    "miss36": 0,
-   "late": 0
+   "late": 0,
+   "ovl": 33,
+   "missO": 0
   },
   "s36": {
    "all": 301,
@@ -1448,6 +1450,21 @@
     "want": 252,
     "chips": 252,
     "got": 252
+   },
+   "ovl": {
+    "n": 33,
+    "sp": 33,
+    "top": [
+     10,
+     9,
+     9
+    ],
+    "days": [
+     1,
+     1,
+     1
+    ],
+    "from": "2026-11-13"
    },
    "days": {
     "from": "2026-11-13",
