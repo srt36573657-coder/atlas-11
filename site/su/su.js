@@ -10,21 +10,14 @@
 import {NAME, josa} from '/next/brand.js';
 import {glossTree} from '/next/glossary.js';
 import {CODE, pct, moreLess, dateKo, bloomList, moneyList, reasonsFor, whyOf, idxLine, coLine, indRows, forwardTo} from '/su/su-data.js';
-import {NEED, brand, holes, kn, num, ymd, ym, eHome, eCo, eCondRows, eInd, eHub, eMonths, eMiss, eDays, eYears, eNear} from '/su/su-six.js';
+import {NEED, brand, holes, kn, num, ymd, ym, eHome, eCo, eCondRows, eInd, eHub, eMonths, eMiss, eDays, eYears, eNear, monthTally} from '/su/su-six.js';
 import {easy, glossPage, hardLeft} from '/su/su-word.js';
 import {halo, dress} from '/su/su-art.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {h, s, fig, matrix, bars, cols, waffle, line, cal, split, sixTiles, sixMap, thumb, funnel, honest3, dots6} from '/su/su-fig.js';
 import {load21, v21Home, v21Next, vLand, vLandOne, vMore, vFriend, reasonBox21, find21} from '/su/su-21.js';
-let GODM = null; const godM = () => (GODM ??= import('/su/su-gods.js')); // 신 72 지킴이 · 스승 39 길잡이(주문 0054 [5]) — 첫 그림을 막지 않게 창이 다 열린 뒤 받음(느린 휴대폰 첫 화면 2.5초)
 const roadM = () => import('/su/su-roads.js'); // 셋의 길 — 옛 기능 자리(주문 0054 [4]) · 그 쪽을 열 때만 받음
-/** 늦게 채우는 자리 — 빈 칸을 먼저 두고, 창이 다 열린 뒤 신 · 스승 모듈이 오면 바꿔 끼움(못 받거나 그 방에 없으면 빈 칸을 치움) */
-function lateGod(make) {
-  const slot = h('div', {class: 'su-late', 'aria-hidden': 'true'});
-  const go = () => godM().then(G => { const e = make(G); if (e) slot.replaceWith(e); else slot.remove(); }).catch(() => slot.remove());
-  if (document.readyState === 'complete') setTimeout(go, 0); else window.addEventListener('load', () => setTimeout(go, 300), {once: true});
-  return slot;
-}
+// 주문 1114-0922(사장님 2026-11-14 08:27 「… 과거 찌꺼기 버릴것은 버리고」) — 방마다 붙던 옛 「신 72 지킴이 · 스승 39 길잡이」 칸(주문 0054 [5])을 뺌: 손자병법 틀과 앞뒤가 안 맞고 화면만 길게 함
 let WHYM = null; const whyM = async () => (WHYM ??= await import('/su/su-why.js')); // 「왜 사?」 · 매매일지는 그 쪽에서 받음(첫 화면이 가볍게 — 주문 2044 느린 휴대폰)
 
 brand(NAME);
@@ -182,8 +175,7 @@ export function page(m) {
     m.big ? sixMap([m.big, ...(m.mids ?? []), ...(m.rows ?? [])]) : null,
     proBox(m.pro),
     ...(m.after ?? []),
-    m.note ? h('p', {class: 'su-note', text: m.note}) : null,
-    lateGod(G => G.godTag(hk))); // 방 지킴이 신(주문 0054 [5] 5)
+    m.note ? h('p', {class: 'su-note', text: m.note}) : null);
   const act = m.act?.filter(Boolean).length ? h('div', {class: 'su-act', 'aria-label': '누르는 곳'}, m.act.filter(Boolean)) : null; // 「왜 사?」 답 단추처럼 기능에 꼭 있는 누르는 곳(지우지 않음 — [2] 3)
   const main = h('main', {class: 'su-page su-news'}, top, m.hero ?? null, act, two, more, source(m.asOf, m.S));
   return [head, main, dock(m.next, m.step), tabs(m.tab ?? 0)];
@@ -199,17 +191,21 @@ export function afterPaint(root) {
   main.dataset.hard = String(left.length);
   main.dataset.hardWords = left.join(',');
   // 신문 짜임(주문 1023 [1] 2 「그림 밖 문장은 큰 값 · 설명 두 줄 · 출처뿐」) — 낱말 풀이와 쉬운 말 셈은 지우지 않고 「자세히」 서랍 맨 앞으로(앞 주문 1807 과 부딪힘 → [2] 5 로 이 주문을 따름)
-  const more = main.querySelector(':scope > details.su-more'), wc = h('p', {class: 'su-wc'}, h('b', {text: '쉬운 말 '}), '풀이 붙인 낱말 ' + glossed.length + '개 · 풀이 없이 남은 어려운 낱말 ' + left.length + '개' + (left.length ? ' (' + left.join(', ') + ')' : ''));
+  // 기계가 센 「쉬운 말 · 풀이 붙인 낱말 ○개 · 풀이 없이 남은 어려운 낱말 ○개」 줄은 화면에 붙이지 않음 — 셈은 위 main data-hard · data-hard-words · data-glossed 에만(점검 장부가 손님 화면에 나오던 것 · DISCARD 10 · 주문 1114-0922 「과거 찌꺼기 버릴것은 버리고」)
+  const more = main.querySelector(':scope > details.su-more');
+  for (const e of main.querySelectorAll('.su-wc')) e.remove();
   if (more) {
     more.querySelector('.su-glbox')?.remove();
     const out = [...main.querySelectorAll('.su-gl')].filter(g => !g.closest('details.su-more'));
-    more.querySelector(':scope > summary')?.after(h('section', {class: 'su-glbox', 'aria-label': '낱말 풀이'}, h('h2', {class: 'su-ft', text: '낱말 풀이'}), ...out, wc));
-  } else { const f = main.querySelector('.su-src'); if (f) { f.querySelector('.su-wc')?.remove(); f.append(wc); } } // 쉬운 말 셈을 맨 아래에(시안 2 장점) — 기계가 센 값
+    if (out.length) more.querySelector(':scope > summary')?.after(h('section', {class: 'su-glbox', 'aria-label': '낱말 풀이'}, h('h2', {class: 'su-ft', text: '낱말 풀이'}), ...out)); // 풀이가 없으면 빈 칸을 두지 않음
+  }
   requestAnimationFrame(() => setTimeout(() => dress(root), 0)); // 무하처럼 — 어깨 덩굴 · 꽃 띠 · 네 모서리 꽃 · 글과 겹치면 숨김(주문 1833) · 첫 그림이 뜬 뒤에(느린 휴대폰에서 첫 화면을 늦추지 않게)
 }
 export function notFound(t) { return {title: '찾지 못했어요', h1: '찾지 못했어요', tab: 0, body: [h('p', {class: 'su-lead', text: '? ' + t}), h('a', {class: 'su-ask', href: '#/'}, h('b', {text: '처음으로'}))]}; }
 const condsOf = bl => bl.say.map(t => ({t, short: t.replace(/(이에요|예요|어요)$/, '')}));
-const honestOf = B => honest3({base: B?.honest?.base, rate: B?.honest?.rate, down: B?.honest?.down, scored: B?.honest?.scored, miss: B?.why?.all?.miss, n: B?.honest?.n, fall: B?.record?.all?.fall, fallBase: B?.record?.all?.fallBase});
+const honestOf = B => { const t = monthTally(B); return honest3({base: B?.honest?.base, rate: B?.honest?.rate, down: t.n ? t.down : null, same: t.same, scored: t.n || null, miss: B?.why?.all?.miss, n: B?.honest?.n, fall: B?.record?.all?.fall, fallBase: B?.record?.all?.fallBase}); }; // 못한 달 = 달마다 쪽과 같은 셈(점검 X4 · F1)
+/** 그 쪽 값 한 줄 — 숨기지 않는 네 칸은 「못 된 이유」 쪽(과 옛 오늘 쪽)에만 · 다른 쪽에는 그 쪽과 상관없는 1,048번 · 7달 대신 그 쪽의 못 된 수(점검 F1) */
+const lossLine = t => (t ? h('figure', {class: 'su-fig su-honest', 'aria-label': '그런데 · 못 된 쪽'}, h('h2', {class: 'su-ft', text: '그런데 · 못 된 쪽'}), h('p', {class: 'su-lead', text: t})) : null);
 function essBox(S) {
   const lines = essenceLines(essenceData({summary: S}));
   return h('section', {class: 'su-ess', 'aria-label': NAME + ' 본질'}, h('h2', {class: 'su-ft', text: josa(NAME, '는') + ' 이런 곳이에요'}), h('ol', {}, lines.map((t, i) => h('li', {'data-ess': String(i + 1), text: t}))));
@@ -272,16 +268,16 @@ async function vCo(code) {
   const hero = line(cl, il ? il.line : null, {label: c.name + ' 한 달 줄과 ' + (il?.name ?? '시장 전체 값'), name: c.name, iname: il?.name ?? '시장', hero: true, cap: e.say, pctText: last != null ? pct(last) : null});
   hero.append(h('p', {class: 'su-lg'}, h('span', {class: 'su-lg-c'}, h('b', {text: last != null ? pct(last) : '?'}), ' ' + c.name), h('span', {class: 'su-lg-i'}, h('b', {text: ilast != null ? pct(ilast) : '?'}), ' ' + (il?.name ?? '시장'))));
   const indX = n => (TH?.inds ?? []).find(i => i?.n === n)?.x;
-  const inds = [...bl.rows.map(r => ({n: r.ind, x: indX(r.ind)})), ...mo.map(r => ({n: r.ind, x: r.x}))].filter((x, i, a) => x.n && Number.isFinite(x.x) && a.findIndex(y => y.n === x.n) === i).sort((a, b) => b.x - a.x);
+  const inds = [...bl.rows.map(r => ({n: r.ind, x: indX(r.ind)})), ...mo.map(r => ({n: r.ind, x: r.x})), {n: ind, x: indX(ind)}].filter((x, i, a) => x.n && Number.isFinite(x.x) && a.findIndex(y => y.n === x.n) === i).sort((a, b) => b.x - a.x); // 이 회사 업종도 막대에(점검 J5)
   return {title: c.name, tab: 1, step: 2, proper: true, kick: [c.market === 'KOSDAQ' ? '코스닥' : c.market === 'KOSPI' ? '코스피' : null, ind ? ind + ' 업종' : null].filter(Boolean).join(' · '), h1: c.name, big: e.big,
-    ...artHero('su-co-jobs', code, hero), mids: e.mids, honest: honestOf(B), // 한 달 줄 · 끝값 이름표 · 「왜 여기 있나」 길(주문 1023) — 첫 페이지 잡스 판으로(주문 2011 · 옛 무하 판 su-co-art 는 남김)
+    ...artHero('su-co-jobs', code, hero), mids: e.mids, honest: lossLine((r0?.kind === 'pick' || r0?.kind === 'near') && bl.rec && Number.isFinite(bl.rec.rate) ? '이런 회사는 지난 기록에서 100번에 ' + (100 - Math.round(bl.rec.rate)) + '번은 꽃이 못 됐어요.' : null), // 한 달 줄 · 끝값 이름표 · 「왜 여기 있나」 길(주문 1023) — 첫 페이지 잡스 판으로(주문 2011 · 옛 무하 판 su-co-art 는 남김)
     figs: [(r0?.kind === 'pick' || r0?.kind === 'near') ? matrix([{name: c.name, ok: bl.say.map(t => (r0.kind === 'pick' ? true : !r0.no.map(easy).includes(t)))}], condsOf(bl), {label: c.name + '와 꽃 조건', title: '꽃 조건 셋과 이 회사'}) : null,
-      inds.length && ind ? bars(inds.map(x => ({name: x.n, v: x.x, key: x.n})), {label: '업종 · 한 달 동안 시장보다', title: '업종이 시장보다 더 오른 만큼' + (Number.isFinite(bl.min) ? ' · 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: ind}) : null].filter(Boolean),
-    body: [...rs.map(reasonCard), ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
-      h('a', {class: 'su-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'}))],
+      inds.length && ind ? bars(inds.map(x => ({name: x.n, v: x.x, key: x.n})), {label: '업종 · 한 달 동안 시장보다', title: '업종이 시장보다 더 오른 만큼' + (Number.isFinite(bl.min) ? ' · 업종이 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: ind}) : null].filter(Boolean),
+    body: [...rs.map(reasonCard), ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null],
     rows: eCondRows({co: {code, name: c.name, ind}, bl, rs: rs.map(x => ({...x, ok: (x.ok ?? []).map(easy), no: (x.no ?? []).map(easy)})), asOf, B}), rowsTitle: '이달 꽃 조건 하나씩', pro: e.pro,
+    after: [h('a', {class: 'su-ask', href: '#/q/' + code}, h('b', {text: '정하기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 까닭부터 적어요.'}))], // 숫자 표 한가운데가 아닌 꽃 조건 칸 뒤 · 안전 문장 바로 위(점검 J3)
     next: ind ? {href: indHref(ind), label: '업종은 얼마나 올랐나?', step: 3} : {href: '#/r', label: '지난날 몇 번 꽃이 됐나?', step: 4}, asOf: H?.asOf ?? asOf, S,
-    note: rs.length ? null : '이 회사는 오늘 두 목록에 없어요. 지난 한 달만 보여 드려요.'};
+    note: rs.length ? null : '이 회사는 오늘 꽃 조건 목록과 돈이 몰린 회사 목록에는 없어요. 지난 한 달 값만 보여 드려요.'}; // 어느 목록인지 이름으로(점검 J12)
 }
 
 /* ── 3 업종(승) ── */
@@ -293,7 +289,7 @@ async function vInd(name) {
   const c0 = lastCo?.ind === name ? rows.find(r => r.code === lastCo.code) ?? null : null;
   const e = eInd({name, x, wy, rows, asOf: M?.asOf, cur: c0, min: Number.isFinite(bl.min) ? bl.min : null});
   const known = rows.filter(r => Number.isFinite(r.c)), up = known.filter(r => r.c > 0).length;
-  const top = rows.slice(0, 12), extra = c0 && !top.some(r => r.code === c0.code) ? [c0] : [];
+  const t12 = rows.slice(0, 12), top = [...t12, ...known.filter(r => r.c <= 0 && !t12.includes(r))], extra = c0 && !top.some(r => r.code === c0.code) ? [c0] : []; // 많이 오른 열둘 + 못 오른 곳은 늘(잘라서 숨기지 않게 — 점검 J2)
   const list = h('section', {class: 'su-list', 'aria-label': name + ' 업종 회사'}, h('h2', {class: 'su-ft', text: '회사를 누르면 그 회사로 가요'}),
     [...top, ...extra].map(r => h('a', {class: 'su-row su-irow' + (c0?.code === r.code ? ' su-cur' : ''), href: coHref(r.code)}, h('b', {'data-proper': '', text: r.name}), h('span', {class: 'su-csub', text: '한 달 ' + (Number.isFinite(r.c) ? pct(r.c) : NEED)}))));
   const indX = n => (TH?.inds ?? []).find(i => i?.n === n)?.x;
@@ -301,25 +297,16 @@ async function vInd(name) {
   const ib = bars([...top, ...extra].map(r => ({name: r.name, v: r.c, key: r.code})), {label: name + ' 업종 회사 한 달 움직임', hero: true, signed: true, cur: c0?.code ?? null, cap: e.say});
   return {title: name + ' 업종', tab: 1, step: null, kick: '돈의 흐름 · ' + dateKo(M?.asOf) + '까지 한 달', h1: name + ' 업종', big: e.big,
     ...frameHero(ib, name + ' 한 달', 'bars', 'money'),
-    mids: e.mids, honest: honestOf(B),
-    figs: [known.length ? waffle(100 * up / known.length, 100 * (known.length - up) / known.length, {label: '오른 회사와 오르지 못한 회사', title: '100곳으로 치면 · 오른 곳과 못 오른 곳', la: '오른 곳', lb: '못 오른 곳'}) : null,
-      inds.length > 1 ? bars(inds.map(v => ({name: v.n, v: v.x, key: v.n})), {label: '업종 · 한 달 동안 시장보다', title: '다른 업종과 견주면' + (Number.isFinite(bl.min) ? ' · 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: name}) : null].filter(Boolean),
+    mids: e.mids, honest: null, // 네 칸은 「못 된 이유」 쪽에만 — 이 쪽의 못 오른 곳은 위 값과 목록에(점검 F1)
+    figs: [known.length ? waffle(100 * (known.length - up) / known.length, 100 * up / known.length, {label: '오르지 못한 회사와 오른 회사', title: '100곳으로 치면 · 못 오른 곳과 오른 곳', la: '못 오른 곳', lb: '오른 곳', ca: 'g-no'}) : null, // 못 오른 쪽 먼저(점검 J5)
+      inds.length > 1 ? bars(inds.map(v => ({name: v.n, v: v.x, key: v.n})), {label: '업종 · 한 달 동안 시장보다', title: '다른 업종과 견주면' + (Number.isFinite(bl.min) ? ' · 업종이 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: name}) : null].filter(Boolean),
     body: [list, wy?.items?.length ? h('section', {class: 'su-why', 'aria-label': '돈이 몰린 이유'}, h('h2', {class: 'su-ft', text: '돈이 몰린 이유'}), wy.line ? h('p', {class: 'su-lead', text: wy.line}) : null,
       h('ol', {class: 'su-items'}, wy.items.slice(0, 4).map(it => h('li', {}, h('b', {text: easy(it.t)}), it.sub ? h('span', {text: easy(it.sub)}) : null)))) : null],
     rows: e.rows, rowsTitle: '회사마다 한 달', pro: e.pro,
     next: {href: '#/r', label: '지난날 몇 번 꽃이 됐나?', step: null}, asOf: M?.asOf ?? a0, S};
 }
 
-/** 다른 기록도 기록 한곳에(주문 0054 [4] 7 「모든 기록은 기록 한곳(#/r)에 모아라」) — 한 달 뒤 · 봉인 · 지난 기록 · 업데이트 기록 · 진화 · 합계 세기(옛 쪽은 수르 틀로) */
-const REC_NAMES = ['한 달 뒤', '지난 기록', '봉인', '업데이트 기록', '진화', '합계 세기', '싹 달력', '급등 달력'];
-function recOthers() {
-  const box = h('section', {class: 'su-flist su-rec2', 'aria-label': '다른 기록'}, h('h2', {class: 'su-ft', text: '다른 기록도 여기서 · 큐피트 틀 안에서 열림'}));
-  import('/su/su-roads.js').then(async R => { const F = await R.feats();
-    for (const nm of REC_NAMES) { const f = F.find(x => x.name === nm), href = f ? R.hrefOf(f) : null; if (!f || !href) continue;
-      box.append(h('a', {class: 'su-fcard', href}, h('b', {text: f.name}), h('span', {text: f.how}))); }
-  }).catch(e => console.error(e));
-  return box;
-}
+// 「다른 기록도 여기서」 칸(옛 쪽 여덟 · 사장님 휴대폰에만 보이는 길까지)은 뺌 — 위 서랍과 같은 길이 세 군데였음(주문 1114-0922 「과거 찌꺼기 버릴것은 버리고」 · 점검 J6) · 옛 기능은 셋의 길(#/g)에 그대로
 /* ── 4 기록 한곳(전) ── */
 async function vHub() {
   const {B, S, bl, mo, asOf} = await base();
@@ -342,11 +329,10 @@ async function vHub() {
       drawer('#/r/w', '못 된 이유', num(B?.why?.all?.miss) ? num(B.why.all.miss) + '번' : NEED, '조건에 맞고도 꽃이 못 된 횟수'),
       drawer('#/r/d', '날마다', dd.big.v != null ? dd.big.v + '날' : NEED, '지난 60거래일 달력'),
       drawer('#/r/k', '한국 시장 일곱 가지', '7가지', '다른 나라와 아주 다른 점 · 한국 문화가 묻은 곳'), // 기록창(주문 0814 · 사장님 2026-11-09 08:14 · 08:25 「수르에 올려야해」)
-      drawer('#/r/i', '한국 투자자 특징 열하나', '11가지', '도우미 열하나가 찾은 버릇 · 큐피트 42칸에 쓰는 일곱'), // 주문 2235
-      h('details', {class: 'su-oldrec'}, h('summary', {class: 'su-oldrecs'}, h('b', {text: '옛 기록 더 보기'}), h('span', {text: '해마다 · 가까운 회사 · 옛 기록 여덟'})), // 이름이 보이는 접힘
-        drawer('#/r/y', '해마다', yy.big.v != null ? yy.big.v + ' 대 ' + yy.big.v2 : NEED, '모든 해 · 100번에 몇 번'),
-        drawer('#/r/n', '가까운 회사', nn.big.v != null ? nn.big.v + ' 대 ' + nn.big.v2 : NEED, '조건에 가까웠던 회사 · 100번에 몇 번'),
-        recOthers()))],
+      drawer('#/r/i', '한국 투자자 특징 열하나', '11가지', '한국 개인 투자자 버릇 열하나 · 그 가운데 일곱을 고를 때 써요'), // 주문 2235 · 만든 쪽 말 「도우미」를 뺌(점검 J7)
+      h('details', {class: 'su-oldrec'}, h('summary', {class: 'su-oldrecs'}, h('b', {text: '옛 기록 더 보기'}), h('span', {text: '해마다 · 가까운 회사'})), // 이름이 보이는 접힘
+        drawer('#/r/y', '해마다', yy.big.v != null ? yy.big.v + ' 대 ' + yy.big.v2 : NEED, '고른 해 · 100번에 몇 번'),
+        drawer('#/r/n', '가까운 회사', nn.big.v != null ? nn.big.v + ' 대 ' + nn.big.v2 : NEED, '조건에 가까웠던 회사 · 100번에 몇 번')))],
     pro: e.pro,
     next: {href: '#/r/m', label: '몇 달이 나았나?', step: null}, asOf, S, note: '지난 기록은 같은 조건을 지난날에 대어 센 것이에요. 앞날을 정해 주지 않아요.'};
 }
@@ -357,8 +343,8 @@ async function vMonths() {
   const e = eMonths({B});
   return {title: '달마다', tab: 2, step: null, kick: '그달 꽃 조건으로 고른 회사', h1: '달마다 지난 기록', big: e.big,
     ...artHero('su-rec-jobs', 'months', cols(e.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|04|07|10)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수와 아무 회사', hero: true, cap: e.say})),
-    mids: e.mids, honest: honestOf(B),
-    figs: [bars(e.ms.filter(m => m.rec.complete === true).map(m => ({name: ym(m.month), v: m.rec.rate - m.rec.base, key: m.month, t: (m.rec.rate - m.rec.base >= 0 ? '+' : '−') + Math.abs(Math.round(m.rec.rate - m.rec.base)) + '번'})).reverse(),
+    mids: e.mids, honest: null, // 못한 달은 위 큰 값이 먼저 말함 — 다른 쪽 숫자 넷을 다시 붙이지 않음(점검 F1)
+    figs: [bars(e.ms.filter(m => m.rec.complete === true).map(m => { const d = Math.round(m.rec.rate) - Math.round(m.rec.base); return {name: ym(m.month), v: d, key: m.month, t: d > 0 ? '+' + d + '번' : d < 0 ? '−' + -d + '번' : '같음'}; }).reverse(), // 보이는 두 수의 차이(「−0번」 없음 — 점검 X5)
       {label: '달마다 아무 회사보다 더 · 덜', title: '아무 회사보다 더(오른쪽) · 덜(왼쪽)', signed: true})],
     rows: e.rows.map(r => ({...r, label: r.label})), rowsTitle: '달마다 · 그달 조건은 여섯 칸의 「왜」', pro: e.pro,
     next: {href: '#/r/w', label: '왜 꽃이 못 됐나?', step: null}, asOf, S};
@@ -367,14 +353,15 @@ async function vMonths() {
 /* ── 6 못 된 까닭(전) ── */
 async function vMiss() {
   const {B, S, asOf} = await base();
-  const e = eMiss({B}), dd = eDays({B}), hon = B?.honest, code = lastCo?.code ?? null;
+  const e = eMiss({B}), hon = B?.honest, code = lastCo?.code ?? null;
   const sp0 = split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것 · 이유 셋', hero: true, cap: e.say});
   return {title: '못 된 이유', tab: 2, step: null, kick: '조건에 맞고도 꽃이 못 된 것', h1: '꽃이 못 된 이유', big: e.big,
     ...frameHero(sp0, '꽃이 못 된 이유', 'split', 'calm'),
     mids: e.mids, honest: honestOf(B),
-    figs: [cal(dd.ds, {label: '지난 60거래일 달력', title: '날마다 · ● 꽃이 됨 · ■ 못 됨 · ▲ 기다림'}), B?.near?.rec ? waffle(B.near.rec.rate, B.near.rec.base, {label: '가까운 회사 · 100번에 몇 번', title: '조건에 가까웠던 회사는', la: '가까운 회사', lb: '아무 회사'}) : null].filter(Boolean),
-    rows: dd.mids, rowsTitle: '지난 60거래일', pro: [...e.pro, ...dd.pro],
-    next: {href: code ? '#/q/' + code : '#/q', label: '내 이유는 무엇인가?', step: null}, asOf, S};
+    figs: [B?.near?.rec ? waffle(B.near.rec.rate, B.near.rec.base, {label: '가까운 회사 · 100번에 몇 번', title: '조건에 가까웠던 회사는', la: '가까운 회사', lb: '아무 회사'}) : null].filter(Boolean),
+    body: [h('a', {class: 'su-ind', href: '#/r/d'}, h('span', {text: '날마다 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))], // 날마다 달력 · 세 칸은 날마다 쪽에만(같은 그림이 두 쪽에 — 점검 J9)
+    pro: e.pro,
+    next: {href: code ? '#/q/' + code : '#/q', label: '내 까닭 적어 보기', step: null}, asOf, S};
 }
 
 /* ── 기록 서랍 — 날마다 · 해마다 · 가까운 회사 ── */
@@ -382,8 +369,8 @@ async function vDays() {
   const {B, S, asOf} = await base();
   const e = eDays({B}), c0 = cal(e.ds, {label: '지난 60거래일 달력', hero: true, cap: e.say});
   return {title: '날마다', tab: 2, kick: ymd(B?.cal?.from) && ymd(B?.cal?.to) ? ymd(B.cal.from) + '부터 ' + ymd(B.cal.to) + '까지' : '지난 60거래일', h1: '날마다 지난 기록', big: e.big,
-    ...frameHero(c0, '날마다', 'cal', 'calm'), mids: e.mids, honest: honestOf(B),
-    figs: [bars([{name: '꽃이 됨', v: e.hit, key: 'h', cls: 'g-ok'}, {name: '못 됨', v: e.miss, key: 'm', cls: 'g-no'}, {name: '기다림', v: e.wait, key: 'w', cls: 'g-wait'}], {label: '날마다 고른 회사 · 셋으로', title: '고른 회사를 셋으로 나누면', unit: '번'})],
+    ...frameHero(c0, '날마다', 'cal', 'calm'), mids: e.mids, honest: lossLine(e.hit + e.miss > 0 ? '한 달이 지난 ' + (e.hit + e.miss) + '번 가운데 ' + e.miss + '번은 꽃이 못 됐어요.' : null), // 이 쪽 60거래일 값(점검 F1)
+    figs: [bars([{name: '못 됨', v: e.miss, key: 'm', cls: 'g-no'}, {name: '꽃이 됨', v: e.hit, key: 'h', cls: 'g-ok'}, {name: '기다림', v: e.wait, key: 'w', cls: 'g-wait'}], {label: '날마다 고른 회사 · 셋으로', title: '고른 회사를 셋으로 나누면', unit: '번'})], // 못 됨 먼저(점검 J10)
     pro: e.pro, next: {href: '#/r/y', label: '해마다 보기'}, asOf, S};
 }
 async function vYears() {
@@ -391,14 +378,14 @@ async function vYears() {
   const e = eYears({B}), y0 = cols(e.ys.map(([y, v]) => ({v: Number.isFinite(v?.rate) ? v.rate : null, v2: Number.isFinite(v?.base) ? v.base : null, key: y, tick: y + '년', label: Number.isFinite(v?.rate) ? Math.round(v.rate) + '번' : '고른 적 없음'})), {label: '해마다 100번에 몇 번 · 짧은 금 = 아무 회사', hero: true, cap: e.say});
   return {title: '해마다', tab: 2, kick: '모든 해', h1: '해마다 지난 기록', big: e.big,
     ...frameHero(y0, '해마다', 'cols', 'calm'),
-    mids: [], honest: honestOf(B), rows: e.rows, rowsTitle: '해마다', pro: e.pro,
+    mids: [], honest: lossLine(Number.isFinite(B?.record?.all?.n) && Number.isFinite(B?.record?.all?.hits) && B.record.all.n > 0 ? '고른 해를 모두 합치면 ' + num(B.record.all.n) + '번 가운데 ' + num(B.record.all.n - B.record.all.hits) + '번은 꽃이 못 됐어요.' : null), rows: e.rows, rowsTitle: '해마다', pro: e.pro, // 이 쪽 값(점검 F1)
     next: {href: '#/r/n', label: '가까운 회사 보기'}, asOf, S};
 }
 async function vNear() {
   const {B, S, asOf} = await base();
   const e = eNear({B}), rec = B?.near?.rec, w0 = waffle(rec?.rate, rec?.base, {label: '가까운 회사와 아무 회사 · 100번에 몇 번', hero: true, la: '가까운 회사', lb: '아무 회사', cap: e.say});
   return {title: '가까운 회사', tab: 2, kick: ymd(rec?.from) && ymd(rec?.to) ? ymd(rec.from) + '부터 ' + ymd(rec.to) + '까지' : '지난 기록', h1: '가까운 회사의 지난 기록', big: e.big,
-    ...frameHero(w0, '가까운 회사', 'waffle', 'bloom'), mids: [], honest: honestOf(B), pro: e.pro,
+    ...frameHero(w0, '가까운 회사', 'waffle', 'bloom'), mids: [], honest: lossLine(Number.isFinite(rec?.n) && Number.isFinite(rec?.hits) && rec.n > 0 ? '가까운 회사는 ' + num(rec.n) + '번 가운데 ' + num(rec.n - rec.hits) + '번은 꽃이 못 됐어요.' : null), pro: e.pro, // 이 쪽 값(점검 F1)
     next: {href: '#/j', label: '내 매매일지 보기'}, asOf, S};
 }
 
@@ -411,9 +398,9 @@ async function coOnPath(code) {
   const v = await vCo(code); if (!v || !v.big) return v;
   const T = await load21(get).catch(() => null), c = T ? find21(T, code) : null;
   v.step = 4;
-  if (c && v.big?.six?.언제) v.big = {...v.big, label: v.big.label + ' · ' + v.big.six.언제.replace(/ 기준이에요\.?$/, '')}; // 큰 값의 기간을 이름에(21곳 까닭의 20거래일 값과 헷갈리지 않게)
-  if (c) { v.lead = reasonBox21(T, code); v.next = {href: '#/c/' + code + '/more', label: '출목표와 수급은?', step: 5, k: '5 / 8'}; } // 누르면 「왜 여기 있나」부터(주문 0054 [2] 4)
-  else v.next = {href: '#/q/' + code, label: '내 이유는 무엇인가?', step: 6, k: '6 / 8'};
+  // 큰 값의 기간은 eCo 가 이름에 넣음(「9월 9일부터 10월 12일까지 움직인 만큼」 — 21곳 까닭의 20거래일 값과 헷갈리지 않게 · 점검 X2)
+  if (c) { v.lead = reasonBox21(T, code); v.next = {href: '#/c/' + code + '/more', label: '날마다 오르내림과 사고판 수는?', step: 5, k: '5 / 8'}; } // 누르면 「왜 여기 있나」부터(주문 0054 [2] 4) · 놀이판 이름을 뺌(점검 J4)
+  else v.next = {href: '#/q/' + code, label: '내 까닭 적어 보기', step: 6, k: '6 / 8'};
   return v;
 }
 async function route() {
@@ -444,7 +431,6 @@ async function route() {
       else v = CODE.test(a) ? await (await whyM()).vQuiz(a, ctx) : notFound('이 회사를 찾지 못했어요.');
     }
   } catch (e) { console.error(e); v = notFound('화면을 그리다 멈췄어요. 다시 열어 주세요.'); }
-  if (v) v.after = [...(v.after ?? []), lateGod(G => { const st = G.STOP_STEP[G.roomKey(hh)]; return st ? G.sageGuide(st, new Date().getDate()) : null; })]; // 스승 길잡이 — 사기 전에 멈추는 길의 쪽에만(주문 0054 [5] 7)
   if (hh !== (location.hash || '#/')) return;
   root.replaceChildren(...page(v).filter(Boolean));
   afterPaint(root);

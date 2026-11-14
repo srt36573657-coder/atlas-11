@@ -26,7 +26,7 @@ export function hrefOf(f, g = f?.group, co = null) {
   if (o === '/privacy.html') return '/su/privacy.html'; // 개인정보 처리방침 = 수르 틀을 미리 입힌 짝 쪽(원본은 보안 규칙이 스크립트를 막아 틀을 씌울 수 없음 · 주문 2011 · su-wrap.js SOLO)
   try { const u = new URL(o, 'https://aaa7377.com'); u.searchParams.set('su', ORDER.includes(g) ? g : 'guide'); return u.pathname + u.search + u.hash; } catch { return null; }
 }
-const helpText = f => (f.helps ? '돕는 것 · ' + (HELP[f.helps] ?? f.helps) : '셋과 안 이어짐 · 사장님이 정하실 것');
+const helpText = f => (f.helps ? '돕는 것 · ' + (HELP[f.helps] ?? f.helps) : f.group === 'sky' ? '셋과 안 이어짐' : '셋과 안 이어짐 · 쓰임을 아직 정하지 않았어요'); // 손님 화면에 「사장님이 정하실 것」 속말을 쓰지 않음 · 하늘은 뒷배경이라 「쓰임 미정」이 아님(2026-11-14)
 /** 화면 이름 — 명단(su-feat.js)의 name 은 자료 2 글자 그대로 · 화면에 쓰지 않는 말이 든 이름은 say 로 보임 · 「(사장님만)」은 따로 붙임 */
 export const nameOf = f => (f?.say ?? f?.name ?? '').replace(/\s*\(사장님만\)\s*$/, '');
 /** 누를 곳이 없는 칸의 한 줄 — 하늘은 뒷배경에서 날고, 옛 화면에만 있던 것은 여는 곳이 없음 */
@@ -50,28 +50,30 @@ export async function vRoads(X, g = null) {
   if (!g) {
     const rows = ORDER.map(k => ({g: k, n: by(k).length}));
     const open = F.filter(f => hrefOf(f)).length, none = F.filter(f => !f.helps), skyN = F.filter(f => !hrefOf(f) && f.group === 'sky').length, goneN = F.length - open - skyN;
-    const big = val(F.length, '가지', '옛 기능 모두 · 하나도 버리지 않음', {누가: NAME, 언제: null, 어디서: '셋의 길 여덟 묶음', 무엇을: '옛 기능을 묶음대로 셋의 길에 놓았어요', 어떻게: '사장님이 정하신 묶음 그대로', 왜: '모든 기능이 셋을 돕게 하려고요'},
-      {mean: '옛 기능 ' + F.length + '가지가 모두 큐피트 안에 자리가 있다는 뜻이에요.'});
-    const mids = [val(open, '가지', '누르면 큐피트 틀 안에서 열림', {누가: NAME, 언제: null, 어디서: '큐피트 · 옛 쪽', 무엇을: '열리는 주소가 있는 기능', 어떻게: '브라우저로 하나씩 열어 봤어요', 왜: '튕기지 않게 하려고요'}, {mean: '뒷배경 하늘 ' + skyN + '가지' + (goneN ? '와 옛 화면에만 있던 ' + goneN + '가지' : '') + '를 빼면 모두 열린다는 뜻이에요.'}),
-      val(none.length, '가지', '셋과 안 이어짐', {누가: NAME, 언제: null, 어디서: '셋의 길', 무엇을: none.map(nameOf).join(' · ') || null, 어떻게: '셋 가운데 무엇을 돕는지 하나씩 적었어요', 왜: '지우지 않고 사장님이 정하시게'}, {mean: none.length ? '이 기능들은 지우지 않고 그대로 두었다는 뜻이에요.' : '모두 셋 가운데 하나를 돕는다는 뜻이에요.'})];
+    // 2026-11-14 — 옛 「하나도 버리지 않음 · 모두 자리가 있다」는 여는 곳 없는 기능까지 센 자랑 말이라 뺌 · 합이 맞게 열림 + 뒷배경 + 여는 곳 없음으로 풀어 씀
+    const big = val(F.length, '가지', '옛 기능 모두', {누가: NAME, 언제: null, 어디서: '셋의 길 여덟 묶음', 무엇을: '옛 기능을 묶음대로 셋의 길에 놓았어요', 어떻게: '옛 기능 명단의 묶음 그대로', 왜: '어느 기능이 셋을 돕는지 한눈에 보려고요'},
+      {mean: '누르면 열리는 ' + open + '가지, 뒷배경 하늘 ' + skyN + '가지' + (goneN ? ', 여는 곳이 없는 ' + goneN + '가지' : '') + '를 더한 수예요.'});
+    const mids = [val(open, '가지', '누르면 큐피트 안에서 열림', {누가: NAME, 언제: null, 어디서: '큐피트 · 옛 쪽', 무엇을: '열리는 주소가 있는 기능', 어떻게: '브라우저로 하나씩 열어 봤어요', 왜: '튕기지 않게 하려고요'}, {mean: '누르면 바로 열리는 기능이 ' + open + '가지라는 뜻이에요. 나머지는 뒷배경 하늘 ' + skyN + '가지' + (goneN ? '와 여는 곳이 없는 ' + goneN + '가지' : '') + '예요.'}),
+      val(none.length, '가지', '셋과 안 이어짐', {누가: NAME, 언제: null, 어디서: '셋의 길', 무엇을: none.map(nameOf).join(' · ') || null, 어떻게: '셋 가운데 무엇을 돕는지 하나씩 적었어요', 왜: '쓰임이 아직 정해지지 않은 기능을 가려 보려고요'}, {mean: none.length ? '불장 · 꽃이 될 · 돈이 몰리는 곳 어느 쪽에도 이어지지 않은 기능이라는 뜻이에요. 위 칸과 따로 셌어요.' : '모두 셋 가운데 하나를 돕는다는 뜻이에요.'})];
     const list = h('section', {class: 'su-roadl', 'aria-label': '묶음'}, h('h2', {class: 'su-ft', text: '묶음 여덟 · 누르면 그 길'}),
       ORDER.map(k => h('a', {class: 'su-fcard', href: '#/g/' + k}, h('b', {text: HEAD[k] + ' · ' + by(k).length + '가지'}), h('span', {text: by(k).slice(0, 4).map(nameOf).join(' · ') + (by(k).length > 4 ? ' …' : '')}))));
     return {title: '셋의 길', tab: 0, kick: '옛 기능 자리', h1: '셋의 길', big,
-      ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars(rows)], {label: '셋의 길 묶음', hero: true, cap: ['옛 기능을 여덟 묶음으로 나눴어요.', '셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 묶음이 맨 위예요.', '그런데 하늘 그림처럼 누르는 기능이 아닌 것도 있어요.', '그래서 묶음을 누르면 그 기능이 큐피트 안에서 열려요.']})),
+      ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars(rows)], {label: '셋의 길 묶음', hero: true, cap: ['옛 기능을 여덟 묶음으로 나눴어요.', '셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 묶음이 맨 위예요.', '그런데 뒷배경 그림처럼 누를 수 없는 것도 있어요.', '그래서 묶음 안에서 열리는 것과 아닌 것을 나눠 적었어요.']})),
       mids, body: [list], pro: F.map(f => ({k: SHORT[f.group] + ' · ' + nameOf(f), v: hrefOf(f) ? '열림' : noneShort(f), how: f.how + ' · ' + helpText(f)})),
       next: {href: '#/g/hot', label: '불장을 돕는 것은?'}, asOf: null, S};
   }
   if (!ORDER.includes(g)) return X.notFound('이 길을 찾지 못했어요.');
   const L = by(g), first = L.find(f => hrefOf(f, g, co));
-  const big = val(L.length, '가지', HEAD[g], {누가: NAME, 언제: null, 어디서: '셋의 길 · ' + SHORT[g], 무엇을: L.map(nameOf).join(' · ') || null, 어떻게: '사장님이 정하신 묶음 그대로', 왜: ['hot', 'bloom', 'money'].includes(g) ? HELP[g] + '을 볼 때 함께 쓰려고요' : '셋을 찾는 길을 도우려고요'},
+  const big = val(L.length, '가지', HEAD[g], {누가: NAME, 언제: null, 어디서: '셋의 길 · ' + SHORT[g], 무엇을: L.map(nameOf).join(' · ') || null, 어떻게: '옛 기능 명단의 묶음 그대로', 왜: ['hot', 'bloom', 'money'].includes(g) ? HELP[g] + '을 볼 때 함께 쓰려고요' : '셋을 찾는 길을 도우려고요'},
     {mean: L.length + '가지 기능이 ' + (['hot', 'bloom', 'money'].includes(g) ? HELP[g] + ' 곁에' : '이 길에') + ' 있다는 뜻이에요.'});
   const card = f => { const href = hrefOf(f, g, co);
     return h(href ? 'a' : 'div', {class: 'su-fcard su-feat' + (href ? '' : ' su-featx'), href: href ?? null, 'data-feat': f.id},
-      h('b', {text: nameOf(f) + (f.owner ? ' · 사장님만' : '')}), h('span', {text: f.how}), h('em', {class: 'su-help', text: helpText(f)}), href ? null : h('em', {class: 'su-help', text: noneText(f)})); };
-  const body = [h('section', {class: 'su-flist', 'aria-label': HEAD[g]}, h('h2', {class: 'su-ft', text: HEAD[g] + ' · 누르면 큐피트 안에서 열림'}), L.map(card))];
+      h('b', {text: nameOf(f) + (f.owner ? ' · 운영자만' : '')}), h('span', {text: f.how}), h('em', {class: 'su-help', text: helpText(f)}), href ? null : h('em', {class: 'su-help', text: noneText(f)})); };
+  const sky = g === 'sky'; // 하늘 묶음은 누르는 기능이 아님 — 「누르면 열림」이라고 쓰지 않음(2026-11-14)
+  const body = [h('section', {class: 'su-flist', 'aria-label': HEAD[g]}, h('h2', {class: 'su-ft', text: HEAD[g] + (sky ? ' · 누르는 기능이 아니에요' : ' · 누르면 큐피트 안에서 열림')}), L.map(card))];
   if (g === 'hot') body.unshift(surgeBox(X));
   return {title: HEAD[g], tab: g === 'stop' ? 3 : g === 'back' || g === 'guest' ? 2 : 0, kick: '셋의 길 · ' + SHORT[g], h1: HEAD[g], big,
-    ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars([{g, n: L.length}, ...ORDER.filter(k => k !== g).slice(0, 3).map(k => ({g: k, n: by(k).length}))])], {label: HEAD[g], hero: true, cap: [HEAD[g] + ' ' + L.length + '가지예요.', '다른 묶음과 견주어 보여요.', '그런데 옛 쪽 글과 숫자는 바꾸지 않았어요.', '그래서 누르면 옛 쪽이 큐피트 틀 안에서 열려요.']})),
+    ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars([{g, n: L.length}, ...ORDER.filter(k => k !== g).slice(0, 3).map(k => ({g: k, n: by(k).length}))])], {label: HEAD[g], hero: true, cap: [HEAD[g] + ' ' + L.length + '가지예요.', '다른 묶음과 견주어 보여요.', ...(sky ? ['그런데 이 묶음은 누르는 기능이 아니에요.', '그래서 뒷배경에서 천천히 날기만 해요.'] : ['그런데 옛 쪽 글과 숫자는 바꾸지 않았어요.', '그래서 누르면 옛 쪽이 큐피트 틀 안에서 열려요.'])]})),
     mids: [], body, pro: L.map(f => ({k: nameOf(f), v: hrefOf(f, g, co) ? '열림' : noneShort(f), how: (hrefOf(f, g, co) ?? '주소 없음') + ' · ' + helpText(f)})),
     next: first ? {href: hrefOf(first, g, co), label: nameOf(first) + ' 열기'} : {href: '#/g', label: '셋의 길 모두'}, asOf: null, S};
 }

@@ -9,12 +9,12 @@
    주문 1113-2033 「특징 열하나」 표는 주문 1113-2224 로 뺌
    주문 1113-2224(사장님 2026-11-13 22:24 「11 가지로 하지 말고 36가지 유형으로 … 손자병법을 적용해서 … 정산하고 연결해봐 36 가지가 다 7가지 정산까지 다 나누게」 · 22:26 「그래」
           · 22:27 「정산표에는 수익율이 높은 순으로 나열을 내봐」 — docs/design/s36-2026-11-13/order-2224.txt)
-          — 아래에 「서른여섯 꾀」 표 하나(손자병법과 함께 내려오는 삼십육계로 고른 묶음 · 일곱 곳씩 · 10주씩) · 여덟 묶음과 따로 셈
+          — 아래에 「서른여섯 꾀」 표 하나(옛 병법에 전하는 삼십육계로 고른 묶음 · 일곱 곳씩 · 10주씩) · 여덟 묶음과 따로 셈
           · 이 표만 산 돈에 견줘 많이 늘어난 차례(같으면 꾀 차례 · 산 셈이 없는 꾀는 맨 아래) — 본질 「수익 순위」와 부딪히나 사장님 말씀으로 이 표만 · 줄어든 꾀도 그대로 보임
    주문 1114-0802(사장님 2026-11-14 08:02 「… 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」 — docs/design/s36-2026-11-13/order-0802.txt)
           — 여덟 표 아래에 「겹친 곳」 표 하나(그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 회사를 10주씩 · 여덟 · 서른여섯과 따로 셈) · 줄 하나
    늘어도 줄어도 같은 크기 · 같은 굵기 · 모양 + 글(색만으로 뜻 0) · 「%」 0 · 글은 textContent 로만 · 꾸밈은 클래스(보안 규칙 style-src 'self') */
-import {h} from '/su/su-fig.js';
+import {h, s} from '/su/su-fig.js';
 import {won, moved, r100, sumOf, resText, shapeOf} from '/su/su-book.js';
 
 export const CSS = Object.freeze(['/su/su-book.css', '/su/su-settle.css']);
@@ -65,7 +65,7 @@ export const S36_MEAN = Object.freeze({
 export const S36_SAY = Object.freeze({
   g01: '하루하루는 잔잔한데 한 달 동안 가장 꾸준히 오른 곳이에요.',
   g02: '닷새 동안 업종이 내릴 때 혼자 오른 곳이에요.',
-  g03: '업종이 한 달 오를 때 업종과 가장 닮게 따라 오른 곳이에요.',
+  g03: '업종이 한 달 오르는 동안, 그 흐름을 가장 가깝게 따라 오른 곳이에요.',
   g04: '오래 조용하다가 지난 닷새 가장 크게 힘을 낸 곳이에요.',
   g05: '한 달 안에 시장이 가장 크게 내린 날들에 오히려 오른 곳이에요.',
   g06: '어제는 내리고 오늘은 크게 오른 곳이에요.',
@@ -93,12 +93,12 @@ export const S36_SAY = Object.freeze({
   g28: '한 달 크게 오르고 꼭대기에서 거의 안 내려온 곳이에요.',
   g29: '사고판 양은 평소보다 적은데 지난 닷새 크게 오른 곳이에요.',
   g30: '석 달 동안 업종 몸집 1등보다 가장 많이 더 오른 곳이에요.',
-  g31: '오늘 하루 가장 크게 오른 곳이에요.',
+  g31: '오늘 하루 가장 크게 오른 곳이에요. 하루 만에 꺾이는 일도 많아요.',
   g32: '한 달 사고판 양이 가장 적은데 값은 버틴 곳이에요.',
   g33: '석 달 동안 같은 업종과 가장 거꾸로 움직인 곳이에요.',
-  g34: '오늘 하루 가장 크게 내린 곳이에요.',
+  g34: '오늘 하루 가장 크게 내린 곳이에요. 내린 곳을 일부러 고른 기록이라 더 내릴 수도 있어요.',
   g35: '오른 날이 오늘까지 가장 길게 이어진 곳이에요.',
-  g36: '한 달 동안 가장 많이 내린 곳이에요.',
+  g36: '한 달 동안 가장 많이 내린 곳이에요. 내린 곳을 일부러 고른 기록이라 더 내릴 수도 있어요.',
 });
 /** 보이는 차례(주문 1113-1623 — 사장님 말씀 차례: 불장 · 불장이 될 듯 · 돈이 몰린 곳 · 돈이 몰릴 듯 · 꽃 · 꽃이 될 듯 · 조용한 힘 · 1 · 2 · 3등은 맨 위 그대로) */
 export const SHOW = Object.freeze(['top3', 'hot', 'hotNext', 'money', 'moneyNext', 'bloom', 'bloomNext', 'quiet']);
@@ -109,10 +109,13 @@ export const SHOWO = Object.freeze(['ovl']);
 /** 거래량으로 고르는 다섯(그날 사고판 양을 받지 못하면 그날은 사지 않음) */
 export const BYVOL = Object.freeze(['g08', 'g13', 'g19', 'g29', 'g32']);
 /** 수익률 — 산 돈에 견줘 늘고 준 몫(백만에 하나까지 · 같으면 같은 차례) */
-export const rateOf = g => (g.n && g.cost > 0 ? Math.round((g.val - g.cost) / g.cost * 1e6) : null);
+export const rateOf = g => (g.n && g.cost > 0 && !g.one ? Math.round((g.val - g.cost) / g.cost * 1e6) : null); // 아직 하루치(늘고 줆이 아직 없음)는 차례를 매기지 않음(주문 1114-0922)
 /** 수익률 높은 차례(주문 1113-2224 「정산표에는 수익율이 높은 순으로」) — 산 셈이 있는 꾀는 수익률 큰 차례(같으면 꾀 차례) · 산 셈이 없는 꾀는 맨 아래(꾀 차례) */
 export const byRate = (K, show = SHOW36) => { const ix = k => show.indexOf(k);
   return [...K].sort((a, b) => (rateOf(a) === null) - (rateOf(b) === null) || (rateOf(b) ?? 0) - (rateOf(a) ?? 0) || ix(a.key) - ix(b.key)); };
+/** 표 위 한 줄 — 늘고 준 몫이 하나라도 다르면 「많이 늘어난 차례」 · 모두 하루치이거나 같으면 원래 차례라고 바로 말함(화면 차례와 글이 맞게) */
+export const rankSay = (K, what) => { const r = K.map(rateOf).filter(v => v !== null), c = what.charCodeAt(what.length - 1), ga = c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 ? '이' : '가'; // 받침이 있으면 「이」(묶음이 · 꾀가)
+  return r.length ? '산 돈에 견줘 많이 늘어난 ' + what + ga + ' 맨 위예요. 날마다 다시 줄 세워요.' : '아직 하루치라서 원래 차례로 놓았어요. 하루가 더 지나면 많이 늘어난 ' + what + ga + ' 맨 위로 가요.'; };
 const DAY = /^\d{4}-\d{2}-\d{2}$/;
 const md = d => (DAY.test(d ?? '') ? +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일' : '?');
 const NF = new Intl.NumberFormat('ko-KR');
@@ -144,16 +147,24 @@ export const byKind = (D, rows, show = SHOW) => show.filter(k => D.kinds.include
 export const part = (D, rows, show) => { const rs = rows.filter(r => show.includes(r.k)); return {rows: rs, T: sumOf(rs), K: byKind(D, rs, show), miss: show.reduce((a, k) => a + (Number.isFinite(D.miss?.[k]) ? D.miss[k] : 0), 0)}; };
 /** 늘었나 줄었나 칸 — 산 셈이 없으면 「아직 없음」 */
 const diffCell = g => h('span', {class: 'bk-ddiff', 'data-st': g.n ? g.st : 'none'}, g.n ? [shapeOf(g.st), h('span', {class: 'bk-dv', text: resText(g)})] : h('span', {class: 'bk-dv', text: '아직 없음'}));
-/** 줄 하나 — 묶음 이름 · 산 돈 · 늘었나 줄었나만(주문 1113-1623 「큰값으로만」) */
-const row = (g, name) => h('div', {class: 'bk-drow st-row', 'data-key': String(g.key), 'data-st': g.n ? g.st : 'none'},
-  h('span', {class: 'bk-dday', text: name}), h('span', {class: 'bk-dcost', text: won(g.cost)}), diffCell(g));
+/** 줄 하나 — 묶음 이름 · 산 돈 · 늘었나 줄었나만(주문 1113-1623 「큰값으로만」) · 아래 막대(주문 1114-0922 「움직이는 도식화」 — 가운데 줄에서 늘면 오른쪽 호박색 · 줄면 왼쪽 회색 · 표 안 가장 큰 몫 = 반 칸) */
+const row = (g, name, mx = 0) => { const r = rateOf(g), w = r !== null && mx > 0 ? Math.max(2, Math.round(Math.abs(r) / mx * 148)) : 0;
+  return h('div', {class: 'bk-drow st-row', 'data-key': String(g.key), 'data-st': g.n ? g.st : 'none'},
+    h('span', {class: 'bk-dday', text: name}), h('span', {class: 'bk-dcost', text: won(g.cost)}), diffCell(g),
+    s('svg', {class: 'st-bar', viewBox: '0 0 300 10', preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false'}, s('line', {x1: 150, y1: 0, x2: 150, y2: 10, class: 'st-b0'}),
+      w ? s('rect', {x: r > 0 ? 151 : 149 - w, y: 2, width: w, height: 6, rx: 3, class: r > 0 ? 'st-bu' : 'st-bd'}) : null)); };
+/** 손실 먼저 한 줄(주문 1114-0922 「손실을 보지 않게 최우선에 두며 그다음이 수익이다」) — 줄어든 줄 수 · 가장 많이 줄어든 줄(늘고 준 돈) · 없으면 「아직 없어요」 */
+export const lossSay = (K, what, name) => { const dn = K.filter(g => g.n && g.st === 'dn').sort((a, b) => a.diff - b.diff), c = what.charCodeAt(what.length - 1), un = c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 ? '은' : '는';
+  return dn.length ? '줄어든 ' + what + ' ' + dn.length + '개 · 가장 많이 줄어든 ' + what + un + ' ' + (name(dn[0].key) ?? dn[0].key) + '(' + won(-dn[0].diff) + ' 줄었어요)' : '줄어든 ' + what + un + ' 아직 없어요.'; };
+/** 표 안 가장 큰 늘고 준 몫(막대 잣대) */
+const mxOf = K => Math.max(0, ...K.map(rateOf).filter(v => v !== null).map(Math.abs));
 /** 표 — 이름 · 머리 · 줄 · 맨 아래 모두(= 맨 위) */
 function table(cls, title, head, rows, T) {
   return h('section', {class: 'bk-days st-tab ' + cls, 'aria-label': title},
     h('h2', {class: 'bk-dh', text: title}),
     h('div', {class: 'bk-dhead', 'aria-hidden': 'true'}, h('span', {class: 'bk-hd', text: head}), h('span', {class: 'bk-hc', text: '산 돈'}), h('span', {class: 'bk-hr', text: '늘었나 줄었나'})),
     h('div', {class: 'bk-drows'}, rows),
-    h('div', {class: 'bk-dtot', 'data-st': T.st}, h('span', {class: 'bk-dday', text: '모두'}), h('span', {class: 'bk-dcost', text: won(T.cost)}), diffCell({...T, n: 1})));
+    h('div', {class: 'bk-dtot', 'data-st': T.cost > 0 ? T.st : 'none'}, h('span', {class: 'bk-dday', text: '모두'}), h('span', {class: 'bk-dcost', text: won(T.cost)}), diffCell({...T, n: T.cost > 0 ? 1 : 0}))); // 산 셈이 없으면 「아직 없음」(0원은 그대로가 아님)
 }
 function moneyCard(T, asOf) {
   return h('section', {class: 'bk-money st-money', 'aria-label': '지금까지 산 돈과 지금', 'data-st': T.st},
@@ -178,21 +189,29 @@ export async function vSettle(X) {
   const first36 = P36.rows.map(r => r.day).sort()[0] ?? null, has36 = D.kinds.includes('g01');
   const PO = part(D, all, SHOWO), hasO = D.kinds.includes('ovl'); // 겹친 곳(주문 1114-0802 · 여덟 · 서른여섯과 따로 셈)
   const hero = h('div', {class: 'su-hero bk st', 'data-g': 'su-settle', 'data-n': String(rows.length), 'data-days': String(new Set(rows.map(r => r.day)).size), 'data-miss': String(miss)},
-    h('p', {class: 'bk-intro', text: '큐피트가 날마다 고른 여덟 묶음을 가짜 돈으로 주식 10주씩 산 셈이에요.'}),
+    h('p', {class: 'bk-intro', text: '큐피트가 날마다 고른 여덟 묶음을 10주씩 샀다고 치고 적은 장부예요. 진짜 돈은 쓰지 않아요.'}),
     D.start ? h('p', {class: 'bk-intro st-replay st-start', text: md(D.start) + '부터 센 정산이에요.'}) : null, // 주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」
     D.replayTo ? h('p', {class: 'bk-intro st-replay', text: md(D.replayTo) + '까지는 지금 고르는 법으로 지난 날을 다시 센 기록이에요.'}) : null,
     moneyCard(T, D.asOf),
+    // 실제보다 좋게 나오는 조건을 접지 않고 바로(주문 1114-0922 — 손실 먼저 · 숨기지 않음)
+    h('p', {class: 'bk-cap st-real', text: '가짜 돈이에요. 수수료와 세금을 빼지 않았고 장이 끝난 뒤 값으로 샀다고 쳐서, 실제보다 좋게 나와요.'}),
     h('p', {class: 'bk-cap st-cap', text: capText(rows, miss, late)}),
-    table('st-kinds', '묶음마다', '묶음', K.map(g => row(g, KIND_NAME[g.key] ?? g.key)), T),
+    // 적은 날 경고(주문 1114-0922 — 이치) — 고른 날이 스무 날이 안 되면 늘고 준 것은 운이 크다고 먼저 밝힘
+    new Set(rows.map(r => r.day)).size < 20 ? h('p', {class: 'bk-cap st-few', text: '고른 날이 ' + new Set(rows.map(r => r.day)).size + '일뿐이에요. 스무 날은 지나야 늘고 준 것을 말할 수 있어요.'}) : null,
+    // 주문 1114-0922(사장님 2026-11-14 08:22 「정산은 수익이 높은 순으로 매일 배열되게 만들고」) — 여덟 묶음도 날마다 산 돈에 견줘 많이 늘어난 차례(아직 하루치 · 산 셈 없음은 아래)
+    h('p', {class: 'bk-cap st-kloss', text: lossSay(K, '묶음', k => KIND_NAME[k])}),
+    h('p', {class: 'bk-cap st-kso', text: rankSay(K, '묶음')}),
+    table('st-kinds', '묶음마다', '묶음', byRate(K, SHOW).map(g => row(g, KIND_NAME[g.key] ?? g.key, mxOf(K))), T),
     // 주문 1114-0802 — 겹친 곳(그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 회사 · 날마다 곳 수가 다름 · 따로 셈)
     hasO ? h('p', {class: 'bk-intro st-ovi', text: '아래는 여러 묶음에 겹쳐 나온 회사를 따로 모은 묶음이에요. 그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 곳을 10주씩 산 셈이고, 다른 묶음과 따로 셌어요.'}) : null,
     hasO ? h('p', {class: 'bk-cap st-ovc', text: PO.rows.length ? capText(PO.rows, PO.miss, 0) : '아직 산 셈이 없어요. 장이 끝난 뒤 첫 묶음을 적어요.'}) : null,
     hasO ? table('st-ovl', '겹친 곳', '묶음', PO.K.map(g => row(g, KIND_NAME[g.key] ?? g.key)), PO.T) : null,
     // 주문 1113-2224 — 서른여섯 꾀(여덟과 따로 셈 · 수익률 높은 차례 · 표 맨 아래 「모두」 = 이 표 서른여섯 줄을 더한 돈)
-    has36 ? h('p', {class: 'bk-intro st-s36i', text: '아래는 손자병법과 함께 내려오는 서른여섯 가지 꾀로 고른 묶음이에요. 꾀마다 일곱 곳을 10주씩 산 셈이고, 위 여덟 묶음과 따로 셌어요.'}) : null,
+    has36 ? h('p', {class: 'bk-intro st-s36i', text: '아래는 옛 병법에 전하는 서른여섯 가지 꾀(삼십육계)로 고른 묶음이에요. 꾀마다 일곱 곳을 10주씩 산 셈이고, 위 여덟 묶음과 따로 셌어요.'}) : null,
     has36 ? h('p', {class: 'bk-cap st-s36c', text: first36 ? capText(P36.rows, P36.miss, 0) : '아직 산 셈이 없어요. 장이 끝난 뒤 첫 묶음을 적어요.'}) : null,
-    has36 ? h('p', {class: 'bk-cap st-s36o', text: '산 돈에 견줘 가장 많이 늘어난 꾀가 맨 위예요.'}) : null,
-    has36 ? table('st-s36', '서른여섯 꾀', '꾀', byRate(P36.K).map(g => row(g, KIND_NAME[g.key] ?? g.key)), P36.T) : null);
+    has36 ? h('p', {class: 'bk-cap st-s36loss', text: lossSay(P36.K, '꾀', k => KIND_NAME[k])}) : null,
+    has36 ? h('p', {class: 'bk-cap st-s36o', text: rankSay(P36.K, '꾀')}) : null,
+    has36 ? table('st-s36', '서른여섯 꾀', '꾀', byRate(P36.K).map(g => row(g, KIND_NAME[g.key] ?? g.key, mxOf(P36.K))), P36.T) : null);
   const how = h('details', {class: 'bk-how'}, h('summary', {class: 'bk-hs'}, h('b', {text: '이렇게 셌어요'}), h('span', {text: '진짜 돈이 아니에요'})),
     h('ul', {class: 'bk-ul'}, ['여덟 묶음은 1 · 2 · 3등, 불장, 불장이 될 듯, 돈이 몰리는 곳, 돈이 몰릴 듯, 꽃이 될 곳, 꽃이 될 듯, 조용한데 힘이 모이는 곳이에요.',
       '묶음마다 고른 회사를 고른 날 마지막 값으로 ' + (D.qty ?? 10) + '주씩 산 셈이에요.', '산 돈은 산 날 값에 ' + (D.qty ?? 10) + '주를 곱한 돈이에요. 지금은 가장 늦은 마지막 값에 ' + (D.qty ?? 10) + '주를 곱해요.',
@@ -205,7 +224,7 @@ export async function vSettle(X) {
       hasO ? '겹친 곳은 그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 회사예요. 날마다 곳 수가 달라요.' : null,
       has36 ? '서른여섯 꾀는 꾀마다 그날 그 꾀를 가장 닮은 일곱 곳이에요. 꾀마다 고르는 법은 아래 「서른여섯 꾀 풀이」에 있어요.' : null,
       has36 ? BYVOL.map(k => KIND_NAME[k]).join(', ') + '는 그날 사고판 양으로 골라요. 그 양을 받지 못한 날은 그 다섯을 사지 않아요.' : null,
-      has36 ? '위 여덟 묶음은 늘 같은 차례예요. 서른여섯 꾀 표만 산 돈에 견줘 많이 늘어난 차례예요.' : '묶음은 늘 같은 차례예요. 늘고 준 크기 차례가 아니에요.', '셋은 장이 끝난 뒤에 골라요. 그 값에 실제로 살 수는 없었어요.', '수수료와 세금은 빼지 않았어요.',
+      '표마다 산 돈에 견줘 많이 늘어난 차례로 날마다 다시 줄 세워요. 아직 하루치이거나 산 셈이 없는 줄은 원래 차례로 아래에 둬요.', '고르는 일은 모두 장이 끝난 뒤에 해요. 그래서 그날 마지막 값에 실제로 살 수는 없었어요.', '수수료와 세금은 빼지 않았어요.',
       '값은 네이버 증권 그날 마지막 값이에요.', '지난 기록이에요. 앞날을 맞히지 않아요.'].filter(Boolean).map(t => h('li', {text: t}))));
   // 서른여섯 꾀 풀이(주문 1113-2224) — 꾀 차례 1 ~ 36 · 꾀 이름 · 쉬운 이름 · 꾀 뜻 · 고르는 법
   const s36how = has36 ? h('details', {class: 'bk-how st-s36how'}, h('summary', {class: 'bk-hs'}, h('b', {text: '서른여섯 꾀 풀이'}), h('span', {text: '꾀마다 고르는 법'})),

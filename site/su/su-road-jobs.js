@@ -1,7 +1,7 @@
-/* 수르 그림 부품 — su-road-jobs(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
+/* 큐피트 그림 부품 — su-road-jobs(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
    옛 무하 판 su-road-art(친구에게 · 셋의 길)를 첫 페이지 잡스 판(su-apple)과 같은 말투로 새로 그림 — 흰 바탕 · 검정 · 회색 · 호박색 하나 · 흐림 필터 0
-   ① 친구에게(#/f · arg 'friend') — 부제 두 줄 → 구슬 둘(환한 구슬 = 내가 본 곳 · 맑은 유리 구슬 = 친구 · 호박색 점이 건너감)
-      → 「내가 본 곳 21곳 | 친구에게 6가지」 → 건네는 여섯 칸(두 줄 셋 · 가는 선 · 주소 · aria-label · data-gift 는 옛 판 그대로)
+   ① 친구에게(#/f · arg 'friend') — 부제 두 줄 → 구슬 둘(환한 구슬 = 큐피트가 찾은 곳 · 맑은 유리 구슬 = 친구 · 호박색 점이 건너감)
+      → 「찾은 곳 21곳 | 친구에게 6가지」(21곳 = 그날 판의 세 목록 칸 수 · 내가 열어 본 곳이 아님) → 건네는 여섯 칸(두 줄 셋 · 가는 선 · 주소 · aria-label · data-gift 는 옛 판 그대로)
    ② 셋의 길(#/g · #/g/<묶음> · arg 'roads') — 부제 두 줄 → 옛 기능 수 큰 숫자를 감싼 가는 고리(여덟 갈래 · 길이 = 갈래마다 기능 수 · 셋을 돕는 세 갈래만 호박색)
       → 여덟 칸(두 줄 넷 · 주소 · aria-label · data-road 는 옛 판 그대로) · opt.g(있으면) = 지금 보는 갈래 칸을 옅은 회색으로
    자료는 옛 판과 같음(su21.json 셋 목록 수 · su-roads.js feats = su-feat.js 명단) · 빈 값은 「확인 필요」 · 지어낸 숫자 0
@@ -11,12 +11,11 @@ import {feats, ORDER, SHORT, HEAD} from '/su/su-roads.js';
 
 export const CSS = '/su/su-road-jobs.css';
 const W = 390, MID = W / 2, PAD = 20, NEED = '확인 필요';
-/** 친구에게 건네는 여섯 — 이름 · 주소는 옛 판(su-road-art FRIEND · vFriend 카드) 그대로 · 읽는 차례(왼쪽 → 오른쪽, 위 → 아래)
+/** 친구에게 건네는 넷 — 이름 · 주소는 옛 판(su-road-art FRIEND · vFriend 카드) 그대로 · 읽는 차례(왼쪽 → 오른쪽, 위 → 아래)
+ *  주문 1114-0922(사장님 2026-11-14 08:27 「… 과거 찌꺼기 버릴것은 버리고」) — 보상 칸 「선물 · 상품권 받기」 「커피 쿠폰」을 뺌(친구 쪽 카드와 같이 · 본질에 없는 보상)
  *  say = vFriend 카드 글을 줄인 한 줄(숫자 없음) */
 const FRIEND = Object.freeze([
   {t: '카톡 보내기', href: '/next/?su=guest#/share', say: '한 곳을 보내요'},
-  {t: '선물', href: '/next/?su=guest#/gift', say: '상품권 받기'},
-  {t: '커피 쿠폰', href: '/next/?su=stop#/why', say: '왜 사? 끝까지'},
   {t: '소개 영상', href: '/hello.html?su=guest', say: '큐피트가 하는 일'},
   {t: '내 종목', href: '/next/?su=stop#/me', say: '같은 잣대로'},
   {t: '진화', href: '/next/?su=back#/jinhwa', say: '큐피트가 고친 것'}]);
@@ -64,7 +63,7 @@ function est(t, px) {
   return w * px;
 }
 const root = (kind, H, label) => s('svg', {class: 'su-svg su-road-jobs srj-' + kind, viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-clean': 'jobs', 'aria-label': label});
-/** 점 — A 호박색 찬 점(셋 · 내가 본 곳) · C 회색 고리 점(다른 것 · 친구) */
+/** 점 — A 호박색 찬 점(셋 · 찾은 곳) · C 회색 고리 점(다른 것 · 친구) */
 const dot = (x, y, k) => (k === 'A' ? s('circle', {cx: f1(x), cy: f1(y), r: 6.5, class: 'srj-dotA'}) : s('circle', {cx: f1(x), cy: f1(y), r: 6, class: 'srj-dotC'}));
 /** 맨 위 부제 두 줄(20px 회색 · 가운데) */
 const sub = (a, b) => s('g', {class: 'srj-top srj-in srj-in1'}, T(MID, 40, a, 'srj-sub', MA), T(MID, 67, b, 'srj-sub', MA));
@@ -100,7 +99,7 @@ function orbs(id, A, B, FL, RH) {
     s('clipPath', {id: id + 'cb'}, s('circle', {cx: B.x, cy: B.y, r: B.r})),
     s('clipPath', {id: id + 'fl'}, s('rect', {x: 0, y: FL, width: W, height: RH})));
   const u = k => `url(#${id}${k})`;
-  /* 내가 본 곳 — 환한 구슬 */
+  /* 찾은 곳 — 환한 구슬 */
   const orbA = s('g', {id: id + 'oa', class: 'srj-orbA'},
     s('circle', {cx: A.x, cy: A.y, r: A.r, fill: u('b')}),
     s('g', {'clip-path': u('ca')}, s('circle', {cx: f1(A.x - 12 * ka), cy: f1(A.y - 20 * ka), r: f1(46 * ka), fill: u('c')}), s('ellipse', {cx: A.x, cy: f1(A.y + 62 * ka), rx: f1(60 * ka), ry: f1(18 * ka), class: 'srj-under'})),
@@ -151,25 +150,25 @@ function pair(PY, cols) {
 
 /* ── ① 친구에게 ── */
 function friend(d) {
-  const items = Array.isArray(d?.items) && d.items.length === 6 ? d.items : FRIEND;
-  const n = fin(d?.n) ? d.n : null;
-  const id = 'srj' + (++UID), H = 664;
-  const svg = root('friend', H, '친구에게 건네는 여섯 가지 · 내가 본 곳 ' + (n != null ? n + '곳' : NEED) + ' · 칸을 누르면 그 길');
-  svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'srj-bg'}), sub('내가 본 곳을', '친구와 함께 봐요.'));
-  // 물건 하나 — 환한 구슬(내가 본 곳) · 맑은 유리 구슬(친구) · 빛이 건너감
+  const items = Array.isArray(d?.items) && d.items.length === FRIEND.length ? d.items : FRIEND;
+  const n = fin(d?.n) ? d.n : null, rows = Math.ceil(items.length / 2);
+  const id = 'srj' + (++UID), H = 664; // 그림 높이는 그대로(첫 화면의 그림 몫 70 넘게 — 검사 ⑪) · 칸이 줄면 칸을 크게
+  const svg = root('friend', H, '친구에게 건네는 ' + items.length + '가지 · 큐피트가 찾은 곳 ' + (n != null ? n + '곳' : NEED) + ' · 칸을 누르면 그 길');
+  svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'srj-bg'}), sub('큐피트가 찾은 곳을', '친구와 함께 봐요.'));
+  // 물건 하나 — 환한 구슬(찾은 곳) · 맑은 유리 구슬(친구) · 빛이 건너감
   const FL = 224, A = {x: 118, y: FL - 2 - 62, r: 62}, B = {x: 284, y: FL - 2 - 40, r: 40};
   svg.append(orbs(id, A, B, FL, 32), hop(A, B));
-  // 내가 본 곳 21곳 | 친구에게 6가지
+  // 찾은 곳 21곳 | 친구에게 6가지
   const PY = FL + 36;
-  svg.append(pair(PY, [{dot: 'A', k: '내가 본 곳', v: n, unit: '곳'}, {dot: 'C', k: '친구에게', v: items.length, unit: '가지'}]));
+  svg.append(pair(PY, [{dot: 'A', k: '찾은 곳', v: n, unit: '곳'}, {dot: 'C', k: '친구에게', v: items.length, unit: '가지'}]));
   // 건네는 여섯 칸 — 이름 · 한 줄(옛 판과 같은 주소 · aria-label · data-gift · 차례)
-  const Y0 = PY + 118, ROW = 76;
-  const cells = s('g', {class: 'srj-cells srj-fade'}, lines(Y0, 3, ROW), items.map((it, i) => { const c = cellAt(i, Y0, ROW);
+  const Y0 = PY + 118, ROW = Math.round(76 * 3 / rows); // 세 줄 자리(228)를 줄 수로 나눔 — 넷이면 두 줄 · 칸 114
+  const cells = s('g', {class: 'srj-cells srj-fade'}, lines(Y0, rows, ROW), items.map((it, i) => { const c = cellAt(i, Y0, ROW);
     return s('a', {href: it.href, class: 'srj-a srj-cell', 'aria-label': it.t, 'data-gift': String(i)},
       s('rect', {x: c.x, y: c.y + 3, width: c.w, height: c.h - 6, rx: 12, class: 'srj-hit'}),
-      T(c.x + 8, c.y + 37, it.t, 'srj-name'),
-      it.say ? T(c.x + 8, c.y + 62, it.say, 'srj-say') : null); }));
-  svg.append(cells, T(MID, Y0 + 3 * ROW + 42, '친구에게도 사고팔기를 권하지 않아요.', 'srj-d srj-in srj-in3', MA));
+      T(c.x + 8, c.y + 37 + (ROW - 76) / 2, it.t, 'srj-name'),
+      it.say ? T(c.x + 8, c.y + 62 + (ROW - 76) / 2, it.say, 'srj-say') : null); })); // 칸이 커지면 글을 칸 가운데로
+  svg.append(cells, T(MID, Y0 + rows * ROW + 42, '친구에게도 사고팔기를 권하지 않아요.', 'srj-d srj-in srj-in3', MA));
   return svg;
 }
 
@@ -215,7 +214,7 @@ function roads(d, opt = {}) {
   const total = fin(d?.total) ? d.total : null, on = ORDER.includes(opt?.g) ? opt.g : null;
   const id = 'srj' + (++UID), H = 666;
   const svg = root('roads', H, '셋의 길 · 옛 기능 ' + (total != null ? total + '가지' : NEED) + ' · 여덟 갈래 · 칸을 누르면 그 길');
-  svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'srj-bg'}), sub('옛 기능을 하나도 버리지 않고', '셋을 돕는 자리에 놓았어요.'));
+  svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'srj-bg'}), sub('옛 기능을 여덟 묶음으로 나눴어요.', '호박색은 셋을 돕는 세 묶음이에요.'));
   // 물건 하나 — 큰 숫자를 감싼 여덟 갈래 고리
   svg.append(s('g', {class: 'srj-ringg'}, ring(id, {x: MID, y: 196}, 84, rows, total)));
   // 여덟 칸 — 점 · 이름 · 기능 수(옛 판과 같은 주소 · aria-label · data-road · 차례)

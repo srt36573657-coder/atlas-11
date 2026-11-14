@@ -1,12 +1,13 @@
-/* 수르 — 땅 지도 큰 그림 둘 · 잡스 판(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」 · docs/design/su-jobs-all-2026-11-08/brief.md)
+/* 큐피트 — 땅 지도 큰 그림 둘 · 잡스 판(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」 · docs/design/su-jobs-all-2026-11-08/brief.md)
    옛 무하 판(su-land-art.js)과 같은 자료(su21-map.json) · 같은 누름 주소 · 같은 aria-label 꼴 — 그림만 첫 페이지(su-apple) 말투로 빈 파일에서 새로 그림
    ① 열 땅 #/m — 맨 위 부제 두 줄 → 땅 칸 열(두 칸 다섯 층 · 층 사이 가는 선 · 다섯 층 모두 첫 화면 안) · 칸마다 구슬(밑에 ✦ 수) · 땅 이름 · 회사 수(큰 숫자)
       21곳(✦)이 든 땅 = 빛나는 호박색 구슬(둘레 빛이 천천히 숨 쉼) · 없는 땅 = 맑은 유리 구슬 · 차례 = ✦ 많은 땅 먼저(같으면 자료 차례 — 옛 판과 같음) · 누르면 #/m/<땅 id>
-   ② 한 땅 #/m/<id> — 부제 두 줄 → 업종 줄마다 이름 · 값(20거래일 · 자료 그대로) · 가로 막대(같은 값 → 같은 길이 · 차례는 자료 그대로 · 오름 = 호박색 · 내림 = 회색 · 오름 · 내림이 섞인 땅만 0 자리 눈금)
+   ② 한 땅 #/m/<id> — 부제 두 줄 → 업종 줄마다 이름 · 값(20거래일 · 자료 그대로) · 가로 막대(같은 값 → 같은 길이 · 차례는 자료 그대로 · 오름 = 호박색 · 내림 = 회색 · 오름 · 내림이 섞인 땅만 0 자리 눈금 · 오름만 빛나게 하지 않음 — 내림도 같은 크기 · 같은 무게)
       → 굵은 선 아래 「21곳에 든 회사」(구슬 · 큰 숫자 · 두 칸 줄 · 누르면 #/c/<번호>) · 없으면 맑은 구슬과 「이 땅에는 이번 21곳이 없어요」
    덜어냄: 여인 · 아치 · 덩굴 · 꽃 · 금 테 · 별 그림 · 그림자 덩어리 · 흐림 필터 · 아무 수 0(같은 자료 → 같은 그림)
    그리기는 s() 만(createElementNS · setAttribute) · 색 · 움직임은 su-land-jobs.css(움직임 줄이기면 끝 모습) */
 import {s} from '/su/su-fig.js';
+import {pct} from '/su/su-data.js';
 
 export const CSS = '/su/su-land-jobs.css';
 const MAP = '/su/data/su21-map.json';
@@ -14,7 +15,7 @@ const W = 390, MID = W / 2, PAD = 20, NEED = '확인 필요';
 const fin = x => typeof x === 'number' && Number.isFinite(x);
 const f1 = v => Math.round(v * 10) / 10, f2 = v => Math.round(v * 100) / 100; // f2 = 막대 길이(같은 값 → 같은 길이를 0.01 까지)
 const isStar = c => Array.isArray(c?.in) && c.in.length > 0;
-const sgnP = v => (fin(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + String(Math.abs(f1(v))) + '%' : NEED); // 옛 판과 같은 값 글
+const sgnP = v => (fin(v) ? pct(v) : NEED); // 값 글 = su-data.js pct 하나(쪽마다 같은 말 · 한 곳만 고치면 모두 바뀜)
 const KO = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열', '열한', '열두'];
 let UID = 0;
 
@@ -122,13 +123,13 @@ function needPic(d) {
 function allPic(d) {
   const id = 'lj' + (++UID);
   const lands = [...d.lands].sort((a, b) => b.star - a.star || a.i - b.i); // ✦ 가 많은 땅이 윗자리 · 같으면 자료 차례(옛 판과 같음)
-  const total = lands.reduce((a, u) => a + (fin(u.n) ? u.n : 0), 0), lit = lands.some(u => u.star > 0);
+  const total = lands.reduce((a, u) => a + (fin(u.n) ? u.n : 0), 0), lit = lands.some(u => u.star > 0), stars = lands.reduce((a, u) => a + (fin(u.star) ? u.star : 0), 0); // ✦ 합 = 21곳에 든 회사(두 목록에 든 회사는 한 번만)
   const TOP = 80, RH = 106, TW = 177, XS = [16, 197], OR = 23, rows = Math.ceil(lands.length / 2), H = Math.max(652, TOP + rows * RH + 28); // 다섯 층 모두 첫 화면(390 × 844 · 머리 줄 아래 ~ 이야기 막대 위 611) 안
-  const svg = svgOf(H, 'lj-all', '땅 지도 · 우량주 ' + total + '곳을 ' + lands.length + '땅으로 · ✦ 는 21곳에 든 회사 수 · 21곳이 든 땅은 구슬이 빛나요');
+  const svg = svgOf(H, 'lj-all', '땅 지도 · 우량주 ' + total + '곳을 ' + lands.length + '땅으로 · ✦ 는 21곳에 든 회사 수(두 목록에 든 회사는 한 번만 · 모두 ' + stars + '곳) · ✦ 가 있는 땅은 구슬이 빛나요');
   svg.append(defs(id), s('rect', {x: 0, y: 0, width: W, height: H, class: 'lj-bg'}),
     s('g', {class: 'lj-top lj-in ' + dly(0)},
       T(MID, 36, '우량주 ' + total + '곳을 ' + (KO[lands.length] ?? lands.length) + ' 땅에 나눴어요.', 'lj-sub', {'text-anchor': 'middle'}),
-      T(MID, 63, lit ? '21곳(✦)이 든 땅은 구슬이 빛나요.' : '이번에는 21곳(✦)이 든 땅이 없어요.', 'lj-sub', {'text-anchor': 'middle'})));
+      T(MID, 63, lit ? '✦ 는 21곳에 든 회사 수예요.' : '이번에는 21곳에 든 회사가 없어요.', 'lj-sub', {'text-anchor': 'middle'})));
   const lines = s('g', {class: 'lj-lines', 'aria-hidden': 'true'});
   for (let r = 1; r < rows; r++) lines.append(s('path', {d: `M${PAD} ${TOP + r * RH}H${W - PAD}`, class: 'lj-line'}));
   const units = s('g', {class: 'lj-units'});
@@ -166,7 +167,6 @@ function onePic(d) {
     /* 이름 자리 = 줄 폭 − 값 글 폭 — 넘치면 18 · 그래도 넘치면 끝을 「…」(값 글과 겹치지 않게) */
     const vt = sgnP(r.g.ch20), st = r.g.star ? '✦ ' : '', room = W - 2 * PAD - est(vt, 19) - 14, npx = est(st + r.g.name, 19) <= room ? 19 : 18;
     return s('g', {class: 'lj-row lj-in ' + dly(i + 1), 'data-v': f1(r.v), 'data-len': f2(len)},
-      up && len > 0 ? s('g', {class: 'lj-breathe', 'aria-hidden': 'true'}, s('rect', {x: f2(x - 3), y: f1(bt - 3), width: f2(len + 6), height: bh + 6, rx: (bh + 6) / 2, class: 'lj-glow lj-bar lj-pos'})) : null,
       edge ? null : s('path', {d: `M${axis} ${f1(bt - 3)}V${f1(bt + bh + 3)}`, class: 'lj-axis'}),
       bar,
       s('text', {x: PAD, y: nb, class: 'lj-ind' + (npx < 19 ? ' lj-f18' : ''), 'data-proper': ''}, st ? s('tspan', {class: 'lj-star', text: st}) : null, s('tspan', {text: clip(r.g.name, npx, room - est(st, npx))})),
@@ -178,7 +178,7 @@ function onePic(d) {
     s('path', {d: `M${PAD} ${ys}H${W - PAD}`, class: 'lj-rule'}),
     orb(id, PAD + 20, ys + 40, 19, S > 0, true),
     S ? [T(PAD + 52, ys + 47, '21곳에 든 회사', 'lj-kh'), T(W - PAD - est('곳', 20) - 3, ys + 52, String(S), 'lj-n2', {'text-anchor': 'end'}), T(W - PAD, ys + 52, '곳', 'lj-unit', {'text-anchor': 'end'})]
-      : T(PAD + 52, ys + 47, '이 땅에는 이번 21곳이 없어요', 'lj-note'));
+      : T(PAD + 52, ys + 47, '21곳에 든 회사가 없어요', 'lj-note'));
   /* 칸 — 이름(한 줄 20 · 넘치면 18 · 그래도 넘치면 두 줄) · 업종 · 누르는 자리 = 칸 모두(높이 74 넘게) */
   const cells = stars.map(c => ({...c, ...fit(c.name, TW - 14, PRE)}));
   const tags = s('g', {class: 'lj-tags'});

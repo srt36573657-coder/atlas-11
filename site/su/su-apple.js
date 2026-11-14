@@ -55,33 +55,93 @@ function chip36(g, c, bd, ov) {
 }
 /** 고르지 못한 꾀 — 쉬운 말 까닭(셈 파일의 까닭은 만드는 사람 말이라 바꿈) */
 const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
-/** 서른여섯 꾀 칸(글 · 고리는 HTML — 줄바꿈 · 누름 48 을 지키려고) — 갈래 여섯 × 꾀 여섯 · 꾀마다 쉬운 이름 · 꾀 이름 · 곳 수 · 고르는 법 · 회사 일곱(누르면 그 회사 쪽) */
-export function section36(g, day) {
+/* ── 손자병법 형세(주문 1114-0922 · 사장님 2026-11-14 08:22 「요즘 주식시장을 병법으로 빚대서 첫페이지에 상황보고를 하고 / 이런 상황일 때 / 살아남을수 있는 전술들을 /
+      자동으로 배열을 위에서 아래로 해 / 손실을 보지 않게 최우선에 두며 그다음이 수익이다」 — docs/design/sun-2026-11-14/order-0922.txt)
+   자료 = su21.json sun(su21_sun.py) — 판 날 장을 다섯 땅 가운데 하나로 읽음 · 지난 같은 땅 날들에서 꾀마다 고른 일곱 곳의 닷새 뒤 값 → 덜 잃은 차례(rank)
+   첫 쪽 맨 위 형세 카드(땅 이름 · 손자병법 말씀 · 오른 곳 막대 · 스무 날 띠) → 그 아래 서른여섯 꾀를 그 차례로(위 일곱은 펼침 · 나머지는 접음) → 그 아래 구슬 그림 ── */
+const LANDK = ['fall', 'shake', 'rise', 'narrow', 'calm'];
+export const okSun = x => !!x && x.rule === 'sun-v1' && LANDK.includes(x.land) && Number.isInteger(x.m?.n) && x.m.n > 0 && Number.isInteger(x.m?.up) && x.m.up >= 0 && x.m.up <= x.m.n
+  && typeof x.name === 'string' && typeof x.quote === 'string' && Array.isArray(x.rank) && x.rank.length === 36 && x.rank.every(r => typeof r?.k === 'string' && Number.isInteger(r.n));
+const KN = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열'];
+const w100 = r => (fin(r) ? (100 * (1 + r)).toFixed(1).replace(/\.0$/, '') + '원' : NEED); // 100원이 ○원(「%」 대신 · 쉬운 판)
+const ym = t => { const m = /^(\d{4})-(\d{2})-\d{2}$/.exec(String(t ?? '')); return m ? m[1] + '년 ' + +m[2] + '월' : null; };
+const shakeSay = v => (!fin(v) ? null : v < 0.6 ? '평소의 절반쯤으로 잔잔해요' : v < 0.85 ? '평소보다 작아요' : v < 1.15 ? '평소와 비슷해요' : v < 1.5 ? '평소보다 커요' : '평소보다 훨씬 커요');
+/** 열 번에 몇 번 잃었나(쉬운 말) */
+export const lose10 = r => { if (!r?.n) return null; if (!r.lose) return '한 번도 잃지 않았어요.'; const k = Math.round(r.lose / r.n * 10); return k ? '열 번에 ' + KN[k] + ' 번 잃었어요.' : '열 번에 한 번이 안 되게 잃었어요.'; };
+/** 형세 카드 — 첫 쪽 맨 위(su21.json 만으로 바로 그림 · 느린 휴대폰 첫 칠함) */
+export function sunCard(x) {
+  const m = x.m, P = (x.path ?? []).filter(k => LANDK.includes(k)).slice(-20), same = P.filter(k => k === x.land).length, BW = 350, BH = 26, upW = Math.round((BW - 4) * m.up / m.n);
+  const sh = shakeSay(m.shake), dd = mday(x.day);
+  return h('section', {class: 'sun', 'data-land': x.land, 'aria-label': '오늘의 형세 · ' + x.name},
+    h('p', {class: 'sun-k', text: '형세 보고' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
+    h('h2', {class: 'sun-name'}, h('span', {text: '지금은 '}), h('b', {text: x.name}), h('span', {text: '이에요.'})),
+    h('blockquote', {class: 'sun-q'}, h('p', {text: '「' + x.quote + '」'}), h('cite', {text: '손자병법 ' + (x.pian ?? '')})),
+    h('ul', {class: 'sun-m'},
+      h('li', {}, h('p', {text: m.n + '곳 가운데 ' + m.up + '곳이 한 달 전보다 올랐어요.'}),
+        s('svg', {class: 'sun-bar', viewBox: `0 0 ${BW} ${BH}`, 'aria-hidden': 'true', focusable: 'false'},
+          s('rect', {x: 0, y: 0, width: Math.max(upW, 2), height: BH, rx: 6, class: 'sun-up'}),
+          s('rect', {x: upW + 4, y: 0, width: Math.max(BW - upW - 4, 2), height: BH, rx: 6, class: 'sun-dn'})),
+        h('p', {class: 'sun-bl'}, h('span', {class: 'sun-bu', text: '오른 곳 ' + m.up}), h('span', {class: 'sun-bd', text: '나머지 ' + (m.n - m.up)}))),
+      h('li', {}, h('p', {text: '한가운데 회사는 한 달 동안 100원이 ' + w100(m.mid) + '이 됐어요.'})),
+      sh ? h('li', {}, h('p', {text: '요즘 스무 날 하루 오르내림은 ' + sh + '.'})) : null),
+    P.length ? h('div', {class: 'sun-path'},
+      s('svg', {class: 'sun-strip', viewBox: `0 0 ${BW} 30`, 'aria-hidden': 'true', focusable: 'false'},
+        ...P.map((k, i) => s('rect', {x: i * 17.5, y: 4, width: 14, height: 22, rx: 4, class: 'sun-d' + (k === x.land ? ' sun-same' : '') + (i === P.length - 1 ? ' sun-now' : '')}))),
+      h('p', {class: 'sun-pc', text: '지난 ' + P.length + '거래일 가운데 ' + same + '날이 ' + x.name + '이었어요. 오른쪽 끝이 오늘이에요.'})) : null,
+    h('p', {class: 'sun-do', text: (x.do ?? '') + ' 그래서 서른여섯 꾀를 덜 잃은 차례로 놓았어요.'}),
+    // 다섯 땅 풀이(깊이 — 땅을 가르는 법 · 손자병법 말씀 · 지난 날 가운데 그 땅이었던 날 수) · 접어 둠
+    x.lands && LANDK.every(k => typeof x.lands[k]?.rule === 'string') ? h('details', {class: 'sun-how'}, h('summary', {class: 'sun-hs', text: '다섯 땅은 이렇게 나눠요'}),
+      h('ol', {class: 'sun-hl'}, ...LANDK.map(k => { const L = x.lands[k]; return h('li', {'data-land': k, class: k === x.land ? 'sun-hx' : null},
+        h('b', {text: L.name + (k === x.land ? ' · 지금' : '')}), h('p', {text: L.rule + (Number.isInteger(L.n) && x.hist?.days ? ' 지난 ' + x.hist.days + '거래일 가운데 ' + L.n + '날이었어요.' : '')}),
+        h('p', {class: 'sun-hq', text: '「' + L.quote + '」 손자병법 ' + L.pian})); })),
+      h('p', {class: 'sun-hp', text: '땅은 그날 마지막 값으로 가려요. 내일 땅을 맞히는 셈이 아니에요.'})) : null,
+    h('p', {class: 'sun-safe', text: '지난 기록으로 본 모습이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+}
+/** 꾀 하나의 지난 기록 — 잃은 몫(열 칸 점) · 잃은 주 평균 · 가장 크게 잃은 주 · 모든 주 평균(손실 먼저 · 수익은 그다음) */
+function rec36(r) {
+  if (!r) return [];
+  if (!r.n) return [h('p', {class: 'sun-none s36-gr', text: '지난 기록을 세지 못했어요. 그날 사고판 양 자료가 있어야 세요.'})];
+  const k = r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0;
+  return [h('div', {class: 's36-rec'},
+      s('svg', {class: 's36-dots', viewBox: '0 0 200 20', 'aria-hidden': 'true', focusable: 'false'}, ...Array.from({length: 10}, (_, i) => s('circle', {cx: 10 + i * 20, cy: 10, r: 7, class: i < k ? 's36-dl' : 's36-dk'}))),
+      h('p', {class: 's36-gr'}, h('b', {text: lose10(r)}), h('span', {text: ' ' + r.n + '번 가운데 ' + r.lose + '번'}))),
+    r.lose ? h('p', {class: 's36-gl', text: '잃은 주는 평균 100원이 ' + w100(r.avgLoss) + '이 됐어요. 가장 크게 잃은 주는 ' + w100(r.worst) + '이었어요.'}) : null,
+    h('p', {class: 's36-ga', text: '모든 주를 고르면 평균 100원이 ' + w100(r.avg) + '이에요.'})];
+}
+/** 서른여섯 꾀 칸 — 형세(su21.json sun)가 있으면 덜 잃은 차례(위 일곱 펼침 · 나머지 접음) · 없으면 꾀 차례 · 꾀마다 이름 · 지난 기록 · 고르는 법 · 회사 일곱(누르면 그 회사 쪽) */
+export function section36(g, day, sun) {
   const N = n36(g), dd = mday(g?.asOf?.data) ?? mday(day), bd = mday(g?.asOf?.board);
   const OV = okOv(g) ? g.ovl.list : []; // 겹친 곳(주문 1114-0802)
   const anySp = g.kinds.some(k => (g.lists[k] ?? []).slice(0, 7).some(c => sp36(g, String(c?.code ?? '')))) || OV.some(c => sp36(g, String(c?.code ?? ''))); // 꺾은선이 하나라도 있으면 읽는 법 한 마디(주문 1114-0325)
-  const sets = [];
-  g.kinds.forEach((k, i) => { const st = g.set?.[k] ?? ''; if (!sets.length || sets.at(-1).name !== st) sets.push({name: st, ks: []}); sets.at(-1).ks.push(k); });
-  return h('section', {class: 's36', 'aria-label': '서른여섯 꾀 ' + N + '곳', 'data-n': String(N)},
+  const S = okSun(sun) && sun.rank.every(r => g.kinds.includes(r.k)) && new Set(sun.rank.map(r => r.k)).size === 36 ? sun : null;
+  const order = S ? S.rank.map(r => r.k) : g.kinds, RB = S ? Object.fromEntries(S.rank.map((r, i) => [r.k, {...r, i: i + 1}])) : {};
+  const grp = k => { const L = (g.lists[k] ?? []).slice(0, 7), r = RB[k];
+    return h('div', {class: 's36-g', 'data-k': k, 'data-n': String(L.length), 'data-rank': r ? String(r.i) : null},
+      h('p', {class: 's36-gh'}, r ? h('span', {class: 's36-rk', text: String(r.i)}) : null, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})),
+      ...rec36(r),
+      h('p', {class: 's36-gs', text: g.say?.[k] ?? ''}),
+      L.length ? h('ul', {class: 's36-co'}, ...L.map(c => chip36(g, c, bd, false)))
+        : h('p', {class: 's36-none', text: none36(g.why?.[k])})); };
+  const H = S ? S.hist : null, TOP = 7;
+  return h('section', {class: 's36', 'aria-label': (S ? '덜 잃은 꾀 차례 · ' : '') + '서른여섯 꾀 ' + N + '곳', 'data-n': String(N), 'data-order': S ? 'sun' : 'kind'},
     h('div', {class: 's36-top'},
-      h('p', {class: 's36-h'}, h('b', {text: '서른여섯 꾀'}), h('span', {text: ' ' + N + '곳'})),
-      h('p', {class: 's36-lead', text: '손자병법과 함께 내려오는 서른여섯 가지 꾀마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
+      h('p', {class: 's36-h'}, h('b', {text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'}), h('span', {text: ' ' + N + '곳'})),
+      S?.rankQ ? h('blockquote', {class: 'sun-q s36-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + S.rankQ.pian})) : null,
+      h('p', {class: 's36-lead', text: '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
+      S && H ? h('p', {class: 's36-rule', text: (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + S.name + '이었던 ' + H.same + '날을 골라, ')
+        + '꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요.' + (ym(H.from) && ym(H.to) ? ' 센 때는 ' + ym(H.from) + '부터 ' + ym(H.to) + '까지예요.' : '')}) : null,
       h('p', {class: 's36-day', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')})),
-    // 겹친 곳(주문 1114-0802) — 꾀 칸 맨 위 · 한 묶음(꾀 칸 묶음과 같은 꼴 · 칸마다 든 묶음 수)
+    h('div', {class: 's36-rank'}, ...order.slice(0, TOP).map(grp)),
+    order.length > TOP ? h('details', {class: 's36-more'}, h('summary', {class: 's36-ms', text: (S ? (TOP + 1) + '위부터 ' + order.length + '위까지 ' : '나머지 ') + '꾀 ' + (order.length - TOP) + '가지 더 보기'}),
+      h('div', {class: 's36-rank'}, ...order.slice(TOP).map(grp))) : null,
+    // 겹친 곳(주문 1114-0802) — 꾀 차례 아래 · 한 묶음(꾀 칸 묶음과 같은 꼴 · 칸마다 든 묶음 수)
     OV.length ? h('div', {class: 's36-ov', 'data-n': String(OV.length)},
       h('h3', {class: 's36-oh', text: '겹친 곳'}),
       h('div', {class: 's36-og', 'data-k': 'ovl', 'data-n': String(OV.length)},
         h('p', {class: 's36-ogh'}, h('b', {text: '세 묶음 이상에 든 곳'}), h('span', {text: ' · ' + OV.length + '곳'})),
-        h('p', {class: 's36-ogs', text: '첫 화면 마흔세 묶음 가운데 세 묶음 이상에 같이 든 회사예요. 많이 겹친 곳이 먼저예요. 칸마다 든 묶음 수를 적었어요.' + (mday(g.ovl.daysFrom) ? ' 며칠째는 ' + mday(g.ovl.daysFrom) + ' 기록부터 셌어요.' : '')}),
+        h('p', {class: 's36-ogs', text: '위 네 창 · 될 듯 세 창 · 서른여섯 꾀, 모두 마흔세 묶음 가운데 세 묶음 이상에 든 회사예요. 많이 겹친 차례예요. 칸마다 든 묶음 수를 적었어요. 겹쳤다고 더 좋은 곳은 아니에요. 같은 흐름이라 함께 내릴 수도 있어요.' + (mday(g.ovl.daysFrom) ? ' 며칠째는 ' + mday(g.ovl.daysFrom) + ' 기록부터 셌어요.' : '')}),
         h('ul', {class: 's36-co'}, ...OV.map(c => chip36(g, c, bd, true))))) : null,
-    ...sets.map(st => h('div', {class: 's36-set', 'data-set': st.name},
-      h('h3', {class: 's36-sh', text: st.name}),
-      ...st.ks.map(k => { const L = (g.lists[k] ?? []).slice(0, 7);
-        return h('div', {class: 's36-g', 'data-k': k, 'data-n': String(L.length)},
-          h('p', {class: 's36-gh'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})),
-          h('p', {class: 's36-gs', text: g.say?.[k] ?? ''}),
-          L.length ? h('ul', {class: 's36-co'}, ...L.map(c => chip36(g, c, bd, false)))
-            : h('p', {class: 's36-none', text: none36(g.why?.[k])})); }))),
+    h('p', {class: 'sun-safe', text: '지난 기록을 센 차례예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     h('a', {class: 's36-go', href: '#/r/t', text: '서른여섯 꾀 정산 보기 ›'}));
 }
 
@@ -316,7 +376,7 @@ function legendUp3(y, rank, day, how) {
   const R = n => (rank ?? []).find(r => r?.place === n);
   const head = [s('circle', {cx: PAD + 7, cy: y - 7, r: 6, class: 'sa-dotA sa-in sa-in3'}), T(PAD + 20, y, '오늘의 1 · 2 · 3등', 'sa-kh sa-up3h sa-in sa-in3'),
     T(W - PAD, y, '누르면 이유 ›', 'sa-d sa-up3t sa-in sa-in3', {'text-anchor': 'end'}),
-    T(PAD, y + 28, '1년 꾸준히 오른 곳이 잠깐 쉴 때예요.', 'sa-mean sa-m17 sa-in sa-in3', {'data-mean': 'up3'})]; // 달력 쪽 첫 줄과 같은 뜻 · 첫 화면 안이라 짧게 17(가장 큰 칠함이 되지 않게)
+    T(PAD, y + 28, '1년 오르다 요즘 쉬거나 내린 곳이에요.', 'sa-mean sa-m17 sa-in sa-in3', {'data-mean': 'up3'})]; // 달력 쪽 첫 줄과 같은 뜻 · 첫 화면 안이라 짧게 17(가장 큰 칠함이 되지 않게)
   const rows = [1, 2, 3].map((n, i) => up3Row(R(n), n, y + 16 + UPM + i * (UPR + UPG), day, how));
   const yb = y + 16 + UPM + 3 * (UPR + UPG) - UPG; // 칸 셋 아래
   const cal = s('a', {href: '#/r/c', class: 'sa-up3c', 'aria-label': '1 · 2 · 3등 달력 보기 — 날마다 뽑힌 셋'},
@@ -456,12 +516,12 @@ function draw(d, opt) {
     T(105, PY + 124, '지금 눈에 띄는 곳', 'sa-d', {'text-anchor': 'middle'}),
     s('circle', {cx: 248, cy: PY + 22, r: 6.5, class: 'sa-dotB'}), s('circle', {cx: 248, cy: PY + 22, r: 2.6, class: 'sa-dotBc'}), T(262, PY + 27, '될 듯', 'sa-k'),
     T(285, PY + 96, String(STRICT ? nNx : nNx || NEED), 'sa-n', {'text-anchor': 'middle'}), T(285 + est(String(nNx), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
-    T(285, PY + 124, '곧 그렇게 될 듯한 곳', 'sa-d', {'text-anchor': 'middle'}));
+    T(285, PY + 124, '그 앞 모습을 닮은 곳', 'sa-d', {'text-anchor': 'middle'}));
   svg.append(pair, ...(G ? [...line2(PY + 160, '여기에 서른여섯 꾀', N36 + '곳을 더해', 'sa-tot sa-in sa-in2', 18), ...line2(PY + 188, '모두', (nNow + nNx + N36) + '곳이에요.', 'sa-tot sa-in sa-in2', 18)] : []), low); // 서른여섯 꾀(주문 1114-0004) — 모두 몇 곳
   low.append(...line2(PY + 168, '지난 기록이에요.', '사고팔기를 권하지 않아요.', 'sa-safe sa-in sa-in3', 18),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
-    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : UP3 ? [...note2(PY + 254, '될 듯은', '그렇게 되기 바로 앞 모습이에요.', 'note5'), ...legendUp3(PY + 292, d.top3.rank, day, d.top3.how)] : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
+    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : UP3 ? [...note2(PY + 254, '될 듯은', '지난 기록의 앞 모습이에요.', 'note5'), ...legendUp3(PY + 292, d.top3.rank, day, d.top3.how)] : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
   low.append(howTo(LIST0)); // 칸 하나 읽는 법(쉬운 판)
   let y = LIST1;
@@ -547,9 +607,10 @@ export function picture(d, opt = {}) {
   if (opt.live !== false) live(svg, d?.asOf?.board ?? null); // 장 중 현재가(주문 2011) — 그림은 바로 돌려주고 값은 받은 뒤에 바꿈
   if (opt.mode !== 'next' && n36d(d) != null && typeof d.get36 === 'function') { // 서른여섯 꾀 칸은 그림 바로 아래(같은 큰 그림 자리 안 — 주문 1114-0004) · 자료는 그림이 칠해진 뒤에 받음
     const wait = h('section', {class: 's36 s36-wait', 'aria-hidden': 'true'}), f = document.createDocumentFragment(), day = d?.asOf?.board ?? null;
-    const fill = () => d.get36().then(g => { if (ok36(g) && g.asOf?.board === day && g.kinds.every(k => (g.lists[k] ?? []).length === d.s36n[k])) wait.replaceWith(section36(g, day)); else wait.remove(); }).catch(() => wait.remove());
+    const fill = () => d.get36().then(g => { if (ok36(g) && g.asOf?.board === day && g.kinds.every(k => (g.lists[k] ?? []).length === d.s36n[k])) wait.replaceWith(section36(g, day, d.sun)); else wait.remove(); }).catch(() => wait.remove());
     if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => setTimeout(fill, 0)); else setTimeout(fill, 0);
-    f.append(svg, wait); return f;
+    // 손자병법 형세(주문 1114-0922) — 맨 위 형세 카드 → 그 아래 꾀 차례(받으면 채움) → 구슬 그림
+    f.append(...(okSun(d.sun) ? [sunCard(d.sun)] : []), wait, svg); return f;
   }
   return svg;
 }

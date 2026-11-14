@@ -16,6 +16,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--live', required=True); ap.add_argument('--repo', required=True); ap.add_argument('--out', required=True)
 ap.add_argument('--mc365', action='store_true') # 몬테카를로를 365곳 모두에(올릴 때 · 주문 0854 · 1422) — 셈 값은 같고 「365곳 모두 셌다」 수만 더함
 ap.add_argument('--top3', action='store_true') # 42칸 1등 · 2등 · 3등 — 몬테카를로 1억 번 · 소거 1억 번(올릴 때 · 주문 1422 · 지난 판 다시 세기는 빼고)
+ap.add_argument('--no-sun', action='store_true') # 주문 1114-0922 — 손자병법 형세(지난 날 꾀 다시 세기 · 20초 남짓)를 건너뜀(지난 판 다시 세기 su21_replay 만)
 ap.add_argument('--vol', default=None) # 주문 1113-2033 · 1113-2224 — 네이버 일봉 [날, 종가, 거래량](su21_vol.mjs · 올리기 작업만) → 서른여섯 꾀 가운데 거래량 다섯
 A = ap.parse_args()
 J = lambda p: json.load(open(p, encoding='utf-8'))
@@ -426,7 +427,7 @@ out['top3'] = None if T3 is None else {'v': T3['v'], 'n': T3['n'], 'pool': T3['p
                        'ch20': r1(B[r['code']]['change20'] * 100) if B[r['code']].get('change20') is not None else None, # 한 달(20거래일) 오른 만큼 — 42칸 불장 값과 같은 셈
                        'in': [k for k, c in CELLS if c == r['code']]} for r in T3['rank']]} # in = 이 회사가 든 칸(없으면 42칸 밖)
 # ⑧ 주문 1113-2224(사장님 2026-11-13 22:24 「11 가지로 하지 말고 36가지 유형으로 … 손자병법을 적용해서 … 정산하고 연결해봐 36 가지가 다 7가지 정산까지 다 나누게」 · 22:26 「그래」)
-#   손자병법과 함께 내려오는 서른여섯 꾀(삼십육계)로 고른 서른여섯 묶음(일곱 곳씩 · su21_s36.py) — 정산 장부(su21_settle.mjs)가 그날 판 날일 때 적고 10주씩 산 셈 · 화면은 정산 쪽 표 하나(수익률 높은 차례)
+#   옛 병법에 전하는 서른여섯 꾀(삼십육계 — 손자병법 13편과 따로 뒤에 엮은 책)로 고른 서른여섯 묶음(일곱 곳씩 · su21_s36.py) — 정산 장부(su21_settle.mjs)가 그날 판 날일 때 적고 10주씩 산 셈 · 화면은 정산 쪽 표 하나(수익률 높은 차례)
 #   주문 1113-2033 특징 열하나 묶음(그 셈 파일 · 자료 파일)은 이 주문으로 뺌
 import su21_s36 as S36
 try:
@@ -437,6 +438,11 @@ S36R = S36.lists36(CODES, IXc, PM, CTX.T, capv, vol=(VOL or {}).get('rows'), dat
 # 겹친 곳(주문 1114-0802 · 사장님 2026-11-14 08:02 「… 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」)
 #   첫 화면 묶음 마흔셋(지금 셋 · 될 듯 셋 · 조용한 힘 · 꾀 서른여섯) 가운데 세 묶음 이상에 든 회사 — 꾀 칸 자료(su21-s36.json ovl)에 · 화면은 꾀 칸 맨 위 · 정산 장부도 이 목록으로
 OV = S36.overlap({**lists, **S36R['lists']})
+# 손자병법 형세(주문 1114-0922 · 사장님 2026-11-14 08:22 「요즘 주식시장을 병법으로 빚대서 첫페이지에 상황보고를 하고 / 이런 상황일 때 / 살아남을수 있는 전술들을 / 자동으로 배열을 위에서 아래로 해 /
+#   손실을 보지 않게 최우선에 두며 그다음이 수익이다」 — docs/design/sun-2026-11-14/order-0922.txt · su21_sun.py)
+#   판 날 장을 다섯 땅 가운데 하나로 읽고 · 지난 같은 땅 날들에서 서른여섯 꾀가 고른 일곱 곳의 닷새 뒤 값으로 덜 잃은 차례를 세움 — 첫 화면 맨 위(가벼워 su21.json 에)
+import su21_sun as SUN
+out['sun'] = SUN.sun(CODES, IXc, PM, CTX.T, capv, DATES, vrows=(VOL or {}).get('rows')) if PM is not None and not A.no_sun else None
 out['s36n'] = {k: len(L) for k, L in S36R['lists'].items()} # 주문 1114-0004 — 처음 쪽 「모두 ○곳」 · 구슬 아래 두 줄은 이 수로(꾀 칸 자료 su21-s36.json 은 첫 칠함 뒤에 받음 — 느린 휴대폰 첫 화면 2.5초)
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
