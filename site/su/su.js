@@ -94,13 +94,13 @@ export function proBox(pro, title = '전문가용 자세히') {
 /** 꼭 있어야 할 길 둘 — 옛 기능 쪽(#/g)에만 있던 것을 쪽마다 맨 아래로 옮김(주문 1114-1306 ⑧)
  *  개인정보 처리방침 = 큐피트 틀을 미리 입힌 짝 쪽(/su/privacy.html) · 고객센터 = 옛 앱 쪽을 큐피트 틀(?su=back)로 엶 */
 export const FOOT = Object.freeze([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]);
-export function source(asOf, S, note = null, kick = null) {
+export function source(asOf, S, note = null, kick = null, foot = true) { // foot = 맨 아래 두 길(회사 「왜?」 쪽은 넉 장 안이라 뺌 — 주문 0510 · 1114-1306)
   const got = S?.fetchedAt ? kstText(S.fetchedAt) : null;
   return h('footer', {class: 'su-src'}, kick ? h('p', {}, h('b', {text: '이 쪽 '}), kick) : null,
     h('p', {}, h('b', {text: '출처 '}), '네이버 증권 그날 마지막 값 · ' + josa(NAME, '가') + ' 센 지난 기록'),
     h('p', {}, h('b', {text: '조사 날짜 '}), '자료 ' + (ymd(asOf) ?? NEED) + (got ? ' · 받은 때 ' + got : '')),
     note ? h('p', {text: note}) : null,
-    h('p', {class: 'su-srcl'}, FOOT.map(([href, t]) => h('a', {href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'})))),
+    foot ? h('p', {class: 'su-srcl'}, FOOT.map(([href, t]) => h('a', {href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'})))) : null,
     h('p', {class: 'su-safe', text: SAFE})); // 안전 문장은 출처 칸 맨 아래(신문 짜임 — 주문 1023 [1] 2 「그림 밖 문장은 큰 값 · 설명 두 줄 · 출처뿐」)
 }
 /* ── 무하 그림(주문 1023 「머스크 판 4」 [3] 4 · [5] · [6] — 일꾼 열하나가 서로 모르게 만든 부품 · docs/design/su-musk-2026-11-05/pic-brief.md) ── */
@@ -182,7 +182,7 @@ export function page(m) {
     ...(m.after ?? []),
     m.note ? h('p', {class: 'su-note', text: m.note}) : null);
   const act = m.act?.filter(Boolean).length ? h('div', {class: 'su-act', 'aria-label': '누르는 곳'}, m.act.filter(Boolean)) : null; // 「왜 사?」 답 단추처럼 기능에 꼭 있는 누르는 곳(지우지 않음 — [2] 3)
-  const main = h('main', {class: 'su-page su-news'}, top, m.hero ?? null, act, two, more, source(m.asOf, m.S));
+  const main = h('main', {class: 'su-page su-news'}, top, m.hero ?? null, act, two, more, source(m.asOf, m.S, null, null, m.foot !== false));
   return [head, main, dock(m.next, m.step), tabs(m.tab ?? 0)];
 }
 /** 그린 뒤 — 낱말 풀이를 붙이고 풀이 없이 남은 어려운 낱말을 셈(main data-hard · data-hard-words · data-glossed) */

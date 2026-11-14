@@ -540,5 +540,5 @@ export async function vWhy(X, code, k) {
   const pro = fo && F11 ? [h('section', {class: 'su-why', 'aria-label': '포모 셈 자세히'}, h('h2', {class: 'su-ft', text: '포모 셈 자세히'}),
     h('p', {class: 'su-lead', text: '예전 포모 셈 열여덟 가지 가운데 그날 마지막 값으로 셀 수 있는 「가격 열기」 여섯 가지로 셈해요. 길 ' + num(fo.paths) + '개 · 흔들림 ' + n1(fo.se) + ' · 바탕 ' + fo.base?.n + '날 · 같은 날 같은 회사는 늘 같은 값이에요.'}))] : [];
   return {title: c.name + ' · 왜?', tab: 0, h1: c.name + ', 왜 ' + ASK[k] + '?', proper: false, hero, body: pro,
-    next: {href: '#/c/' + code + '/more', label: '날마다 오르내림과 사고판 수는?'}, asOf: T?.asOf?.board, S: b?.S ?? null}; // 왜 → 자세히 → 내 이유(회사 쪽은 아래 「이 회사 쪽 보기」)
+    next: {href: '#/c/' + code + '/more', label: '날마다 오르내림과 사고판 수는?'}, asOf: T?.asOf?.board, S: b?.S ?? null, foot: false}; // 왜 → 자세히 → 내 이유(회사 쪽은 아래 「이 회사 쪽 보기」) · foot: false = 맨 아래 두 길을 빼 넉 장 안(진짜 사이트 3/11 ⑰ 4.01장 · 주문 1114-1306)
 }

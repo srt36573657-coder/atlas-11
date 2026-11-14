@@ -412,12 +412,16 @@ for (const w of [320, 360, 390]) {
 {
   const CASES = [...SHUT_ROUTES.map(r => '/next/' + r), '/next/?dev=1#/today', '/next/?dev=1#/surge/10', '/next/?lang=en#/talk', '/next/?lang=en#/cal', '/next/?su=hot#/surge'];
   const p = await page(390, 844), atSu = u => u.pathname === '/su/' && u.hash === '#/';
+  // 닿은 큐피트 첫 쪽의 현재가 묻기(/api/price)는 큐피트 검사(check_su ⑮)가 따로 봄 — 여기서는 장이 닫힌 답으로 막음(주소 열아홉을 잇달아 열면 진짜 사이트 함수가 403 으로 막아 화면 오류로 남음 · 진짜 사이트 3/11)
+  await p.context().route('**/api/price*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify({schema: 'su-price-1', day: '0000-00-00', status: 'closed', items: {}})}));
+  const badRes = []; p.on('response', r => { if (r.status() >= 400) badRes.push(r.status() + ' ' + r.url().replace(base, '')); }); // 실패한 받기는 주소까지 적음(까닭 찾기)
   const drawn = q => q.waitForFunction(() => !!document.querySelector('#su') && !document.querySelector('#su .su-boot') && document.querySelectorAll('#su *').length > 20, null, {timeout: 20000}).then(() => true, () => false);
   for (const u of CASES) {
     await p.goto(base + u, {waitUntil: 'load'}).catch(e => fail('닫은 쪽 열기', u + ' ' + e.message));
     if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) { fail('닫은 쪽 → 큐피트 첫 쪽 /su/#/(주문 1114-1306)', u + ' → ' + p.url().replace(base, '')); continue; }
     if (!await drawn(p)) fail('닫은 쪽 → 큐피트 첫 쪽이 그려지지 않음(빈 쪽)', u);
-    if (p._errs.length) { fail('화면 오류', '닫은 쪽 ' + u + ' ' + p._errs.join(' | ').slice(0, 200)); p._errs.length = 0; }
+    if (p._errs.length) { fail('화면 오류', '닫은 쪽 ' + u + ' ' + p._errs.join(' | ').slice(0, 200) + (badRes.length ? ' · ' + badRes.join(' · ').slice(0, 160) : '')); p._errs.length = 0; }
+    badRes.length = 0;
     bump('닫은 쪽 → 큐피트 첫 쪽');
   }
   // 쪽 안에서 주소만 바꿈(옛 고리 · 주소 칸에 친 주소) — 첫 화면에서 넷 모두
