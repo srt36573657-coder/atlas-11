@@ -445,6 +445,11 @@ import su21_sun as SUN
 out['sun'] = SUN.sun(CODES, IXc, PM, CTX.T, capv, DATES, vrows=(VOL or {}).get('rows')) if PM is not None and not A.no_sun else None
 out['s36n'] = {k: len(L) for k, L in S36R['lists'].items()} # 주문 1114-0004 — 처음 쪽 「모두 ○곳」 · 구슬 아래 두 줄은 이 수로(꾀 칸 자료 su21-s36.json 은 첫 칠함 뒤에 받음 — 느린 휴대폰 첫 화면 2.5초)
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
+# 주문 1114-1306 ⑤ — 오늘 이름이 오른 회사 수(지금 · 넷째 창 · 될 듯 · 서른여섯 꾀 칸마다 앞 일곱 · 같은 회사는 한 번 — 화면 su-21.js coN · su-apple.js coCount 와 같은 셈)
+#   꾀 칸 자료(su21-s36.json)는 첫 칠함 뒤에 받으므로 이 수를 su21.json 에도 두어 첫 화면 큰 값을 바로 그림(느린 휴대폰 가장 큰 칠함 2.5초 — 「…」로 두었다가 채우면 가장 큰 칠함이 늦어짐 · 전체 검사 1/11 2,560ms)
+_co = {str(c.get('code')) for k in ('hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext') for c in (out['lists'].get(k) or [])[:7] if isinstance(c, dict) and c.get('code')}
+_co |= {str(c) for L in S36R['lists'].values() for c in (L or [])[:7] if c}
+out['co36'] = len(_co)
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 주문 1912 — 문화 일곱 · 칸마다 흔적(「왜?」 쪽만)
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

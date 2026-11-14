@@ -1468,6 +1468,8 @@ function bookMoney(BK) {
   // 오늘 이름이 오른 회사(주문 1114-1306 ⑤ · 점검 A3 — 칸마다 센 수(ALL36 칸)를 회사 수처럼 부르지 않음) — 묶음마다 앞 일곱 칸의 회사 번호를 모아 겹침을 뺀 수(이 검사가 따로 셈 · 꾀 칸 자료가 맞지 않으면 지금 · 될 듯 칸만)
   const CO7 = ['hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext'].flatMap(k => (T36?.lists?.[k] ?? []).slice(0, 7));
   const coOf = xs => new Set(xs.map(c => c?.code).filter(c => /^[0-9A-Z]{6}$/.test(c ?? ''))).size, CO49 = coOf(CO7), CO36 = same ? coOf([...CO7, ...K36.flatMap(k => G36.lists[k].slice(0, 7))]) : CO49;
+  // su21.json co36(첫 칠함에 바로 그리는 회사 수 — su21.py 가 같은 셈으로 둠 · 주문 1114-1306) = 이 검사가 따로 센 수(꾀 칸 자료가 같은 날일 때) · 없으면 옛 자료(첫 칠함은 「…」 뒤 채움)
+  check(T36?.co36 == null || !same || T36.co36 === CO36, '㉔ 자료 회사 수 co36 = 따로 센 오늘 이름이 오른 회사 수(첫 화면 큰 값을 바로 그림 · 주문 1114-1306 ⑤)', JSON.stringify({co36: T36?.co36 ?? null, want: CO36, same}));
   // 손자병법 형세(주문 1114-0922 · 사장님 2026-11-14 08:22 「요즘 주식시장을 병법으로 빚대서 첫페이지에 상황보고를 하고 / 이런 상황일 때 / 살아남을수 있는 전술들을 / 자동으로 배열을 위에서 아래로 해 /
   //   손실을 보지 않게 최우선에 두며 그다음이 수익이다」) — su21.json sun: 땅 = 숫자로 다시 읽은 땅(이 검사가 따로) · 꾀 차례 = 덜 잃은 차례(잃은 몫 → 잃은 주 평균 → 가장 크게 잃은 주 → 평균 → 꾀 차례 · 셀 날 0 은 맨 뒤)
   const SUN = T36?.sun ?? null, LANDN = {fall: '내리는 땅', shake: '흔들리는 땅', rise: '오르는 땅', narrow: '좁은 길', calm: '잔잔한 땅'};

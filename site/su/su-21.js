@@ -200,7 +200,8 @@ export async function v21Home(X) {
   //   꾀 칸 회사 번호는 su21-s36.json 에만 있어 첫 칠함은 「…」(세는 중)로 두고, 그림이 칠해진 뒤 그 파일을 받아 회사 수(○곳)로 채움(later — 첫 화면 2.5초를 늦추지 않게 · 그림 구슬 아래 「오늘 이름이 오른 회사는 ○곳이에요.」와 같은 때 같은 셈)
   const g7 = [...KEY, 'quiet', ...KEYN].map(k => T.lists?.[k] ?? []), coNow = coN(g7), b365 = T.counts?.b365 ?? 365;
   const LAB = '우량주 ' + b365 + '곳 가운데 오늘 이름이 오른 회사', MEAN = '같은 회사가 여러 칸에 들어요. 칸으로 세면 지금 ' + n28 + '칸 · 될 듯 ' + n21 + '칸' + (G ? ' · 서른여섯 꾀 ' + N36 + '칸' : '') + '이에요.';
-  const big = val(G ? '…' : coNow, G ? '' : '곳', LAB, {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안',
+  const coPre = G && Number.isInteger(T.co36) && T.co36 > 0 ? T.co36 : null; // su21.json co36(같은 셈 · su21.py) — 첫 칠함에 바로 그림(느린 휴대폰 가장 큰 칠함 2.5초 · 주문 1114-1306) · 없으면 「…」 뒤 채움
+  const big = val(G ? (coPre ?? '…') : coNow, G ? (coPre != null ? '곳' : '') : '곳', LAB, {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안',
     무엇을: (FILT(T) ? '불장 · 꽃이 될 · 돈이 몰리는 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾았어요') + (nq ? '. 넷째 창 조용한데 힘이 모이는 곳 ' + nq + '칸을 더했어요' : '') + '. 될 듯 ' + n21 + '칸' + (G ? '과 서른여섯 꾀 ' + N36 + '칸' : '') + '도 더했어요. 같은 회사가 여러 칸에 들면 회사는 한 번만 셌어요', 어떻게: CUR(T) ? HOW_CUR(T) : MCR(T) ? '365곳 모두 ' + TEN(T) + '번 섞어 보고, 소거 한 번을 지난 곳을 드문 차례로 일곱씩 골랐어요' : FILT(T) ? '세 가지 셈을 365곳에 대고, 몬테카를로 10만 번과 기준 31가지로 다시 걸렀어요' : MARK(T) ? '세 가지 셈을 365곳에 똑같이 대고, 몬테카를로와 기준 31가지를 모두 지난 ' + nSx(T, KEY) + '칸에 큐피트 계산법 표를 달았어요' : '세 가지 셈을 365곳에 똑같이 대어 봤어요', 왜: '주식을 몰라도 지금 볼 곳을 한눈에 알게 하려고요'},
     {mean: MEAN});
   /** 꾀 칸 자료를 받은 뒤 — 큰 값을 「오늘 이름이 오른 회사 ○곳」으로(받지 못하면 지금 · 될 듯 칸의 회사 수와 그 까닭) · 다른 쪽으로 넘어갔으면 손대지 않음 */
@@ -212,8 +213,8 @@ export async function v21Home(X) {
     if (!bv.isConnected) return;
     const ok = ok36(g, T), n = ok ? coN([...g7, ...g.kinds.map(k => g.lists[k])]) : coNow;
     const b = bv.querySelector('b'), u = bv.querySelector('span');
-    if (b) b.textContent = num(n);
-    if (u) u.textContent = '곳'; else if (b) b.after(h('span', {text: '곳'}));
+    if (b && b.textContent !== num(n)) b.textContent = num(n); // 같은 수면 다시 그리지 않음(가장 큰 칠함이 늦어지지 않게)
+    if (u) { if (u.textContent !== '곳') u.textContent = '곳'; } else if (b) b.after(h('span', {text: '곳'}));
     bv.setAttribute('data-co', String(n));
     if (bl) bl.textContent = ok ? LAB : '우량주 ' + b365 + '곳 가운데 지금 · 될 듯 칸에 이름이 오른 회사';
     if (mn && !ok) mn.textContent = MEAN + ' 서른여섯 꾀 회사는 받지 못해 빼고 셌어요.';

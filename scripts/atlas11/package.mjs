@@ -33,6 +33,7 @@ export const LANGS = Object.freeze(['en', 'zh']);
    판 묶음(public/data/atlas11/<id>/view · 예측 없음 · 판 이름 · place.id 가 맞음)이 있는 것만 /<id>/ 에 같은 화면 코드와 함께 싣는다 · 차례 = 위 막대 시장 단추 차례 */
 export {ABROAD} from '../../lib/atlas11/places.mjs'; // 2026-10-08 18:33(마카오 시각) 「한국 미국장만 두고 남머지 장은 삭제해」 — 미국 하나(옛 미국 · 중국 · 일본 · 베트남)
 import {ABROAD, RETIRED} from '../../lib/atlas11/places.mjs';
+import {slimDir} from './next/slim_js.mjs'; // 큐피트 쪽 js 설명 빼기(주문 1114-1306)
 
 export async function buildDist() {
   const manifest = JSON.parse(await fs.readFile(path.join(root, 'public/data/atlas11/view/manifest.json'), 'utf8'));
@@ -40,6 +41,9 @@ export async function buildDist() {
   const dist = path.join(root, 'dist');
   await fs.rm(dist, {recursive: true, force: true}); await fs.mkdir(dist, {recursive: true});
   await copyDir(path.join(root, 'site'), dist);
+  // 큐피트 쪽 js 설명 빼기(주문 1114-1306 · 사장님 2026-11-14 13:46 「속도를 3배 빠르게 해」 — 느린 휴대폰 첫 화면 2.5초) · 저장소 원본은 그대로 · 묶음 사본만
+  //   글 · 셈은 그대로(설명 줄만 · 문법 검사가 실패한 파일은 원본 그대로 — scripts/atlas11/next/slim_js.mjs · 시험 tests/atlas11/slim.test.mjs 가 뼈대가 같은지 봄)
+  { const r = slimDir(path.join(dist, 'su')); console.log(`큐피트 js 설명 빼기 — 파일 ${r.files}개 · ${Math.round(r.saved / 1024)}KB 아낌${r.kept.length ? ' · 원본 그대로 ' + r.kept.join(' ') : ''}`); }
   // 수르 판 표(주문 1708 · 사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어!」) — 묶을 때마다 새 표 · 휴대폰이 화면을 다시 볼 때 표가 바뀌었으면 스스로 새로 고침(site/su/su.js fresh) · 저장소 판은 「dev」
   await fs.writeFile(path.join(dist, 'su/version.json'), JSON.stringify({v: (process.env.GITHUB_SHA ?? 'local').slice(0, 12) + '-' + Date.now().toString(36)}) + '\n');
   // 새 ATLAS 날마다 굴리기(2026-10-11 09:37 사장님 「기준일을 항상 현재 날짜에서 지난 20일 거래로 … 항상 그렇게 하라」) — 이어 받은 종가로 dist/atlas/data 를 다시 셈
