@@ -17,10 +17,10 @@ const DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
  *  local: 2026-10-18 39092369729(옛 쪽 기준값 없이 · en 11 몫 2,370 · past 2 몫 402 · co 2 몫 243) + 39091891146(range 2 몫 165) — 쪽 검사가 자라면(새 검사 칸) 여기를 새로 잼
  *  live: 2026-10-17 39044543448 + co · range 는 local 에서 늘어난 만큼 더함(새 검사 칸은 화면 안 셈이라 사이트 빠르기와 상관없음) */
 export const COST = { // local 은 2026-11-05 41949468910 로 새로 잼(주문 1023 — 전에 없던 쪽 열하나가 「모르는 쪽」이라 작업 하나씩 차지하던 것)
-  local: {en: 2535, past: 405, co: 278, roman: 243, chx: 186, gift: 174, range: 160, theme: 155, grow: 139, cal: 127, gdr: 127, kakao: 123, surge: 117, next: 113, share: 112, sage: 102,
-    hold: 79, why11: 68, white: 67, today: 57, why: 53, rivals: 51, misc: 47, su: 47, cond: 45, jinhwa: 43, help: 17, essence: 8},
-  live: {en: 3217, co: 742, past: 629, grow: 607, range: 531, next: 321, rivals: 292, chx: 182, cal: 100, today: 93, misc: 57, share: 56, why: 46, surge: 40, cond: 39, gdr: 26, hold: 15},
-};
+  local: {en: 2535, past: 405, co: 278, roman: 243, chx: 186, gift: 174, range: 160, theme: 155, grow: 139, gdr: 127, kakao: 123, next: 113, share: 112, sage: 102,
+    hold: 79, why11: 68, white: 67, why: 53, rivals: 51, misc: 47, su: 47, cond: 45, jinhwa: 43, help: 17, essence: 8},
+  live: {en: 3217, co: 742, past: 629, grow: 607, range: 531, next: 321, rivals: 292, chx: 182, misc: 57, share: 56, why: 46, cond: 39, gdr: 26, hold: 15},
+}; // 달력(cal) · 급등(surge) · 오늘 시장(today) 쪽 검사는 쪽을 닫아 지움(주문 1114-1306)
 export const SPLITTABLE = ['en', 'co', 'range', 'past', 'grow'];
 const START = {local: 5, live: 8}; // 검사 하나를 띄우는 초(노드 · 브라우저 · 자료) — 몫마다 한 번씩 더 듦
 const SETUP = {local: 78, live: 32}; // 작업마다 준비 초(저장소 받기 · 브라우저 · local 은 묶고 띄우기 — local 2026-11-05 실측 75 ~ 80)
@@ -31,9 +31,9 @@ const MAXN = 20;
  *  live 는 하나 그대로(실제 사이트를 한꺼번에 두드리면 「자료를 못 받음」이 남 — 아래 page 의 max-parallel 6 과 같은 까닭) */
 export const PAR_IN = Object.freeze({local: 3, live: 1});
 /** 셋씩 함께 돌 때 쪽마다 느려지는 배수 = 함께 돈 초 ÷ 혼자 돈 초(2026-11-05 41954062442 ÷ 41949468910 실측 · 주문 1042) — 모르는 쪽은 1.6
- *  en 은 기다림이 많아 셋이 함께여도 그대로(1.0) · cal · gdr · rivals · misc 는 화면 셈이 무거워 두 배 가까이 → 무거운 쪽은 혼자 한 작업에 두게 됨 */
-export const SLOW = Object.freeze({en: 1, past: 1.5, co: 1.43, range: 1.8, grow: 1.4, cal: 1.77, gdr: 1.76, chx: 1.05, gift: 1.02, theme: 1.07, essence: 1, kakao: 1.28, surge: 1.21, help: 1.1, next: 1.16,
-  share: 1, sage: 1.09, hold: 1, why11: 1, why: 1, today: 1.58, rivals: 2.27, misc: 2.28, cond: 1.42, jinhwa: 1.23, roman: 1, su: 1, white: 1});
+ *  en 은 기다림이 많아 셋이 함께여도 그대로(1.0) · gdr · rivals · misc 는 화면 셈이 무거워 두 배 가까이 → 무거운 쪽은 혼자 한 작업에 두게 됨 */
+export const SLOW = Object.freeze({en: 1, past: 1.5, co: 1.43, range: 1.8, grow: 1.4, gdr: 1.76, chx: 1.05, gift: 1.02, theme: 1.07, essence: 1, kakao: 1.28, help: 1.1, next: 1.16,
+  share: 1, sage: 1.09, hold: 1, why11: 1, why: 1, rivals: 2.27, misc: 2.28, cond: 1.42, jinhwa: 1.23, roman: 1, su: 1, white: 1});
 /** 느린 휴대폰 흉내로 시간을 재는 검사(check_su · check_white) — 함께 돌면 잰 시간이 늘어 틀리게 걸림 → 작업 안에서 혼자 먼저 돎(워크플로 SOLO 와 같게) */
 export const SOLO = Object.freeze(['su', 'white']);
 

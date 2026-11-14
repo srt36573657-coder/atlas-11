@@ -55,8 +55,11 @@ test('화면 — 첫 페이지 이름 셋 · 「왜?」 쪽 상자 · 달력 첫
   assert.ok(/export const up3From = B =>/.test(bk) && bk.includes("const ruleNew = '새 기준은 우량주 365곳 가운데 1년 오르다 요즘 쉬거나 내린 곳이에요. 크게 내린 곳도 숨기지 않아요.';") && bk.includes("'부터는 새 기준으로 골랐어요. '") && !bk.includes('bk-intro bk-new'), '달력 — 새 잣대 첫 날(풀이는 표 밑 한 칸)');
   assert.ok(ck.includes('⑳ 새 잣대(주문 1111-1857)') && ck.includes("'⑳ 첫 페이지 — 42칸 모두 · 오늘의 1등 · 2등 · 3등 넓은 칸 셋(이름 · 현재가 · 한 달 · 업종 · 이유 · 한 달 꺾은선 · 누르면 그 곳 쪽)"), '검사 ⑳ — 새 잣대');
   const says = ['지난 기록 차례예요.', '앞날은 몰라요.', '고른 기준은 넷이에요. ', '1년 꾸준히 오름', '1년 오른 날이 많음', '업종보다 덜 오름', '최근 5일 쉼', '오늘의 1 · 2 · 3등', '누르면 이유 ›', '이유 — ', '이 칸은 1 · 2 · 3등이 아니에요', '넷을 더한 값이 ', '앞날을 맞히지 않아요. 지난 값으로 센 기록이에요.',
-    '부터는 새 기준으로 골랐어요. ', '새 기준은 우량주 365곳 가운데 1년 오르다 요즘 쉬거나 내린 곳이에요. 크게 내린 곳도 숨기지 않아요.', '지난 기록이에요. ', '에는 열흘 뒤 오른 때가 100번에 '];
+    '부터는 새 기준으로 골랐어요. ', '새 기준은 우량주 365곳 가운데 1년 오르다 요즘 쉬거나 내린 곳이에요. 크게 내린 곳도 숨기지 않아요.', '지난 기록이에요. ', '에는 열흘 뒤 오른 때가 100번에 ', '한 달은 내림 · ', '더 내릴 수도 있어요.'];
   for (const t of says) { assert.ok(!/[A-Za-z%]/.test(t) && !/매수|매도|추천|예측|확률|유망|신호|수익률/.test(t), '영어 · % · 쓰지 않을 말 없음 — ' + t); assert.deepEqual(screenHits(t), [], '화면 낱말 — ' + t); }
+  // 주문 1114-1306 ① · ③ — 1 · 2 · 3등 칸 한 달 = 「한 달 100원이 ○원」 · 한 달 값이 내렸으면 이유 줄 첫 마디 「한 달은 내림 · 」(장 중 값으로 바뀌어도 다시 셈) · 머리 아래 「더 내릴 수도 있어요.」 · 검사 ⑳ 이 따로 셈
+  assert.ok(ap.includes("mon = '한 달 ' + (c20 != null ? won100(c20) : NEED)") && ap.includes('wl = up3Why(c20, why)') && ap.includes("mon = '한 달 ' + won100(ch)") && ap.includes('const wl = up3Why(ch, c.why)') && ap.includes("T(PAD, y + 50, '더 내릴 수도 있어요.'"), '첫 페이지 1 · 2 · 3등 — 100원 말 · 손실 먼저');
+  assert.ok(ck.includes("const whyW = r => '이유 — ' + (spOk(r) && c20Of(r) < 0 ? '한 달은 내림 · ' : '') + (topWhy(r) ?? '확인 필요');") && ck.includes("x.m === '한 달 ' + won100Of(c20Of(r))"), '검사 ⑳ — 한 달 · 이유 줄을 따로 셈');
 });
 
 test('저장된 판 — 새 잣대 셋 · 그 판 날 값 · 칸 등수 맞음', () => {
@@ -89,6 +92,7 @@ test('1 · 2 · 3등 그림 · 이어지는 쪽(주문 1112-0044 · 사장님 20
   assert.ok(ap.includes("querySelectorAll('a.sa-cell[data-code], a.sa-up3a[data-code]')") && ap.includes('c.sw ?? SW, c.sh ?? 34'), '장 중 현재가 — 1 · 2 · 3등 칸도 같은 값 · 꺾은선 크기 그대로');
   assert.ok(su.includes("/^[0-9A-Z]{6}\\/t$/.test(a)) v = await (await import('/su/su-up3.js')).vUp3(X21, a.slice(0, 6));"), '길 #/c/<번호>/t');
   assert.ok(/export async function vUp3\(X, code\)/.test(u3) && u3.includes("X.notFound('이 회사는 오늘 1 · 2 · 3등이 아니에요.") && u3.includes("h('a', {class: 'su-ask', href: '#/r/c'}") && u3.includes("href: '#/c/' + r.code + '/t'"), '쪽 — 1 · 2 · 3등만 · 달력 · 다른 두 곳으로 이어짐');
+  assert.ok(u3.includes("import {dateKo, won100} from '/su/su-data.js';") && u3.includes("chip('한 달', sp ? w100(ch) : NEED") && u3.includes("' · 한 달 ' + w100(ch)}") && u3.includes("' · 한 달 ' + (o.sp ? w100(o.ch) : NEED)") && !/toFixed\(1\) \+ '%'/.test(u3), '쪽 — 한 달은 「100원이 ○원」(칩 · 꺾은선 소리 이름표 · 다른 두 곳 · 주문 1114-1306 ①)');
   assert.ok(ck.includes("'⑳ 1 · 2 · 3등 한 곳 쪽(주문 1112-0044) — '") && ck.includes("'⑳ 1 · 2 · 3등이 아닌 회사의 새 잣대 쪽 — 찾지 못했어요'"), '검사 ⑳ — 이어지는 쪽');
   // 쪽에 나오는 고정 문장 — 영어 · % · 쓰지 않을 말 없음 · 화면 낱말
   const fu = f => new URL('../../site/su/' + f, import.meta.url).href; // 화면 모듈은 /su/… 로 부름 — 시험에서는 그림 도구만 빈 것으로 · 나머지는 그 파일

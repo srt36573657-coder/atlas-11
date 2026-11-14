@@ -19,9 +19,9 @@ html.en .hits small { flex-basis: 100%; white-space: normal; }
 html.en .m4-letter .nb, html.en .pchx-nb { white-space: normal; }
 /* 접은 칸 「열기 · 닫기 · 펼치기 · 접기」 — 쪽 모듈 꼴(p-*.css)이 스타일로 넣은 글은 사전이 못 바꿈 → 영어 판에서 같은 말로(지금 아틀란스 atlas.css 「Open · Close」와 같음)
    모듈 꼴이 이 파일보다 뒤에 읽혀서 html.en 을 앞에 붙여 이김 */
-html.en details.pcal-more > summary::after, html.en details.pco-more > summary::after, html.en .pcond details > summary::after,
-html.en details.pgrow-more > summary::after, html.en .psurge-more > summary::after { content: 'Open'; }
-html.en details.pcal-more[open] > summary::after, html.en details.pco-more[open] > summary::after, html.en .pcond details[open] > summary::after,
-html.en details.pgrow-more[open] > summary::after, html.en .psurge-more[open] > summary::after { content: 'Close'; }
+html.en details.pco-more > summary::after, html.en .pcond details > summary::after,
+html.en details.pgrow-more > summary::after { content: 'Open'; }
+html.en details.pco-more[open] > summary::after, html.en .pcond details[open] > summary::after,
+html.en details.pgrow-more[open] > summary::after { content: 'Close'; } /* 달력 · 급등 쪽 꼴(pcal · psurge)은 쪽을 닫아 뺌(주문 1114-1306) */
 html.en .ppast-more summary::after { content: 'Open ›'; } html.en .ppast-more[open] summary::after { content: 'Close'; }
 html.en details.prange-more > summary::after { content: 'Show'; } html.en details.prange-more[open] > summary::after { content: 'Hide'; }

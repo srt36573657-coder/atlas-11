@@ -115,7 +115,13 @@ const LIST = JSON.parse(await fs.readFile(path.join(ROOT, 'docs/design/roman72-2
   check(!own.some(s => nameKo.test(s) || nameEn.test(s)), '① 이름을 글에 박지 않음({N} 으로 · 규칙 76)', own.filter(s => nameKo.test(s) || nameEn.test(s)).slice(0, 3).join(' | '));
   check(!GLOSS.test(K), '① 낱말표가 바꾸는 말 0', K.match(GLOSS)?.[0]);
   check(SEATS.every(s => s[3] === null || /^#\/[a-z0-9/]*$/.test(s[3])), '① 고리 꼴(#/… 또는 고리 없음)', SEATS.filter(s => !(s[3] === null || /^#\/[a-z0-9/]*$/.test(s[3]))).map(s => s[3]).join(','));
-  check(SEATS.filter(s => s[3] === null).length <= 6, '① 고리 없는 자리 여섯 이하(제 주소가 없는 단추 · 쪽만)', SEATS.filter(s => s[3] === null).length);
+  { // 닫은 쪽 넷(사장님 2026-11-14 13:06 주문 1114-1306 ② — 오늘 시장 · 급등 · 달력 · 오늘의 이야기): 자리는 그대로(일흔둘) · 고리 없음 · 방 이름표 없음 · 닫은 주소로 가는 고리 0
+    const SHUT_SEAT = ['오늘 시장', '급등', '달력', '오늘의 이야기'], shut = SEATS.filter(s => s[0] === 'more' && SHUT_SEAT.includes(s[1]));
+    check(shut.length === 4 && shut.every(s => s[3] === null), '① 닫은 쪽 넷 자리 = 고리 없음(「제 쪽이 따로 없어요」 · 주문 1114-1306)', shut.map(s => s[1] + ' ' + s[3]).join(' · '));
+    check(!SEATS.some(s => /^#\/(talk|surge|cal|today)(\/|$)/.test(s[3] ?? '')), '① 닫은 주소(#/talk · #/surge · #/cal · #/today)로 가는 고리 0', SEATS.filter(s => /^#\/(talk|surge|cal|today)(\/|$)/.test(s[3] ?? '')).map(s => s[3]).join(','));
+    check(!['talk', 'surge', 'cal', 'today'].some(k => Object.hasOwn(ROOMS, k)), '① 방 이름표 표에 닫은 쪽 0', Object.keys(ROOMS).filter(k => ['talk', 'surge', 'cal', 'today'].includes(k)).join(','));
+    check(SEATS.filter(s => s[3] === null && !shut.includes(s)).length <= 6, '① 고리 없는 자리 여섯 이하(제 주소가 없는 단추 · 쪽만 — 닫은 쪽 넷 밖)', SEATS.filter(s => s[3] === null && !shut.includes(s)).length);
+  }
   check(SEATS.every(s => /요\.$/.test(s[5]) && /[.?”]$/.test(s[6])), '① 왜 여기 = 끝난 문장(…요. · 영어 마침표)', SEATS.filter(s => !(/요\.$/.test(s[5]) && /[.?”]$/.test(s[6]))).map(s => s[4]).join(','));
   const css = cssRules('site/next/p-roman.css'); check(!css.length, '① 모양 규칙(글씨 · 여백 잣대)', css.slice(0, 4).join(' | '));
   { // 방 지킴이 표(ROOMS) — 신마다 한 방 · 그 신의 자리 고리가 그 방 · 주소 → 신 셈(roomOf)

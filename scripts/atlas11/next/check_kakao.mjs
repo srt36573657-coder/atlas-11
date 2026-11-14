@@ -2,17 +2,18 @@
 /* 카톡 줄 검사(사장님 2026-10-18(싱가포르) 16:39 「진화가 본질인 명령문」 [6] 1 · 6 · 8 · 일꾼 KB2) — 종목이 나오는 줄 · 카드마다 같은 카톡 단추 하나
    단추 = site/next/share-btn.js shareButtons(o, {kakao: true}) 하나(button.kk-btn[data-kk][data-kind]) · 줄 = 그 단추와 종목 고리를 형제로 둔 칸([data-kkrow="<곳>"])
    쓰는 법: node scripts/atlas11/next/check_kakao.mjs --base http://127.0.0.1:8826 [--pw /opt/node-tools/] [--all] [--limit N] [--shard k/n] [--out 결과.json]
-            [--w 360,320,390] [--path /next/?dev=1] [--no-click] [--routes '#/cal,#/f/surge'](고치는 동안 · 문을 못 지남)
-     기본(작은 범위) = 곳마다 길 하나(칩 셋 · 급등 다섯 칸 · 달력 · 종목 파일 · 조건 · 오늘 시장 · 이야기 · 관심 · 보유종목 · 매매일지 · 골똘이 칸 · 첫 화면 · 시황 · 찾기 ·
+            [--w 360,320,390] [--path /next/?dev=1] [--no-click] [--routes '#/cond,#/f/lead'](고치는 동안 · 문을 못 지남)
+     기본(작은 범위) = 곳마다 길 하나(칩 둘 · 조건 · 관심 · 보유종목 · 매매일지 · 골똘이 칸 · 첫 화면 · 시황 · 찾기 ·
                        업종 하나 · 큰 업종 하나 · 회사 하나와 그 4 ~ 7단 · 봉인 · 도움말 · 업데이트 · 밖 칸) · 세 폭(360 · 320 · 390)
      --all = 기본 + 업종 77 · 큰 업종 10 모두 + 업종마다 첫 회사 화면 + 고른 곳 모두의 5단(다른 회사 막대) + 찾기 셋 · --limit N = 업종 · 회사 길 N 개까지(run_all --quick)
      --shard k/n = 길을 n 몫으로 가름(shard/part.mjs · 모으기 shard/merge.mjs)
    보는 것(길마다 · 폭마다 · 접은 칸도 펼친 뒤):
      ① 종목 줄 수 = 카톡 단추 수 · 줄마다 단추 정확히 1 · 단추는 모두 줄 안 · 단추가 고리(a) 안 0 · 줄 안에 줄 0
-     ② 줄마다 종목 고리(회사 #/w/<번호>[/4 ~ 7단] · 종목 파일 #/cal/<번호>) 정확히 1 · 고리 번호 = 단추 번호 — 줄 = 회사 · 단추 = 보내기(엉키지 않음)
+     ② 줄마다 종목 고리(회사 #/w/<번호>[/4 ~ 7단]) 정확히 1 · 고리 번호 = 단추 번호 — 줄 = 회사 · 단추 = 보내기(엉키지 않음)
         (매매일지 기록 줄 why.rec 은 고리 없이 이름 글 — 이름이 줄 글에 있는지만 봄)
      ③ 줄 밖 종목 고리 0 — 아래 뺀 꼴(SKIP · 까닭과 수를 결과 counts.skipped 에) 밖 = 「종목 고리 수 = 카톡 단추 수」
-     ④ kind — 급등 칩(#/f/surge) · 급등 다섯 칸 · 달력 · 소식(뽑힘 · 옮김 · 빠짐) = surge(받는 카드에 반값 한 줄 [6] 8) · 그 밖 = share
+     ④ kind — 보유종목 소식(뽑힘 · 옮김 · 빠짐) = surge(받는 카드에 반값 한 줄 [6] 8) · 그 밖 = share
+        (급등 칩 · 급등 다섯 칸 · 달력 · 오늘 시장 · 이야기 쪽은 닫음 — 사장님 2026-11-14 주문 1114-1306 · 큐피트 첫 쪽으로 가는지는 next_check ⑪)
      ⑤ 보이는 줄: 단추 44 × 44px 이상 · 단추 오른쪽 끝 ≥ 줄 오른쪽 끝 − 24px · 단추 오른쪽에 다른 칸 0 · 단추가 화면 안 · 쪽 가로 넘침 0
      ⑥ 누름(길마다 한 번 · 첫 폭 · --no-click 이면 안 함): 카톡 단추 → 글상자(.ps-dlg) 열림 · 이름이 글상자에 · 주소(#) 그대로 → 닫으면 주소 · 자리 그대로 /
         줄 고리 → 그 종목 길로 감(그리는 중 누름은 끝으로 감는 화면이 있어 한 번 더 누름)
@@ -38,17 +39,14 @@ const SH = shardOf(argv);
 const T0 = Date.now();
 
 /* 곳 이름 — 줄을 그리는 함수(KB2 · accept/KB2.md 곳 수 표) · 모르는 곳이 나오면 경고(표를 고침) */
-const KNOWN = ['chip.card', 'chip.row', 'watch.next', 'ch.grid', 'sub.co', 'me.hist', 'find.co', 'cal.row', 'cal.ev', 'cal.alert', 'cal.gone', 'chx.row', 'cond.row', 'cond.q',
-  'gdr.card', 'hold.card', 'hold.news', 'rivals.peer', 'surge.board', 'surge.row', 'surge.track', 'surge.gone', 'talk.card', 'talk.fact', 'today.mv', 'why.rec'];
-const SURGE_PLACES = new Set(['surge.board', 'surge.row', 'surge.track', 'surge.gone', 'cal.row', 'cal.ev', 'cal.alert', 'cal.gone']);
+const KNOWN = ['chip.card', 'chip.row', 'watch.next', 'ch.grid', 'sub.co', 'me.hist', 'find.co', 'chx.row', 'cond.row', 'cond.q',
+  'gdr.card', 'hold.card', 'hold.news', 'rivals.peer', 'why.rec']; // 닫은 쪽(급등 surge.* · 달력 cal.* · 이야기 talk.* · 오늘 시장 today.*)의 곳은 뺌(주문 1114-1306) — 나오면 「모르는 곳」 경고
 const NOLINK = new Set(['why.rec']); // 고리 없이 이름 글만 있는 줄(기록 줄 — 누르면 회사로 가지 않음)
 /* 뺀 꼴 — 종목 고리지만 줄 · 카드가 아님(까닭) · 차례대로 맞춤 */
 const SKIP = [
   ['.chaps a, nav.wpath a, a.chap-next, nav.wtabs a, a.pco-next', '7단 길 고리 — 그 회사 쪽끼리 오가는 길(줄 · 카드 아님)'],
-  ['a.pcal-btn, a.pcal-back', '종목 파일 쪽의 길 단추 「회사 보기 ›」(쪽 자체가 그 종목)'],
   ['a.pchx-chip', '고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사)'],
   ['a.pchx-inl', '글 속 이름(선을 못 그린 회사 — 문장 안)'],
-  ['.psurge-nl a.psurge-inl', '그날 들고 난 이름 목록(이름 글 — 줄 · 카드 아님)'],
   ['a.ps-link', '친구가 연 쪽 「이 회사 자세히 보기」(그 쪽 보내기는 「나도 보내기」 · KB1)'],
   ['[data-kkskip]', '업종 줄(회사가 하나뿐인 업종 — 고리가 그 회사)'],
 ];
@@ -56,21 +54,19 @@ const SKIP = [
 let chromium;
 try { ({chromium} = createRequire(PW.endsWith('/') ? PW : PW + '/')('playwright')); } catch (e) { console.error('playwright 를 못 받음 —', PW, e.message); process.exit(2); }
 
-/* 자료 — 길 목록을 만듦(업종 · 큰 업종 · 회사 · 급등 · 종목 파일 · 밖 칸) */
+/* 자료 — 길 목록을 만듦(업종 · 큰 업종 · 회사 · 밖 칸) */
 const getJ = async u => { try { const r = await fetch(BASE + u, {cache: 'no-store'}); return r.ok ? await r.json() : null; } catch { return null; } };
-const [core, mkt, surge, tr, names] = await Promise.all(['core', 'mkt', 'surge', 'surgetr', 'names'].map(n => getJ('/atlas/data/' + n + '.json')));
+const [core, mkt, names] = await Promise.all(['core', 'mkt', 'names'].map(n => getJ('/atlas/data/' + n + '.json')));
 if (!core?.industries || !mkt?.companies) { console.error('자료(core · mkt)를 못 받음 —', BASE); process.exit(2); }
 const CO = mkt.companies, codes = Object.keys(CO);
 const pick1 = ['005930', ...codes].find(c => CO[c]), picked = codes.filter(c => CO[c].p);
 const ind1 = core.industries.find(i => (i.members || []).length >= 3) ?? core.industries[0];
 const grp1 = core.groups?.[0];
-const sm = (surge?.members ?? []).map(m => m.c).filter(c => CO[c]);
-const hide1 = sm.at(-1) ?? null; // 급등 · 달력의 「숨긴 곳」 줄을 보이려고 하나 숨김(이 검사 칸 안에서만)
-const case1 = tr?.cases?.[0]?.[0] ?? null, x1 = names?.rows?.find(r => !CO[r.c])?.c ?? null;
+const x1 = names?.rows?.find(r => !CO[r.c])?.c ?? null;
 const enc = encodeURIComponent;
 const routes = [];
 const add = r => { if (r && !routes.includes(r)) routes.push(r); };
-for (const r of ['#/f/surge', '#/f/lead', '#/f/pick', '#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40', '#/cal', case1 ? '#/cal/' + case1 : null, '#/cond', '#/today', '#/talk',
+for (const r of ['#/f/lead', '#/f/pick', '#/cond', // 급등 칩 · 급등 다섯 칸 · 달력 · 종목 파일 · 오늘 시장 · 이야기는 쪽을 닫아 뺌(주문 1114-1306)
   '#/sub', '#/me', '#/why', '#/gdr', '#/', '#/shorts', '#/find/' + enc(CO[pick1].n.slice(0, 2)), '#/ch/i/' + enc(ind1.name), grp1 ? '#/ch/g/' + enc(grp1.id) : null,
   '#/w/' + pick1, ...['past', 'rivals', 'grow', 'range'].map(k => '#/w/' + pick1 + '/' + k), '#/time', '#/info', '#/up', x1 ? '#/x/' + x1 : null]) add(r);
 if (ALL || LIMIT) {
@@ -93,7 +89,6 @@ const SEED = {
   'atlas:new:hist': JSON.stringify(two),
   'atlas:godori-hold': JSON.stringify([{id: 'kk-1', code: pick1, name: CO[pick1].n, buy: 1000, qty: 1, day: TODAY, at: new Date().toISOString()}]),
   'atlas:godori-why': JSON.stringify([{at: '2026-10-16T01:00:00.000Z', code: pick1, name: CO[pick1].n, answers: Array(11).fill(0), verdict: '반만 준비됐어'}]),
-  ...(hide1 ? {'atlas:surge-hide': JSON.stringify([hide1])} : {}),
   'atlas:essence-seen': 'true',
 };
 
@@ -101,8 +96,8 @@ const SEED = {
 function scan({skip, nolink}) {
   const V = document.querySelector('#view'), out = {rows: [], fails: [], skipped: {}, outside: 0, links: 0, btns: 0, nrows: 0, geo: [], overflow: 0};
   if (!V) { out.fails.push(['#view 없음', '']); return out; }
-  const RW = /^#\/w\/([0-9A-Z]{6})(?:\/(?:past|rivals|grow|range))?$/, RC = /^#\/cal\/([0-9A-Z]{6})$/;
-  const codeOf = href => { const s = String(href ?? ''), m = RW.exec(s) ?? RC.exec(s); return m && !/^KOS(PI|DAQ)$/.test(m[1]) ? m[1] : null; }; // 지수(#/w/KOSPI · KOSDAQ)는 종목 아님
+  const RW = /^#\/w\/([0-9A-Z]{6})(?:\/(?:past|rivals|grow|range))?$/;
+  const codeOf = href => { const s = String(href ?? ''), m = RW.exec(s); return m && !/^KOS(PI|DAQ)$/.test(m[1]) ? m[1] : null; }; // 지수(#/w/KOSPI · KOSDAQ)는 종목 아님
   const vis = e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(e).visibility !== 'hidden' ? r : null; };
   const btns = [...V.querySelectorAll('button.kk-btn[data-kk]')], rows = [...V.querySelectorAll('[data-kkrow]')];
   out.btns = btns.length; out.nrows = rows.length;
@@ -207,7 +202,7 @@ for (const route of mine) {
         P.rows++; P.btns += r.n; if (r.kind === 'surge') P.surge++; else if (r.kind === 'share') P.share++;
         if (!KNOWN.includes(r.place)) warn.push(`모르는 곳 이름 ${r.place} — accept/KB2.md 곳 수 표에 더할 것`);
         // ④ kind
-        const exp = SURGE_PLACES.has(r.place) || (r.place.startsWith('chip.') && landed === '#/f/surge') ? 'surge' : r.place === 'hold.news' ? (r.sb === 'mov' ? 'share' : 'surge') : 'share';
+        const exp = r.place === 'hold.news' ? (r.sb === 'mov' ? 'share' : 'surge') : 'share'; // 급등 칩 · 급등 쪽 · 달력 곳은 닫음(주문 1114-1306)
         if (r.n === 1 && r.kind !== exp) fail(route, w, 'kind 다름', `${r.place} ${r.code} ${r.kind} — 기대 ${exp}`);
       }
       for (const pl of new Set(s.rows.map(r => r.place))) places[pl].routes++;
@@ -265,10 +260,10 @@ for (const route of mine) {
     }
     // 줄 고리 → 그 종목 길
     const pickLink = await p.evaluate(nolink => {
-      const RW = /^#\/w\/([0-9A-Z]{6})(?:\/(?:past|rivals|grow|range))?$/, RC = /^#\/cal\/([0-9A-Z]{6})$/;
+      const RW = /^#\/w\/([0-9A-Z]{6})(?:\/(?:past|rivals|grow|range))?$/;
       for (const r of document.querySelectorAll('#view [data-kkrow]')) {
         if (nolink.includes(r.dataset.kkrow)) continue;
-        const a = [...r.querySelectorAll('a[href]')].find(x => RW.test(x.getAttribute('href')) || RC.test(x.getAttribute('href'))), q = a?.getBoundingClientRect();
+        const a = [...r.querySelectorAll('a[href]')].find(x => RW.test(x.getAttribute('href'))), q = a?.getBoundingClientRect();
         if (!a || !(q.width > 0 && q.height > 0)) continue;
         a.setAttribute('data-kkl', '1'); a.scrollIntoView({block: 'center'});
         return {place: r.dataset.kkrow, href: a.getAttribute('href')};

@@ -44,6 +44,8 @@ const storyNone = pk => (pk ? '? 세 팀 이야기는 아직 없습니다 — �
 // 쓰지 않을 말(next_check.mjs 와 같은 목록 + 지운 36곳 화면 글 — inspect4.mjs OLD36_TEXT 를 읽어 그대로)
 const OLD36 = JSON.parse((/export const OLD36_TEXT = (\[[^\]]*\]);/.exec(await fs.readFile(path.join(ROOT, 'scripts/atlas11/t365/inspect4.mjs'), 'utf8').catch(() => '')) || [, '[]'])[1].replace(/'/g, '"'));
 if (!OLD36.length) fail('OLD36_TEXT 를 못 읽음', 'scripts/atlas11/t365/inspect4.mjs');
+// 옛 /atlas/ 화면으로 가는 고리 0(주문 1114-1306 ② · 점검 DISCARD 17) — 화면 검사는 ?dev=1(모든 쪽이 있다고 봄)이라 「새 쪽이 없을 때」 길을 못 탐 → 모듈 글에서 따로 셈
+{ const n = ((await fs.readFile(path.join(ROOT, 'site/next/p-grow.js'), 'utf8')).match(/['"`]\/atlas\/#/g) ?? []).length; if (n) fail('새 화면에 옛 화면(/atlas/#) 고리', `site/next/p-grow.js ${n}곳`); else bump('새 화면 옛 고리 0'); }
 const BANNED = ['추천', '매수', '매도', '팔라', '사세요', '파세요', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', 'TOP', ...OLD36];
 
 /* 회사 차례 — 고른 곳(이야기) → 매출 없는 곳(그림 못 그림) → 그 밖 번호 차례 */
@@ -334,7 +336,7 @@ if (WIDE) {
     await raf2(p);
     const r = await p.evaluate(() => ({t: document.querySelector('main#view').textContent.replace(/[\s ]+/g, ' '), sw: document.documentElement.scrollWidth, vw: document.documentElement.clientWidth, x: [...document.querySelectorAll('main#view a')].map(a => a.getAttribute('href'))}));
     if (!r.t.includes(want)) fail('둘레 「' + name + '」', r.t.slice(0, 120));
-    if (name.startsWith('없는 주소(회사 아닌') && ![].concat(r.x ?? []).flatMap(x => String(x).split(',')).some(x => x === '#/x/' + code || x === '/atlas/#/x/' + code)) fail('밖 칸 고리', code + ' ' + r.x); // 밖 칸이 새 화면에 켜지면 #/x/ (2026-10-17)
+    if (name.startsWith('없는 주소(회사 아닌') && ![].concat(r.x ?? []).flatMap(x => String(x).split(',')).some(x => x === '#/x/' + code)) fail('밖 칸 고리', code + ' ' + r.x); // 밖 칸 = 이 앱의 #/x/ 하나(옛 /atlas/#/x/ 길은 끊음 · 주문 1114-1306 ② · 점검 DISCARD 17)
     if (r.sw > r.vw) fail('가로 넘침', name);
     p._errs = p._errs.filter(e => !/404|Failed to load resource/.test(e)); // 일부러 막은 파일의 404 줄은 뺌
     await errsOf(p, '둘레 ' + name, '새');

@@ -180,11 +180,12 @@ export const SEATS = Object.freeze([
   ['co', '앞으로 클까?', 'Will it grow?', '#/w/005930/grow', 63, '어린 아들이 자라 새 도시를 세웠어요. 「앞으로 클까?」를 묻는 쪽을 맡아요.', 'The young son grew up and founded a new city. He looks after the page that asks “Will it grow?”'],
   ['co', '범위 · 확인', 'Range check', '#/w/005930/range', 18, '밭 가장자리를 지키듯 어디부터 어디까지인지 범위를 맡아요.', 'As he guards the edges of fields, he looks after the range, from where to where.'],
 
-  ['more', '오늘 시장', 'Today’s market', '#/today', 52, '로마 채소 시장 안에 스페스 신전이 있었어요. 오늘 시장을 맡아요.', 'Spes had a temple in Rome’s vegetable market. She looks after Today’s market.'],
-  ['more', '급등', 'Surge', '#/surge', 59, '운이 갑자기 바뀌듯 갑자기 크게 오른 회사를 맡아요.', 'As luck can change suddenly, she looks after companies that jumped suddenly.'],
-  ['more', '달력', 'Calendar', '#/cal', 13, '라틴 말로 1월은 야누아리우스예요. 야누스의 이름에서 왔어요. 달력을 맡아요.', 'January, the first month, is named after Janus. He looks after the calendar.'],
+  // 오늘 시장 · 급등 · 달력 · 오늘의 이야기 — 그 쪽을 닫아(사장님 2026-11-14 주문 1114-1306 · 본질 「급등 자랑 0 · 사고팔기를 권하지 않음」) 고리 없음 · 카드는 「제 쪽이 따로 없어요」 · 방 이름표(ROOMS)도 뺌
+  ['more', '오늘 시장', 'Today’s market', null, 52, '로마 채소 시장 안에 스페스 신전이 있었어요. 오늘 시장을 맡아요.', 'Spes had a temple in Rome’s vegetable market. She looks after Today’s market.'],
+  ['more', '급등', 'Surge', null, 59, '운이 갑자기 바뀌듯 갑자기 크게 오른 회사를 맡아요.', 'As luck can change suddenly, she looks after companies that jumped suddenly.'],
+  ['more', '달력', 'Calendar', null, 13, '라틴 말로 1월은 야누아리우스예요. 야누스의 이름에서 왔어요. 달력을 맡아요.', 'January, the first month, is named after Janus. He looks after the calendar.'],
   ['more', '조건 찾기', 'Filter', '#/cond', 29, '곡식이 병드는 것을 막듯 조건으로 하나씩 걸러 보는 쪽을 맡아요.', 'As he keeps disease from the grain, he looks after the page that filters by conditions.'],
-  ['more', '오늘의 이야기', 'Today’s talk', '#/talk', 67, '아이네아스에게 옛이야기를 들려줬어요. 오늘의 이야기를 맡아요.', 'He told Aeneas old stories. He looks after Today’s talk.'],
+  ['more', '오늘의 이야기', 'Today’s talk', null, 67, '아이네아스에게 옛이야기를 들려줬어요. 오늘의 이야기를 맡아요.', 'He told Aeneas old stories. He looks after Today’s talk.'],
   ['more', '업데이트 기록', 'Update log', '#/up', 10, '대장간에서 두드려 고치듯 고친 기록을 맡아요.', 'Like hammering at a forge, he looks after the log of fixes and updates.'],
   ['more', '봉인', 'Time capsule', '#/time', 44, '땅속에 묻어 두듯 고른 날을 봉인해 몇 해 뒤에 열어요.', 'Like burying something underground, he keeps a sealed day to open years later.'],
   ['more', '어떻게 셌나요', 'How we count', '#/info', 68, '소가죽을 가늘게 잘라 땅을 둘러 쟀다는 이야기가 있어요. 어떻게 셌는지 맡아요.', 'Legend says she cut an ox-hide into thin strips to measure out land. She looks after how we count.'],
@@ -201,7 +202,7 @@ export const ROOMS = Object.freeze({
   jinhwa: 47, gift: 55, find: 24,
   't/sprout': 34, 't/bloom': 56, 't/wilt': 45, 't/how': 27, 't/today': 54, 't/cal': 19, 't/alert': 8,
   'w/*': 39, 'w/*/past': 62, 'w/*/rivals': 66, 'w/*/grow': 63, 'w/*/range': 18,
-  today: 52, surge: 59, cal: 13, cond: 29, talk: 67, up: 10, time: 44, info: 68, gdr: 71, 'f/ind': 17, s: 28,
+  cond: 29, up: 10, time: 44, info: 68, gdr: 71, 'f/ind': 17, s: 28,
 });
 /** 주소(k · a — app.js parse 꼴) → 그 방 지킴이 신 번호 · 없으면 null */
 export function roomOf(k, a) {

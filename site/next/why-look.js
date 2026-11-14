@@ -46,11 +46,12 @@ export const ACT_MORE = Object.freeze([
 ]);
 /** 마음 상태 넷(그림 7 「감정 상태 체크」) — 이 기기에만 남김 */
 export const MOODS = Object.freeze([['calm', '안정'], ['soso', '보통'], ['worry', '불안'], ['rush', '초조']]);
-/** 결과 요약(그림 4 「당신은 / ○○ 투자자예요」 · 따옴표 한 줄) — 판정(go · wait · rest)마다 · 단정(order-1011 5) */
+/** 결과 요약(그림 4 「당신은 / ○○ 투자자예요」 · 따옴표 한 줄) — 판정(go · wait · rest)마다 · 단정(order-1011 5)
+ *  쉬어 가는 까닭 줄: stopQ = 돈 답(4번 · 9번) · sellQ = 7번 「떨어지면?」에 「안 정함」(주문 1114-1306 ④ · 큐피트 su-why.js WHY_TYPE.rest 넷째와 같은 글) */
 export const TYPE_OF = Object.freeze({
   go: Object.freeze({name: '신중한 준비형 투자자', q: '내 이유로 따져 보고, 정해 둔 대로 움직이는 편이에요.'}),
   wait: Object.freeze({name: '반쯤 준비된 투자자', q: '이유는 있지만, 가끔 마음이 앞설 때가 있어요.'}),
-  rest: Object.freeze({name: '오늘은 쉬어 갈 투자자', q: '준비가 덜 된 곳이 많아요. 오늘은 하루 쉬어 가요.', stopQ: '빌린 돈이나 곧 쓸 돈이라면, 오늘은 쉬어 가는 게 좋아요.'}),
+  rest: Object.freeze({name: '오늘은 쉬어 갈 투자자', q: '준비가 덜 된 곳이 많아요. 오늘은 하루 쉬어 가요.', stopQ: '빌린 돈이나 곧 쓸 돈이라면, 오늘은 쉬어 가는 게 좋아요.', sellQ: '팔 곳을 아직 정하지 않았어요. 오늘은 하루 쉬어 가요.'}),
 });
 /** 10번 「마음은?」 답 → 현재 심리 상태(그림 4) */
 export const MIND_OF = Object.freeze([['안정', '서두르지 않아 좋은 값을 기다릴 수 있어요.'], ['초조', '놓칠까 급한 마음이 커요. 숨을 고르고 봐요.'], ['불안', '잃은 돈 생각이 판단을 흐릴 수 있어요.']]);
