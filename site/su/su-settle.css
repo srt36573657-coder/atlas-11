@@ -9,14 +9,3 @@
 .st-s36i { margin-top: 18px; font-size: 17px; font-weight: 600; color: #3A3A3C; } /* 주문 1113-2224 — 서른여섯 꾀 표 앞 한 줄 */
 :root.su-lg .st-s36i { font-size: 19px; }
 .st-s36ul li { margin-bottom: 8px; } /* 서른여섯 꾀 풀이 — 꾀마다 한 줄 */
-/* 주문 1114-0922 — 줄마다 막대(가운데 줄 · 늘면 오른쪽 호박색 · 줄면 왼쪽 회색 · 표 안 가장 큰 몫 = 반 칸) · 처음 한 번 가운데서 자람 · 줄이기면 끝 모습 */
-.st .st-row { grid-template-areas: "d c k" "n r k" "b b b"; }
-.st .st-bar { grid-area: b; display: block; width: 100%; height: 10px; margin-top: 6px; overflow: visible; }
-.st .st-b0 { stroke: #C7C7CC; stroke-width: 1; }
-.st .st-bu { fill: #D97706; }
-.st .st-bd { fill: #636366; }
-@media (prefers-reduced-motion: no-preference) {
-  .st .st-bu { transform-box: fill-box; transform-origin: 0 50%; animation: st-grow .9s cubic-bezier(.2, .8, .2, 1) .15s both; }
-  .st .st-bd { transform-box: fill-box; transform-origin: 100% 50%; animation: st-grow .9s cubic-bezier(.2, .8, .2, 1) .15s both; }
-}
-@keyframes st-grow { from { transform: scaleX(0); } to { transform: none; } }

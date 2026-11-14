@@ -57,15 +57,12 @@ export async function vQuiet(X) {
   const hero = h('div', {class: 'su-hero bk qt', 'data-g': 'su-quiet', 'data-n': String(L.length), 'data-pool': String(Q.pool ?? ''), 'data-rule': Q.rule ?? ''},
     h('p', {class: 'bk-intro', text: '값은 한 달 내내 잠잠한데, 외국인과 기관이 들어온 회사예요.'}),
     h('p', {class: 'bk-cap', text: '우량주 ' + NF.format(D.counts?.b365 ?? 365) + '곳에서 걸렀어요 · ' + md(D.asOf?.board) + ' 자료'}),
-    // 줄 세운 잣대를 목록 위에 먼저(2026-11-14 — 흔들림 숫자가 먼저 보여 차례의 뜻을 오해했음)
-    h('p', {class: 'bk-key', text: '이만큼 조용하기 — 한 달 길을 섞어 그려 보면, 지금만큼 조용한 길이 100번에 몇 번 나오는지예요.'}),
-    h('p', {class: 'bk-key', text: '적을수록 드물어요. 가장 드문 차례로 1 · 2 · 3등이에요.'}),
     h('ol', {class: 'bk-rows qt-rows'}, rows),
+    h('p', {class: 'bk-key', text: '첫 셋이 1 · 2 · 3등이에요. 이만큼 조용하기가 가장 드문 차례예요.'}),
     h('p', {class: 'bk-key', text: '선은 한 달 값이에요. 점선은 한 달 전 값이에요. 위아래 눈금은 모두 같아요.'}),
-    h('section', {class: 'qt-way', 'aria-label': '걸러 온 길'}, h('h2', {class: 'bk-bh', text: '이렇게 걸렀어요'}), funnel(Q.steps ?? [])), // 목록 → 걸러 온 길 → 안전 한 줄 → 달력 차례(같은 고리가 깔때기 앞에 끼어 있었음)
-    h('p', {class: 'bk-late', text: '조용한 뒤에 오를지 내릴지는 몰라요. 지난 기록만 보여 줘요.'}),
-    h('p', {class: 'bk-key', text: '고른 뒤 값이 어떻게 됐는지는 조용한 힘 달력에 날마다 적어요. 1년치 지난 기록은 아직 세지 못했어요.'}), // 손실 쪽 기록이 없다는 것을 숨기지 않음
-    h('a', {class: 'qt-cal', href: '#/r/s'}, h('b', {text: '조용한 힘 달력'}), h('span', {text: '뽑힌 날부터 따라가요 ›'})));
+    h('a', {class: 'qt-cal', href: '#/r/s'}, h('b', {text: '조용한 힘 달력'}), h('span', {text: '뽑힌 날부터 따라가요 ›'})),
+    h('section', {class: 'qt-way', 'aria-label': '걸러 온 길'}, h('h2', {class: 'bk-bh', text: '이렇게 걸렀어요'}), funnel(Q.steps ?? [])),
+    h('p', {class: 'bk-late', text: '조용한 뒤에 오를지 내릴지는 몰라요. 지난 기록만 보여 줘요.'}));
   const how = h('details', {class: 'bk-how'}, h('summary', {class: 'bk-hs'}, h('b', {text: '몬테카를로와 소거법'}), h('span', {text: '기준 일곱'})),
     h('ul', {class: 'bk-ul'}, [...(Q.crit ?? []).map(x => x.name + ' — ' + x.say),
       '몬테카를로: 회사마다 지난 ' + (Q.hist ?? 250) + '거래일 하루 값을 ' + (Q.win ?? 20) + '개씩 ' + NF.format(Q.paths ?? 100000) + '번 뽑아 한 달 길을 그렸어요.',

@@ -1,4 +1,4 @@
-/* 큐피트 — 회사 쪽 큰 그림 「su-co-jobs」(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
+/* 수르 — 회사 쪽 큰 그림 「su-co-jobs」(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」)
    옛 무하 판 su-co-art 를 첫 페이지 잡스 판(su-apple)과 같은 말투로 다시 그림 — 흰 바탕 · 검정 · 회색 · 호박색 하나 · 무하 꾸밈 0 · 흐림 필터 0
    한 장 = 위에서 아래로 생각 하나씩
      ① 회사 이름(크게) → 현재가(큰 숫자 · 회사 자료 c.price) → 「현재가는 ○월 ○일 마지막 값이에요.」(첫 페이지 칸과 같은 말)
@@ -18,9 +18,9 @@ const W = 390, PAD = 20, MID = W / 2, HMIN = 660, KEY = ['hot', 'bloom', 'money'
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const r1 = v => Math.round(v * 10) / 10;
 const lastOf = a => (Array.isArray(a) && a.length ? a[a.length - 1] : null);
-/* 값 글 — 늘고 준 몫은 su-data.js pct 하나로(쪽마다 같은 말 · 한 곳만 고치면 모두 바뀜) · 시장보다 앞선 만큼은 whyRoad 와 같은 sgn */
+/* whyRoad 와 같은 꼴(su-21.js sgn · sgnP 그대로) */
 const sgn = x => (fin(x) ? (x > 0 ? '+' : x < 0 ? '−' : '') + num(Math.abs(Math.round(x * 10) / 10)) : NEED);
-const sgnP = x => (fin(x) ? pct(x) : NEED);
+const sgnP = x => (fin(x) ? sgn(x) + '%' : NEED);
 const indHref = n => '#/i/' + encodeURIComponent(n);
 const dk = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) ? dateKo(d) : null);
 let SEQ = 0;
@@ -292,12 +292,12 @@ export function picture(d, opt = {}) {
   if (m.price != null && (!opt || opt.live !== false)) live(svg, m, P, id);
   return svg;
 }
-/** 그림 이름표(aria-label) — 현재가 · 한 달 줄 · 시장 줄 · 기간 · 든 목록 */
+/** 그림 이름표(aria-label) — 현재가 · 한 달 줄 · 시장 줄 · 기간 · 21곳에 든 길 */
 function labelOf(m) {
   const per = m.from && m.to ? ' · ' + dk(m.from) + ' ~ ' + dk(m.to) : '';
   return m.name + ' 현재가 ' + (m.price != null ? num(m.price) + '원' + (m.plab ? '(' + m.plab + ')' : m.pday ? '(' + m.pday + ' 마지막 값)' : '') : NEED)
     + ' · 한 달 줄 ' + (m.cl ? pct(m.last) : NEED) + ' · ' + (m.il ? m.il.name + ' ' + pct(m.ilast) : '시장 ' + NEED) + per
-    + (m.roads.length ? ' · 든 목록 ' + m.roads.map(r => r.ind + (r.k === 'hot' ? ' ' : ' 업종 ') + r.iv + (r.ivp && r.ivp[1] ? ' ' + r.ivp[0] + ' ' + r.ivp[1] + '까지' : '') + ' → ' + r.name + ' ' + r.cv
+    + (m.roads.length ? ' · 21곳에 든 길 ' + m.roads.map(r => r.ind + (r.k === 'hot' ? ' ' : ' 업종 ') + r.iv + (r.ivp && r.ivp[1] ? ' ' + r.ivp[0] + ' ' + r.ivp[1] + '까지' : '') + ' → ' + r.name + ' ' + r.cv
       + (r.cvp && r.cvp[1] ? ' ' + r.cvp[0] + ' ' + r.cvp[1] + '까지' : '') + ' → ' + r.kind + ' ' + r.n + '곳').join(' · ') : m.ind ? ' · ' + m.ind + ' 업종' : '');
 }
 /** 장 중 한 달 꺾은선 — 첫 페이지 relive 와 같은 셈(오늘이 판 날보다 뒤 = 맨 앞 하루를 빼고 오늘 값을 끝에 · 같은 날 = 끝 값만 바꿈) · 날짜도 함께 밀림 · 오늘 지수 값은 자료에 없으니 밀리면 시장 줄은 그리지 않음 */

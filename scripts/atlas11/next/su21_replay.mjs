@@ -137,7 +137,7 @@ for (const d of days) {
   link(path.join(ROOT, 'reports/atlas11/su-next/past.json'), path.join(repo, 'reports/atlas11/su-next/past.json'));
   if (fs.existsSync(path.join(ROOT, 'reports/atlas11/su-next/past-strict.json'))) link(path.join(ROOT, 'reports/atlas11/su-next/past-strict.json'), path.join(repo, 'reports/atlas11/su-next/past-strict.json')); // 엄격 셈 지난 1년(주문 0854)
   const o = path.join(w, 'su21.json');
-  try { execFileSync('python3', [path.join(ROOT, 'scripts/atlas11/next/su21.py'), '--live', live, '--repo', repo, '--out', o, '--no-sun'], {encoding: 'utf8', maxBuffer: 1 << 26, stdio: ['ignore', 'pipe', 'pipe']}); }
+  try { execFileSync('python3', [path.join(ROOT, 'scripts/atlas11/next/su21.py'), '--live', live, '--repo', repo, '--out', o], {encoding: 'utf8', maxBuffer: 1 << 26, stdio: ['ignore', 'pipe', 'pipe']}); }
   catch (e) { console.warn(`${d} — 다시 세기 멈춤: ${String(e.stderr || e.message).trim().split('\n').at(-1)}`); continue; }
   const s = J(o);
   out[d] = {how: 'replay', data: dates[T], lists: Object.fromEntries(KEYS.map(k => [k, (s.lists?.[k] ?? []).map(c => c.code)]))};

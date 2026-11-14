@@ -213,7 +213,7 @@ async function pageMods() {
   const bk = rd('site/su/su-book.js').replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;').replace("import {KIND} from '/su/su-21.js';", 'const KIND = {};');
   assert.ok(!/^import /m.test(bk));
   const bkUrl = 'data:text/javascript;base64,' + Buffer.from(bk).toString('base64');
-  const st = rd('site/su/su-settle.js').replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;').replace("from '/su/su-book.js';", "from '" + bkUrl + "';");
+  const st = rd('site/su/su-settle.js').replace("import {h} from '/su/su-fig.js';", 'const h = () => null;').replace("from '/su/su-book.js';", "from '" + bkUrl + "';");
   assert.ok(!/^import .* from '\/su\//m.test(st), '정산 모듈의 그리기 도구 · 달력 셈을 바꿈');
   return {B: await import(bkUrl), M: await import('data:text/javascript;base64,' + Buffer.from(st).toString('base64'))};
 }
@@ -258,10 +258,7 @@ test('화면 셈 — 산 셈 줄 · 묶음마다 여덟 줄(사장님 말씀 차
   assert.deepEqual([P8.rows.length, P8.T.cost, P8.miss], [5, rows.reduce((a, r) => a + r.cost, 0), 1], '맨 위 · 묶음마다 = 여덟만(서른여섯 꾀를 섞지 않음)');
   assert.deepEqual([P36.rows.length, P36.T.cost, P36.miss, P36.K.length], [5, 10000 + 20000 + 11000 + 25000 + 40000, 2, 36], '서른여섯 꾀 = 서른여섯 줄 · 그 줄들만 더함 · 못 센 수도 따로');
   const R = M.byRate(P36.K);
-  assert.deepEqual(R.slice(0, 4).map(g => g.key), ['g05', 'g30', 'g03', 'g01'], '수익률 높은 차례 — 늘어난 꾀 → 줄어든 꾀 → 아직 하루치(차례를 매기지 않음 · 주문 1114-0922) · 산 셈 없는 꾀(꾀 차례)');
-  assert.equal(M.rateOf({n: 1, cost: 100, val: 100, one: true}), null, '아직 하루치는 차례 없음(주문 1114-0922)');
-  assert.equal(M.rankSay(P36.K, '꾀'), '산 돈에 견줘 많이 늘어난 꾀가 맨 위예요. 날마다 다시 줄 세워요.');
-  assert.equal(M.rankSay([{key: 'hot', n: 1, cost: 100, val: 100, one: true}], '묶음'), '아직 하루치라서 원래 차례로 놓았어요. 하루가 더 지나면 많이 늘어난 묶음이 맨 위로 가요.', '받침이 있으면 「이」');
+  assert.deepEqual(R.slice(0, 4).map(g => g.key), ['g05', 'g30', 'g01', 'g03'], '수익률 높은 차례 — 늘어난 꾀 → 그대로(아직 하루치) → 줄어든 꾀');
   assert.deepEqual(R.slice(4).map(g => g.key), S36.filter(k => !['g05', 'g30', 'g01', 'g03'].includes(k)), '산 셈이 없는 꾀는 맨 아래 꾀 차례');
   assert.deepEqual(M.byRate([{key: 'g09', n: 1, cost: 100, val: 110}, {key: 'g02', n: 1, cost: 200, val: 220}]).map(g => g.key), ['g02', 'g09'], '수익률이 같으면 꾀 차례');
   assert.equal(M.rateOf({n: 0, cost: 0, val: 0}), null);
@@ -281,8 +278,8 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t
   assert.ok(/#\\\/r\\\/\[mwdynkicst\]/.test(ck), '검사 고리 꼴에 #/r/t');
   assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(st), '보안 규칙 — innerHTML · 글 속 style 없음');
   assert.ok(css.includes('.st-replay') && !css.includes('.st-rest'), '꾸밈 — 접은 줄 꾸밈은 뺌(주문 1113-1623)');
-  assert.ok(st.includes("table('st-kinds', '묶음마다', '묶음', byRate(K, SHOW).map(g => row(g, KIND_NAME[g.key] ?? g.key, mxOf(K))), T)") && !/st-inds|st-cos|restFold|'#\/c\/'/.test(st), '쪽 — 표는 묶음마다 하나(업종 · 회사 표 · 회사 고리 0) · 여덟 묶음도 수익률 높은 차례(주문 1114-0922)');
-  assert.ok(st.includes("table('st-s36', '서른여섯 꾀', '꾀', byRate(P36.K).map(g => row(g, KIND_NAME[g.key] ?? g.key, mxOf(P36.K))), P36.T)") && !st.includes('st-t11') && ck.includes("check(g.tabs === 3 &&") && ck.includes('서른여섯 꾀(주문 1113-2224)'), '쪽 · 검사 — 서른여섯 꾀 표(주문 1113-2224 · 수익률 높은 차례) · 겹친 곳 표(주문 1114-0802) · 특징 열하나 표 0');
+  assert.ok(st.includes("table('st-kinds', '묶음마다', '묶음', K.map(g => row(g, KIND_NAME[g.key] ?? g.key)), T)") && !/st-inds|st-cos|restFold|'#\/c\/'/.test(st), '쪽 — 표는 묶음마다 하나(업종 · 회사 표 · 회사 고리 0)');
+  assert.ok(st.includes("table('st-s36', '서른여섯 꾀', '꾀', byRate(P36.K).map(g => row(g, KIND_NAME[g.key] ?? g.key)), P36.T)") && !st.includes('st-t11') && ck.includes("check(g.tabs === 3 &&") && ck.includes('서른여섯 꾀(주문 1113-2224)'), '쪽 · 검사 — 서른여섯 꾀 표(주문 1113-2224 · 수익률 높은 차례) · 겹친 곳 표(주문 1114-0802) · 특징 열하나 표 0');
   assert.ok(ck.includes("const SHOWs = ['top3', 'hot', 'hotNext', 'money', 'moneyNext', 'bloom', 'bloomNext', 'quiet'];") && ck.includes('큰 값만(주문 1113-1623)'), '검사 — 보이는 차례 · 큰 값만');
   const texts = [...st.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
   assert.ok(texts.length > 20);

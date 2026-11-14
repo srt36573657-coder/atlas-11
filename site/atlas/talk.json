@@ -10,6 +10,13 @@
  "maxims": [
   {
    "who": "워런 버핏",
+   "ko": "남들이 욕심낼 때 두려워하고, 남들이 두려워할 때 욕심내라.",
+   "en": "Be fearful when others are greedy and greedy only when others are fearful.",
+   "src": "1986년 버크셔 주주 서한",
+   "url": "https://www.berkshirehathaway.com/letters/1986.html"
+  },
+  {
+   "who": "워런 버핏",
    "ko": "가격은 내는 것이고, 가치는 얻는 것이다.",
    "en": "Price is what you pay; value is what you get.",
    "src": "2008년 버크셔 주주 서한",
@@ -63,6 +70,13 @@
    "en": "You can't predict. You can prepare.",
    "src": "2001년 오크트리 메모",
    "url": "https://www.oaktreecapital.com/insights/memo/you-cant-predict-you-can-prepare"
+  },
+  {
+   "who": "존 보글",
+   "ko": "건초 더미에서 바늘을 찾지 말고, 건초 더미를 통째로 사라.",
+   "en": "Don't look for the needle in the haystack. Just buy the haystack!",
+   "src": "책 『모든 주식을 소유하라』",
+   "url": null
   },
   {
    "who": "피터 린치",
