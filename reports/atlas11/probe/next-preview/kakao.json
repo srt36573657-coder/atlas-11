@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-13T23:34:27.449Z",
+ "at": "2026-11-14T02:19:07.810Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 157,
+ "seconds": 141,
  "counts": {
   "routes": 251,
-  "rows": 9823,
-  "btns": 9823,
-  "links": 13247,
+  "rows": 9831,
+  "btns": 9831,
+  "links": 13301,
   "clicks": 479,
   "fail": 0,
   "places": {
@@ -45,24 +45,24 @@
     "share": 131,
     "routes": 3
    },
-   "surge.row": {
-    "rows": 37,
-    "btns": 37,
-    "surge": 37,
-    "share": 0,
-    "routes": 1
-   },
    "surge.board": {
-    "rows": 163,
-    "btns": 163,
-    "surge": 163,
+    "rows": 167,
+    "btns": 167,
+    "surge": 167,
     "share": 0,
     "routes": 5
    },
+   "surge.row": {
+    "rows": 36,
+    "btns": 36,
+    "surge": 36,
+    "share": 0,
+    "routes": 1
+   },
    "surge.track": {
-    "rows": 905,
-    "btns": 905,
-    "surge": 905,
+    "rows": 908,
+    "btns": 908,
+    "surge": 908,
     "share": 0,
     "routes": 5
    },
@@ -81,9 +81,9 @@
     "routes": 1
    },
    "cal.row": {
-    "rows": 669,
-    "btns": 669,
-    "surge": 669,
+    "rows": 671,
+    "btns": 671,
+    "surge": 671,
     "share": 0,
     "routes": 1
    },
@@ -201,7 +201,7 @@
    }
   },
   "skipped": {
-   "그날 들고 난 이름 목록(이름 글 — 줄 · 카드 아님)": 2561,
+   "그날 들고 난 이름 목록(이름 글 — 줄 · 카드 아님)": 2607,
    "종목 파일 쪽의 길 단추 「회사 보기 ›」(쪽 자체가 그 종목)": 1,
    "고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사)": 112,
    "7단 길 고리 — 그 회사 쪽끼리 오가는 길(줄 · 카드 아님)": 750,
@@ -234,49 +234,49 @@
    },
    {
     "route": "#/surge",
-    "rows": 292,
-    "btns": 292,
-    "links": 770,
-    "clicked": "surge.row",
+    "rows": 291,
+    "btns": 291,
+    "links": 769,
+    "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/10",
     "rows": 371,
     "btns": 371,
-    "links": 1475,
+    "links": 1497,
     "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/20",
-    "rows": 214,
-    "btns": 214,
-    "links": 758,
+    "rows": 215,
+    "btns": 215,
+    "links": 773,
     "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/30",
-    "rows": 149,
-    "btns": 149,
-    "links": 462,
+    "rows": 152,
+    "btns": 152,
+    "links": 473,
     "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/40",
-    "rows": 84,
-    "btns": 84,
-    "links": 206,
+    "rows": 87,
+    "btns": 87,
+    "links": 211,
     "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/cal",
-    "rows": 3499,
-    "btns": 3499,
-    "links": 3499,
+    "rows": 3501,
+    "btns": 3501,
+    "links": 3501,
     "clicked": "cal.alert",
     "fail": 0
    },

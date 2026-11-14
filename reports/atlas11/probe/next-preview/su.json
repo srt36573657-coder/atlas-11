@@ -1,12 +1,17 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T23:33:22.204Z",
+ "at": "2026-11-14T02:17:41.054Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1691,
-  "fail": 0
+  "pass": 1695,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  [
+   "㉑ 1 · 2 · 3등 달력 · 모든 사람 [390] 첫 화면에 종목 이름(주문 1111-0938 「종목이 보이게」 — 아래 고정 줄보다 위)",
+   "{\"lim\":716,\"name\":757,\"line\":2178,\"money\":547}"
+  ]
+ ],
  "m": {
   "dropped": [],
   "data": {
@@ -63,51 +68,51 @@
     "orn": 5
    },
    {
-    "h1": "지주 · 유통 · 운송 땅",
+    "h1": "K-소비재 · 콘텐츠 땅",
     "heroShare": 72.4,
     "share": 89,
     "outside": 13,
     "two": 2,
-    "labels": 25,
+    "labels": 41,
     "mucha": [],
-    "anim": 23,
+    "anim": 32,
     "need": 0,
     "means": 1,
-    "hard": 0,
-    "hardWords": "",
+    "hard": 1,
+    "hardWords": "종가",
     "glossed": 2,
     "orn": 7
    },
    {
-    "h1": "한진칼",
+    "h1": "KT&G",
     "heroShare": 72.4,
-    "share": 161,
+    "share": 178,
     "outside": 12,
     "two": 2,
-    "labels": 18,
+    "labels": 26,
     "mucha": [],
-    "anim": 5,
-    "need": 0,
-    "means": 7,
+    "anim": 6,
+    "need": 1,
+    "means": 6,
     "hard": 0,
     "hardWords": "",
-    "glossed": 10,
+    "glossed": 7,
     "orn": 5
    },
    {
-    "h1": "한진칼 출목표",
+    "h1": "KT&G 한 달 하루씩",
     "heroShare": 72.4,
     "share": 178,
     "outside": 13,
     "two": 2,
-    "labels": 31,
+    "labels": 32,
     "mucha": [],
-    "anim": 11,
+    "anim": 12,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
-    "glossed": 4,
+    "glossed": 5,
     "orn": 5
    },
    {
@@ -148,19 +153,21 @@
     "share": 79,
     "outside": 13,
     "two": 2,
-    "labels": 19,
+    "labels": 15,
     "mucha": [],
     "anim": 13,
     "need": 0,
     "means": 1,
     "hard": 0,
     "hardWords": "",
-    "glossed": 1,
-    "orn": 5
+    "glossed": 0,
+    "orn": 7
    }
   ],
-  "hard": 0,
-  "hardWords": [],
+  "hard": 1,
+  "hardWords": [
+   "종가"
+  ],
   "drawers": {
    "#/r/d": {
     "h1": "날마다 지난 기록",
@@ -179,9 +186,9 @@
    }
   },
   "speed": {
-   "lcp": 2356,
+   "lcp": 2432,
    "cls": 0.143,
-   "pic": 3426
+   "pic": 3419
   },
   "white": {
    "light #/": {
@@ -390,7 +397,7 @@
     "note": [
      "현재가는 11월 6일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "될 듯은 그렇게 되기 바로 앞 모습이에요.",
+     "될 듯은 지난 기록의 앞 모습이에요.",
      "지난 기록 차례예요. 앞날은 몰라요."
     ]
    },
@@ -400,7 +407,7 @@
     "note": [
      "현재가는 11월 6일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "될 듯은 그렇게 되기 바로 앞 모습이에요.",
+     "될 듯은 지난 기록의 앞 모습이에요.",
      "지난 기록 차례예요. 앞날은 몰라요."
     ]
    }
@@ -1252,7 +1259,7 @@
     ]
    },
    "daysFrom": "2026-10-02",
-   "screens": 3.32,
+   "screens": 3.67,
    "pages": 42,
    "reasons": 1512
   },
@@ -1334,15 +1341,15 @@
   "bookFold": {
    "320": {
     "lim": 716,
-    "name": 762,
-    "line": 2312,
-    "money": 526
+    "name": 868,
+    "line": 2729,
+    "money": 633
    },
    "390": {
     "lim": 716,
-    "name": 650,
-    "line": 1842,
-    "money": 440
+    "name": 757,
+    "line": 2178,
+    "money": 547
    }
   },
   "bookLedger": {
@@ -1375,7 +1382,7 @@
    "days": 4
   },
   "settle": {
-   "buys": 356,
+   "buys": 389,
    "kinds": [
     6,
     14,
@@ -1434,7 +1441,7 @@
    "miss": 0,
    "miss36": 0,
    "late": 0,
-   "ovl": 0,
+   "ovl": 33,
    "missO": 0
   },
   "s36": {
@@ -1475,5 +1482,5 @@
    }
   }
  },
- "ok": true
+ "ok": false
 }
