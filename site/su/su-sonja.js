@@ -12,7 +12,8 @@ import {NEED, ymd} from '/su/su-six.js';
 import {NAME, josa} from '/next/brand.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
-import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav} from '/su/su-sonja-top.js'; // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
+import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav} from '/su/su-sonja-top.js';
+import {landPic, kkoePic, arrowsPic, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
 
 export const CSS = '/su/su-sonja.css';
 export const D21 = '/su/data/su21.json', D36 = '/su/data/su21-s36.json', DST = '/su/data/su21-settle.json'; // 첫 화면 자료 · 꾀 칸 자료(첫 칠함 뒤) · 정산 장부
@@ -71,26 +72,22 @@ function sunSec(T) {
     h('p', {class: 'sj-lead', text: day(T.asOf?.board) + ' 자료예요. 오늘 형세는 아직 세지 못해 꾀를 정한 차례로 놓았어요.'}));
   const m = x.m, P = (x.path ?? []).filter(k => LANDK.includes(k)).slice(-20), same = P.filter(k => k === x.land).length, upPart = m.up / m.n;
   const sh = shakeSay(m.shake), dd = mday(x.day);
-  const BW = 340, BH = 30, upW = Math.round((BW - 6) * upPart);
+  const up10 = Math.round(10 * upPart); // 깃발 열 가운데 선 깃발 = 오른 몫(열에 몇)
   return h('section', {class: 'sj-sec sj-sun', 'data-land': x.land, 'aria-label': '오늘의 형세 · ' + x.name},
-    h('p', {class: 'sj-k', text: '형세 보고' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
+    h('p', {class: 'sj-k', text: '제1장 땅을 살피다' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
     h('div', {class: 'sj-today'},
       h('h1', {class: 'sj-h1'}, h('span', {class: 'sj-h1a', text: '지금은 '}), h('b', {class: 'sj-land', text: x.name}), h('span', {class: 'sj-h1c', text: '이에요.'})),
       h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), 'aria-hidden': 'true', text: x.name})),
+    h('figure', {class: 'sj-ink sj-landfig'}, landPic({land: x.land, name: x.name, up: up10, path: P, sameName: x.name, title: false})), // 손무가 언덕에서 오늘 땅을 내려다봄 · 깃발 열 · 디딤돌 스물
     h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + x.quote + '」'}), h('cite', {text: '손자병법 ' + (x.pian ?? '')})),
-    h('ul', {class: 'sj-m'},
-      h('li', {}, h('p', {class: 'sj-m1', text: m.n + '곳 가운데 ' + m.up + '곳이 한 달 전보다 올랐어요.'}),
-        s('svg', {class: 'sj-bar', viewBox: `0 0 ${BW} ${BH}`, 'aria-hidden': 'true', focusable: 'false'},
-          s('rect', {x: 1, y: 1, width: Math.max(upW, 2), height: BH - 2, class: 'sj-bar-up'}),
-          s('rect', {x: upW + 5, y: 1, width: Math.max(BW - upW - 6, 2), height: BH - 2, class: 'sj-bar-dn'})),
-        h('p', {class: 'sj-bl'}, h('span', {class: 'sj-blu'}, h('i', {class: 'sj-ms sj-ms-up', 'aria-hidden': 'true'}), '오른 곳 ' + m.up), h('span', {class: 'sj-bld'}, h('i', {class: 'sj-ms sj-ms-dn', 'aria-hidden': 'true'}), '나머지 ' + (m.n - m.up)))),
-      h('li', {}, h('p', {class: 'sj-m2', text: '한가운데 회사는 한 달 동안 100원이 ' + w100(m.mid) + '이 됐어요.'})),
-      sh ? h('li', {}, h('p', {class: 'sj-m3', text: '요즘 스무 날 하루 오르내림은 ' + sh + '.'})) : null),
-    P.length ? h('div', {class: 'sj-path'},
-      s('svg', {class: 'sj-strip', viewBox: `0 0 ${BW} 34`, 'aria-hidden': 'true', focusable: 'false'},
-        ...P.map((k, i) => s('rect', {x: 1 + i * 17, y: 4, width: 13, height: 26, class: 'sj-day' + (k === x.land ? ' sj-same' : '') + (i === P.length - 1 ? ' sj-now' : '')}))),
-      h('p', {class: 'sj-pc', text: '지난 ' + P.length + '거래일 가운데 ' + same + '날이 ' + x.name + '이었어요. 오른쪽 끝이 오늘이에요.'})) : null,
-    h('p', {class: 'sj-do', 'data-say': '', text: (x.do ?? '') + ' 그래서 서른여섯 꾀를 덜 잃은 차례로 놓았어요.'}),
+    h('div', {class: 'sj-says'}, h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), // 손무가 들려주는 한 줄
+      h('p', {class: 'sj-do', 'data-say': '', text: (x.do ?? '') + ' 그래서 서른여섯 꾀를 덜 잃은 차례로 놓았어요.'})),
+    h('details', {class: 'sj-drawer sj-nums'}, h('summary', {}, h('span', {class: 'sj-s1', text: '그림 속 숫자 자세히'}), chev()),
+      h('ul', {class: 'sj-m'},
+        h('li', {}, h('p', {class: 'sj-m1', text: m.n + '곳 가운데 ' + m.up + '곳이 한 달 전보다 올랐어요.'})),
+        h('li', {}, h('p', {class: 'sj-m2', text: '한가운데 회사는 한 달 동안 100원이 ' + w100(m.mid) + '이 됐어요.'})),
+        sh ? h('li', {}, h('p', {class: 'sj-m3', text: '요즘 스무 날 하루 오르내림은 ' + sh + '.'})) : null),
+      P.length ? h('p', {class: 'sj-pc', text: '지난 ' + P.length + '거래일 가운데 ' + same + '날이 ' + x.name + '이었어요. 오른쪽 끝이 오늘이에요.'}) : null),
     x.lands && LANDK.every(k => typeof x.lands[k]?.rule === 'string') ? h('details', {class: 'sj-drawer sj-lands'},
       h('summary', {}, h('span', {class: 'sj-s1', text: '다섯 땅은 이렇게 나눠요'}), chev()),
       h('ol', {class: 'sj-ldl'}, ...LANDK.map(k => { const L = x.lands[k]; return h('li', {'data-land': k, class: 'sj-ld' + (k === x.land ? ' sj-ldnow' : '')},
@@ -106,15 +103,18 @@ export const chev = () => s('svg', {class: 'sj-chev', viewBox: '0 0 24 24', 'ari
 function trickWait(T) {
   return n36of(T) != null ? h('section', {class: 'sj-sec sj-s36 sj-wait', 'aria-hidden': 'true', 'data-wait': ''}) : null;
 }
-export function rec36(r) {
+export function rec36(r, more = false) {
   if (!r) return [];
   if (!r.n) return [h('p', {class: 'sj-tl sj-tnorec', text: '지난 기록을 세지 못했어요. 그날 사고판 양 자료가 있어야 세요.'})];
   const k = r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0;
-  return [h('p', {class: 'sj-dots', role: 'img', 'aria-label': '열 칸 가운데 잃은 몫 ' + k + '칸'}, ...Array.from({length: 10}, (_, i) => h('i', {class: i < k ? 'sj-dl' : 'sj-dk'}))),
+  return [h('figure', {class: 'sj-ink sj-arw'}, arrowsPic(k)), // 화살 열 가운데 꺾인 화살 = 잃은 몫(옛 점 열 칸 대신)
     h('p', {class: 'sj-tl'}, h('b', {text: lose10(r)}), h('span', {text: ' ' + r.n + '번 가운데 ' + r.lose + '번'})),
-    r.lose ? h('p', {class: 'sj-tl2', text: '잃은 주는 평균 100원이 ' + w100(r.avgLoss) + '이 됐어요. 가장 크게 잃은 주는 ' + w100(r.worst) + '이었어요.'}) : null,
-    h('p', {class: 'sj-tl3', text: '모든 주를 고르면 평균 100원이 ' + w100(r.avg) + '이에요.'})];
+    more ? h('details', {class: 'sj-drawer sj-recmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '잃은 주 · 모든 주 자세히'}), chev()),
+      r.lose ? h('p', {class: 'sj-tl2', text: '잃은 주는 평균 100원이 ' + w100(r.avgLoss) + '이 됐어요. 가장 크게 잃은 주는 ' + w100(r.worst) + '이었어요.'}) : null,
+      h('p', {class: 'sj-tl3', text: '모든 주를 고르면 평균 100원이 ' + w100(r.avg) + '이에요.'})) : null];
 }
+/** 꾀 그림 단추(누르면 그 꾀 쪽 · 소리 읽기는 꾀 이름 줄이 맡음 — 그림 단추는 건너뜀) */
+export const kkoeTile = (k, name, cls = 'sj-tkpic', w = 200, hh = 150) => h('a', {class: cls, href: '#/k/' + k, tabindex: '-1', 'aria-hidden': 'true'}, kkoePic(k, {w, h: hh, label: name + ' 그림'}));
 export function chip(g, c, bd, ov) {
   const code = String(c.code ?? ''), name = String(c.name ?? NEED), dz = Number.isInteger(c.days) && c.days >= 1 ? c.days : null, sp = sp36(g, code), n = ov && Number.isInteger(c.n) ? c.n : null, m = monOf(sp);
   return h('li', {}, h('a', {class: 'sj-chip' + (ov ? ' sj-chip-ov' : ''), href: '#/c/' + encodeURIComponent(code), 'data-code': code, 'data-days': dz ? String(dz) : null, 'data-n': n ? String(n) : null, 'data-mon': m ?? 'na',
@@ -128,22 +128,26 @@ function trickSec(g, T) {
   const order = S ? S.rank.map(r => r.k) : g.kinds, RB = S ? Object.fromEntries(S.rank.map((r, i) => [r.k, {...r, i: i + 1}])) : {};
   const one36 = k => { const L = (g.lists[k] ?? []).slice(0, 7), r = RB[k];
     return h('li', {class: 'sj-tk', 'data-k': k, 'data-n': String(L.length), 'data-rank': r ? String(r.i) : null},
+      kkoeTile(k, g.name?.[k] ?? k),
       h('a', {class: 'sj-tkh', href: '#/k/' + k, 'aria-label': (r ? '차례 ' + r.i + ' · ' : '') + (g.name?.[k] ?? k) + ' · 이 꾀 자세히'}, r ? h('span', {class: 'sj-rk', text: String(r.i)}) : null,
         h('p', {class: 'sj-tn'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})), h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})), // 꾀 이름을 누르면 그 꾀 쪽(주문 1115-2328)
       ...rec36(r),
-      h('p', {class: 'sj-say', text: g.say?.[k] ?? ''}),
-      L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: none36(g.why?.[k])})); };
+      h('details', {class: 'sj-drawer sj-cos'}, h('summary', {}, h('span', {class: 'sj-s1', text: L.length ? '오늘 닮은 곳 ' + L.length + '곳 · 고르는 법' : '고르는 법'}), chev()), // 긴 풀이 · 회사 단추는 눌러야 열림(주문 1116-0118)
+        h('p', {class: 'sj-say', text: g.say?.[k] ?? ''}),
+        L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: none36(g.why?.[k])}))); };
   const H = S ? S.hist : null, TOP = 7;
   return h('section', {class: 'sj-sec sj-s36', 'aria-label': (S ? '덜 잃은 꾀 차례 · ' : '') + '서른여섯 꾀 ' + N + '칸', 'data-n': String(N), 'data-order': S ? 'sun' : 'kind'},
     head('꾀', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + N + '칸'})), true),
     S?.rankQ ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + S.rankQ.pian})) : null,
-    h('p', {class: 'sj-lead', text: '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
-    S && H ? h('p', {class: 'sj-rule', text: (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + S.name + '이었던 ' + H.same + '날을 골라, ')
-      + '꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요.' + (ym(H.from) && ym(H.to) ? ' 센 때는 ' + ym(H.from) + '부터 ' + ym(H.to) + '까지예요.' : '')}) : null,
-    h('p', {class: 'sj-dayl', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 점선은 한 달 전 값이에요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')}),
     h('ol', {class: 'sj-tricks'}, ...order.slice(0, TOP).map(one36)),
-    order.length > TOP ? h('details', {class: 'sj-drawer sj-tmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: (S ? (TOP + 1) + '위부터 ' + order.length + '위까지 ' : '나머지 ') + '꾀 ' + (order.length - TOP) + '가지 더 보기'}), chev()),
+    order.length > TOP ? h('details', {class: 'sj-drawer sj-tmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: (S ? (TOP + 1) + '번째부터 ' + order.length + '번째까지 ' : '나머지 ') + '꾀 ' + (order.length - TOP) + '가지 더 보기'}), chev()),
       h('ol', {class: 'sj-tricks'}, ...order.slice(TOP).map(one36))) : null,
+    h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '꾀 차례는 이렇게 셌어요'}), chev()), // 센 법 · 고른 날(긴 풀이는 접은 칸 — 주문 1116-0118)
+      h('p', {class: 'sj-lead', text: '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
+      S && H ? h('p', {class: 'sj-rule', text: (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + S.name + '이었던 ' + H.same + '날을 골라, ')
+        + '꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요.' + (ym(H.from) && ym(H.to) ? ' 센 때는 ' + ym(H.from) + '부터 ' + ym(H.to) + '까지예요.' : '')}) : null,
+      h('p', {class: 'sj-dayl', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 점선은 한 달 전 값이에요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')}),
+      h('p', {class: 'sj-note', text: '화살 열은 지난 같은 땅 싸움 열 번이에요. 꺾인 화살이 잃은 몫이에요.'})),
     h('p', {class: 'sj-safe', text: '지난 기록을 센 차례예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     h('a', {class: 'sj-go', href: '#/r/t'}, h('span', {text: '서른여섯 꾀 정산 보기'}), h('i', {'aria-hidden': 'true', text: '›'})),
     endSeal('꾀'));

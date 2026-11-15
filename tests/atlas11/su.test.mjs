@@ -290,7 +290,7 @@ const JOBS = ['su-land-jobs.js', 'su-co-jobs.js', 'su-more-jobs.js', 'su-stop-jo
 // (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(옛 회사 · 「왜?」 · 기록창 한국 시장 · 무하 부품 쪽)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)
 test('새 판 화면(새로 씀) — 다음 단추 네 번 다섯 화면(주문 1115-2328) · 탭 다섯 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
   const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8');
-  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-wrap.js') + src('su-sky.js') + ART4.map(src).join('') + JOBS.map(src).join('') + src('su-frame-jobs.js') + src('su-mucha-kit.js') + src('su-sonja.js') + src('su-sonja-top.js') + src('su-sonja-kkoe.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-wrap.js') + src('su-sky.js') + ART4.map(src).join('') + JOBS.map(src).join('') + src('su-frame-jobs.js') + src('su-mucha-kit.js') + src('su-sonja.js') + src('su-sonja-top.js') + src('su-sonja-kkoe.js') + src('su-sonja-ink.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
   const arr = (s, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(s); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
   const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
   assert.equal(qs.length, 11);

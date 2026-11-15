@@ -360,3 +360,30 @@ html.sj-sub #su > main.sj-pre { display: none; }
   #su .sj-ph .sj-land { font-size: 2.25rem; }
 }
 
+
+/* ── 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 손무의 이야기) ── */
+#su .sj-ink { margin: 14px 0 6px; }
+#su .sj-ink svg { display: block; width: 100%; height: auto; }
+#su .sj-landfig svg { max-width: 440px; margin: 0 auto; }
+#su .sj-herofig svg { max-width: 440px; margin: 0 auto; }
+#su .sj-kfig svg { max-width: 440px; margin: 0 auto; }
+#su .sj-arw { margin: 2px 0 0; }
+#su .sj-arw svg { max-width: 340px; }
+#su .sj-tkpic, #su .sj-kpic { display: block; color: inherit; text-decoration: none; }
+#su .sj-tkpic svg { display: block; width: 100%; max-width: 360px; height: auto; }
+#su .sj-tmore .sj-tkpic svg, #su .sj-cotricks .sj-tkpic svg { max-width: 220px; }
+#su .sj-kr { grid-template-columns: 108px minmax(0, 1fr); column-gap: 12px; align-items: center; }
+#su .sj-kr > .sj-kpic { grid-row: 1; grid-column: 1; }
+#su .sj-kr > .sj-kpic svg { display: block; width: 108px; height: auto; }
+#su .sj-kr > .sj-ka { grid-row: 1; grid-column: 2; min-width: 0; flex-wrap: wrap; column-gap: 8px; row-gap: 2px; }
+#su .sj-kr > .sj-ka .sj-kt { flex: 1 1 100%; order: -1; }
+#su .sj-kr > .sj-ka .sj-kno { min-width: 0; }
+#su .sj-kr > .sj-kmean { grid-column: 1 / -1; padding-left: 0; }
+#su .ik-t { font-family: inherit; }
+#su .ik-brush { font-family: inherit; letter-spacing: 0.04em; }
+#su .sj-stbar { height: 22px; }
+#su .sj-coline svg.ik-ridge { width: 100%; height: auto; }
+#su .sj-cos > summary, #su .sj-recmore > summary, #su .sj-how > summary, #su .sj-src > summary, #su .sj-nums > summary { min-height: 52px; }
+#su .sj-says { display: grid; grid-template-columns: 84px minmax(0, 1fr); column-gap: 12px; align-items: center; margin-top: 14px; }
+#su .sj-saysp svg { display: block; width: 84px; height: 100px; }
+#su .sj-says > .sj-do { margin: 0; min-width: 0; }
