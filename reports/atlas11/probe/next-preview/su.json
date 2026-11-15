@@ -1,105 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-15T15:35:58.492Z",
+ "at": "2026-11-15T15:54:12.396Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 322,
-  "fail": 23
+  "pass": 394,
+  "fail": 0
  },
- "fails": [
-  [
-   "[390] ⑨ 2번째 화면 = 손자병법 판 kkoe(main.sj-page · 주문 1115-1706 · 1115-2328)",
-   "\"miss\""
-  ],
-  [
-   "[390] ⑨ 걸음 표시 2 / 5 · 읽어 주기 「2 / 5 · 꾀」 — 찾지 못했어요",
-   " · "
-  ],
-  [
-   "[390] ⑨ 이야기 막대 점 다섯 · 지금 화면 2 — 찾지 못했어요",
-   "[[],\"\"]"
-  ],
-  [
-   "[390] ⑨ 쪽 차례 — 머리 → 고르는 법 → 같은 땅 기록 → 오늘 닮은 곳 → 정산 → 앞뒤 꾀 → 끝 줄 — 찾지 못했어요",
-   "sj-ph sj-sec sj-end"
-  ],
-  [
-   "[390] ⑨ 탭 다섯 오늘 · 꾀 · 멈춤 · 일지 · 정산(주문 1115-2328 — 옛 지도 · 기록 · 달력 지움) · 「꾀」 켜짐 — 찾지 못했어요",
-   "[{\"t\":\"오늘\",\"cur\":false},{\"t\":\"꾀\",\"cur\":false},{\"t\":\"멈춤\",\"cur\":false},{\"t\":\"일지\",\"cur\":false},{\"t\":\"정산\",\"cur\":false}] 탭 — 오늘 · 꾀 · 멈춤 · 일지 · 정산"
-  ],
-  [
-   "[390] ⑨ 다음 단추 = 4 / 5 #/q — 찾지 못했어요",
-   "[null,\"\"]"
-  ],
-  [
-   "[390] ⑨ 다음 단추 — 찾지 못했어요",
-   ""
-  ],
-  [
-   "[390] ⑨ 다음 네 번에 끝(다섯 화면 · 끝 = 내 매매일지 — 주문 1115-2328 오늘 → 꾀 → 회사 → 왜 사? → 매매일지)",
-   "서른여섯 꾀 → 찾지 못했어요"
-  ],
-  [
-   "[390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 404 (Not Found) | Failed to load resource: the server responded with a status of 404 (Not Found) | Failed to load resource: the server responded with a status of 404 (Not Found)"
-  ],
-  [
-   "[360] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 404 (Not Found) | Failed to load resource: the server responded with a status of 404 (Not Found) | Failed to load resource: the server responded with a status of 404 (Not Found)"
-  ],
-  [
-   "[320] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 404 (Not Found) | Failed to load resource: the server responded with a status of 404 (Not Found) | Failed to load resource: the server responded with a status of 404 (Not Found)"
-  ],
-  [
-   "㉓ 정산 [390] 꾀마다 서른여섯 줄 — 수익이 높은 차례(본질 8번 · 같으면 꾀 차례 · 하루치 · 산 셈 없음은 맨 아래) · 이름 · 산 돈 · 늘었나 줄었나 · 모양 · 누르면 그 꾀 쪽 = 따로 셈",
-   "{\"n\":36,\"bad\":[[[\"g01\",\"제1계\",\"산 돈 732만 9,400원\",\"아직 하루치예요\",\"○\"],[\"g01\",\"몰래 바다 건너기\",\"산 돈 732만 9,400원\",\"아직 하루치예요\",\"○\"]],[[\"g02\",\"제2계\",\"산 돈 496만 7,250원\",\"아직 하루치예요\",\"○\"],[\"g02\",\"딴 데 쳐서 구하기\",\"산 돈 496만 7,250원\",\"아직 하루치예요\",\"○\"]]]}"
-  ],
-  [
-   "㉓ 정산 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 404 (Not Found)"
-  ],
-  [
-   "㉓ 정산 [320] 꾀마다 서른여섯 줄 — 수익이 높은 차례(본질 8번 · 같으면 꾀 차례 · 하루치 · 산 셈 없음은 맨 아래) · 이름 · 산 돈 · 늘었나 줄었나 · 모양 · 누르면 그 꾀 쪽 = 따로 셈",
-   "{\"n\":36,\"bad\":[[[\"g01\",\"제1계\",\"산 돈 732만 9,400원\",\"아직 하루치예요\",\"○\"],[\"g01\",\"몰래 바다 건너기\",\"산 돈 732만 9,400원\",\"아직 하루치예요\",\"○\"]],[[\"g02\",\"제2계\",\"산 돈 496만 7,250원\",\"아직 하루치예요\",\"○\"],[\"g02\",\"딴 데 쳐서 구하기\",\"산 돈 496만 7,250원\",\"아직 하루치예요\",\"○\"]]]}"
-  ],
-  [
-   "㉓ 정산 [320] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 404 (Not Found)"
-  ],
-  [
-   "㉕ 손자병법 다른 쪽 [390] 가) 꾀 모음 — 여섯 묶음 × 여섯 꾀(삼십육계 차례 · 묶음 이름 = 자료) · 제 ○계 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 탭 「꾀」 · 다음 = 맨 위 꾀",
-   "{\"main\":false,\"h1\":\"찾지 못했어요\",\"tab\":\"\",\"next\":null,\"bad\":\"data\"}"
-  ],
-  [
-   "㉕ 손자병법 다른 쪽 [390] 나) 꾀 한 가지 36쪽 — 걸음 2 / 5 · 묶음 · 도장 = 오늘 차례 · 뜻 · 지금 땅에서 몇 위 · 고르는 법(사고판 양 꾀 풀이) · 같은 땅 기록 · 잃은 몫 점 · 오늘 닮은 곳(누르면 그 회사) · 정산 · 앞뒤 꾀 · 다음 단추 = 자료에서 따로 셈",
-   "g01 data [[null,null]] / g02 data [[null,null]] / g03 data [[null,null]]"
-  ],
-  [
-   "㉕ 손자병법 다른 쪽 [390] 다) 회사 쪽 (오늘 어느 꾀에도 없는 회사) — 걸음 3 / 5 · 이름 · 시장 · 업종 · 몇 가지 꾀가 골랐나 · 한 달 꺾은선 글 · 고른 꾀(덜 잃은 차례 · 지난 기록 · 고르는 법 · 누르면 그 꾀) · 「왜 사?」 = 자료에서 따로 셈 — 005930",
-   "[[\"data\",null,null]]"
-  ],
-  [
-   "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 404 (Not Found) / Failed to load resource: the server responded with a status of 404 (Not Found) / Failed to load resource: the server responded with a status of 404 (Not Found)"
-  ],
-  [
-   "㉕ 손자병법 다른 쪽 [320] 가) 꾀 모음 — 여섯 묶음 × 여섯 꾀(삼십육계 차례 · 묶음 이름 = 자료) · 제 ○계 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 탭 「꾀」 · 다음 = 맨 위 꾀",
-   "{\"main\":false,\"h1\":\"찾지 못했어요\",\"tab\":\"\",\"next\":null,\"bad\":\"data\"}"
-  ],
-  [
-   "㉕ 손자병법 다른 쪽 [320] 나) 꾀 한 가지 2쪽 — 걸음 2 / 5 · 묶음 · 도장 = 오늘 차례 · 뜻 · 지금 땅에서 몇 위 · 고르는 법(사고판 양 꾀 풀이) · 같은 땅 기록 · 잃은 몫 점 · 오늘 닮은 곳(누르면 그 회사) · 정산 · 앞뒤 꾀 · 다음 단추 = 자료에서 따로 셈",
-   "g01 data [[null,null]] / g36 data [[null,null]]"
-  ],
-  [
-   "㉕ 손자병법 다른 쪽 [320] 다) 회사 쪽 (오늘 어느 꾀에도 없는 회사) — 걸음 3 / 5 · 이름 · 시장 · 업종 · 몇 가지 꾀가 골랐나 · 한 달 꺾은선 글 · 고른 꾀(덜 잃은 차례 · 지난 기록 · 고르는 법 · 누르면 그 꾀) · 「왜 사?」 = 자료에서 따로 셈 — 005930",
-   "[[\"data\",null,null]]"
-  ],
-  [
-   "㉕ 손자병법 다른 쪽 [320] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 404 (Not Found) / Failed to load resource: the server responded with a status of 404 (Not Found) / Failed to load resource: the server responded with a status of 404 (Not Found)"
-  ]
- ],
+ "fails": [],
  "m": {
   "data": {
    "fk": "g01",
@@ -129,27 +36,72 @@
     "hardWords": "코스피,코스닥"
    },
    {
-    "h1": "찾지 못했어요",
-    "page": "miss",
+    "h1": "몰래 바다 건너기",
+    "page": "kkoe",
     "kids": [
      "sj-ph",
-     "sj-sec",
+     "sj-kway",
+     "sj-krec",
+     "sj-kco",
+     "sj-kst",
+     "sj-kpn",
      "sj-end"
     ],
     "seals": 0,
+    "hard": 1,
+    "hardWords": "주식"
+   },
+   {
+    "h1": "왜 사?",
+    "heroShare": 72.4,
+    "share": 78,
+    "outside": 17,
+    "two": 2,
+    "labels": 30,
+    "mucha": [],
+    "anim": 7,
+    "need": 0,
+    "means": {
+     "vals": 1,
+     "with": 1
+    },
+    "pro": 5,
     "hard": 0,
-    "hardWords": ""
+    "glossed": 1,
+    "orn": 0,
+    "ornN": 7
+   },
+   {
+    "h1": "내 매매일지",
+    "heroShare": 72.4,
+    "share": 82,
+    "outside": 15,
+    "two": 2,
+    "labels": 17,
+    "mucha": [],
+    "anim": 11,
+    "need": 0,
+    "means": {
+     "vals": 3,
+     "with": 3
+    },
+    "pro": 9,
+    "hard": 0,
+    "glossed": 3,
+    "orn": 0,
+    "ornN": 7
    }
   ],
-  "hard": 2,
+  "hard": 3,
   "hardWords": [
    "코스피",
-   "코스닥"
+   "코스닥",
+   "주식"
   ],
   "speed": {
-   "lcp": 764,
+   "lcp": 544,
    "cls": 0,
-   "pic": 770
+   "pic": 549
   },
   "white": {
    "light #/": {
@@ -975,5 +927,5 @@
    }
   }
  },
- "ok": false
+ "ok": true
 }
