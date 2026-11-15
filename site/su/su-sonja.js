@@ -11,32 +11,32 @@ import {h, s} from '/su/su-fig.js';
 import {NEED, ymd} from '/su/su-six.js';
 import {NAME, josa} from '/next/brand.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
-import {load21, n36of} from '/su/su-21.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
-import {topBar, cover, stepDay} from '/su/su-sonja-top.js'; // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면)
+import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav} from '/su/su-sonja-top.js'; // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
 
 export const CSS = '/su/su-sonja.css';
-const D36 = '/su/data/su21-s36.json';
-const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const FOOT = [['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']];
-const LANDK = ['fall', 'shake', 'rise', 'narrow', 'calm'];
-const KN = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열']; // 잃은 몫 「열 번에 ○ 번」(lose10)
-const STEP8 = ['오늘', '땅 지도', '업종', '회사', '회사 자세히', '「왜 사?」', '내 매매일지', '친구에게'];
+export const D21 = '/su/data/su21.json', D36 = '/su/data/su21-s36.json', DST = '/su/data/su21-settle.json'; // 첫 화면 자료 · 꾀 칸 자료(첫 칠함 뒤) · 정산 장부
+export const LANDK = ['fall', 'shake', 'rise', 'narrow', 'calm'];
+export const KN = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열']; // 잃은 몫 「열 번에 ○ 번」(lose10)
+/** 첫 화면 자료(su21.json) — X.get 이 주소마다 한 번만 받음(옛 su-21.js load21 을 옮김 · 주문 1115-2328 옛 21곳 파일은 지움) */
+export const load21 = get => get(D21);
+/** 서른여섯 꾀 칸 수(꾀마다 앞 일곱까지) — 꾀 칸 자료가 없으면 null */
+export const n36of = T => { const m = T?.s36n; if (!m || typeof m !== 'object') return null; const v = Object.values(m); return v.length === 36 && v.every(x => Number.isInteger(x) && x >= 0) ? v.reduce((a, x) => a + Math.min(7, x), 0) : null; };
 
-const fin = x => typeof x === 'number' && Number.isFinite(x);
-const NF = new Intl.NumberFormat('ko-KR');
-const won = v => NF.format(Math.round(v)) + '원';
-const mday = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d ?? '')); return m ? +m[2] + '월 ' + +m[3] + '일' : null; };
-const ym = t => { const m = /^(\d{4})-(\d{2})-\d{2}$/.exec(String(t ?? '')); return m ? m[1] + '년 ' + +m[2] + '월' : null; };
-const day = d => ymd(d) ?? NEED;
-const w100 = r => (fin(r) ? (100 * (1 + r)).toFixed(1).replace(/\.0$/, '') + '원' : NEED);
+export const fin = x => typeof x === 'number' && Number.isFinite(x);
+export const NF = new Intl.NumberFormat('ko-KR');
+export const won = v => NF.format(Math.round(v)) + '원';
+export const mday = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d ?? '')); return m ? +m[2] + '월 ' + +m[3] + '일' : null; };
+export const ym = t => { const m = /^(\d{4})-(\d{2})-\d{2}$/.exec(String(t ?? '')); return m ? m[1] + '년 ' + +m[2] + '월' : null; };
+export const day = d => ymd(d) ?? NEED;
+export const w100 = r => (fin(r) ? (100 * (1 + r)).toFixed(1).replace(/\.0$/, '') + '원' : NEED);
 /** 한 달 판별 — 꺾은선 처음(한 달 전)과 끝(그날)으로 · 값이 없으면 null */
-const monOf = sp => (!sp ? null : sp[sp.length - 1] < sp[0] ? 'dn' : sp[sp.length - 1] > sp[0] ? 'up' : 'eq');
-const MONW = {dn: '한 달 내림', up: '오름', eq: '같음'};
+export const monOf = sp => (!sp ? null : sp[sp.length - 1] < sp[0] ? 'dn' : sp[sp.length - 1] > sp[0] ? 'up' : 'eq');
+export const MONW = {dn: '한 달 내림', up: '오름', eq: '같음'};
 
 /* ── 작은 부품(새로 그림) ── */
 /** 한 달 꺾은선(먹 선 · 한 달 전 값 점선 · 끝 점 = 내림 남빛 · 오름 먹) */
-function spark(sp, w = 96, hh = 34, cls = '') {
+export function spark(sp, w = 96, hh = 34, cls = '') {
   const g = s('svg', {class: 'sj-sp' + (cls ? ' ' + cls : ''), viewBox: `0 0 ${w} ${hh}`, width: w, height: hh, 'aria-hidden': 'true', focusable: 'false'});
   if (!sp) return g;
   const P = 4, n = sp.length, lo = Math.min(...sp), hi = Math.max(...sp);
@@ -48,20 +48,20 @@ function spark(sp, w = 96, hh = 34, cls = '') {
   return g;
 }
 /** 장 머리 — 위 여백의 붓 글씨 한 낱말 · 가는 세로 먹선 · 장 번호 · 제목(장마다 좌우 뒤집음) */
-const head = (bw, pno, title, flip = false, more = []) => h('div', {class: 'sj-sh' + (flip ? ' sj-flip' : '')},
+export const head = (bw, pno, title, flip = false, more = []) => h('div', {class: 'sj-sh' + (flip ? ' sj-flip' : '')},
   h('p', {class: 'sj-bw', 'aria-hidden': 'true', text: bw}), h('i', {class: 'sj-axis', 'aria-hidden': 'true'}),
   h('div', {class: 'sj-sht'}, h('p', {class: 'sj-pno', text: pno}), title, ...more));
-const endSeal = t => h('span', {class: 'sj-endseal', 'aria-hidden': 'true', text: t});
+export const endSeal = t => h('span', {class: 'sj-endseal', 'aria-hidden': 'true', text: t});
 
 /* ── 자료 ── */
-const ok36 = (g, T) => !!g && g.schema === 'su21-s36-1' && Array.isArray(g.kinds) && g.kinds.length === 36 && !!g.lists && typeof g.lists === 'object' && g.asOf?.board === T?.asOf?.board
+export const ok36 = (g, T) => !!g && g.schema === 'su21-s36-1' && Array.isArray(g.kinds) && g.kinds.length === 36 && !!g.lists && typeof g.lists === 'object' && g.asOf?.board === T?.asOf?.board
   && g.kinds.every(k => (g.lists[k] ?? []).length === T?.s36n?.[k]);
-const okSun = x => !!x && x.rule === 'sun-v1' && LANDK.includes(x.land) && Number.isInteger(x.m?.n) && x.m.n > 0 && Number.isInteger(x.m?.up) && x.m.up >= 0 && x.m.up <= x.m.n
+export const okSun = x => !!x && x.rule === 'sun-v1' && LANDK.includes(x.land) && Number.isInteger(x.m?.n) && x.m.n > 0 && Number.isInteger(x.m?.up) && x.m.up >= 0 && x.m.up <= x.m.n
   && typeof x.name === 'string' && typeof x.quote === 'string' && Array.isArray(x.rank) && x.rank.length === 36 && x.rank.every(r => typeof r?.k === 'string' && Number.isInteger(r.n));
-const sp36 = (g, code) => { const v = g?.line?.[code]; return v && Array.isArray(v.c) && v.c.length === 21 && v.c.every(x => fin(x) && x > 0) && fin(v.close) && v.close === v.c[20] && typeof v.date === 'string' && v.date === g?.asOf?.board ? v.c : null; };
+export const sp36 = (g, code) => { const v = g?.line?.[code]; return v && Array.isArray(v.c) && v.c.length === 21 && v.c.every(x => fin(x) && x > 0) && fin(v.close) && v.close === v.c[20] && typeof v.date === 'string' && v.date === g?.asOf?.board ? v.c : null; };
 const shakeSay = v => (!fin(v) ? null : v < 0.6 ? '평소의 절반쯤으로 잔잔해요' : v < 0.85 ? '평소보다 작아요' : v < 1.15 ? '평소와 비슷해요' : v < 1.5 ? '평소보다 커요' : '평소보다 훨씬 커요');
-const lose10 = r => { if (!r?.n) return null; if (!r.lose) return '한 번도 잃지 않았어요.'; const k = Math.round(r.lose / r.n * 10); return k ? '열 번에 ' + KN[k] + ' 번 잃었어요.' : '열 번에 한 번이 안 되게 잃었어요.'; };
-const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
+export const lose10 = r => { if (!r?.n) return null; if (!r.lose) return '한 번도 잃지 않았어요.'; const k = Math.round(r.lose / r.n * 10); return k ? '열 번에 ' + KN[k] + ' 번 잃었어요.' : '열 번에 한 번이 안 되게 잃었어요.'; };
+export const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
 /* ── 1 머리 ── */
 /* ── 2 표지 · 형세 보고 ── */
 function sunSec(T) {
@@ -90,7 +90,7 @@ function sunSec(T) {
       s('svg', {class: 'sj-strip', viewBox: `0 0 ${BW} 34`, 'aria-hidden': 'true', focusable: 'false'},
         ...P.map((k, i) => s('rect', {x: 1 + i * 17, y: 4, width: 13, height: 26, class: 'sj-day' + (k === x.land ? ' sj-same' : '') + (i === P.length - 1 ? ' sj-now' : '')}))),
       h('p', {class: 'sj-pc', text: '지난 ' + P.length + '거래일 가운데 ' + same + '날이 ' + x.name + '이었어요. 오른쪽 끝이 오늘이에요.'})) : null,
-    h('p', {class: 'sj-do', text: (x.do ?? '') + ' 그래서 서른여섯 꾀를 덜 잃은 차례로 놓았어요.'}),
+    h('p', {class: 'sj-do', 'data-say': '', text: (x.do ?? '') + ' 그래서 서른여섯 꾀를 덜 잃은 차례로 놓았어요.'}),
     x.lands && LANDK.every(k => typeof x.lands[k]?.rule === 'string') ? h('details', {class: 'sj-drawer sj-lands'},
       h('summary', {}, h('span', {class: 'sj-s1', text: '다섯 땅은 이렇게 나눠요'}), chev()),
       h('ol', {class: 'sj-ldl'}, ...LANDK.map(k => { const L = x.lands[k]; return h('li', {'data-land': k, class: 'sj-ld' + (k === x.land ? ' sj-ldnow' : '')},
@@ -100,13 +100,13 @@ function sunSec(T) {
     h('p', {class: 'sj-safe', text: '지난 기록으로 본 모습이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSeal('형세'));
 }
-const chev = () => s('svg', {class: 'sj-chev', viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, s('path', {d: 'M5 9l7 7 7-7'}));
+export const chev = () => s('svg', {class: 'sj-chev', viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, s('path', {d: 'M5 9l7 7 7-7'}));
 
 /* ── 3 덜 잃은 꾀 차례(꾀 칸 자료는 첫 칠함 뒤에 받음 — 느린 휴대폰 첫 화면) ── */
 function trickWait(T) {
   return n36of(T) != null ? h('section', {class: 'sj-sec sj-s36 sj-wait', 'aria-hidden': 'true', 'data-wait': ''}) : null;
 }
-function rec36(r) {
+export function rec36(r) {
   if (!r) return [];
   if (!r.n) return [h('p', {class: 'sj-tl sj-tnorec', text: '지난 기록을 세지 못했어요. 그날 사고판 양 자료가 있어야 세요.'})];
   const k = r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0;
@@ -115,7 +115,7 @@ function rec36(r) {
     r.lose ? h('p', {class: 'sj-tl2', text: '잃은 주는 평균 100원이 ' + w100(r.avgLoss) + '이 됐어요. 가장 크게 잃은 주는 ' + w100(r.worst) + '이었어요.'}) : null,
     h('p', {class: 'sj-tl3', text: '모든 주를 고르면 평균 100원이 ' + w100(r.avg) + '이에요.'})];
 }
-function chip(g, c, bd, ov) {
+export function chip(g, c, bd, ov) {
   const code = String(c.code ?? ''), name = String(c.name ?? NEED), dz = Number.isInteger(c.days) && c.days >= 1 ? c.days : null, sp = sp36(g, code), n = ov && Number.isInteger(c.n) ? c.n : null, m = monOf(sp);
   return h('li', {}, h('a', {class: 'sj-chip' + (ov ? ' sj-chip-ov' : ''), href: '#/c/' + encodeURIComponent(code), 'data-code': code, 'data-days': dz ? String(dz) : null, 'data-n': n ? String(n) : null, 'data-mon': m ?? 'na',
     'aria-label': name + (n ? ' · ' + n + '묶음' : '') + (dz ? ' · ' + dz + '일째' : '') + (sp ? ' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[20]) + ' · ' + MONW[m] : '')},
@@ -128,8 +128,8 @@ function trickSec(g, T) {
   const order = S ? S.rank.map(r => r.k) : g.kinds, RB = S ? Object.fromEntries(S.rank.map((r, i) => [r.k, {...r, i: i + 1}])) : {};
   const one36 = k => { const L = (g.lists[k] ?? []).slice(0, 7), r = RB[k];
     return h('li', {class: 'sj-tk', 'data-k': k, 'data-n': String(L.length), 'data-rank': r ? String(r.i) : null},
-      h('div', {class: 'sj-tkh'}, r ? h('span', {class: 'sj-rk', text: String(r.i)}) : null,
-        h('p', {class: 'sj-tn'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'}))),
+      h('a', {class: 'sj-tkh', href: '#/k/' + k, 'aria-label': (r ? '차례 ' + r.i + ' · ' : '') + (g.name?.[k] ?? k) + ' · 이 꾀 자세히'}, r ? h('span', {class: 'sj-rk', text: String(r.i)}) : null,
+        h('p', {class: 'sj-tn'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})), h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})), // 꾀 이름을 누르면 그 꾀 쪽(주문 1115-2328)
       ...rec36(r),
       h('p', {class: 'sj-say', text: g.say?.[k] ?? ''}),
       L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: none36(g.why?.[k])})); };
@@ -160,37 +160,12 @@ function moreBox(S) {
 }
 
 /* ── 11 끝 줄 ── */
-function endSec(T, S) {
-  const got = S?.fetchedAt ? kstText(S.fetchedAt) : null;
-  return h('footer', {class: 'sj-end'},
-    h('p', {class: 'sj-enough', text: '사기 전에 한 번 멈춰요.'}),
-    h('p', {}, h('b', {text: '출처 '}), '네이버 증권 그날 마지막 값 · ' + josa(NAME, '가') + ' 센 지난 기록'),
-    h('p', {}, h('b', {text: '조사 날짜 '}), '자료 ' + day(T.asOf?.board) + (got ? ' · 받은 때 ' + got : '')),
-    h('p', {class: 'sj-links'}, ...FOOT.map(([href, t]) => h('a', {href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'})))),
-    h('p', {class: 'sj-safe sj-safe-end', text: SAFE}));
-}
+function endSec(T, S) { return endLine(day(T.asOf?.board), S?.fetchedAt ? kstText(S.fetchedAt) : null); }
 
-/* ── 12 이야기 막대 · 13 탭 ── */
-function dockNav(X) {
-  const say = h('button', {class: 'sj-listen', type: 'button', 'aria-label': '읽어 주기', text: '듣기'});
-  say.addEventListener('click', () => {
-    try {
-      const sy = window.speechSynthesis; if (!sy) return;
-      if (sy.speaking) { sy.cancel(); return; }
-      const t = [...document.querySelectorAll('#su .sj-h1, #su .sj-sun .sj-do')].map(e => e.innerText.replace(/\s+/g, ' ')).join('. ');
-      const u = new SpeechSynthesisUtterance(t); u.lang = 'ko-KR'; u.rate = 0.9; sy.speak(u);
-    } catch { /* 읽어 주기가 없는 기기 */ }
-  });
-  return h('nav', {class: 'sj-dock', 'aria-label': '다음 화면'},
-    h('ol', {class: 'sj-prog', 'aria-label': '여덟 화면 가운데 1번째'}, ...STEP8.slice(1).map((t, i) => h('li', {class: i === 0 ? 'sj-pcur' : '', 'aria-hidden': 'true'}))),
-    h('div', {class: 'sj-dk'}, say, h('a', {class: 'sj-next', href: '#/m'}, h('span', {class: 'sj-nk', text: '2 / 8'}), h('b', {text: '21곳은 어느 땅에 있나?'}), h('i', {'aria-hidden': 'true', text: '›'}))));
-}
-function tabNav(X) {
-  const lc = X.cur?.()?.code;
-  const T = [['오늘', '#/'], ['지도', '#/m'], ['기록', '#/r'], ['멈춤', lc ? '#/q/' + lc : '#/q'], ['달력', '#/r/c'], ['정산', '#/r/t']], ORD = [0, 1, 3, 2, 4, 5];
-  return h('nav', {class: 'sj-tabs', 'aria-label': '탭 — 오늘 · 지도 · 멈춤 · 기록 · 달력 · 정산'}, ORD.map((i, k) => { const [t, href] = T[i];
-    return h('a', {class: 'sj-tab' + (i === 0 ? ' sj-cur' : ''), href, 'aria-current': i === 0 ? 'page' : null, 'aria-label': (k + 1) + '번째 · ' + t, text: t}); }));
-}
+/* ── 12 이야기 막대 · 13 탭(모든 쪽이 같은 판 — su-sonja-top.js · 주문 1115-2328) ── */
+/** 첫 쪽 다음 단추 — 덜 잃은 차례 맨 위 꾀(형세가 없으면 꾀 모음) */
+const firstKkoe = T => (okSun(T?.sun) ? T.sun.rank[0]?.k ?? null : null);
+const nextOf = T => { const k = firstKkoe(T); return {href: '#/k/' + (k ?? 'g01'), k: '2 / 5', label: k ? '맨 위 꾀는 어떤 꾀인가?' : '첫째 꾀는 어떤 꾀인가?'}; }; // 형세가 없으면 삼십육계 첫째 꾀(길 다섯 화면은 늘 그대로)
 
 /* ── 쪽 ── */
 /** 첫 쪽 — {title, dom: [머리, 본문, 이야기 막대, 탭], after()} · su.js route 가 이것만 붙임(옛 page() · afterPaint() 를 거치지 않음) */
@@ -198,7 +173,6 @@ function tabNav(X) {
 export async function vSonja(X, shell = null) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   if (!T) return null;
-  X.setFirst?.((T.lists?.hot?.[0] ?? T.lists?.money?.[0])?.code); // 다른 쪽(회사)의 처음 회사 — 쪽에는 보이지 않음
   const wait = trickWait(T);
   const dd = mday((okSun(T.sun) ? T.sun.day : null) ?? T.asOf?.board), body = [sunSec(T), wait, moreBox(S), endSec(T, S)];
   const keep = !!shell?.main?.isConnected, main = keep ? shell.main : h('main', {class: 'sj-page', 'data-page': 'sonja', 'data-wait': ''}, cover(null)); // data-wait — 꾀 칸을 채우면 뗌(검사가 기다림)
@@ -214,6 +188,6 @@ export async function vSonja(X, shell = null) {
     if (ok36(g, T)) wait.replaceWith(trickSec(g, T)); else wait.remove();
     hardOf(); main.removeAttribute('data-wait');
   };
-  const dock = dockNav(X), tabs = tabNav(X);
+  const dock = dockNav(1, nextOf(T)), tabs = tabNav(0, X.cur?.()?.code ?? null);
   return {title: '오늘', keep, dom: [keep ? shell.top : topBar(), main, dock, tabs], rest: [dock, tabs], after}; // keep = 먼저 칠한 판에 이어 붙임(su.js 는 rest 만 붙임)
 }

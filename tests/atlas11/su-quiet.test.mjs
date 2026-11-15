@@ -112,15 +112,4 @@ test('화면 글 — 한 달 폭 · 이만큼 조용하기 · 외국인 · 기�
   assert.ok(/\.qt-cal \{[^}]*min-height: 56px/.test(css), '달력 고리 누르는 곳 56');
 });
 
-test('길 · 서랍 · 그림 · 묶기 · 검사(주문 1111-1334)', () => {
-  const su = rd('site/su/su.js'), ap = rd('site/su/su-apple.js'), s21 = rd('site/su/su-21.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs'), p21 = rd('scripts/atlas11/next/su21.py');
-  assert.equal(forwardTo('', '#/s'), null); assert.equal(forwardTo('', '#/r/s'), null);
-  assert.ok(su.includes("else if (t && t[1] === 's') v = await (await import('/su/su-quiet.js')).vQuiet(X21);"), '길 #/s');
-  assert.ok(su.includes("a === 's' ? await (await import('/su/su-book.js')).vBook(X21, 'quiet')"), '길 #/r/s');
-  assert.ok(su.includes("drawer('#/r/s', '조용한 힘 달력'"), '기록 쪽 서랍');
-  assert.ok(ap.includes("'data-k': 'quiet'") && ap.includes('function cellQ') && /nNow = [^\n]*quiet/.test(ap), '처음 쪽 그림 넷째 창 칸 · 지금 수에 일곱');
-  assert.ok(s21.includes("'넷째 창 조용한 힘 ' + nq + '칸을 더하면 ' + (21 + nq) + '칸이에요.'") && s21.includes("'aria-label': '지금 28칸 · 될 듯 21칸'") && !s21.includes('지금 28곳'), '21곳 쪽 글 · 지금 28칸(칸 수를 회사 수처럼 「곳」으로 부르지 않음 — 주문 1114-1306 ⑤)');
-  assert.ok(p21.includes('import su21_quiet as QU') && p21.includes("'quiet': QUIET"), 'su21.py 가 넷째 창을 셈');
-  assert.ok(/'--rank', 'quiet'[\s\S]{0,300}reports\/atlas11\/su21\/qbook\.json[\s\S]{0,100}\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶기 — 따로 된 장부 · 올리기 작업만 저장');
-  assert.ok(ck.includes('㉒ 넷째 창 자료') && ck.includes('㉒ 조용한 힘 장부 자료') && ck.includes('#/s 줄 일곱 = 자료 차례') && ck.includes('#/r/s 조용한 힘 달력'), '검사 ㉒');
-});
+// (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(조용한 힘 #/s · #/r/s)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)

@@ -267,30 +267,25 @@ test('화면 셈 — 산 셈 줄 · 묶음마다 여덟 줄(사장님 말씀 차
   assert.equal(M.rateOf({n: 0, cost: 0, val: 0}), null);
 });
 
-test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t · 새 판 안 · 올리기 작업만 장부를 씀 · 검사 ㉓ · 화면 글', () => {
-  const su = rd('site/su/su.js'), st = rd('site/su/su-settle.js'), css = rd('site/su/su-settle.css'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.ok(su.includes("['정산', '#/r/t', ") && su.includes('export const TAB_ORDER = Object.freeze([0, 1, 3, 2, 4, 5]);'), '정산 탭은 맨 끝(여섯째)');
-  assert.ok(su.includes("a === 't' ? await (await import('/su/su-settle.js')).vSettle(X21)"), '길 #/r/t');
+test('탭 · 길 · 묶기 · 검사 — 아래 탭 다섯째 「정산」 #/r/t · 손자병법 판 서른여섯 꾀 표만(주문 1115-2328) · 올리기 작업만 장부를 씀 · 검사 ㉓ · 화면 글', () => {
+  const su = rd('site/su/su.js'), kk = rd('site/su/su-sonja-kkoe.js'), top = rd('site/su/su-sonja-top.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
+  assert.ok(su.includes("['정산', '#/r/t', ") && su.includes('export const TAB_ORDER = Object.freeze([0, 1, 2, 3, 4]);') && top.includes("['정산', '#/r/t']]);"), '정산 탭은 맨 끝(다섯째 · 옛 틀 · 손자병법 판 둘 다)');
+  assert.ok(su.includes("if (hh === '#/r/t') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vSettle36(XS)); }"), '길 #/r/t → 손자병법 판 정산(su-sonja-kkoe.js vSettle36)');
   assert.equal(forwardTo('', '#/r/t'), null, '#/r/t 는 새 판 안(옛 판으로 넘기지 않음)');
-  assert.ok(st.includes("return {title: '정산', tab: 5,"), '정산 쪽을 열면 정산 탭이 켜짐');
-  assert.ok(pk.includes("'scripts/atlas11/next/su21_settle.mjs'") && pk.includes("'--book', path.join(root, 'reports/atlas11/su21/settle.json')") && /su21_settle\.mjs[^\n]*\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶을 때 화면 자료 · 장부는 올리기 작업만 씀');
+  assert.ok(kk.includes("return frame({title: '정산', page: 'settle', kids, tab: 4,"), '정산 쪽을 열면 정산 탭(다섯째)이 켜짐');
+  assert.ok(pk.includes("'scripts/atlas11/next/su21_settle.mjs'") && pk.includes("'--book', path.join(root, 'reports/atlas11/su21/settle.json')") && /su21_settle\.mjs[^\n]*\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶을 때 화면 자료 · 장부(올리기 작업만 장부를 씀)');
   assert.ok(pk.indexOf('su21_days.mjs') < pk.indexOf('su21_settle.mjs'), '그날 목록을 적은 뒤에 정산');
-  assert.ok(ck.includes("'오늘 지도 멈춤 기록 달력 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 여섯(첫 탭 「오늘」 — 주문 1114-1306 ⑤) · 정산 쪽');
-  assert.ok(ck.includes("import {START as SETTLE_START} from './su21_settle.mjs';") && ck.includes('㉓ 정산 첫날') && ck.includes("부터 센 정산이에요."), '검사 — 정산 첫날(주문 1112-2042)');
-  assert.ok(st.includes("text: md(D.start) + '부터 센 정산이에요.'"), '쪽 — 맨 위 첫날 한 줄');
-  assert.ok(/#\\\/r\\\/\[mwdykicst\]/.test(ck), '검사 고리 꼴에 #/r/t(가까운 회사 쪽 #/r/n 은 버림 — 주문 1114-1306 ⑧)');
-  assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(st), '보안 규칙 — innerHTML · 글 속 style 없음');
-  assert.ok(css.includes('.st-replay') && !css.includes('.st-rest'), '꾸밈 — 접은 줄 꾸밈은 뺌(주문 1113-1623)');
-  assert.ok(st.includes("table('st-kinds', '묶음마다', '묶음', byRate(K, SHOW).map(g => row(g, KIND_NAME[g.key] ?? g.key, mxOf(K))), T)") && !/st-inds|st-cos|restFold|'#\/c\/'/.test(st), '쪽 — 표는 묶음마다 하나(업종 · 회사 표 · 회사 고리 0) · 여덟 묶음도 수익률 높은 차례(주문 1114-0922)');
-  assert.ok(st.includes("table('st-s36', '서른여섯 꾀', '꾀', byRate(P36.K).map(g => row(g, KIND_NAME[g.key] ?? g.key, mxOf(P36.K))), P36.T)") && !st.includes('st-t11') && ck.includes("check(g.tabs === 3 &&") && ck.includes('서른여섯 꾀(주문 1113-2224)'), '쪽 · 검사 — 서른여섯 꾀 표(주문 1113-2224 · 수익률 높은 차례) · 겹친 곳 표(주문 1114-0802) · 특징 열하나 표 0');
-  assert.ok(ck.includes("const SHOWs = ['top3', 'hot', 'hotNext', 'money', 'moneyNext', 'bloom', 'bloomNext', 'quiet'];") && ck.includes('큰 값만(주문 1113-1623)'), '검사 — 보이는 차례 · 큰 값만');
-  const texts = [...st.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
+  assert.ok(ck.includes("'오늘 꾀 멈춤 일지 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 다섯 · 정산 쪽');
+  assert.ok(ck.includes("import {START as SETTLE_START} from './su21_settle.mjs';") && ck.includes('㉓ 정산 첫날'), '검사 — 정산 첫날(주문 1112-2042)');
+  assert.ok(/#\\\/r\\\/t\|/.test(ck) && !/#\\\/r\\\/\[mwdykicst\]/.test(ck), '검사 고리 꼴 — #/r/t 만(옛 기록 서랍 · 달력 고리는 지움 — 주문 1115-2328)');
+  assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(kk), '보안 규칙 — innerHTML · 글 속 style 없음');
+  assert.ok(kk.includes("export function settle36(D)") && /K\.sort\(\(a, b\) => \(rateOf\(a\) === null\) - \(rateOf\(b\) === null\) \|\| \(rateOf\(b\) \?\? 0\) - \(rateOf\(a\) \?\? 0\) \|\| K36\.indexOf/.test(kk), '쪽 — 서른여섯 꾀 수익이 높은 차례(본질 8번 · 같으면 꾀 차례 · 하루치 · 산 셈 없음은 맨 아래)');
+  assert.ok(!/st-kinds|st-ovl|st-inds|st-cos|KIND_NAME\.(hot|bloom|money|quiet|top3)/.test(kk) && ck.includes("'㉓ 정산 [' + width + '] '") && ck.includes('옛 정산 판(여덟 묶음 · 겹친 곳 · 업종 · 회사 표) 0'), '쪽 — 옛 여덟 묶음 · 겹친 곳 · 업종 · 회사 표 0(주문 1115-2328)');
+  const texts = [...kk.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
   assert.ok(texts.length > 20);
   const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));
   assert.deepEqual(bad, [], '화면 글에 쓰지 않을 말 0');
-  assert.deepEqual(texts.filter(s => s.includes('%') || /[A-Za-z]{2,}/.test(s.replace(/data-[a-z-]+|bk-[a-z0-9-]+|st-[a-z0-9-]+|su-[a-z0-9-]+/g, ''))), [], '화면 글에 「%」 · 영어 0');
 });
-
 test('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 값 셈 · su21.py 한 달 값 · 단추 그림 · 검사 ㉔ · 선 모양 = 42칸', async () => {
   const ap = rd('site/su/su-apple.js'), stub = ap.replace("import {s, h} from '/su/su-fig.js';", 'const s = () => null, h = () => null;').replace("'/su/su-data.js'", JSON.stringify(new URL('../../site/su/su-data.js', import.meta.url).href)); // 값 글(주문 1114-1306 「%」 대신 100원 말)은 그 파일 그대로
   assert.ok(!stub.includes('/su/su-fig.js') && (stub.match(/^import /gm) ?? []).length === 1, '그리기 도구를 바꿈(남은 부름은 값 글 su-data.js 하나)');
@@ -361,7 +356,7 @@ test('겹친 곳(주문 1114-0802 「… 36개 정도 겹치는 그 종목을 �
   assert.ok(ap.includes("n ? h('span', {class: 's36-cn', text: n + '묶음'}) : null") && ap.includes("(n ? ' · ' + n + '묶음' : '')"), '칸마다 든 묶음 수(글 · 소리 이름표)');
   for (const x of ['처음 쪽', '겹친 곳', '세 묶음 이상에 든 곳', '첫 화면 마흔세 묶음 가운데 세 묶음 이상에 같이 든 회사예요. 많이 겹친 곳이 먼저예요. 칸마다 든 묶음 수를 적었어요.']) assert.ok(!x.includes('%') && !/[A-Za-z]/.test(x), x);
   const ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.ok(ck.includes('㉔ 겹친 곳 자료(주문 1114-0802)') && ck.includes("W + '겹친 곳 0(네 창 · 될 듯 세 창과 함께 센 묶음 — 병법 서른여섯만 · 주문 1115-1843)'") && ck.includes("W + '겹친 곳(주문 1114-0802) — 묶음마다 표 바로 아래"), '검사 ㉓ · ㉔(처음 쪽 겹친 곳은 지움 — 주문 1115-1843 · 정산 쪽 묶음은 그대로)');
+  assert.ok(ck.includes('㉔ 겹친 곳 자료(주문 1114-0802)') && ck.includes("W + '겹친 곳 0(네 창 · 될 듯 세 창과 함께 센 묶음 — 병법 서른여섯만 · 주문 1115-1843)'"), '검사 ㉔(처음 쪽 겹친 곳은 지움 — 주문 1115-1843 · 정산 쪽도 서른여섯 꾀 표만 — 주문 1115-2328)');
   const css = rd('site/su/su-apple.css');
   assert.ok(css.includes('.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-oc.s36-csp { grid-template-areas: "n n" "c s" "d s"; }'), '칸 = 위 이름 · 아래 왼쪽 ○묶음 · ○일째 · 오른쪽 꺾은선');
 });

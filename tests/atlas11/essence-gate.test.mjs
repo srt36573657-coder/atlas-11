@@ -85,8 +85,9 @@ const WRONG = [
   [7, '받은 때를 모르면 「마지막으로 받은 때: ?.」로 둠', ({site}) => must(path.join(site, 'next/essence.js'), "if (!isIso(d.at)) return [ESSENCE[0], ESSENCE[1].replace('{n}', n), ESSENCE_PLAIN[2]];", "if (!isIso(d.at)) return [ESSENCE[0], ESSENCE[1].replace('{n}', n), ESSENCE[2].replace('{at}', '?')];")],
   // 새 첫 화면(수르 두 길 · site/su/ — 사장님 2026-11-03 19:47(+04) 「응」 진화가 이 쪽을 고침 · 주문 0047) — 진화 대안이 망치면 막힘
   [3, '새 첫 화면 글에 망치는 길 낱말', ({site}) => must(path.join(site, 'su/su.js'), "text: '찾기'", "text: '지금이 기회예요. 놓치지 마세요.'")], // 자리는 지금 su.js 글(주문 0054 — 옛 「두 가지예요」 줄은 2044 판에서 빠짐)
-  [2, '새 첫 화면에서 본질 세 줄 칸을 뺌', ({site}) => must(path.join(site, 'su/su.js'), 'after: [essBox(S)]', 'after: []')],
-  [2, '새 첫 화면 세 줄을 자료로 셈하지 않음', ({site}) => must(path.join(site, 'su/su.js'), 'essenceLines(essenceData({summary: S}))', "['앞날을 맞혀요']")],
+  // 주문 1115-2328 — 첫 쪽은 손자병법 판(su-sonja.js)뿐 · 그 「자세히」(moreBox)가 세 줄 칸
+  [2, '새 첫 화면에서 본질 세 줄 칸을 뺌', ({site}) => must(path.join(site, 'su/su-sonja.js'), 'moreBox(S), endSec(T, S)]', 'endSec(T, S)]')],
+  [2, '새 첫 화면 세 줄을 자료로 셈하지 않음', ({site}) => must(path.join(site, 'su/su-sonja.js'), 'essenceLines(essenceData({summary: S}))', "['앞날을 맞혀요']")],
 ];
 for (const [i, [no, name, wreck]] of WRONG.entries()) {
   test(`틀린 판 ${no} — ${name} → 끝 코드 1 · 막은 번호 ${no} 하나`, async () => {

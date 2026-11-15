@@ -5,9 +5,11 @@
    보안 규칙: 글 속 스크립트 없음(이 파일은 같은 주소 파일) · 사이트 밖 주소 없음 */
 (function () {
   var hh = location.hash || '#/', d = document.documentElement, i;
-  var home = !/^#\/(c|i|k|r|p|q|m)\/(.+)$/.test(hh) && !/^#\/(b|k|r|p|q|j|m|f|n|s)$/.test(hh);
+  // 주문 1115-2328 — 옛 틀은 「왜 사?」 · 매매일지만(#/q · #/p · #/q/<번호> · #/j) · 꾀 · 회사 · 정산(#/k · #/k/<꾀> · #/c/<번호> · #/r/t)은 손자병법 판(표지는 첫 쪽에만 — sj-sub) · 나머지(지운 쪽 포함)는 첫 쪽
+  var home = !/^#\/(q|p)(\/[^/]+)?$|^#\/j$/.test(hh), sub = /^#\/k(\/.+)?$|^#\/c\/[0-9A-Z]{6}$|^#\/r\/t$/.test(hh);
   if (home) {
     d.classList.add('sj-on');
+    if (sub) d.classList.add('sj-sub');
     var t = document.querySelectorAll('meta[name="theme-color"]');
     for (i = 0; i < t.length; i++) t[i].setAttribute('content', '#F1E3D3');
   } else {

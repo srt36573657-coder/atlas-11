@@ -177,7 +177,7 @@ export async function vQuiz(code0, X) {
     const nDone = Q.ans.filter(x => x != null).length;
     const big = val((i + 1) + ' / ' + WHY_QS.length, '', '질문 · ' + WHY_GROUPS[gi][0] + ' 묶음', {누가: '내가 고른 답', 언제: '오늘', 어디서: '이 휴대폰', 무엇을: (name ? name + ' · ' : '') + WHY_QS[i], 어떻게: '답 셋 가운데 하나를 골라요', 왜: WHY_WHY[i]},
       {mean: '지금 ' + (i + 1) + '번째 질문이에요. ' + (nDone ? '답한 질문은 ' + nDone + '개예요.' : '답은 아직 0개예요.')});
-    return {title: '왜 사?', tab: 3, step: 6, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · ' + WHY_GROUPS[gi][0] + ' 묶음', h1: WHY_QS[i], big,
+    return {title: '왜 사?', tab: 2, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · ' + WHY_GROUPS[gi][0] + ' 묶음', h1: WHY_QS[i], big,
       pro: [{k: '질문 수', v: WHY_QS.length + '개', how: '네 묶음 · ' + WHY_GROUPS.map(([n, q]) => n + ' ' + q.length).join(' · ')}, {k: '지금 질문', v: (i + 1) + ' / ' + WHY_QS.length, how: WHY_GROUPS[gi][0] + ' 묶음'},
         {k: '답 셋의 점수', v: '● 0 · ▲ 1 · ■ 2', how: '■ 은 빨간 답 · 답 점수는 답마다 이 점수를 더한 값이라 낮을수록 준비됨 · 준비 점수는 ' + WHY_MAX + '에서 답 점수를 뺀 값이라 높을수록 준비됨'},
         {k: '판정 문턱', v: '쉬어 · 반만 · 준비됨', how: JUDGE_HOW},
@@ -189,14 +189,14 @@ export async function vQuiz(code0, X) {
         i > 0 ? btn('su-qback', [h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: '앞 질문'})], () => { Q.i = i - 1; redraw(); }) : null],
       body: [h('p', {class: 'su-qwhy', text: WHY_WHY[i]}),
         ch ? h('div', {class: 'su-reply ' + ch[0], role: 'status'}, h('p', {class: 'su-rk'}, h('i', {'aria-hidden': 'true', text: SHAPE[ch[0]]}), h('b', {text: TONE_W[ch[0]]})), h('p', {class: 'su-rt2', text: ch[2]})) : h('p', {class: 'su-note', text: '답 하나를 눌러요.'})],
-      next: {href: '#/j', label: '내 기록은 몇 번?', step: 7}, asOf, S, note: '답은 이 휴대폰에만 남아요.'};
+      next: {href: '#/j', label: '내 기록은 몇 번?', step: 5}, asOf, S, note: '답은 이 휴대폰에만 남아요.'};
   };
   const result = () => {
     const J = Q.J, v = WHY_V[J.verdict], T = WHY_TYPE[v], rows = groupRowsOf(J.groups);
     const weak = rows.filter(r => r.ready < r.max).sort((a, b) => a.ready / a.max - b.ready / b.max)[0] ?? null;
     const e = eQuizResult({score: J.ready, max: WHY_MAX, verdict: J.verdict, reds: J.reds, type: T[0], day: seoulDay(Date.now()), name});
     const big = J.sell ? Object.freeze({...e.big, mean: WHY_SELL_SAY}) : e.big; // 7번 「안 정함」 — 큰 값 밑 「그래서」 줄(그림 밖에 보이는 설명 두 줄)이 안내 한 줄(주문 1114-1306 ④)
-    return {title: '왜 사? 결과', tab: 3, step: 6, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 결과', h1: J.verdict, big,
+    return {title: '왜 사? 결과', tab: 2, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 결과', h1: J.verdict, big,
       ...pic(WHY_QS.length, WHY_QS.length, petals(tonesNow(), {label: '내 답 꽃잎 열하나와 한 달 뒤', hero: true, arc: '한 달 뒤 · 장 스무 번',
         cap: ['질문 열한 개에 모두 답했어요.', '준비는 ' + WHY_MAX + '점 가운데 ' + J.ready + '점이에요.',
           J.money && J.sell ? '그런데 빌린 돈이나 곧 쓸 돈이고, 팔 곳도 안 정했어요.' : J.money ? '그런데 내 돈 거의 다나 빌린 돈, 곧 쓸 돈이라고 답했어요.' : J.sell ? '그런데 떨어질 때 팔 곳을 안 정했다고 답했어요.'
@@ -215,7 +215,7 @@ export async function vQuiz(code0, X) {
         h('a', {class: 'su-ask', href: '#/j'}, h('b', {text: '내 매매일지 보기'}), h('span', {text: '쌓인 답과 한 달 뒤 약속이 한곳에 있어요.'})),
         btn('su-qback su-again', [h('i', {'aria-hidden': 'true', text: '↺'}), h('span', {text: '다시 하기'})], () => { Q.i = 0; Q.ans.fill(null); Q.J = null; redraw(); })],
       act: [h('a', {class: 'su-ask su-ask1', href: '#/j'}, h('b', {text: '내 매매일지 보기'}))], // 누르는 곳 하나는 그림 바로 아래
-      next: {href: '#/j', label: '내 기록은 몇 번?', step: 7}, asOf, S, note: '답과 기록은 이 휴대폰에만 남아요.'};
+      next: {href: '#/j', label: '내 기록은 몇 번?', step: 5}, asOf, S, note: '답과 기록은 이 휴대폰에만 남아요.'};
   };
   const model = () => (Q.i === 'res' ? result() : ask());
   return model();
@@ -270,7 +270,7 @@ export async function vJournal(X) {
   const kept = full.filter(r => r.kept?.a === 'yes').length, asked = full.filter(r => r.kept?.a === 'yes' || r.kept?.a === 'no').length;
   const avg = {}; for (const [n] of WHY_GROUPS) { const v = full.map(r => r.groups?.[n]).filter(Number.isFinite); avg[n] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }
   const e = eJournal({recs: full, due: dues.length, kept, asked, lastDay: full[0] ? dayOf(full[0]) : null});
-  return {title: '매매일지', tab: 3, step: 7, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
+  return {title: '매매일지', tab: 3, step: 5, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
     ...X.artHero('su-stop-jobs', 'journal', timeline(metas, {label: '내 기록 시간 줄 · 한 달 뒤 동그라미', hero: true, cap: e.say})),
     mids: e.mids,
     figs: full.length ? [tally3([{name: VSHORT.rest, v: vc.rest, cls: 'g-pt-r'}, {name: VSHORT.wait, v: vc.wait, cls: 'g-pt-y'}, {name: VSHORT.go, v: vc.go, cls: 'g-pt-g'}], {label: '판정 셋', title: '판정 · 쉬어 · 반만 · 준비됨'}),
@@ -282,11 +282,11 @@ export async function vJournal(X) {
         h('ol', {class: 'su-jl'}, shown.map((m, i) => recCard(m.r, m.W, laters[i]))),
         h('p', {class: 'su-note', text: '한 달 뒤 값은 맞고 틀림을 가르는 표가 아니에요. 그날 정한 대로 했는지만 봐요.'}),
         full.length > 30 ? h('p', {class: 'su-note', text: '새 기록 서른 줄만 보여요. 나머지 ' + (full.length - 30) + '줄도 지우지 않고 그대로 있어요.'}) : null) : null,
-      full.length ? h('a', {class: 'su-ask', href: '#/r'}, h('b', {text: '꽃 지난 기록과 함께 보기'}), h('span', {text: '한 달 뒤 값을 기록 탭의 꽃 · 시장 기록과 견줘 봐요.'})) : null,
+      full.length ? h('a', {class: 'su-ask', href: '#/r/t'}, h('b', {text: '서른여섯 꾀 정산과 함께 보기'}), h('span', {text: '한 달 뒤 값을 꾀마다 10주씩 산 셈과 견줘 봐요.'})) : null, // 옛 꽃 기록 단추(주문 1115-2328 — 꽃 쪽은 지움)
       can ? null : h('p', {class: 'su-note', text: '이 기기는 기록을 남길 수 없어요.'})],
     pro: [{k: '쌓인 기록', v: full.length + '번', how: '이 휴대폰에만 · 틀린 것도 지우지 않음 · 최근 200줄까지 남고 저장 공간을 비우면 사라짐'}, {k: '판정 · 쉬어 · 반만 · 준비됨', v: vc.rest + ' · ' + vc.wait + ' · ' + vc.go, how: '「왜 사?」 결과 판정을 센 값 · 쉬어 간 날은 싸우지 않고 지킨 날이에요'},
       {k: '한 달 뒤 물은 기록 · 못 한 기록 · 한 기록', v: asked + ' · ' + (asked - kept) + ' · ' + kept, how: '한 달 = 장이 열린 날 스무 번(달력으로 서른 날이 먼저 지나면 그날) · 한 달이 지난 기록에만 물어요 · 지금 물을 기록 ' + dues.length + '번'},
       ...WHY_GROUPS.map(([n]) => ({k: n + ' 묶음 평균', v: Number.isFinite(avg[n]) ? String(Math.round(avg[n] * 10) / 10) : NEED, how: '기록마다 묶음 점수의 평균 · 준비된 만큼'})),
       ...full.slice(0, 30).map(r => ({k: (dayOf(r) ?? NEED) + (r.name ? ' · ' + r.name : ''), v: (readyOfRec(r) ?? NEED) + ' / ' + WHY_MAX + ' · ' + (shownV(r.verdict) ?? NEED), how: '그날 값 ' + (r.price > 0 ? won(r.price) : NEED) + ' · 빨간 답 ' + (Number.isFinite(r.reds) ? r.reds : NEED) + ' · 한 달 뒤 ' + (r.kept ? (r.kept.a === 'yes' ? '정한 대로 함' : '못 함') : '아직')}))],
-    next: {href: '#/f', label: '친구에게 건네기', step: 8}, asOf, S, note: '기록은 이 휴대폰에만 있어요. 이름도 열쇠도 받지 않아요. 친구에게 건넬 때도 내 기록은 보내지 않아요.'};
+    next: {href: '#/', label: '처음으로 · 오늘 형세는?', k: '1 / 5'}, asOf, S, note: '기록은 이 휴대폰에만 있어요. 이름도 열쇠도 받지 않아요.'}; // 길 다섯 화면의 끝(주문 1115-2328 — 옛 「친구에게」 쪽은 지움)
 }

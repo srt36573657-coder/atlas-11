@@ -28,7 +28,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrpqjmfns]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/c\/[0-9A-Z]{6}\/t|#\/c\/[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdykicst]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 가까운 회사 쪽 #/r/n 은 버려 고리 꼴에서 뺌 · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0 // 주문 0054 — 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n · 주문 1112-0044 새 잣대 한 곳 쪽 #/c/<번호>/t
+const LINK_OK = /^(#\/|#\/[kqpj]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -54,17 +54,18 @@ async function lineWant(code) {
 const shapeOf = pts => { const ys = pts.map(q => q[1]), lo = Math.min(...ys), hi = Math.max(...ys); return ys.map(y => (hi - lo > 1e-9 ? (y - lo) / (hi - lo) : 0)); };
 const ptsOf = (s, re) => [...String(s ?? '').matchAll(re)].map(m => [+m[1], +m[2]]);
 const sameShape = (a, b) => a.length === b.length && a.length > 1 && a.every((y, i) => Math.abs(y - b[i]) <= 0.02);
-const B = await J('/next/data/theme-bloom.json'), TH = await J('/next/data/theme.json'), SUM = await J('/next/data/home-summary.json').catch(() => null);
+const SUM = await J('/next/data/home-summary.json').catch(() => null);
 const ESS = essenceLines(essenceData({summary: SUM}));
-const picks0 = (B?.today?.inds ?? []).flatMap(i => (i?.co ?? []).filter(r => /^[0-9A-Z]{6}$/.test(r?.[0] ?? '')).map(r => ({code: r[0], name: r[1]})));
-const near0 = picks0.length ? [] : (B?.near?.today ?? []).filter(r => /^[0-9A-Z]{6}$/.test(r?.[0] ?? '')).map(r => ({code: r[0], name: r[1]}));
-const money0 = (TH?.inds ?? []).filter(i => typeof i?.x === 'number' && i.x > 0 && /^[0-9A-Z]{6}$/.test(i?.lead?.[0] ?? '') && typeof i.lead[1] === 'string').sort((a, b) => b.x - a.x).slice(0, 3).map(i => ({code: i.lead[0], name: i.lead[1], ind: i.n}));
-// 누르면 열리는 회사만(su.js base 와 같은 셈) — 회사 자료가 가벼운 판뿐(c 없음)이면 누르면 「찾지 못했어요」라 화면 목록에서 뺌(2026-11-05 실리콘투 · 41949468910)
-const opensCo = async c => { try { const co = await J('/atlas/data/co/' + c.code + '.json'); return !!co?.c && typeof co.c.name === 'string'; } catch { return false; } };
-const keepOpen = async xs => { const ok = await Promise.all(xs.map(opensCo)); return xs.filter((x, i) => ok[i]); };
-const [picks, near, money] = await Promise.all([keepOpen(picks0), keepOpen(near0), keepOpen(money0)]);
-R.m.dropped = [...picks0, ...near0, ...money0].filter(x => ![...picks, ...near, ...money].some(y => y.code === x.code)).map(x => x.name); // 뺀 회사(결과에 남김)
-R.m.data = {picks: picks.length, near: near.length, money: money.map(x => x.name)};
+// 주문 1115-2328(사장님 2026-11-15(마카오) 22:28 「어고쳐」 — 「다른 쪽들도 병법 서른여섯 가지에 맞게 고칠까요?」의 답) — 길 다섯 화면(오늘 → 꾀 → 회사 → 「왜 사?」 → 내 매매일지)
+//   이 검사가 자료에서 따로 고름: 둘째 화면 꾀 FK = 형세 덜 잃은 차례 맨 위(형세가 없으면 g01) · 셋째 화면 회사 FC = 그 꾀가 고른 첫 곳(없으면 「왜 사?」로 바로)
+const T0 = await J('/su/data/su21.json').catch(() => null), G0 = await J('/su/data/su21-s36.json').catch(() => null);
+const K36A = Array.from({length: 36}, (_, i) => 'g' + String(i + 1).padStart(2, '0'));
+const sun0 = T0?.sun?.rule === 'sun-v1' && Array.isArray(T0.sun.rank) && T0.sun.rank.length === 36 && new Set(T0.sun.rank.map(r => r?.k)).size === 36 && T0.sun.rank.every(r => K36A.includes(r.k) && Number.isInteger(r.n)) && ['fall', 'shake', 'rise', 'narrow', 'calm'].includes(T0.sun.land) && Number.isInteger(T0.sun.m?.n) && T0.sun.m.n > 0;
+const FK = sun0 ? T0.sun.rank[0].k : 'g01';
+const FC = (Array.isArray(G0?.lists?.[FK]) ? G0.lists[FK] : []).find(c => /^[0-9A-Z]{6}$/.test(c?.code ?? '') && typeof c.name === 'string') ?? null;
+// 지운 쪽(주문 1115-2328) — 옛 고리로 오면 첫 쪽 · 주소 #/
+const GONE = ['#/b', '#/m', '#/m/fall', '#/n', '#/s', '#/f', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/k', '#/r/i', '#/r/c', '#/r/s', '#/r/n', '#/r/005930', '#/i/' + encodeURIComponent('반도체'), '#/c/005930/more', '#/c/005930/t', '#/c/005930/y/hot', '#/g', '#/g/hot'];
+R.m.data = {fk: FK, fc: FC?.name ?? null, sun: sun0};
 
 const browser = await chromium.launch(process.env.PW_EXE ? {executablePath: process.env.PW_EXE} : {});
 const URL_OF = hash => `${base}/su/?v=${Date.now()}${hash}`;
@@ -129,82 +130,37 @@ for (const width of [390, 360, 320]) {
       check(want.test(u.pathname) && (want.source.includes('su') || u.hash === hh || hh === '#/'), W + '고리 이어짐 ' + (q + hh || '(빈)'), u.pathname + u.search + u.hash);
     }
   }
-  { // 주문 2044 — 처음 쪽 21곳 한눈에(셋 × 일곱 · 이름 = su21.json · 겹친 곳 ✦ · 누르면 그 회사)
+  { // 주문 1115-1843 · 1115-2328 — 처음 쪽 = 병법 서른여섯만 · 옛 21곳 · 불장 · 꽃이 될 · 돈이 몰리는 칸과 그 말 0
     const T21 = await J('/su/data/su21.json');
-    // 주문 1023 [6] 2 · 3 — 21곳은 무하의 세 여인 그림 안 이름표(목록 data-k · 이름 data-name · 겹친 곳 ✦ = aria-label 「두 목록에 함께」)
     // 주문 1115-1843(사장님 2026-11-15(마카오) 17:43 「… 기존애 돈모리는곳 불장 꽃은 다 삭제 하고 병법 36가지 만 표현 되개 해야 한다」 · 17:46 「응」)
     //   처음 쪽 = 손자병법 판(표지 → 형세 보고 → 꾀 차례) · 불장 · 꽃이 될 · 돈이 몰리는(지금 · 될 듯) · 조용한 힘 · 1 · 2 · 3등 · 이름이 오른 회사 · 칸 읽는 법 · 두 단추 · 겹친 곳 = 0 · 그 말도 0(꾀 이름 · 풀이 글 밖)
     const g0 = await p.evaluate(() => { const M = document.querySelector('#su main.sj-page'); if (!M) return null; const c = M.cloneNode(true); for (const e of c.querySelectorAll('section.sj-s36')) e.remove();
       return {parts: M.querySelectorAll('a.sj-row, a.sj-up3a, section.sj-grp, section.sj-quiet, section.sj-count, section.sj-up3, section.sj-how, nav.sj-mode, .sj-ov').length, words: (c.textContent.match(/불장|꽃이 될|돈이 몰리|돈이 몰릴|조용한데 힘이|될 듯/g) ?? []), art: document.querySelector('#su .sj-cover .sj-hwa')?.textContent ?? ''}; });
-    check(!!g0 && g0.parts === 0 && g0.words.length === 0 && g0.art === '형세를 읽고덜 잃는꾀를 찾아요', W + '처음 쪽 = 병법 서른여섯만 — 불장 · 꽃이 될 · 돈이 몰리는(지금 · 될 듯) · 조용한 힘 · 1 · 2 · 3등 칸 0 · 그 말 0 · 표지 화제 「형세를 읽고 · 덜 잃는 꾀를 찾아요」(주문 1115-1843)', JSON.stringify(g0).slice(0, 300));
-    check(await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="sonja"]'), k = m ? [...m.children] : []; return !!m && !!k[0]?.classList.contains('sj-cover') && !!k[1]?.classList.contains('sj-sun') && !document.querySelector('#su main > .su-hero'); }), W + '처음 쪽 = 손자병법 판(주문 1115-1706 — 빈 파일에서 새로 씀 · 맨 위 표지 → 형세 보고 · 옛 그림 칸 0)', '');
-    R.m.t21 = {listed: T21.counts.listed, b365: T21.counts.b365, n: 0, overlap: (T21.overlap ?? []).length, distinct: T21.distinct};
-    { // 주문 1103(사장님 2026-11-08 11:03 · 11:08 「응」) — 될 듯 21곳 #/n · 같은 세 여인 · 불장이 될 듯 · 꽃이 될 듯 · 돈이 몰릴 듯 일곱씩 · 지난 1년 기록 · 누르면 그 회사의 까닭
-      await open(p, '#/n');
-      const mN = await measure(p); pageRules(mN, W + '될 듯 21곳');
-      const gN = await p.evaluate(() => ['hot', 'bloom', 'money'].map(k => [...document.querySelectorAll(`#su main > .su-hero a[data-k="${k}"]`)].map(a => ({href: a.getAttribute('href'), name: a.getAttribute('data-name') ?? ''}))));
-      const wantN = ['hotNext', 'bloomNext', 'moneyNext'].map(k => (T21.lists[k] ?? []).map(c => c.name));
-      check(JSON.stringify(gN.map(c => c.map(x => x.name))) === JSON.stringify(wantN) && gN.every(c => (T21.strict ? c.length <= 7 : c.length === 7)), W + '될 듯 21곳 = su21.json(될 듯 셋 일곱씩)', JSON.stringify(gN.map(c => c.length)));
-      check(await p.evaluate(() => document.querySelector('#su main > .su-hero svg[data-mode]')?.getAttribute('data-mode') === 'next'), W + '될 듯 21곳 그림 = 될 듯 판', '');
-      check(['hotNext', 'bloomNext', 'moneyNext'].every(k => Number.isFinite(T21.past?.[k]?.per100) && Number.isFinite(T21.past?.[k]?.base100)), W + '될 듯 셋 지난 1년 기록(100번에 몇 번 · 아무 회사)', JSON.stringify(T21.past ?? null).slice(0, 120));
-      check(await p.evaluate(() => [...document.querySelectorAll('#su .su-mode a')].map(a => a.getAttribute('href')).join(' ') === '#/ #/n'), W + '지금 · 될 듯 두 칸 단추', '');
-      for (const r of gN.map(c => c[0]).filter(Boolean)) {
-        await open(p, '#/n'); await p.click(`#su main > .su-hero a[href="${r.href}"]`); await settle(p, r.name);
-        const m1 = await measure(p);
-        check(p.url().endsWith(r.href) && m1.h1.startsWith(r.name + ', 왜 ') && /듯/.test(m1.h1), W + '될 듯 21곳 누르면 그 회사의 「왜?」 쪽 — ' + r.name, `${p.url().split('#')[1]} · ${m1.h1}`);
-        check(await p.evaluate(() => document.querySelectorAll('#su .yw-part .yw-li').length === 36), W + '될 듯 21곳에서 누른 회사 — 서른여섯 가지 — ' + r.name, '');
-      }
-    }
-    await open(p, '#/b'); await more(p); // 옛 처음(꽃 · 돈 줄)은 #/b 에 그대로 — 아래 검사는 그 쪽에서(줄은 「자세히」 안)
+    check(!!g0 && g0.parts === 0 && g0.words.length === 0 && g0.art === '형세를 읽고덜 잃는꾀를 찾아요', W + '처음 쪽 = 병법 서른여섯만 — 불장 · 꽃이 될 · 돈이 몰리는(지금 · 될 듯) · 조용한 힘 · 1 · 2 · 3등 칸 0 · 그 말 0 · 표지 화제 「형세를 읽고 · 덜 잃는 꾀를 찾아요」(주문 1115-1843)', JSON.stringify(g0));
+    check(await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="sonja"]'), k = m ? [...m.children] : []; return !!m && !!k[0]?.classList.contains('sj-cover') && !!k[1]?.classList.contains('sj-sun') && !document.querySelector('#su main > .su-hero'); }), W + '처음 쪽 = 손자병법 판(주문 1115-1706 — 표지 → 형세 보고 · 옛 그림 칸 0)', '');
+    R.m.t21 = {listed: T21?.counts?.listed ?? null, board: T21?.asOf?.board ?? null};
   }
-  const rows = await p.evaluate(() => [...document.querySelectorAll('#su section[aria-label] a.su-row')].map(a => ({sec: a.closest('section').getAttribute('aria-label'), href: a.getAttribute('href'), name: a.querySelector('[data-proper]')?.textContent ?? '', chip: a.querySelector('.su-chip')?.textContent ?? ''})));
-  const bl = rows.filter(r => r.sec === '꽃이 될 회사'), mo = rows.filter(r => r.sec === '돈이 몰린 회사');
-  const want = picks.length ? picks : near;
-  check(JSON.stringify(bl.map(r => r.name)) === JSON.stringify(want.map(r => r.name)), W + '꽃이 될 회사 줄 = 자료', `${bl.map(r => r.name)} / ${want.map(r => r.name)}`);
-  check(bl.every(r => r.href === '#/c/' + want.find(x => x.name === r.name)?.code), W + '꽃이 될 회사 줄 → 그 회사 번호', bl.map(r => r.href).join(' '));
-  if (near.length) { check(bl.every(r => r.chip === '가까운 곳'), W + '가까운 회사 줄마다 「가까운 곳」', bl.map(r => r.chip).join(',')); check((await p.evaluate(() => document.body.innerText)).includes('고른 회사가 아니에요'), W + '고른 회사가 아니라는 말(#/b)', ''); }
-  check(JSON.stringify(mo.map(r => r.name)) === JSON.stringify(money.map(r => r.name)), W + '돈이 몰린 회사 줄 = 한 달 앞선 업종 셋의 대장', `${mo.map(r => r.name)} / ${money.map(r => r.name)}`);
-  // ① 누르면 그것이 나옴 — 줄마다(390 에서만 모두 · 다른 폭은 첫 줄씩)
-  const tap = width === 390 ? rows : [bl[0], mo[0]].filter(Boolean);
-  for (const r of tap) {
-    await open(p, '#/b'); await more(p);
-    await p.click(`#su a.su-row[href="${r.href}"]`);
-    await settle(p, r.name);
-    const m1 = await measure(p);
-    check(p.url().endsWith(r.href) && m1.h1 === r.name, W + '누르면 그 회사 — ' + r.name, `${p.url().split('#')[1]} · ${m1.h1}`);
-    pageRules(m1, W + '회사 ' + r.name);
-    await more(p); const kind = await p.evaluate(() => document.body.innerText); // 「왜 여기 있나」 글은 「자세히」 안
-    if (near.some(x => x.name === r.name)) check(kind.includes('조건에 가장 가까운 회사예요') && kind.includes('맞은 조건') && kind.includes('안 맞은 조건'), W + '왜 여기 있나 — 가까운 회사 ' + r.name, '');
-    if (picks.some(x => x.name === r.name)) check(kind.includes('꽃이 될 회사예요'), W + '왜 여기 있나 — 고른 회사 ' + r.name, '');
-    if (money.some(x => x.name === r.name)) check(kind.includes('돈이 몰린 회사예요'), W + '왜 여기 있나 — 돈이 몰린 회사 ' + r.name, '');
-    if (width === 390) { // 그림 글 = 회사 자료(co.line 마지막 · 기준 100)
-      const code = r.href.slice(4), lw = await lineWant(code), co = await J('/atlas/data/co/' + code + '.json').catch(() => null), last = lw ? lw.last : co?.line?.length ? co.line[co.line.length - 1] / 100 - 100 : NaN; // 자료가 없으면 멈추지 않고 아래 맞댐이 실패로 적음 · 42칸 회사는 판 값(주문 0806)
-      const wantW = won100Of(last); // 주문 1114-1306 — 끝값 이름표는 「100원이 ○원」(한 달 전 = 100 · 화면 코드를 쓰지 않고 따로 셈)
-      const got = await p.evaluate(() => document.querySelector('#su main > .su-hero .su-lg-c .v')?.textContent ?? document.querySelector('.su-lg-c b')?.textContent ?? ''); // 주문 1023 — 무하 아치 창 그림의 끝값 이름표
-      check(got === wantW && !got.includes('%'), W + '그림 한 달 「100원이 ○원」 = 회사 자료 — ' + r.name, `${got} / ${wantW}`);
-      check(await p.evaluate(() => document.querySelectorAll('svg.su-svg polyline').length >= 1), W + '한 달 그림 — ' + r.name, '');
+  // 주문 1115-2328(사장님 22:28 「어고쳐」) — 사이트 모든 쪽 = 병법 서른여섯만: 지운 쪽은 옛 고리로 와도 첫 쪽(주소도 #/) · 옛 회사 고리 #/k/<번호> 는 그 회사 쪽
+  if (width === 390) {
+    const bad = [];
+    for (const hh of GONE) {
+      await open(p, hh); await p.waitForTimeout(150);
+      const g = await p.evaluate(() => ({hash: location.hash, page: document.querySelector('#su main')?.getAttribute('data-page') ?? '', h1: (document.querySelector('#su h1')?.innerText ?? '').replace(/\s+/g, ' ').trim(),
+        old: document.querySelectorAll('#su .su-hero, #su .su-fcard, #su [data-feat], #su [data-road], #su .su-drawer').length, text: document.getElementById('su')?.innerText ?? ''}));
+      if (!(g.hash === '#/' && g.page === 'sonja' && g.h1 === m0.h1 && g.old === 0 && !/불장|꽃이 될|돈이 몰|조용한데 힘이/.test(g.text))) bad.push(hh + ' → ' + g.hash + ' ' + g.page + ' ' + g.h1.slice(0, 12));
     }
+    check(!bad.length, W + '⑨ 지운 쪽 ' + GONE.length + '곳(옛 처음 · 땅 지도 · 될 듯 21곳 · 조용한 힘 · 친구에게 · 기록 · 달마다 · 못 된 까닭 · 날마다 · 해마다 · 한국 시장 · 투자자 · 달력 · 업종 · 회사 자세히 · 1 · 2 · 3등 · 「왜?」 · 옛 기능) — 옛 고리로 오면 첫 쪽 · 주소 #/ · 옛 칸 · 그 말 0(주문 1115-2328)', bad.slice(0, 4).join(' / '));
+    if (FC) { await open(p, '#/k/' + FC.code); const g = await p.evaluate(() => ({hash: location.hash, page: document.querySelector('#su main')?.getAttribute('data-page') ?? ''}));
+      check(g.hash === '#/c/' + FC.code && g.page === 'co', W + '⑨ 옛 회사 고리 #/k/<번호> → 그 회사 쪽(주문 1115-2328)', JSON.stringify(g)); }
   }
-  // 회사 → 업종 → 회사
-  const first = (mo[0] ?? bl[0]);
-  if (first) {
-    await open(p, first.href); await more(p);
-    const ind = await p.evaluate(() => ({href: document.querySelector('#su a.su-ind')?.getAttribute('href') ?? '', name: document.querySelector('#su a.su-ind span')?.textContent ?? ''}));
-    check(/^#\/i\//.test(ind.href), W + '회사 쪽 업종 단추', ind.href);
-    if (ind.href) {
-      await p.click('#su a.su-ind'); await settle(p, ind.name);
-      const m2 = await measure(p);
-      check(m2.h1 === ind.name, W + '누르면 그 업종 — ' + ind.name, m2.h1);
-      pageRules(m2, W + '업종 ' + ind.name);
-      const c1 = await p.evaluate(() => { const a = document.querySelector('#su a.su-row'); return a ? {href: a.getAttribute('href'), name: a.querySelector('[data-proper]')?.textContent ?? ''} : null; });
-      check(!!c1, W + '업종 쪽 회사 줄', '');
-      if (c1) { await more(p); await p.click(`#su a.su-row[href="${c1.href}"]`); await settle(p, c1.name); const m3 = await measure(p); check(m3.h1 === c1.name, W + '업종 → 그 회사 — ' + c1.name, m3.h1); }
-    }
+  { // 주문 1115-2328 — 새 쪽마다 쪽 규칙(넘침 0 · 글 17px · 누름 48 · 고리 꼴 · 안전 문장 · 쓰지 않을 말 0)
+    for (const hh of ['#/k', '#/k/' + FK, ...(FC ? ['#/c/' + FC.code] : []), '#/r/t']) { await open(p, hh); pageRules(await measure(p), W + '손자병법 판 ' + hh); }
   }
   if (width === 390) { // 「왜 사?」 답하기(주문 1506) — 열한 질문을 하나씩 답하면 결과 판정 · 매매일지에 같은 열쇠 · 같은 꼴로 한 줄 · 질문 쪽과 결과 쪽도 쪽 규칙 그대로
     // 주문 1114-1306 ④ · ① — 판정은 이 검사가 누른 답(모양 ● 0 · ▲ 1 · ■ 2 · 답 글)으로 따로 셈 · 「떨어지면? → 안 정함」은 바로 쉬어 + 큰 값 밑 「그래서」 줄에 안내 한 줄 · 판정 이름 셋에 「좋아」 없음
     //   · 옛 기록(판정 글 「좋아, 정해 둔 대로만」 둘 — 한 달 지나 「했어」 · 아직 안 물음)도 매매일지에 새 이름 · 한 달 뒤 값 셋 = 「100원이 ○원」(이 검사가 자료에서 따로 셈) · 판정 칸 차례 쉬어 → 반만 → 준비됨 · 칸마다 센 수
-    const qc = (bl[0] ?? mo[0])?.href?.slice(4) ?? null, qn = (bl[0] ?? mo[0])?.name ?? null, KEYW = 'atlas:godori-why';
+    // 주문 1115-2328 — 「왜 사?」를 여는 회사 = 길의 셋째 화면 회사(첫 꾀가 고른 첫 곳 · 옛 꽃 · 돈 줄은 지움)
+    const qc = FC?.code ?? null, qn = FC?.name ?? null, KEYW = 'atlas:godori-why';
     const WV = ['준비됐어, 정해 둔 대로만', '반만 준비됐어', '오늘은 쉬어 가자'], WV_OLD = '좋아, 정해 둔 대로만', SELL_SAY = '팔 곳을 정하기 전에는 사지 않아요.', NEEDT = '확인 필요';
     const WREST = [[3, '거의 다·빌린 돈'], [6, '안 정함'], [8, '곧']]; // 쉬어 가는 답(질문 자리 · 답 글 — 4번 · 7번 · 9번)
     const wantV = got => { const pt = got.map(a => ({'●': 0, '▲': 1, '■': 2})[a.shape] ?? NaN), sc = pt.reduce((a, b) => a + b, 0), reds = pt.filter(x => x === 2).length, stop = WREST.some(([q, t]) => got[q]?.label === t);
@@ -267,20 +223,23 @@ for (const width of [390, 360, 320]) {
     pageRules(jm, W + '매매일지');
     await p.evaluate(([k, ats]) => { try { const x = JSON.parse(localStorage.getItem(k) || '[]'); localStorage.setItem(k, JSON.stringify(x.filter(r => !ats.includes(r?.at)))); } catch { /* 그대로 */ } }, [KEYW, seeds.map(r => r.at)]); // 옛 기록 시험 줄은 뒤 검사(⑨) 앞에 뺌
   }
-  if (width === 390) { // ⑨ 주문 1616 — 일곱 번 · 탭 · 쪽 차례 · 그림 · 여섯 칸 · 기록 서랍
-    /** 손자병법 첫 쪽(주문 1115-1706 · 샘플 사 「화제와 도장」 기준) — 옛 신문 짜임(큰 값 → 큰 그림 70% → 설명 두 줄) 대신 새 판의 차례 · 걸음 · 탭 · 끝 줄 · 서랍 · 도장을 잼 */
+  if (width === 390) { // ⑨ 주문 1115-2328 — 길 다섯 화면(오늘 → 꾀 → 회사 → 「왜 사?」 → 내 매매일지) · 다음 단추 네 번에 끝 · 탭 다섯 · 쪽 차례 · 끝 줄
+    /** 손자병법 판(첫 쪽 · 꾀 · 회사 — 주문 1115-1706 샘플 사 「화제와 도장」) — 차례 · 걸음 · 탭 · 끝 줄 · 서랍 · 도장 · 빨강 0 · 옛 꾸밈 0 */
     const shapeSj = () => p.evaluate(() => {
       const main = document.querySelector('#su main.sj-page'); if (!main) return null;
-      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|count|up3|how|grp|quiet|mode|more|end)$/.test(c)) ?? e.className);
-      const want = ['sj-cover', 'sj-sun', 'sj-s36', 'sj-more', 'sj-end']; // 주문 1115-1843 — 병법 서른여섯만(꾀 칸은 그날 꾀 자료가 있을 때)
-      const order = kids.every(k => want.includes(k)) && kids.map(k => want.indexOf(k)).every((v, i, a) => !i || v > a[i - 1]) && ['sj-cover', 'sj-sun', 'sj-more', 'sj-end'].every(k => kids.includes(k));
+      const page = main.getAttribute('data-page') ?? '';
+      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|costop)$/.test(c)) ?? e.className);
+      const want = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-s36', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kst', 'sj-kpn', 'sj-end'] : page === 'co' ? ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'] : [];
+      const must = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kpn', 'sj-end'] : ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'];
+      const order = kids.every(k => want.includes(k)) && kids.map(k => want.indexOf(k)).every((v, i, a) => !i || v > a[i - 1]) && must.every(k => kids.includes(k));
       const last = main.lastElementChild, more = main.querySelector(':scope > details.sj-more');
       const step = document.querySelector('#su .sj-step'), art = document.querySelector('#su .sj-cover img.sj-art');
-      // 한눈 판별(주문 1115-1843) — 꾀 회사 단추마다 한 달 표(내림 · 오름 · 같음) = 그 단추의 한 달 방향 · 형세 도장(내리는 땅 = 짙은 남빛 찬 도장 + 흰 글)
+      // 한눈 판별(주문 1115-1843) — 꾀 회사 단추마다 한 달 표(내림 · 오름 · 같음) = 그 단추의 한 달 방향 · 내리는 땅 도장(내림) = 짙은 남빛 찬 도장 + 흰 글
       const seals = [...main.querySelectorAll('a.sj-chip')].map(a => { const e = a.querySelector('i.sj-chipm'); return {m: /sj-chipm-(dn|up|eq)/.exec(e?.className ?? '')?.[1] ?? 'na', row: a.getAttribute('data-mon'), t: e?.textContent ?? ''}; });
-      const sunSeal = (() => { const e = main.querySelector('section.sj-sun .sj-seal-big'); return e ? {dn: e.classList.contains('sj-seal-dn'), bg: getComputedStyle(e).backgroundColor, c: getComputedStyle(e).color, t: e.textContent} : null; })();
-      return {sonja: true, h1: (document.querySelector('#su h1')?.innerText ?? '').replace(/\s+/g, ' ').trim(), order, kids,
-        step: step?.innerText.replace(/\s+/g, ' ').trim() ?? '', stepL: step?.getAttribute('aria-label') ?? '', next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null,
+      const sunSeal = (() => { const e = main.querySelector('section.sj-sun .sj-seal-big, section.sj-ph .sj-seal-big'); return e ? {dn: e.classList.contains('sj-seal-dn'), bg: getComputedStyle(e).backgroundColor, c: getComputedStyle(e).color, t: e.textContent} : null; })();
+      return {sonja: true, page, h1: (document.querySelector('#su h1')?.innerText ?? '').replace(/\s+/g, ' ').trim(), order, kids,
+        step: step?.innerText.replace(/\s+/g, ' ').trim() ?? '', stepL: step?.getAttribute('aria-label') ?? '', next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null, nextK: document.querySelector('#su .sj-next .sj-nk')?.textContent ?? '',
+        prog: [...document.querySelectorAll('#su .sj-prog li')].map(li => li.className), progL: document.querySelector('#su .sj-prog')?.getAttribute('aria-label') ?? '',
         lastIsSrc: !!last?.classList?.contains('sj-end') && /출처/.test(last.innerText) && /조사 날짜/.test(last.innerText),
         foot: [...main.querySelectorAll(':scope > .sj-end .sj-links a')].map(a => [a.getAttribute('href'), a.querySelector('span')?.textContent ?? '']),
         tabs: [...document.querySelectorAll('#su .sj-tabs a')].map(a => ({t: a.innerText.trim(), cur: a.getAttribute('aria-current') === 'page'})), tabsL: document.querySelector('#su .sj-tabs')?.getAttribute('aria-label') ?? '',
@@ -329,85 +288,66 @@ for (const width of [390, 360, 320]) {
         figs: figs.length, moving, tiles, vals: vals.length, valsSix, tabs: [...document.querySelectorAll('#su .su-tabs a')].map(a => ({t: a.innerText.trim(), cur: a.getAttribute('aria-current') === 'page'})), tabsL: document.querySelector('#su .su-tabs')?.getAttribute('aria-label') ?? '',
         foot: [...document.querySelectorAll('#su main > .su-src .su-srcl a')].map(a => [a.getAttribute('href'), a.querySelector('span')?.textContent ?? ''])};
     });
-    const STEP8 = ['오늘', '땅 지도', '업종', '회사', '회사 자세히', '「왜 사?」', '내 매매일지', '친구에게']; // 여덟 화면 이름(화면 코드 STEPS 를 쓰지 않고 따로 적음 · 첫 쪽 「오늘」 — 주문 1114-1306 ⑤)
+    const STEP5 = ['오늘', '꾀', '회사', '「왜 사?」', '내 매매일지']; // 다섯 화면 이름(화면 코드 STEP5 를 쓰지 않고 따로 적음 · 주문 1115-2328)
+    const TAB5 = '오늘 꾀 멈춤 일지 정산', TAB5L = '탭 — 오늘 · 꾀 · 멈춤 · 일지 · 정산', PAGE3 = ['sonja', 'kkoe', 'co'], CUR3 = [0, 1, -1]; // 회사 쪽은 탭 밖(켜진 탭 0)
+    const FOOTW = JSON.stringify([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]);
     await open(p, '#/');
     const seen = [];
-    for (let k = 0; k <= 7; k++) {
+    for (let k = 0; k <= 4; k++) {
       await p.waitForTimeout(150);
-      const sj = k === 0 ? await shapeSj() : null;
-      if (k === 0) { // 손자병법 첫 쪽(주문 1115-1706) — 새 판 잣대(걸음 · 차례 · 끝 줄 · 탭 · 서랍 · 도장 · 빨강 0 · 옛 꾸밈 0)
-        check(!!sj, W + '⑨ 첫 쪽 = 손자병법 판(main.sj-page · 주문 1115-1706)', '');
+      if (k <= 2) { // 손자병법 판 세 화면(오늘 · 꾀 · 회사)
+        const sj = await shapeSj();
+        check(!!sj && sj.page === PAGE3[k], W + '⑨ ' + (k + 1) + '번째 화면 = 손자병법 판 ' + PAGE3[k] + '(main.sj-page · 주문 1115-1706 · 1115-2328)', JSON.stringify(sj?.page ?? null));
         if (!sj) break;
         seen.push(sj);
-        check(sj.step.includes('1 / 8') && sj.stepL === '1 / 8 · ' + STEP8[0], W + '⑨ 걸음 표시 1 / 8 · 읽어 주기 「1 / 8 · 오늘」 — ' + sj.h1, sj.step + ' · ' + sj.stepL);
-        check(sj.order, W + '⑨ 첫 쪽 차례 — 표지 → 형세 보고 → 덜 잃은 꾀 차례 → 자세히 → 끝 줄(병법 서른여섯만 — 주문 1115-1843)', sj.kids.join(' '));
-        check(sj.lastIsSrc && JSON.stringify(sj.foot) === JSON.stringify([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]), W + '⑨ 맨 아래 출처 · 조사 날짜 · 꼭 있어야 할 길 둘 — ' + sj.h1, JSON.stringify(sj.foot));
-        check(sj.tabs.length === 6 && sj.tabs.map(t => t.t).join(' ') === '오늘 지도 멈춤 기록 달력 정산' && sj.tabs.filter(t => t.cur).length === 1 && sj.tabs[0].cur && sj.tabsL === '탭 — 오늘 · 지도 · 멈춤 · 기록 · 달력 · 정산', W + '⑨ 탭 여섯 차례 그대로 · 첫 탭 「오늘」이 켜짐 — ' + sj.h1, JSON.stringify({tabs: sj.tabs, label: sj.tabsL}));
-        check(sj.moreShut && sj.ess === 3, W + '⑩ 「자세히」는 눌러야 열림 · 그 안 본질 세 줄 — ' + sj.h1, JSON.stringify({shut: sj.moreShut, ess: sj.ess}));
-        check(sj.art && sj.old === 0, W + '⑪ 표지 붓 글씨 그림이 열림 · 옛 꾸밈(그림 칸 · 무하 장식 · 옛 머리 · 탭 · 막대) 0 — 주문 1115-1706 「기존에 있던것 단 한나도 디자임 사용하지말고」', JSON.stringify({art: sj.art, old: sj.old}));
-        check(sj.sealsOk, W + '⑪ 한눈 판별 — 꾀 회사 단추의 한 달 표(내림 · 오름 · 같음) = 그 회사 한 달 방향 · 내리는 땅 도장 = 짙은 남빛 찬 도장 + 흰 글(샘플 사 · 주문 1115-1843)', sj.seals.length + ' · ' + JSON.stringify({bad: sj.seals.filter(x => !(x.m === x.row)).slice(0, 2), sun: sj.sunSeal}));
-        check(sj.red === 0, W + '⑪ 빨강 글 0(한국에서 빨강은 오름 — 내림을 빨강으로 읽지 않게)', String(sj.red));
+        check(sj.step.includes((k + 1) + ' / 5') && sj.stepL === (k + 1) + ' / 5 · ' + STEP5[k], W + '⑨ 걸음 표시 ' + (k + 1) + ' / 5 · 읽어 주기 「' + (k + 1) + ' / 5 · ' + STEP5[k] + '」 — ' + sj.h1, sj.step + ' · ' + sj.stepL);
+        check(sj.prog.length === 5 && sj.prog.every((c, i) => c === (i === k ? 'sj-pcur' : i < k ? 'sj-pdone' : '')) && sj.progL === '다섯 화면 가운데 ' + (k + 1) + '번째', W + '⑨ 이야기 막대 점 다섯 · 지금 화면 ' + (k + 1) + ' — ' + sj.h1, JSON.stringify([sj.prog, sj.progL]));
+        check(sj.order, W + '⑨ 쪽 차례 — ' + (k === 0 ? '표지 → 형세 보고 → 덜 잃은 꾀 차례 → 자세히 → 끝 줄' : k === 1 ? '머리 → 고르는 법 → 같은 땅 기록 → 오늘 닮은 곳 → 정산 → 앞뒤 꾀 → 끝 줄' : '머리 · 한 달 꺾은선 → 고른 꾀 → 사기 전에 멈춤 → 끝 줄') + ' — ' + sj.h1, sj.kids.join(' '));
+        check(sj.lastIsSrc && JSON.stringify(sj.foot) === FOOTW, W + '⑨ 맨 아래 출처 · 조사 날짜 · 꼭 있어야 할 길 둘 — ' + sj.h1, JSON.stringify(sj.foot));
+        check(sj.tabs.length === 5 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
+          W + '⑨ 탭 다섯 오늘 · 꾀 · 멈춤 · 일지 · 정산(주문 1115-2328 — 옛 지도 · 기록 · 달력 지움) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
+        if (k === 0) { check(sj.moreShut && sj.ess === 3, W + '⑩ 「자세히」는 눌러야 열림 · 그 안 본질 세 줄 — ' + sj.h1, JSON.stringify({shut: sj.moreShut, ess: sj.ess})); check(sj.art, W + '⑪ 표지 붓 글씨 그림이 열림', ''); }
+        check(sj.old === 0, W + '⑪ 옛 꾸밈(그림 칸 · 무하 장식 · 옛 머리 · 탭 · 막대) 0 — 주문 1115-1706 「기존에 있던것 단 한나도 디자임 사용하지말고」 — ' + sj.h1, String(sj.old));
+        check(sj.sealsOk, W + '⑪ 한눈 판별 — 회사 단추의 한 달 표(내림 · 오름 · 같음) = 그 회사 한 달 방향 · 내림 도장 = 짙은 남빛 찬 도장 + 흰 글(샘플 사) — ' + sj.h1, sj.seals.length + ' · ' + JSON.stringify(sj.sunSeal));
+        check(sj.red === 0, W + '⑪ 빨강 글 0(한국에서 빨강은 오름 — 내림을 빨강으로 읽지 않게) — ' + sj.h1, String(sj.red));
         check(Number.isFinite(sj.hard), W + '⑩ 어려운 낱말 셈 — ' + sj.h1, String(sj.hard) + ' ' + sj.hardWords);
-        check(sj.next === '#/m', W + '⑨ 다음 단추 = 땅 지도(2 / 8)', String(sj.next));
-        pageRules(await measure(p), W + '⑨ 1번째 화면 ' + sj.h1);
-        const a = await p.$('#su .sj-next'); if (!a) { check(false, W + '⑨ 다음 단추 — ' + sj.h1, ''); break; } await a.click(); await settle(p); await p.waitForTimeout(300);
+        const nxW = k === 0 ? ['#/k/' + FK, '2 / 5'] : k === 1 ? (FC ? ['#/c/' + FC.code, '3 / 5'] : ['#/q', '4 / 5']) : [FC ? '#/q/' + FC.code : '#/q', '4 / 5'];
+        check(sj.next === nxW[0] && sj.nextK === nxW[1], W + '⑨ 다음 단추 = ' + nxW[1] + ' ' + nxW[0] + ' — ' + sj.h1, JSON.stringify([sj.next, sj.nextK]));
+        pageRules(await measure(p), W + '⑨ ' + (k + 1) + '번째 화면 ' + sj.h1);
+        const a = await p.$('#su .sj-next'); if (!a) { check(false, W + '⑨ 다음 단추 — ' + sj.h1, ''); break; } await a.click(); await settle(p); await p.waitForTimeout(400);
         continue;
       }
-      const m = await shape(); seen.push(m);
-      check(m.step.includes((k + 1) + ' / 8'), W + '⑨ 걸음 표시 ' + (k + 1) + ' / 8 — ' + m.h1, m.step);
-      check(m.stepL === (k + 1) + ' / 8 · ' + STEP8[k], W + '⑨ 걸음 이름(읽어 주기) ' + (k + 1) + ' / 8 · ' + STEP8[k] + ' — 첫 쪽은 「오늘」(주문 1114-1306 ⑤ · 칸 수를 회사 수처럼 부르지 않게)', m.stepL);
-      check(m.order, W + '⑨ 신문 짜임 — 큰 값 한 줄 → 큰 그림 → 설명 두 줄 → 「자세히」(닫힘 · 중간 값은 그 안) → 출처 — ' + m.h1, ''); // 주문 1023 [목표]
-      check(m.heroShare >= 70, W + '⑪ 움직이는 그림이 화면의 70% 넘게(390 × 844 · 머리 줄 아래 · 다음 단추 위로 자름) — ' + m.h1, m.heroShare + '%'); // 주문 1023 [1] 1
-      check(m.outside.every(o => o.box !== 'other') && m.twoN <= 2, W + '⑪ 그림 밖 글은 큰 값 · 설명 두 줄 · 출처뿐 — ' + m.h1, JSON.stringify(m.outside.filter(o => o.box === 'other')).slice(0, 200) + ' · 설명 ' + m.twoN + '줄'); // [1] 2
-      check(m.labels >= 3, W + '⑪ 이름과 숫자는 그림 안 이름표 — ' + m.h1, '이름표 ' + m.labels); // [1] 3
-      check(m.mucha.length >= 5 || m.clean, W + '⑪ 무하 요소 다섯 가지 넘게(잡스 판 첫 페이지는 덜어냄 — 주문 1532) — ' + m.h1, m.mucha.join(' ')); // [1] 4
+      const m = await shape(); seen.push(m); // 「왜 사?」 · 매매일지 = 옛 틀 그대로(신문 짜임 잣대)
+      check(m.step.includes((k + 1) + ' / 5'), W + '⑨ 걸음 표시 ' + (k + 1) + ' / 5 — ' + m.h1, m.step);
+      check(m.stepL === (k + 1) + ' / 5 · ' + STEP5[k], W + '⑨ 걸음 이름(읽어 주기) ' + (k + 1) + ' / 5 · ' + STEP5[k], m.stepL);
+      check(m.order, W + '⑨ 신문 짜임 — 큰 값 한 줄 → 큰 그림 → 설명 두 줄 → 「자세히」(닫힘 · 중간 값은 그 안) → 출처 — ' + m.h1, '');
+      check(m.heroShare >= 70, W + '⑪ 움직이는 그림이 화면의 70% 넘게(390 × 844 · 머리 줄 아래 · 다음 단추 위로 자름) — ' + m.h1, m.heroShare + '%');
+      check(m.outside.every(o => o.box !== 'other') && m.twoN <= 2, W + '⑪ 그림 밖 글은 큰 값 · 설명 두 줄 · 출처뿐 — ' + m.h1, JSON.stringify(m.outside.filter(o => o.box === 'other')).slice(0, 200) + ' · 설명 ' + m.twoN + '줄');
+      check(m.labels >= 3, W + '⑪ 이름과 숫자는 그림 안 이름표 — ' + m.h1, '이름표 ' + m.labels);
+      check(m.mucha.length >= 5 || m.clean, W + '⑪ 무하 요소 다섯 가지 넘게(잡스 판은 덜어냄 — 주문 1532) — ' + m.h1, m.mucha.join(' '));
       check(m.lastIsSrc, W + '⑨ 맨 아래 출처와 조사 날짜 — ' + m.h1, '');
-      check(JSON.stringify(m.foot) === JSON.stringify([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]), W + '⑨ 맨 아래 꼭 있어야 할 길 둘(개인정보 처리방침 · 고객센터 — 옛 기능 쪽 #/g 에서 옮김 · 주문 1114-1306 ⑧) — ' + m.h1, JSON.stringify(m.foot));
+      check(JSON.stringify(m.foot) === FOOTW, W + '⑨ 맨 아래 꼭 있어야 할 길 둘(개인정보 처리방침 · 고객센터) — ' + m.h1, JSON.stringify(m.foot));
       check(m.moving >= 1, W + '⑨ 큰 그림이 움직임 — ' + m.h1, '움직임 ' + m.anim);
-      // 빈 칸 글 = 「왜 셌는지 확인 필요」 꼴(주문 0054 칸 이름 녹이기 · su-fig.js sixSay) — 끝이 「확인 필요」면 빈 칸 표시 · 값 있는 칸에는 「확인 필요」가 없어야 함(아래 ⑭ 42칸 값 셈과 같은 잣대)
       check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? /확인 필요$/.test(t.v) : t.v && !t.v.includes('확인 필요'))), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
-      check(m.tabs.length === 6 && m.tabs.map(t => t.t).join(' ') === '오늘 지도 멈춤 기록 달력 정산' && m.tabs.filter(t => t.cur).length === 1 && m.tabsL === '탭 — 오늘 · 지도 · 멈춤 · 기록 · 달력 · 정산', W + '⑨ 탭 여섯 중요한 차례(주문 1023 [4]) · 달력(주문 0040) · 정산(주문 1112-1728)은 맨 끝 · 첫 탭 이름 「오늘」(주문 1114-1306 ⑤) · 켜진 탭 하나 — ' + m.h1, JSON.stringify({tabs: m.tabs, label: m.tabsL}));
+      const curW = k === 3 ? 2 : 3; // 「왜 사?」 = 멈춤 · 매매일지 = 일지
+      check(m.tabs.length === 5 && m.tabs.map(t => t.t).join(' ') === TAB5 && m.tabs.filter(t => t.cur).length === 1 && m.tabs[curW].cur && m.tabsL === TAB5L, W + '⑨ 탭 다섯(옛 틀도 같은 다섯 · 주문 1115-2328) · 「' + TAB5.split(' ')[curW] + '」 켜짐 — ' + m.h1, JSON.stringify(m.tabs) + ' ' + m.tabsL);
       check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
       check(m.pro.has && !m.pro.open && m.pro.rows >= 3, W + '⑩ 전문가용 자세히 — 눌러야 열림 — ' + m.h1, JSON.stringify(m.pro));
       check(Number.isFinite(m.hard), W + '⑩ 어려운 낱말 셈 — ' + m.h1, String(m.hard) + ' ' + m.hardWords);
       check(m.smap, W + '⑩ 여섯 칸 지도 — ' + m.h1, '');
       check(m.orn === 0, W + '⑩ 장식이 글을 가리지 않음(겹친 넓이 0) — ' + m.h1, m.orn + ' · 장식 ' + m.ornN);
+      check(k === 3 ? m.next === '#/j' : m.next === '#/', W + '⑨ 다음 단추 — ' + (k === 3 ? '내 매매일지' : '끝 화면은 처음으로(#/ · 옛 「친구에게」는 지움)') + ' — ' + m.h1, String(m.next));
       pageRules(await measure(p), W + '⑨ ' + (k + 1) + '번째 화면 ' + m.h1);
-      if (k < 7) { const a = await p.$('#su .su-next'); if (!a) { check(false, W + '⑨ 다음 단추 — ' + m.h1, ''); break; } await a.click(); await settle(p); await p.waitForTimeout(300); }
+      if (k < 4) { const a = await p.$('#su .su-next'); if (!a) { check(false, W + '⑨ 다음 단추 — ' + m.h1, ''); break; } await a.click(); await settle(p); await p.waitForTimeout(300); }
     }
-    check(seen.length === 8 && new Set(seen.map(m => m.h1)).size === 8 && seen[7]?.h1 === '친구에게', W + '⑨ 다음 일곱 번에 끝(여덟 화면 · 끝 = 친구에게 — 주문 2044 21곳 → 땅 → 업종 → 회사 → 자세히 → 왜 사? → 매매일지 → 친구에게)', seen.map(m => m.h1).join(' → '));
-    R.m.path = seen.map(m => (m.sonja ? {h1: m.h1, sonja: true, kids: m.kids, seals: m.seals.length, hard: m.hard, hardWords: m.hardWords} : {h1: m.h1, heroShare: m.heroShare, share: m.share, outside: m.outside.length, two: m.twoN, labels: m.labels, mucha: m.mucha, anim: m.anim, need: m.tiles.filter(t => t.need).length, means: m.means.vals, hard: m.hard, hardWords: m.hardWords, glossed: m.glossed, orn: m.ornN})); // 첫 쪽 = 손자병법 판(주문 1115-1706) // 주문 1023 보고 [7] 2 — 화면마다 합격선 숫자
+    check(seen.length === 5 && new Set(seen.map(m => m.h1)).size === 5 && seen[4]?.h1 === '내 매매일지', W + '⑨ 다음 네 번에 끝(다섯 화면 · 끝 = 내 매매일지 — 주문 1115-2328 오늘 → 꾀 → 회사 → 왜 사? → 매매일지)', seen.map(m => m.h1).join(' → '));
+    R.m.path = seen.map(m => (m.sonja ? {h1: m.h1, page: m.page, kids: m.kids, seals: m.seals.length, hard: m.hard, hardWords: m.hardWords} : {h1: m.h1, heroShare: m.heroShare, share: m.share, outside: m.outside.length, two: m.twoN, labels: m.labels, mucha: m.mucha, anim: m.anim, need: m.tiles.filter(t => t.need).length, means: m.means, pro: m.pro.rows, hard: m.hard, glossed: m.glossed, orn: m.orn, ornN: m.ornN}));
     R.m.hard = seen.reduce((a, m) => a + (Number.isFinite(m.hard) ? m.hard : 0), 0); R.m.hardWords = [...new Set(seen.flatMap(m => m.hardWords.split(',').filter(Boolean)))];
-    // 옛 기능 쪽 「셋의 길」(#/g · 옛 기능 82가지)과 가까운 회사 쪽(#/r/n)은 버림(주문 1114-1306 ⑧ · DISCARD 5 · 15) — 옛 고리로 오면 #/g 는 첫 쪽 · #/r/n 은 「찾지 못했어요」 · 옛 기능 칸 0
-    for (const [hh, want] of [['#/g', 'home'], ['#/g/hot', 'home'], ['#/r/n', 'none']]) {
-      await open(p, hh); await p.waitForTimeout(200);
-      const g = await p.evaluate(() => ({h1: (document.querySelector('#su h1')?.innerText ?? '').replace(/\s+/g, ' ').trim(), fcard: document.querySelectorAll('#su .su-fcard, #su [data-feat], #su [data-road]').length, text: document.getElementById('su')?.innerText ?? ''})); // 큰 제목 줄바꿈은 띄어쓰기 하나로(손자병법 첫 쪽 「지금은 / 내리는 땅 / 이에요.」 — 첫 쪽 잣대와 같은 꼴 · 주문 1115-1843)
-      check(g.fcard === 0 && !g.text.includes('가까운 회사의 지난 기록') && (want === 'home' ? g.h1 === seen[0]?.h1 : g.text.includes('찾지 못했어요')), W + '⑨ 버린 쪽 ' + hh + ' — ' + (want === 'home' ? '첫 쪽으로' : '「찾지 못했어요」') + ' · 옛 기능 칸 0', JSON.stringify({h1: g.h1, home: seen[0]?.h1, fcard: g.fcard}));
-    }
-    // 기록 서랍 · 서랍 쪽
-    await open(p, '#/r');
-    const dr = await p.evaluate(() => [...document.querySelectorAll('#su .su-drawer')].map(a => a.getAttribute('href')));
-    check(JSON.stringify(dr) === JSON.stringify(['#/r/c', '#/r/s', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y']), W + '⑨ 기록 서랍 — 토론 차례(1 · 2 · 3등 달력(주문 0938 · 1513 모든 사람) · 달마다 · 한 달 뒤 · 내 매매일지 · 못 된 이유 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 한국 투자자 특징 열하나(주문 2235) · 옛 기록 더 보기 안 해마다 하나 — 주문 1023 [4] · 가까운 회사 쪽은 버림 — 주문 1114-1306 ⑧)', dr.join(' '));
-    R.m.drawers = {};
-    for (const hh of ['#/r/d', '#/r/y']) { await open(p, hh); await p.waitForTimeout(200); const m = await shape(); R.m.drawers[hh] = {h1: m.h1, share: m.share, moving: m.moving}; check(m.tiles.length === 6 && m.lastIsSrc, W + '⑨ 서랍 쪽 ' + hh + ' — ' + m.h1, JSON.stringify(m).slice(0, 160)); pageRules(await measure(p), W + '⑨ 서랍 쪽 ' + hh); }
-    { // 해마다 쪽 — 다음은 내 매매일지(#/j) · 버린 가까운 회사 쪽의 한 줄은 「자세히」 안(못 된 수가 먼저 · 이 검사가 자료에서 따로 셈 · 자료에 값이 없으면 칸 0 — 주문 1114-1306 ⑧ · DISCARD 15)
-      await open(p, '#/r/y'); await more(p);
-      const y = await p.evaluate(() => ({next: document.querySelector('#su .su-next')?.getAttribute('href') ?? null, nextT: (document.querySelector('#su .su-next b')?.textContent ?? '').trim(),
-        near: [...document.querySelectorAll('#su .su-near p')].map(e => e.textContent.trim()), inMore: [...document.querySelectorAll('#su .su-near')].every(e => !!e.closest('details.su-more'))}));
-      const nr = B?.near?.rec, has = Number.isFinite(nr?.n) && nr.n > 0 && Number.isFinite(nr?.hits) && Number.isFinite(nr?.rate) && Number.isFinite(nr?.base);
-      const NFy = new Intl.NumberFormat('ko-KR'), ra = has ? Math.round(nr.rate) : 0, rb = has ? Math.round(nr.base) : 0;
-      const wantNear = has ? ['조건에 다 맞은 회사가 없던 날, 가장 가까운 회사를 따로 셌어요.', NFy.format(nr.n) + '번 가운데 ' + NFy.format(nr.n - nr.hits) + '번은 꽃이 못 됐어요.', '100번에 ' + ra + '번 꽃이 됐어요. 아무 회사는 ' + rb + '번이었어요.',
-        ra < rb ? '조건에 가까운 회사는 아무 회사보다 꽃이 덜 됐어요.' : ra > rb ? '조건에 가까운 회사는 아무 회사보다 꽃이 더 됐어요.' : '조건에 가까운 회사와 아무 회사가 같았어요.'] : [];
-      check(y.next === '#/j' && y.nextT === '내 매매일지 보기', W + '⑨ 해마다 쪽 다음 단추 = 내 매매일지(가까운 회사 쪽을 버림 — 주문 1114-1306 ⑧)', JSON.stringify({next: y.next, nextT: y.nextT}));
-      check(JSON.stringify(y.near.slice(0, 4)) === JSON.stringify(wantNear) && y.inMore, W + '⑨ 해마다 쪽 「자세히」 안 가까운 회사 한 줄 — 못 된 수 먼저 · 100번에 몇 번 · 아무 회사보다 덜 · 더(자료 값 따로 셈 · 값이 없으면 칸 0)', JSON.stringify({got: y.near, want: wantNear}).slice(0, 300));
-      R.m.nearYears = {has, lines: y.near.length};
-    }
   }
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' | '));
-  // 없는 회사 · 업종 — 「?」 한 줄과 처음으로(빈 화면 아님 · 없는 회사 자료 404 는 일부러 — 오류 셈 뒤)
+  // 없는 회사 — 「찾지 못했어요」 한 줄과 처음으로(빈 화면 아님 · 없는 회사 자료 404 는 일부러 — 오류 셈 뒤)
   await open(p, '#/c/ZZZZZZ'); check((await p.evaluate(() => document.body.innerText)).includes('찾지 못했어요'), W + '없는 회사', '');
-  await open(p, '#/i/' + encodeURIComponent('없는 업종')); check((await p.evaluate(() => document.body.innerText)).includes('찾지 못했어요'), W + '없는 업종', '');
   await ctx.close();
 }
 { // 느린 4G · CPU 4배 느리게(흰 첫 화면 검사 check_white ③ 과 같은 셈) — 첫 화면이 된 수르 두 길 처음 쪽 가장 큰 그림 2.5초 안
@@ -461,21 +401,26 @@ for (const width of [390, 360, 320]) {
       check((w.frame === 'none' || w.frame === 'normal') && w.orn === 0, W1 + '— 둘레 겹테 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, orn: w.orn}));
       check(w.tc.length >= 1 && w.tc.every(c => c === '#F1E3D3'), W1 + '— 휴대폰 맨 위 띠 한지 색', w.tc.join(' '));
     }
-    for (const hh of ['#/n']) { // 다른 쪽은 옛 흰 판 그대로(첫 쪽만 새로 만듦 — 주문 1115-1706)
-      await open(p, hh); await p.waitForTimeout(2200); // 뒷하늘(창이 열리고 1.5초 뒤 붙음)까지 붙은 뒤에 잼
-      const w = await look(p); R.m.white[scheme + ' ' + hh] = w;
-      const W1 = '⑫ 흰 구슬 판(' + (scheme === 'dark' ? '어두운' : '밝은') + ' 휴대폰 · ' + hh + ') ';
-      check(w.clean && [w.body, w.top, w.dock, w.tabs].every(c => c === WHITE), W1 + '— 큰 그림 잡스 판 · 바탕 · 맨 위 단추 줄 · 이야기 막대 · 아래 단추 넷 흰색', JSON.stringify(w).slice(0, 300));
-      check(con(w.h1, WHITE) >= 7, W1 + '— 큰 제목 글 대비 7 넘게', w.h1);
-      check(w.frame === 'none' && w.wave === 'none' && w.curve === 'none' && w.orn === 0, W1 + '— 둘레 겹테 · 금빛 물결 줄 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, wave: w.wave, curve: w.curve, orn: w.orn}));
-      check(w.tc.length >= 1 && w.tc.every(c => c === '#FFFFFF'), W1 + '— 휴대폰 맨 위 띠 흰색', w.tc.join(' '));
+    for (const hh of ['#/k', '#/k/' + FK, ...(FC ? ['#/c/' + FC.code] : []), '#/r/t']) { // 주문 1115-2328 — 꾀 모음 · 꾀 · 회사 · 정산도 첫 쪽과 같은 한지 판(샘플 사)
+      const PAPER = 'rgb(241, 227, 211)';
+      await open(p, hh); await p.waitForTimeout(600);
+      const w = await p.evaluate(() => { const bg = e => (e ? getComputedStyle(e).backgroundColor : 'none'), h1 = document.querySelector('#su h1');
+        return {sj: !!document.querySelector('#su main.sj-page'), body: bg(document.body), top: bg(document.querySelector('#su .sj-top')), dock: bg(document.querySelector('#su .sj-dock')), tabs: bg(document.querySelector('#su .sj-tabs')),
+          h1: h1 ? getComputedStyle(h1).color : '', frame: getComputedStyle(document.getElementById('su'), '::before').content, orn: document.querySelectorAll('#su .su-orn, .su-corners, .su-sky').length, old: document.querySelectorAll('#su .su-top, #su .su-tabs, #su .su-dock, #su main > .su-hero').length,
+          cover: document.querySelectorAll('#su .sj-cover').length, tc: [...document.querySelectorAll('meta[name="theme-color"]')].map(m => m.getAttribute('content'))}; });
+      R.m.white[scheme + ' ' + hh] = w;
+      const W1 = '⑫ 손자병법 한지 판(' + (scheme === 'dark' ? '어두운' : '밝은') + ' 휴대폰 · ' + hh + ' · 주문 1115-2328) ';
+      check(w.sj && [w.body, w.top, w.dock, w.tabs].every(c => c === PAPER) && w.old === 0 && w.cover === 0, W1 + '— 바탕 · 맨 위 단추 줄 · 이야기 막대 · 아래 탭 한지 색 · 옛 머리 · 탭 · 막대 0 · 표지는 첫 쪽에만', JSON.stringify(w).slice(0, 300));
+      check(con(w.h1, PAPER) >= 7, W1 + '— 큰 제목 먹 글 대비 7 넘게', w.h1);
+      check((w.frame === 'none' || w.frame === 'normal') && w.orn === 0, W1 + '— 둘레 겹테 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, orn: w.orn}));
+      check(w.tc.length >= 1 && w.tc.every(c => c === '#F1E3D3'), W1 + '— 휴대폰 맨 위 띠 한지 색', w.tc.join(' '));
     }
-    // 주문 2011(사장님 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」) — 다른 쪽도 같은 흰 판(1708 에는 「옛 꾸밈 그대로」를 쟀음)
-    for (const hh of ['#/m', '#/r', '#/r/d', '#/r/y']) { // 옛 기능 쪽 #/g 는 버림(주문 1114-1306 ⑧) — 대신 그 한 줄을 옮겨 받은 해마다 쪽
+    // 「왜 사?」 · 매매일지는 옛 흰 판 그대로(주문 2011 「모든 페이지를 첫페이지 기준으로」 때의 흰 판 · 주문 1115-2328 에서 남긴 옛 틀 두 쪽)
+    for (const hh of ['#/q', '#/j']) {
       await open(p, hh); await p.waitForTimeout(400);
       const o = await look(p); R.m.white[scheme + ' ' + hh] = o;
       check([o.body, o.top, o.dock, o.tabs].every(c => c === WHITE || c === 'none') && o.top === WHITE && o.frame === 'none' && o.wave === 'none' && o.curve === 'none' && o.orn === 0 && o.tc.every(c => c === '#FFFFFF') && con(o.h1, WHITE) >= 7,
-        '⑫ 다른 쪽도 흰 판(' + scheme + ' · ' + hh + ') — 바탕 · 위아래 흰색 · 둘레 겹테 · 물결 줄 · 무하 꾸밈 0 · 큰 제목 대비 7', JSON.stringify({body: o.body, top: o.top, dock: o.dock, tabs: o.tabs, frame: o.frame, orn: o.orn, tc: o.tc}));
+        '⑫ 옛 틀 두 쪽도 흰 판(' + scheme + ' · ' + hh + ') — 바탕 · 위아래 흰색 · 둘레 겹테 · 물결 줄 · 무하 꾸밈 0 · 큰 제목 대비 7', JSON.stringify({body: o.body, top: o.top, dock: o.dock, tabs: o.tabs, frame: o.frame, orn: o.orn, tc: o.tc}).slice(0, 300));
     }
     await ctx.close();
   }
@@ -495,61 +440,7 @@ for (const width of [390, 360, 320]) {
   check(same === 1 && after === 2 && lost === 2 && at === '#/', '⑬ 새 판이면 스스로 새로 고침 — 같은 판 그대로 · 바뀐 판 한 번 · 표를 못 받으면 그대로 · 보던 쪽 그대로', JSON.stringify(R.m.fresh));
   await ctx.close();
 }
-{ // ⑭ 첫 페이지 종목마다 현재가 · 한 달 꺾은선(주문 1837 · 사장님 2026-11-08 18:37 「첫패이지에 나온 종목들에 현재가와 꺽기 그래프 한달 올려」) — 처음 쪽 · 될 듯 21곳
-  //   칸마다 현재가 = su21.json 그 회사 close(그날 = asOf.board) · 「N원」 글 · 꺾은선 21점 = 그 회사 c 21개 그대로(오르내림 차례가 값과 같음) · 한 달 전 옅은 줄 = 첫 값 높이 · 마지막 점 = 끝 값 · 날짜 글
-  const T21 = await J('/su/data/su21.json'), N21 = await J('/su/data/su21-next.json'), day = T21?.asOf?.board ?? ''; // 될 듯 셋의 현재가 · 21 마지막 값 = su21-next.json
-  const md = /^\d{4}-(\d{2})-(\d{2})$/.exec(day), mtxt = md ? '현재가는 ' + +md[1] + '월 ' + +md[2] + '일 마지막 값이에요.' : '현재가는 마지막 값이에요.';
-  const NFk = new Intl.NumberFormat('ko-KR');
-  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
-  const p = await ctx.newPage();
-  R.m.price = {};
-  for (const [hh, KM] of [['#/', {hot: 'hot', bloom: 'bloom', money: 'money', hotNext: 'hotNext', bloomNext: 'bloomNext', moneyNext: 'moneyNext', quiet: 'quiet'}], ['#/n', {hotNow: 'hot', bloomNow: 'bloom', moneyNow: 'money', hot: 'hotNext', bloom: 'bloomNext', money: 'moneyNext'}]]) {
-    if (hh === '#/') { R.m.price[hh] = {cells: 0, gone: '주문 1115-1843 — 처음 쪽은 병법 서른여섯만(줄 없음)'}; continue; }
-    await open(p, hh);
-    const SJ = hh === '#/'; // 손자병법 첫 쪽(주문 1115-1706) — 칸 = 줄 a.sj-row(같은 data-k · data-name · data-px · data-live · 이름표) · 꺾은선 path.sj-sp1 · 한 달 전 점선 path.sj-sp0 · 끝 점 circle.sj-spe(한 달 방향 색 = sj-spe-dn · up · eq) · 날짜 글 .sj-pxnote
-    const got = SJ ? await p.evaluate(() => ({note: [document.querySelector('#su .sj-pxnote')?.textContent ?? '', ...[...document.querySelectorAll('#su .sj-notes li')].map(e => e.textContent).filter(t => /꺾은선은 한 달/.test(t))],
-      cells: [...document.querySelectorAll('#su main.sj-page a.sj-row[data-k]')].map(a => { const dot = a.querySelector('circle.sj-spe');
-        return {k: a.getAttribute('data-k'), name: a.getAttribute('data-name'), px: a.getAttribute('data-px'), live: a.getAttribute('data-live'), t: [...a.querySelectorAll('b, span')].map(e => e.textContent), label: a.getAttribute('aria-label') ?? '',
-          line: a.querySelector('path.sj-sp1')?.getAttribute('d') ?? '', base: a.querySelector('path.sj-sp0')?.getAttribute('d') ?? '', dot: dot ? [+dot.getAttribute('cx'), +dot.getAttribute('cy')] : null, dotc: dot?.getAttribute('class') ?? '', mon: a.getAttribute('data-mon')}; })}))
-    : await p.evaluate(() => ({note: (() => { const L = new Map(); for (const e of document.querySelectorAll('#su main > .su-hero text.sa-note')) { const y = e.getAttribute('y'); L.set(y, (L.has(y) ? L.get(y) + ' ' : '') + e.textContent); } return [...L.values()]; })(), // 한 줄 = 같은 높이 두 조각
-      cells: [...document.querySelectorAll('#su main > .su-hero a[data-k]')].map(a => {
-        const dot = a.querySelector('circle.sa-spA, circle.sa-spB');
-        return {k: a.getAttribute('data-k'), name: a.getAttribute('data-name'), px: a.getAttribute('data-px'), live: a.getAttribute('data-live'), t: [...a.querySelectorAll('text')].map(e => e.textContent), label: a.getAttribute('aria-label') ?? '',
-          line: a.querySelector('path.sa-sp')?.getAttribute('d') ?? '', base: a.querySelector('path.sa-sp0')?.getAttribute('d') ?? '', dot: dot ? [+dot.getAttribute('cx'), +dot.getAttribute('cy')] : null, ring: !!a.querySelector('circle.sa-spB')};
-      })}));
-    const bad = [];
-    for (const c of got.cells) {
-      const key = KM[c.k], it = ((key.endsWith('Next') ? N21 : T21).lists?.[key] ?? []).find(x => x.name === c.name);
-      if (!it) { bad.push(c.name + ' 목록에 없음'); continue; }
-      const ok = typeof it.close === 'number' && it.close > 0 && (!it.date || it.date === day), price = ok ? NFk.format(it.close) + '원' : null;
-      if (!ok) { if (!c.t.includes('확인 필요') || c.line) bad.push(c.name + ' 값 없음인데 「확인 필요」 아님'); continue; }
-      if (c.live) { // 장 중 현재가(주문 2011)가 붙은 칸 — 받은 값(data-px)이 글 · 이름표 · 꺾은선 끝과 같은지(판 값과는 다를 수 있음)
-        const lp = NFk.format(+c.px) + '원', pts = [...c.line.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)];
-        if (!(+c.px > 0) || !c.t.includes(lp) || !c.label.includes('현재가 ' + lp) || pts.length !== 21 || !c.dot) bad.push(c.name + ' 장 중 값 ' + c.px);
-        continue;
-      }
-      if (c.px !== String(it.close) || !c.t.includes(price) || !c.label.includes('현재가 ' + price)) { bad.push(c.name + ' 현재가 ' + c.px + ' ≠ ' + it.close); continue; }
-      const pts = [...c.line.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map(m => [+m[1], +m[2]]), v = it.c;
-      if (!Array.isArray(v) || v.length !== 21 || pts.length !== 21) { bad.push(c.name + ' 꺾은선 점 ' + pts.length); continue; }
-      if (v[20] !== it.close) { bad.push(c.name + ' 끝 값 ≠ 현재가'); continue; }
-      const lo = Math.min(...v), hi = Math.max(...v), yT = Math.min(...pts.map(q => q[1])), yB = Math.max(...pts.map(q => q[1]));
-      const sameWay = hi === lo ? yB - yT < 0.15 : pts.every((q, i) => Math.abs(q[1] - (yT + ((hi - v[i]) / (hi - lo)) * (yB - yT))) <= 0.15); // 점마다 높이 = 그 값(가장 높은 값 = 위 · 가장 낮은 값 = 아래)
-      const xs = pts.every((q, i) => !i || q[0] > pts[i - 1][0]);
-      const by = +(/M[\d.]+ ([\d.]+)H/.exec(c.base)?.[1] ?? NaN);
-      if (!sameWay || !xs) { bad.push(c.name + ' 꺾은선 오르내림이 값과 다름'); continue; }
-      if (!(Math.abs(by - pts[0][1]) < 0.15)) { bad.push(c.name + ' 한 달 전 줄 높이 ' + by + ' ≠ ' + pts[0][1]); continue; }
-      const dir = v[20] < v[0] ? 'dn' : v[20] > v[0] ? 'up' : 'eq'; // 손자병법 첫 쪽 — 끝 점 · 도장 = 한 달 방향(이 검사가 자료에서 따로 셈)
-      if (!c.dot || Math.abs(c.dot[0] - pts[20][0]) > 0.15 || Math.abs(c.dot[1] - pts[20][1]) > 0.15 || (SJ ? !c.dotc.includes('sj-spe-' + dir) || c.mon !== dir : c.ring !== key.endsWith('Next'))) { bad.push(c.name + ' 마지막 점' + (SJ ? '(한 달 방향 ' + dir + ' · 점 ' + c.dotc + ' · 도장 ' + c.mon + ')' : '')); continue; }
-    }
-    R.m.price[hh] = {cells: got.cells.length, bad: bad.length, note: got.note};
-    const nCells = ['hot', 'bloom', 'money', 'hotNext', 'bloomNext', 'moneyNext'].reduce((a, k) => a + Math.min(7, (T21.lists?.[k] ?? []).length), 0); // 엄격 셈(주문 0854)이면 42 아래일 수 있음
-    const nQ = hh === '#/' ? Math.min(7, (T21.lists?.quiet ?? []).length) : 0; // 넷째 창 칸(주문 1111-1334 · 처음 쪽에만 · 장부 자료가 옛 판이면 0)
-    check(got.cells.length === nCells + nQ && (T21.strict || nCells === 42) && !bad.length, '⑭ ' + hh + ' 종목마다 현재가 = 자료 · 한 달 꺾은선 21점 = 자료 그대로 · 한 달 전 줄 · 마지막 점(' + (SJ ? '손자병법 첫 쪽 — 끝 점 · 도장 = 한 달 방향' : '지금 찬 점 · 될 듯 고리') + ')', got.cells.length + ' · ' + bad.slice(0, 4).join(' | '));
-    const liveN = /^현재가는 \d+월 \d+일 (오전|오후) \d+시( \d+분)? 값이에요\.$|^현재가는 \d+월 \d+일 마지막 값이에요\.$/; // 장 중 · 장 끝 값이 붙으면 그 때(주문 2011)
-    check((got.note[0] === mtxt || (got.cells.some(c => c.live) && liveN.test(got.note[0] ?? ''))) && /꺾은선은 한 달/.test(got.note[1] ?? ''), '⑭ ' + hh + ' 현재가 날짜 글 — ' + mtxt, got.note.join(' / '));
-  }
-  await ctx.close();
-}
+// ⑭ 첫 페이지 줄마다 현재가(주문 1837)는 처음 쪽에 회사 줄이 없어(주문 1115-1843) 지움 · 될 듯 21곳(#/n)도 지움(주문 1115-2328) — 꾀 칸 회사 단추 꺾은선은 ㉔ · 회사 쪽 한 달 꺾은선은 ㉕
 { // ⑮ 장 중 현재가(주문 2011 · 사장님 2026-11-08 20:11 「어 그렇게 하고」 — 장이 열려 있는 낮에도 현재가가 바뀌게) — /api/price 답을 시험 값으로 바꿔 끼워 화면이 따라 바뀌는지
   //   오늘(판 다음 날) 장 중 값 → 그 칸 현재가 글 · data-px · data-live · 이름표 · 꺾은선(맨 앞 하루를 빼고 오늘 값을 끝에 = 21점 · 끝 점 = 받은 값 높이) · 날짜 글 「○월 ○일 오후 2시 31분 값이에요.」
   //   받은 값이 없는 칸은 그대로 · 함수가 없거나(404) 장 밖이면 아무것도 바꾸지 않음
@@ -571,6 +462,9 @@ for (const width of [390, 360, 320]) {
   await open(p, '#/'); await p.waitForTimeout(1500);
   const c0 = await cellOf(); R.m.live = {asked, first: 'none'};
   check(asked === 0 && !c0, '⑮ 처음 쪽은 장 중 현재가를 받지 않음(회사 줄이 없음 — 병법 서른여섯만 · 주문 1115-1843)', JSON.stringify({asked, cell: !!c0}));
+  for (const hh of ['#/k', '#/k/' + FK, ...(FC ? ['#/c/' + FC.code] : []), '#/r/t']) { await open(p, hh); await p.waitForTimeout(600); } // 주문 1115-2328 — 새 쪽도 그날 마지막 값만(장 중 값을 받지 않음 · 앞날을 맞히지 않는 지난 기록)
+  check(asked === 0, '⑮ 꾀 모음 · 꾀 · 회사 · 정산 쪽도 장 중 현재가를 받지 않음(그날 마지막 값 · 주문 1115-2328)', JSON.stringify({asked}));
+  R.m.live.sub = asked;
   await ctx.close();
 }
 { // ⑯ 수르에서 넘어간 옛 쪽도 첫 페이지 판(주문 2011 · 사장님 2026-11-08 20:26 「아니 이것도 같이 작업해」 — 서른아홉 스승 · 로마 신처럼 수르에서 눌러 넘어간 옛 쪽)
@@ -638,373 +532,7 @@ for (const width of [390, 360, 320]) {
     await ctx.close();
   }
 }
-{ // ⑰ 「왜?」 쪽 · 42칸 첫 발견 · 며칠째 · 포모지수(주문 0123 · 사장님 2026-11-09 01:23 「36가지로 중요순으로 기승전결로 … 선정한 기준 7가지」 · 01:44 「몇일째 … 첫 발견 … 42곳 모두」
-  //   · 02:01 「포모지수값을 첫페이지 42곳에 모두 … 그이유도 11가지」 · 02:02 「몬트리올(몬테카를로) … 소거법 … 기준 … 이유 7가지」) · 회사 쪽 현재가 = 첫 페이지 값(주문 0200 · 02:00 「어」)
-  const [T21, N21, WHY] = await Promise.all([J('/su/data/su21.json'), J('/su/data/su21-next.json'), J('/su/data/su21-why.json').catch(() => null)]);
-  const KEY6 = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'], board = T21.asOf?.board;
-  const item = (k, code) => (k.endsWith('Next') ? N21.lists?.[k] : T21.lists?.[k])?.find(c => c.code === code);
-  const all = KEY6.flatMap(k => (T21.lists?.[k] ?? []).map(c => ({k, ...(item(k, c.code) ?? c)})));
-  const DAYRE = /^\d{4}-\d{2}-\d{2}$/, md = d => { const q = /^\d{4}-(\d{2})-(\d{2})$/.exec(d ?? ''); return q ? +q[1] + '월 ' + +q[2] + '일' : null; };
-  const nAll = KEY6.reduce((a, k) => a + Math.min(7, (T21.lists?.[k] ?? []).length), 0); // 엄격 셈(주문 0854)이면 42 아래
-  check(all.length === nAll && (T21.strict || nAll === 42) && all.every(c => Number.isInteger(c.days) && c.days >= 1 && DAYRE.test(c.found ?? '') && c.found <= board && typeof c.since === 'boolean'), '⑰ 42칸 모두 며칠째 · 첫 발견(자료)', JSON.stringify(all.filter(c => !(Number.isInteger(c.days) && DAYRE.test(c.found ?? ''))).map(c => c.k + ' ' + c.name)).slice(0, 200));
-  check(T21.days && DAYRE.test(T21.days.from ?? '') && T21.days.to === board, '⑰ 며칠째 셈 바탕(기록 첫날 · 오늘 판)', JSON.stringify(T21.days ?? null).slice(0, 160));
-  check(!!WHY && WHY.board === board && WHY.mc?.paths >= 20000 && Array.isArray(WHY.checks) && WHY.checks.length === 7, '⑰ 포모 자료 = 오늘 판 · 몬테카를로 길 2만 개 넘게 · 소거 기준 일곱', WHY ? `${WHY.board} · ${WHY.mc?.paths} · ${WHY.checks?.length}` : '없음');
-  const codes = [...new Set(all.map(c => c.code))], F = WHY?.fomo ?? {};
-  check(codes.every(c => F[c] && Array.isArray(F[c].checks) && F[c].checks.length === 7 && (F[c].verdict === 'pass' ? Number.isInteger(F[c].v) && F[c].v >= 0 && F[c].v <= 100 && F[c].se <= 0.5 && F[c].paths >= 20000 && F[c].f?.length === 6 : F[c].v === null)), '⑰ 회사마다 포모 — 기준 일곱 · 통과면 0 ~ 100 · 흔들림 0.5 안 · 잣대 여섯', JSON.stringify(codes.filter(c => !F[c]).slice(0, 5)));
-  check(all.every(c => (F[c.code]?.verdict === 'pass' ? c.fomo === F[c.code].v : c.fomo === null) && c.fv === (F[c.code]?.verdict ?? 'hold')), '⑰ 42칸 포모지수 = 포모 자료', '');
-  const passN = codes.filter(c => F[c]?.verdict === 'pass').length;
-  if (/^https:/.test(base)) { // 진짜 사이트 — 올릴 때 굴린 종가로 셈(미리 보기 묶음은 종가를 굴리지 않아 옛 자료 · 그때는 묶음 꼴만 봄)
-    check(T21.days?.from < board && (all.some(c => c.days > 1) || (T21.strict && all.length <= 7)), '⑰ 진짜 사이트 — 지난 판 기록으로 센 며칠째(기록 첫날 < 오늘 판 · 2일째 넘는 칸 있음 — 엄격 셈으로 칸이 일곱 아래면 기록 첫날만)', JSON.stringify(T21.days ?? null).slice(0, 120));
-    check(WHY?.data === board && passN >= Math.ceil(codes.length * 0.8), '⑰ 진짜 사이트 — 포모 자료 날 = 오늘 판 · 열에 여덟 넘게 통과', `${WHY?.data} · ${passN}/${codes.length}`);
-  }
-  R.m.why = {board, cells: all.length, codes: codes.length, fomoPass: passN, days: Object.fromEntries(all.map(c => [c.k + ' ' + c.code, [c.days, c.found, c.fomo]])), daysFrom: T21.days?.from ?? null};
-  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
-  await QUIET(ctx); // 판 값과 맞대는 검사(장 중에도 같은 답 · 장 중 값은 ⑱)
-  const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-  await open(p, '#/');
-  // 주문 1115-1843 — 처음 쪽에는 42칸 · 칸 하나 읽는 법이 없음(병법 서른여섯만) · 칸마다 「첫 발견 · 며칠째 · 포모지수」 값은 아래 「왜?」 쪽마다 그대로 잼
-  check(await p.evaluate(() => !document.querySelector('#su main.sj-page a.sj-row, #su main.sj-page section.sj-how')), '⑰ 처음 쪽 42칸 · 칸 하나 읽는 법 0(병법 서른여섯만 — 주문 1115-1843)', '');
-  let pages = 0, reasons = 0;
-  for (const c of all) {
-    await open(p, `#/c/${c.code}/y/${c.k}`);
-    const w = await p.evaluate(() => {
-      const parts = [...document.querySelectorAll('#su .yw-part')].map(s => ({h: s.querySelector('.yw-h')?.textContent ?? '', n: [...s.querySelectorAll('.yw-li')].map(li => +li.querySelector('.yw-n')?.textContent)}));
-      const chips = [...document.querySelectorAll('#su .yw-chip b')].map(b => b.textContent);
-      const sents = [...document.querySelectorAll('#su .yw-hero, #su .yw .yw-s, #su .yw .yw-t')].map(e => e.textContent);
-      return {h1: document.querySelector('#su h1')?.innerText ?? '', parts, chips, crit: document.querySelectorAll('#su .yw-crit .yw-li').length, fchk: document.querySelectorAll('#su .yw-fomo > ol:first-of-type .yw-li').length,
-        f11: document.querySelectorAll('#su .yw-fomo > ol:nth-of-type(2) .yw-li').length, pct: sents.filter(t => t.includes('%')).length, price: [...document.querySelectorAll('#su .yw .yw-s')].map(e => e.textContent).find(t => /마지막 값은 [\d,]+원이에요/.test(t)) ?? null,
-        g: (g => g ? {listed: g.getAttribute('data-listed'), b365: g.getAttribute('data-b365'), pool: g.getAttribute('data-pool'), pos: g.getAttribute('data-pos'), steps: g.querySelectorAll('.yw-steps > li').length,
-          me: g.querySelector('.yw-steps > li.yw-sme')?.textContent ?? '', a1: (g.querySelector('.yw-a1')?.textContent ?? '').trim(), inSteps: g.querySelectorAll('.yw-steps .yw-li').length, open: g.querySelectorAll('.yw-steps details[open]').length,
-          first: g.getBoundingClientRect().top < innerHeight && g.querySelector('.yw-steps > li.yw-sme').getBoundingClientRect().bottom < innerHeight} : null)(document.querySelector('#su .yw-glance.yw-crit')), // 주문 0510 — 한눈 그림
-        folds: [...document.querySelectorAll('#su details.yw-fold')].map(d => d.open), screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(2), heroPct: (document.querySelector('#su .su-hero.yw')?.textContent ?? '').includes('%')};
-    });
-    const m = await measure(p); pageRules(m, '⑰ 「왜?」 ' + c.k + ' ' + c.name);
-    const nums = w.parts.flatMap(x => x.n), okNums = nums.length === 36 && nums.every((v, i) => v === i + 1) && w.parts.length === 4 && w.parts.every(x => x.n.length === 9) && ['기', '승', '전', '결'].every((g, i) => w.parts[i]?.h.startsWith(g + ' — '));
-    const fo = F[c.code], wantChips = [md(c.found), c.days + '일째', c.fomo === null ? '보류' : String(c.fomo)];
-    check(w.h1.startsWith(c.name + ', 왜 ') && w.h1.endsWith('?'), '⑰ 「왜?」 물음 — ' + c.k + ' ' + c.name, w.h1);
-    check(okNums, '⑰ 서른여섯 가지 · 중요한 차례 1 ~ 36 · 기 · 승 · 전 · 결 아홉씩 — ' + c.k + ' ' + c.name, JSON.stringify(w.parts.map(x => x.n.length)));
-    check(w.crit === 7, '⑰ 이렇게 고른 기준 일곱 — ' + c.k + ' ' + c.name, String(w.crit));
-    check(JSON.stringify(w.chips) === JSON.stringify(wantChips), '⑰ 첫 발견 · 며칠째 · 포모지수 = 자료 — ' + c.k + ' ' + c.name, JSON.stringify(w.chips) + ' / ' + JSON.stringify(wantChips));
-    check(w.fchk === 7 && (fo?.verdict === 'pass' ? w.f11 === 11 : w.f11 === 0), '⑰ 포모 소거 기준 일곱 · 통과면 이유 열하나 — ' + c.k + ' ' + c.name, w.fchk + ' · ' + w.f11);
-    check(w.pct === 0 && !w.heroPct, '⑰ 풀이 문장에 「%」 없음(한눈 그림 · 접힌 글 포함) — ' + c.k + ' ' + c.name, String(w.pct) + ' · ' + w.heroPct);
-    { // 주문 0510(사장님 2026-11-10 05:10 「이곳에 글이 너무 어렵고 많아 핵심을 도식화로 만들어서 한눈에 알수있도록 해」) — 한눈 그림 수 = 자료 · 기준 일곱이 그림 칸 안 · 긴 글은 접힘 · 쪽 길이
-      const src = (c.k.endsWith('Next') ? N21.lists?.[c.k] : null) ?? T21.lists?.[c.k] ?? [], pos = src.findIndex(x => x.code === c.code) + 1, mcr = T21.listRule === 'mc365-v1' || T21.listRule === 'culture7-v1';
-      const pool = mcr && Number.isFinite(c.mc?.pool) ? c.mc.pool : T21.counts?.pools?.[c.k];
-      const g = w.g, okG = !!g && g.listed === String(T21.counts?.listed) && g.b365 === String(T21.counts?.b365) && g.pool === String(pool ?? '') && g.pos === String(pos) && g.steps === 5 && g.me.includes(c.name) && g.inSteps === 7 && g.open === 0
-        && g.a1.length >= 8 && !g.a1.includes('확인 필요') && g.first;
-      check(okG, '⑰ 한눈 그림 — 상장 · 우량주 · 거른 곳 · 일곱 · 이 회사 자리 = 자료 · 기준 일곱이 칸 안 · 첫 화면 안(주문 0510) — ' + c.k + ' ' + c.name, JSON.stringify({g, want: {listed: T21.counts?.listed, b365: T21.counts?.b365, pool, pos}}).slice(0, 300));
-      check(w.folds.length >= 4 && w.folds.every(o => !o) && w.screens <= 4, '⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — ' + c.k + ' ' + c.name, JSON.stringify({folds: w.folds, screens: w.screens}));
-      R.m.why.screens = Math.max(R.m.why.screens ?? 0, w.screens);
-    }
-    check(!w.price || !Number.isFinite(c.close) || w.price.includes(Number(c.close).toLocaleString('ko-KR') + '원'), '⑰ 마지막 값 = 첫 페이지 값 — ' + c.k + ' ' + c.name, w.price ?? '없음');
-    pages++; reasons += nums.length;
-  }
-  R.m.why.pages = pages; R.m.why.reasons = reasons;
-  check(!errs.length, '⑰ 「왜?」 쪽 화면 오류 0', errs.slice(0, 3).join(' / '));
-  // 주문 0200 — 회사 쪽 현재가 = 첫 페이지 칸 값(그날 판) · 묶음마다 첫 회사
-  for (const k of KEY6) {
-    const c = all.find(x => x.k === k); if (!c) continue;
-    await open(p, `#/c/${c.code}`); await p.waitForTimeout(600);
-    const px = await p.evaluate(() => { const s = document.querySelector('#su svg.su-co-jobs'); return s ? {px: s.getAttribute('data-px'), d: s.getAttribute('data-pdate'), src: s.getAttribute('data-psrc'), n: s.querySelector('text.cj-px tspan.cj-n')?.textContent ?? ''} : null; });
-    check(!!px && Number(px.px) === c.close && px.d === board && px.src === 'board' && px.n === Number(c.close).toLocaleString('ko-KR'), '⑰ 회사 쪽 현재가 = 첫 페이지 값(주문 0200) — ' + k + ' ' + c.name, JSON.stringify(px) + ' / ' + c.close + ' ' + board);
-  }
-  // 주문 0806(사장님 2026-11-09 08:06 「어 그렇게 해」) — 42칸 회사마다 회사 쪽 한 달 꺾은선 = 첫 페이지 칸과 같은 21 값 · 같은 꼴 · 처음 날 · 끝 날 · 끝값 이름표 · 시장 줄은 21날이 지수 자료에 모두 있을 때만
-  const coBad = [], seen = new Set(); let coN = 0, idxN = 0, cdN = 0;
-  for (const c of all) {
-    if (seen.has(c.code)) continue; seen.add(c.code);
-    const lw = await lineWant(c.code); // 첫 페이지 칸과 꼴을 맞대던 것은 뺌(처음 쪽 칸 없음 — 주문 1115-1843) · 값 21개 · 날 · 이름표는 판 값과 그대로 맞댐
-    await open(p, `#/c/${c.code}`); await p.waitForTimeout(300);
-    const g = await p.evaluate(() => { const s = document.querySelector('#su svg.su-co-jobs'), co = s?.querySelector('g[data-line="co"]'), ix = s?.querySelector('g[data-line="idx"]');
-      return s ? {lsrc: s.getAttribute('data-lsrc'), src: co?.getAttribute('data-src') ?? null, v: co?.getAttribute('data-v') ?? null, n: co?.getAttribute('data-n') ?? null, from: co?.getAttribute('data-from') ?? null, to: co?.getAttribute('data-to') ?? null,
-        pts: co?.querySelector('polyline.cj-co')?.getAttribute('points') ?? '', ix: ix ? {from: ix.getAttribute('data-from'), to: ix.getAttribute('data-to'), n: ix.getAttribute('data-n')} : null,
-        lab: s.querySelector('.su-lg-c .v')?.textContent ?? '', axis: [...s.querySelectorAll('g[data-per="line"] text')].map(e => e.textContent)} : null; });
-    const why = [];
-    if (!lw) why.push('판 값 없음');
-    else if (!g) why.push('그림 없음');
-    else {
-      if (g.lsrc !== 'board' || g.src !== 'board') why.push('바탕 ' + g.lsrc + '/' + g.src);
-      if (g.v !== lw.v.join(',') || g.n !== '21') why.push('값 ' + String(g.v).slice(0, 40));
-      if (g.from !== (lw.from ?? '') || g.to !== board) why.push('날 ' + g.from + '~' + g.to + ' / ' + lw.from + '~' + board);
-      if (g.lab !== won100Of(lw.last)) why.push('이름표 ' + g.lab + ' / ' + won100Of(lw.last)); // 회사 쪽 그림(su-co-jobs) 끝값 = 「100원이 ○원」(주문 1114-1306)
-      if (lw.from && (g.axis[0] !== md(lw.from) || g.axis[g.axis.length - 1] !== md(board))) why.push('아래 날 ' + g.axis.join('~'));
-      if (lw.idx ? !(g.ix && g.ix.from === lw.cd[0] && g.ix.to === lw.cd[20] && g.ix.n === '21') : !!g.ix) why.push('시장 줄 ' + JSON.stringify(g.ix) + ' 있어야 ' + lw.idx);
-      coN++; if (g.ix) idxN++; if (Array.isArray(lw.it.cd)) cdN++;
-    }
-    if (why.length) coBad.push(c.code + ' ' + c.name + ': ' + why.join(' · '));
-  }
-  R.m.coLine = {companies: seen.size, ok: coN - coBad.length, idx: idxN, cd: cdN, bad: coBad.slice(0, 6)};
-  check(seen.size >= Math.min(30, new Set(all.map(c => c.code)).size) && !coBad.length, '⑰ 42칸 회사 쪽 한 달 꺾은선 = 판 값 21개 · 처음 날 · 끝 날 · 끝값 이름표 · 시장 줄은 날짜가 꼭 맞을 때만(주문 0806 · 첫 페이지 칸 꼴 맞댐은 칸이 없어 뺌 — 주문 1115-1843)', seen.size + '곳 · ' + coBad.slice(0, 3).join(' | '));
-  if (/^https:/.test(base)) check(cdN === seen.size, '⑰ 진짜 사이트 — 42칸 회사 모두 판 날짜 21개(cd)', cdN + '/' + seen.size);
-  await ctx.close();
-}
-{ // ⑳ 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 「몬테카를로 방식으로 먼저 찾아낸 다음 소거법을 31번 더 돌려서 지금보다 엄격한 기준으로」 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움)
-  //   자료: su21.json strict = su21-strict.json(규칙 · 판 날) · 기준 31가지 · 몬테카를로 10만 길 · 스무 번에 한 번
-  //   묶음마다: 고른 곳 수 = 마지막 수 · 일곱까지 · 소거 줄(31) 줄어들기만 · 고른 곳은 몬테카를로 두 번 모두 스무 번에 한 번 아래 · 31가지 모두 통과 · 업종마다 둘(돈 둘 = 하나)
-  //   첫 페이지: 칸 + 빈 자리 = 42 · 「왜?」 쪽: 더 엄격하게 상자 · 기준 31가지 모두 통과
-  const T21 = await J('/su/data/su21.json'), SX = await J('/su/data/su21-strict.json').catch(() => null), KEY6 = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
-  if (T21.listRule === 'mc365-v1' || T21.listRule === 'culture7-v1') {
-    // 주문 1912(사장님 2026-11-09 19:12 「… 7가지에 정의를 내린 다음 42개에 종목을 찾아내는데 문화에 중심으로 세팅한 다음 … 몬테카를로 방식 소급법(소거법)을 더 진화시켜서」)
-    //   문화 셈 판(culture7-v1): 문화 일곱(culture.traits 7 · 칸마다 cu.on) · 1억 번 셈 v2(잣대 셋 · 무게 열둘 · 서로 다른 회사 셋) · 풀이 넷째 줄 「문화 일곱으로 고르고 1억 번 섞었어요.」 · 「왜?」 쪽 문화 일곱 상자
-    const CULT = T21.listRule === 'culture7-v1';
-    // 주문 1422(사장님 2026-11-09 14:22 「365 전 종목을 몬테카를로 계산법으로 찾은 다음 소거법으로 1번만 돌려서 42개를 찾고 … 1억 번 … 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」
-    //   · 14:37 「42곳도 표기 하고 그중에서 … 1.2.3을 수르계산법으로 표기」)
-    //   자료: 칸마다 몬테카를로(드묾 p · 드문 차례 ord · 소거를 지난 수 pool) · 묶음 안 차례 = 드문 차례 · 일곱씩 · top3(1억 판 · 판마다 1등 · 2등 · 3등이 하나씩 — 합 = 1억)
-    //   첫 페이지: 42칸 · 1등 · 2등 · 3등 칸에만 표(그 칸 = top3.rank) · 풀이 두 줄 · 「왜?」 쪽: 1억 번 셈 상자(등수 칸 · 아닌 칸) · 기준 일곱(몬테카를로)
-    const bad = [], t3 = T21.top3;
-    for (const k of KEY6) {
-      const L = T21.lists?.[k] ?? [], per = k.startsWith('money') ? 1 : 2, cnt = {};
-      for (const c of L) cnt[c.ind] = (cnt[c.ind] ?? 0) + 1;
-      const ords = L.map(c => c.mc?.ord);
-      if (!(L.length === 7 && L.every(c => Number.isFinite(c.mc?.p) && c.mc.p > 0 && c.mc.p <= 1 && Number.isInteger(c.mc?.ord) && c.mc.ord >= 1 && c.mc.ord <= c.mc.pool)
-        && ords.every((v, i) => !i || v >= ords[i - 1]) && (k === 'bloom' || Object.values(cnt).every(n => n <= per)))) bad.push(k + ' ' + JSON.stringify(L.map(c => [c.name, c.mc?.p, c.mc?.ord])).slice(0, 160));
-    }
-    R.m.mc = Object.fromEntries(KEY6.map(k => [k, T21.mc?.pools?.[k] ?? null]));
-    check(!bad.length && T21.mc?.paths >= 100000 && T21.mc?.hist === 250, '⑳ 몬테카를로 차례(주문 1422) — 묶음마다 일곱 · 칸마다 드묾 · 드문 차례대로 · 업종마다 둘(돈 둘 = 하나)', bad.join(' | '));
-    if (CULT) {
-      const C = T21.culture, CUJ = await J('/su/data/su21-cu.json').catch(() => null), all42 = KEY6.flatMap(k => (T21.lists?.[k] ?? []).map(c => k + ':' + c.code)), past = T21.past ?? {};
-      const tr = CUJ?.culture?.traits;
-      R.m.culture = Array.isArray(tr) ? tr.map(t => t.name + ':' + t.n365) : null;
-      check(!!C && C.rule === 'culture7-v1' && C.eleven === 11 && !!C.pos && !!C.neg && !!CUJ && CUJ.rule === 'culture7-v1' && CUJ.asOf?.board === T21.asOf?.board
-        && Array.isArray(tr) && tr.length === 7 && tr.every(t => t.name && t.say && t.use && Number.isInteger(t.n365))
-        && all42.length === 42 && all42.every(key => CUJ.cu?.[key] && Array.isArray(CUJ.cu[key].on) && CUJ.cu[key].v) && T21.mc?.method === 'fhs' && past.cultureRank === true
-        && ['hotNext', 'moneyNext', 'bloomNext'].every(g => Number.isFinite(past[g]?.mc100) && Number.isFinite(past[g]?.old100)),
-        '⑳ 문화 셈(주문 1912) — 한국 투자자 문화 일곱(su21-cu.json) · 칸마다 흔적 · 요즘 흔들림에 맞춘 길 · 지난 1년(바로 앞 셈 · 예전 셈과 견줌)', JSON.stringify({rule: C?.rule, n: tr?.length, cu: Object.keys(CUJ?.cu ?? {}).length, method: T21.mc?.method, past: past.cultureRank}));
-      check(past.bloomFrom === 'pick' && /고른 날/.test(past.what?.bloomNext ?? '') && Number.isFinite(past.bloomNext?.per100) && Number.isFinite(past.bloomNext?.base100),
-        '⑳ 꽃이 될 듯 맞음 — 고른 날 값부터 셈(주문 0103 · 지난 스무 날 창의 덤 없음)', JSON.stringify({from: past.bloomFrom, what: past.what?.bloomNext, per100: past.bloomNext?.per100}));
-      const codes3 = (T21.top3?.rank ?? []).map(r => r.code);
-      if ((T21.top3 || /^https:/.test(base)) && T21.top3?.v !== 'up3-v1') check(T21.top3?.v === 'top3-v2' && T21.top3?.gn === 12 && Array.isArray(T21.top3?.how) && T21.top3.how.length === 3 && new Set(codes3).size === 3,
-        '⑳ 1억 번 셈 v2 — 잣대 셋 · 무게 열두 가지 · 1 · 2 · 3등은 서로 다른 회사', JSON.stringify({v: T21.top3?.v, gn: T21.top3?.gn, codes3}));
-    }
-    const cells = KEY6.flatMap(k => (T21.lists?.[k] ?? []).map(c => ({k, c})));
-    // 주문 1111-1857(사장님 2026-11-11 18:57 「… 선정 기준을 상승할것 같은 종목 으로 해야 해! 에이전트 100개 …」) — 새 잣대(up3-v1): 우량주 365곳에서 넷 고른 섞기 첫 셋
-    //   자료: 셋 · 등수 1 · 2 · 3 · 서로 다른 회사 · 판 회사 · 잣대 넷 · 고를 수 있는 곳 100 넘음 · 값 = 그 판 날 값 · 칸에 든 회사만 그 칸에 등수(아니면 칸 표 0)
-    //   첫 페이지: 그림 셋째 ~ 다섯째 줄 [1등] 이름 셋(차례 · 이름 = 자료) · 누르면 회사 쪽 · 풀이 「새 잣대로 우량주 365곳에서 골랐어요.」 · 「왜?」 쪽: 새 잣대 상자
-    const UP3 = t3?.v === 'up3-v1', coOk = UP3 && Array.isArray(t3.rank) ? await Promise.all(t3.rank.map(r => J('/atlas/data/co/' + r.code + '.json').then(x => !!x?.c?.name).catch(() => false))) : []; // 누르면 열 회사 쪽 자료
-    const up3ok = UP3 && Array.isArray(t3.rank) && t3.rank.length === 3 && t3.rank.map(r => r.place).join() === '1,2,3' && new Set(t3.rank.map(r => r.code)).size === 3
-      && t3.rank.every(r => /^[0-9A-Z]{6}$/.test(r.code) && typeof r.name === 'string' && r.name && Number.isFinite(r.score) && Array.isArray(r.parts) && r.parts.length === 4 && r.date === T21.asOf?.board && Number.isFinite(r.close) && r.close > 0) && coOk.every(Boolean)
-      && t3.rank.every((r, i) => !i || r.score <= t3.rank[i - 1].score) && Array.isArray(t3.how) && t3.how.length === 4 && Number.isInteger(t3.pool) && t3.pool >= 100 && t3.pool <= t3.n
-      && cells.every(x => x.c.r3 == null ? !t3.rank.some(r => r.code === x.c.code) : t3.rank.some(r => r.code === x.c.code && r.place === x.c.r3));
-    if (UP3) { R.m.top3 = t3.rank.map(r => r.place + ':' + r.name + ':' + r.score + ':' + (r.in ?? []).join('+')); check(up3ok, '⑳ 새 잣대(주문 1111-1857) — 우량주 365곳 · 넷 고른 섞기 · 1 · 2 · 3등 서로 다른 회사 · 점수 차례 · 그 판 날 값 · 칸에 든 회사만 칸 등수', JSON.stringify({m: R.m.top3, pool: t3.pool, n: t3.n, co: coOk})); }
-    const sum = j => Object.values(t3?.cells ?? {}).reduce((a, x) => a + (Array.isArray(x) ? x[j] : 0), 0);
-    const t3ok = !!t3 && t3.total >= 100000000 && Array.isArray(t3.rank) && t3.rank.length === 3 && t3.rank.map(r => r.place).join() === '1,2,3' && Object.keys(t3.cells ?? {}).length === cells.length
-      && sum(0) === t3.total && sum(1) === t3.total && sum(2) === t3.total && t3.rank.every((r, i) => !i || r.first <= t3.rank[i - 1].first)
-      && t3.rank.every(r => cells.some(x => x.k === r.k && x.c.code === r.code && x.c.r3 === r.place)) && cells.filter(x => [1, 2, 3].includes(x.c.r3)).length === 3;
-    if (!UP3) R.m.top3 = t3 ? t3.rank.map(r => r.place + ':' + r.k + ':' + r.name + ':' + r.first) : null;
-    if (!UP3 && (t3 || /^https:/.test(base))) check(t3ok, '⑳ 1억 번 셈 — 1억 판 · 판마다 1등 · 2등 · 3등 하나씩(합 = 1억) · 1등 · 2등 · 3등 = 1등 횟수 차례 · 그 칸에 등수', JSON.stringify(R.m.top3));
-    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
-    await QUIET(ctx);
-    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-    await open(p, '#/');
-    check(await p.evaluate(() => !document.querySelector('#su main.sj-page a.sj-row, #su main.sj-page a.sj-up3a, #su main.sj-page section.sj-up3')), '⑳ 처음 쪽 42칸 · 1 · 2 · 3등 칸 0(병법 서른여섯만 — 주문 1115-1843 · 1 · 2 · 3등 쪽과 「왜?」 쪽은 아래에서 그대로 잼)', '');
-    const want = cells.filter(x => [1, 2, 3].includes(x.c.r3)).map(x => x.c.r3 + ':' + x.k + ':' + x.c.code).sort();
-    const LEG = CULT ? '1등 2등 3등 손자병법 계산법 차례 문화 일곱으로 고르고 1억 번 섞었어요.' : '1등 2등 3등 손자병법 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.';
-    // 주문 1112-0044(사장님 2026-11-12 00:44 「여기 1.2.3에 그래프 그리고 다양한 정보 직관적으로 보이게 하고 클릭 하면 그정보가 이어지게 해」) — 1 · 2 · 3등 넓은 칸 셋:
-    //   칸마다 [N등] 이름 · 현재가 · 한 달 · 업종(자료) · 까닭(잣대 넷 가운데 값이 가장 큰 것) · 한 달 꺾은선(21 마지막 값이 있으면) · › · 누름 48 넘게 · 누르면 #/c/<번호>/t · 아래 달력 고리(#/r/c · 누름 48 넘게)
-    const UPHOW = Array.isArray(t3?.how) && t3.how.length === 4 ? t3.how : ['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림'];
-    const EASYHOW = {'긴 오름세 · 덜 흔들림': '1년 꾸준히 오름', '1년 오른 날 몫': '1년 오른 날이 많음', '업종 따라잡기': '업종보다 덜 오름', '닷새 눌림': '최근 5일 쉼'}; // 쉬운 판(주문 1112-0253) — 보이는 말
-    const topWhy = r => { const ps = Array.isArray(r?.parts) ? r.parts : []; let j = -1; ps.forEach((v, i) => { if (Number.isFinite(v) && (j < 0 || v > ps[j])) j = i; }); return j < 0 ? null : (EASYHOW[UPHOW[j]] ?? UPHOW[j]); };
-    const spOk = r => Array.isArray(r?.c) && r.c.length === 21 && r.c.every(v => Number.isFinite(v) && v > 0) && r.c[20] === r.close && r.date === T21.asOf?.board;
-    if (UP3) {
-      const wantU = t3.rank.map(r => r.place + ':' + r.place + '등:' + r.name + ':#/c/' + r.code + '/t');
-      // 주문 1114-1306 ① · ③ — 한 달 = 「한 달 100원이 ○원」(자료 ch20 · 없으면 21 마지막 값으로 따로 셈) · 한 달 값이 내렸으면 이유 줄 첫 마디 「한 달은 내림 · 」 · 머리 아래 「더 내릴 수도 있어요.」
-      const c20Of = r => (Number.isFinite(r?.ch20) ? r.ch20 : Math.round((r.c[20] / r.c[0] - 1) * 1000) / 10);
-      const whyW = r => '이유 — ' + (spOk(r) && c20Of(r) < 0 ? '한 달은 내림 · ' : '') + (topWhy(r) ?? '확인 필요');
-      // 누르면 이어지는 쪽 #/c/<번호>/t — 큰 제목 · 칩 셋 · 한 달 꺾은선 · 잣대 넷 막대 · 풀이 넷 · 넷을 더한 차례 · 다른 두 곳(누르면 그 곳) · 달력 · 회사 쪽 · 「왜 사?」 · 안전 문장
-      for (const r of t3.rank) {
-        await open(p, '#/c/' + r.code + '/t');
-        const u = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero.u3'); if (!H) return null;
-          return {h1: document.querySelector('#su h1')?.textContent ?? '', place: H.getAttribute('data-place'), chips: [...H.querySelectorAll('.u3-sum .yw-chip span')].map(e => e.textContent).join(','),
-            line: H.querySelectorAll('svg.u3-line path.u3-lp').length, bars: H.querySelectorAll('svg.u3-bars g.u3-bar').length, words: [...H.querySelectorAll('svg.u3-bars text.u3-bw')].map(e => e.textContent),
-            li: H.querySelectorAll('.u3-ol .yw-li').length, v: H.querySelector('p.u3-verdict')?.textContent ?? '', others: [...H.querySelectorAll('a.u3-other')].map(a => a.getAttribute('href')),
-            go: [...H.querySelectorAll('nav.u3-go a')].map(a => a.getAttribute('href')), safe: (H.textContent ?? '').includes('앞날을 맞히지 않아요. 지난 값으로 센 기록이에요.')}; });
-        const ordK = n => (n === 1 ? '첫 번째' : n + '번째'), szK = v => (Number.isFinite(v) ? (v >= 0.5 ? '높아요' : v <= -0.5 ? '낮아요' : '보통이에요') : '확인 필요');
-        const wantO = t3.rank.filter(x => x.code !== r.code).map(x => '#/c/' + x.code + '/t');
-        check(!!u && u.h1 === r.name + ', 왜 ' + r.place + '등?' && u.place === String(r.place) && u.chips === '현재가,한 달,업종' && u.line === (spOk(r) ? 1 : 0) && u.bars === 4 && JSON.stringify(u.words) === JSON.stringify((r.parts ?? []).map(szK))
-          && u.li === 4 && u.v === '넷을 더한 값이 우량주 ' + t3.pool + '곳 가운데 ' + ordK(r.place) + '로 커서 ' + r.place + '등이에요.' && JSON.stringify(u.others) === JSON.stringify(wantO)
-          && JSON.stringify(u.go) === JSON.stringify(['#/r/c', '#/c/' + r.code, '#/q/' + r.code]) && u.safe,
-          '⑳ 1 · 2 · 3등 한 곳 쪽(주문 1112-0044) — ' + r.place + '등 ' + r.name + ' · 꺾은선 · 잣대 넷 막대 · 넷을 더한 차례 · 다른 두 곳 · 달력 · 회사 쪽', JSON.stringify(u).slice(0, 300));
-      }
-      const other = cells.map(x => x.c.code).find(c => !t3.rank.some(r => r.code === c)); // 1 · 2 · 3등이 아닌 회사 — 쪽 대신 「찾지 못했어요」
-      if (other) { await open(p, '#/c/' + other + '/t'); const nf = await p.evaluate(() => document.querySelector('#su h1')?.textContent ?? ''); check(nf === '찾지 못했어요', '⑳ 1 · 2 · 3등이 아닌 회사의 새 잣대 쪽 — 찾지 못했어요', other + ' ' + nf); }
-    }
-    if (UP3) for (const pick of [cells.find(x => [1, 2, 3].includes(x.c.r3)), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
-      await open(p, `#/c/${pick.c.code}/y/${pick.k}`);
-      const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-top3'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', li: b.querySelectorAll('.yw-li').length,
-        crit: document.querySelectorAll('#su .yw-crit .yw-li').length} : null; });
-      const pl = [1, 2, 3].includes(pick.c.r3) ? pick.c.r3 : null, R3 = n => t3.rank.find(r => r.place === n)?.name;
-      check(!!w && w.crit === 7 && (pl ? w.h === '오늘의 ' + pl + '등' && w.li === 4 && w.v === '넷을 더한 값이 ' + (pl === 1 ? '첫 번째' : pl + '번째') + '로 커서 ' + pl + '등이에요.'
-        : w.h === '오늘의 1 · 2 · 3등' && w.li === 0 && w.v.startsWith('1등 ' + R3(1) + ' · 2등 ' + R3(2) + ' · 3등 ' + R3(3)) && /(이에요|예요)\.$/.test(w.v)),
-        '⑳ 「왜?」 쪽 — 새 잣대 상자 · 기준 일곱 — ' + (pl ? pl + '등 ' : '등수 밖 ') + pick.k + ' ' + pick.c.name, JSON.stringify(w).slice(0, 200));
-    }
-    if (t3 && !UP3) for (const pick of [cells.find(x => x.c.r3 === 1), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
-      await open(p, `#/c/${pick.c.code}/y/${pick.k}`);
-      const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-top3'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', crit: document.querySelectorAll('#su .yw-crit .yw-li').length,
-        mc: [...document.querySelectorAll('#su .yw-crit .yw-li')].map(e => e.textContent).join(' ').includes('번 섞어 그린 길 가운데'), cu: document.querySelectorAll('#su .yw-cu .yw-li').length,
-        cuOn: [...document.querySelectorAll('#su .yw-cu .yw-ok')].map(e => e.textContent).join(',')} : null; });
-      const top = pick.c.r3 === 1;
-      check(!!w && w.crit === 7 && w.mc && (!CULT || w.cu === 7) && (top ? w.h === '손자병법 계산법 1등 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,]+만( [\d,]+)?번 끝까지 남았어요\. 42칸 가운데 첫 번째예요\. 그래서 1등이에요\.$/.test(w.v) : w.h === '손자병법 계산법 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,만 ]+번 끝까지 남았어요\. 42칸 가운데 (첫 |\d+)번째예요\.( 같은 회사의 다른 칸이 더 많이 남아 등수는 그 칸에 달았어요\.)?$/.test(w.v)),
-        '⑳ 「왜?」 쪽 — 1억 번 셈 상자 · 기준 일곱(몬테카를로) — ' + (top ? '1등 ' : '등수 밖 ') + pick.k + ' ' + pick.c.name, JSON.stringify(w).slice(0, 200));
-    }
-    check(!errs.length, '⑳ 화면 오류 0', errs.slice(0, 3).join(' / '));
-    await ctx.close();
-  } else if (T21.strict) {
-    // 주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 표시 판(mode mark): 칸은 일곱 그대로 · 엄격 셈을 모두 지난 칸만 sx · 「수르 계산법」 표
-    const MARKM = T21.strict.mode === 'mark';
-    check(!!SX && SX.rule === T21.strict.rule && SX.asOf?.board === T21.asOf?.board && SX.crit?.length === 31 && new Set(SX.crit.map(c => c.id)).size === 31 && SX.mc?.paths >= 100000 && SX.mc?.p <= 0.05,
-      '⑳ 엄격 셈 자료 — 규칙 · 판 날 · 기준 31가지 · 몬테카를로 10만 길 · 스무 번에 한 번', JSON.stringify({rule: SX?.rule, board: SX?.asOf?.board, n: SX?.crit?.length, mc: SX?.mc}));
-    const bad = [];
-    for (const k of KEY6) {
-      const L0 = T21.lists?.[k] ?? [], L = MARKM ? L0.filter(c => c.sx === true) : L0, g = SX?.groups?.[k], per = k.startsWith('money') ? 1 : 2, cnt = {};
-      for (const c of L) cnt[c.ind] = (cnt[c.ind] ?? 0) + 1;
-      const mk = !MARKM || (L0.length === 7 && JSON.stringify(L.map(c => c.code)) === JSON.stringify(T21.strict.marked?.[k] ?? []) && (g?.pick ?? []).length === L.length && L.every(c => g.pick.includes(c.code))
-        && L0.every(c => !!g?.co?.[c.code]?.mc)); // 표시 판: 일곱 그대로 · 표 = su21.json marked = su21-strict.json pick · 42칸 모두 몬테카를로 값이 있음
-      const ok = !!g && mk && L.length === g.final && L.length <= 7 && g.steps?.length === 31 && g.mc <= g.pool && g.steps.every((n, i) => n <= (i ? g.steps[i - 1] : g.mc)) && g.steps[30] >= g.final
-        && Object.values(cnt).every(n => n <= per) && L.every(c => { const m = g.co?.[c.code]; return m && m.mc?.p <= 0.05 && m.mc?.p2 <= 0.05 && m.ok?.length === 31 && m.ok.every(Boolean); });
-      if (!ok) bad.push(k + ' ' + JSON.stringify({n: L.length, g: g && {pool: g.pool, mc: g.mc, final: g.final}}));
-    }
-    R.m.strict = Object.fromEntries(KEY6.map(k => [k, SX?.groups?.[k] ? [SX.groups[k].pool, SX.groups[k].mc, SX.groups[k].final] : null]));
-    check(!bad.length, '⑳ 묶음마다 — 고른 곳 = 몬테카를로 두 번 모두 스무 번에 한 번 아래 · 기준 31가지 모두 통과 · 일곱까지 · 업종마다 둘(돈 둘 = 하나) · 소거 줄 줄어들기만' + (MARKM ? ' · 표시 판(칸 일곱 그대로 · 표 = 고른 곳)' : ''), bad.join(' | '));
-    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
-    await QUIET(ctx);
-    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-    await open(p, '#/');
-    if (MARKM) R.m.marked = KEY6.flatMap(k => (T21.lists?.[k] ?? []).filter(c => c.sx === true).map(c => k + ':' + c.name)); // 보고용 — 표가 붙은 칸(묶음 · 이름)
-    check(await p.evaluate(() => !document.querySelector('#su main.sj-page a.sj-row, #su main.sj-page a.sj-up3a, #su main.sj-page section.sj-up3')), '⑳ 처음 쪽 42칸 · 1 · 2 · 3등 칸 0(병법 서른여섯만 — 주문 1115-1843 · 1 · 2 · 3등 쪽과 「왜?」 쪽은 아래에서 그대로 잼)', '');
-    const first = KEY6.map(k => [k, (T21.lists?.[k] ?? []).find(c => !MARKM || c.sx === true)]).find(([, c]) => c);
-    if (MARKM) { // 표가 없는 칸 — 「왜?」 쪽에 어디서 걸렸는지(몬테카를로 또는 기준 31가지)
-      const un = KEY6.map(k => [k, (T21.lists?.[k] ?? []).find(c => c.sx !== true)]).find(([, c]) => c);
-      if (un) {
-        await open(p, `#/c/${un[1].code}/y/${un[0]}`);
-        const u = await p.evaluate(() => { const b = document.querySelector('#su .yw-strict'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', li: b.querySelectorAll('.yw-li').length, no: b.querySelectorAll('.yw-no').length} : null; });
-        check(!!u && u.h === '손자병법 계산법 — 몬테카를로와 기준 31가지' && /표가 붙지 않았어요/.test(u.v) && (u.li === 0 ? /몬테카를로에서 걸려/.test(u.v) : u.li === 31 && u.no >= 1), '⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지 — ' + un[0] + ' ' + un[1].name, JSON.stringify(u).slice(0, 200));
-      }
-    }
-    if (first) {
-      await open(p, `#/c/${first[1].code}/y/${first[0]}`);
-      const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-strict'); return b ? {li: b.querySelectorAll('.yw-li').length, pass: [...b.querySelectorAll('.yw-ok')].filter(e => e.textContent === '통과').length, s: [...b.querySelectorAll('p.yw-s')].slice(0, 2).map(e => e.textContent), v: b.querySelector('p.yw-verdict')?.textContent ?? null} : null; });
-      check(!!w && w.li === 31 && w.pass === 31 && /번 섞어 그린 길 가운데/.test(w.s[0] ?? '') && /후보 \d+곳 → 몬테카를로를 지난 곳 \d+곳 → 기준 31가지를 모두 지난 곳 \d+곳/.test(w.s[1] ?? '') && (!MARKM || /「수르 계산법」 표가 붙었어요/.test(w.v ?? '')), '⑳ 「왜?」 쪽 — 더 엄격하게(몬테카를로 · 후보 → 몬테카를로 → 31가지) · 기준 31가지 모두 통과 — ' + first[0] + ' ' + first[1].name, JSON.stringify(w).slice(0, 200));
-    }
-    check(!errs.length, '⑳ 화면 오류 0', errs.slice(0, 3).join(' / '));
-    await ctx.close();
-  } else check(!/^https:/.test(base), '⑳ 진짜 사이트 — 엄격 셈 자료(su21.json strict)', 'strict 없음');
-}
-{ // ⑲ 기록창 — 한국 시장 일곱 가지(주문 0814 · 사장님 2026-11-09 08:14 「… 다른 나라와 비교할 때 … 정말 아주 다른 특징 … 총 7가지 … 기록창을 만들어 먼저 기재 하라 에이전트 활용하라」 · 08:25 「수르에 올려야해」)
-  //   기록 쪽 서랍 → #/r/k · 일곱 칸 = 자료(su/data/kr7.json) 그대로 · 칸마다 한국은 · 다른 나라는(둘 넘게) · 한국 문화와 이어진 까닭 · 근거(하나 넘게) · 한눈 그림 일곱 짝 · 새 문장 「%」 0 · 영어 글자 0 · 쪽 규칙(넘침 · 17px · 48 · 고리 · 안전 문장 · 쓰지 않을 말)
-  const K = await J('/su/data/kr7.json').catch(() => null);
-  check(!!K && Array.isArray(K.items) && K.items.length === 7 && K.items.every(it => it.t && it.one && it.kr && it.why && it.culture && it.tag && it.vs?.length >= 2 && it.src?.length >= 1), '⑲ 기록창 자료 — 일곱 가지 · 칸마다 한국은 · 다른 나라는 둘 넘게 · 이유 · 근거', JSON.stringify(K?.items?.map(x => x.t) ?? null).slice(0, 200));
-  for (const width of [390, 320]) {
-    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
-    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-    const W = '⑲ [' + width + '] ';
-    await open(p, '#/r');
-    const dr = await p.evaluate(() => [...document.querySelectorAll('#su a.su-drawer')].map(a => ({href: a.getAttribute('href'), t: a.querySelector('b')?.textContent ?? ''})));
-    check(dr.some(d => d.href === '#/r/k' && d.t === '한국 시장 일곱 가지'), W + '기록 쪽 서랍 「한국 시장 일곱 가지」 → #/r/k', JSON.stringify(dr.map(d => d.href)));
-    await open(p, '#/r/k');
-    await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.k7-d')) d.open = true; });
-    const m = await measure(p); pageRules(m, W + '기록창');
-    const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.k7');
-      return {h1: document.querySelector('#su h1')?.innerText ?? '', g: hero?.getAttribute('data-g') ?? null, rows: hero ? hero.querySelectorAll('svg.k7-map g.k7-row').length : 0,
-        cards: hero ? [...hero.querySelectorAll('li.k7-li')].map(li => ({t: li.querySelector('.k7-t')?.textContent ?? '', vs: li.querySelectorAll('.k7-v').length, src: li.querySelectorAll('.k7-sr').length, why: li.querySelector('.k7-why')?.textContent ?? ''})) : [],
-        text: [...document.querySelectorAll('#su main .su-hero.k7, #su main .k7-how')].map(e => e.innerText).join('\n')}; });
-    check(g.g === 'su-kr7' && g.h1.includes('한국 주식시장') && g.rows === 7 && g.cards.length === 7, W + '쪽 꼴 — 큰 제목 · 한눈 그림 일곱 짝 · 일곱 칸', JSON.stringify({h1: g.h1, rows: g.rows, n: g.cards.length}));
-    if (K?.items) check(g.cards.every((c, i) => c.t === K.items[i].t && c.vs === K.items[i].vs.length && c.src === K.items[i].src.length && c.why === K.items[i].why), W + '일곱 칸 = 자료 그대로(차례 · 이름 · 다른 나라 · 근거 · 이유)', JSON.stringify(g.cards.map(c => [c.t, c.vs, c.src])).slice(0, 200));
-    check(!g.text.includes('%') && !/[A-Za-z]/.test(g.text), W + '새 문장에 「%」 · 영어 글자 없음', (g.text.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
-    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
-    if (width === 390) R.m.kr7 = {cards: g.cards.length, rows: g.rows, screens: m.screens};
-    await ctx.close();
-  }
-}
-{ // ⑲-2 기록창 — 한국 투자자 특징 열하나(주문 2235 · 사장님 2026-11-09 22:35 「어 올려」 — 물음 「특징 열하나도 기록창에 올릴까요?」의 답 · 주문 1912 도우미 열하나가 찾은 것)
-  //   기록 쪽 서랍 → #/r/i · 열한 칸 = 자료(su/data/ant11.json) 그대로 · 칸마다 한국은 · 다른 나라는(하나 넘게) · 수르에서는 · 근거 · 한눈 그림 열한 짝 · 쓰는 흔적을 모으면 문화 일곱 · 「%」 · 영어 글자 0 · 쪽 규칙
-  const K = await J('/su/data/ant11.json').catch(() => null);
-  const uses = new Set((K?.items ?? []).flatMap(it => it.uses ?? []));
-  check(!!K && Array.isArray(K.items) && K.items.length === 11 && K.items.every(it => it.t && it.one && it.kr && it.why && it.culture && it.tag && it.vs?.length >= 1 && it.src?.length >= 1)
-    && ['herd', 'near', 'rev', 'casc', 'big', 'lot', 'attn'].every(k => uses.has(k)) && uses.size === 7, '⑲ 기록창 자료 — 특징 열하나 · 칸마다 한국은 · 다른 나라는 · 수르에서는 · 근거 · 쓰는 흔적 = 문화 일곱', JSON.stringify({n: K?.items?.length, uses: [...uses]}));
-  for (const width of [390, 320]) {
-    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
-    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-    const W = '⑲ 특징 열하나 [' + width + '] ';
-    await open(p, '#/r');
-    const dr = await p.evaluate(() => [...document.querySelectorAll('#su a.su-drawer')].map(a => ({href: a.getAttribute('href'), t: a.querySelector('b')?.textContent ?? ''})));
-    check(dr.some(d => d.href === '#/r/i' && d.t === '한국 투자자 특징 열하나'), W + '기록 쪽 서랍 「한국 투자자 특징 열하나」 → #/r/i', JSON.stringify(dr.map(d => d.href)));
-    await open(p, '#/r/i');
-    await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.k7-d')) d.open = true; });
-    const m = await measure(p); pageRules(m, W + '기록창');
-    const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.k7');
-      return {h1: document.querySelector('#su h1')?.innerText ?? '', g: hero?.getAttribute('data-g') ?? null, rows: hero ? hero.querySelectorAll('svg.k7-map g.k7-row').length : 0,
-        cards: hero ? [...hero.querySelectorAll('li.k7-li')].map(li => ({t: li.querySelector('.k7-t')?.textContent ?? '', vs: li.querySelectorAll('.k7-v').length, src: li.querySelectorAll('.k7-sr').length, why: li.querySelector('.k7-why')?.textContent ?? ''})) : [],
-        text: [...document.querySelectorAll('#su main .su-hero.k7, #su main .k7-how')].map(e => e.innerText).join('\n')}; });
-    check(g.g === 'su-ant11' && g.h1.includes('한국 개인 투자자') && g.rows === 11 && g.cards.length === 11, W + '쪽 꼴 — 큰 제목 · 한눈 그림 열한 짝 · 열한 칸', JSON.stringify({h1: g.h1, rows: g.rows, n: g.cards.length}));
-    if (K?.items) check(g.cards.every((c, i) => c.t === K.items[i].t && c.vs === K.items[i].vs.length && c.src === K.items[i].src.length && c.why === K.items[i].why), W + '열한 칸 = 자료 그대로(차례 · 이름 · 다른 나라 · 근거 · 수르에서는)', JSON.stringify(g.cards.map(c => [c.t, c.vs, c.src])).slice(0, 200));
-    check(!g.text.includes('%') && !/[A-Za-z]/.test(g.text), W + '새 문장에 「%」 · 영어 글자 없음', (g.text.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
-    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
-    if (width === 390) R.m.ant11 = {cards: g.cards.length, rows: g.rows, screens: m.screens};
-    await ctx.close();
-  }
-}
-{ // ⑱ 회사 쪽 장 중 한 달 꺾은선(주문 0806 · 사장님 2026-11-09 08:06 「어 그렇게 해」 — 장이 열린 낮에 첫 페이지 꺾은선이 1분마다 바뀌면 회사 쪽 꺾은선도 똑같이)
-  //   가) /api/price 답을 시험 값으로 끼움: 판 다음 날 장 중 값 → 회사 쪽 줄 = 맨 앞 하루를 빼고 그 값을 끝에(첫 페이지 relive 와 같은 셈) · 처음 날 = 둘째 날 · 끝 날 = 그날 · 시장 줄 없음 · 끝값 이름표 · 첫 페이지 칸과 같은 꼴
-  //       판과 같은 날 값 → 끝 값만 바뀜 · 날짜 · 시장 줄 그대로 · 값 없음 → 판 값 그대로
-  //   나) 진짜 답(끼우지 않음): 장 중이면 회사 쪽 줄 끝 = 그 현재가 · 앞 20개 = 판 값 · 첫 페이지 칸과 같은 때 값이면 같은 현재가 · 같은 꼴 / 장 밖이면 판 값 그대로
-  const T21 = await J('/su/data/su21.json'), N21x = await J('/su/data/su21-next.json').catch(() => null), day = T21?.asOf?.board ?? '';
-  const h = [...['hot', 'money', 'bloom'].map(k => T21?.lists?.[k]?.[0]), ...['hotNext', 'moneyNext', 'bloomNext'].map(k => N21x?.lists?.[k]?.[0])].find(x => x && Array.isArray(x.c) && x.c.length === 21 && x.close > 0), lw = h ? await lineWant(h.code) : null;
-  const next = (() => { const d = new Date(day + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + 3); return d.toISOString().slice(0, 10); })();
-  const P = h?.close ? Math.round(h.close * 1.031) : 0, P2 = h?.close ? Math.round(h.close * 0.987) : 0, NFk = new Intl.NumberFormat('ko-KR'), mdK = d => { const q = /^\d{4}-(\d{2})-(\d{2})$/.exec(d ?? ''); return q ? +q[1] + '월 ' + +q[2] + '일' : null; };
-  const coOf = p => p.evaluate(() => { const s = document.querySelector('#su svg.su-co-jobs'), co = s?.querySelector('g[data-line="co"]');
-    return s ? {px: s.getAttribute('data-px'), live: s.getAttribute('data-live'), label: s.getAttribute('aria-label') ?? '', v: co?.getAttribute('data-v') ?? null, from: co?.getAttribute('data-from') ?? null, to: co?.getAttribute('data-to') ?? null,
-      pts: co?.querySelector('polyline.cj-co')?.getAttribute('points') ?? '', ix: !!s.querySelector('g[data-line="idx"]'), chartLive: s.querySelector('g.cj-chart')?.getAttribute('data-live') ?? null, lab: s.querySelector('.su-lg-c .v')?.textContent ?? '',
-      axis: [...s.querySelectorAll('g[data-per="line"] text')].map(e => e.textContent), n: s.querySelector('text.cj-px tspan.cj-n')?.textContent ?? '', d: s.querySelector('text.cj-d')?.textContent ?? ''} : null; });
-  const cellOf = (p, code) => p.evaluate(code => { const a = document.querySelector(`#su main.sj-page a.sj-row[data-code="${code}"]`); return a ? {px: a.getAttribute('data-px'), live: a.getAttribute('data-live'), sp: a.querySelector('path.sj-sp1')?.getAttribute('d') ?? ''} : null; }, code); // 손자병법 첫 쪽(주문 1115-1706) — 줄 a.sj-row
-  const lastOfV = v => v[20] / v[0] * 100 - 100;
-  if (h && P && lw) { // 판 날짜 21개(cd)가 없으면(미리 보기 묶음 — 저장된 옛 판) 밀린 처음 날 글은 없음(그림이 처음 날을 쓰지 않음)
-    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
-    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-    let mode = 'open';
-    await p.route('**/api/price*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(mode === 'same' ? {schema: 'su-price-1', day, hhmm: '1530', status: 'closed', items: {[h.code]: {p: P2, t: day + 'T15:30'}}}
-      : mode === 'none' ? {schema: 'su-price-1', day: next, hhmm: '0901', status: 'open', items: {}} : {schema: 'su-price-1', day: next, hhmm: '1431', status: 'open', items: {[h.code]: {p: P, t: next + 'T14:31'}}})}));
-    // 가-1 판 다음 날 장 중
-    await open(p, `#/c/${h.code}`); await p.waitForTimeout(1200);
-    const a = await coOf(p), want = [...lw.v.slice(1), P];
-    const okA = !!a && a.px === String(P) && a.live === next + 'T14:31' && a.chartLive === next + 'T14:31' && a.v === want.join(',') && a.from === (lw.cd ? lw.cd[1] : '') && a.to === next && !a.ix && a.lab === won100Of(lastOfV(want))
-      && (lw.cd ? a.axis[0] === mdK(lw.cd[1]) : a.axis.length === 1) && a.axis[a.axis.length - 1] === mdK(next) && a.n === NFk.format(P) && a.label.includes('현재가 ' + NFk.format(P) + '원') && a.label.includes('오후 2시 31분 값') && a.label.includes('한 달 줄 ' + won100Of(lastOfV(want))); // 끝값 · 소리 이름표 = 「100원이 ○원」(주문 1114-1306)
-    R.m.coLive = {a: a && {px: a.px, live: a.live, from: a.from, to: a.to, ix: a.ix, lab: a.lab}}; // 첫 페이지 칸과 맞대던 꼴은 지움(처음 쪽 칸 없음 — 주문 1115-1843)
-    check(okA, '⑱ 회사 쪽 장 중 — 판 다음 날 값이면 꺾은선 맨 앞 하루를 빼고 그 값을 끝에 · 처음 날 = 둘째 날 · 끝 날 = 그날 · 시장 줄 없음 · 끝값 이름표 · 현재가 글(주문 0806)', JSON.stringify(a).slice(0, 300));
-    // 가-2 판과 같은 날 값(장 끝 값) → 끝 값만
-    mode = 'same'; await open(p, `#/c/${h.code}`); await p.waitForTimeout(1200);
-    const b = await coOf(p), want2 = [...lw.v.slice(0, 20), P2];
-    check(!!b && b.px === String(P2) && b.v === want2.join(',') && b.from === (lw.from ?? '') && b.to === day && b.ix === lw.idx && b.lab === won100Of(lastOfV(want2)) && b.d === '현재가는 ' + mdK(day) + ' 마지막 값이에요.',
-      '⑱ 회사 쪽 — 판과 같은 날 값이면 끝 값만 바뀜 · 날짜 · 시장 줄 그대로', JSON.stringify(b).slice(0, 300));
-    // 가-3 받은 값 없음 → 판 값 그대로
-    mode = 'none'; await open(p, `#/c/${h.code}`); await p.waitForTimeout(1200);
-    const z = await coOf(p);
-    check(!!z && z.px === String(h.close) && z.live === null && z.v === lw.v.join(',') && z.from === (lw.from ?? '') && z.to === day, '⑱ 회사 쪽 — 받은 값이 없으면 판 값 그대로', JSON.stringify(z).slice(0, 200));
-    check(!errs.length, '⑱ 회사 쪽 장 중 화면 오류 0', errs.slice(0, 3).join(' / '));
-    await ctx.close();
-  } else check(false, '⑱ 회사 쪽 장 중 — 불장 첫 회사 판 값', JSON.stringify({h: h?.code, lw: !!lw, cd: !!lw?.cd}));
-  // 나) 진짜 답 — 지금 이 때(장 중이든 밖이든)
-  if (h && lw) {
-    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
-    const p = await ctx.newPage();
-    await open(p, `#/c/${h.code}`); await p.waitForTimeout(2500);
-    const a = await coOf(p);
-    const v = String(a?.v ?? '').split(',').map(Number), sh = !!a?.to && a.to > day; // 첫 페이지 칸과 맞대던 것은 지움(처음 쪽 칸 없음 — 주문 1115-1843)
-    const ok = !!a && v.length === 21 && (a.live
-      ? +a.px > 0 && v[20] === +a.px && JSON.stringify(v.slice(0, 20)) === JSON.stringify(sh ? lw.v.slice(1) : lw.v.slice(0, 20)) && (sh ? a.from === (lw.cd ? lw.cd[1] : '') && !a.ix : a.from === (lw.from ?? ''))
-      : a.px === String(h.close) && a.v === lw.v.join(','));
-    R.m.coReal = {live: a?.live ?? null, px: a?.px ?? null, from: a?.from ?? null, to: a?.to ?? null};
-    check(ok, '⑱ 진짜 답 — 장 중이면 회사 쪽 꺾은선 끝 = 받은 현재가 · 앞 20개 = 판 값 / 장 밖이면 판 값 그대로', JSON.stringify(R.m.coReal));
-    // 장이 열려 있으면(날짜 글 「○월 ○일 오전/오후 ○시 ○분 값이에요.」) 1분 뒤 다시 — 회사 쪽 · 첫 페이지 칸 모두 때가 앞으로 · 회사 쪽 줄 끝 = 새 현재가
-    if (a?.live && /(오전|오후) \d+시/.test(a.d ?? '')) {
-      await open(p, `#/c/${h.code}`); await p.waitForTimeout(2500);
-      const a1 = await coOf(p); let a2 = a1;
-      for (let i = 0; i < 2 && !(a2?.live > a1?.live); i++) { await p.waitForTimeout(66000); a2 = await coOf(p); } // 1분마다 묻기 · 두 번까지 기다림
-      const v2 = String(a2?.v ?? '').split(',').map(Number);
-      R.m.coReal.minute = {t1: a1?.live ?? null, t2: a2?.live ?? null, px2: a2?.px ?? null};
-      check(!!a1?.live && !!a2?.live && a2.live > a1.live && v2.length === 21 && v2[20] === +a2.px, '⑱ 진짜 답 — 장 중 1분 뒤 회사 쪽 현재가 · 꺾은선 끝이 새 때 값으로 바뀜', JSON.stringify(R.m.coReal.minute));
-    }
-    await ctx.close();
-  }
-}
+// ⑰ 「왜?」 쪽 · ⑳ 엄격 셈 · ⑲ 한국 시장 일곱 · 투자자 열하나 · ⑱ 옛 회사 쪽 장 중 꺾은선 · ㉑ 1 · 2 · 3등 달력 · ㉒ 조용한 힘 — 그 쪽들을 지움(주문 1115-2328 · 옛 고리는 ⑨ 지운 쪽 검사가 첫 쪽으로 감을 잼)
 /** 돈 셈 한눈에(주문 1112-1304 · 사장님 2026-11-12 13:04 「지금까지 총 매수한 금액이 얼마고 그담에 날짜별로 매수한 금액이 얼마여 가지고 순실이나 수익이 어떻게 됐는지 … 바보도 알 수 있게끔」)
  *  장부 하나를 이 검사가 따로 셈(화면 코드 site/su/su-book.js 를 쓰지 않음): 산 셈마다 산 돈(산 값 × 주 수) · 지금(산 날부터 값 줄 맨 끝 값 × 주 수) · 날짜마다 더함 · 다섯 날 앞은 달마다 더함 · 모두
  *  돈 글은 화면과 맞대기에만 씀 — 결과 파일에는 맞음 · 틀림 · 날 · 수만(명령문 [4] 5 「수익률은 보내지 마라」 · 결과는 저장소에 올라감) */
@@ -1013,264 +541,6 @@ const wonM = v => { const a = Math.round(Math.abs(v)), e = Math.floor(a / 1e8), 
 const movedM = v => (Math.round(v) > 0 ? wonM(v) + ' 늘었어요' : Math.round(v) < 0 ? wonM(v) + ' 줄었어요' : '그대로예요');
 const hundM = (now, buy) => { const x = 100 * now / buy, a = Math.round(x * 10) / 10, t = a === 100 && now !== buy ? Math.round(x * 100) / 100 : a; return '100원이 ' + t.toLocaleString('ko-KR', {maximumFractionDigits: 2}) + '원'; };
 const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '▲', dn: '▼', eq: '―', one: '○'};
-function bookMoney(BK) {
-  const qty = BK?.qty;
-  if (!BK || !Array.isArray(BK.days) || !BK.days.length || !Number.isFinite(qty)) return null;
-  const pxOf = code => [...new Map((Array.isArray(BK.px?.[code]) ? BK.px[code] : []).filter(e => Array.isArray(e) && DAYm.test(e[0] ?? '') && Number.isFinite(e[1]) && e[1] > 0))].sort(([a], [b]) => a.localeCompare(b));
-  const rows = BK.days.flatMap(d => (d.picks ?? []).map(q => { const ser = pxOf(q.code).filter(([dd]) => dd >= d.board), now = ser.length ? ser[ser.length - 1] : [d.board, q.px];
-    return {day: d.board, place: q.place, name: q.name, one: ser.length < 2, cost: q.px * qty, val: now[1] * qty, nowDay: now[0]}; }));
-  const add = rs => { const cost = rs.reduce((a, r) => a + r.cost, 0), val = rs.reduce((a, r) => a + r.val, 0), diff = val - cost, one = rs.length > 0 && rs.every(r => r.one), st = one ? 'one' : Math.round(diff) > 0 ? 'up' : Math.round(diff) < 0 ? 'dn' : 'eq';
-    return {cost, val, diff, one, st, res: st === 'one' ? '아직 하루치' : st === 'eq' ? '그대로' : wonM(diff), said: one ? '아직 하루치예요' : movedM(diff)}; };
-  const last = rows.map(r => r.nowDay).sort().pop() ?? BK.asOf ?? null, lastY = String(last ?? '').slice(0, 4);
-  const days = [...new Set(rows.map(r => r.day))].sort().map(d => { const rs = rows.filter(r => r.day === d).sort((a, b) => a.place - b.place);
-    return {day: d, label: mdM(d) + ' (' + WDm[new Date(d + 'T00:00:00Z').getUTCDay()] + ')', names: rs.map(r => r.name).join(' · '), ...add(rs)}; });
-  const desc = [...days].reverse(), mons = new Map();
-  for (const x of desc.slice(5)) { const ym = x.day.slice(0, 7); if (!mons.has(ym)) mons.set(ym, []); mons.get(ym).push(x); }
-  const spanM = xs => { const a = xs[xs.length - 1].day, b = xs[0].day; return a === b ? mdM(a) : mdM(a) + ' ~ ' + +b.slice(8, 10) + '일'; }; // 달 줄 이름 = 그 달 접은 날의 처음 ~ 끝
-  const months = [...mons].map(([ym, xs]) => ({ym, days: xs, label: (ym.slice(0, 4) !== lastY ? ym.slice(0, 4) + '년 ' : '') + spanM(xs), ...add(rows.filter(r => xs.some(x => x.day === r.day)))}));
-  return {rows, days, desc, recent: desc.slice(0, 5), months, last, T: add(rows)};
-}
-{ // ㉑ 1 · 2 · 3등 달력(주문 0938 · 사장님 2026-11-10 09:38 「자 달력을 만들어 1.2.3달력을 그리고 찾아낸 그날부터해서 첫페이지처럼 표현햐서 추적해 그리고 10주씩 무조건 매수해 그리고 나서 수익율률을 추적하기 해봐   잡스라면」
-  //   · 주문 1513 · 사장님 2026-11-10 15:13 「모든사람 휴대폰에 열리게 해」 — 사장님 열쇠 문을 뺌 · 모든 사람 · 진짜 사이트 검사에서도 화면을 다 봄)
-  //   · 주문 1111-0938 · 사장님 2026-11-11 09:38 「종목이 복이게 하고 그때부터 지금까지 그래프 보이개 하고 매매 결과 직거ㅏㄴ적으로 보이게 하고 에이번트 11개 가동해서 가방 이상적인 시스템 토론해 잡스라면」
-  //     — 일꾼 열하나 판 · 토론 두 판(docs/design/top3-cal-2026-11-11/debate.md)으로 다시 짠 쪽
-  //   가) 자료 su/data/su21-book.json — 꼴(su21-book-1 · 10주) · 판 날 차례 · 날마다 1 · 2 · 3등 셋 · 산 값 = 그 회사 값 줄의 그 판 날 값 · 값 줄은 산 날(그 회사가 처음 든 판 날)부터 · 장부 판 날이 21곳 판 날보다 앞서지 않음
-  //   나) 모든 사람(열쇠 없는 기기) — 이 검사가 따로 센 값과 맞댐: 같은 크기 세 칸(늘었어요 · 줄었어요 · 셋째 칸) · 모두 합친 줄 · 접힌 「산 값과 지금」 · 합을 흔든 한 줄
-  //       · 달력 한 줄(장이 서는 날 다섯 · 뽑힌 날 단추 · 1 · 2 · 3등 차례 모양 · 칸 안) · 판 차례(새 판이 위 · 다섯 판만 펴고 그 앞은 달마다 접음) · 판마다 「처음 보인 때」
-  //       · 줄마다 등수 · 이름 · 회사 쪽 고리 · 「100원이 ○원」 · 10주 늘고 준 돈 · 모양 · 그림 · 아직 하루치 판은 이름 한 줄 · 390 첫 화면에 종목 이름 · 날 단추를 누르면 그 판으로
-  //       · 「%」 · 영어 0(회사 이름 빼고) · 「사장님 휴대폰에서만」 글 0 · 쪽 규칙 · 기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」
-  //   다) 주문 1112-1304(사장님 2026-11-12 13:04 「지금까지 총 매수한 금액이 얼마고 그담에 날짜별로 매수한 금액이 얼마여 가지고 순실이나 수익이 어떻게 됐는지 … 바보도 알 수 있게끔」)
-  //       — 맨 위 「지금까지」(산 돈 · 지금 · 늘었나 줄었나 · 모두 합치면 100원이 ○원 · ○월 ○일 값까지 · 첫 화면에 다 보임) · 「날짜마다」 표(새 날이 위 · 다섯 날 · 달마다 접음 · 그날 세 회사 · 맨 아래 모두 = 맨 위)
-  //       · 판마다 돈 줄 · 줄마다 「10주 ○원어치」 · 차례(지금까지 → 날짜마다 → 세 칸 → 달력 → 판) · 날짜마다 줄을 누르면 그날로 — 모두 bookMoney 가 장부에서 따로 셈
-  //   결과 파일에는 늘고 준 돈을 적지 않음(명령문 [4] 5 「수익률은 보내지 마라」 — 결과는 저장소에 올라감) · 날 수 · 칸 수 · 모양 수만
-  const BK = await J('/su/data/su21-book.json').catch(() => null), T21b = await J('/su/data/su21.json').catch(() => null);
-  const DAYb = /^\d{4}-\d{2}-\d{2}$/, NFb = new Intl.NumberFormat('ko-KR');
-  const pxOf = code => new Map((Array.isArray(BK?.px?.[code]) ? BK.px[code] : []).filter(e => Array.isArray(e) && DAYb.test(e[0] ?? '') && Number.isFinite(e[1]) && e[1] > 0));
-  const bdays = (Array.isArray(BK?.days) ? BK.days : []).map(d => d?.board);
-  const firstB = {}; for (const d of BK?.days ?? []) for (const q of d?.picks ?? []) if (q?.code && (!firstB[q.code] || d.board < firstB[q.code])) firstB[q.code] = d.board;
-  check(!!BK && BK.schema === 'su21-book-1' && BK.qty === 10 && bdays.length >= 1 && bdays.every((d, i) => DAYb.test(d ?? '') && (!i || bdays[i - 1] < d))
-    && BK.days.every(d => Array.isArray(d.picks) && d.picks.length === 3 && d.picks.every((q, i) => q && q.place === i + 1 && /^[0-9A-Z]{6}$/.test(q.code ?? '') && typeof q.name === 'string' && q.name && Number.isFinite(q.px) && q.px > 0 && pxOf(q.code).get(d.board) === q.px)),
-    '㉑ 1 · 2 · 3등 장부 자료 — 꼴 · 판 날 차례 · 날마다 셋 · 산 값 = 값 줄의 그 판 날 값', JSON.stringify({schema: BK?.schema, qty: BK?.qty, days: bdays}).slice(0, 200));
-  check(!!BK && Object.entries(firstB).every(([code, d0]) => [...pxOf(code).keys()].every(d => d >= d0)) && Object.keys(BK.px ?? {}).every(code => code in firstB),
-    '㉑ 값 줄은 산 날부터(그 회사가 처음 든 판 날) · 장부에 없는 회사 값 0', Object.keys(BK?.px ?? {}).join(' ').slice(0, 200));
-  // 장부 판 날 ≥ 21곳 판 날(장부 만들기가 멈추면 저장된 옛 장부라 21곳 판보다 앞섬) — 같음은 아님: 검사 묶음은 21곳을 저장된 옛 판(site/su/data/su21.json)으로 실을 때가 있음(주문 0938 올리기 1/11 · 틀림 장부 197)
-  check(!!BK && !!T21b?.asOf?.board && BK.asOf >= T21b.asOf.board && bdays[bdays.length - 1] <= BK.asOf, '㉑ 장부 판 날이 21곳 판 날보다 앞서지 않음(장부 만들기가 돎)', JSON.stringify({book: BK?.asOf ?? null, board: T21b?.asOf?.board ?? null, last: bdays[bdays.length - 1] ?? null}));
-  // 따로 셈 — 산 값 = 그 판 날 값 × 10주 · 지금 = 산 날부터 값 줄의 맨 끝 값 × 10주 · 산 뒤 값이 없으면 「아직 하루치」 · 같은 회사는 산 차례로 몇 번째
-  const wonB = v => { const a = Math.round(Math.abs(v)), e = Math.floor(a / 1e8), m = Math.floor((a % 1e8) / 1e4), r = a % 1e4; return [e ? NFb.format(e) + '억' : '', m ? NFb.format(m) + '만' : '', r || (!e && !m) ? NFb.format(r) : ''].filter(Boolean).join(' ') + '원'; };
-  const movedB = v => (Math.round(v) > 0 ? wonB(v) + ' 늘었어요' : Math.round(v) < 0 ? wonB(v) + ' 줄었어요' : '그대로예요');
-  const hundB = (now, buy) => { const x = 100 * now / buy, a = Math.round(x * 10) / 10, t = a === 100 && now !== buy ? Math.round(x * 100) / 100 : a; return '100원이 ' + t.toLocaleString('ko-KR', {maximumFractionDigits: 2}) + '원'; };
-  const kstB = t => { const ms = Date.parse(t ?? ''); if (!Number.isFinite(ms)) return null; const k = new Date(ms + 9 * 3600e3), d = k.toISOString().slice(0, 10), hh = k.getUTCHours(), mm = k.getUTCMinutes(); return {day: d, text: +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일 ' + (hh < 12 ? '오전 ' : '오후 ') + (hh % 12 || 12) + '시' + (mm ? ' ' + mm + '분' : '')}; };
-  const SHB = {up: '▲', dn: '▼', eq: '―', one: '○'};
-  const wantB = (() => {
-    if (!BK || !bdays.length) return null;
-    const times = {};
-    const rows = BK.days.flatMap(d => d.picks.map(q => { const ser = [...pxOf(q.code)].filter(([dd]) => dd >= d.board).sort(([a], [b]) => a.localeCompare(b)), now = ser.length ? ser[ser.length - 1][1] : q.px, one = ser.length < 2;
-      times[q.code] = (times[q.code] ?? 0) + 1;
-      return {day: d.board, seen: d.seen, place: q.place, code: q.code, name: q.name, buy: q.px, now, one, st: one ? 'one' : now > q.px ? 'up' : now < q.px ? 'dn' : 'eq', nth: times[q.code]}; }));
-    const cost = rows.reduce((a, r) => a + r.buy * BK.qty, 0), val = rows.reduce((a, r) => a + r.now * BK.qty, 0), n = {up: 0, dn: 0, eq: 0, one: 0};
-    for (const r of rows) n[r.st]++;
-    const big = rows.reduce((a, r) => (Math.abs(r.now - r.buy) * BK.qty > Math.abs(a.now - a.buy) * BK.qty ? r : a), rows[0]), bd = (big.now - big.buy) * BK.qty, diff = Math.round(val - cost);
-    const third = n.one && n.eq ? ['그대로 · 하루치', n.eq + n.one] : n.one ? ['아직 하루치', n.one] : ['그대로', n.eq];
-    const strip = []; for (let d = bdays[bdays.length - 1]; strip.length < 5;) { const w = new Date(d + 'T00:00:00Z').getUTCDay(); if (w && w < 6) strip.unshift(d); const t = new Date(d + 'T00:00:00Z'); t.setUTCDate(t.getUTCDate() - 1); d = t.toISOString().slice(0, 10); }
-    const desc = [...bdays].reverse();
-    return {rows, cost, val, diff, n, tiles: [['늘었어요', n.up], ['줄었어요', n.dn], third], swing: rows.length > 1 && bd && Math.abs(bd) * 2 >= Math.abs(diff) ? {r: big, d: bd, rest: diff - bd} : null,
-      strip, picks: strip.filter(d => bdays.includes(d)), desc, recent: desc.slice(0, 5), months: [...new Set(desc.slice(5).map(d => d.slice(0, 7)))]};
-  })();
-  const REC = ['#/r/c', '#/r/s', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y']; // 가까운 회사 쪽(#/r/n)은 버림(주문 1114-1306 ⑧)
-  const MB = bookMoney(BK); // 주문 1112-1304 — 지금까지 · 날짜마다(따로 셈)
-  R.m.book = {days: bdays.length, rows: wantB?.rows.length ?? 0, shapes: wantB?.n ?? null, folds: wantB?.months.length ?? 0, ledger: MB ? {rows: MB.recent.length, months: MB.months.length} : null, who: '모든 사람(주문 1513)'};
-  for (const width of [390, 320]) {
-    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
-    await QUIET(ctx);
-    const p = await ctx.newPage(), errs = [];
-    p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
-    const W = '㉑ 1 · 2 · 3등 달력 · 모든 사람 [' + width + '] ';
-    await open(p, '#/r/c');
-    await p.waitForFunction(() => document.querySelector('#su .su-hero.bk .bk-board'), null, {timeout: 10000}).catch(() => {});
-    // 첫 화면(아무것도 열기 전) — 390 너비에서 종목 이름이 아래 고정 줄(다음 · 탭)보다 위에 보임(주문 1112-1304 뒤로는 「날짜마다」 첫 줄의 세 회사 이름) · 맨 위 「지금까지」가 다 보임 · 첫 그림 자리는 결과 파일에만
-    const fold0 = await p.evaluate(() => { const lim = Math.min(...[...document.querySelectorAll('.su-dock, .su-tabs')].map(e => e.getBoundingClientRect().top).filter(Number.isFinite), innerHeight);
-      const nm = document.querySelector('#su .bk-days .bk-dnm, #su .bk-board .bk-names, #su .bk-board .bk-row .bk-nm'), sp = document.querySelector('#su .bk-board .bk-sp'), mo = document.querySelector('#su .bk-money');
-      return {lim: Math.round(lim), name: nm ? Math.round(nm.getBoundingClientRect().bottom) : null, line: sp ? Math.round(sp.getBoundingClientRect().top) : null, money: mo ? Math.round(mo.getBoundingClientRect().bottom) : null}; });
-    (R.m.bookFold ??= {})[width] = fold0;
-    if (width === 390) check(fold0.name != null && fold0.name <= fold0.lim, W + '첫 화면에 종목 이름(주문 1111-0938 「종목이 보이게」 — 아래 고정 줄보다 위)', JSON.stringify(fold0));
-    check(fold0.money != null && fold0.money <= fold0.lim, W + '첫 화면에 맨 위 「지금까지」가 다 보임(주문 1112-1304 — 산 돈 · 지금 · 늘었나 줄었나)', JSON.stringify(fold0));
-    await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.bk-split, #su details.bk-old, #su details.bk-dmon')) d.open = true; });
-    const m = await measure(p); pageRules(m, W);
-    const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.bk'), txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
-      return {diff: hero?.getAttribute('data-diff') ?? null, n: ['up', 'dn', 'eq', 'one'].map(k => hero?.getAttribute('data-' + k)),
-        tiles: [...document.querySelectorAll('#su .bk-tile')].map(e => [txt(e.querySelector('.bk-tl')), txt(e.querySelector('.bk-tn'))]), cap: txt(hero?.querySelector('.bk-sum .bk-cap')),
-        spl: [...document.querySelectorAll('#su .bk-split .bk-spl')].map(txt),
-        // 주문 1112-1304 — 맨 위 「지금까지」 · 「날짜마다」(줄 · 달 줄 · 맨 아래 모두) · 차례
-        money: (() => { const m = hero?.querySelector('.bk-money'); return m ? {h: [txt(m.querySelector('.bk-mh b')), txt(m.querySelector('.bk-mh span'))], c: txt(m.querySelector('.bk-mcost b')), v: txt(m.querySelector('.bk-mval b')), r: txt(m.querySelector('.bk-mres')),
-          sh: m.querySelector('.bk-mres [data-shape]')?.getAttribute('data-shape') ?? '', m100: txt(m.querySelector('.bk-m100'))} : null; })(),
-        ledH: [...(hero?.querySelectorAll('.bk-days .bk-dhead span') ?? [])].map(txt),
-        led: [...(hero?.querySelectorAll('.bk-days .bk-drow:not(.bk-dsum)') ?? [])].map(b => ({day: b.getAttribute('data-day'), btn: b.tagName === 'BUTTON', mon: b.closest('details.bk-dmon')?.getAttribute('data-month') ?? null,
-          d: txt(b.querySelector('.bk-dday')), c: txt(b.querySelector('.bk-dcost')), r: txt(b.querySelector('.bk-ddiff')), sh: b.querySelector('.bk-ddiff [data-shape]')?.getAttribute('data-shape') ?? '', n: txt(b.querySelector('.bk-dnm'))})),
-        ledM: [...(hero?.querySelectorAll('.bk-days details.bk-dmon') ?? [])].map(e => { const s = e.querySelector('summary'); return {ym: e.getAttribute('data-month'), d: txt(s?.querySelector('.bk-dday')), c: txt(s?.querySelector('.bk-dcost')), r: txt(s?.querySelector('.bk-ddiff')), sh: s?.querySelector('.bk-ddiff [data-shape]')?.getAttribute('data-shape') ?? ''}; }),
-        ledT: (() => { const t = hero?.querySelector('.bk-days .bk-dtot'); return t ? {d: txt(t.querySelector('.bk-dday')), c: txt(t.querySelector('.bk-dcost')), r: txt(t.querySelector('.bk-ddiff')), sh: t.querySelector('.bk-ddiff [data-shape]')?.getAttribute('data-shape') ?? ''} : null; })(),
-        order: (() => { const all = hero ? [...hero.querySelectorAll('*')] : []; return ['.bk-money', '.bk-days', '.bk-sum', '.bk-cal', '.bk-list'].map(q => { const e = hero?.querySelector(q); return e ? all.indexOf(e) : -1; }); })(),
-        cal: [...document.querySelectorAll('#su .bk-cal .bk-d')].map(e => ({day: e.getAttribute('data-day'), btn: e.tagName === 'BUTTON', shapes: [...e.querySelectorAll('.bk-3 [data-shape]')].map(x => x.getAttribute('data-shape')).join('')})),
-        spill: [...document.querySelectorAll('#su .bk-pick')].filter(b => { const r = b.getBoundingClientRect(), q = b.querySelector('.bk-3')?.getBoundingClientRect(); return !q || q.left < r.left - 0.5 || q.right > r.right + 0.5; }).map(b => b.getAttribute('data-day')),
-        boards: [...document.querySelectorAll('#su .bk-board')].map(e => ({day: e.getAttribute('data-day'), fold: !!e.closest('details.bk-old'), h2: txt(e.querySelector('.bk-bh')), seen: txt(e.querySelector('.bk-seen')), late: txt(e.querySelector('.bk-late')),
-          bm1: txt(e.querySelector('.bk-bm1')), bm2: txt(e.querySelector('.bk-bm2')), bsh: e.querySelector('.bk-bm2 [data-shape]')?.getAttribute('data-shape') ?? '',
-          names: [...e.querySelectorAll('.bk-names .bk-nm1')].map(x => [x.getAttribute('data-place'), x.getAttribute('data-code'), txt(x.querySelector('span'))]),
-          rows: [...e.querySelectorAll('a.bk-row')].map(a => ({place: a.getAttribute('data-place'), code: a.getAttribute('data-code'), href: a.getAttribute('href'), st: a.getAttribute('data-st'), name: txt(a.querySelector('.bk-nm')), tag: txt(a.querySelector('.bk-tag')),
-            shape: a.querySelector('.bk-res [data-shape]')?.getAttribute('data-shape') ?? '', r100: txt(a.querySelector('.bk-r100')), mon1: txt(a.querySelector('.bk-mon1')), mon2: txt(a.querySelector('.bk-mon2')), sp: !!a.querySelector('svg.bk-sp path.bk-line')}))})),
-        folds: [...document.querySelectorAll('#su details.bk-old')].map(e => e.getAttribute('data-month')),
-        text: [...document.querySelectorAll('#su main .su-hero.bk, #su main .bk-how')].map(e => e.innerText).join('\n'), all: document.getElementById('su')?.innerText ?? ''}; });
-    check(!g.all.includes('사장님 휴대폰에서만') && !g.all.includes('사장님 휴대폰'), W + '「사장님 휴대폰에서만」 글 0(모든 사람 — 주문 1513)', (g.all.match(/.{0,12}사장님 휴대폰.{0,12}/) ?? [''])[0]);
-    if (!wantB) check(false, W + '장부 자료가 있어야 화면을 맞댐', 'su21-book.json 없음');
-    else {
-      const w = wantB, rowsOf = d => w.rows.filter(r => r.day === d).sort((a, b) => a.place - b.place);
-      check(+g.diff === w.diff && JSON.stringify(g.n.map(Number)) === JSON.stringify([w.n.up, w.n.dn, w.n.eq, w.n.one]), W + '셈 = 따로 센 값(10주씩 · 산 날 값 → 맨 끝 값 · 늘었어요 · 줄었어요 · 그대로 · 아직 하루치 수)', JSON.stringify({n: g.n, same: +g.diff === w.diff}));
-      check(JSON.stringify(g.tiles) === JSON.stringify(w.tiles.map(([l, k]) => [l, k + '번'])) && g.cap === '산 셈 ' + w.rows.length + '번 · 고른 날 ' + bdays.length + '일', W + '같은 크기 세 칸(산 셈 하나씩) — 늘었어요 · 줄었어요 · 셋째 칸(아직 하루치 · 그대로) · 산 셈 수 · 고른 날 수', JSON.stringify({tiles: g.tiles, cap: g.cap}));
-      // 주문 1112-1304 — 맨 위 「지금까지」 = 따로 센 값(산 돈 · 지금 · 늘었나 줄었나 모양 + 글 · 모두 합치면 100원이 ○원 · ○월 ○일 값까지) · 실패 글에는 맞음 · 틀림만(돈 글 0)
-      const T = MB.T, mOk = {h: JSON.stringify(g.money?.h) === JSON.stringify(['지금까지', mdM(MB.last) + ' 값까지']), c: g.money?.c === wonM(T.cost), v: g.money?.v === wonM(T.val), r: g.money?.r === T.said && g.money?.sh === SHM[T.st],
-        m100: g.money?.m100 === (T.one ? '' : '모두 합치면 ' + hundM(T.val, T.cost)), same: T.cost === w.cost && Math.round(T.diff) === w.diff};
-      check(!!g.money && Object.values(mOk).every(Boolean), W + '맨 위 「지금까지」 — 산 돈 · 지금 · 늘었나 줄었나(모양 + 글) · 모두 합치면 100원이 ○원 · ○월 ○일 값까지 = 따로 센 값', JSON.stringify(mOk));
-      check(g.order.every((x, i) => x >= 0 && (!i || x > g.order[i - 1])), W + '차례 — 맨 위 「지금까지」 → 「날짜마다」 → 세 칸 → 달력 → 고른 셋(주문 1112-1304)', JSON.stringify(g.order));
-      // 날짜마다 — 새 날이 위 · 다섯 날만 펴고 그 앞은 달마다 접음 · 줄마다 고른 날 · 산 돈 · 늘었나 줄었나(모양) · 그날 세 회사 · 단추 · 맨 아래 모두 = 맨 위
-      const ledWant = [...MB.recent.map(x => ({...x, mon: null})), ...MB.months.flatMap(m => m.days.map(x => ({...x, mon: m.ym})))], badL = [];
-      if (JSON.stringify(g.ledH) !== JSON.stringify(['고른 날 · 고른 셋', '산 돈', '늘었나 줄었나'])) badL.push('표 머리');
-      if (g.led.length !== ledWant.length) badL.push('줄 수 ' + g.led.length + ' · ' + ledWant.length);
-      g.led.forEach((x, i) => { const y = ledWant[i]; if (!y || x.day !== y.day || x.mon !== y.mon || !x.btn || x.d !== y.label || x.c !== wonM(y.cost) || x.r !== y.res || x.sh !== SHM[y.st] || x.n !== y.names) badL.push((y?.day ?? x.day) + ' 줄'); });
-      if (JSON.stringify(g.ledM.map(m => m.ym)) !== JSON.stringify(MB.months.map(m => m.ym))) badL.push('달 차례');
-      g.ledM.forEach((m, i) => { const y = MB.months[i]; if (!y || m.d !== y.label || m.c !== wonM(y.cost) || m.r !== y.res || m.sh !== SHM[y.st]) badL.push(m.ym + ' 달 줄'); });
-      if (!g.ledT || g.ledT.d !== '모두' || g.ledT.c !== wonM(T.cost) || g.ledT.r !== T.res || g.ledT.sh !== SHM[T.st]) badL.push('모두 줄');
-      R.m.bookLedger = {rows: g.led.length, months: g.ledM.length, bad: badL.length};
-      check(!badL.length, W + '날짜마다 — 새 날이 위 · 다섯 날만 펴고 그 앞은 달마다 접음 · 줄마다 고른 날 · 산 돈 · 늘었나 줄었나(모양) · 그날 세 회사 · 맨 아래 모두 = 맨 위(따로 셈)', badL.slice(0, 6).join(' / '));
-      const sw = w.swing, swWant = sw ? [+sw.r.day.slice(5, 7) + '월 ' + +sw.r.day.slice(8, 10) + '일 ' + sw.r.place + '등 ' + sw.r.name + ' 한 줄이 ' + movedB(sw.d), '그 한 줄을 빼면 ' + movedB(sw.rest), '10주씩 사면 값이 비싼 회사가 합을 크게 흔들어요.'] : [];
-      check(JSON.stringify(g.spl) === JSON.stringify(swWant), W + '합을 흔든 한 줄(합의 절반 넘게 움직인 줄만 · 없으면 접힌 칸도 없음) — 그 줄 · 그 줄을 빼면', JSON.stringify({swing: !!sw, lines: g.spl.length, same: swWant.map(x => g.spl.includes(x))}));
-      check(JSON.stringify(g.cal.map(c => c.day ?? '')) === JSON.stringify(w.strip.map(d => (w.picks.includes(d) ? d : ''))) && g.cal.every(c => c.btn === !!c.day)
-        && g.cal.filter(c => c.btn).every(c => c.shapes === rowsOf(c.day).map(r => SHB[r.st]).join('')), W + '달력 한 줄 — 장이 서는 날 다섯 · 뽑힌 날만 단추 · 1 · 2 · 3등 차례 모양', JSON.stringify(g.cal).slice(0, 300));
-      check(!g.spill.length, W + '달력 — 세 모양이 날 칸 안에', g.spill.join(' '));
-      const order = g.boards.map(b => b.day), unfold = g.boards.filter(b => !b.fold).map(b => b.day);
-      check(JSON.stringify(order) === JSON.stringify(w.desc) && JSON.stringify(unfold) === JSON.stringify(w.recent) && JSON.stringify(g.folds) === JSON.stringify(w.months), W + '판 차례 — 새 판이 위 · 다섯 판만 펴고 그 앞은 달마다 접음(번 크기 차례 0)', JSON.stringify({order: order.slice(0, 8), unfold, folds: g.folds}));
-      const bad = [];
-      for (const b of g.boards) {
-        const rs = rowsOf(b.day), sn = kstB(rs[0]?.seen), one = rs.every(r => r.one);
-        if (!b.h2.includes(+b.day.slice(5, 7) + '월 ' + +b.day.slice(8, 10) + '일') || (sn && b.seen !== '처음 보인 때 ' + sn.text) || (!!(sn && sn.day > b.day) !== !!b.late)) bad.push(b.day + ' 머리');
-        const dm = MB.days.find(x => x.day === b.day); // 주문 1112-1304 — 그날 돈 줄(산 돈 → 지금 · 늘고 준 돈 · 아직 하루치면 산 돈만)
-        if (!dm || b.bm1 !== (dm.one ? '산 돈 ' + wonM(dm.cost) : '산 돈 ' + wonM(dm.cost) + ' → 지금 ' + wonM(dm.val)) || b.bm2 !== dm.said || b.bsh !== SHM[dm.st]) bad.push(b.day + ' 돈 줄');
-        if (one) { if (JSON.stringify(b.names) !== JSON.stringify(rs.map(r => [String(r.place), r.code, r.name])) || b.rows.length) bad.push(b.day + ' 이름 한 줄'); continue; }
-        if (b.rows.length !== 3) { bad.push(b.day + ' 줄 수'); continue; }
-        b.rows.forEach((x, i) => { const r = rs[i];
-          if (x.place !== String(r.place) || x.code !== r.code || x.name !== r.name || x.href !== '#/c/' + r.code || x.st !== r.st || x.shape !== SHB[r.st] || x.r100 !== hundB(r.now, r.buy)
-            || x.mon1 !== BK.qty + '주 ' + wonB(r.buy * BK.qty) + '어치' || x.mon2 !== (r.one ? '아직 하루치예요' : movedB((r.now - r.buy) * BK.qty)) || x.sp !== !r.one || (r.nth > 1) !== !!x.tag) bad.push(b.day + ' ' + r.place + '등'); });
-      }
-      check(!bad.length, W + '판마다 처음 보인 때 · 그날 돈 줄(산 돈 → 지금) · 줄마다 등수 · 이름 · 회사 쪽 고리 · 모양 · 100원이 ○원 · 10주 ○원어치 · 늘고 준 돈 · 그림 · 같은 회사 몇 번째(따로 센 값)', bad.slice(0, 6).join(' / '));
-      const names = [...new Set(w.rows.map(r => r.name))].sort((a, b) => b.length - a.length), plain = names.reduce((t, n) => t.split(n).join(''), g.text);
-      check(!plain.includes('%') && !/[A-Za-z]/.test(plain), W + '「%」 · 영어 글자 0(회사 이름 빼고)', (plain.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
-      const tgt = w.picks[0];
-      if (tgt) {
-        await p.evaluate(() => scrollTo(0, 0)); await p.click(`#su .bk-pick[data-day="${tgt}"]`); await p.waitForTimeout(1200);
-        const g2 = await p.evaluate(d => { const e = document.querySelector(`#su .bk-board[data-day="${d}"]`); return {top: e ? Math.round(e.getBoundingClientRect().top) : null, on: [...document.querySelectorAll('#su .bk-pick.bk-on')].map(b => b.getAttribute('data-day'))}; }, tgt);
-        check(g2.top != null && g2.top >= -2 && g2.top <= 160 && JSON.stringify(g2.on) === JSON.stringify([tgt]), W + '달력 날을 누르면 그 판으로(맨 위 가까이) · 누른 날 표시', JSON.stringify({day: tgt, ...g2}));
-        pageRules(await measure(p), W + '날 누른 뒤');
-      }
-      const tgL = MB.recent[MB.recent.length - 1]?.day; // 주문 1112-1304 — 날짜마다 줄(펴 둔 날 가운데 가장 오래된 날)을 누르면 그날 고른 셋으로
-      if (tgL) {
-        await p.evaluate(() => scrollTo(0, 0)); await p.click(`#su .bk-days .bk-drow[data-day="${tgL}"]`); await p.waitForTimeout(1200);
-        const g3 = await p.evaluate(d => { const e = document.querySelector(`#su .bk-board[data-day="${d}"]`); return {top: e ? Math.round(e.getBoundingClientRect().top) : null}; }, tgL);
-        check(g3.top != null && g3.top >= -2 && g3.top <= 160, W + '날짜마다 줄을 누르면 그날 고른 셋으로(맨 위 가까이)', JSON.stringify({day: tgL, ...g3}));
-      }
-    }
-    await open(p, '#/r');
-    const dr = await p.evaluate(() => [...document.querySelectorAll('#su a.su-drawer')].map(a => a.getAttribute('href')));
-    check(JSON.stringify(dr) === JSON.stringify(REC), W + '기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」(모든 사람)', dr.join(' '));
-    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
-    await ctx.close();
-  }
-}
-{ // ㉒ 넷째 창 — 조용한데 힘이 모이는 7곳 · 조용한 힘 달력(주문 1111-1334 · 사장님 2026-11-11 13:34 「조용한데 에너지가 모이는 주식창을 하나더 만들어라 그래서 총 28개로 만들고
-  //   몬태카를로 소거법으로을 찾아내라 그러면서 이것을 ㅊ 적하는 별도에 달력을 만들어라 잡스라면」)
-  //   가) 자료 su21.json lists.quiet · quiet — 일곱 · 다른 세 창 밖 · 한 달 · 하루 오르내림 위아래 5 안 · 외국인과 기관 들어옴 · 몬테카를로 드문 차례(채움은 뒤) · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등 = quiet.rank
-  //       · 걸러 온 길 줄어들기만 — 이 검사가 21 값으로 따로 셈
-  //   나) 처음 쪽 그림 넷째 창 칸 일곱(차례 · 이름 · 누르면 회사 쪽 · 첫 셋 표) · 머리 줄 → #/s · 「지금 28곳」
-  //   다) #/s — 줄마다 등수 · 이름 · 한 달 폭 · 이만큼 조용하기 · 외국인 · 기관 = 따로 센 글 · 걸러 온 길 = 자료 · 달력 고리 · 쪽 규칙 · 「%」 · 영어 0(회사 이름 빼고) · 오류 0
-  //   라) 조용한 힘 장부 su21-qbook.json(kind quiet · 날마다 셋 · 산 값 = 값 줄) · #/r/s(data-book quiet · 판 차례 새 판이 위) — 결과 파일에 돈 글 없음
-  const T21q = await J('/su/data/su21.json').catch(() => null), Lq = T21q?.lists?.quiet ?? null, Qd = T21q?.quiet ?? null, DAYq = /^\d{4}-\d{2}-\d{2}$/;
-  const has = Array.isArray(Lq) && Lq.length > 0 && !!Qd;
-  R.m.quiet = has ? {n: Lq.length, pool: Qd.pool, steps: (Qd.steps ?? []).map(x => x.n), rank: (Qd.rank ?? []).map(r => r.place + ':' + r.name)} : null;
-  check(has, '㉒ 넷째 창 자료 — su21.json lists.quiet · quiet', JSON.stringify(R.m.quiet));
-  const QB = await J('/su/data/su21-qbook.json').catch(() => null), qdays = (QB?.days ?? []).map(d => d?.board), qpx = code => new Map(Array.isArray(QB?.px?.[code]) ? QB.px[code] : []);
-  check(!!QB && QB.schema === 'su21-book-1' && QB.kind === 'quiet' && QB.qty === 10 && qdays.length >= 1 && qdays.every((d, i) => DAYq.test(d ?? '') && (!i || qdays[i - 1] < d))
-    && QB.days.every(d => Array.isArray(d.picks) && d.picks.length === 3 && d.picks.every((q, i) => q && q.place === i + 1 && q.k === 'quiet' && /^[0-9A-Z]{6}$/.test(q.code ?? '') && Number.isFinite(q.px) && qpx(q.code).get(d.board) === q.px)),
-    '㉒ 조용한 힘 장부 자료 — 꼴 · 판 날 차례 · 날마다 셋 · 산 값 = 값 줄', JSON.stringify({kind: QB?.kind ?? null, days: qdays}).slice(0, 200));
-  R.m.qbook = {days: qdays.length};
-  if (has) {
-    const now21 = new Set(['hot', 'bloom', 'money'].flatMap(k => (T21q.lists?.[k] ?? []).map(c => c.code))), bad = [], inds = {};
-    if (Lq.length !== Math.min(7, Qd.pool ?? 0)) bad.push('일곱 아님 ' + Lq.length + ' · 소거 일곱을 지난 곳 ' + Qd.pool); // 소거 일곱을 지난 곳이 일곱보다 적은 날만 그 수
-    Lq.forEach((c, j) => {
-      const l = c.c, w = c.why ?? {};
-      if (now21.has(c.code)) bad.push(c.name + ' 다른 세 창에 듦');
-      if (!Array.isArray(l) || l.length !== 21 || !l.every(v => Number.isFinite(v) && v > 0)) { bad.push(c.name + ' 21 값'); return; }
-      const r20 = (l[20] / l[0] - 1) * 100, sp = (Math.max(...l) / Math.min(...l) - 1) * 100, d1 = Math.max(...l.slice(1).map((v, i) => Math.abs(v / l[i] - 1))) * 100;
-      if (!(sp < 10) || !(d1 < 5)) bad.push(c.name + ' 잠잠 아님'); // 한 달 폭 100원에 10원 아래 · 하루 위아래 5 안
-      if (!(Math.abs(w.r20 - Math.round(r20 * 10) / 10) < 0.051) || !(Math.abs(w.span20 - Math.round(sp * 10) / 10) < 0.051)) bad.push(c.name + ' 폭 값');
-      if (!(Number.isFinite(w.f) && Number.isFinite(w.i) && w.f + w.i > 0)) bad.push(c.name + ' 힘(외국인 + 기관)');
-      if (!(Number.isFinite(w.p) && w.p > 0 && w.p <= 1) || (w.rare !== false && w.p > Qd.pmax)) bad.push(c.name + ' 드묾 p');
-      if (c.r3q !== (j < 3 ? j + 1 : null) || w.place !== (j < 3 ? j + 1 : null)) bad.push(c.name + ' 등수');
-      inds[c.ind] = (inds[c.ind] ?? 0) + 1;
-    });
-    const ord = Lq.map(c => [c.why?.rare === false ? 1 : 0, c.why?.p ?? 9]);
-    if (!ord.every((x, i) => !i || x[0] > ord[i - 1][0] || (x[0] === ord[i - 1][0] && x[1] >= ord[i - 1][1]))) bad.push('드문 차례 아님');
-    if (Object.values(inds).some(n => n > 2)) bad.push('업종마다 둘 넘음');
-    const st = (Qd.steps ?? []).map(x => x.n);
-    if (!(st.length >= 3 && st.slice(0, -1).every((n, i) => !i || n <= st[i - 1]) && st[st.length - 1] === Lq.length)) bad.push('걸러 온 길 ' + st.join('>'));
-    if (JSON.stringify((Qd.rank ?? []).map(r => r.code)) !== JSON.stringify(Lq.slice(0, 3).map(c => c.code))) bad.push('quiet.rank ≠ 첫 셋');
-    check(!bad.length, '㉒ 넷째 창 일곱 — 다른 세 창 밖 · 한 달 폭 10 아래 · 하루 위아래 5 안 · 외국인과 기관 들어옴 · 몬테카를로 드문 차례 · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등 · 걸러 온 길(따로 셈)', bad.slice(0, 6).join(' / '));
-    const NFq = new Intl.NumberFormat('ko-KR'), one = v => (Math.round(v * 10) / 10).toLocaleString('ko-KR');
-    const wantRow = (c, j) => { const w = c.why, n = w.f + w.i;
-      return {code: c.code, href: '#/c/' + c.code, pl: j < 3 ? (j + 1) + '등' : String(j + 1), nm: c.name, l1: '한 달 흔들림: 100원에 ' + one(w.span20) + '원',
-        l2: w.p * 100 < 0.1 ? '이만큼 조용하기: 100번에 0.1번 아래' : '이만큼 조용하기: 100번에 ' + one(w.p * 100) + '번',
-        l3: (Number.isFinite(w.days) && w.days !== 5 ? w.days + '거래일' : '닷새') + ' 동안 외국인 · 기관 합쳐 ' + NFq.format(Math.abs(Math.round(n))) + '주 ' + (n > 0 ? '들어왔어요' : n < 0 ? '나갔어요' : '그대로예요'), sp: true}; };
-    const nNowQ = ['hot', 'bloom', 'money'].reduce((a, k) => a + Math.min(7, (T21q.lists?.[k] ?? []).length), 0) + Math.min(7, Lq.length);
-    for (const width of [390, 320]) {
-      const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
-      await QUIET(ctx);
-      const p = await ctx.newPage(), errs = [];
-      p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-      p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
-      const W = '㉒ 넷째 창 [' + width + '] ';
-      await open(p, '#/');
-      check(await p.evaluate(() => !document.querySelector('#su main.sj-page a.sj-row[data-k="quiet"], #su main.sj-page section.sj-quiet')), W + '처음 쪽 넷째 창 칸 0(병법 서른여섯만 — 주문 1115-1843 · 넷째 창 쪽 #/s 는 아래에서 그대로 잼)', '');
-      await open(p, '#/s');
-      await p.waitForFunction(() => document.querySelector('#su .su-hero.qt .qt-row'), null, {timeout: 10000}).catch(() => {});
-      await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how')) d.open = true; });
-      pageRules(await measure(p), W + '#/s');
-      const g = await p.evaluate(() => ({rows: [...document.querySelectorAll('#su .qt-row')].map(a => ({code: a.getAttribute('data-code'), href: a.getAttribute('href'), pl: a.querySelector('.bk-pl')?.textContent ?? '', nm: a.querySelector('.bk-nm')?.textContent ?? '',
-          l1: a.querySelector('.qt-l1')?.textContent ?? '', l2: a.querySelector('.qt-l2')?.textContent ?? '', l3: a.querySelector('.qt-l3')?.textContent ?? '', sp: !!a.querySelector('svg.qt-sp path.qt-line')})),
-        steps: [...document.querySelectorAll('#su .qt-step')].map(e => [e.querySelector('.qt-sn')?.textContent ?? '', e.querySelector('.qt-sv')?.textContent ?? '']), cal: document.querySelector('#su a.qt-cal')?.getAttribute('href') ?? null,
-        tab: document.querySelector('.su-tabs [aria-current="page"]')?.textContent ?? '', h1: (document.querySelector('#su h1')?.textContent ?? '').trim(), text: [...document.querySelectorAll('#su main .su-hero.qt, #su main .bk-how')].map(e => { const c = e.cloneNode(true); for (const x of c.querySelectorAll('.su-gl')) x.remove(); return c.textContent; }).join('\n')})); // 새 문장만(쪽 틀이 붙이는 낱말 풀이 li.su-gl 은 예전 글 — 뺌)
-      const badR = g.rows.map((x, j) => (Lq[j] && JSON.stringify(x) === JSON.stringify(wantRow(Lq[j], j)) ? null : j)).filter(x => x != null);
-      check(g.rows.length === Lq.length && !badR.length && g.h1 === '조용한데 힘이 모이는 ' + Lq.length + '곳', W + '#/s 줄 일곱 = 자료 차례 · 등수 · 한 달 폭 · 이만큼 조용하기 · 외국인 · 기관(따로 센 글) · 큰 제목', JSON.stringify(badR.slice(0, 2).map(j => [g.rows[j], Lq[j] ? wantRow(Lq[j], j) : null])).slice(0, 300));
-      check(JSON.stringify(g.steps) === JSON.stringify((Qd.steps ?? []).map(x => [x.name, NFq.format(x.n) + '곳'])) && g.cal === '#/r/s' && g.tab.trim() === '오늘', W + '#/s 걸러 온 길 = 자료 · 조용한 힘 달력 고리 · 아래 탭 「오늘」(주문 1114-1306 ⑤)', JSON.stringify({steps: g.steps.length, cal: g.cal, tab: g.tab}));
-      const names = [...new Set(Lq.map(c => c.name))].sort((a, b) => b.length - a.length), plain = names.reduce((s, n) => s.split(n).join(''), g.text);
-      check(!plain.includes('%') && !/[A-Za-z]/.test(plain), W + '#/s 「%」 · 영어 글자 0(회사 이름 빼고)', (plain.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
-      if (QB) {
-        await open(p, '#/r/s');
-        await p.waitForFunction(() => document.querySelector('#su .su-hero.bk[data-book="quiet"] .bk-board'), null, {timeout: 10000}).catch(() => {});
-        await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.bk-split, #su details.bk-old, #su details.bk-dmon')) d.open = true; });
-        pageRules(await measure(p), W + '#/r/s');
-        const g2 = await p.evaluate(() => ({book: document.querySelector('#su .su-hero.bk')?.getAttribute('data-book') ?? null, h1: document.querySelector('#su h1')?.textContent ?? '',
-          boards: [...document.querySelectorAll('#su .bk-board')].map(e => e.getAttribute('data-day')), intro: document.querySelector('#su .bk-intro')?.textContent ?? ''}));
-        check(g2.book === 'quiet' && g2.h1 === '조용한 힘 달력' && JSON.stringify(g2.boards) === JSON.stringify([...qdays].reverse()) && g2.intro.startsWith('조용한데 힘이 모이는 창의'), W + '#/r/s 조용한 힘 달력 — 따로 된 장부 · 판 차례(새 판이 위)', JSON.stringify(g2).slice(0, 300));
-        const QM = bookMoney(QB); // 주문 1112-1304 — 같은 꼴: 맨 위 「지금까지」 · 날짜마다 · 모두(따로 셈 · 실패 글에 돈 글 0)
-        const g4 = await p.evaluate(() => { const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), hero = document.querySelector('#su .su-hero.bk');
-          return {c: txt(hero?.querySelector('.bk-money .bk-mcost b')), v: txt(hero?.querySelector('.bk-money .bk-mval b')), r: txt(hero?.querySelector('.bk-money .bk-mres')),
-            days: [...(hero?.querySelectorAll('.bk-days .bk-drow:not(.bk-dsum)') ?? [])].map(b => [b.getAttribute('data-day'), txt(b.querySelector('.bk-dcost')), txt(b.querySelector('.bk-ddiff')), txt(b.querySelector('.bk-dnm'))]),
-            tc: txt(hero?.querySelector('.bk-days .bk-dtot .bk-dcost')), tr: txt(hero?.querySelector('.bk-days .bk-dtot .bk-ddiff'))}; });
-        const qOk = QM ? {c: g4.c === wonM(QM.T.cost), v: g4.v === wonM(QM.T.val), r: g4.r === QM.T.said, days: JSON.stringify(g4.days) === JSON.stringify([...QM.recent, ...QM.months.flatMap(m => m.days)].map(x => [x.day, wonM(x.cost), x.res, x.names])),
-          tot: g4.tc === wonM(QM.T.cost) && g4.tr === QM.T.res} : {book: false};
-        check(Object.values(qOk).every(Boolean), W + '#/r/s 조용한 힘 달력 — 맨 위 「지금까지」 · 날짜마다 · 모두 = 따로 센 값(주문 1112-1304)', JSON.stringify(qOk));
-      }
-      check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
-      await ctx.close();
-    }
-  }
-}
 { // ㉓ 정산(주문 1112-1728 · 사장님 2026-11-12 17:28 「정산 페이지를 하나 만들어 테이블 하나 더 만들어 그럼 탭이 여섯 개가 되겠지 그래가지고 말이야 거기에 일 이 삼 등 매일 사
   //   그담에 불 장인 것도 사고 모든 여덟 개를 종류별로 업종별로 다 사는거별로 분류 별별로」 · 17:30 「어」 — docs/design/settle-2026-11-12/order-1728.txt)
   //   가) 자료 su/data/su21-settle.json — 꼴 · 여덟 묶음 차례 · 산 셈 줄(날 · 묶음 · 번호 · 산 값) · 같은 날 같은 묶음 같은 회사 한 번 · 지금 = 그 회사 판 날까지 값
@@ -1341,6 +611,20 @@ function bookMoney(BK) {
   const ovW3 = rowsO.length ? [KNAME.ovl, wonM(TOS.cost), TOS.res, SHM[TOS.st], ''] : [KNAME.ovl, '0원', '아직 없음', '', ''];
   const capOW = rowsO.length ? mdM(TOS.first) + '부터 · 산 셈 ' + NFs.format(rowsO.length) + '번 · 고른 날 ' + NFs.format(new Set(rowsO.map(r => r.day)).size) + '일' + (missO ? ' · 값이 없어 못 센 ' + NFs.format(missO) + '번' : '') : '아직 산 셈이 없어요. 장이 끝난 뒤 첫 묶음을 적어요.';
   R.m.settle = {buys: ST?.buys?.length ?? 0, kinds: KS.slice(0, 8).map(k => rowsS.filter(r => r.k === k).length), s36: S36s.map(k => rows36.filter(r => r.k === k).length), up36: ord36.slice(0, 3).map(x => x.k), inds: indG.length, cos: coG.length, miss: missS, miss36, late: lateN, ovl: rowsO.length, missO};
+  // 주문 1115-2328 — 정산 쪽(#/r/t)은 서른여섯 꾀 표만(옛 여덟 묶음 · 겹친 곳 표 · 업종 · 회사 표는 지움 · 장부 자료는 그대로) · 손자병법 판(샘플 사)
+  //   이 검사가 장부에서 따로 셈: 맨 위 산 돈 · 지금 · 늘었나 줄었나 · 작은 줄(첫날 · 산 셈 수 · 고른 날 수 · 못 센 수 · 값까지 날) · 꾀마다 서른여섯 줄 수익이 높은 차례(같으면 꾀 차례 · 하루치 · 산 셈 없음은 맨 아래)
+  //   · 줄어든 꾀 수 · 가장 많이 줄어든 꾀 · 줄마다 이름(누르면 그 꾀 쪽) · 산 돈 · 늘었나 줄었나(모양 + 글) · 모두 = 서른여섯 합
+  const G23 = await J('/su/data/su21-s36.json').catch(() => null), nm36 = k => (typeof G23?.name?.[k] === 'string' ? G23.name[k] : KNAME[k]);
+  const SAIDs = st => (st === 'none' ? '아직 산 셈이 없어요' : st === 'one' ? '아직 하루치예요' : null);
+  const resW = g => (!g || !g.n ? '아직 산 셈이 없어요' : g.one ? '아직 하루치예요' : movedM(g.diff));
+  const stW = g => (!g || !g.n ? 'none' : g.st);
+  const rowsW = ord36.map(({k, g}) => [k, nm36(k), '산 돈 ' + wonM(g ? g.cost : 0), resW(g), SHM[stW(g)] ?? '·']);
+  const dn36 = ord36.filter(x => x.g && x.g.n && x.g.st === 'dn').sort((a, b) => a.g.diff - b.g.diff);
+  const lossW36 = dn36.length ? '줄어든 꾀 ' + dn36.length + '가지 · 가장 많이 줄어든 꾀는 ' + nm36(dn36[0].k) + '(' + wonM(-dn36[0].g.diff) + ' 줄었어요)' : '줄어든 꾀는 아직 없어요.';
+  const rated36 = ord36.some(x => x.rate !== null), first36 = rows36.map(r => r.day).sort()[0] ?? null;
+  const capW36 = (first36 ? mdM(first36) + '부터 · ' : '') + '산 셈 ' + NFs.format(rows36.length) + '번 · 고른 날 ' + NFs.format(new Set(rows36.map(r => r.day)).size) + '일' + (miss36 ? ' · 값이 없어 못 센 ' + NFs.format(miss36) + '번' : '') + (DAYs.test(ST?.asOf ?? '') ? ' · ' + mdM(ST.asOf) + ' 값까지' : '');
+  const ruleW36 = rated36 ? '산 돈에 견줘 많이 늘어난 꾀가 맨 위예요. 날마다 다시 줄 세워요. 줄어든 꾀도 숨기지 않아요.' : '아직 하루치라서 꾀 차례로 놓았어요. 하루가 더 지나면 많이 늘어난 꾀가 맨 위로 가요.';
+  const T36st = rows36.length ? T36S.st : 'none';
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
@@ -1349,51 +633,26 @@ function bookMoney(BK) {
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
     const W = '㉓ 정산 [' + width + '] ';
     await open(p, '#/r/t');
-    await p.waitForFunction(() => document.querySelector('#su .su-hero.st .st-kinds'), null, {timeout: 10000}).catch(() => {});
-    const fold0 = await p.evaluate(() => { const lim = Math.min(...[...document.querySelectorAll('.su-dock, .su-tabs')].map(e => e.getBoundingClientRect().top).filter(Number.isFinite), innerHeight), mo = document.querySelector('#su .st-money'); return {lim: Math.round(lim), money: mo ? Math.round(mo.getBoundingClientRect().bottom) : null}; });
-    check(fold0.money != null && fold0.money <= fold0.lim, W + '첫 화면에 맨 위 「지금까지」가 다 보임', JSON.stringify(fold0));
-    await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how')) d.open = true; });
     pageRules(await measure(p), W);
-    const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.st'), txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
-      const cell = r => [txt(r.querySelector('.bk-dday')), txt(r.querySelector('.bk-dcost')), txt(r.querySelector('.bk-ddiff')), r.querySelector('.bk-ddiff [data-shape]')?.getAttribute('data-shape') ?? ''];
-      const tab = sel => { const t = hero?.querySelector(sel); if (!t) return null; const sum = t.querySelector('details.st-rest > summary');
-        return {head: [...t.querySelectorAll('.bk-dhead span')].map(txt), rows: [...t.querySelectorAll('.bk-drows > .st-row, .bk-drows > details.st-rest > .st-row:not(summary)')].map(r => [...cell(r), txt(r.querySelector('.bk-dnm')), r.tagName === 'A' ? r.getAttribute('href') : null]),
-          open: [...t.querySelectorAll('.bk-drows > .st-row')].length, rest: sum ? cell(sum) : null, tot: (() => { const x = t.querySelector('.bk-dtot'); return x ? cell(x) : null; })()}; };
-      const m = hero?.querySelector('.st-money');
-      return {money: m ? {h: [txt(m.querySelector('.bk-mh b')), txt(m.querySelector('.bk-mh span'))], c: txt(m.querySelector('.bk-mcost b')), v: txt(m.querySelector('.bk-mval b')), r: txt(m.querySelector('.bk-mres')), sh: m.querySelector('.bk-mres [data-shape]')?.getAttribute('data-shape') ?? '', m100: txt(m.querySelector('.bk-m100'))} : null,
-        cap: txt(hero?.querySelector('.st-cap')), start: txt(hero?.querySelector('.st-start')), kinds: tab('.st-kinds'), kso: txt(hero?.querySelector('.st-kso')), kloss: txt(hero?.querySelector('.st-kloss')), s36loss: txt(hero?.querySelector('.st-s36loss')), few: txt(hero?.querySelector('.st-few')), tabs: hero ? hero.querySelectorAll('.st-tab').length : 0,
-        s36: tab('.st-s36'), s36i: txt(hero?.querySelector('.st-s36i')), s36c: txt(hero?.querySelector('.st-s36c')), s36o: txt(hero?.querySelector('.st-s36o')),
-        ovl: tab('.st-ovl'), ovi: txt(hero?.querySelector('.st-ovi')), ovc: txt(hero?.querySelector('.st-ovc')), ovAfter: hero?.querySelector('.st-kinds')?.nextElementSibling?.classList?.contains('st-ovi') ?? false, // 겹친 곳(주문 1114-0802)
-        s36how: [...document.querySelectorAll('#su details.st-s36how ol.st-s36ul > li[data-key]')].map(li => [li.getAttribute('data-key'), txt(li)]), t11: hero ? hero.querySelectorAll('.st-t11, .st-t11i').length : -1, // 풀이 = 꾀 줄만(낱말 풀이 su-gl 줄은 빼고)
-        fine: hero ? hero.querySelectorAll('.st-inds, .st-cos, details.st-rest, a.st-row, .st-row .bk-dnm').length : -1, tab: document.querySelector('.su-tabs [aria-current="page"]')?.textContent?.trim() ?? '', h1: txt(document.querySelector('#su h1')),
-        text: [...document.querySelectorAll('#su main .su-hero.st, #su main .bk-how')].map(e => { const c = e.cloneNode(true); for (const x of c.querySelectorAll('.su-gl')) x.remove(); return c.innerText; }).join('\n')}; });
-    check(g.tab === '정산' && g.h1 === '정산', W + '아래 탭 「정산」 켜짐 · 큰 제목', JSON.stringify({tab: g.tab, h1: g.h1}));
-    const mOk = {h: JSON.stringify(g.money?.h) === JSON.stringify(['지금까지', mdM(ST?.asOf ?? '0000-00-00') + ' 값까지']), c: g.money?.c === wonM(TS.cost), v: g.money?.v === wonM(TS.val), r: g.money?.r === TS.said && g.money?.sh === SHM[TS.st], m100: g.money?.m100 === (TS.one ? '' : '모두 합치면 ' + hundM(TS.val, TS.cost))};
-    check(okD && !!g.money && Object.values(mOk).every(Boolean), W + '맨 위 「지금까지」 — 산 돈 · 지금 · 늘었나 줄었나 · 모두 합치면 100원이 ○원 = 따로 셈', JSON.stringify(mOk));
-    check(okD && g.start === mdM(ST.start ?? '0000-00-00') + '부터 센 정산이에요.', W + '맨 위 「○월 ○일부터 센 정산이에요」(주문 1112-2042)', JSON.stringify(g.start));
-    check(okD && g.cap === capW, W + '맨 위 작은 줄 — 첫날 · 산 셈 수 · 고른 날 수 · 못 센 수 · 앞 날 값으로 센 회사 수(숨기지 않음)', JSON.stringify([g.cap, capW]));
-    const totW = totOf(TS);
-    const kOk = !!g.kinds && JSON.stringify(g.kinds.head) === JSON.stringify(['묶음', '산 돈', '늘었나 줄었나']) && g.kinds.rows.length === 8 && g.kinds.rows.every((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(kindW[i]) && r[5] === null) && JSON.stringify(g.kinds.tot) === JSON.stringify(totW);
-    // 손실 먼저 한 줄(주문 1114-0922) — 줄어든 줄 수 · 가장 많이 줄어든 줄(이 검사가 따로 셈) · 적은 날 경고(고른 날 스무 날 아래)
-    const lossW = (o, what) => { const dn = o.filter(x => x.g && x.g.n && x.g.st === 'dn').sort((a, b) => a.g.diff - b.g.diff), un = what === '묶음' ? '은' : '는'; return dn.length ? '줄어든 ' + what + ' ' + dn.length + '개 · 가장 많이 줄어든 ' + what + un + ' ' + KNAME[dn[0].k] + '(' + wonM(-dn[0].g.diff) + ' 줄었어요)' : '줄어든 ' + what + un + ' 아직 없어요.'; };
-    const daysS = new Set(rowsS.map(r => r.day)).size, fewW = daysS < 20 ? '고른 날이 ' + daysS + '일뿐이에요. 스무 날은 지나야 늘고 준 것을 말할 수 있어요.' : '';
-    check(g.kloss === lossW(gK, '묶음') && g.s36loss === lossW(g36, '꾀') && g.few === fewW, W + '손실 먼저 한 줄(주문 1114-0922) — 줄어든 묶음 · 꾀 수 · 가장 많이 줄어든 곳(따로 셈) · 적은 날 경고', JSON.stringify({k: [g.kloss, lossW(gK, '묶음')], s: [g.s36loss, lossW(g36, '꾀')], few: [g.few, fewW]}).slice(0, 500));
-    check(kOk && g.kso === sayW(ordK, '묶음'), W + '묶음마다 — 여덟 줄 수익률 높은 차례(주문 1114-0922 · 같으면 말씀 차례 · 아직 하루치 · 산 셈 없음은 맨 아래) · 산 돈 · 늘었나 줄었나(모양) · 모두 = 맨 위(따로 셈) · 차례 한 줄', JSON.stringify({rows: (g.kinds?.rows ?? []).map((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(kindW[i])), kso: [g.kso, sayW(ordK, '묶음')]}));
-    check(g.tabs === 3 && g.fine === 0 && g.t11 === 0, W + '큰 값만(주문 1113-1623) — 표는 묶음마다 · 겹친 곳 · 서른여섯 꾀 셋(주문 1114-0802) · 업종 · 회사 표 · 접은 줄 · 회사 고리 · 줄 밑 작은 글 0 · 특징 열하나 표 0(주문 1113-2224)', JSON.stringify({tabs: g.tabs, fine: g.fine, t11: g.t11}));
-    // 겹친 곳(주문 1114-0802) — 묶음마다 표 바로 아래 · 앞 한 줄 · 작은 줄 · 줄 하나(이름 · 산 돈 · 늘었나 줄었나) · 모두 = 그 줄(따로 셈 · 여덟 · 서른여섯과 섞지 않음)
-    const totOW = totOf(TOS);
-    const kO = !!g.ovl && JSON.stringify(g.ovl.head) === JSON.stringify(['묶음', '산 돈', '늘었나 줄었나']) && g.ovl.rows.length === 1 && JSON.stringify(g.ovl.rows[0].slice(0, 5)) === JSON.stringify(ovW3) && g.ovl.rows[0][5] === null && JSON.stringify(g.ovl.tot) === JSON.stringify(totOW);
-    check(kO && g.ovAfter && g.ovi === '아래는 여러 묶음에 겹쳐 나온 회사를 따로 모은 묶음이에요. 그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 곳을 10주씩 산 셈이고, 다른 묶음과 따로 셌어요.' && g.ovc === capOW,
-      W + '겹친 곳(주문 1114-0802) — 묶음마다 표 바로 아래 · 줄 하나 · 산 돈 · 늘었나 줄었나 · 모두 = 그 줄(따로 셈) · 앞 한 줄 · 작은 줄', JSON.stringify({rows: g.ovl?.rows ?? null, want: ovW3, tot: g.ovl?.tot ?? null, cap: [g.ovc, capOW], after: g.ovAfter}).slice(0, 400));
-    const tot36W = totOf(T36S);
-    const k36 = !!g.s36 && JSON.stringify(g.s36.head) === JSON.stringify(['꾀', '산 돈', '늘었나 줄었나']) && g.s36.rows.length === 36 && g.s36.rows.every((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(s36W[i]) && r[5] === null) && JSON.stringify(g.s36.tot) === JSON.stringify(tot36W);
-    check(k36 && g.s36i === '아래는 옛 병법에 전하는 서른여섯 가지 꾀(삼십육계)로 고른 묶음이에요. 꾀마다 일곱 곳을 10주씩 산 셈이고, 위 여덟 묶음과 따로 셌어요.' && g.s36c === cap36W && g.s36o === sayW(ord36, '꾀'),
-      W + '서른여섯 꾀(주문 1113-2224) — 서른여섯 줄 수익률 높은 차례(같으면 꾀 차례 · 산 셈 없는 꾀는 맨 아래) · 산 돈 · 늘었나 줄었나 · 빈 꾀 「아직 없음」 · 모두 = 서른여섯 줄 합(따로 셈 · 여덟과 섞지 않음) · 앞 한 줄 · 작은 줄 · 차례 한 줄',
-      JSON.stringify({rows: (g.s36?.rows ?? []).map((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(s36W[i])).filter(x => !x).length, tot: JSON.stringify(g.s36?.tot) === JSON.stringify(tot36W), cap: [g.s36c, cap36W], o: g.s36o}));
-    check(g.s36how.length === 36 && g.s36how.every(([k, t], i) => k === S36s[i] && t.includes(', ' + KNAME[k] + '. ') && !t.includes('%') && !/[A-Za-z]/.test(t)),
-      W + '서른여섯 꾀 풀이 — 꾀 차례 1 ~ 36 · 꾀 이름 · 쉬운 이름 · 꾀 뜻 · 고르는 법', JSON.stringify(g.s36how.slice(0, 2)));
-    const names = [...new Set(rowsS.flatMap(r => [r.name, r.ind]))].sort((a, b) => b.length - a.length), plain = names.reduce((t, n) => t.split(n).join(''), g.text);
-    check(!plain.includes('%') && !/[A-Za-z]/.test(plain), W + '「%」 · 영어 글자 0(낱말 풀이 빼고)', (plain.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
+    const g = await p.evaluate(() => { const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), main = document.querySelector('#su main.sj-page[data-page="settle"]'), sec = main?.querySelector('section.sj-st36');
+      return {main: !!main, h1: txt(document.querySelector('#su h1')), tab: txt(document.querySelector('#su .sj-tabs a[aria-current="page"]')),
+        money: [...(main?.querySelectorAll('section.sj-ph dl.sj-money dd') ?? [])].map(txt), res: txt(main?.querySelector('section.sj-ph .sj-res-big b')), sh: txt(main?.querySelector('section.sj-ph .sj-res-big .sj-shp')), resSt: main?.querySelector('section.sj-ph .sj-res-big')?.getAttribute('data-st') ?? '',
+        cap: txt(main?.querySelector('section.sj-ph p.sj-note')), rule: txt(sec?.querySelector('.sj-rule')), loss: txt(sec?.querySelector('.sj-loss')),
+        rows: [...(sec?.querySelectorAll('ol.sj-stl > li.sj-str') ?? [])].map(li => [li.getAttribute('data-k'), txt(li.querySelector('.sj-stk')), txt(li.querySelector('.sj-stv > span:first-child')), txt(li.querySelector('.sj-stv .sj-res > span')), txt(li.querySelector('.sj-stv .sj-shp')), li.querySelector('a.sj-sta')?.getAttribute('href') ?? '', txt(li.querySelector('.sj-stn'))]),
+        tot: [txt(sec?.querySelector('.sj-sttot > b')), txt(sec?.querySelector('.sj-sttot > span:not(.sj-res)')), txt(sec?.querySelector('.sj-sttot .sj-res > span')), txt(sec?.querySelector('.sj-sttot .sj-shp'))],
+        old: document.querySelectorAll('#su .su-hero, #su .st-kinds, #su .st-ovl, #su .st-inds, #su .st-cos, #su .bk-days, #su .su-top, #su .su-tabs').length,
+        text: main?.innerText ?? ''}; });
+    check(g.main && g.h1 === '서른여섯 꾀 정산' && g.tab === '정산' && g.old === 0, W + '손자병법 판 정산 쪽(주문 1115-2328) — 큰 제목 · 아래 탭 「정산」 켜짐 · 옛 정산 판(여덟 묶음 · 겹친 곳 · 업종 · 회사 표) 0', JSON.stringify({main: g.main, h1: g.h1, tab: g.tab, old: g.old}));
+    check(okD && JSON.stringify(g.money) === JSON.stringify([wonM(T36S.cost), rows36.length ? wonM(T36S.val) : '아직 산 셈이 없어요']) && g.res === resW(rows36.length ? T36S : null) && g.sh === (SHM[T36st] ?? '·') && g.resSt === T36st,
+      W + '맨 위 — 서른여섯 꾀 산 돈 · 지금 · 늘었나 줄었나(모양 + 글) = 장부에서 따로 셈', JSON.stringify({money: g.money, res: g.res, sh: g.sh, st: g.resSt}));
+    check(okD && g.cap === capW36, W + '맨 위 작은 줄 — 첫날 · 산 셈 수 · 고른 날 수 · 못 센 수 · 값까지 날(숨기지 않음)', JSON.stringify([g.cap, capW36]));
+    check(g.rule === ruleW36 && g.loss === lossW36, W + '차례 까닭 · 손실 먼저 한 줄(주문 1114-0922 「손실을 보지 않게 최우선」) — 줄어든 꾀 수 · 가장 많이 줄어든 꾀', JSON.stringify({rule: g.rule, loss: [g.loss, lossW36]}));
+    const rOk = g.rows.length === 36 && g.rows.every((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(rowsW[i]) && r[5] === '#/k/' + rowsW[i][0] && r[6] === String(i + 1));
+    check(okD && rOk, W + '꾀마다 서른여섯 줄 — 수익이 높은 차례(본질 8번 · 같으면 꾀 차례 · 하루치 · 산 셈 없음은 맨 아래) · 이름 · 산 돈 · 늘었나 줄었나 · 모양 · 누르면 그 꾀 쪽 = 따로 셈',
+      JSON.stringify({n: g.rows.length, bad: g.rows.map((r, i) => (JSON.stringify(r.slice(0, 5)) === JSON.stringify(rowsW[i]) ? null : [r.slice(0, 5), rowsW[i]])).filter(Boolean).slice(0, 2)}).slice(0, 400));
+    check(JSON.stringify(g.tot) === JSON.stringify(['모두', '산 돈 ' + wonM(T36S.cost), resW(rows36.length ? T36S : null), SHM[T36st] ?? '·']), W + '맨 아래 모두 = 서른여섯 줄 합 = 맨 위', JSON.stringify(g.tot));
+    const plain = [...new Set(rows36.map(r => r.name))].sort((a, b) => b.length - a.length).reduce((t, n) => t.split(n).join(''), g.text);
+    check(!plain.includes('%') && !/[A-Za-z]/.test(plain) && !/불장|꽃이 될|돈이 몰|조용한데 힘이|1 · 2 · 3등/.test(plain), W + '「%」 · 영어 글자 · 옛 묶음 이름(불장 · 꽃이 될 · 돈이 몰리는 · 조용한 힘 · 1 · 2 · 3등) 0', (plain.match(/.{0,12}(%|[A-Za-z]+|불장|꽃이 될|돈이 몰|조용한데 힘이|1 · 2 · 3등).{0,12}/) ?? [''])[0]);
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
   }
@@ -1491,7 +750,7 @@ function bookMoney(BK) {
             cs: [...o.querySelectorAll('a.sj-chip.sj-chip-ov')].map(a => [a.getAttribute('href'), txt(a.querySelector('b')), txt(a.querySelector('.sj-chipn')), txt(a.querySelector('.sj-chipd'))]), sp: [...o.querySelectorAll('a.sj-chip.sj-chip-ov')].map(spOf)}; })(),
         small: [...(sec?.querySelectorAll('a') ?? [])].filter(a => { const r = a.getBoundingClientRect(); return r.width < 47.5 || r.height < 47.5; }).length}; });
     check(g.big === '' && g.tot === '' && g.tab === '오늘', W + '처음 쪽 「오늘 이름이 오른 회사」 큰 값 · 칸 수 풀이 0 · 첫 탭 「오늘」(병법 서른여섯만 — 주문 1115-1843)', JSON.stringify({big: g.big, tot: g.tot, tab: g.tab}));
-    const wantG = okG ? ORD36.map(k => ({k, n: String(Math.min(7, G36.lists[k].length)), rk: RK36[k] ? String(RK36[k].i) : null, h: (RK36[k] ? String(RK36[k].i) : '') + G36.name[k] + ' ' + G36.han[k] + ' · ' + Math.min(7, G36.lists[k].length) + '곳', s: G36.say[k], gr: recW(RK36[k]),
+    const wantG = okG ? ORD36.map(k => ({k, n: String(Math.min(7, G36.lists[k].length)), rk: RK36[k] ? String(RK36[k].i) : null, h: (RK36[k] ? String(RK36[k].i) : '') + G36.name[k] + ' ' + G36.han[k] + ' · ' + Math.min(7, G36.lists[k].length) + '곳›', s: G36.say[k], gr: recW(RK36[k]), // 꾀 이름 줄을 누르면 그 꾀 쪽(주문 1115-2328 · 끝 「›」)
       dots: RK36[k]?.n && RK36[k].lose ? Math.max(1, Math.round(RK36[k].lose / RK36[k].n * 10)) : 0, cs: G36.lists[k].slice(0, 7).map(c => ['#/c/' + c.code, c.name, Number.isInteger(c.days) && c.days >= 1 ? c.days + '일째' : ''])})) : []; // 며칠째(주문 1114-0151) · 덜 잃은 차례 · 지난 기록 · 잃은 몫 점(주문 1114-0922)
     const badG = wantG.map((w, i) => { const x = g.gs[i]; return x && x.k === w.k && x.n === w.n && x.rk === w.rk && x.h === w.h && x.s === w.s && x.gr === w.gr && x.dots === w.dots && JSON.stringify(x.cs) === JSON.stringify(w.cs) && (w.cs.length ? !x.none : !!x.none) ? null : w.k; }).filter(Boolean);
     check(same ? g.sec && g.after && g.gs.length === 36 && !badG.length && g.sets === 0 && JSON.stringify(g.open7) === JSON.stringify(ORD36.slice(0, 7)) && JSON.stringify(g.fold) === JSON.stringify(ORD36.slice(7)) && g.ord === (ORD36 === K36 ? 'kind' : 'sun') : !g.sec,
@@ -1537,6 +796,88 @@ function bookMoney(BK) {
     const ruleW = HS ? (HS.all ? '지난 ' + HS.days + '거래일을 모두 보고, ' : '지난 ' + HS.days + '거래일 가운데 오늘처럼 ' + SUN.name + '이었던 ' + HS.same + '날을 골라, ') + '꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요.' + (ymW(HS.from) && ymW(HS.to) ? ' 센 때는 ' + ymW(HS.from) + '부터 ' + ymW(HS.to) + '까지예요.' : '') : '';
     check(!same || (g.h === (HS ? '덜 잃은 꾀 차례 ' : '서른여섯 꾀 ') + N36 + '칸' && g.lead === '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.' && g.rule === ruleW && g.day.endsWith(dayW) && g.go === '#/r/t' && g.small === 0),
       W + '꾀 칸 머리 · 한 줄 풀이(삼십육계 — 손자병법과 따로 · 주문 1114-0922) · 차례 까닭(같은 땅 날 · 닷새 뒤 · 덜 잃은 차례) · 고른 날 · 같은 회사 여러 꾀 · 정산 고리 · 누름 48', JSON.stringify({h: g.h, lead: g.lead, rule: [g.rule, ruleW], day: g.day, go: g.go, small: g.small}).slice(0, 500));
+    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+    await ctx.close();
+  }
+  // ㉕ 주문 1115-2328(사장님 2026-11-15(마카오) 22:28 「어고쳐」 — 「다른 쪽들도 병법 서른여섯 가지에 맞게 고칠까요?」의 답) — 다른 쪽도 병법 서른여섯만 · 이 검사가 자료에서 따로 셈(화면 코드를 쓰지 않음)
+  //   가) 꾀 모음 #/k — 여섯 묶음(묶음 이름 = 자료 set) × 여섯 꾀(삼십육계 차례) · 꾀마다 「제 ○계」 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 첫 쪽 꾀 이름 줄도 그 꾀 쪽
+  //   나) 꾀 한 가지 #/k/g01 ~ g36(390 은 서른여섯 모두 · 320 은 셋) — 걸음 2 / 5 · 머리(묶음 · 도장 = 오늘 차례 · 뜻 · 지금 땅에서 몇 위) · 고르는 법 · 같은 땅 기록 · 오늘 닮은 곳(누르면 그 회사) · 이 꾀 정산 · 앞뒤 꾀 · 다음 단추
+  //   다) 회사 #/c/<번호>(길 셋째 회사 · 오늘 어느 꾀에도 없는 회사 하나) — 걸음 3 / 5 · 이름 · 시장 · 업종 · 고른 꾀(덜 잃은 차례 · 지난 기록 · 고르는 법 · 누르면 그 꾀) · 한 달 꺾은선 글 · 「왜 사?」 고리
+  const ST25 = await J('/su/data/su21-settle.json').catch(() => null);
+  const okT25 = okG && ['mean', 'set', 'say', 'name', 'han'].every(f => K36.every(k => typeof G36[f]?.[k] === 'string' && G36[f][k]));
+  const sun25 = okSunD && !sunBad.length ? SUN : null, ymW25 = t => (DAYz.test(t ?? '') ? t.slice(0, 4) + '년 ' + +t.slice(5, 7) + '월' : null), kn25 = k => +k.slice(1);
+  const set25 = k => { if (!ST25 || !Array.isArray(ST25.buys) || !Array.isArray(ST25.kinds)) return null; const q = Number.isFinite(ST25.qty) ? ST25.qty : 10;
+    const rs = ST25.buys.filter(b => ST25.kinds[b[1]] === k && Number.isFinite(b[3]) && b[3] > 0).map(([d, , code, buy]) => { const [now, nd] = ST25.now?.[code] ?? [buy, d]; return {cost: buy * q, val: now * q, one: !(nd > d)}; });
+    const cost = rs.reduce((a, r) => a + r.cost, 0), val = rs.reduce((a, r) => a + r.val, 0), one = rs.length > 0 && rs.every(r => r.one);
+    return {dd: [wonM(cost), rs.length ? wonM(val) : '아직 산 셈이 없어요'], res: !rs.length ? '아직 산 셈이 없어요' : one ? '아직 하루치예요' : movedM(val - cost)}; };
+  const none25 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
+  const in25 = code => (okG ? K36.filter(k => G36.lists[k].slice(0, 7).some(c => c.code === code)) : []);
+  let other25 = null; for (const c of ['005930', '000660', '035420', '005380', '051910', '035720', '068270']) { if (in25(c).length) continue; const co = await J('/atlas/data/co/' + c + '.json').catch(() => null); if (typeof co?.c?.name === 'string') { other25 = {code: c, co}; break; } }
+  const coW25 = async code => { const co = await J('/atlas/data/co/' + code + '.json').catch(() => null), mine = in25(code), it = mine.length ? G36.lists[mine[0]].find(c => c.code === code) : null;
+    const name = typeof co?.c?.name === 'string' && co.c.name ? co.c.name : it?.name ?? null, mk = co?.c?.market === 'KOSDAQ' ? '코스닥' : co?.c?.market === 'KOSPI' ? '코스피' : null;
+    const v = spW36({code}), bd = DAYz.test(G36?.asOf?.board ?? '') ? mdM(G36.asOf.board) + ' ' : '', m = v ? (v[20] < v[0] ? 'dn' : v[20] > v[0] ? 'up' : 'eq') : null;
+    const ord = [...mine].sort((a, b) => (RK36[a]?.i ?? 99) - (RK36[b]?.i ?? 99) || kn25(a) - kn25(b));
+    return {h1: name, kick: [mk, typeof co?.c?.i === 'string' && co.c.i ? co.c.i + ' 업종' : null].filter(Boolean).join(' · ') || '회사', step: '3 / 5 · 회사',
+      say: mine.length ? '오늘 서른여섯 꾀 가운데 ' + mine.length + '가지가 이 회사를 골랐어요.' : '오늘은 서른여섯 꾀 어디에도 들지 않았어요.', seal: m ? {dn: '내림', up: '오름', eq: '같음'}[m] : '',
+      cap: v ? ['한 달 전 ' + wonM(v[0]), bd + '마지막 값 ' + wonM(v[20]), '한 달 동안 100원이 ' + w100(v[20] / v[0] - 1) + '이 됐어요.'] : [],
+      ks: ord.map(k => [k, '#/k/' + k, RK36[k] ? recW(RK36[k]) : '', G36.say[k]]), ask: '#/q/' + code, next: ['#/q/' + code, '4 / 5']}; };
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = [];
+    p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    const W = '㉕ 손자병법 다른 쪽 [' + width + '] ';
+    const txtJS = 'const txt = e => (e?.textContent ?? \'\').replace(/\\s+/g, \' \').trim();';
+    // 가) 첫 쪽 꾀 이름 줄 → 그 꾀 쪽 · 꾀 모음
+    if (same) { await open(p, '#/'); await p.waitForFunction(() => document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), null, {timeout: 15000}).catch(() => {});
+      const hs = await p.evaluate(() => [...document.querySelectorAll('#su section.sj-s36 li.sj-tk')].map(li => [li.getAttribute('data-k'), li.querySelector(':scope > a.sj-tkh')?.getAttribute('href') ?? '']));
+      check(hs.length === 36 && hs.every(([k, hr]) => hr === '#/k/' + k), W + '첫 쪽 꾀 이름 줄을 누르면 그 꾀 쪽(#/k/<꾀> · 서른여섯 모두)', JSON.stringify(hs.filter(([k, hr]) => hr !== '#/k/' + k).slice(0, 3))); }
+    await open(p, '#/k');
+    const ga = await p.evaluate(new Function(txtJS + `const main = document.querySelector('#su main.sj-page[data-page="kkoes"]');
+      return {main: !!main, h1: txt(document.querySelector('#su h1')), tab: txt(document.querySelector('#su .sj-tabs a[aria-current="page"]')), next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null,
+        sets: [...(main?.querySelectorAll('section.sj-kset') ?? [])].map(s => ({n: s.getAttribute('data-set'), h: txt(s.querySelector('h2')), rows: [...s.querySelectorAll('li.sj-kr')].map(li => [li.getAttribute('data-k'), li.querySelector('a.sj-ka')?.getAttribute('href') ?? '', txt(li.querySelector('.sj-kno')), txt(li.querySelector('.sj-kt b')), txt(li.querySelector('.sj-khan')), txt(li.querySelector('.sj-krk')), txt(li.querySelector('.sj-kmean'))])}))};`));
+    const setsW = okT25 ? [0, 1, 2, 3, 4, 5].map(i => ({n: String(i + 1), h: G36.set[K36[i * 6]], rows: K36.slice(i * 6, i * 6 + 6).map(k => [k, '#/k/' + k, '제' + kn25(k) + '계', G36.name[k], G36.han[k], RK36[k] ? RK36[k].i + '번째' : '', G36.mean[k]])})) : null;
+    check(okT25 && ga.main && ga.h1 === '병법 서른여섯 가지' && ga.tab === '꾀' && JSON.stringify(ga.sets) === JSON.stringify(setsW) && ga.next === '#/k/' + (sun25 ? ORD36[0] : 'g01'),
+      W + '가) 꾀 모음 — 여섯 묶음 × 여섯 꾀(삼십육계 차례 · 묶음 이름 = 자료) · 제 ○계 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 탭 「꾀」 · 다음 = 맨 위 꾀', JSON.stringify({main: ga.main, h1: ga.h1, tab: ga.tab, next: ga.next, bad: setsW ? ga.sets.map((s, i) => (JSON.stringify(s) === JSON.stringify(setsW[i]) ? null : [s.n, s.h, s.rows.find((r, j) => JSON.stringify(r) !== JSON.stringify(setsW[i].rows[j]))])).filter(Boolean).slice(0, 2) : 'data'}).slice(0, 500));
+    // 나) 꾀 한 가지
+    const KS25 = width === 390 ? ORD36 : [...new Set([ORD36[0], ORD36[35], ...K36.filter(k => G36?.by?.[k] === 'vol').slice(0, 1)])];
+    const badK = [];
+    for (const k of KS25) {
+      await open(p, '#/k/' + k);
+      const gk = await p.evaluate(new Function(txtJS + `const main = document.querySelector('#su main.sj-page[data-page="kkoe"]'), ph = main?.querySelector('section.sj-ph'), way = main?.querySelector('section.sj-kway'), rec = main?.querySelector('section.sj-krec'), kco = main?.querySelector('section.sj-kco'), kst = main?.querySelector('section.sj-kst');
+        return {main: !!main, k: main?.getAttribute('data-k') ?? null, h1: txt(document.querySelector('#su h1')), kick: txt(ph?.querySelector('.sj-k')), seal: txt(ph?.querySelector('.sj-seal-big')), q: txt(ph?.querySelector('.sj-q p')), cite: txt(ph?.querySelector('.sj-q cite')), step: ph?.querySelector('.sj-step')?.getAttribute('aria-label') ?? '', say: txt(ph?.querySelector('.sj-do')),
+          way: txt(way?.querySelector('.sj-lead')), vol: [...(way?.querySelectorAll('.sj-note') ?? [])].some(e => /사고판 양/.test(e.textContent)), rule: txt(rec?.querySelector('.sj-rule')), tl: txt(rec?.querySelector('.sj-tl')), dots: rec ? rec.querySelectorAll('.sj-dots i.sj-dl').length : -1,
+          cs: [...(kco?.querySelectorAll('a.sj-chip') ?? [])].map(a => [a.getAttribute('href'), txt(a.querySelector('b')), txt(a.querySelector('.sj-chipd'))]), none: txt(kco?.querySelector('.sj-tnone')), n: kco?.getAttribute('data-n') ?? null,
+          st: kst ? {dd: [...kst.querySelectorAll('dl.sj-money dd')].map(txt), res: txt(kst.querySelector('.sj-res b')), go: kst.querySelector('a.sj-go')?.getAttribute('href') ?? ''} : null,
+          pn: [...(main?.querySelectorAll('nav.sj-kpn a') ?? [])].map(a => a.getAttribute('href')), next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null, nextK: txt(document.querySelector('#su .sj-next .sj-nk')), tab: txt(document.querySelector('#su .sj-tabs a[aria-current="page"]'))};`));
+      const r = RK36[k] ?? null, H = sun25?.hist ?? null, at = ORD36.indexOf(k), L = okG ? G36.lists[k].slice(0, 7) : [], S25 = set25(k);
+      const want = okT25 ? {main: true, k, h1: G36.name[k], kick: '삼십육계 제' + kn25(k) + '계 · ' + G36.set[k], seal: r ? '차례 ' + r.i : '꾀', q: '「' + G36.mean[k] + '」', cite: '삼십육계 제' + kn25(k) + '계 ' + G36.han[k], step: '2 / 5 · 꾀',
+        say: sun25 ? (r?.n ? '지금 ' + sun25.name + '에서 서른여섯 꾀 가운데 덜 잃은 차례 ' + r.i + '번째예요. 지난 같은 땅 기록으로 셌어요.' : '지금 ' + sun25.name + '이에요. 이 꾀는 지난 기록을 세지 못해 맨 아래에 놓았어요.') : '오늘 형세는 아직 세지 못했어요. 꾀 차례 대신 옛 차례로 놓았어요.',
+        way: G36.say[k], vol: G36.by?.[k] === 'vol',
+        rule: sun25 && H ? (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + sun25.name + '이었던 ' + H.same + '날을 골라, ') + '이 꾀가 고른 일곱 곳을 닷새 뒤 값과 견줬어요.' + (ymW25(H.from) && ymW25(H.to) ? ' 센 때는 ' + ymW25(H.from) + '부터 ' + ymW25(H.to) + '까지예요.' : '') : '',
+        tl: r ? recW(r) : '오늘 형세를 아직 세지 못해 같은 땅 기록이 없어요.', dots: r?.n && r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0,
+        cs: L.map(c => ['#/c/' + c.code, c.name, Number.isInteger(c.days) && c.days >= 1 ? c.days + '일째' : '']), none: L.length ? '' : none25(G36.why?.[k]), n: String(L.length),
+        st: S25 ? {dd: S25.dd, res: S25.res, go: '#/r/t'} : null,
+        pn: [at > 0 ? '#/k/' + ORD36[at - 1] : null, at < 35 ? '#/k/' + ORD36[at + 1] : null, '#/k'].filter(Boolean), next: L.length ? '#/c/' + L[0].code : '#/q', nextK: L.length ? '3 / 5' : '4 / 5', tab: '꾀'} : null;
+      const diff = want ? Object.keys(want).filter(x => JSON.stringify(want[x]) !== JSON.stringify(gk[x])) : ['data'];
+      if (diff.length) badK.push(k + ' ' + diff.join(',') + ' ' + JSON.stringify(diff.slice(0, 2).map(x => [gk[x], want?.[x]])).slice(0, 220));
+      if (k === KS25[0] || k === KS25[KS25.length - 1]) pageRules(await measure(p), W + '나) 꾀 쪽 #/k/' + k);
+    }
+    check(!badK.length, W + '나) 꾀 한 가지 ' + KS25.length + '쪽 — 걸음 2 / 5 · 묶음 · 도장 = 오늘 차례 · 뜻 · 지금 땅에서 몇 위 · 고르는 법(사고판 양 꾀 풀이) · 같은 땅 기록 · 잃은 몫 점 · 오늘 닮은 곳(누르면 그 회사) · 정산 · 앞뒤 꾀 · 다음 단추 = 자료에서 따로 셈', badK.slice(0, 3).join(' / '));
+    // 다) 회사
+    for (const c of [FC?.code ?? null, other25?.code ?? null].filter(Boolean)) {
+      await open(p, '#/c/' + c);
+      const gc = await p.evaluate(new Function(txtJS + `const main = document.querySelector('#su main.sj-page[data-page="co"]'), ph = main?.querySelector('section.sj-ph'), cok = main?.querySelector('section.sj-cok');
+        return {h1: txt(document.querySelector('#su h1')), kick: txt(ph?.querySelector('.sj-k')), step: ph?.querySelector('.sj-step')?.getAttribute('aria-label') ?? '', say: txt(ph?.querySelector('.sj-do')), seal: txt(ph?.querySelector('.sj-seal-big')),
+          cap: [...(ph?.querySelectorAll('figure.sj-coline figcaption > *') ?? [])].map(txt), ks: [...(cok?.querySelectorAll('li.sj-tk') ?? [])].map(li => [li.getAttribute('data-k'), li.querySelector('a.sj-tkh')?.getAttribute('href') ?? '', txt(li.querySelector('.sj-tl')), txt(li.querySelector('.sj-say'))]),
+          ask: main?.querySelector('section.sj-costop a.sj-ask')?.getAttribute('href') ?? '', next: [document.querySelector('#su .sj-next')?.getAttribute('href') ?? '', txt(document.querySelector('#su .sj-next .sj-nk'))]};`));
+      const want = okT25 ? await coW25(c) : null;
+      const diff = want ? Object.keys(want).filter(x => JSON.stringify(want[x]) !== JSON.stringify(gc[x])) : ['data'];
+      check(!diff.length, W + '다) 회사 쪽 ' + (c === FC?.code ? '(길 셋째 회사)' : '(오늘 어느 꾀에도 없는 회사)') + ' — 걸음 3 / 5 · 이름 · 시장 · 업종 · 몇 가지 꾀가 골랐나 · 한 달 꺾은선 글 · 고른 꾀(덜 잃은 차례 · 지난 기록 · 고르는 법 · 누르면 그 꾀) · 「왜 사?」 = 자료에서 따로 셈 — ' + (want?.h1 ?? c),
+        JSON.stringify(diff.map(x => [x, gc[x], want?.[x]])).slice(0, 400));
+      pageRules(await measure(p), W + '다) 회사 쪽 #/c/' + c);
+    }
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
   }

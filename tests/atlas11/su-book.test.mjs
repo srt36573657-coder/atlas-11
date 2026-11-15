@@ -167,21 +167,4 @@ test('돈 셈 한눈에(주문 1112-1304) — 맨 위 지금까지 → 날짜마
   assert.ok(!/sort\([^)]*diff/.test(bk) && !/sort\([^)]*\.val/.test(bk), '늘고 준 크기 차례 0(수익 순위 0 — 본질 망치는 길)');
 });
 
-test('길 · 서랍 · 꾸밈 · 모든 사람(주문 1513) · 묶기 · 검사(주문 0938)', () => {
-  const su = rd('site/su/su.js'), bk = rd('site/su/su-book.js'), css = rd('site/su/su-book.css'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.equal(forwardTo('', '#/r/c'), null, '#/r/c — 큐피트 안');
-  assert.ok(/return \{title: T, tab: 4, step: null, kick: [^\n]*, h1: T, proper: false, hero, body: \[how\],\n/.test(bk), '달력 쪽은 탭 4(달력)가 켜짐 · 큰 숫자 · 달력(hero) · 「이렇게 셌어요」(body)가 한 줄에 그대로 — 주문 0040(줄 끝 풀이 글이 hero 를 가린 틀림 장부 201)');
-  assert.ok(su.includes("a === 'c' ? await (await import('/su/su-book.js')).vBook(X21)"), '길 #/r/c');
-  assert.ok(su.includes("drawer('#/r/c', '1 · 2 · 3등 달력', '10주씩', '뽑힌 날부터 산 셈 · 가짜 돈')") && /su-drawers[\s\S]{0,400}drawer\('#\/r\/c'[\s\S]{0,300}drawer\('#\/r\/m'/.test(su), '기록 쪽 서랍 맨 앞 — 모든 사람(주문 1513)');
-  assert.ok(!/ownerBook|su-oslot/.test(su), '사장님 기기 서랍 자리(빈 자리) 0 — 모든 사람에게 같은 서랍');
-  assert.ok(!/ownerOk|api\/jinhwa\/me|atlas11:invite:owner|data-owner|bk-lock/.test(bk), '사장님 열쇠 문 0 — 모든 사람에게 같은 화면(주문 1513 「모든사람 휴대폰에 열리게 해」)');
-  assert.ok(![...bk.matchAll(/'([^'\n]*)'/g)].some(m => m[1].includes('사장님 휴대폰')), '화면 글에 「사장님 휴대폰에서만」 0');
-  assert.ok(!/\bstyle:/.test(bk) && !/\.style\b/.test(bk) && !/innerHTML/.test(bk), '글 속 꾸밈(보안 규칙 style-src) · innerHTML 0');
-  assert.ok(/export const CSS = '\/su\/su-book\.css'/.test(bk) && fs.existsSync(path.join(ROOT, 'site/su/su-book.css')), '꾸밈 파일');
-  for (const [k, px] of [...css.matchAll(/font-size:\s*(\d+(?:\.\d+)?)px/g)].map(m => [m[0], +m[1]])) assert.ok(px >= 17, '글 17px 넘게 — ' + k);
-  assert.ok(/\.bk-d \{[^}]*min-height: 62px/.test(css) && /\.bk-row \{[^}]*min-height: 48px/.test(css) && /\.bk-hs \{[^}]*min-height: 48px/.test(css) && /\.bk-sps \{[^}]*min-height: 48px/.test(css) && /\.bk-olds \{[^}]*min-height: 56px/.test(css) && /\.bk-drow \{[^}]*min-height: 56px/.test(css), '누르는 곳 48 넘게(달력 칸 · 줄 · 접힌 칸 · 날짜마다 줄 — 주문 1112-1304)');
-  assert.ok(!/<text|'text'/.test(bk.slice(bk.indexOf('function spark'), bk.indexOf('const axisOf'))) && /viewBox: '0 0 20 20'/.test(bk), '그림 속 글자 0 · 모양은 도형(글꼴마다 넓이가 다른 글자 대신)');
-  assert.ok(/const RECENT = 5;/.test(bk) && bk.includes('function monthFold') && bk.includes("'처음 보인 때 '") && bk.includes("'같은 회사 '") && !bk.includes("import {KIND}"), '다섯 판만 펴고 달마다 접음 · 처음 보인 때 · 같은 회사 몇 번째(주문 1111-0938)');
-  assert.ok(pk.includes("'scripts/atlas11/next/su21_book.mjs'") && /su21_book\.mjs[\s\S]{0,400}\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶기 — 판마다 장부 · 올리기 작업만 저장');
-  assert.ok(ck.includes("'#/r/c'") && ck.includes('㉑ 1 · 2 · 3등 장부 자료') && ck.includes('「사장님 휴대폰에서만」 글 0') && !/ATLAS_DEV_OWNER_KEY[\s\S]{0,200}1 · 2 · 3등 달력/.test(ck.slice(ck.indexOf('㉑ 1 · 2 · 3등 달력(주문 0938'))) && ck.includes('같은 크기 세 칸(산 셈 하나씩)') && ck.includes('첫 화면에 종목 이름') && ck.includes('맨 위 「지금까지」') && ck.includes('날짜마다 — 새 날이 위') && ck.includes('날짜마다 줄을 누르면 그날 고른 셋으로') && ck.includes('function bookMoney(BK)') && ck.includes('달력 날을 누르면 그 판으로') && ck.includes('판 차례 — 새 판이 위') && /#\\\/r\\\/\[mwdykicst\]/.test(ck), '검사 ㉑ · 고리 꼴(가까운 회사 쪽 #/r/n 은 버림 — 주문 1114-1306 ⑧)');
-});
+// (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(1 · 2 · 3등 달력 #/r/c)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)

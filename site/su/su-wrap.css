@@ -16,7 +16,7 @@ html.su-wrapped .hm-it[data-k="us"], html.su-wrapped .ptoday-sec[data-k="us"], h
 .suw-back b { font-size: 19px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .suw-back i { margin-left: auto; font-style: normal; font-size: 24px; color: #86868B; }
 .suw-find { display: flex; align-items: center; gap: 6px; min-height: 52px; min-width: 52px; padding: 0 14px; border-radius: 26px; border: 1px solid #D2D2D7; color: #1D1D1F; text-decoration: none; background: #FFFFFF; }
-.suw-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 4px; }
+.suw-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 4px; }
 .suw-tabs a { min-height: 50px; display: grid; justify-items: center; align-content: center; gap: 2px; color: #1D1D1F; text-decoration: none; font-size: 17px; font-weight: 600; }
 .suw-tabs a .suw-i { color: #6E6E73; }
 .suw-i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }

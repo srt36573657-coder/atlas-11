@@ -1,15 +1,23 @@
-/* 손자병법 첫 쪽 머리 줄 · 표지(주문 1115-1706 · 빈 파일에서 새로 씀 · 짝 = 본문 su-sonja.js · 꾸밈 su-sonja.css)
+/* 손자병법 판 머리 줄 · 표지 · 걸음 · 이야기 막대 · 탭 · 끝 줄(주문 1115-1706 · 빈 파일에서 새로 씀 · 짝 = 첫 쪽 본문 su-sonja.js · 다른 쪽 su-sonja-kkoe.js · 꾸밈 su-sonja.css)
    자료와 본문 코드를 기다리지 않고 먼저 칠함 — 느린 휴대폰(느린 4G · 처리 4배 느림)에서 가장 큰 그림(표지)이 먼저 보이게
    처음 열 때는 index.html 이 같은 머리 줄 · 표지를 글로 들고 있어 자바스크립트보다 먼저 보임(주문 1115-1836 「지금보다 속도 3배 빠르게」) — sonjaShell 이 그것을 그대로 이어 씀
    (index.html 의 글을 고치면 여기 topBar · cover 도 같이 고침 — 다른 쪽에서 첫 쪽으로 돌아올 때는 여기서 새로 그림)
-   본문(형세 보고 → … → 끝 줄 · 이야기 막대 · 탭)은 su-sonja.js 가 자료를 받은 뒤 같은 main 뒤에 붙임(표지는 다시 그리지 않음)
+   주문 1115-2328(사장님 2026-11-15(마카오) 22:28 「어고쳐」 — 「다른 쪽들도 병법 서른여섯 가지에 맞게 고칠까요?」의 답) — 모든 쪽이 같은 판
+   · 길 다섯 화면: 오늘 → 꾀 → 회사 → 「왜 사?」 → 내 매매일지 · 탭 다섯: 오늘 · 꾀 · 멈춤 · 일지 · 정산(옛 지도 · 기록 · 달력은 지움)
    보안 규칙: innerHTML 없음 · 글 속 style 없음 · 다른 주소 스크립트 없음 */
 import {h} from '/su/su-fig.js';
-import {NAME} from '/next/brand.js';
+import {NAME, josa} from '/next/brand.js';
 
 export const ART = '/su/su-sonja-hero.svg';
 /** 표지 화제(세로 글 두 줄 · 오른쪽 줄부터) — 주문 1115-1843 「병법으로 … 손실을 보지 않을 방법을 병법으로 풀어 내는 곳」 · 옛 「불장 · 꽃이 될 · 돈이 몰리는 곳을 찾아요」는 지움 */
 export const HWA = [['형세를', '읽고'], ['덜', '잃는'], ['꾀를', '찾아요']]; // 세로 세 줄(오른쪽부터) · 낱말 사이 = 좁은 틈(i — 띄어쓰기 글자는 남김)
+export const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
+/** 꼭 있어야 할 길 둘(개인정보 처리방침 · 고객센터) — 쪽마다 맨 아래 */
+export const FOOT = Object.freeze([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]);
+/** 길 다섯 화면(주문 1115-2328) — [이름, 기승전결] · 짝: su.js STEPS(옛 틀 「왜 사?」 · 매매일지) · 검사 check_su.mjs ⑨ */
+export const STEP5 = Object.freeze([['오늘', '기'], ['꾀', '승'], ['회사', '전'], ['「왜 사?」', '결'], ['내 매매일지', '결']]);
+/** 탭 다섯(주문 1115-2328) — 오늘 · 꾀 · 멈춤 · 일지 · 정산 · 짝: su.js TABS(옛 틀) */
+export const TAB5 = Object.freeze([['오늘', '#/'], ['꾀', '#/k'], ['멈춤', '#/q'], ['일지', '#/j'], ['정산', '#/r/t']]);
 
 /** 「글씨」 단추 — 누르면 한 단 크게(html.su-lg · 다음에 열어도 그대로) */
 function bigText(big) {
@@ -30,13 +38,18 @@ export function topBar() {
       big));
 }
 
-/** 표지 — 큰 붓 글씨 그림 한 장 · 걸음 「기 · 1 / 8 · 오늘」(dd = 「11월 13일」 같은 자료 날 · 없으면 뒤에 붙임) */
+/** 걸음 표시 「기 · 1 / 5 · 오늘」(n = 1 ~ 5 · dd = 「11월 13일」 같은 자료 날 · 없으면 뒤에 붙임) */
+export function stepTag(n, dd = null) {
+  const [name, ph] = STEP5[n - 1] ?? STEP5[0], t = n + ' / ' + STEP5.length + ' · ' + name;
+  return h('p', {class: 'sj-step', 'aria-label': t}, h('b', {text: ph}), h('span', {text: t}), dd ? stepDay(dd) : null);
+}
+/** 표지 — 큰 붓 글씨 그림 한 장 · 걸음 「기 · 1 / 5 · 오늘」 */
 export function cover(dd = null) {
   return h('section', {class: 'sj-cover', 'aria-label': NAME + ' 표지'},
     h('div', {class: 'sj-artw'},
       h('img', {class: 'sj-art', src: ART, width: '390', height: '470', alt: '붓 글씨 「' + NAME + '」 · 먼 산과 붓 한 획', decoding: 'async', fetchpriority: 'high'}),
       h('p', {class: 'sj-hwa'}, ...HWA.map(([w1, w2]) => h('span', {}, w1, h('i', {text: ' '}), w2)))),
-    h('p', {class: 'sj-step', 'aria-label': '1 / 8 · 오늘'}, h('b', {text: '기'}), h('span', {text: '1 / 8 · 오늘'}), dd ? stepDay(dd) : null));
+    stepTag(1, dd));
 }
 /** 걸음 줄 끝의 자료 날 */
 export const stepDay = dd => h('span', {class: 'sj-stepd', text: dd + ' 자료'});
@@ -51,4 +64,41 @@ export function sonjaShell(root = null) {
     return {top, main, pre: true};
   }
   return {top: topBar(), main: h('main', {class: 'sj-page', 'data-page': 'sonja', 'data-wait': ''}, cover(null)), pre: false};
+}
+
+/* ── 쪽마다 같은 아래 판(주문 1115-2328) ── */
+/** 끝 줄 — 사기 전에 멈춤 한 줄 · 출처 · 조사 날짜 · 꼭 있어야 할 길 둘 · 안전 문장(쪽마다 맨 아래) */
+export function endSec(day, got = null, more = null) {
+  return h('footer', {class: 'sj-end'},
+    h('p', {class: 'sj-enough', text: '사기 전에 한 번 멈춰요.'}),
+    h('p', {}, h('b', {text: '출처 '}), '네이버 증권 그날 마지막 값 · ' + josa(NAME, '가') + ' 센 지난 기록'),
+    h('p', {}, h('b', {text: '조사 날짜 '}), '자료 ' + day + (got ? ' · 받은 때 ' + got : '')),
+    more ? h('p', {text: more}) : null,
+    h('p', {class: 'sj-links'}, ...FOOT.map(([href, t]) => h('a', {href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'})))),
+    h('p', {class: 'sj-safe sj-safe-end', text: SAFE}));
+}
+/** 듣기 — 쪽의 큰 제목과 [data-say] 줄을 차례로 읽음(다시 누르면 멈춤) */
+function sayBtn() {
+  const say = h('button', {class: 'sj-listen', type: 'button', 'aria-label': '읽어 주기', text: '듣기'});
+  say.addEventListener('click', () => {
+    try {
+      const sy = window.speechSynthesis; if (!sy) return;
+      if (sy.speaking) { sy.cancel(); return; }
+      const t = [...document.querySelectorAll('#su .sj-h1, #su [data-say]')].map(e => e.innerText.replace(/\s+/g, ' ').trim()).filter(Boolean).join('. ');
+      const u = new SpeechSynthesisUtterance(t); u.lang = 'ko-KR'; u.rate = 0.9; sy.speak(u);
+    } catch { /* 읽어 주기가 없는 기기 */ }
+  });
+  return say;
+}
+/** 이야기 막대 — 다섯 화면 가운데 몇 번째(step · 길 밖 쪽은 null) · 듣기 · 다음 단추(nx = {href, label, k}) */
+export function dockNav(step, nx) {
+  return h('nav', {class: 'sj-dock', 'aria-label': '다음 화면'},
+    step ? h('ol', {class: 'sj-prog', 'aria-label': '다섯 화면 가운데 ' + step + '번째'}, ...STEP5.map((x, i) => h('li', {class: i + 1 === step ? 'sj-pcur' : i + 1 < step ? 'sj-pdone' : '', 'aria-hidden': 'true'}))) : null,
+    h('div', {class: 'sj-dk' + (nx ? '' : ' sj-dk1')}, sayBtn(),
+      nx ? h('a', {class: 'sj-next', href: nx.href}, nx.k ? h('span', {class: 'sj-nk', text: nx.k}) : null, h('b', {text: nx.label}), h('i', {'aria-hidden': 'true', text: '›'})) : null));
+}
+/** 탭 다섯 — cur = 켜진 탭 차례(0 오늘 · 1 꾀 · 2 멈춤 · 3 일지 · 4 정산 · 탭 밖 쪽은 -1) · lc = 마지막에 본 회사 번호(멈춤 탭이 그 회사로) */
+export function tabNav(cur = 0, lc = null) {
+  return h('nav', {class: 'sj-tabs', 'aria-label': '탭 — ' + TAB5.map(x => x[0]).join(' · ')}, TAB5.map(([t, href], i) =>
+    h('a', {class: 'sj-tab' + (i === cur ? ' sj-cur' : ''), href: i === 2 && lc ? '#/q/' + lc : href, 'aria-current': i === cur ? 'page' : null, 'aria-label': (i + 1) + '번째 · ' + t, text: t})));
 }

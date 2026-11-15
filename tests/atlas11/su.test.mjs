@@ -287,28 +287,10 @@ test('무하 그림 부품 — 부품 꼴(load · picture · CSS) · 꾸밈 파�
 
 /** 주문 2011 「모든 페이지를 첫페이지 기준으로」 — 무하 그림 부품을 첫 페이지(흰 구슬 판 su-apple) 말투로 새로 그린 잡스 판 부품(옛 무하 부품은 지우지 않고 둠 · docs/design/su-jobs-all-2026-11-08/brief.md) */
 const JOBS = ['su-land-jobs.js', 'su-co-jobs.js', 'su-more-jobs.js', 'su-stop-jobs.js', 'su-rec-jobs.js', 'su-road-jobs.js'];
-test('잡스 판 부품 — 부품 꼴 · 꾸밈 파일(제 이름 아래만) · 깨끗한 판 표시 · 글 속 꾸밈 · 아무 수 0 · 쓰는 쪽이 옛 무하 부품 대신 부름(주문 2011)', () => {
-  const callers = ['su.js', 'su-21.js', 'su-why.js'].map(u => fs.readFileSync(path.join(ROOT, 'site/su', u), 'utf8')).join('\n'); // 셋의 길(su-roads.js)은 버림(주문 1114-1306 ⑧)
-  for (const f of [...JOBS, 'su-frame-jobs.js']) {
-    const t = fs.readFileSync(path.join(ROOT, 'site/su', f), 'utf8'), name = f.replace(/\.js$/, '');
-    if (f === 'su-frame-jobs.js') assert.ok(/export function frame\(/.test(t), f + ' 틀 꼴');
-    else assert.ok(/export async function load\(/.test(t) && /export function picture\(/.test(t), f + ' 부품 꼴');
-    const css = /export const CSS = '\/su\/([a-z0-9-]+\.css)'/.exec(t); assert.ok(css && css[1] === name + '.css' && fs.existsSync(path.join(ROOT, 'site/su', css[1])), f + ' 꾸밈 파일');
-    assert.ok(/data-clean['"]?\s*[:,]\s*['"]jobs['"]|'data-clean', 'jobs'/.test(t), f + ' 깨끗한 판 표시(data-clean="jobs")');
-    assert.ok(!/innerHTML|outerHTML|insertAdjacentHTML|\.style\b|Math\.random/.test(t), f + ' 글 속 꾸밈 · 아무 수 0');
-    assert.ok(!/data-mucha/.test(t), f + ' 무하 요소 0');
-    const C = fs.readFileSync(path.join(ROOT, 'site/su', css[1]), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
-    const sels = [...C.matchAll(/(^|[{}])\s*([^@{}\s][^{}]*?)\s*\{/g)].map(m => m[2].trim()).filter(x => x && !/^(from|to|\d+%)/.test(x));
-    assert.ok(sels.length > 5 && sels.every(x => x.split(',').every(y => y.trim().startsWith('.' + name))), f + ' 꾸밈은 제 이름(.' + name + ') 아래만');
-    if (f !== 'su-frame-jobs.js') assert.ok(callers.includes("'" + name + "'"), f + ' 쓰는 쪽이 부름');
-  }
-  for (const old of ['su-land-art', 'su-stop-art', 'su-rec-art']) assert.ok(!callers.includes("'" + old + "'"), old + ' 대신 잡스 판(옛 파일은 남김)');
-  for (const old of ART_GONE) assert.ok(!callers.includes("'" + old + "'") && !fs.existsSync(path.join(ROOT, 'site/su', old + '.js')), old + ' — 아무도 부르지 않아 지움(주문 1114-1306 ⑨)');
-});
-
-test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 기승전결 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
+// (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(옛 회사 · 「왜?」 · 기록창 한국 시장 · 무하 부품 쪽)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)
+test('새 판 화면(새로 씀) — 다음 단추 네 번 다섯 화면(주문 1115-2328) · 탭 다섯 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
   const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8');
-  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-wrap.js') + src('su-sky.js') + ART4.map(src).join('') + JOBS.map(src).join('') + src('su-frame-jobs.js') + src('su-mucha-kit.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-wrap.js') + src('su-sky.js') + ART4.map(src).join('') + JOBS.map(src).join('') + src('su-frame-jobs.js') + src('su-mucha-kit.js') + src('su-sonja.js') + src('su-sonja-top.js') + src('su-sonja-kkoe.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
   const arr = (s, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(s); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
   const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
   assert.equal(qs.length, 11);
@@ -317,16 +299,17 @@ test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 
   assert.deepEqual(arr(wy, 'WHY_GROUPS'), JSON.parse(g[1].replace(/'/g, '"')), '네 묶음 = p-why.js GROUPS 그대로');
   const st = /export const STEPS = (\[null, [^\n]*\]);/.exec(su); assert.ok(st, 'STEPS');
   const steps = new Function('return ' + st[1])().slice(1);
-  assert.equal(steps.length, 8, '여덟 화면 = 다음 단추 일곱 번');
-  assert.deepEqual(steps.map(x => x[1]), [0, 1, 1, 2, 2, 3, 3, 3], '걸음이 기승전결 차례로 이어짐(주문 2044 — 21곳 · 땅 지도 · 업종 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게)');
+  assert.equal(steps.length, 5, '다섯 화면 = 다음 단추 네 번(주문 1115-2328 — 오늘 · 꾀 · 회사 · 「왜 사?」 · 매매일지)');
+  assert.deepEqual(steps.map(x => x[0]), ['오늘', '꾀', '회사', '「왜 사?」', '내 매매일지'], '다섯 화면 이름');
+  assert.deepEqual(steps.map(x => x[1]), [0, 1, 2, 3, 3], '걸음이 기승전결 차례로 이어짐(주문 2044 — 21곳 · 땅 지도 · 업종 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게)');
   const tl = /const TABS = \(\) => \[([\s\S]*?)\]\];/.exec(su); assert.ok(tl, 'TABS');
   const tabNames = [...tl[1].matchAll(/\['([0-9가-힣]+)', /g)].map(m => m[1]);
-  assert.deepEqual(tabNames.slice(0, 6), ['오늘', '지도', '기록', '멈춤', '달력', '정산'], '탭 여섯 = 쪽마다 tab 값 차례(0 오늘 — 주문 1114-1306 ⑤ 칸 수 「301곳」을 회사 수처럼 부르지 않게 첫 쪽 이름으로 · 1 지도 · 2 기록 · 3 멈춤 — 주문 2044 · 4 달력 — 주문 0040 · 5 정산 — 주문 1112-1728)');
+  assert.deepEqual(tabNames, ['오늘', '꾀', '멈춤', '일지', '정산'], '탭 다섯 = 쪽마다 tab 값 차례(주문 1115-2328 — 0 오늘 · 1 꾀 · 2 멈춤 · 3 일지 · 4 정산 · 옛 지도 · 기록 · 달력 지움)');
   const to = /export const TAB_ORDER = Object\.freeze\((\[[0-9, ]+\])\);/.exec(su); assert.ok(to, 'TAB_ORDER');
-  assert.deepEqual(JSON.parse(to[1]).map(i => tabNames[i]), ['오늘', '지도', '멈춤', '기록', '달력', '정산'], '보이는 차례 = 중요한 차례 오늘 · 지도 · 멈춤 · 기록(주문 1023 [4] 토론) · 달력(주문 0040 「달력을 탭에 두도록해」) · 정산은 맨 끝(주문 1112-1728 「탭이 여섯 개가 되겠지」)');
-  assert.ok(su.includes("'탭 — 오늘 · 지도 · 멈춤 · 기록 · 달력 · 정산'") && !/['"]301곳/.test(su) && su.includes("['달력', '#/r/c', ") && su.includes("['정산', '#/r/t', "), '달력 탭 = #/r/c · 정산 탭 = #/r/t');
-  assert.ok(/\.su-tabs \{[^}]*grid-template-columns: repeat\(6, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su.css'), 'utf8')), '탭 줄 여섯 칸');
-  for (const href of ['#/', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/s', '#/r/c', '#/r/t', '#/s', '#/q', '#/q/127120', '#/j', '#/c/127120', '#/m', '#/m/hold', '#/f', '#/c/127120/more']) assert.equal(forwardTo('', href), null, '새 판 안 — ' + href);
+  assert.deepEqual(JSON.parse(to[1]).map(i => tabNames[i]), ['오늘', '꾀', '멈춤', '일지', '정산'], '보이는 차례 = 탭 차례 그대로(주문 1115-2328)');
+  assert.ok(su.includes("'탭 — 오늘 · 꾀 · 멈춤 · 일지 · 정산'") && !/['"]301곳/.test(su) && su.includes("['꾀', '#/k', ") && su.includes("['정산', '#/r/t', ") && !su.includes("['달력', ") && !su.includes("['지도', "), '꾀 탭 = #/k · 정산 탭 = #/r/t · 옛 달력 · 지도 탭 0');
+  assert.ok(/\.su-tabs \{[^}]*grid-template-columns: repeat\(5, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su.css'), 'utf8')) && /#su \.sj-tabs \{[^}]*grid-template-columns: repeat\(5, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su-sonja.css'), 'utf8')), '탭 줄 다섯 칸(옛 틀 · 손자병법 판)');
+  for (const href of ['#/', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/s', '#/r/c', '#/r/t', '#/s', '#/q', '#/q/127120', '#/j', '#/c/127120', '#/m', '#/m/hold', '#/f', '#/c/127120/more', '#/k', '#/k/g01', '#/k/g36']) assert.equal(forwardTo('', href), null, '새 판 안 — ' + href); // 지운 쪽 옛 고리도 /next/ 로 넘기지 않고 손자병법 안에서 첫 쪽(주문 1115-2328)
   const {screenHits, ruinHits} = await import('../../site/next/words.js');
   const texts = [...all.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
   const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));
@@ -582,53 +565,8 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
 });
 
 /** 주문 0123(사장님 2026-11-09 01:23 · 01:44 · 02:01 · 02:02 · 02:04 「어」) · 주문 0200(02:00 「어」) — 「왜?」 쪽 · 42칸 첫 발견 · 며칠째 · 포모지수 · 회사 쪽 현재가 */
-test('「왜?」 쪽 — 길 · 서른여섯 가지 · 기준 일곱 · 포모 이유 · 42칸 줄 · 회사 쪽 현재가', () => {
-  const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), y = fs.readFileSync(path.join(ROOT, 'site/su/su-why36.js'), 'utf8');
-  const ap = fs.readFileSync(path.join(ROOT, 'site/su/su-apple.js'), 'utf8'), cj = fs.readFileSync(path.join(ROOT, 'site/su/su-co-jobs.js'), 'utf8'), pk = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/package.mjs'), 'utf8');
-  assert.ok(/\\\/y\\\/\(hot\|bloom\|money\|hotNext\|moneyNext\|bloomNext\)\$\/\.test\(a\)\) v = await \(await import\('\/su\/su-why36\.js'\)\)\.vWhy\(X21, a\.slice\(0, 6\), a\.slice\(9\)\)/.test(su), '길 #/c/<번호>/y/<묶음>');
-  assert.ok(fs.existsSync(path.join(ROOT, 'site/su/su-why36.css')) && /export const CSS = '\/su\/su-why36\.css'/.test(y), '꾸밈 파일');
-  for (const k of ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext']) assert.ok(new RegExp(`\\b${k}: \\{기: \\[`).test(y), '중요한 차례 — ' + k);
-  assert.ok(/PARTS = Object\.freeze\(\[\s*\{id: '기'/.test(y) && /items\.length >= 9/.test(y) && /while \(p\.items\.length < 9 && spare\.length\)/.test(y), '기 · 승 · 전 · 결 아홉씩');
-  assert.ok(/export function crit7/.test(y) && /fomo11/.test(y) && /rows\.slice\(0, 11\)/.test(y), '기준 일곱 · 포모 이유 열하나');
-  assert.ok(/'#\/c\/' \+ encodeURIComponent\(it\.code\) \+ '\/y\/' \+ it\.k/.test(ap) && /'sa-found'/.test(ap) && /'sa-days'/.test(ap) && /const ROW = 140/.test(ap), '첫 페이지 칸 — 누르면 「왜?」 · 첫 발견 · 며칠째 · 포모지수');
-  assert.ok(/psrc: bd \? 'board' : 'co'/.test(cj) && /function live\(svg, m, P, id\)/.test(cj) && /su21-next\.json/.test(cj), '회사 쪽 현재가 = 첫 페이지 값 · 장 중 1분마다');
-  // 주문 0806(사장님 2026-11-09 08:06 「어 그렇게 해」) — 회사 쪽 한 달 꺾은선 = 첫 페이지 칸 값 21개 · 같은 날짜 · 시장 줄은 날짜가 꼭 맞을 때만 · 장 중에는 칸과 똑같이 밀림
-  assert.ok(/bd\.c\.length !== 21/.test(cj) && /bd\.c\[20\] !== bd\.close/.test(cj) && /lsrc: B \? 'board' : 'co'/.test(cj), '칸 값 잣대 = 첫 페이지 spOf 와 같음(21개 · 끝 값 = 현재가)');
-  assert.ok(/function idxAt\(H, market, cd\)/.test(cj) && /v\.every\(fin\) \?/.test(cj), '시장 줄 = 그 21날 지수 값이 모두 있을 때만');
-  assert.ok(/const sh = jday > \(day \|\| ''\), v = sh \? m\.lv\.slice\(1\)\.concat\(\[p\]\) : m\.lv\.slice\(0, 20\)\.concat\(\[p\]\)/.test(cj) && /il = sh \? null : m\.il/.test(cj), '장 중 — 첫 페이지 relive 와 같은 셈 · 밀리면 시장 줄 없음');
-  assert.ok(/const sp = j\.day > day \? \[\.\.\.c\.it\.sp\.slice\(1\), v\.p\] : \[\.\.\.c\.it\.sp\.slice\(0, 20\), v\.p\]/.test(ap), '첫 페이지 셈(맞댄 짝)');
-  const S21 = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/next/su21.py'), 'utf8');
-  assert.ok(/HEAVY = \('c', 'cFrom', 'cd',/.test(S21) && /'cFrom': v\.get\('cFrom'\), 'cd': cdOf\(c\)/.test(S21) && /st\.get\('boardId'\) == b\.get\('boardId'\)/.test(S21), '판 날짜 21개(같은 판 회사 파일 · 값이 모두 같을 때만)');
-  for (const f of ['su21_replay.mjs', 'su21_days.mjs', 'su21_fomo.mjs']) assert.ok(pk.includes('scripts/atlas11/next/' + f), '묶을 때 셈 — ' + f);
-  const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21.json'), 'utf8')), W = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-why.json'), 'utf8'));
-  const all = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'].flatMap(k => T.lists[k]);
-  assert.ok(T.strict && T.strict.mode !== 'mark' ? all.length <= 42 : all.length === 42, '저장된 판 칸 수(엄격 셈 거른 판이면 42 아래 · 주문 0854 · 표시 판은 42 — 주문 1209)');
-  assert.ok(all.every(c => Number.isInteger(c.days) && c.days >= 1 && /^\d{4}-\d{2}-\d{2}$/.test(c.found) && (c.fomo === null || (Number.isInteger(c.fomo) && c.fomo >= 0 && c.fomo <= 100))), '저장된 판 42칸 — 며칠째 · 첫 발견 · 포모');
-  assert.equal(W.board, T.asOf.board); assert.equal(W.checks.length, 7); assert.ok(W.mc.paths >= 20000);
-});
-
-/** 주문 0814(사장님 2026-11-09 08:14 「… 총 7가지를 파악해서 기록창을 만들어 먼저 기재 하라 에이전트 활용하라」 · 08:25 「수르에 올려야해」) — 기록창 「한국 시장 일곱 가지」 */
-test('기록창 — 한국 시장 일곱 가지(자료 꼴 · 쓰지 않을 말 0 · 「%」 0 · 영어 글자 0 · 길 · 서랍)', async () => {
-  const K = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/kr7.json'), 'utf8'));
-  assert.equal(K.schema, 'su-kr7-1'); assert.match(K.at, /^\d{4}-\d{2}-\d{2}$/); assert.equal(K.items.length, 7);
-  const W = await import('../../site/next/words.js');
-  const strs = [K.lead, ...(K.how ?? [])];
-  for (const it of K.items) {
-    for (const k of ['t', 'one', 'kr', 'why', 'culture', 'tag']) { assert.equal(typeof it[k], 'string', it.t + ' ' + k); assert.ok(it[k].trim().length > 1, it.t + ' ' + k); strs.push(it[k]); }
-    assert.ok([...it.culture].length <= 5 && [...it.tag].length <= 8, it.t + ' 한눈 그림 글 길이(문화 다섯 · 모습 여덟 글자 안)');
-    assert.ok(Array.isArray(it.vs) && it.vs.length >= 2 && it.vs.every(v => v.who && v.s), it.t + ' 다른 나라 둘 넘게'); for (const v of it.vs) strs.push(v.who, v.s);
-    assert.ok(Array.isArray(it.src) && it.src.length >= 1 && it.src.every(x => typeof x === 'string' && /\d{4}/.test(x)), it.t + ' 근거(해 적힘)'); strs.push(...it.src);
-    if (it.bars) { assert.ok(it.bars.rows.length >= 2 && it.bars.rows.some(r => r.who === '한국' || r.kr === true) && it.bars.rows.every(r => Number.isFinite(r.v) && r.v >= 0 && r.t), it.t + ' 견줌 그림'); strs.push(it.bars.title, ...(it.bars.note ? [it.bars.note] : []), ...it.bars.rows.flatMap(r => [r.who, r.t])); }
-  }
-  const all = strs.join('\n');
-  assert.deepEqual([...W.screenHits(all), ...W.ruinHits(all)].map(x => x.word ?? x), [], '쓰지 않을 말 0');
-  assert.ok(!all.includes('%'), '「%」 없음'); assert.ok(!/[A-Za-z]/.test(all), '영어 글자 없음');
-  const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), k7 = fs.readFileSync(path.join(ROOT, 'site/su/su-kr7.js'), 'utf8');
-  assert.ok(/a === 'k' \? await \(await import\('\/su\/su-kr7\.js'\)\)\.vKr7\(X21\)/.test(su) && /drawer\('#\/r\/k', '한국 시장 일곱 가지'/.test(su), '길 #/r/k · 기록 쪽 서랍');
-  assert.ok(/export const CSS = '\/su\/su-kr7\.css'/.test(k7) && fs.existsSync(path.join(ROOT, 'site/su/su-kr7.css')) && !/innerHTML|outerHTML|insertAdjacentHTML|\.style\b|Math\.random|https?:\/\//.test(k7), '꾸밈 파일 · 글 속 꾸밈 0 · 아무 수 0 · 바깥 고리 0');
-});
-
-/** 주문 0854(사장님 2026-11-09 08:54 「몬테카를로 방식으로 먼저 찾아낸 다음 소거법을 31번 더 돌려서 지금보다 엄격한 기준으로」 · 09:02 「어」) — 엄격 셈 · 빈 자리 · 「왜?」 쪽 */
+// (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(옛 회사 · 「왜?」 · 기록창 한국 시장 · 무하 부품 쪽)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)
+// (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(옛 회사 · 「왜?」 · 기록창 한국 시장 · 무하 부품 쪽)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)
 test('엄격 셈 — su21.py 가 지금 셈 일곱을 거름 · 첫 페이지 빈 자리 · 「왜?」 쪽 기준 31가지 · 묶을 때 su21-strict.json', () => {
   const src = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   const py = src('scripts/atlas11/next/su21.py'), ap = src('site/su/su-apple.js'), y = src('site/su/su-why36.js'), pk = src('scripts/atlas11/package.mjs'), rp = src('scripts/atlas11/next/su21_replay.mjs');
@@ -647,7 +585,7 @@ test('손자병법 계산법 표 — 42칸 그대로 · 엄격 셈을 모두 지
   assert.ok(!/HOT, BLOOM, MONEY, HOTN, MONEYN, BLOOMN = PICK/.test(py), 'su21.py — 칸은 일곱 그대로(주문 1422 뒤에는 몬테카를로 차례 · 표는 1등 · 2등 · 3등)');
   assert.ok(/const MARK = d\?\.strict\?\.mode === 'mark'/.test(ap) && /function sxTag\(/.test(ap) && /function legendSx\(/.test(ap) && ap.includes("SXT = '손자병법 계산법'") && ap.includes("SXL = '손자병법 계산법으로 찾은 종목'") && /'data-sx': it\.sx \? '1' : ''/.test(ap), '첫 페이지 — 표 · 풀이 · data-sx');
   assert.ok(y.includes('손자병법 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지') && y.includes('몬테카를로에서 걸려 기준 31가지는 세지 않았어요'), '「왜?」 쪽 — 표가 붙은 곳 · 걸린 곳');
-  assert.ok(ck.includes('⑳ 처음 쪽 42칸 · 1 · 2 · 3등 칸 0(병법 서른여섯만 — 주문 1115-1843') && ck.includes('⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지'), '검사 ⑳ — 표시 판(처음 쪽 칸은 지움 — 주문 1115-1843 · 「왜?」 쪽은 그대로)');
+  // (주문 1115-2328 — 첫 쪽 · 「왜?」 쪽 · 기록창 쪽을 지워 검사 ⑳ 과 그 길도 지움 · 자료 셈 시험은 그대로)
   assert.ok(rp.includes("s?.mode === 'mark' ? null") && dy.includes("su?.strict?.mode === 'mark' ? null"), '며칠째 — 표시 판은 칸이 옛 셈 일곱이라 옛 규칙');
   assert.ok(/const FILT = T => !!T\?\.strict && T\.strict\.mode !== 'mark'/.test(s21) && s21.includes('그 가운데 손자병법 계산법으로 찾은 곳은'), '21곳 쪽 — 표시 판 글');
   assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = (UP3 \? (720|PY0 \+ \d+ \+ UP3H) : )?MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(손자병법 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
@@ -666,7 +604,7 @@ test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소�
   assert.ok(/const RANK = !!d\?\.top3/.test(ap) && /function legendR3\(/.test(ap) && ap.includes("note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4')") && /sxTag\(x \+ 6, y \+ 8, it\.r3 \+ '등', 'sa-r3'\)/.test(ap), '첫 페이지 — 1등 · 2등 · 3등 표 · 풀이 두 줄');
   assert.ok(/export function crit7mc\(/.test(y) && /export function top3Box\(/.test(y) && y.includes("'손자병법 계산법 ' + place + '등 — 1억 번 셈'"), '「왜?」 쪽 — 기준 일곱(몬테카를로) · 1억 번 셈 상자');
   assert.ok(/const MCR = T => T\?\.listRule === 'mc365-v1'/.test(s21) && s21.includes("예전 셈은 ' + p.old100"), '21곳 쪽 — 몬테카를로 글 · 지난 1년(예전 셈과 견줌)');
-  assert.ok(ck.includes('⑳ 1억 번 셈 — 1억 판') && ck.includes('⑳ 처음 쪽 42칸 · 1 · 2 · 3등 칸 0(병법 서른여섯만 — 주문 1115-1843'), '검사 ⑳ — 몬테카를로 차례 판(처음 쪽 칸은 지움 — 주문 1115-1843)');
+  // (주문 1115-2328 — 첫 쪽 · 「왜?」 쪽 · 기록창 쪽을 지워 검사 ⑳ 과 그 길도 지움 · 자료 셈 시험은 그대로)
   const P = JSON.parse(rd('reports/atlas11/su-next/past-mc.json'));
   assert.equal(P.rule, 'mc365-v1');
   for (const g of ['hotNext', 'moneyNext', 'bloomNext']) for (const k of ['mc', 'old', 'base']) assert.ok(P.res[g][k].picks > 0 && Number.isFinite(P.res[g][k].per100), g + ' ' + k);
@@ -699,7 +637,7 @@ test('문화 셈 — 특징 열하나 · 일곱 정의 · 문화로 42칸 · 요
   assert.ok(ap.includes("note2(y + 26, '문화 일곱으로 고르고', '1억 번 섞었어요.', 'note4')") && /legendR3\(PY \+ 254, CULT\)/.test(ap), '첫 페이지 풀이 넷째 줄');
   assert.ok(/export function cultureBox\(/.test(y) && /export const CUR = /.test(y) && y.includes("'한국 투자자 문화 일곱 — 이 칸'"), '「왜?」 쪽 — 문화 일곱 상자');
   assert.ok(s21.includes("바로 앞 셈은 ' + p.mc100") && /const CUR = /.test(s21), '21곳 쪽 — 바로 앞 셈과 견줌');
-  assert.ok(ck.includes('⑳ 문화 셈(주문 1912)') && ck.includes('⑳ 1억 번 셈 v2'), '검사 ⑳ — 문화 셈 판');
+  // (주문 1115-2328 — 첫 쪽 · 「왜?」 쪽 · 기록창 쪽을 지워 검사 ⑳ 과 그 길도 지움 · 자료 셈 시험은 그대로)
   const P = JSON.parse(rd('reports/atlas11/su-next/past-culture.json'));
   assert.equal(P.rule, 'culture7-v1');
   for (const g of ['hotNext', 'moneyNext', 'bloomNext']) for (const k of ['culture', 'mc1422', 'old', 'base']) assert.ok(P.res[g][k].picks > 0 && Number.isFinite(P.res[g][k].per100) && Number.isFinite(P.halves[g].first[k].per100) && Number.isFinite(P.halves[g].second[k].per100), g + ' ' + k);
@@ -726,9 +664,8 @@ test('기록창 — 한국 투자자 특징 열하나 · 서랍 · 길 · 자료
   assert.ok(!/[A-Za-z]/.test(vals) && !vals.includes('%'), '영어 글자 · % 없음');
   for (const w of ['추천', '매수', '매도', '팔라', '사세요', '파세요', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', '사라', '팔아라']) assert.ok(!vals.includes(w), '쓰지 않을 말 — ' + w);
   for (const it of K.items) assert.ok(Array.from(it.culture).length <= 6, '한눈 그림 왼쪽 글 — ' + it.culture);
-  assert.ok(su.includes("drawer('#/r/i', '한국 투자자 특징 열하나'") && su.includes("a === 'i' ? await (await import('/su/su-kr7.js')).vAnt11(X21)"), '서랍 · 길 #/r/i');
+  // (주문 1115-2328 — 첫 쪽 · 「왜?」 쪽 · 기록창 쪽을 지워 검사 ⑳ 과 그 길도 지움 · 자료 셈 시험은 그대로)
   assert.ok(/export async function vAnt11\(X\)/.test(k7) && k7.includes("'data-g': 'su-ant11'") && k7.includes("h1: '한국 개인 투자자, 무엇이 다를까요?'"), '쪽 그리기');
-  assert.ok(ck.includes('⑲ 기록창 자료 — 특징 열하나'), '검사 ⑲ — 특징 열하나');
   const {gloss} = await import('../../site/next/glossary.js'); // 쉬운 말 사전이 화면에서 바꾸는 낱말이 없어야 자료 = 화면(「한 갈래씩」 → 「한 큰 업종씩」 같은 뜻 바뀜을 막음)
   for (const x of vals.split('\n')) assert.equal(gloss(x), x, '쉬운 말 사전이 바꾸지 않음 — ' + x.slice(0, 40));
 });
@@ -749,7 +686,7 @@ test('꽃이 될 듯 맞음 — 고른 날 값부터 셈 · 옛 잣대는 견줌
   const s21 = rd('site/su/su-21.js'), y = rd('site/su/su-why36.js'), py21 = rd('scripts/atlas11/next/su21.py'), ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.ok(s21.includes("bloomNext: '고른 날부터 시장보다 100원에 15원 넘게 앞섰어요'") && !s21.includes('넘게 앞섰어요(꽃)') && !s21.includes('PASTW[k]') && (s21.match(/PW\(T\)\[k\]/g) ?? []).length === 8, '21곳 쪽 — 꽃이 될 듯 글 여덟 자리 · 「15」 대신 100원 말 · 회사 꽃의 선(5원)과 다른 선이라 「(꽃)」을 붙이지 않음(주문 1114-1306 · 점검 W1)');
   assert.ok(y.includes("(T.past.bloomFrom === 'pick' ? '고른 날부터 ' : '')"), '「왜?」 쪽 — 지난 1년 기록 글');
-  assert.ok(py21.includes("'bloomFrom': PASTC.get('flower')") && ck.includes('⑳ 꽃이 될 듯 맞음 — 고른 날 값부터 셈(주문 0103'), 'su21.py · 검사 ⑳');
+  assert.ok(py21.includes("'bloomFrom': PASTC.get('flower')"), 'su21.py — 고른 날 값부터 셈(주문 0103 · 화면 검사 ⑳ 은 그 쪽과 함께 지움 — 주문 1115-2328)');
   for (const t2 of ['고른 날부터 시장보다 100원에 15원 넘게 앞섰어요', '고른 날부터 ', P.what.bloomNext])
     assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|매도|추천|예측|확률|유망|신호/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
 });
@@ -777,21 +714,7 @@ test('이름 손자병법(옛 큐피트 · 주문 1115-1706) · 천사 단추 ·
 
 /** 주문 0510(사장님 2026-11-10 05:10 「이곳에 글이 너무 어렵고 많아 핵심을 도식화로 만들어서 한눈에 알수있도록 해 11개 에이전트 활용하고 잡스라면 어떻기 했을지 공부 한다음 혁신적으로 개선해」)
  *  — 「왜?」 쪽 맨 위 한눈 그림(답 한 줄 · 고른 길 다섯 칸 · 칸 안에 기준 일곱) · 우연이었나 백 칸 · 지난 1년 백 칸 둘 · 긴 글은 접음 · 온도계 뒤 멈춤 · 검사 */
-test('「왜?」 쪽 한눈 그림 — 답 한 줄 · 고른 길 · 기준 일곱이 칸 안 · 백 칸 · 접음 · 온도계(주문 0510)', () => {
-  const y = fs.readFileSync(path.join(ROOT, 'site/su/su-why36.js'), 'utf8'), css = fs.readFileSync(path.join(ROOT, 'site/su/su-why36.css'), 'utf8'), ck = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/next/check_su.mjs'), 'utf8');
-  assert.ok(/export function glance\(T, c, k, pos, C7 = \[\]\)/.test(y) && /export function answer1\(T, c, k\)/.test(y) && /export function path5\(T, c, k, pos, C7 = \[\]\)/.test(y), '한눈 그림 · 답 한 줄 · 고른 길');
-  assert.ok(y.includes("class: 'yw-glance yw-crit'") && y.includes("'곳을 세 번 걸러 남은 일곱 가운데 하나예요'"), '기준 일곱은 그림 칸 안(.yw-crit .yw-li 일곱 그대로)');
-  assert.ok(/const stepOf = x => \(\/우량주\/\.test\(x\.t\) \? 1 : \/\^몬테카를로\|\^소거\/\.test\(x\.t\) \? 2 : \/차례\|업종마다\/\.test\(x\.t\) \? 3 : 4\)/.test(y), '기준을 칸에 나눔');
-  assert.ok(y.includes("fold('yw-36', '이유 서른여섯 가지'") && y.includes("fold('yw-fomo'") && y.includes("fold('yw-top3'") && y.includes("fold('yw-cu'"), '긴 글은 접음');
-  assert.ok(y.includes("'뜨거움은 앞날을 말하지 않아요. 사기 전에 한 번 멈춰요.'") && y.includes("h('small', {class: 'yw-c50', text: '보통 50'})"), '포모 온도계 · 보통 50');
-  assert.ok(y.includes("' 마지막 값으로 셌어요. 지난 기록이고, 앞날은 맞히지 않아요.'") && y.includes("'지난 1년, 이렇게 고른 회사는?'") && y.includes("'우연이었을까요?'"), '셈한 날 · 지난 1년 · 우연');
-  assert.ok(ck.includes("heroPct: (document.querySelector('#su .su-hero.yw')?.textContent ?? '').includes('%')"), '「왜?」 쪽 글 모두(접힌 글 포함) 「%」 없음 — 검사');
-  assert.ok(!/\bstyle: /.test(y) && /const cssv = \(e, k, v\) => \{ e\.style\.setProperty\(k, v\); return e; \};/.test(y), '글로 쓴 style 속성 0 — 사이트 보안 규칙 style-src \'self\'(전체 검사 1/11 화면 오류) · 꾸밈 값은 CSSOM');
-  assert.ok(/prefers-reduced-motion: no-preference\) \{ \.yw-st \{ animation: yw-in/.test(css) && /\.yw-ss \{[^}]*min-height: 52px/.test(css) && /\.yw-shut \{[^}]*min-height: 48px/.test(css), '움직임 줄이기 · 누르는 곳 48 넘게');
-  assert.ok(ck.includes("'⑰ 한눈 그림 — 상장 · 우량주 · 거른 곳 · 일곱 · 이 회사 자리 = 자료") && ck.includes("'⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510"), '검사(check_su ⑰)');
-});
-
-/** 주문 1114-1306 ② — 옛 시안 쪽 /new/(「ATLAS · 새 판」) 버림(점검 DISCARD 18 · FIX N3) · 옛 주소는 큐피트로 · 일꾼 pf */
+// (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(옛 회사 · 「왜?」 · 기록창 한국 시장 · 무하 부품 쪽)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)
 test('옛 쪽 /new/ 버림 — site/new 없음 · 옛 주소 /new · /new/* 는 /su/ 로(302) · 넓은 말 줄보다 앞', () => {
   assert.ok(!fs.existsSync(path.join(ROOT, 'site/new')), 'site/new 가 남음');
   const red = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/package.mjs'), 'utf8').split('\n').find(l => l.includes("path.join(dist, '_redirects')")) ?? '';

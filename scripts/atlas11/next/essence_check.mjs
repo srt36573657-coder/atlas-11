@@ -427,18 +427,19 @@ export function checkAppSource(dir) {
     if (ib < 0) bad(c, 'app.js 첫 화면(vHomeAll)이 essenceBox() 를 그리지 않음');
     else if (it >= 0 && ib > it) bad(c, 'app.js 첫 화면에서 세 줄 칸이 이야기 입구(tk-entry) 아래에 있음([5] 1 「이야기 입구 위」)');
   }
-  // 수르 두 길 = 첫 화면(_redirects 「/ → /su/index.html」 · 주문 2333) — 처음 쪽(vHome)이 본질 세 줄 칸(essBox → essenceLines(essenceData(…)))을 그림 · 진화 대안이 빼면 막음
-  const S = readText(path.join(dir, 'su/su.js'));
+  // 수르 두 길 = 첫 화면(_redirects 「/ → /su/index.html」 · 주문 2333) — 처음 쪽이 본질 세 줄 칸(essenceLines(essenceData(…)))을 그림 · 진화 대안이 빼면 막음
+  // 주문 1115-2328 — 처음 쪽은 손자병법 판(su-sonja.js vSonja · 주문 1115-1706)뿐(옛 처음 쪽 su.js vHome · essBox 는 지움) → 그 쪽의 「자세히」(moreBox)가 세 줄을 그리는지 봄
+  const S = readText(path.join(dir, 'su/su-sonja.js'));
   if (S != null) {
     const sc = codeOnly(S);
-    if (!/from\s*['"]\/next\/essence\.js['"]/.test(S)) bad(c, 'su.js 가 essence.js(세 줄 셈)를 부르지 않음');
-    const eb = fnBody(sc, 'essBox');
-    if (!eb) bad(c, 'su.js 에 essBox() 가 없음');
-    else if (!/\bessenceLines\s*\(\s*essenceData\s*\(/.test(sc.slice(eb.start, eb.end))) bad(c, 'su.js essBox() 가 essenceLines(essenceData(…))(자료로 셈한 세 줄)를 쓰지 않음');
-    const vh = fnBody(sc, 'vHome');
-    if (!vh) bad(c, 'su.js 첫 화면(vHome)이 없음');
-    else if (!/\bessBox\s*\(/.test(sc.slice(vh.start, vh.end))) bad(c, 'su.js 첫 화면(vHome)이 essBox() 를 그리지 않음');
-  }
+    if (!/from\s*['"]\/next\/essence\.js['"]/.test(S)) bad(c, 'su-sonja.js 가 essence.js(세 줄 셈)를 부르지 않음');
+    const eb = fnBody(sc, 'moreBox');
+    if (!eb) bad(c, 'su-sonja.js 에 moreBox() 가 없음');
+    else if (!/\bessenceLines\s*\(\s*essenceData\s*\(/.test(sc.slice(eb.start, eb.end))) bad(c, 'su-sonja.js moreBox() 가 essenceLines(essenceData(…))(자료로 셈한 세 줄)를 쓰지 않음');
+    const vh = fnBody(sc, 'vSonja');
+    if (!vh) bad(c, 'su-sonja.js 첫 쪽(vSonja)이 없음');
+    else if (!/\bmoreBox\s*\(/.test(sc.slice(vh.start, vh.end))) bad(c, 'su-sonja.js 첫 쪽(vSonja)이 moreBox() 를 그리지 않음');
+  } else bad(c, 'su-sonja.js(첫 쪽)를 못 읽음');
   return c;
 }
 

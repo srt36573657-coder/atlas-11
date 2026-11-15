@@ -144,7 +144,9 @@ html.sj-on #su :focus-visible { outline: 3px solid #1F2A44; outline-offset: 2px;
 #su .sj-tricks { display: grid; margin-top: 18px; }
 #su .sj-tk { display: grid; gap: 6px; padding: 16px 0 18px; border-top: 1.5px solid #3B1A14; }
 #su .sj-tricks > li:last-child { border-bottom: 1.5px solid #3B1A14; }
-#su .sj-tkh { display: flex; align-items: center; gap: 12px; }
+#su .sj-tkh { display: flex; align-items: center; gap: 12px; min-height: 48px; color: inherit; text-decoration: none; }
+#su .sj-tkh .sj-tn { flex: 1 1 auto; min-width: 0; }
+#su .sj-tkgo { flex: none; font-style: normal; font-size: 1.625rem; line-height: 1; color: #3B1A14; }
 #su .sj-rk { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 6px; border: 1.5px solid #3B1A14; border-radius: 3px; font-family: var(--sj-serif); font-size: 1.1875rem; font-weight: 800; }
 #su .sj-tricks > li:nth-child(-n+3) .sj-rk { background: #3B1A14; color: #F1E3D3; }
 #su .sj-tn { font-size: 1.3125rem; line-height: 1.35; }
@@ -285,7 +287,76 @@ html.sj-on #su :focus-visible { outline: 3px solid #1F2A44; outline-offset: 2px;
 #su .sj-nk { flex: none; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 700; color: #E7D3BF; }
 #su .sj-next b { flex: 1 1 auto; min-width: 0; font-size: 1.125rem; font-weight: 800; line-height: 1.25; }
 #su .sj-next i { flex: none; font-style: normal; font-size: 1.5rem; }
-#su .sj-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; padding: 5px max(6px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); background: #F1E3D3; border-top: 1.5px solid #3B1A14; }
+#su .sj-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; padding: 5px max(6px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); background: #F1E3D3; border-top: 1.5px solid #3B1A14; }
 #su .sj-tab { display: flex; align-items: center; justify-content: center; min-height: 50px; min-width: 0; padding: 0 2px; border-radius: 3px; color: #3B1A14; font-family: var(--sj-sans); font-size: 1.0625rem; font-weight: 700; line-height: 1.15; text-align: center; text-decoration: none; white-space: nowrap; }
 #su .sj-tab.sj-cur { background: #3B1A14; color: #F1E3D3; font-weight: 800; }
 html.sj-on.su-lg #su .sj-tab { white-space: normal; font-size: 1rem; }
+
+/* ── 다른 쪽(주문 1115-2328 — 꾀 모음 · 꾀 한 가지 · 회사 · 정산 · 짝: su-sonja-kkoe.js) ── */
+html.sj-sub #su > main.sj-pre { display: none; }
+#su .sj-sub { padding-top: 6px; }
+#su .sj-ph { padding-top: 18px; padding-bottom: 56px; }
+#su .sj-ph .sj-step { margin-bottom: 10px; }
+#su .sj-ph .sj-land { font-size: 2.625rem; line-height: 1.12; word-break: keep-all; overflow-wrap: anywhere; }
+#su .sj-prog li.sj-pdone { background: #8E7466; }
+#su .sj-dk.sj-dk1 { grid-template-columns: auto; justify-content: start; }
+/* 꾀 모음 · 꾀 줄 */
+#su .sj-kl { display: grid; margin-top: 14px; }
+#su .sj-kr { display: grid; gap: 4px; padding: 10px 0 14px; border-top: 1.5px solid #3B1A14; }
+#su .sj-kl > li:last-child { border-bottom: 1.5px solid #3B1A14; }
+#su .sj-ka { display: flex; align-items: center; gap: 10px; min-height: 48px; color: inherit; text-decoration: none; }
+#su .sj-kno { flex: none; min-width: 64px; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 800; color: #8A5A44; }
+#su .sj-kt { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; }
+#su .sj-kt b { font-size: 1.3125rem; line-height: 1.35; }
+#su .sj-khan { font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 700; color: #6B4A3E; }
+#su .sj-krk { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 52px; height: 36px; padding: 0 6px; border: 1.5px solid #3B1A14; border-radius: 3px; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 800; }
+#su .sj-ka i { flex: none; font-style: normal; font-size: 1.625rem; line-height: 1; }
+#su .sj-kmean { font-size: 1.125rem; line-height: 1.5; font-weight: 600; color: #4A2C22; padding-left: 74px; }
+/* 정산 돈 · 늘었나 줄었나(모양 + 글 · 색만으로 뜻 0) */
+#su .sj-money { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 4px; margin-top: 14px; font-size: 1.25rem; line-height: 1.4; }
+#su .sj-money dt { font-weight: 700; color: #6B4A3E; }
+#su .sj-money dd { font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+#su .sj-money-big { font-size: 1.375rem; }
+#su .sj-res { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; }
+#su .sj-res-big, #su .sj-kst > .sj-res { display: flex; margin-top: 8px; font-size: 1.3125rem; }
+#su .sj-shp { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 3px; font-style: normal; font-size: 1.0625rem; line-height: 1; border: 1.5px solid #8E7466; }
+#su .sj-shp-dn { background: #1F2A44; border-color: #1F2A44; color: #FFFFFF; }
+#su .sj-shp-up { border-color: #3B1A14; color: #3B1A14; }
+/* 앞뒤 꾀 */
+#su .sj-kpn { display: grid; gap: 8px; padding-top: 8px; padding-bottom: 40px; }
+#su .sj-kp { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 4px 10px; border: 1.5px solid #B8A08E; border-radius: 3px; font-size: 1.1875rem; font-weight: 800; color: inherit; text-decoration: none; }
+#su .sj-kp.sj-kn { justify-content: flex-end; text-align: right; }
+#su .sj-kp i { font-style: normal; font-size: 1.5rem; }
+#su .sj-kpn .sj-go { margin-top: 6px; }
+/* 회사 쪽 */
+#su .sj-coline { margin-top: 18px; display: grid; gap: 6px; }
+#su .sj-coline .sj-spbig { width: 100%; height: 120px; }
+#su .sj-coline figcaption { display: grid; gap: 2px; font-size: 1.125rem; line-height: 1.5; font-weight: 600; color: #4A2C22; }
+#su .sj-coline figcaption b { font-size: 1.25rem; font-weight: 800; color: #3B1A14; }
+#su .sj-costop { padding-top: 12px; padding-bottom: 40px; }
+#su .sj-ask { display: grid; gap: 4px; min-height: 56px; padding: 12px 14px; border-radius: 3px; background: #3B1A14; color: #F1E3D3; text-decoration: none; }
+#su .sj-ask b { font-size: 1.3125rem; font-weight: 800; color: #F1E3D3; }
+#su .sj-ask span { font-size: 1.125rem; line-height: 1.45; color: #E7D3BF; }
+#su .sj-cotricks > li:nth-child(-n+3) .sj-rk { background: transparent; color: #3B1A14; }
+#su .sj-cotricks .sj-rk.sj-rk3 { background: #3B1A14; color: #F1E3D3; }
+/* 정산 표 */
+#su .sj-stl { display: grid; margin-top: 14px; }
+#su .sj-str { display: grid; gap: 2px; padding: 8px 0 10px; border-top: 1.5px solid #3B1A14; }
+#su .sj-stl > li:last-child { border-bottom: 1.5px solid #3B1A14; }
+#su .sj-sta { display: flex; align-items: center; gap: 10px; min-height: 48px; color: inherit; text-decoration: none; }
+#su .sj-stn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 40px; height: 36px; border: 1.5px solid #3B1A14; border-radius: 3px; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 800; }
+#su .sj-stk { flex: 1 1 auto; min-width: 0; font-size: 1.25rem; line-height: 1.35; }
+#su .sj-sta i { flex: none; font-style: normal; font-size: 1.5rem; }
+#su .sj-stv { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; column-gap: 10px; row-gap: 2px; font-size: 1.125rem; line-height: 1.45; font-weight: 600; }
+#su .sj-stbar { display: block; width: 100%; height: 10px; margin-top: 4px; }
+#su .sj-stb0 { stroke: #8E7466; stroke-width: 2; }
+#su .sj-stbu { fill: #8A5A44; }
+#su .sj-stbd { fill: #1F2A44; }
+#su .sj-sttot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; column-gap: 10px; row-gap: 4px; margin-top: 10px; padding: 10px 0; border-bottom: 2px solid #3B1A14; font-size: 1.1875rem; font-weight: 700; }
+#su .sj-sttot b { font-size: 1.25rem; font-weight: 900; }
+@media (max-width: 345px) {
+  #su .sj-kmean { padding-left: 0; }
+  #su .sj-kno { min-width: 0; }
+  #su .sj-ph .sj-land { font-size: 2.25rem; }
+}
+
