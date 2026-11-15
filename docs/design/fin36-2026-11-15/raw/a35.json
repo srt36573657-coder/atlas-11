@@ -1,0 +1,15 @@
+{"id":35,"app":"제로다 카이트 (Zerodha Kite)","country":"인도",
+"scores":{"아름다움":6,"한눈":7,"어르신":6,"정직":6,"손자병법":9},
+"awards":["디자인 상은 검색에서 못 찾음"],
+"moves":[
+{"name":"큰 빨강·초록 상자를 쓰지 않는 절제","what":"제로다 직원이 공식 답변으로 밝힘: 큰 빨강·초록 상자, 어두운 화면, 여러 색으로 깜박이는 숫자를 일부러 뺐다. 차분하게 기다리게 돕는 것이 목적.","apply":"샘플 3의 오름·내림을 색으로 외치지 않고 띠의 굵기와 짙기로만 가르는 원칙을 더 굳힌다."},
+{"name":"숫자 소음 줄이기","what":"한 화면에 움직이는 숫자를 최소로 둠(같은 답변에서 확인).","apply":"샘플 3 회사 칸에 숫자는 하나만 크게, 나머지는 작게 접는다."},
+{"name":"가볍고 느린 망에서도 되는 단순함","what":"단순한 화면이 어느 기기·느린 망에서도 돌고 덜 익숙한 사람에게 쉽다는 이용자 의견(공식 아님).","apply":"장식 그림 없이 글자와 띠만으로 구성해 어르신 휴대폰에서도 빠르게 뜨게 한다."},
+{"name":"밀도는 약점으로 배운다","what":"디자인 회사 평: 화면이 기능으로 빽빽해 처음 쓰는 사람이 헷갈리고 포트폴리오가 시각적으로 밋밋하다(광고성 출처라 약함).","apply":"샘플 3은 칸 수를 늘리지 않고 여백을 넉넉히 둬 빽빽함을 피한다."}
+],
+"src":[
+{"t":"Why is Kite built with such a minimal interface? (TradingQnA, 제로다 답변)","u":"https://tradingqna.com/t/why-is-kite-built-with-such-a-minimal-interface/6373","d":"확인일 2026-11-15"},
+{"t":"Zerodha App Rating: Kite UX Review (Yellow Slice)","u":"https://www.yellowslice.in/blog/zerodha-app-rating-kite-ux-review-key-improvement-tips","d":"확인일 2026-11-15"},
+{"t":"Kite by Zerodha marries speed with simplicity (YourStory)","u":"https://yourstory.com/2020/11/app-kite-zerodha-speed-simplicity-first-time-stock-trader","d":"2020-11 (검색 제목만 확인)"}
+],
+"verdict":"디자인 상은 못 찾았다. 아름다움보다 절제의 철학이 강한 앱이라, 1등감이라기보다 손자병법의 차분함을 배울 본보기다."}

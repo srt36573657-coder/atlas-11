@@ -1,0 +1,16 @@
+{"id":7,"app":"로빈후드","country":"미국","scores":{"아름다움":8,"한눈":8,"어르신":4,"정직":4,"손자병법":5},
+"awards":["디자인 상은 검색에서 못 찾음"],
+"moves":[
+{"name":"검정 바탕에 연두 한 점","what":"2024년 새 모습: 검정·흰색·회색 위주, 밝은 연두(로빈 네온)는 포인트로만 씀. 원칙은 「덜어낼수록 좋다」","apply":"샘플 3 바탕은 짙은 먹색 또는 흰 종이색으로 정하고, 강조색은 한 가지만 아주 조금 쓴다. 오름을 돋보이게 하지 않는 규칙은 그대로 지킨다"},
+{"name":"가는 선과 큰 숫자","what":"흰 가는 선 위주 화면, 잘록하게 새긴 글꼴 느낌(획 굵기 차가 큼, 모서리에 잉크 트랩). 회원 등급 쪽엔 명조 계열 글꼴(마르티나 플랑탱)을 씀","apply":"제목과 큰 숫자에만 굵기 차가 큰 글꼴을 쓰고, 17px 넘는 본문은 또렷한 고딕으로 둔다"},
+{"name":"모듈 칸 배치","what":"공식 소개에서 「의도된 모듈형 배치」와 「군더더기 없는 경험」을 내세움","apply":"회사 칸을 같은 크기 모듈로 맞추고 여백을 넉넉히 둔다. 바닥 띠(한눈 판별)는 그대로 둔다"},
+{"name":"색 말고 다른 단서도 함께","what":"로빈후드는 색맹용 「접근 가능한 색」 설정을 따로 둠. 반대로 글자 크기 설정은 앱이 아직 못 따라간다고 스스로 밝힘","apply":"오름·내림을 색에만 맡기지 않고 띠의 굵기·글자 표시를 함께 쓴다. 기기 글자 크기 설정을 따르게 한다"}
+],
+"src":[
+{"t":"A new visual identity (로빈후드 공식)","u":"https://robinhood.com/newsroom/a-new-visual-identity","d":"2024-10-10"},
+{"t":"로빈후드 리브랜딩: 미래 도시에서 요트 클럽으로 (디자인컴퍼스)","u":"https://designcompass.org/2024/10/18/robinhood-rebranding/","d":"2024-10-18"},
+{"t":"Accessibility options (로빈후드 공식)","u":"https://robinhood.com/us/en/support/articles/accessibility-options/","d":"확인일 2026-11-15"},
+{"t":"Design Critique: Robinhood iOS App (Pratt IXD)","u":"https://ixd.prattsi.org/2025/02/design-critique-robinhood-ios-app/","d":"2025-02"},
+{"t":"A critique of Robinhood's gamified interface","u":"https://rhino-ellipse-5w5y.squarespace.com/blog/a-critique-of-robinhoods-gamified-interface","d":"날짜 못 봄(제목만 확인, 본문 안 읽음)"}
+],
+"verdict":"네온 한 점을 뺀 절제된 검정 화면과 모듈 배치는 배울 만하나, 거래를 부추기는 설계와 색에 기댄 오름·내림은 정직과 어르신 눈높이에서 감점이다. 디자인 상은 찾지 못함."}

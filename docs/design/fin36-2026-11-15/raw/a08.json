@@ -1,0 +1,15 @@
+{"id":8,"app":"레볼루트(Revolut)","country":"영국","scores":{"아름다움":8,"한눈":6,"어르신":5,"정직":6,"손자병법":7},
+"awards":["디자인 상 직접 확인 못 함 · 이번 검색에서 못 찾음"],
+"moves":[
+{"name":"큰 숫자는 굵지 않게","what":"큰 제목에 중간 굵기(500) 글꼴을 쓰고 아주 굵은 것은 안 씀. 글자 사이를 좁혀 단단해 보임(제3자 분석, 공식 아님)","apply":"회사 칸 큰 숫자를 중간 굵기로 하고 자간을 살짝 좁혀 차분하고 단단하게"},
+{"name":"검정과 흰색 두 색 중심","what":"거의 검정(#191c1f)과 흰색, 옅은 회색 바탕. 포인트 파랑 하나(#494fdf). 그림자 없음(제3자 분석)","apply":"샘플 3 바탕을 흰색과 옅은 회색으로, 짙은 띠는 검정에 가까운 한 색으로 통일"},
+{"name":"여백 8칸 단위","what":"8px 단위로 간격을 맞추고 구역 사이를 넓게 둠(제3자 분석)","apply":"칸 사이를 8의 배수로 맞추고 구역 사이는 넉넉히. 누르는 곳은 44px 넘게"},
+{"name":"알약 모양 단추","what":"모든 단추가 완전히 둥근 알약꼴, 안쪽 여백이 넉넉함(제3자 분석)","apply":"누르는 단추를 알약꼴로 하고 높이 48px 이상"},
+{"name":"그림자 대신 면 나누기","what":"깊이를 그림자가 아니라 어두운 면과 밝은 면의 번갈음, 여백으로 표현","apply":"칸 구분을 그림자 없이 옅은 회색 면과 가는 선으로"}
+],
+"src":[
+{"t":"Revolut overhauls design and layout of primary app account (Finextra)","u":"https://www.finextra.com/pressarticle/98301/revolut-overhauls-design-and-layout-of-primary-app-account","d":"2024-12"},
+{"t":"Design System Inspiration of Revolut (제3자 분석, 공식 문서 아님)","u":"https://design.hagicode.com/designs/revolut/DESIGN.md","d":"날짜 미확인"},
+{"t":"UI Overhaul (레볼루트 공식 이용자 모임 글)","u":"https://community.revolut.com/t/ui-overhaul/147896?page=8","d":"날짜 미확인"}
+],
+"verdict":"겉모습은 단단하고 차분해 본받을 만하나, 새 화면은 광고 칸이 많아 복잡하다는 불만이 있어 어르신용 본보기는 못 됨. 색·글꼴·여백 원리만 배움. 수치는 제3자 분석이라 웹 화면 기준이며 앱 화면과 다를 수 있음."}

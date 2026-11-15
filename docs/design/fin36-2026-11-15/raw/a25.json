@@ -1,0 +1,17 @@
+{"id":25,"app":"무무(moomoo, 푸투 증권사 앱)","country":"홍콩·중국 회사, 미국·싱가포르·호주 등에서 서비스",
+"scores":{"아름다움":5,"한눈":6,"어르신":5,"눈약한분":5,"정직":6,"손자병법":5},
+"score_note":"디자인 상은 못 찾음. 점수는 아래 평 한 건과 상 목록만으로 낸 어림이며 근거가 약함. 화면 사진은 직접 못 봄.",
+"awards":["Best Mobile App Awards 2023년 8월(모바일 앱 상. 디자인 기준 아님, 투표 반영 · 회사 보도자료)","FinTech Breakthrough 2024 최고 주식 거래 앱(핀테크 상. 디자인 상 아님)","Benzinga 글로벌 핀테크 상(거래 소프트웨어 · 조사 기능 부문. 디자인 상 아님)"],
+"moves":[
+{"name":"칸 사이 여백 넓히기","what":"NX 개편에서 메뉴 단추를 더 크게, 간격을 더 넓게, 전체 밀도를 낮춤(커뮤니티 후기 글 1건에서 확인)","apply":"샘플 3의 회사 칸 사이 간격을 넓히고 누르는 곳을 44px 넘게 유지"},
+{"name":"어두운 바탕을 한 단계 밝게","what":"검정+주황에서 한 단계 밝은 검정 바탕으로 바꿨다는 후기 글 1건. 같은 후기에서 웹불 닮았다고 함","apply":"짙은 띠 칸이 묻히지 않게 바탕은 완전 검정 대신 한 단계 밝은 짙은 색을 쓰는 안만 시험"},
+{"name":"한 화면에 소식 모으기","what":"뉴스 탭에 관심종목 · 헤드라인 · 최신 소식을 한 화면으로 합침","apply":"첫 쪽에서 회사 칸과 소식 한 줄을 같은 화면에 두는 구성. 앞날 맞히는 말은 넣지 않음"},
+{"name":"바로 거래 단추는 배우지 않음","what":"관심종목에서 빠른 거래 단추를 둠","apply":"손자병법은 거래 유도가 아니므로 가져오지 않음(반면교사)"}],
+"src":[
+{"t":"Review comparison of moomoo NX: a significant upgrade (moomoo 커뮤니티, 사용자 글)","u":"https://moomoo.com/community/feed/review-comparison-of-moomoo-nx-a-significant-upgrade-113018243842054","d":"날짜 못 확인"},
+{"t":"Moomoo Named the Best Mobile App in August 2023","u":"https://moomoo.com/us/newsroom/moomoo-named-the-best-mobile-app-in-august-2023","d":"2023-09-28"},
+{"t":"moomoo brand guidelines (비공식 해석, 공식 아님)","u":"https://madegooddesigns.com/moomoo-brand-guidelines/","d":"날짜 못 확인"},
+{"t":"BrokerChooser moomoo app (사용성 평균 이상 한 줄만)","u":"https://brokerchooser.com/zh/broker-reviews/moomoo-review/moomoo-app","d":"날짜 못 확인"},
+{"t":"Moomoo Wins Best Stock Trading App, FinTech Breakthrough 2024","u":"https://technode.global/prnasia/moomoo-wins-best-stock-trading-app-award-in-2024-fintech-breakthrough-awards-program/","d":"2024"}],
+"not_found":["애플 디자인 상 · 레드닷 · iF · 웨비 수상 기록 못 찾음","회사 공개 디자인 시스템 못 찾음","화면 사진 설명 못 얻음","한 달 내림/오름 색 규칙 확인 못 함"],
+"verdict":"디자인 1등 후보로는 근거 부족. 상은 모두 기능 · 인기 상이고, 배울 만한 것은 밀도를 낮춘 개편 방향 하나뿐."}

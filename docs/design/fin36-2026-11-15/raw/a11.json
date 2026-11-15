@@ -1,0 +1,14 @@
+{"id":11,"app":"캐시앱","country":"미국","scores":{"아름다움":8,"한눈":7,"어르신":5,"정직":6,"손자병법":3},
+"awards":["수상 기록은 검색에서 못 찾음"],
+"moves":[
+{"name":"전용 글꼴 하나로 통일","what":"캐시 산스라는 전용 글꼴로 성격과 또렷함을 함께 잡음(2025.12 디자인컴퍼스)","apply":"숫자와 제목에 굵기 두 가지만 쓰는 한 가지 글꼴로 통일한다"},
+{"name":"한 가지 색을 크게","what":"대표 초록을 더 선명하게 바꿔 앱 전체를 한 색으로 묶음","apply":"짙은 한 색만 정해 내림 띠와 제목에 쓴다. 오름 초록 강조는 규칙상 쓰지 않는다"},
+{"name":"정돈된 칸 격자","what":"구조가 분명한 격자 위에 칸을 놓음","apply":"회사 칸 크기와 간격을 같은 배수로 맞춘다"},
+{"name":"쓰는 사람 몫의 그림 자리","what":"결제·카드 화면에 사용자별 그림을 보여 내 것이라는 느낌을 줌","apply":"쓰는 분이 고른 종목 이름을 칸 머리에 크게 보여 준다. 장식 그림은 넣지 않는다"},
+{"name":"절제한 움직임만 참고","what":"반응하는 움직임이 많아 활기가 큼. 우리 규칙과 부딪히므로 누를 때 한 번만 쓰는 것으로 줄임","apply":"누르면 칸이 한 번만 부드럽게 눌린다. 끝없는 움직임은 0"}
+],
+"src":[
+{"t":"Cash App's New Design Language and AI Moneybot","u":"https://designcompass.org/en/2025/12/03/cash-apps-new-design-language-and-ai-moneybot/","d":"2025-12-03"},
+{"t":"Cash App's new brand guidelines make style guides fun","u":"https://www.creativebloq.com/design/branding/cash-apps-new-brand-guidelines-make-style-guides-fun","d":"2025-03-03"}
+],
+"verdict":"젊고 선명한 개성이 강점이나 3D·움직임·형광색이 많아 차분한 손자병법과는 멀고, 배울 것은 글꼴 통일과 격자뿐이다."}

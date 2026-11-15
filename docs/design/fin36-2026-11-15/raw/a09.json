@@ -1,0 +1,14 @@
+{"id":9,"app":"몬조(Monzo)","country":"영국","scores":{"아름다움":8,"한눈":8,"어르신":6,"정직":8,"손자병법":6},
+"awards":["UK Digital Awards 2018 수상 (Jumio와 함께, 디자인상은 아님·확인 약함)","디자인 전문 상 직접 확인 못 함"],
+"moves":[
+{"name":"한 가지 대표색 + 짙은 남색 + 옅은 흰색","what":"2022년 새 얼굴에서 산호색을 중심에, 짙은 남색과 부드러운 흰색을 곁에 둠. 보조색은 '볼 수 있게' 고름","apply":"샘플 3 바탕을 옅은 흰색, 글씨와 내림 띠를 짙은 남색 계열로. 산호색은 쓰지 않고 색 수를 둘로 줄임"},
+{"name":"위에 잔액, 아래에 쓴 돈","what":"잔액이 화면 맨 위, 하루 쓴 돈이 바로 보임(크리에이티브블로크 2025 평)","apply":"샘플 3 맨 위에 한 줄 큰 숫자 하나만 두고 나머지는 칸 아래로"},
+{"name":"덜 채운 깨끗한 칸","what":"군더더기 없는 화면, 설명은 작은 움직임으로","apply":"칸 사이 여백을 넓히고 장식 지움. 움직임은 누를 때 한 번만"},
+{"name":"읽기 쉬운 글꼴 한 벌","what":"쓰임새 글꼴(Monzo Sans)은 읽기 위해 만든 맞춤 글꼴, 점이 크고 끝이 둥긂","apply":"한글 고딕 한 가지, 굵기 둘만 써서 숫자를 또렷하게"},
+{"name":"맞았다는 작은 표시","what":"새 받는 사람이 확인되면 초록 확인 표시","apply":"내림은 짙은 띠 하나로 정직하게 보이고, 확인 표시만 작게"}],
+"src":[
+{"t":"We've given our visual brand a refresh (Monzo 커뮤니티)","u":"https://community.monzo.com/t/we-ve-given-our-visual-brand-a-refresh-q-a-w-jesse-senior-brand-designer/139681","d":"2022-10-17"},
+{"t":"Ragged Edge makes over Monzo (It's Nice That)","u":"https://www.itsnicethat.com/news/ragged-edge-monzo-graphic-design-021122","d":"2022-11-02"},
+{"t":"Monzo's brilliant UI makes my life so much easier (Creative Bloq)","u":"https://www.creativebloq.com/web-design/ux-ui/monzos-brilliant-ui-design-is-a-delight-to-use","d":"2025-06-21"},
+{"t":"Big Win for Jumio and Monzo at the UK Digital Awards","u":"https://www.jumio.com/about/press-releases/jumio-monzo-uk-digital-awards-2018/","d":"2018 (제목만 봄)"}],
+"verdict":"산호색 한 줄기와 깨끗한 칸이 강점이나 디자인 큰 상은 못 찾았고, 산호색 자체는 샘플 3의 차분함과 거리가 있어 색 수 줄이기와 잔액 먼저 보이기만 배울 만하다."}

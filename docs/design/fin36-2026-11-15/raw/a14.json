@@ -1,0 +1,10 @@
+{"id":14,"app":"누뱅크(Nubank)","country":"브라질(2026년 9월 미국 진출)",
+"scores":{"아름다움":8,"한눈":7,"어르신":6,"정직":6,"손자병법":6},
+"awards":["Fast Company 혁신 디자인 상(Innovation by Design) 선정 언급 · 2026 (부문과 수상 여부는 확인 못 함)"],
+"moves":[
+{"name":"하나의 대표 색과 보조 색","what":"자주색을 다듬어 지키고 보조 색을 곁들임(코토 새 정체성)","apply":"샘플 3의 짙은 띠를 한 가지 짙은 색으로 통일하고 보조 색은 두 가지 안쪽으로만"},
+{"name":"굵은 제목 글꼴","what":"새 전용 글꼴 누 산스는 큰 제목은 굵게, 작은 앱 글씨도 읽힘","apply":"회사 이름과 큰 숫자만 굵게, 나머지는 보통 굵기로 대비를 줌"},
+{"name":"튀는 곳을 색 밖에서 찾기","what":"자주색이 흔해져 색 대신 글꼴 · 그림 · 움직임으로 구별함","apply":"띠 색에 기대지 않고 띠 굵기와 글씨로 한눈 판별을 지킴"},
+{"name":"부드러운 그림","what":"친근하고 밝은 그림","apply":"절제된 선 그림 한두 개만, 끝없는 움직임은 쓰지 않음"}],
+"src":[{"t":"Fast Company: Purple is everywhere in fintech, Nu redesign","u":"https://www.fastcompany.com/91631436/purple-is-everywhere-in-fintech-nu-bank-redesign","d":"2026-10-29"},{"t":"Let's Money: Nubank Fast Company Innovation by Design","u":"https://www.letsmoney.com.br/noticias/nubank-fast-company-innovation-design/","d":"2026-09-16"},{"t":"Figma: Nubank design system accessible experiences","u":"https://www.figma.com/customers/nubank-design-system-accessible-experiences-with-figma/","d":"못 봄(제목만)"}],
+"verdict":"새 글꼴과 자주색으로 개성이 뚜렷하나, 움직임과 장난기는 손자병법의 절제와 거리가 있어 색 · 글꼴만 배울 만함. 점수는 글 요약만 보고 매긴 추정임."}

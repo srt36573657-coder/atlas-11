@@ -1,0 +1,14 @@
+{"id":34,"app":"업 뱅크 (Up)","country":"호주","scores":{"아름다움":8,"한눈":8,"어르신":6,"정직":8,"손자병법":5},
+"awards":["머니 매거진 올해의 디지털 은행 · 2025 (소비자 금융 상)"],
+"moves":[
+{"name":"쓸 수 있는 돈 한 칸","what":"잔액 가운데 지금 쓸 수 있는 돈을 따로 크게 보여 줌 (검색에서 기능으로 확인, 화면 수치는 직접 못 봄)","apply":"샘플 3 맨 위에 「내 돈 중 지금 버틸 수 있는 몫」 한 칸을 큰 숫자 하나로 둠"},
+{"name":"필요할 때만 확인","what":"보는 일은 가볍게, 돈이 나가는 위험한 일에만 본인 확인 (업 블로그 원문)","apply":"기록 보기는 한 번 누름, 바꾸는 일만 한 번 더 묻는 칸을 둠"},
+{"name":"물어보듯 쓴 글","what":"입력 안내를 「휴대폰 번호가 무엇입니까?」처럼 질문 문장으로 씀 (업 블로그 원문)","apply":"버튼과 안내를 쉬운 질문 문장으로 바꿈"},
+{"name":"아래에 붙은 넓은 버튼","what":"버튼을 화면 아래에 가로 꽉 차게 붙임 (업 블로그 원문)","apply":"누르는 곳을 아래 가로 전체 44px 넘는 띠로 둠"},
+{"name":"절제할 때를 아는 움직임","what":"기쁜 순간에만 움직임, 나머지는 절제 (업 블로그 원문). 단 업은 화사하고 장난스러워 손자병법과는 거리 있음","apply":"움직임은 처음 한 번 부드럽게만, 폭죽 · 반짝임 0 유지"}],
+"src":[
+{"t":"The Evolutionary Design of Up","u":"https://up.com.au/blog/the-evolutionary-design-of-up/","d":"날짜 못 찾음"},
+{"t":"Consumer Finance Awards 2025: Bank of the Year - Digital","u":"https://www.moneymag.com.au/consumer-finance-awards-2025-bank-of-the-year-digital","d":"2025"},
+{"t":"3 great examples of neobank design (raw.studio)","u":"https://raw.studio/blog/3-great-examples-of-neobank-design/","d":"날짜 못 찾음"}],
+"verdict":"밝고 장난스러운 색이 강점이라 아름다움과 정직은 높으나, 손자병법의 차분함과는 맞지 않아 쓸 것은 글투와 확인 방식 정도임. 색 · 글꼴 값은 검색에서 못 찾음.",
+"note":"디자인 전문 상(레드닷 · iF · 웨비)은 검색에서 못 찾음. 점수는 검색 글 근거의 추정."}

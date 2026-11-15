@@ -1,0 +1,16 @@
+{"id":10,"app":"와이즈(Wise)","country":"영국","scores":{"아름다움":8,"한눈":9,"어르신":7,"정직":10,"손자병법":6},
+"awards":["D&AD 노랑·검정 연필상(기타 부문, 브랜드 새단장·디자인 시스템) · 2024","zeroheight 디자인 시스템 상 「가장 잘 퍼뜨린 곳」 최종 후보 · 연도 못 찾음"],
+"moves":[
+{"name":"숫자가 이름표보다 크다","what":"수수료·환율·받는 금액 같은 결정 숫자를 라벨보다 크게 보여 줌","apply":"회사 칸의 한 달 내림 숫자를 이름보다 크게, 이름은 작게"},
+{"name":"읽기 좋은 본문 글꼴","what":"본문은 146개 언어를 담은 Inter, 제목만 맞춤 글꼴 Wise Sans","apply":"본문은 한 가지 또렷한 글꼴, 제목에만 굵은 맞춤 글씨 한 가지"},
+{"name":"한 색만 힘주기","what":"초록 한 색을 행동 단추에, 나머지는 회색. 옛 파란 은행 느낌을 버림","apply":"짙은 한 색을 내림 띠에만 쓰고 나머지는 회색 계열로 차분하게"},
+{"name":"한 화면 한 일","what":"본인확인 화면은 입력 하나 또는 올리기 하나, 「4단계 중 2단계」 표시","apply":"쪽마다 핵심 하나, 현재 위치를 짧게 표시"},
+{"name":"숨기지 않는 계산","what":"환율 출처와 수수료를 따로 한 줄씩 보여 줌","apply":"한 달 내림 숫자 아래에 기준 날짜와 자료 출처를 한 줄"}
+],
+"src":[
+{"t":"D&AD 2024 Wise","u":"https://dandad.org/awards/professional/2024/238658/wise","d":"2024"},
+{"t":"Going everywhere — Meet the new Wise design system (Wise Design 블로그)","u":"https://medium.com/transferwise-design/going-everywhere-meet-the-new-wise-design-system-863731563f71","d":"2023"},
+{"t":"zeroheight Design System Awards 최종 후보 Wise Design","u":"https://zeroheight.com/events/design-system-awards/finalists/wise/","d":"연도 미표기"},
+{"t":"Wise App Design Breakdown (925 Studios, 제3자 글·FAQ 근거 약함)","u":"https://www.925studios.co/blog/wise-design-breakdown-fintech-transparency","d":"2026"}
+],
+"verdict":"디자인 상과 자체 시스템이 확인된 곳. 숫자 우선·정직한 수수료 표시가 강점이나 연둣빛 밝은 개성은 손자병법의 차분함보다 쾌활함. 직접 화면은 못 봤고 글자 크기·간격 수치는 못 찾음."}

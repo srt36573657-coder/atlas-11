@@ -1,0 +1,15 @@
+{"id":30,"app":"와이냅 (YNAB)","country":"미국","scores":{"아름다움":6,"한눈":7,"어르신":7,"정직":9,"손자병법":8},
+"awards":["못 찾음 — 검색에서 디자인 상 기록을 직접 보지 못했다"],
+"moves":[
+{"name":"뜻으로 이름 붙인 색 두 층","what":"색을 「기본 색 모음」과 「쓰임 색」 두 층으로 나눈다. 쓰임 색 이름은 뜻으로 짓는다(예: 마이너스 상태). 밝은 화면과 어두운 화면은 같은 쓰임 색이 서로 다른 기본 색을 가리킨다.","apply":"샘플 3의 짙은 띠(한 달 내림)를 쓰임 색 하나로 정해 모든 칸에 같게 쓴다. 한 색은 한 가지 뜻만 갖는다."},
+{"name":"색에만 기대지 않기","what":"예산 상태를 색 하나로만 알리지 않는다. 색을 못 가리는 사람을 위해 높은 대비 선택 칸을 따로 둔다.","apply":"샘플 3은 이미 띠 굵기와 흰 글씨를 함께 쓴다. 여기에 내림 칸에 「내림」 글자 한 단어를 더 붙인다."},
+{"name":"한 색 높이의 차분한 팔레트","what":"파랑과 보라 사이 색(블러플)을 대표 색으로 삼고 앱과 홈페이지가 같은 색을 쓴다.","apply":"포인트 색은 하나만 쓰고 오름·내림은 짙고 옅음으로만 나눈다. 빨강 초록은 쓰지 않는다."},
+{"name":"새 글꼴로 얼굴 바꾸기","what":"새 글꼴(Wish Farm)을 들여와 브랜드 느낌을 통일했다.","apply":"샘플 3 숫자에 같은 폭으로 정렬되는 글꼴을 쓰고, 제목과 숫자 글꼴을 두 가지 이내로 한다. (글꼴 이름 그대로 베끼지 않는다)"}
+],
+"src":[
+{"t":"A Semantic Color System: The Theory (YNAB, DEV Community)","u":"https://dev.to/ynab/a-semantic-color-system-the-theory-hk7","d":"날짜 못 봄"},
+{"t":"Hey YNABers, Meet Blurple (YNAB 블로그)","u":"https://www.ynab.com/blog/hey-ynabers-meet-blurple","d":"날짜 못 봄(2023 가을 브랜드 새단장 시기로 보임, 확인 못 함)"},
+{"t":"The Great YNAB Remodel","u":"https://www.ynab.com/blog/the-great-ynab-remodel","d":"제목만 봄, 본문은 안 읽음"},
+{"t":"YNAB v26.20 UI 변경 반발 기사 (mwm.ai)","u":"https://mwm.ai/articles/ynab-v26-20-adds-ceo-book-ads-sparks-user-outrage-over-ui-changes-in-june-2026","d":"2026-06, 제목만 봄"}
+],
+"verdict":"겉모습은 평범하지만 색의 뜻을 하나로 지키고 손실을 그대로 보이는 정직함이 으뜸이라, 손자병법의 절제에 가장 가까운 배울 거리다."}

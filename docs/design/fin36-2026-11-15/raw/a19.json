@@ -1,0 +1,14 @@
+{"id":19,"app":"클라르나(Klarna)","country":"스웨덴","scores":{"아름다움":7,"한눈":6,"어르신":4,"정직":4,"손자병법":3},
+"awards":["못 찾음 (검색 결과와 크리에이티브 리뷰 글에 수상 언급 없음)"],
+"moves":[
+{"name":"분홍 한 색 + 흰 바탕 + 검정","what":"브랜드 분홍은 그대로 두고 주색을 분홍·오프화이트·검정 셋으로 줄이고, 보라 둘·회색·초록은 배경에만 씀","apply":"샘플 3도 바탕 오프화이트, 글자 검정, 강조색은 한 가지만. 한 달 내림 띠에만 짙은 색을 쓴다"},
+{"name":"전용 글꼴 한 쌍(제목용·본문용)","what":"Colophon과 만든 Klarna Title(제목)과 Klarna Text(본문, 여러 굵기). 글꼴 한 쌍으로 개성을 냄","apply":"샘플 3은 제목은 굵고 큰 글꼴, 숫자와 본문은 굵기만 바꿔 한 가족으로 통일"},
+{"name":"직설적이되 재치 있는 말투","what":"돈 얘기는 곧바로 말하고 재치는 얹는 「curiously bold」 성격","apply":"샘플 3의 문구는 짧은 직설 한국어. 재치는 넣되 손자병법답게 절제"},
+{"name":"버튼을 누르는 느낌의 움직임","what":"로고 움직임이 버튼 누름에서 나옴, 화면 전환은 스크롤·스와이프 흐름을 따라감","apply":"샘플 3은 누르면 한 번만 살짝 눌리는 움직임. 끝없이 도는 움직임은 넣지 않는다"}
+],
+"src":[
+{"t":"Klarna's new look aims to elevate the shopping experience (Creative Review)","u":"https://creativereview.co.uk/klarna-brand-refresh","d":"날짜 안 나옴"},
+{"t":"How Klarna works (Built for Mars)","u":"https://builtformars.com/case-studies/how-klarna-works","d":"2020-09-17, 고침 2025-04-01 (본문 유료라 못 읽음)"},
+{"t":"Klarna overhauls its app with a TikTok-like discovery feed","u":"https://omnitalk.blog/2023/04/27/fintech-firm-klarna-overhauls-its-app-with-a-tiktok-like-discovery-feed-as-a-i-hype-swirls/","d":"2023-04-27 (제목만 확인)"}
+],
+"verdict":"브랜드 개성과 글꼴은 배울 만하지만 쇼핑 피드형 앱이라 차분함과 정직(손실 숨김 없음)은 근거를 못 찾았고, 1등감은 아님. 화면 직접 평가와 수상은 확인 못 함."}

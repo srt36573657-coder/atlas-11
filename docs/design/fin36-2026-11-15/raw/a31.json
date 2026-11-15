@@ -1,0 +1,13 @@
+{"id":31,"app":"에이콘스(Acorns)","country":"미국(상 받은 것은 호주판)",
+"scores":{"아름다움":6,"한눈":8,"어르신":7,"정직":5,"손자병법":5},
+"awards":["굿디자인 어워드 호주 · 최우수 디지털 디자인 · 2016 (호주판 앱, 거스름돈 자동 투자 방식에 준 상)"],
+"moves":[
+{"name":"숫자 하나만 크게","what":"화면에 내 돈이 얼마인지와 오른 정도만 크게 보여 주고 종목 코드는 뺀다(디자인러시 평).","apply":"샘플 3 맨 위에 '이번 달 전체 흐름' 한 줄만 큰 글씨로 두고 나머지는 접는다"},
+{"name":"넉넉한 여백과 단순한 글꼴","what":"글꼴은 단순하고 화면이 깨끗하며 최소한만 그린다(디자인러시 평).","apply":"회사 칸 사이 간격을 넓히고 글꼴은 한 가지 굵기 둘만 쓴다"},
+{"name":"가입 전에 써 보게 하기","what":"가입 전에 성장 모의 그림을 직접 만져 보게 해 값을 느끼게 한다(Built for Mars 요약).","apply":"샘플 3에 한 달 내림이 어떤 모양인지 눌러 보는 작은 칸을 하나 둔다(앞날 맞히는 말은 넣지 않음)"},
+{"name":"흰 글씨와 큰 면 색","what":"밝은 바탕 위 흰 글씨와 그림이 또렷하다(디자인러시 평).","apply":"내림 띠의 짙은 색 위 흰 글씨를 그대로 쓰고 대비를 더 올린다"}],
+"src":[
+{"t":"Acorns Modern App Design (DesignRush)","u":"https://www.designrush.com/best-designs/apps/acorns","d":"날짜 못 찾음"},
+{"t":"Acorns app wins the prestigious top design award (Professional Planner)","u":"https://www.professionalplanner.com.au/2016/05/acorns-app-wins-the-prestigious-top-design-award/","d":"2016-05"},
+{"t":"Acorns (Built for Mars)","u":"https://builtformars.com/company/acorns","d":"날짜 못 찾음"}],
+"verdict":"쉬움과 단순함은 배울 만하나 디자인 상은 2016년 호주판 한 건뿐이고 손실 표시가 강하다는 근거는 못 찾아 1등감은 아님."}
