@@ -1,32 +1,32 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-11-14T07:06:40.180Z",
+ "at": "2026-11-15T10:19:36.518Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "ref": "musk-1023b",
- "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
- "run": 43568400128,
- "wallSeconds": 869,
+ "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+ "run": 43702928057,
+ "wallSeconds": 435,
  "data": {
   "from": "live",
   "asOf": "2026-11-13",
-  "built": "2026-11-14T05:59:24.966Z",
-  "seconds": 23
+  "built": "2026-11-15T10:03:48.111Z",
+  "seconds": 63
  },
  "pages": [
   {
    "name": "chx",
    "code": 0,
-   "seconds": 198,
+   "seconds": 206,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 34,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 49,
    "data": "live 2026-11-13"
   },
   {
    "name": "co",
    "code": 0,
-   "seconds": 137,
+   "seconds": 125,
    "shards": 3,
    "codes": [
     0,
@@ -34,93 +34,93 @@
     0
    ],
    "shardSeconds": [
-    137,
-    136,
-    135
+    125,
+    124,
+    124
    ],
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "data": "live 2026-11-13",
-   "build": 35
+   "build": 46
   },
   {
    "name": "cond",
    "code": 0,
    "seconds": 36,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "build": 30,
    "data": "live 2026-11-13"
   },
   {
    "name": "en",
-   "code": 0,
-   "seconds": 209,
+   "code": 1,
+   "seconds": 229,
    "shards": 12,
    "codes": [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
    ],
    "shardSeconds": [
-    203,
-    202,
-    202,
-    198,
-    198,
-    202,
-    204,
-    203,
-    204,
-    209,
+    229,
+    228,
+    228,
     206,
-    208
+    206,
+    209,
+    229,
+    227,
+    226,
+    228,
+    226,
+    224
    ],
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "data": "live 2026-11-13",
-   "build": 32
+   "build": 48
   },
   {
    "name": "essence",
    "code": 0,
-   "seconds": 9,
+   "seconds": 12,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 34,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 49,
    "data": "live 2026-11-13"
   },
   {
    "name": "gdr",
    "code": 0,
-   "seconds": 140,
+   "seconds": 136,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "build": 30,
    "data": "live 2026-11-13"
   },
   {
    "name": "gift",
-   "code": 0,
-   "seconds": 175,
+   "code": 1,
+   "seconds": 177,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 34,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 49,
    "data": "live 2026-11-13"
   },
   {
    "name": "grow",
    "code": 0,
-   "seconds": 71,
+   "seconds": 56,
    "shards": 3,
    "codes": [
     0,
@@ -128,73 +128,73 @@
     0
    ],
    "shardSeconds": [
-    71,
-    71,
-    71
+    56,
+    56,
+    56
    ],
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "data": "live 2026-11-13",
-   "build": 34
+   "build": 45
   },
   {
    "name": "help",
-   "code": 0,
+   "code": 1,
    "seconds": 19,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 34,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 49,
    "data": "live 2026-11-13"
   },
   {
    "name": "hold",
-   "code": 0,
-   "seconds": 77,
+   "code": 1,
+   "seconds": 78,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "build": 30,
    "data": "live 2026-11-13"
   },
   {
    "name": "jinhwa",
-   "code": 0,
-   "seconds": 42,
+   "code": 1,
+   "seconds": 66,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 30,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 32,
    "data": "live 2026-11-13"
   },
   {
    "name": "kakao",
    "code": 0,
-   "seconds": 116,
+   "seconds": 121,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "build": 30,
    "data": "live 2026-11-13"
   },
   {
    "name": "misc",
    "code": 0,
-   "seconds": 43,
+   "seconds": 81,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 30,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 32,
    "data": "live 2026-11-13"
   },
   {
    "name": "next",
    "code": 0,
-   "seconds": 124,
+   "seconds": 133,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "build": 30,
    "data": "live 2026-11-13"
   },
   {
    "name": "past",
    "code": 0,
-   "seconds": 169,
+   "seconds": 161,
    "shards": 3,
    "codes": [
     0,
@@ -202,19 +202,19 @@
     0
    ],
    "shardSeconds": [
-    166,
-    166,
-    169
+    158,
+    158,
+    161
    ],
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "data": "live 2026-11-13",
-   "build": 35
+   "build": 50
   },
   {
    "name": "range",
    "code": 0,
-   "seconds": 77,
+   "seconds": 85,
    "shards": 3,
    "codes": [
     0,
@@ -222,96 +222,93 @@
     0
    ],
    "shardSeconds": [
-    76,
-    77,
-    77
+    83,
+    85,
+    85
    ],
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "data": "live 2026-11-13",
-   "build": 31
+   "build": 42
   },
   {
    "name": "rivals",
    "code": 0,
-   "seconds": 73,
+   "seconds": 109,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 30,
-   "data": "live 2026-11-13"
-  },
-  {
-   "name": "roman",
-   "code": 0,
-   "seconds": 238,
-   "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
    "build": 32,
    "data": "live 2026-11-13"
   },
   {
-   "name": "sage",
-   "code": 0,
-   "seconds": 125,
+   "name": "roman",
+   "code": 1,
+   "seconds": 238,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 30,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 47,
+   "data": "live 2026-11-13"
+  },
+  {
+   "name": "sage",
+   "code": 1,
+   "seconds": 135,
+   "mode": "local",
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 32,
    "data": "live 2026-11-13"
   },
   {
    "name": "share",
-   "code": 0,
-   "seconds": 110,
+   "code": 1,
+   "seconds": 127,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 30,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 32,
    "data": "live 2026-11-13"
   },
   {
    "name": "su",
-   "code": 0,
-   "seconds": 732,
-   "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 30,
-   "data": "live 2026-11-13"
+   "code": 99,
+   "seconds": 0,
+   "why": "결과 없음 — 작업이 끝나지 못함"
   },
   {
    "name": "theme",
-   "code": 0,
-   "seconds": 168,
+   "code": 1,
+   "seconds": 170,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 34,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 49,
    "data": "live 2026-11-13"
   },
   {
    "name": "white",
    "code": 0,
-   "seconds": 54,
+   "seconds": 59,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 30,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 43,
    "data": "live 2026-11-13"
   },
   {
    "name": "why",
    "code": 0,
-   "seconds": 62,
+   "seconds": 65,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 34,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 49,
    "data": "live 2026-11-13"
   },
   {
    "name": "why11",
    "code": 0,
-   "seconds": 62,
+   "seconds": 92,
    "mode": "local",
-   "sha": "7f608e686868f783b875b9a8e75f517fd8c1c157",
-   "build": 30,
+   "sha": "524ad5f697f8e4891108d79a468d7a854ac0b17d",
+   "build": 32,
    "data": "live 2026-11-13"
   }
  ],
- "ok": true
+ "ok": false
 }
