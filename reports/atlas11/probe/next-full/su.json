@@ -1,12 +1,81 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-14T07:11:37.983Z",
+ "at": "2026-11-15T11:08:04.226Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1667,
-  "fail": 0
+  "pass": 1397,
+  "fail": 17
  },
- "fails": [],
+ "fails": [
+  [
+   "[390] ⑨ 버린 쪽 #/g — 첫 쪽으로 · 옛 기능 칸 0",
+   "{\"h1\":\"지금은\\n내리는 땅\\n이에요.\",\"home\":\"지금은 내리는 땅 이에요.\",\"fcard\":0}"
+  ],
+  [
+   "[390] ⑨ 버린 쪽 #/g/hot — 첫 쪽으로 · 옛 기능 칸 0",
+   "{\"h1\":\"지금은\\n내리는 땅\\n이에요.\",\"home\":\"지금은 내리는 땅 이에요.\",\"fcard\":0}"
+  ],
+  [
+   "[390] 화면 오류 0",
+   "ReferenceError: KN is not defined\n    at lose10 (https://aaa7377.com/su/su-sonja.js:48:146)\n    at rec36 (https://aaa7377.com/su/su-sonja.js:96:44)\n    at one36 (https://aaa7377.com/su/su-sonja.js:115 | ReferenceError: KN is not defined\n    at lose10 (https://aaa7377.com/su/su-sonja.js:48:146)\n    a"
+  ],
+  [
+   "[360] 화면 오류 0",
+   "ReferenceError: KN is not defined\n    at lose10 (https://aaa7377.com/su/su-sonja.js:48:146)\n    at rec36 (https://aaa7377.com/su/su-sonja.js:96:44)\n    at one36 (https://aaa7377.com/su/su-sonja.js:115"
+  ],
+  [
+   "[320] 화면 오류 0",
+   "ReferenceError: KN is not defined\n    at lose10 (https://aaa7377.com/su/su-sonja.js:48:146)\n    at rec36 (https://aaa7377.com/su/su-sonja.js:96:44)\n    at one36 (https://aaa7377.com/su/su-sonja.js:115"
+  ],
+  [
+   "㉒ 넷째 창 [390] 화면 오류 0",
+   "ReferenceError: KN is not defined\n    at lose10 (https://aaa7377.com/su/su-sonja.js:48:146)\n    at rec36 (https://aaa7377.com/su/su-sonja.js:96:44)\n    at one36 (https://aaa7377.com/su/su-sonja.js:115"
+  ],
+  [
+   "㉒ 넷째 창 [320] 화면 오류 0",
+   "ReferenceError: KN is not defined\n    at lose10 (https://aaa7377.com/su/su-sonja.js:48:146)\n    at rec36 (https://aaa7377.com/su/su-sonja.js:96:44)\n    at one36 (https://aaa7377.com/su/su-sonja.js:115"
+  ],
+  [
+   "㉔ 처음 쪽 [390] 형세 보고 바로 아래 서른여섯 꾀(주문 1114-0922 · 손자병법 첫 쪽 1115-1706) — 덜 잃은 차례(위 일곱 펼침 · 나머지 접음) · 차례 번호 · 쉬운 이름 · 꾀 이름 · 곳 수 · 지난 기록 · 잃은 몫 점 · 고르는 법 · 회사 일곱 = 자료(누르면 그 회사 쪽) · 고르지 못한 꾀는 까닭 한 줄",
+   "{\"sec\":false,\"before\":false,\"n\":0,\"bad\":[\"g09\",\"g03\",\"g25\",\"g35\"],\"sets\":0,\"open7\":0,\"fold\":0,\"ord\":null}"
+  ],
+  [
+   "㉔ 처음 쪽 [390] 형세 카드(주문 1114-0922) — 맨 위 · 바로 아래 꾀 차례 · 땅 이름 · 말씀 · 오른 곳 = 자료 · 막대 = 오른 몫 · 한가운데 회사 100원이 ○원 · 스무 날 띠 = 자료 · 안전 문장 · 글씨 17",
+   "{\"want\":true,\"diff\":[\"nextS36\"],\"bar\":true,\"small\":0,\"m1\":\"한가운데 회사는 한 달 동안 100원이 92.2원이 됐어요.\"}"
+  ],
+  [
+   "㉔ 처음 쪽 [390] 꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325) = 자료 그대로 · 한 달 전 줄 · 끝 점 · 단추 안 · 이름표",
+   "{\"got\":0,\"want\":252,\"bad\":[\"제일기획 단추 없음\",\"기업은행 단추 없음\",\"농심 단추 없음\",\"LG유플러스 단추 없음\"]}"
+  ],
+  [
+   "㉔ 처음 쪽 [390] 꾀 칸 머리 · 한 줄 풀이(삼십육계 — 손자병법과 따로 · 주문 1114-0922) · 차례 까닭(같은 땅 날 · 닷새 뒤 · 덜 잃은 차례) · 고른 날 · 같은 회사 여러 꾀 · 정산 고리 · 누름 48",
+   "{\"h\":\"\",\"lead\":\"\",\"rule\":[\"\",\"지난 500거래일 가운데 오늘처럼 내리는 땅이었던 162날을 골라, 꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요. 센 때는 2024년 10월부터 2026년 11월까지예요.\"],\"day\":\"\",\"go\":null,\"small\":0}"
+  ],
+  [
+   "㉔ 처음 쪽 [390] 화면 오류 0",
+   "ReferenceError: KN is not defined\n    at lose10 (https://aaa7377.com/su/su-sonja.js:48:146)\n    at rec36 (https://aaa7377.com/su/su-sonja.js:96:44)\n    at one36 (https://aaa7377.com/su/su-sonja.js:115"
+  ],
+  [
+   "㉔ 처음 쪽 [320] 형세 보고 바로 아래 서른여섯 꾀(주문 1114-0922 · 손자병법 첫 쪽 1115-1706) — 덜 잃은 차례(위 일곱 펼침 · 나머지 접음) · 차례 번호 · 쉬운 이름 · 꾀 이름 · 곳 수 · 지난 기록 · 잃은 몫 점 · 고르는 법 · 회사 일곱 = 자료(누르면 그 회사 쪽) · 고르지 못한 꾀는 까닭 한 줄",
+   "{\"sec\":false,\"before\":false,\"n\":0,\"bad\":[\"g09\",\"g03\",\"g25\",\"g35\"],\"sets\":0,\"open7\":0,\"fold\":0,\"ord\":null}"
+  ],
+  [
+   "㉔ 처음 쪽 [320] 형세 카드(주문 1114-0922) — 맨 위 · 바로 아래 꾀 차례 · 땅 이름 · 말씀 · 오른 곳 = 자료 · 막대 = 오른 몫 · 한가운데 회사 100원이 ○원 · 스무 날 띠 = 자료 · 안전 문장 · 글씨 17",
+   "{\"want\":true,\"diff\":[\"nextS36\"],\"bar\":true,\"small\":0,\"m1\":\"한가운데 회사는 한 달 동안 100원이 92.2원이 됐어요.\"}"
+  ],
+  [
+   "㉔ 처음 쪽 [320] 꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325) = 자료 그대로 · 한 달 전 줄 · 끝 점 · 단추 안 · 이름표",
+   "{\"got\":0,\"want\":252,\"bad\":[\"제일기획 단추 없음\",\"기업은행 단추 없음\",\"농심 단추 없음\",\"LG유플러스 단추 없음\"]}"
+  ],
+  [
+   "㉔ 처음 쪽 [320] 꾀 칸 머리 · 한 줄 풀이(삼십육계 — 손자병법과 따로 · 주문 1114-0922) · 차례 까닭(같은 땅 날 · 닷새 뒤 · 덜 잃은 차례) · 고른 날 · 같은 회사 여러 꾀 · 정산 고리 · 누름 48",
+   "{\"h\":\"\",\"lead\":\"\",\"rule\":[\"\",\"지난 500거래일 가운데 오늘처럼 내리는 땅이었던 162날을 골라, 꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요. 센 때는 2024년 10월부터 2026년 11월까지예요.\"],\"day\":\"\",\"go\":null,\"small\":0}"
+  ],
+  [
+   "㉔ 처음 쪽 [320] 화면 오류 0",
+   "ReferenceError: KN is not defined\n    at lose10 (https://aaa7377.com/su/su-sonja.js:48:146)\n    at rec36 (https://aaa7377.com/su/su-sonja.js:96:44)\n    at one36 (https://aaa7377.com/su/su-sonja.js:115"
+  ]
+ ],
  "m": {
   "dropped": [],
   "data": {
@@ -19,32 +88,30 @@
    ]
   },
   "home": {
-   "screens": 16.96,
-   "links": 154
+   "screens": 2.6,
+   "links": 15
   },
   "t21": {
    "listed": 2557,
    "b365": 365,
-   "n": 21,
+   "n": 0,
    "overlap": 2,
    "distinct": 19
   },
   "path": [
    {
-    "h1": "요즘 눈에 띄는 회사",
-    "heroShare": 72.4,
-    "share": 89,
-    "outside": 21,
-    "two": 2,
-    "labels": 339,
-    "mucha": [],
-    "anim": 130,
-    "need": 0,
-    "means": 4,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 10,
-    "orn": 5
+    "h1": "지금은 내리는 땅 이에요.",
+    "sonja": true,
+    "kids": [
+     "sj-cover",
+     "sj-sun",
+     "sj-s36",
+     "sj-more",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 3,
+    "hardWords": "코스피,코스닥,거래일"
    },
    {
     "h1": "땅 지도",
@@ -159,8 +226,12 @@
     "orn": 5
    }
   ],
-  "hard": 0,
-  "hardWords": [],
+  "hard": 3,
+  "hardWords": [
+   "코스피",
+   "코스닥",
+   "거래일"
+  ],
   "drawers": {
    "#/r/d": {
     "h1": "날마다 지난 기록",
@@ -178,25 +249,22 @@
    "lines": 5
   },
   "speed": {
-   "lcp": 1752,
-   "cls": 0.121,
-   "pic": 1744
+   "lcp": 480,
+   "cls": 0,
+   "pic": 486
   },
   "white": {
    "light #/": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": true,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
    "light #/n": {
@@ -242,7 +310,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -280,19 +348,16 @@
     ]
    },
    "dark #/": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": true,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
    "dark #/n": {
@@ -384,14 +449,8 @@
   },
   "price": {
    "#/": {
-    "cells": 49,
-    "bad": 0,
-    "note": [
-     "현재가는 11월 13일 마지막 값이에요.",
-     "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "될 듯은 지난 기록의 앞 모습이에요.",
-     "지난 기록 차례예요. 앞날은 몰라요."
-    ]
+    "cells": 0,
+    "gone": "주문 1115-1843 — 처음 쪽은 병법 서른여섯만(줄 없음)"
    },
    "#/n": {
     "cells": 42,
@@ -405,11 +464,8 @@
    }
   },
   "live": {
-   "asked": 1,
-   "px": "70933",
-   "live": "2026-11-16T14:31",
-   "note": "현재가는 11월 16일 오후 2시 31분 값이에요.",
-   "shape": true
+   "asked": 0,
+   "first": "none"
   },
   "old": {
    "light /next/?su=guide#/find": {
@@ -452,7 +508,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.011,
+    "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
@@ -512,7 +568,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.023,
+    "darkMax": 0.026,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0
@@ -572,7 +628,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.011,
+    "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
@@ -632,7 +688,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.023,
+    "darkMax": 0.026,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0
@@ -742,7 +798,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.023,
+    "darkMax": 0.026,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0,
@@ -886,7 +942,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.023,
+    "darkMax": 0.026,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0,
@@ -1192,19 +1248,6 @@
    "2:현대오토에버:4.71:",
    "3:삼천당제약:4.08:"
   ],
-  "v42": {
-   "cells": 49,
-   "bad": 0,
-   "cap": [
-    "bloomNext:닷새 동안 시장보다",
-    "quiet:한 달 흔들림",
-    "quiet:한 달 흔들림"
-   ],
-   "eg": [
-    "100원이 157.8원",
-    "100원이 129.2원"
-   ]
-  },
   "kr7": {
    "cards": 7,
    "rows": 7,
@@ -1223,17 +1266,13 @@
     "to": "2026-11-16",
     "ix": false,
     "lab": "100원이 156.6원"
-   },
-   "shape": true
+   }
   },
   "coReal": {
    "live": null,
-   "cellLive": null,
    "px": "68800",
-   "cellPx": "68800",
    "from": "2026-10-16",
-   "to": "2026-11-13",
-   "both": false
+   "to": "2026-11-13"
   },
   "book": {
    "days": 6,
@@ -1369,7 +1408,7 @@
    "sp": {
     "want": 252,
     "chips": 252,
-    "got": 252
+    "got": 0
    },
    "ovl": {
     "n": 33,
@@ -1403,5 +1442,5 @@
    }
   }
  },
- "ok": true
+ "ok": false
 }
