@@ -101,6 +101,9 @@
 :root:has(#su) .su-top { background: #FFFFFF; border-bottom: 1px solid #E5E5EA; }
 :root:has(#su) .su-top::after { content: none; }
 :root:has(#su) .su-brand { color: #1D1D1F; letter-spacing: .02em; }
+/* 이름이 네 글자(손자병법)가 되어 좁은 휴대폰에서 옛 쪽 맨 위 줄이 넘침 → 이름 글씨를 한 단 줄임(주문 1115-1706 이름 바꿈 · 올리기 전 검사 3/11 「될 듯 21곳 가로 넘침 396 > 390」) */
+@media (max-width: 420px) { :root:has(#su) .su-brand { font-size: 20px; letter-spacing: 0; } }
+@media (max-width: 345px) { :root:has(#su) .su-brand { font-size: 18px; } }
 :root:has(#su) .su-top .su-mansour { background: #F5F5F7; box-shadow: none; color: #1D1D1F; }
 :root:has(#su) .su-tool { background: #FFFFFF; border: 1px solid #D2D2D7; color: #1D1D1F; box-shadow: none; }
 :root:has(#su) .su-tool[aria-pressed="true"] { background: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }

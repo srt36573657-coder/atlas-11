@@ -962,7 +962,7 @@ if (RUN(13)) {
           if (!J || !eq(Object.keys(J.keys ?? {}).sort(), want)) fail('기록 파일 = JSON 하나 · 열쇠 넷 그대로', `${tag} ${J ? JSON.stringify(Object.keys(J.keys ?? {})) : '못 읽음'}`);
           else for (const k of want) if (!eq(J.keys[k], JSON.parse(KEYSNAP[k]))) fail('기록 파일 값이 이 기기 기록과 다름', `${tag} ${k}`);
           if (txt.includes('atlas:godori-money') || txt.includes('S5H-SECRET')) fail('기록 파일에 내 돈 칸이 들어감', tag);
-          if (!new RegExp('^' + NAME_EN.toLowerCase() + '-records-\\d{4}-\\d{2}-\\d{2}\\.json$').test(name)) fail('기록 파일 이름', `${tag} ${name}`);
+          if (!new RegExp('^' + NAME_EN.toLowerCase().replace(/[^a-z]/g, '') + '-records-\\d{4}-\\d{2}-\\d{2}\\.json$').test(name)) // 파일 이름 = 영어 이름 글자만(Sun Tzu → suntzu · 띄어쓰기 없는 이름 — 주문 1115-1706) fail('기록 파일 이름', `${tag} ${name}`);
           bump('기록 파일 맞댐');
         }
         if (calls.exportFile && kk?.exportFalse) bump('exportFile false → 여기서 만듦');

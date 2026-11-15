@@ -56,6 +56,9 @@ html.su-jobs.su-jobs.su-jobs.su-jobs.su-jobs.pg-sage #view, html.su-jobs.su-jobs
 /* ── 그림 꾸밈: 옛 판의 빛 · 그림자 없음 ── */
 html.su-jobs .top, html.su-jobs .suw-bar { -webkit-backdrop-filter: none; backdrop-filter: none; }
 
+/* 이름이 네 글자(손자병법)가 되어 아주 좁은 휴대폰(349 아래) 맨 위 이름이 잘림 → 두 줄(손자 · 병법)로 접음(주문 1115-1706 이름 바꿈 · 올리기 전 검사 3/11 선물 단추 칸 「이름 칸 잘림」) */
+@media (max-width: 349px) { html.white.su-jobs.su-jobs.su-jobs .top .logo { white-space: normal; word-break: break-all; max-width: 2.3em; line-height: 1.05; text-align: center; } }
+
 /* ── 밤 판 자리 · 크기 지킴(아래는 scripts/atlas11/next/wrap_keep.py 가 지음 · 손으로 고치지 않음) ── */
 /* site/next/clock.css */
 html:where(.white.su-jobs) i.play { border: 2px solid #E5E5EA; }
