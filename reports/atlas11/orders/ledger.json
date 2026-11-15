@@ -1851,8 +1851,8 @@
    "then": "16:06(마카오) 물음 「사 판을 기준으로 진짜 사이트 첫 화면을 새로 만드는 뜻인가요? …」 → 16:09 「응」 → 16:10 「이름도 손자 병법으로 변경해」 → 16:32 「기존에 있던것 단 한나도 디자임 사용하지말고 완전 새로게 만들어」",
    "did": "이름 큐피트 → 손자병법(brand.js · brand_apply · 본질 문서 docs/손자병법_본질.md · 잠금 줄) · 첫 쪽(#/)을 빈 파일에서 새로 씀(su-sonja.js · su-sonja-top.js · su-sonja.css · 붓 글씨 표지 · 붓 글꼴 쓰는 글자만) — 샘플 사 「화제와 도장」 기준: 한지 바탕 · 먹 글 · 한 달 내림 남빛 도장 · 빨강 0 · 옛 꾸밈 0 · 검사(check_su) 첫 쪽 잣대를 새 판으로 · 기준 한 장 docs/design/sonja-ink-2026-11-15/standard.md",
    "short": "이름을 손자병법으로 바꾸고, 첫 쪽을 사 판 기준으로 빈 판에서 새로 만들었어요.",
-   "state": "완성",
-   "proof": "docs/design/sonja-ink-2026-11-15/(order-1706.txt · order-1836.txt · order-1843.txt · standard.md · essence-1843.txt) · 커밋 ada8e92cc2 · 6fde08876a · 3989f13e27 · 6c6a27a68d · 5cbdc575e9 · 846c44f6f9 · f08f53d149 · 올리기 전 검사 1 · 2/11 멈춤(검사 덩이 이름 남김 — 틀림 장부 227) · 3/11 실패 10쪽(영어 틀 토씨 · 좁은 휴대폰 이름 칸 · 진화 쪽 첫 화면 · 기록 파일 이름) · 4/11 멈춤 · 5/11 실패 1(될 듯 21곳 320 넘침) · 6/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43706203217 25쪽 실패 0(손자병법 두 길 1,410 통과 · 느린 4G 가장 큰 그림 552ms — 옛 판 시험 서버 2264ms) · 올리기 run 43706240744 · 진짜 사이트 검사 7/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43707243111 도는 중"
+   "state": "성공",
+   "proof": "docs/design/sonja-ink-2026-11-15/(order-1706.txt · order-1836.txt · order-1843.txt · standard.md · essence-1843.txt) · 커밋 ada8e92cc2 · 6fde08876a · 3989f13e27 · 6c6a27a68d · 5cbdc575e9 · 846c44f6f9 · f08f53d149 · 2a44c4009c · 올리기 전 검사 1 · 2/11 멈춤 · 3/11 실패 10쪽 · 4/11 멈춤 · 5/11 실패 1 · 6/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43706203217 실패 0 · 올리기 run 43706240744 · 진짜 사이트 7/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43707243111 실패 — 첫 쪽 꾀 칸 KN(틀림 장부 228) · 8/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43710468609 실패 0 · 올리기 run 43710479953 · 진짜 사이트 9/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43711403141 — 손자병법 두 길 1,414 · 실패 0 · 느린 4G 가장 큰 그림 448ms(옛 판 진짜 사이트 1752ms · 약 3.9배) · gdr 1 · help 1 · next 1(이 주문 밖 — 판 멈춤 30초 · 바로 열기 맨 위 · 403)"
   },
   {
    "id": "1115-1836",
@@ -1861,8 +1861,8 @@
    "then": "17:36(마카오) 물음 「제가 일하는 속도를 3배 빠르게 해서 … 사이트가 열리는 속도를 말씀하신 거면 「사이트」라고만 답해 주세요.」 → 17:37 「사이트」 → 17:47 「작업 앞으로 2시간내에 할수 있는 방법 찾아서 작업해」",
    "did": "첫 화면을 글로 먼저 칠함 — index.html 이 머리 줄 · 표지(그림은 글 속 데이터 주소)를 들고 있음 · 첫 칠함을 막는 꾸밈 파일 여섯 → 하나(옛 쪽 꾸밈 다섯은 받기만 하고 옛 쪽을 그릴 때 켬) · 코드 · 자료는 낮은 차례 · 본문 코드 49KB → 18KB · 표지 그림 29KB → 14KB · 붓 글꼴 미리 받지 않음 · 장 중 현재가 · 될 듯 값 받기 없앰 · 잣대 = 느린 4G · 처리 4배 느림 가장 큰 그림(check_su 와 같은 셈)",
    "short": "느린 휴대폰에서도 첫 화면이 전보다 세 배 넘게 빨리 뜨게 했어요.",
-   "state": "완성",
-   "proof": "docs/design/sonja-ink-2026-11-15/(order-1706.txt · order-1836.txt · order-1843.txt · standard.md · essence-1843.txt) · 커밋 ada8e92cc2 · 6fde08876a · 3989f13e27 · 6c6a27a68d · 5cbdc575e9 · 846c44f6f9 · f08f53d149 · 올리기 전 검사 1 · 2/11 멈춤(검사 덩이 이름 남김 — 틀림 장부 227) · 3/11 실패 10쪽(영어 틀 토씨 · 좁은 휴대폰 이름 칸 · 진화 쪽 첫 화면 · 기록 파일 이름) · 4/11 멈춤 · 5/11 실패 1(될 듯 21곳 320 넘침) · 6/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43706203217 25쪽 실패 0(손자병법 두 길 1,410 통과 · 느린 4G 가장 큰 그림 552ms — 옛 판 시험 서버 2264ms) · 올리기 run 43706240744 · 진짜 사이트 검사 7/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43707243111 도는 중"
+   "state": "성공",
+   "proof": "docs/design/sonja-ink-2026-11-15/(order-1706.txt · order-1836.txt · order-1843.txt · standard.md · essence-1843.txt) · 커밋 ada8e92cc2 · 6fde08876a · 3989f13e27 · 6c6a27a68d · 5cbdc575e9 · 846c44f6f9 · f08f53d149 · 2a44c4009c · 올리기 전 검사 1 · 2/11 멈춤 · 3/11 실패 10쪽 · 4/11 멈춤 · 5/11 실패 1 · 6/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43706203217 실패 0 · 올리기 run 43706240744 · 진짜 사이트 7/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43707243111 실패 — 첫 쪽 꾀 칸 KN(틀림 장부 228) · 8/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43710468609 실패 0 · 올리기 run 43710479953 · 진짜 사이트 9/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43711403141 — 손자병법 두 길 1,414 · 실패 0 · 느린 4G 가장 큰 그림 448ms(옛 판 진짜 사이트 1752ms · 약 3.9배) · gdr 1 · help 1 · next 1(이 주문 밖 — 판 멈춤 30초 · 바로 열기 맨 위 · 403)"
   },
   {
    "id": "1115-1843",
@@ -1871,8 +1871,8 @@
    "then": "17:43(마카오) 이해한 것 일곱 줄 보고 → 17:46 「응」 → 17:47 「작업 앞으로 2시간내에 할수 있는 방법 찾아서 작업해」",
    "did": "첫 쪽 = 머리 줄 · 표지 → 형세 보고 → 덜 잃은 꾀 차례(서른여섯 꾀) → 자세히(본질 세 줄) → 끝 줄 · 지움: 불장 · 꽃이 될 · 돈이 몰리는(지금 · 될 듯) · 조용한 힘 · 1 · 2 · 3등 · 이름이 오른 회사 · 칸 읽는 법 · 두 단추 · 겹친 곳 · 표지 화제 「형세를 읽고 · 덜 잃는 꾀를 찾아요」 · 본질 한 장 1번(사장님 말씀) · 2번 「꾀를 돕는 일」 · 7번 지움 · 첫 화면 본질 첫 줄 「요즘 상황에 어떤 병법으로 거래해야 손실을 덜 보는지, 병법 서른여섯 가지로 풀어요.」 · 다른 쪽(지도 · 될 듯 21곳 …)은 다음 차례",
    "short": "첫 쪽을 지금 형세와 병법 서른여섯 가지만 보이게 고쳤어요.",
-   "state": "완성",
-   "proof": "docs/design/sonja-ink-2026-11-15/(order-1706.txt · order-1836.txt · order-1843.txt · standard.md · essence-1843.txt) · 커밋 ada8e92cc2 · 6fde08876a · 3989f13e27 · 6c6a27a68d · 5cbdc575e9 · 846c44f6f9 · f08f53d149 · 올리기 전 검사 1 · 2/11 멈춤(검사 덩이 이름 남김 — 틀림 장부 227) · 3/11 실패 10쪽(영어 틀 토씨 · 좁은 휴대폰 이름 칸 · 진화 쪽 첫 화면 · 기록 파일 이름) · 4/11 멈춤 · 5/11 실패 1(될 듯 21곳 320 넘침) · 6/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43706203217 25쪽 실패 0(손자병법 두 길 1,410 통과 · 느린 4G 가장 큰 그림 552ms — 옛 판 시험 서버 2264ms) · 올리기 run 43706240744 · 진짜 사이트 검사 7/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43707243111 도는 중"
+   "state": "성공",
+   "proof": "docs/design/sonja-ink-2026-11-15/(order-1706.txt · order-1836.txt · order-1843.txt · standard.md · essence-1843.txt) · 커밋 ada8e92cc2 · 6fde08876a · 3989f13e27 · 6c6a27a68d · 5cbdc575e9 · 846c44f6f9 · f08f53d149 · 2a44c4009c · 올리기 전 검사 1 · 2/11 멈춤 · 3/11 실패 10쪽 · 4/11 멈춤 · 5/11 실패 1 · 6/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43706203217 실패 0 · 올리기 run 43706240744 · 진짜 사이트 7/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43707243111 실패 — 첫 쪽 꾀 칸 KN(틀림 장부 228) · 8/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43710468609 실패 0 · 올리기 run 43710479953 · 진짜 사이트 9/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43711403141 — 손자병법 두 길 1,414 · 실패 0 · 느린 4G 가장 큰 그림 448ms(옛 판 진짜 사이트 1752ms · 약 3.9배) · gdr 1 · help 1 · next 1(이 주문 밖 — 판 멈춤 30초 · 바로 열기 맨 위 · 403)"
   }
  ],
  "open": 9,
