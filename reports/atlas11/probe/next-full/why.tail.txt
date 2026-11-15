@@ -1,5 +1,5 @@
 {
- "sec": 99,
+ "sec": 265,
  "quick": false,
  "accept": {
   "css": {
