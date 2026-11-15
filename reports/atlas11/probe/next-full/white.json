@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-15T16:18:18.427Z",
+ "at": "2026-11-15T17:50:24.305Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 127,
    "blocks": {
-    "ess": 5557,
+    "ess": 5761,
     "find": 776,
-    "today": 3610,
-    "gdr": 4876,
-    "all": 5288
+    "today": 3730,
+    "gdr": 5055,
+    "all": 5491
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -219,7 +219,7 @@
    "blocks": {
     "ess": 5638,
     "find": 776,
-    "today": 3718,
+    "today": 3730,
     "gdr": 5055,
     "all": 5491
    },
@@ -667,14 +667,17 @@
    }
   },
   "speed": {
-   "lcp": 1264,
-   "inp": 80,
+   "lcp": 1212,
+   "inp": 56,
    "cls": 0.003
   }
  },
  "net": {
-  "retry": 0,
-  "why": {}
+  "retry": 3,
+  "why": {
+   "HTTP 403": 1,
+   "열기 실패": 2
+  }
  },
  "ok": true,
  "enforced": true

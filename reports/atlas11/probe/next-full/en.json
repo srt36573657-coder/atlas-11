@@ -1,118 +1,29 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-15T16:50:08.821Z",
- "base": "https://aaa7377.com",
- "page": "https://aaa7377.com/next/?lang=en",
+ "at": "2026-11-15T17:57:43.201Z",
+ "base": null,
+ "page": null,
  "lang": "en",
- "widths": [
-  320,
-  360,
-  390
- ],
- "routes": 13020,
- "companies": 2557,
- "allCompanies": true,
- "modules": true,
- "modFiles": {
-  "rivals": true,
-  "past": true,
-  "grow": true,
-  "cond": true,
-  "sage": true,
-  "share": true,
-  "gdr": true,
-  "co": true,
-  "theme": true,
-  "time": true,
-  "why": true,
-  "up": true,
-  "x": true,
-  "roman": true,
-  "range": true,
-  "hold": true,
-  "info": true,
-  "chx": true
- },
- "edge": true,
+ "widths": null,
+ "routes": 0,
+ "companies": null,
+ "allCompanies": null,
+ "modules": null,
+ "modFiles": null,
+ "edge": null,
  "only": null,
  "appFile": null,
  "shard": "all/3",
  "full": false,
  "units": {
-  "total": 13016,
-  "hash": "f3fe5370876bbf0a",
-  "w": {
-   "@tail": 80,
-   "@newwin": 15
-  }
+  "total": 0,
+  "hash": null,
+  "w": null
  },
- "seconds": 1071,
- "secondsSum": 3117,
- "shards": [
-  {
-   "shard": "1/3",
-   "ok": true,
-   "fails": 0,
-   "routes": 4370,
-   "screens": 4413,
-   "mine": 4370,
-   "seconds": 1004,
-   "secs": {
-    "open": 1.5,
-    "routes": 1001.4
-   }
-  },
-  {
-   "shard": "2/3",
-   "ok": true,
-   "fails": 0,
-   "routes": 4360,
-   "screens": 4424,
-   "mine": 4355,
-   "seconds": 1042,
-   "secs": {
-    "open": 0.5,
-    "routes": 1036.3,
-    "newwin": 4.1
-   }
-  },
-  {
-   "shard": "3/3",
-   "ok": true,
-   "fails": 0,
-   "routes": 4290,
-   "screens": 4411,
-   "mine": 4291,
-   "seconds": 1071,
-   "secs": {
-    "open": 1.8,
-    "routes": 1054.5,
-    "act": 6.2,
-    "edge": 6.7,
-    "grammar": 0
-   }
-  }
- ],
- "counts": {
-  "화면": 13248,
-  "길 · home": 1,
-  "길 · chips": 6,
-  "길 · me": 1,
-  "길 · find": 9,
-  "길 · watch": 2560,
-  "길 · chan": 89,
-  "길 · mod": 10346,
-  "왜 사? 끝까지": 2,
-  "쇼츠 장": 6,
-  "길 · shorts": 7,
-  "손자병법 칸 잠김": 2,
-  "새 창": 2,
-  "길 · sub": 1,
-  "보내기 글상자": 3,
-  "누르기": 1,
-  "바꿔치기": 1,
-  "오늘 한 줄 문장": 412
- },
+ "seconds": 0,
+ "secondsSum": 0,
+ "shards": [],
+ "counts": {},
  "missing": 0,
  "avatarLetters": 0,
  "kinds": {},
@@ -130,6 +41,11 @@
  "missingList": [],
  "all": [],
  "truncated": false,
- "problems": [],
- "ok": true
+ "problems": [
+  "몫 결과가 하나도 없음",
+  "1/3 몫 결과 없음",
+  "2/3 몫 결과 없음",
+  "3/3 몫 결과 없음"
+ ],
+ "ok": false
 }
