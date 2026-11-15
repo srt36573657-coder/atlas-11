@@ -93,8 +93,8 @@ export async function vAnt11(X) {
   const hero = h('div', {class: 'su-hero k7', 'data-g': 'su-ant11', 'data-n': String(K.items.length), 'data-at': K.at},
     h('p', {class: 'k7-lead', text: K.lead}),
     h('p', {class: 'k7-when', text: ymdK(K.at) + ' 기록 · 숫자는 근거에 적힌 해의 값이에요.'}),
-    mapFig(K.items, '한국 투자자', '큐피트에서 쓰는 곳', '한국 투자자 특징과 큐피트에서 쓰는 곳 열한 짝'),
-    h('ol', {class: 'k7-ol'}, K.items.map((it, i) => card(it, i, '큐피트에서는'))));
+    mapFig(K.items, '한국 투자자', '손자병법에서 쓰는 곳', '한국 투자자 특징과 손자병법에서 쓰는 곳 열한 짝'),
+    h('ol', {class: 'k7-ol'}, K.items.map((it, i) => card(it, i, '손자병법에서는'))));
   const how = h('section', {class: 'k7-how', 'aria-label': '어떻게 찾았나요'}, h('h2', {class: 'su-ft', text: '어떻게 찾았나요'}),
     h('ul', {class: 'k7-hw'}, (K.how ?? []).map(t => h('li', {class: 'k7-s', text: t}))),
     h('a', {class: 'su-ask', href: '#/r'}, h('b', {text: '기록 쪽으로'}), h('span', {text: '지난 기록 서랍을 봐요.'})));

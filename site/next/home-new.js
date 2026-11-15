@@ -348,7 +348,7 @@ function todayPicks(B) {
     if (!nr.length) return h('p', {class: 'nh-tp nh-tp0', text: '오늘은 조건에 맞은 회사가 없어요.'});
     return h('div', {class: 'nh-tp nh-tpnr'}, h('p', {class: 'nh-tp0', text: '오늘은 조건에 맞은 회사가 없어요.'}), h('p', {class: 'nh-tpk', text: '조건에 가장 가까운 회사'}),
       h('ul', {class: 'nh-tpl'}, ...nr.map(r => h('li', {}, h('b', {'data-proper': '', text: r[1]}), typeof r[2] === 'string' ? h('small', {'data-proper': '', text: r[2]}) : null))),
-      h('p', {class: 'nh-tpnote', text: '조건에 다 맞지는 않아요. 큐피트가 고른 회사가 아니에요.'}));
+      h('p', {class: 'nh-tpnote', text: '조건에 다 맞지는 않아요. 손자병법이 고른 회사가 아니에요.'}));
   }
   return h('div', {class: 'nh-tp'}, h('p', {class: 'nh-tpk', text: `오늘 조건에 맞은 회사 ${num(list.length)}곳`}),
     h('ul', {class: 'nh-tpl'}, ...list.slice(0, 5).map(x => h('li', {}, h('b', {'data-proper': '', text: x.n}), typeof x.i === 'string' ? h('small', {'data-proper': '', text: x.i}) : null))));

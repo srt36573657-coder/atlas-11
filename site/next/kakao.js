@@ -88,7 +88,7 @@ export function mergeKeys(local, remote) {
 }
 
 /** 기록 파일 이름 — 이름은 brand.js 한 곳(영어 이름) */
-export const fileName = (now = new Date()) => `${NAME_EN.toLowerCase()}-records-${now.toISOString().slice(0, 10)}.json`;
+export const fileName = (now = new Date()) => `${NAME_EN.toLowerCase().replace(/[^a-z]/g, '')}-records-${now.toISOString().slice(0, 10)}.json`; // 영어 이름에 띄어쓰기가 있어도 파일 이름은 붙여 씀(Sun Tzu → suntzu · 주문 1115-1706)
 
 export function createKakao(env = {}) {
   const g = globalThis;

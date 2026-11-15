@@ -189,7 +189,7 @@ export async function vSettle(X) {
   const first36 = P36.rows.map(r => r.day).sort()[0] ?? null, has36 = D.kinds.includes('g01');
   const PO = part(D, all, SHOWO), hasO = D.kinds.includes('ovl'); // 겹친 곳(주문 1114-0802 · 여덟 · 서른여섯과 따로 셈)
   const hero = h('div', {class: 'su-hero bk st', 'data-g': 'su-settle', 'data-n': String(rows.length), 'data-days': String(new Set(rows.map(r => r.day)).size), 'data-miss': String(miss)},
-    h('p', {class: 'bk-intro', text: '큐피트가 날마다 고른 여덟 묶음을 10주씩 샀다고 치고 적은 장부예요. 진짜 돈은 쓰지 않아요.'}),
+    h('p', {class: 'bk-intro', text: '손자병법이 날마다 고른 여덟 묶음을 10주씩 샀다고 치고 적은 장부예요. 진짜 돈은 쓰지 않아요.'}),
     D.start ? h('p', {class: 'bk-intro st-replay st-start', text: md(D.start) + '부터 센 정산이에요.'}) : null, // 주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」
     D.replayTo ? h('p', {class: 'bk-intro st-replay', text: md(D.replayTo) + '까지는 지금 고르는 법으로 지난 날을 다시 센 기록이에요.'}) : null,
     moneyCard(T, D.asOf),

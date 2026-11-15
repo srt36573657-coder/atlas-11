@@ -16,6 +16,9 @@ import {halo, dress} from '/su/su-art.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {h, s, fig, matrix, bars, cols, waffle, line, cal, split, sixTiles, sixMap, thumb, funnel, honest3, dots6} from '/su/su-fig.js';
 import {load21, v21Home, v21Next, vLand, vLandOne, vMore, vFriend, reasonBox21, find21} from '/su/su-21.js';
+// 주문 1115-1706(사장님 2026-11-15(마카오) 16:06 · 16:09 「응」 · 16:10 「이름도 손자 병법으로 변경해」 · 16:32 「기존에 있던것 단 한나도 디자임 사용하지말고 완전 새로게 만들어」)
+//   첫 쪽(#/)은 빈 파일에서 새로 쓴 손자병법 판(su-sonja.js · su-sonja.css — 기준 샘플 사 「화제와 도장」) · 옛 page() · afterPaint() 를 거치지 않음 · 다른 쪽은 그대로
+import {sonjaShell} from '/su/su-sonja-top.js'; // 머리 줄 · 표지(먼저 칠함) — 본문 su-sonja.js 는 첫 쪽을 열 때 받음(주문 1115-1836 · 느린 휴대폰 첫 화면)
 // 주문 1114-0922(사장님 2026-11-14 08:27 「… 과거 찌꺼기 버릴것은 버리고」) — 방마다 붙던 옛 「신 72 지킴이 · 스승 39 길잡이」 칸(주문 0054 [5])을 뺌: 손자병법 틀과 앞뒤가 안 맞고 화면만 길게 함
 // 주문 1114-1306(사장님 2026-11-14 13:06 「… 다 해」) — 그 칸 파일(su-gods.js · 얼굴 그림)과 옛 기능 쪽 「셋의 길」(#/g · su-feat.js) · 가까운 회사 쪽(#/r/n)도 버림
 //   꼭 있어야 할 길 둘(개인정보 처리방침 · 고객센터)은 #/g 에만 있었으므로 쪽마다 맨 아래 출처 칸으로 옮김
@@ -413,6 +416,29 @@ async function coOnPath(code) {
   else v.next = {href: '#/q/' + code, label: '내 까닭 적어 보기', step: 6, k: '6 / 8'};
   return v;
 }
+let skyOld = false, skyLoaded = false, skyGo = false;
+/** 하늘(주문 0054 [6] 8 · 9) — 옛 쪽을 볼 때만 모양 · 그림을 받음(손자병법 첫 쪽에는 옛 꾸밈을 하나도 붙이지 않음 — 주문 1115-1706 「기존에 있던것 단 한나도 디자임 사용하지말고」) */
+function sky() {
+  if (skyGo || !skyLoaded || !skyOld) return; skyGo = true;
+  const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/su/su-sky.css'; document.head.append(l);
+  import('/su/su-sky.js').then(m => m.startSky()).catch(e => console.error(e));
+}
+/** 손자병법 첫 쪽 판 켜기 · 끄기 — html.sj-on(한지 바탕 · su-sonja.css) · 휴대폰 맨 위 띠 색(첫 쪽 = 한지 #F1E3D3 · 다른 쪽 = 흰색 그대로) */
+const SJ_TC = '#F1E3D3', OLD_TC = '#FFFFFF';
+/** 옛 쪽 꾸밈 파일 켜기 · 끄기 — link[data-old-css](index.html 이 media="print" 로 받기만 함 · 주문 1115-1836) · 첫 쪽 손자병법 판은 하나도 쓰지 않음(주문 1115-1706)
+ *  켤 때는 다 받을 때까지 기다림(옛 쪽이 꾸밈 없이 칠해지지 않게 · 6초 넘으면 그냥 감) */
+function oldCss(on) {
+  const ls = [...document.querySelectorAll('link[data-old-css]')], md = on ? 'all' : 'print';
+  for (const l of ls) if (l.media !== md) l.media = md;
+  if (!on) return Promise.resolve();
+  return Promise.all(ls.map(l => (l.sheet ? null : new Promise(res => { l.addEventListener('load', res, {once: true}); l.addEventListener('error', res, {once: true}); setTimeout(res, 6000); }))));
+}
+function sonjaOn(on) {
+  document.documentElement.classList.toggle('sj-on', on);
+  if (on) oldCss(false);
+  for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.setAttribute('content', on ? SJ_TC : OLD_TC);
+  skyOld = !on; if (!on) sky();
+}
 async function route() {
   const hh = location.hash || '#/';
   const fw = forwardTo(location.search, hh);
@@ -424,7 +450,14 @@ async function route() {
     const on21 = (!m && !t) || (t && (t[1] === 'm' || t[1] === 'f' || t[1] === 'n' || t[1] === 's')) || (m && m[1] === 'm'); // 21곳 쪽은 꽃 · 돈 · 왜 자료를 기다리지 않음(주문 2044 느린 휴대폰 첫 화면)
     if (!FIRST && !on21) { const b0 = await base(); FIRST = firstCode(b0.bl, b0.mo); }
     if (on21) setTimeout(() => { base().catch(() => null); }, 2500); // 넷째 쪽(회사) 자료는 첫 화면 뒤에 미리 받아 둠
-    if (!m && !t) v = await v21Home(X21);
+    if (!m && !t) { // 손자병법 첫 쪽(주문 1115-1706) — 머리 · 본문 · 이야기 막대 · 탭을 새 판이 모두 그림
+      // 주문 1115-1836 — 머리 줄 · 표지를 자료 · 본문 코드보다 먼저(처음 열 때는 index.html 이 든 것을 그대로 · 다른 쪽에서 오면 새로 그림) → 본문은 받은 뒤 같은 main 에 이어 붙임
+      const sh = sonjaShell(root); sonjaOn(true);
+      if (sh.pre) { for (const c of [...root.children]) if (c !== sh.top && c !== sh.main) c.remove(); } else { root.replaceChildren(sh.top, sh.main); window.scrollTo(0, 0); }
+      const sj = await (await import('/su/su-sonja.js')).vSonja({...X21, cur: () => lastCo}, sh);
+      if (sj) { if (hh !== (location.hash || '#/')) return; document.title = sj.title + ' · ' + NAME; if (sj.keep) root.append(...sj.rest); else root.replaceChildren(...sj.dom); sj.after().catch(e => console.error(e)); return; }
+      v = await v21Home(X21); // 21곳 자료를 못 받으면 옛 판(빈 화면 대신)
+    }
     else if (t && t[1] === 'n') v = await v21Next(X21); // 될 듯 21곳(주문 1103)
     else if (t && t[1] === 's') v = await (await import('/su/su-quiet.js')).vQuiet(X21); // 넷째 창 조용한데 힘이 모이는 7곳(주문 1111-1334)
     else if (t) v = t[1] === 'm' ? await vLand(X21) : t[1] === 'f' ? await vFriend(X21) : t[1] === 'r' ? await vHub() : t[1] === 'q' || t[1] === 'p' ? await (await whyM()).vQuiz(lastCo?.code ?? null, ctx) : t[1] === 'j' ? await (await whyM()).vJournal(ctx) : t[1] === 'k' && lastCo?.code ? await vCo(lastCo.code) : await vHome();
@@ -441,6 +474,9 @@ async function route() {
     }
   } catch (e) { console.error(e); v = notFound('화면을 그리다 멈췄어요. 다시 열어 주세요.'); }
   if (hh !== (location.hash || '#/')) return;
+  await oldCss(true); // 옛 쪽 꾸밈을 다 받은 뒤에 그림(주문 1115-1836)
+  if (hh !== (location.hash || '#/')) return;
+  sonjaOn(false);
   root.replaceChildren(...page(v).filter(Boolean));
   afterPaint(root);
   window.scrollTo(0, 0);
@@ -449,10 +485,7 @@ async function route() {
 try { if (localStorage.getItem('su-big-text') === '1') document.documentElement.classList.add('su-lg'); } catch { /* 저장소 없음 */ }
 window.addEventListener('hashchange', route);
 route();
-window.addEventListener('load', () => setTimeout(() => { // 하늘(주문 0054 [6] 8 · 9) — 첫 그림을 막지 않게 창이 다 열린 뒤 모양 · 그림을 받음
-  const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/su/su-sky.css'; document.head.append(l);
-  import('/su/su-sky.js').then(m => m.startSky()).catch(e => console.error(e));
-}, 1500), {once: true});
+window.addEventListener('load', () => setTimeout(() => { skyLoaded = true; sky(); }, 1500), {once: true}); // 하늘 — 첫 그림을 막지 않게 창이 다 열린 뒤(옛 쪽을 볼 때만 · 위 sky())
 /* 새 판이 올라가면 스스로 새로 고침(주문 1708 · 사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어!」 — 휴대폰이 전에 열어 둔 화면을 새로 받지 않고 그대로 보여 줌)
    판 표 /su/version.json = 올릴 때마다 새 표(scripts/atlas11/package.mjs 가 씀 · 저장소에는 「dev」) · 처음 연 때의 표를 기억
    화면이 다시 보일 때(다른 앱에서 돌아옴 · 뒤로 가기로 저장된 화면이 다시 뜸) 표를 새로 받아 바뀌었으면 한 번 새로 고침 · 같거나 못 받으면 그대로(읽는 중에는 바꾸지 않음) */

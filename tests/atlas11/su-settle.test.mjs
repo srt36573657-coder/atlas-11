@@ -308,7 +308,7 @@ test('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325 「모든�
   const py = rd('scripts/atlas11/next/su21.py');
   assert.ok(py.includes("'line': {c: {'c': B[c].get('c'), 'close': B[c].get('close'), 'date': B[c].get('date')} for c in sorted({c for L in S36R['lists'].values() for c in L} | {c for c, _, _ in OV}) if c in B}"), 'su21.py 가 꾀 칸 · 겹친 곳 회사마다 한 달 값을 한 번씩 씀(42칸과 같은 판 값)');
   const ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.ok(ck.includes('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325)') && ck.includes('꾀 칸 한 달 꺾은선 자료(주문 1114-0325)') && ck.includes("? 31 : 7.8)"), '검사 ㉔ · 처음 쪽 길이(주문 1114-0802 겹친 곳까지)');
+  assert.ok(ck.includes('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325)') && ck.includes('꾀 칸 한 달 꺾은선 자료(주문 1114-0325)') && ck.includes("? 31 : 16)"), '검사 ㉔ · 처음 쪽 길이(주문 1114-0802 겹친 곳까지)');
   const css = rd('site/su/su-apple.css');
   for (const [k, v] of [['.sa-sp', '{ fill: none; stroke: #86868B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }'], ['.sa-sp0', '{ fill: none; stroke: #E5E5EA; stroke-width: 1; }'], ['.sa-spA', '{ fill: #D97706; stroke: #FFFFFF; stroke-width: 2; }']])
     assert.ok(css.includes('.su-news > .su-hero[data-g="su-apple"] .s36-sp ' + k + ' ' + v) && css.includes('.su-apple ' + k + ' ' + v), k + ' 선 모양 = 42칸');

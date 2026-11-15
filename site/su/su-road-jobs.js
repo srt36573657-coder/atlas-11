@@ -15,9 +15,9 @@ const W = 390, MID = W / 2, PAD = 20, NEED = '확인 필요';
  *  say = vFriend 카드 글을 줄인 한 줄(숫자 없음) */
 const FRIEND = Object.freeze([
   {t: '카톡 보내기', href: '/next/?su=guest#/share', say: '한 곳을 보내요'},
-  {t: '소개 영상', href: '/hello.html?su=guest', say: '큐피트가 하는 일'},
+  {t: '소개 영상', href: '/hello.html?su=guest', say: '손자병법이 하는 일'},
   {t: '내 종목', href: '/next/?su=stop#/me', say: '같은 잣대로'},
-  {t: '진화', href: '/next/?su=back#/jinhwa', say: '큐피트가 고친 것'}]);
+  {t: '진화', href: '/next/?su=back#/jinhwa', say: '손자병법이 고친 것'}]);
 let UID = 0;
 
 /** 자료 — 친구에게(arg 'friend') · 찾은 곳 수 = 그날 판 세 목록 칸 수(su21.json) · 못 받으면 null(「확인 필요」) */
@@ -142,8 +142,8 @@ function friend(d) {
   const items = Array.isArray(d?.items) && d.items.length === FRIEND.length ? d.items : FRIEND;
   const n = fin(d?.n) ? d.n : null, rows = Math.ceil(items.length / 2);
   const id = 'srj' + (++UID), H = 664; // 그림 높이는 그대로(첫 화면의 그림 몫 70 넘게 — 검사 ⑪) · 칸이 줄면 칸을 크게
-  const svg = root('friend', H, '친구에게 건네는 ' + items.length + '가지 · 큐피트가 찾은 곳 ' + (n != null ? n + '곳' : NEED) + ' · 칸을 누르면 그 길');
-  svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'srj-bg'}), sub('큐피트가 찾은 곳을', '친구와 함께 봐요.'));
+  const svg = root('friend', H, '친구에게 건네는 ' + items.length + '가지 · 손자병법이 찾은 곳 ' + (n != null ? n + '곳' : NEED) + ' · 칸을 누르면 그 길');
+  svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'srj-bg'}), sub('손자병법이 찾은 곳을', '친구와 함께 봐요.'));
   // 물건 하나 — 환한 구슬(찾은 곳) · 맑은 유리 구슬(친구) · 빛이 건너감
   const FL = 224, A = {x: 118, y: FL - 2 - 62, r: 62}, B = {x: 284, y: FL - 2 - 40, r: 40};
   svg.append(orbs(id, A, B, FL, 32), hop(A, B));

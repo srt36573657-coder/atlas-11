@@ -329,13 +329,13 @@ function cell(it, x, y, w, h, side) {
 }
 
 /* ── 「수르 계산법」 표(주문 1209 · 사장님 2026-11-09 12:09 「엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기를 해봐」) — 칸 맨 위 작은 이름표 · 풀이는 위 셋째 줄 ── */
-const BX = 30, SXT = '큐피트 계산법', SXL = '큐피트 계산법으로 찾은 종목';
+const BX = 30, SXT = '손자병법 계산법', SXL = '손자병법 계산법으로 찾은 종목';
 function sxTag(x, y, text = SXT, cls = '') {
   const bw = Math.ceil(est(text, 17)) + 18;
   return s('g', {class: 'sa-sx' + (cls ? ' ' + cls : ''), 'aria-hidden': 'true'}, s('rect', {x, y, width: bw, height: 24, rx: 12, class: 'sa-sxb'}), T(f1(x + bw / 2), y + 18, text, 'sa-sxt', {'text-anchor': 'middle'}));
 }
 /* ── 1등 · 2등 · 3등 표(주문 1422 · 사장님 2026-11-09 14:22 「42개를 찾은 것 중에서 다시 몬테카를로 … 1억 번 … 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 셋째 줄 [1등][2등][3등] 수르 계산법 차례 · 넷째 줄 풀이 ── */
-const R3L = '큐피트 계산법';
+const R3L = '손자병법 계산법';
 function legendR3(y, cul = false) {
   const ws = [1, 2, 3].map(n => Math.ceil(est(n + '등', 17)) + 18), gap = 6, tl = R3L + ' 차례', tw = est(tl, 18), all = ws.reduce((a, v) => a + v, 0) + gap * 2 + 8 + tw;
   let x = MID - all / 2;
@@ -517,7 +517,7 @@ function draw(d, opt) {
   const CAPH = 26, capOf = k => ((VCAP[k] && items(k, false).length) || (VCAP[NXK[k]] && items(k, true).length) ? CAPH : 0); // 줄 이름 한 줄(주문 1114-1306 — 칸 하나 읽는 법과 값 뜻이 다른 열만)
   const H = LIST1 + KEY.reduce((a, k) => a + HEADH + MEANH + capOf(k) + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + (QL.length ? HEADH + 30 + CAPH + Array.from({length: qRows}, (_, i) => qRowH(i)).reduce((b, v) => b + v, 0) + GAP : 0) + 24;
   const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H + TOT}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
-    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}칸 · 될 듯 ${nNx}칸` + (G ? ` · 서른여섯 꾀 ${N36}칸 · 같은 회사가 여러 칸에 들어요` : '') + (MARK ? ` · 큐피트 계산법으로 찾은 칸 ${nSx}` : '') + (UP3 ? ' · 오늘의 1등 · 2등 · 3등 ' + d.top3.rank.map(r => r.place + '등 ' + r.name).join(' · ') : RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
+    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}칸 · 될 듯 ${nNx}칸` + (G ? ` · 서른여섯 꾀 ${N36}칸 · 같은 회사가 여러 칸에 들어요` : '') + (MARK ? ` · 손자병법 계산법으로 찾은 칸 ${nSx}` : '') + (UP3 ? ' · 오늘의 1등 · 2등 · 3등 ' + d.top3.rank.map(r => r.place + '등 ' + r.name).join(' · ') : RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
   svg.append(s('rect', {x: 0, y: 0, width: W, height: H + TOT, class: 'sa-bg'}));
   const low = s('g', {class: 'sa-low', ...(TOT ? {transform: `translate(0 ${TOT})`} : {})}); // 구슬 아래 글부터 끝까지(서른여섯 꾀 네 줄이 있으면 TOT 만큼 아래)
   /* 1 한 문장 */

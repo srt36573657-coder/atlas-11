@@ -37,10 +37,10 @@ function icon(d) {
 /** 아래 막대 — 앵무새 단추(그 묶음 길로) + 탭 넷 */
 export function wrapBar(g) {
   const back = el('a', {class: 'suw-back', href: '/su/#/'}, el('img', {src: '/media/makbi-icon.svg', alt: '', width: '34', height: '34'}), // 옛 기능 쪽 「셋의 길」(#/g)은 버림 — 큐피트 첫 쪽으로(주문 1114-1306 ⑧)
-    el('span', {class: 'suw-bk'}, '큐피트로'), el('b', {}, '첫 쪽'), el('i', {'aria-hidden': 'true'}, '›'));
+    el('span', {class: 'suw-bk'}, '손자병법으로'), el('b', {}, '첫 쪽'), el('i', {'aria-hidden': 'true'}, '›'));
   const find = el('a', {class: 'suw-find', href: '/next/?su=guide#/find', 'aria-label': '종목 찾기'}, icon(FIND_D), el('span', {}, '찾기'));
-  const tabs = el('nav', {class: 'suw-tabs', 'aria-label': '큐피트 탭'}, TABS.map(([t, href, d]) => el('a', {href}, icon(d), el('span', {}, t))));
-  return el('div', {class: 'suw-bar', role: 'navigation', 'aria-label': '큐피트 길'}, el('div', {class: 'suw-row'}, back, find), tabs);
+  const tabs = el('nav', {class: 'suw-tabs', 'aria-label': '손자병법 탭'}, TABS.map(([t, href, d]) => el('a', {href}, icon(d), el('span', {}, t))));
+  return el('div', {class: 'suw-bar', role: 'navigation', 'aria-label': '손자병법 길'}, el('div', {class: 'suw-row'}, back, find), tabs);
 }
 /** 첫 페이지 판 — 색 파일을 붙이고, 다 받은 뒤(그 전에는 옛 판 그대로 — 반쯤 바뀐 화면 없음) 밤 무대 판을 떼고 창 위 띠를 흰색으로 지킴 · 한 번만 */
 let looked = false;

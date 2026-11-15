@@ -22,7 +22,7 @@ const fin = x => typeof x === 'number' && Number.isFinite(x);
 const wonN = x => (fin(x) ? won100(x) : NEED);
 const mkt = x => (fin(x) ? '시장보다 ' + more100(x) + ' 올랐어요' : '시장보다 앞선 만큼은 ' + NEED + '예요');
 const miss100 = p => (fin(p) ? num(Math.round((100 - p) * 10) / 10) : NEED); // 100번 가운데 그렇게 되지 않은 번 수(자료 per100 · old100 의 나머지 — 손실 쪽을 먼저 보임 · 새 셈 아님)
-const SRC = '네이버 증권 그날 마지막 값 · 큐피트가 셈';
+const SRC = '네이버 증권 그날 마지막 값 · 손자병법이 셈';
 const day = d => ymd(d) ?? NEED;
 
 /** 21곳 자료 — 한 번만 받음 */
@@ -54,7 +54,7 @@ const pastLine0 = (k, T) => { const p = T?.past?.[k]; return !p ? '' : T.past.cu
   : T.past.mcRank && Number.isFinite(p.old100) // 주문 1422 — 몬테카를로 차례로 고른 일곱 · 예전 셈 · 아무 회사
   ? '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + p.per100 + '번이 한 달 안에 ' + PW(T)[k] + '. 나머지 ' + miss100(p.per100) + '번은 그러지 못했어요. 예전 셈은 ' + p.old100 + '번, 아무 회사는 ' + p.base100 + '번이었어요.'
   : MARK(T) && T.past.strict && Number.isFinite(p.old100) // 주문 1209 — 일곱(칸) · 그 가운데 큐피트 계산법 표 · 아무 회사
-  ? '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + p.old100 + '번이 한 달 안에 ' + PW(T)[k] + '. 그 가운데 큐피트 계산법으로 찾은 곳은 ' + p.per100 + '번, 아무 회사는 ' + p.base100 + '번이었어요. 일곱이 그러지 못한 때는 100번에 ' + miss100(p.old100) + '번이에요.'
+  ? '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + p.old100 + '번이 한 달 안에 ' + PW(T)[k] + '. 그 가운데 손자병법 계산법으로 찾은 곳은 ' + p.per100 + '번, 아무 회사는 ' + p.base100 + '번이었어요. 일곱이 그러지 못한 때는 100번에 ' + miss100(p.old100) + '번이에요.'
   : T.past.strict && Number.isFinite(p.old100) // 엄격 셈(주문 0854) — 옛 일곱을 거른 곳 · 옛 셈 · 아무 회사를 함께
   ? '지난 1년 날마다 이렇게 엄격하게 거른 곳을 모두 세면 100번에 ' + p.per100 + '번이 한 달 안에 ' + PW(T)[k] + '. 나머지 ' + miss100(p.per100) + '번은 그러지 못했어요. 거르기 전 일곱은 100번에 ' + p.old100 + '번, 아무 회사는 ' + p.base100 + '번이었어요.'
   : '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + p.per100 + '번이 한 달 안에 ' + PW(T)[k] + '. 나머지 ' + miss100(p.per100) + '번은 그러지 못했어요. 아무 회사는 100번에 ' + p.base100 + '번이었어요.'; };
@@ -80,7 +80,7 @@ export function why21(c, k, T, past = true) {
   if (k === 'bloom') return c.ind + ' 업종이 한 달 동안 ' + mkt(w.indX) + '. ' + josa(c.name, '은') + ' 아직 「싹」이에요. ' + (w.full ? '꽃 조건을 모두 채웠어요.' : '꽃 조건을 다 채우지는 못한, 가장 가까운 곳이에요.');
   return c.ind + ' 업종이 한 달 동안 ' + mkt(w.indX) + '. 그 업종 우량주 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + joEok(w.gain) + ' 늘어 가장 많았어요.';
 }
-const six21 = (c, k, T) => ({누가: c.name + ' · ' + c.ind + ' 업종', 언제: day(T?.asOf?.board) + ' 자료', 어디서: '우량주 365곳 안(' + (c.land ?? NEED) + ')', 무엇을: KIND[k] + ' 7곳에 들었어요', 어떻게: T?.rules?.[k] ?? null, 왜: why21(c, k, T)});
+export const six21 = (c, k, T) => ({누가: c.name + ' · ' + c.ind + ' 업종', 언제: day(T?.asOf?.board) + ' 자료', 어디서: '우량주 365곳 안(' + (c.land ?? NEED) + ')', 무엇을: KIND[k] + ' 7곳에 들었어요', 어떻게: T?.rules?.[k] ?? null, 왜: why21(c, k, T)});
 
 /* ── 그림 ── */
 /** 깔때기 띠 — 상장 2,557 → 우량주 365 → 21 */
@@ -163,7 +163,7 @@ function petals6() {
 }
 
 /* ── 쪽 ── */
-const ruleRows = T => [{k: '상장 회사', v: num(T.counts.listed) + '곳', how: (T.counts.listedWhat ?? '') + ' · /atlas/data/mkt.json · 자료 ' + day(T.asOf.mkt)},
+export const ruleRows = T => [{k: '상장 회사', v: num(T.counts.listed) + '곳', how: (T.counts.listedWhat ?? '') + ' · /atlas/data/mkt.json · 자료 ' + day(T.asOf.mkt)},
   {k: '우량주', v: T.counts.b365 + '곳', how: T.rules.b365 + ' · 고른 갈래 ' + Object.entries(T.counts.kinds ?? {}).map(([k, v]) => k + ' ' + v).join(' · ')},
   {k: '불장 업종', v: T.counts.hotInds + '곳', how: T.rules.hot + ' · 후보 ' + T.counts.hotPool + '곳'},
   {k: '꽃이 될 후보', v: T.counts.bloomPool + '곳', how: T.rules.bloom + ' · 꽃 조건을 모두 채운 곳 ' + T.counts.bloomFull + '곳'},
@@ -202,7 +202,7 @@ export async function v21Home(X) {
   const LAB = '우량주 ' + b365 + '곳 가운데 오늘 이름이 오른 회사', MEAN = '같은 회사가 여러 칸에 들어요. 칸으로 세면 지금 ' + n28 + '칸 · 될 듯 ' + n21 + '칸' + (G ? ' · 서른여섯 꾀 ' + N36 + '칸' : '') + '이에요.';
   const coPre = G && Number.isInteger(T.co36) && T.co36 > 0 ? T.co36 : null; // su21.json co36(같은 셈 · su21.py) — 첫 칠함에 바로 그림(느린 휴대폰 가장 큰 칠함 2.5초 · 주문 1114-1306) · 없으면 「…」 뒤 채움
   const big = val(G ? (coPre ?? '…') : coNow, G ? (coPre != null ? '곳' : '') : '곳', LAB, {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안',
-    무엇을: (FILT(T) ? '불장 · 꽃이 될 · 돈이 몰리는 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾았어요') + (nq ? '. 넷째 창 조용한데 힘이 모이는 곳 ' + nq + '칸을 더했어요' : '') + '. 될 듯 ' + n21 + '칸' + (G ? '과 서른여섯 꾀 ' + N36 + '칸' : '') + '도 더했어요. 같은 회사가 여러 칸에 들면 회사는 한 번만 셌어요', 어떻게: CUR(T) ? HOW_CUR(T) : MCR(T) ? '365곳 모두 ' + TEN(T) + '번 섞어 보고, 소거 한 번을 지난 곳을 드문 차례로 일곱씩 골랐어요' : FILT(T) ? '세 가지 셈을 365곳에 대고, 몬테카를로 10만 번과 기준 31가지로 다시 걸렀어요' : MARK(T) ? '세 가지 셈을 365곳에 똑같이 대고, 몬테카를로와 기준 31가지를 모두 지난 ' + nSx(T, KEY) + '칸에 큐피트 계산법 표를 달았어요' : '세 가지 셈을 365곳에 똑같이 대어 봤어요', 왜: '주식을 몰라도 지금 볼 곳을 한눈에 알게 하려고요'},
+    무엇을: (FILT(T) ? '불장 · 꽃이 될 · 돈이 몰리는 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾았어요') + (nq ? '. 넷째 창 조용한데 힘이 모이는 곳 ' + nq + '칸을 더했어요' : '') + '. 될 듯 ' + n21 + '칸' + (G ? '과 서른여섯 꾀 ' + N36 + '칸' : '') + '도 더했어요. 같은 회사가 여러 칸에 들면 회사는 한 번만 셌어요', 어떻게: CUR(T) ? HOW_CUR(T) : MCR(T) ? '365곳 모두 ' + TEN(T) + '번 섞어 보고, 소거 한 번을 지난 곳을 드문 차례로 일곱씩 골랐어요' : FILT(T) ? '세 가지 셈을 365곳에 대고, 몬테카를로 10만 번과 기준 31가지로 다시 걸렀어요' : MARK(T) ? '세 가지 셈을 365곳에 똑같이 대고, 몬테카를로와 기준 31가지를 모두 지난 ' + nSx(T, KEY) + '칸에 손자병법 계산법 표를 달았어요' : '세 가지 셈을 365곳에 똑같이 대어 봤어요', 왜: '주식을 몰라도 지금 볼 곳을 한눈에 알게 하려고요'},
     {mean: MEAN});
   /** 꾀 칸 자료를 받은 뒤 — 큰 값을 「오늘 이름이 오른 회사 ○곳」으로(받지 못하면 지금 · 될 듯 칸의 회사 수와 그 까닭) · 다른 쪽으로 넘어갔으면 손대지 않음 */
   const later = G ? async () => {
@@ -247,7 +247,7 @@ export async function v21Next(X) {
   const mids = KEYN.map(k => { const p = P[k]; return MCK ? val(p.per100, '번', lab(k, p.per100), {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: whatSay(P.what?.[k]), 어떻게: (P.cultureRank ? '날마다 문화 셈으로 고른 일곱을 모두 셌어요(' : '날마다 몬테카를로 차례로 고른 일곱을 모두 셌어요(') + num(p.n) + '번 가운데 ' + num(p.hit) + '번)', 왜: '지난 기록만 보여 줘요'},
       {mean: '100번에 ' + p.per100 + '번이 한 달 안에 ' + PW(T)[k] + '. 나머지 ' + miss100(p.per100) + '번은 그러지 못했어요.' + (P.cultureRank && Number.isFinite(p.mc100) ? ' 바로 앞 셈은 100번에 ' + p.mc100 + '번,' : '') + ' 예전 셈은 100번에 ' + p.old100 + '번, 아무 회사는 ' + p.base100 + '번이었어요.'})
     : MK ? val(p.old100, '번', lab(k, p.old100), {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: whatSay(P.what?.[k]), 어떻게: '날마다 고른 일곱을 모두 셌어요(' + num(p.oldN) + '번)', 왜: '지난 기록만 보여 줘요'},
-      {mean: '100번에 ' + p.old100 + '번이 한 달 안에 ' + PW(T)[k] + '. 그 가운데 큐피트 계산법으로 찾은 곳은 100번에 ' + p.per100 + '번(' + num(p.n) + '번 가운데 ' + num(p.hit) + '번), 아무 회사는 ' + p.base100 + '번이었어요. 일곱이 그러지 못한 때는 100번에 ' + miss100(p.old100) + '번이에요.'})
+      {mean: '100번에 ' + p.old100 + '번이 한 달 안에 ' + PW(T)[k] + '. 그 가운데 손자병법 계산법으로 찾은 곳은 100번에 ' + p.per100 + '번(' + num(p.n) + '번 가운데 ' + num(p.hit) + '번), 아무 회사는 ' + p.base100 + '번이었어요. 일곱이 그러지 못한 때는 100번에 ' + miss100(p.old100) + '번이에요.'})
     : val(p?.per100 ?? null, '번', p ? lab(k, p.per100) : KIND[k] + ' · 100번 가운데', {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: whatSay(P.what?.[k]), 어떻게: '날마다 고른 일곱을 모두 셌어요(' + num(p?.n) + '번 가운데 ' + num(p?.hit) + '번)', 왜: '지난 기록만 보여 줘요'},
     {mean: p ? '100번에 ' + p.per100 + '번이 한 달 안에 ' + PW(T)[k] + '. 나머지 ' + miss100(p.per100) + '번은 그러지 못했어요.' + (P.strict && Number.isFinite(p.old100) ? ' 거르기 전 일곱은 ' + p.old100 + '번,' : '') + ' 아무 회사는 100번에 ' + p.base100 + '번이었어요.' : '지난 기록은 ' + NEED + '예요.'}); });
   return {title: '될 듯 21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안 · 지난 1년 기록으로 고름', h1: '될 듯 21곳', big,
@@ -313,13 +313,13 @@ export async function vFriend(X) {
   // 2026-11-14 — 보상 칸(상품권 · 커피 쿠폰)은 뺌(본질 「망치는 길: 폭죽과 연속 접속 보상」) · 「옛 기능」 칸 · 「돕는 일 · 셋 모두」 꼬리 · 「사장님」 속말도 뺌
   const card = (href, title, say) => h('a', {class: 'su-fcard', href}, h('b', {text: title}), h('span', {text: say}));
   const cards = h('section', {class: 'su-flist', 'aria-label': '친구에게'}, h('h2', {class: 'su-ft', text: '친구에게 · 함께 쓰는 것'}),
-    card('/next/?su=guest#/share', '카톡 보내기', '21곳 가운데 한 곳을 친구에게 보내요.'), card('/hello.html?su=guest', '소개 영상', '큐피트가 무엇을 하는 곳인지 1분 영상.'),
-    card('/next/?su=stop#/me', '내 종목 점검', '내가 가진 회사를 같은 잣대로 봐요.'), card('/next/?su=back#/jinhwa', '진화', '큐피트가 스스로 고친 것을 모두 보여요.'),
+    card('/next/?su=guest#/share', '카톡 보내기', '21곳 가운데 한 곳을 친구에게 보내요.'), card('/hello.html?su=guest', '소개 영상', '손자병법이 무엇을 하는 곳인지 1분 영상.'),
+    card('/next/?su=stop#/me', '내 종목 점검', '내가 가진 회사를 같은 잣대로 봐요.'), card('/next/?su=back#/jinhwa', '진화', '손자병법이 스스로 고친 것을 모두 보여요.'),
     card('/next/?su=guide#/find', '종목 찾기', '상장 회사 모두에서 이름으로 찾아요.'), card('/next/?lang=en&su=guide#/', '영어', '영어로 봐요.'),
-    card('https://shin-yxy.gino.im/', '천사', '큐피트 밖에서 여는 길이에요. 21곳과는 이어지지 않아요.'));
+    card('https://shin-yxy.gino.im/', '천사', '손자병법 밖에서 여는 길이에요. 21곳과는 이어지지 않아요.'));
   return {title: '친구에게', tab: 3, step: 8, kick: '함께 보기', h1: '친구에게', big,
     ...X.artHero('su-road-jobs', 'friend', X.fig('p6', [petals6()], {label: '친구에게 건네는 여섯 가지', hero: true, cap: ['21곳을 친구와 함께 봐요.', '카톡으로 한 곳을 골라 보내요.', '그런데 친구에게도 사고팔기를 권하지 않아요.', '그래서 이유와 함께 건네요.']})),
-    mids: [], body: [cards], pro: [{k: '카톡 보내기', v: '켜짐', how: '/next/?su=guest#/share · 한 곳씩'}, {k: '카톡 가입', v: '켜짐', how: 'config/atlas11/kakao.json'}, {k: '천사', v: '바깥 길', how: '큐피트 밖 주소 · 21곳과 이어지지 않음'}],
+    mids: [], body: [cards], pro: [{k: '카톡 보내기', v: '켜짐', how: '/next/?su=guest#/share · 한 곳씩'}, {k: '카톡 가입', v: '켜짐', how: 'config/atlas11/kakao.json'}, {k: '천사', v: '바깥 길', how: '손자병법 밖 주소 · 21곳과 이어지지 않음'}],
     next: {href: '#/', label: '처음으로', step: null, k: '끝'}, asOf: T.asOf.board, S};
 }
 /** 회사 쪽 — 21곳 까닭 상자 */

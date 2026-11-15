@@ -485,7 +485,7 @@ function exportLocal() {
   for (const k of KEYS4) { try { const raw = localStorage.getItem(k); if (raw == null) continue; try { keys[k] = JSON.parse(raw); } catch { keys[k] = raw; } } catch { blocked = true; } }
   const now = new Date(), file = {schema: 'godori-device-records-1', exportedAt: now.toISOString(), keys}; // 꼴 · 파일 이름은 kakao.js exportFile 과 같음(어느 쪽이 만들어도 한 꼴)
   const url = URL.createObjectURL(new Blob([JSON.stringify(file, null, 1)], {type: 'application/json'}));
-  const a = document.createElement('a'); a.href = url; a.download = `${NAME_EN.toLowerCase()}-records-${now.toISOString().slice(0, 10)}.json`; a.rel = 'noopener'; a.hidden = true; document.body.append(a); a.click(); a.remove();
+  const a = document.createElement('a'); a.href = url; a.download = `${NAME_EN.toLowerCase().replace(/[^a-z]/g, '')}-records-${now.toISOString().slice(0, 10)}.json`; a.rel = 'noopener'; a.hidden = true; document.body.append(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
   return {blocked, n: Object.keys(keys).length};
 }

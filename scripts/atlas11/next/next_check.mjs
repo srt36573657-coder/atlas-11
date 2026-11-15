@@ -266,7 +266,7 @@ for (const w of [320, 360, 390]) {
   if (g.today) fail('첫 화면에 오늘 시장 칸이 남음([6] 4)', String(g.today));
   if (g.surgeCards) fail('첫 화면에 급등 카드([6] 5)', String(g.surgeCards));
   const hix = [['KOSPI', '코스피'], ['KOSDAQ', '코스닥']].filter(([k]) => home?.idx?.[k]);
-  if (!g.band || g.band.href !== SU_HOME) fail('한 줄 띠([6] 1 — 큐피트 첫 쪽 /su/#/ · 옛 #/today 닫음)', JSON.stringify(g.band));
+  if (!g.band || g.band.href !== SU_HOME) fail('한 줄 띠([6] 1 — 손자병법 첫 쪽 /su/#/ · 옛 #/today 닫음)', JSON.stringify(g.band));
   else for (const [k, nm] of hix) if (!g.band.t.includes(nm) || !g.band.t.includes(P2(home.idx[k].day))) fail('한 줄 띠 숫자([6] 1)', `${nm} ${P2(home.idx[k].day)} 없음 「${g.band.t.replace(/\n/g, ' ')}」`);
   const bandDay = home?.stale?.idx && /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(home.stale.idx) ? home.stale.idx.slice(0, 10) : (home?.idx?.KOSPI ?? home?.idx?.KOSDAQ)?.date;
   if (g.band && bandDay && !g.band.t.includes(MD(bandDay))) fail('한 줄 띠 날짜', MD(bandDay) + ' 없음');
@@ -293,7 +293,7 @@ for (const w of [320, 360, 390]) {
     if (JSON.stringify(rh) !== JSON.stringify(ALL_WANT)) fail('「전부 보기」 줄(오르는 업종 · 큰 업종 · 업종 · 미국 · 고른 곳 · 가짜 돈 연습)', rh.join(' '));
     if (hmo.rows.some(x => x.w < 0.85 * hmo.W0 || x.h < 43.5)) fail('「전부 보기」 한 줄에 하나(네모 칸 0 · 44px)', JSON.stringify(hmo.rows.map(x => [Math.round(x.w), Math.round(x.h)])));
     if (hmo.li.length !== 3 || hmo.li.some(x => x.big !== 1 || x.why !== 1)) fail('오늘 시장 세 줄 = 큰 숫자 하나 + 까닭 한 줄([6] 4 · 9)', JSON.stringify(hmo.li));
-    if (!hmo.today) fail('「전부 보기」 안 「오늘 시장 자세히」 = 큐피트 첫 쪽 /su/#/ 고리([6] 4 · 옛 #/today 닫음)', '');
+    if (!hmo.today) fail('「전부 보기」 안 「오늘 시장 자세히」 = 손자병법 첫 쪽 /su/#/ 고리([6] 4 · 옛 #/today 닫음)', '');
     if (hmo.shut.length) fail('「전부 보기」 안 닫은 쪽 · 옛 /atlas/ 화면 고리(주문 1114-1306)', hmo.shut.join(' '));
     for (const [k, nm] of hix) if (hmo.t.includes(P2(home.idx[k].day))) fail('띠 숫자가 「전부 보기」에 또 나옴([6] 3)', nm + ' ' + P2(home.idx[k].day));
     if (home?.us?.date && bandDay && home.us.date !== bandDay && !hmo.li.find(x => x.k === 'us')?.tag) fail('띠 날과 다른 날 꼬리표([6] 2)', '미국 ' + home.us.date + ' ≠ ' + bandDay);
@@ -418,20 +418,20 @@ for (const w of [320, 360, 390]) {
   const drawn = q => q.waitForFunction(() => !!document.querySelector('#su') && !document.querySelector('#su .su-boot') && document.querySelectorAll('#su *').length > 20, null, {timeout: 20000}).then(() => true, () => false);
   for (const u of CASES) {
     await p.goto(base + u, {waitUntil: 'load'}).catch(e => fail('닫은 쪽 열기', u + ' ' + e.message));
-    if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) { fail('닫은 쪽 → 큐피트 첫 쪽 /su/#/(주문 1114-1306)', u + ' → ' + p.url().replace(base, '')); continue; }
-    if (!await drawn(p)) fail('닫은 쪽 → 큐피트 첫 쪽이 그려지지 않음(빈 쪽)', u);
+    if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) { fail('닫은 쪽 → 손자병법 첫 쪽 /su/#/(주문 1114-1306)', u + ' → ' + p.url().replace(base, '')); continue; }
+    if (!await drawn(p)) fail('닫은 쪽 → 손자병법 첫 쪽이 그려지지 않음(빈 쪽)', u);
     if (p._errs.length) { fail('화면 오류', '닫은 쪽 ' + u + ' ' + p._errs.join(' | ').slice(0, 200) + (badRes.length ? ' · ' + badRes.join(' · ').slice(0, 160) : '')); p._errs.length = 0; }
     badRes.length = 0;
-    bump('닫은 쪽 → 큐피트 첫 쪽');
+    bump('닫은 쪽 → 손자병법 첫 쪽');
   }
   // 쪽 안에서 주소만 바꿈(옛 고리 · 주소 칸에 친 주소) — 첫 화면에서 넷 모두
   for (const r of ['#/today', '#/talk', '#/surge/20', '#/cal']) {
     if (await first(p, base + '/next/#/') === false) { fail('닫은 쪽 — 첫 화면 처음 열기', r); continue; }
     await p.evaluate(h => { location.hash = h; }, r);
-    if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) fail('닫은 쪽(쪽 안에서 주소 바꿈) → 큐피트 첫 쪽 /su/#/', r + ' → ' + p.url().replace(base, ''));
-    else if (!await drawn(p)) fail('닫은 쪽(쪽 안에서 주소 바꿈) → 큐피트 첫 쪽이 그려지지 않음', r);
+    if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) fail('닫은 쪽(쪽 안에서 주소 바꿈) → 손자병법 첫 쪽 /su/#/', r + ' → ' + p.url().replace(base, ''));
+    else if (!await drawn(p)) fail('닫은 쪽(쪽 안에서 주소 바꿈) → 손자병법 첫 쪽이 그려지지 않음', r);
     if (p._errs.length) { fail('화면 오류', '닫은 쪽 ' + r + ' ' + p._errs.join(' | ').slice(0, 200)); p._errs.length = 0; }
-    bump('닫은 쪽 → 큐피트 첫 쪽');
+    bump('닫은 쪽 → 손자병법 첫 쪽');
   }
   await p.context().close();
 }
@@ -496,14 +496,14 @@ for (const w of [320, 360, 390]) {
 /* ①-3 아래 단추 다섯(2026-10-17 21:10 [2] · 규칙 1 · 2) — 차례 · 이름(숫자 없음) · data-tab · 고리 · 창 제목 = 탭 이름 · 지금 탭 표시
    + 질문을 끝낸 기계(매매일지 기록 하나)에서 고도리 칸이 열린 꼴을 세 폭으로(첫 화면 · 고도리 칸 · 카드 하나 · 매매일지 · 보유종목) — [6] 1 두 꼴 모두 */
 {
-  const TABS = [['꽃 될 회사', 'bloom', '#/t/picks'], ['지난 기록', 'rec', '#/t/pick'], ['왜 사?', 'why', '#/why'], ['큐피트', 'dori', '#/dori']]; // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) · 한 달 뒤는 왜 사? 안 · 돌이 메뉴 맨 위 · // 아래 단추 넷(돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」 — 시황 · 관심 · 보유종목은 돌이 단추 안)
+  const TABS = [['꽃 될 회사', 'bloom', '#/t/picks'], ['지난 기록', 'rec', '#/t/pick'], ['왜 사?', 'why', '#/why'], ['손자병법', 'dori', '#/dori']]; // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) · 한 달 뒤는 왜 사? 안 · 돌이 메뉴 맨 위 · // 아래 단추 넷(돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」 — 시황 · 관심 · 보유종목은 돌이 단추 안)
   const q = await page(390, 844);
   if (await first(q, base + '/next/#/') === false) fail('여는 중 남음', '아래 단추 처음 열기');
   const t = await q.evaluate(() => [...document.querySelectorAll('.tabs a')].map(a => [a.textContent.trim(), a.dataset.tab ?? null, a.getAttribute('href')]));
   if (JSON.stringify(t) !== JSON.stringify(TABS)) fail('아래 단추 넷', JSON.stringify(t));
   for (const [nm] of t) if (/\d/.test(nm)) fail('탭 이름에 숫자(규칙 2)', nm);
   // 쪽 이름(창 제목 · 화면 제목) · 지금 단추 — 시황 · 관심 · 보유종목 · 고객센터는 돌이 단추 안(지금 단추 = 돌이) · 첫 화면은 지금 단추 없음
-  for (const [hh, nm, cur] of [['#/', '오늘 장', null], ['#/shorts', '시황', '큐피트'], ['#/shorts/1', '시황', '큐피트'], ['#/why', '매매일지', '왜 사?'], ['#/why/005930', '매매일지', '왜 사?'], ['#/why/later', '한 달 뒤', '왜 사?'], ['#/sub', '관심', '큐피트'], ['#/me', '보유종목', '큐피트'], ['#/dori', '큐피트', '큐피트']]) {
+  for (const [hh, nm, cur] of [['#/', '오늘 장', null], ['#/shorts', '시황', '손자병법'], ['#/shorts/1', '시황', '손자병법'], ['#/why', '매매일지', '왜 사?'], ['#/why/005930', '매매일지', '왜 사?'], ['#/why/later', '한 달 뒤', '왜 사?'], ['#/sub', '관심', '손자병법'], ['#/me', '보유종목', '손자병법'], ['#/dori', '손자병법', '손자병법']]) {
     await go(q, hh); await q.waitForTimeout(60);
     const x = await q.evaluate(() => ({title: document.title, cur: document.querySelector('.tabs a[aria-current="page"]')?.textContent.trim() ?? null, h1: document.querySelector('#view h1')?.textContent ?? null}));
     if (x.title !== nm + TITLE_TAIL) fail('창 제목 = 쪽 이름', hh + ' 「' + x.title + '」');
