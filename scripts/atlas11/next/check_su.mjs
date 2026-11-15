@@ -712,7 +712,7 @@ for (const width of [390, 360, 320]) {
   const coBad = [], seen = new Set(); let coN = 0, idxN = 0, cdN = 0;
   for (const c of all) {
     if (seen.has(c.code)) continue; seen.add(c.code);
-    const lw = await lineWant(c.code), cell = cells.find(x => x.code === c.code);
+    const lw = await lineWant(c.code); // 첫 페이지 칸과 꼴을 맞대던 것은 뺌(처음 쪽 칸 없음 — 주문 1115-1843) · 값 21개 · 날 · 이름표는 판 값과 그대로 맞댐
     await open(p, `#/c/${c.code}`); await p.waitForTimeout(300);
     const g = await p.evaluate(() => { const s = document.querySelector('#su svg.su-co-jobs'), co = s?.querySelector('g[data-line="co"]'), ix = s?.querySelector('g[data-line="idx"]');
       return s ? {lsrc: s.getAttribute('data-lsrc'), src: co?.getAttribute('data-src') ?? null, v: co?.getAttribute('data-v') ?? null, n: co?.getAttribute('data-n') ?? null, from: co?.getAttribute('data-from') ?? null, to: co?.getAttribute('data-to') ?? null,
@@ -727,15 +727,13 @@ for (const width of [390, 360, 320]) {
       if (g.from !== (lw.from ?? '') || g.to !== board) why.push('날 ' + g.from + '~' + g.to + ' / ' + lw.from + '~' + board);
       if (g.lab !== won100Of(lw.last)) why.push('이름표 ' + g.lab + ' / ' + won100Of(lw.last)); // 회사 쪽 그림(su-co-jobs) 끝값 = 「100원이 ○원」(주문 1114-1306)
       if (lw.from && (g.axis[0] !== md(lw.from) || g.axis[g.axis.length - 1] !== md(board))) why.push('아래 날 ' + g.axis.join('~'));
-      const a = shapeOf(ptsOf(g.pts, /(-?[\d.]+),(-?[\d.]+)/g)), b = shapeOf(ptsOf(cell?.sp, /(-?[\d.]+) (-?[\d.]+)/g));
-      if (!sameShape(a, b)) why.push('꼴이 첫 페이지 칸과 다름 ' + a.length + '/' + b.length);
       if (lw.idx ? !(g.ix && g.ix.from === lw.cd[0] && g.ix.to === lw.cd[20] && g.ix.n === '21') : !!g.ix) why.push('시장 줄 ' + JSON.stringify(g.ix) + ' 있어야 ' + lw.idx);
       coN++; if (g.ix) idxN++; if (Array.isArray(lw.it.cd)) cdN++;
     }
     if (why.length) coBad.push(c.code + ' ' + c.name + ': ' + why.join(' · '));
   }
   R.m.coLine = {companies: seen.size, ok: coN - coBad.length, idx: idxN, cd: cdN, bad: coBad.slice(0, 6)};
-  check(seen.size >= Math.min(30, new Set(all.map(c => c.code)).size) && !coBad.length, '⑰ 42칸 회사 쪽 한 달 꺾은선 = 첫 페이지 칸 값 21개 · 같은 꼴 · 처음 날 · 끝 날 · 끝값 이름표 · 시장 줄은 날짜가 꼭 맞을 때만(주문 0806)', seen.size + '곳 · ' + coBad.slice(0, 3).join(' | '));
+  check(seen.size >= Math.min(30, new Set(all.map(c => c.code)).size) && !coBad.length, '⑰ 42칸 회사 쪽 한 달 꺾은선 = 판 값 21개 · 처음 날 · 끝 날 · 끝값 이름표 · 시장 줄은 날짜가 꼭 맞을 때만(주문 0806 · 첫 페이지 칸 꼴 맞댐은 칸이 없어 뺌 — 주문 1115-1843)', seen.size + '곳 · ' + coBad.slice(0, 3).join(' | '));
   if (/^https:/.test(base)) check(cdN === seen.size, '⑰ 진짜 사이트 — 42칸 회사 모두 판 날짜 21개(cd)', cdN + '/' + seen.size);
   await ctx.close();
 }
