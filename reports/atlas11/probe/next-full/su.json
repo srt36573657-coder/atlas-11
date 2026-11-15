@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-15T16:17:26.420Z",
+ "at": "2026-11-15T17:48:49.360Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 455,
+  "pass": 465,
   "fail": 0
  },
  "fails": [],
@@ -14,8 +14,8 @@
    "sun": true
   },
   "home": {
-   "screens": 9.81,
-   "links": 71
+   "screens": 8.56,
+   "links": 29
   },
   "t21": {
    "listed": 2557,
@@ -116,9 +116,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 468,
+   "lcp": 560,
    "cls": 0,
-   "pic": 465
+   "pic": 570
   },
   "white": {
    "light #/": {
@@ -384,7 +384,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.013,
+    "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0

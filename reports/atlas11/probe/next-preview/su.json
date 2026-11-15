@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-15T17:33:51.248Z",
+ "at": "2026-11-15T18:23:20.706Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 404,
+  "pass": 400,
   "fail": 0
  },
  "fails": [],
@@ -53,55 +53,45 @@
    },
    {
     "h1": "왜 사?",
-    "heroShare": 72.4,
-    "share": 78,
-    "outside": 17,
-    "two": 2,
-    "labels": 30,
-    "mucha": [],
-    "anim": 7,
-    "need": 0,
-    "means": {
-     "vals": 1,
-     "with": 1
-    },
-    "pro": 5,
-    "hard": 0,
-    "glossed": 1,
-    "orn": 0,
-    "ornN": 7
+    "page": "why",
+    "kids": [
+     "sj-ph",
+     "sj-two",
+     "sj-act",
+     "sj-body",
+     "sj-whymore",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 1,
+    "hardWords": "주식"
    },
    {
     "h1": "내 매매일지",
-    "heroShare": 72.4,
-    "share": 82,
-    "outside": 15,
-    "two": 2,
-    "labels": 17,
-    "mucha": [],
-    "anim": 11,
-    "need": 0,
-    "means": {
-     "vals": 3,
-     "with": 3
-    },
-    "pro": 9,
-    "hard": 0,
-    "glossed": 3,
-    "orn": 0,
-    "ornN": 7
+    "page": "journal",
+    "kids": [
+     "sj-ph",
+     "sj-two",
+     "sj-body",
+     "sj-figs",
+     "sj-whymore",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 1,
+    "hardWords": "코스피"
    }
   ],
-  "hard": 3,
+  "hard": 5,
   "hardWords": [
    "코스피",
    "코스닥",
    "주식"
   ],
   "speed": {
-   "lcp": 668,
+   "lcp": 684,
    "cls": 0,
-   "pic": 667
+   "pic": 680
   },
   "white": {
    "light #/": {
@@ -163,35 +153,33 @@
     ]
    },
    "light #/q": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": false,
+    "old": 0,
+    "cover": 0,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
    "light #/j": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": false,
+    "old": 0,
+    "cover": 0,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
    "dark #/": {
@@ -253,35 +241,33 @@
     ]
    },
    "dark #/q": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": false,
+    "old": 0,
+    "cover": 0,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
    "dark #/j": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": false,
+    "old": 0,
+    "cover": 0,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    }
   },
