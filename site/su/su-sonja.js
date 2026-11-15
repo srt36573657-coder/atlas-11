@@ -20,6 +20,7 @@ const D36 = '/su/data/su21-s36.json';
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
 const FOOT = [['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']];
 const LANDK = ['fall', 'shake', 'rise', 'narrow', 'calm'];
+const KN = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열']; // 잃은 몫 「열 번에 ○ 번」(lose10)
 const STEP8 = ['오늘', '땅 지도', '업종', '회사', '회사 자세히', '「왜 사?」', '내 매매일지', '친구에게'];
 
 const fin = x => typeof x === 'number' && Number.isFinite(x);

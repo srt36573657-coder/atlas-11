@@ -38,11 +38,11 @@ const openAt = async (ctx, url, w = 390, h = 844) => {
   await p.goto(B + url, {waitUntil: 'networkidle'}); await p.waitForTimeout(900); return p;
 };
 
-/* ① 모든 쪽 위 막대 금빛 선물 단추 → 상품권 방(첫 화면 · 매매일지 쪽에서) */
+/* ① 모든 쪽 위 막대 금빛 선물 단추 → 상품권 방(첫 화면 · 매매일지 쪽에서) — 손자병법 첫 쪽은 머리 줄이 header.sj-top(주문 1115-1706 · 진짜 사이트 /next/ 가 /su/ 첫 쪽으로 감) */
 for (const [w, h] of [[390, 844], [320, 568]]) for (const r of ['#/', '#/why']) {
   const ctx = await browser.newContext(), p = await openAt(ctx, NEXT + r, w, h);
   await p.waitForSelector('#giftBtn', {timeout: 20000}).catch(() => {});
-  const g = await p.evaluate(() => { const a = document.querySelector('#giftBtn'); if (!a) return null; const r = a.getBoundingClientRect(), lg = document.querySelector('.top .logo'); return {href: a.getAttribute('href'), w: Math.round(r.width), h: Math.round(r.height), top: Math.round(r.top), inTop: !!a.closest('header.top'), label: a.getAttribute('aria-label') || '', logoCut: lg ? lg.scrollWidth > lg.clientWidth + 1 : null, over: document.documentElement.scrollWidth > innerWidth}; });
+  const g = await p.evaluate(() => { const a = document.querySelector('#giftBtn'); if (!a) return null; const r = a.getBoundingClientRect(), lg = document.querySelector('.top .logo'); return {href: a.getAttribute('href'), w: Math.round(r.width), h: Math.round(r.height), top: Math.round(r.top), inTop: !!a.closest('header.top, header.sj-top'), label: a.getAttribute('aria-label') || '', logoCut: lg ? lg.scrollWidth > lg.clientWidth + 1 : null, over: document.documentElement.scrollWidth > innerWidth}; });
   if (!g) fail(`${w} ${r} 위 막대 금빛 선물 단추 없음`);
   else {
     if (g.href !== '#/gift' || g.w < 48 || g.h < 48 || !g.inTop || g.top > 80 || g.logoCut || g.over || !/상품권/.test(g.label)) fail(`${w} ${r} 위 막대 선물 단추(48px · #/gift · 이름 칸 안 잘림 · 넘침 0)`, JSON.stringify(g));

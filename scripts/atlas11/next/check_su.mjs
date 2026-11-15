@@ -382,7 +382,7 @@ for (const width of [390, 360, 320]) {
     // 옛 기능 쪽 「셋의 길」(#/g · 옛 기능 82가지)과 가까운 회사 쪽(#/r/n)은 버림(주문 1114-1306 ⑧ · DISCARD 5 · 15) — 옛 고리로 오면 #/g 는 첫 쪽 · #/r/n 은 「찾지 못했어요」 · 옛 기능 칸 0
     for (const [hh, want] of [['#/g', 'home'], ['#/g/hot', 'home'], ['#/r/n', 'none']]) {
       await open(p, hh); await p.waitForTimeout(200);
-      const g = await p.evaluate(() => ({h1: (document.querySelector('#su h1')?.innerText ?? '').trim(), fcard: document.querySelectorAll('#su .su-fcard, #su [data-feat], #su [data-road]').length, text: document.getElementById('su')?.innerText ?? ''}));
+      const g = await p.evaluate(() => ({h1: (document.querySelector('#su h1')?.innerText ?? '').replace(/\s+/g, ' ').trim(), fcard: document.querySelectorAll('#su .su-fcard, #su [data-feat], #su [data-road]').length, text: document.getElementById('su')?.innerText ?? ''})); // 큰 제목 줄바꿈은 띄어쓰기 하나로(손자병법 첫 쪽 「지금은 / 내리는 땅 / 이에요.」 — 첫 쪽 잣대와 같은 꼴 · 주문 1115-1843)
       check(g.fcard === 0 && !g.text.includes('가까운 회사의 지난 기록') && (want === 'home' ? g.h1 === seen[0]?.h1 : g.text.includes('찾지 못했어요')), W + '⑨ 버린 쪽 ' + hh + ' — ' + (want === 'home' ? '첫 쪽으로' : '「찾지 못했어요」') + ' · 옛 기능 칸 0', JSON.stringify({h1: g.h1, home: seen[0]?.h1, fcard: g.fcard}));
     }
     // 기록 서랍 · 서랍 쪽
