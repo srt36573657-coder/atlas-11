@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-14T07:13:00.796Z",
+ "at": "2026-11-15T11:09:40.096Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 127,
    "blocks": {
-    "ess": 5735,
+    "ess": 5761,
     "find": 776,
-    "today": 3692,
-    "gdr": 5029,
-    "all": 5465
+    "today": 3718,
+    "gdr": 5055,
+    "all": 5491
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -33,7 +33,7 @@
     "꽃 될 회사",
     "지난 기록",
     "왜 사?",
-    "큐피트"
+    "손자병법"
    ],
    "jh": true,
    "whyTab": true,
@@ -217,11 +217,11 @@
    "bodyLum": 1,
    "chars": 127,
    "blocks": {
-    "ess": 5612,
+    "ess": 5638,
     "find": 776,
-    "today": 3692,
-    "gdr": 5029,
-    "all": 5465
+    "today": 3730,
+    "gdr": 5055,
+    "all": 5491
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -237,7 +237,7 @@
     "꽃 될 회사",
     "지난 기록",
     "왜 사?",
-    "큐피트"
+    "손자병법"
    ],
    "jh": true,
    "whyTab": true,
@@ -667,17 +667,14 @@
    }
   },
   "speed": {
-   "lcp": 1324,
-   "inp": 48,
+   "lcp": 1280,
+   "inp": 32,
    "cls": 0.003
   }
  },
  "net": {
-  "retry": 3,
-  "why": {
-   "HTTP 403": 1,
-   "열기 실패": 2
-  }
+  "retry": 0,
+  "why": {}
  },
  "ok": true,
  "enforced": true

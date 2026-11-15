@@ -1,6 +1,9 @@
 {
  "schema": "atlas11-check-gift-1",
  "base": "https://aaa7377.com",
- "ok": true,
- "fails": []
+ "ok": false,
+ "fails": [
+  "390 #/ 위 막대 선물 단추(48px · #/gift · 이름 칸 안 잘림 · 넘침 0) — {\"href\":\"#/gift\",\"w\":50,\"h\":48,\"top\":8,\"inTop\":false,\"label\":\"선물 받기 · 상품권\",\"logoCut\":null,\"over\":false}",
+  "320 #/ 위 막대 선물 단추(48px · #/gift · 이름 칸 안 잘림 · 넘침 0) — {\"href\":\"#/gift\",\"w\":50,\"h\":48,\"top\":64,\"inTop\":false,\"label\":\"선물 받기 · 상품권\",\"logoCut\":null,\"over\":false}"
+ ]
 }
