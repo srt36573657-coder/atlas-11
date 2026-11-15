@@ -706,3 +706,22 @@ test('옛 쪽 /new/ 버림 — site/new 없음 · 옛 주소 /new · /new/* 는 
   const a = red.indexOf("'/new/*  /su/  302\\n/new  /su/  302\\n'"), b = red.indexOf('LANGS.map(');
   assert.ok(a > 0 && b > a, '_redirects 에 /new 두 줄(넓은 말 줄 /en/* · /zh/* 보다 앞)');
 });
+
+/** 주문 1116-0505(사장님 2026-11-16(마카오) 04:05 「이렇개 색도 넣고 깊이 있게 아주 자세하개 모든 그림과 동영상을 만둘어 …」 · 04:12 「어 맞아」) — 먹그림 색 판
+    색은 그림 코드 · 표지 그림 · 꾸밈 파일의 종이 결에만 · 빨강 0(한국에서 빨강은 오름 — 꽃은 연분홍 · 도장은 밤색) · 남빛(#1F2A44)은 뜻이 있는 곳(꺾인 화살 · 오늘 돌 · 내림 · 판정)에만 · 표지 그림은 첫 쪽 글 속 데이터 주소와 같음 */
+test('먹그림 색 판 — 빨강 0 · 연분홍 꽃 · 밤색 도장 · 종이 결 · 표지 그림 = 첫 쪽 글 속 그림(주문 1116-0505)', () => {
+  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const ink = rd('site/su/su-sonja-ink.js'), hero = rd('site/su/su-sonja-hero.svg'), html = rd('site/su/index.html'), css = rd('site/su/su-sonja.css');
+  const reds = src => [...new Set([...src.matchAll(/#([0-9A-Fa-f]{6})\b/g)].map(m => m[1].toUpperCase()))].filter(h => {
+    const R = parseInt(h.slice(0, 2), 16), G = parseInt(h.slice(2, 4), 16), B = parseInt(h.slice(4, 6), 16), mx = Math.max(R, G, B), mn = Math.min(R, G, B), sat = mx ? (mx - mn) / mx : 0;
+    let hue = 0; if (mx !== mn) hue = mx === R ? ((G - B) / (mx - mn)) * 60 : mx === G ? (2 + (B - R) / (mx - mn)) * 60 : (4 + (R - G) / (mx - mn)) * 60; if (hue < 0) hue += 360;
+    return (hue >= 340 || hue <= 18) && sat > 0.45 && R > 140 && G < 120; });
+  assert.deepEqual(reds(ink), [], '그림 코드 빨강 0');
+  assert.deepEqual(reds(hero), [], '표지 그림 빨강 0');
+  assert.ok(/export const C = Object\.freeze\(\{/.test(ink) && /pink: '#EFBFCA'/.test(ink) && /indigoDeep: '#4F6274'/.test(ink), '색 판(C) — 연분홍 꽃 · 쪽빛 잿빛');
+  assert.ok(/KIT = Object\.freeze\(\{[^}]*\bC, tint, soft, offP, dryStroke, bark, mossDots, foliage, needles, flower, blossomBranch, grassTuft, reflection, spline, M, kkoeSvg\}/.test(ink), '그림 부품 모음에 색 판 부품');
+  assert.ok(/#su svg\.ik-anim:not\(\.sj-stbar\) \{ background-image: url\("data:image\/svg\+xml,/.test(css), '종이 결(먹그림 바탕 무늬 · 정산 붓 막대는 뺌)');
+  const enc = x => x.replace(/"/g, "'").replace(/\n/g, '').replace(/%/g, '%25').replace(/#/g, '%23').replace(/</g, '%3C').replace(/>/g, '%3E');
+  assert.ok(html.includes('<img class="sj-art" src="data:image/svg+xml,' + enc(hero) + '"'), '표지 그림 = 첫 쪽 글 속 데이터 주소(su-sonja-hero.svg 를 고치면 index.html 도 같이)');
+  for (const k of ['g01', 'g18', 'g36']) assert.ok(new RegExp('^ {2}' + k + ': \\(\\) => ', 'm').test(ink), '꾀 장면 ' + k);
+});
