@@ -12,7 +12,7 @@ export const TABS = [['오늘', '/su/#/', 'M4 11l8-7 8 7v9H4z'], ['꾀', '/su/#/
 const NS = 'http://www.w3.org/2000/svg';
 export const JOBS_CSS = '/su/su-wrap-jobs.css'; // 색 이름 · 위 막대 · 아래 단추 · 밤 판 자리 지킴 — 쪽 머리가 처음부터 받음
 export const APP_CSS = '/su/su-wrap-app.css'; // 옛 앱(/next/) 쪽마다 남은 색 — 첫 그림을 늦추지 않게 여기서 뒤에 붙임
-const WHITE = '#FFFFFF';
+const WHITE = '#FFFFFF', PAPER = '#F1E3D3'; // 창 위 띠 — 옛 주소로 바로 온 손님 = 흰색 · 손자병법에서 넘어온 때(html.su-wrapped) = 손자병법 종이색(주문 1116-0300)
 export const FIND_D = 'M10.5 4a6.5 6.5 0 1 0 4 11.6l4.4 4.4 1.4-1.4-4.4-4.4A6.5 6.5 0 0 0 10.5 4zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9z';
 /** 개인정보 처리방침 — 그 쪽은 보안 규칙이 스크립트를 막아(default-src 'none') 틀을 씌울 수 없어, 수르 틀을 미리 입힌 쪽(/su/privacy.html · scripts/atlas11/next/su_privacy.mjs 가 원본에서 지음)으로 감 */
 export const SOLO = Object.freeze({'/privacy.html': '/su/privacy.html'});
@@ -34,10 +34,10 @@ function icon(d) {
   const sv = document.createElementNS(NS, 'svg'); sv.setAttribute('viewBox', '0 0 24 24'); sv.setAttribute('aria-hidden', 'true'); sv.setAttribute('class', 'suw-i');
   const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); sv.append(p); return sv;
 }
-/** 아래 막대 — 앵무새 단추(그 묶음 길로) + 탭 넷 */
+/** 아래 막대 — 손자병법 첫 쪽 단추 · 찾기 + 탭 다섯(손자병법 종이 판 · su-wrap.css) */
 export function wrapBar(g) {
-  const back = el('a', {class: 'suw-back', href: '/su/#/'}, el('img', {src: '/media/makbi-icon.svg', alt: '', width: '34', height: '34'}), // 옛 기능 쪽 「셋의 길」(#/g)은 버림 — 큐피트 첫 쪽으로(주문 1114-1306 ⑧)
-    el('span', {class: 'suw-bk'}, '손자병법으로'), el('b', {}, '첫 쪽'), el('i', {'aria-hidden': 'true'}, '›'));
+  const back = el('a', {class: 'suw-back', href: '/su/#/'}, // 첫 쪽으로(주문 1114-1306 ⑧) · 옛 그림 단추(막비 얼굴)는 지움 — 손자병법 이름만(주문 1116-0300)
+    el('span', {class: 'suw-bk'}, '손자병법'), el('b', {}, '첫 쪽으로'), el('i', {'aria-hidden': 'true'}, '›'));
   const find = el('a', {class: 'suw-find', href: '/next/?su=guide#/find', 'aria-label': '종목 찾기'}, icon(FIND_D), el('span', {}, '찾기'));
   const tabs = el('nav', {class: 'suw-tabs', 'aria-label': '손자병법 탭'}, TABS.map(([t, href, d]) => el('a', {href}, icon(d), el('span', {}, t))));
   return el('div', {class: 'suw-bar', role: 'navigation', 'aria-label': '손자병법 길'}, el('div', {class: 'suw-row'}, back, find), tabs);
@@ -48,7 +48,8 @@ export function jobsLook(doc = document) {
   const de = doc.documentElement;
   const keep = () => {
     if (de.classList.contains('clock')) de.classList.remove('clock');
-    for (const m of doc.querySelectorAll('meta[name="theme-color"]')) if (m.getAttribute('content') !== WHITE) m.setAttribute('content', WHITE);
+    const tc = de.classList.contains('su-wrapped') ? PAPER : WHITE;
+    for (const m of doc.querySelectorAll('meta[name="theme-color"]')) if (m.getAttribute('content') !== tc) m.setAttribute('content', tc);
   };
   const on = () => {
     if (looked) return; looked = true;

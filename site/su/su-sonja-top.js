@@ -34,7 +34,7 @@ export function topBar() {
     h('div', {class: 'sj-tools'},
       h('a', {class: 'sj-btn sj-angel', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'}), h('i', {'aria-hidden': 'true', text: '↗'})),
       h('a', {class: 'sj-btn sj-find', href: '/next/?su=guide#/find', 'aria-label': '종목 찾기', text: '찾기'}),
-      h('a', {id: 'giftBtn', class: 'sj-btn sj-gift', href: '#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}),
+      h('a', {id: 'giftBtn', class: 'sj-btn sj-gift', href: '/next/?su=guide#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}),
       big));
 }
 

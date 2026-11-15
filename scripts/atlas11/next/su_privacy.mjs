@@ -20,7 +20,7 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 const icon = d => `<svg viewBox="0 0 24 24" aria-hidden="true" class="suw-i"><path d="${esc(d)}"/></svg>`;
 
 export function bar(g = G) {
-  const back = `<a class="suw-back" href="/su/#/"><img src="/media/makbi-icon.svg" alt="" width="34" height="34"><span class="suw-bk">손자병법으로</span><b>첫 쪽</b><i aria-hidden="true">›</i></a>`; // 옛 기능 쪽 「셋의 길」(#/g)은 버림 — 큐피트 첫 쪽으로(주문 1114-1306 ⑧ · su-wrap.js wrapBar 와 같은 꼴)
+  const back = `<a class="suw-back" href="/su/#/"><span class="suw-bk">손자병법</span><b>첫 쪽으로</b><i aria-hidden="true">›</i></a>`; // 첫 쪽으로(주문 1114-1306 ⑧ · su-wrap.js wrapBar 와 같은 꼴) · 옛 그림 단추(막비 얼굴)는 지움 — 손자병법 이름만(주문 1116-0300)
   const find = `<a class="suw-find" href="/next/?su=guide#/find" aria-label="종목 찾기">${icon(FIND_D)}<span>찾기</span></a>`;
   const tabs = `<nav class="suw-tabs" aria-label="손자병법 탭">${TABS.map(([t, href, d]) => `<a href="${esc(href)}">${icon(d)}<span>${esc(t)}</span></a>`).join('')}</nav>`;
   return `<div class="suw-bar" id="suw" role="navigation" aria-label="손자병법 길"><div class="suw-row">${back}${find}</div>${tabs}</div>`;
@@ -31,7 +31,7 @@ export function build(src) {
   let s = src;
   s = once(s, '<!doctype html>\n', '<!doctype html>\n<!-- 지은 파일 — scripts/atlas11/next/su_privacy.mjs 가 site/privacy.html 에서 지음(손으로 고치지 않음 · 원본을 고친 뒤 다시 지음) · 손자병법 틀을 미리 입힌 짝 쪽(주문 2011) -->\n');
   s = once(s, '<html lang="ko" class="su-jobs">', '<html lang="ko" class="su-jobs su-wrapped">'); // 원본은 이미 첫 페이지 색(su-jobs · su-privacy.css · 주문 2250) — 짝 쪽은 수르 틀(아래 수르 막대)만 더함
-  s = s.replace(/<meta name="theme-color" content="#[0-9A-Fa-f]{6}">/, '<meta name="theme-color" content="#FFFFFF">');
+  s = s.replace(/<meta name="theme-color" content="#[0-9A-Fa-f]{6}">/, '<meta name="theme-color" content="#F1E3D3">'); // 창 위 띠 = 손자병법 종이색(주문 1116-0300 · 짝 쪽은 늘 손자병법에서 넘어온 쪽)
   s = once(s, '<link rel="stylesheet" href="/su/su-privacy.css">', '<link rel="stylesheet" href="/su/su-privacy.css">\n<link rel="stylesheet" href="/su/su-wrap.css">');
   s = once(s, '</body>', bar() + '\n</body>');
   return s;

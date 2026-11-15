@@ -468,8 +468,9 @@ for (const width of [390, 360, 320]) {
   //   옛 주소로 바로 온 손님도 같은 흰 판(주문 2250 · 22:50 「이것도 구슬로 해」) — 수르 막대만 없음 · 서른아홉 스승 · 로마 신은 읽는 종이 바탕 #FDF9F5(그 쪽 검사 「밝은 종이 바탕」)
   // 주문 1114-1306 ⑧ · ② — 지금 큐피트가 실제로 거는 옛 쪽만: 맨 위 「찾기」 · 친구에게(카톡 보내기 · 소개 영상 · 내 종목 · 진화) · 쪽마다 맨 아래(개인정보 처리방침 · 고객센터)
   //   옛 기능 쪽 #/g 에서만 가던 쪽(서른아홉 스승 · 로마 신 · 「왜 사?」 옛 판 · 편지 · 초대장)과 닫히는 급등 쪽은 뺌(옛 주소로 바로 온 손님 판은 아래 DIRECT 가 그대로 봄)
-  const ROUTES = ['/next/?su=guide#/find', '/next/?su=guest#/share', '/next/?su=stop#/me', '/next/?su=guide#/', '/next/?su=back#/jinhwa', '/next/?su=back#/help', '/hello.html?su=guest', '/su/privacy.html'];
-  const WHITE = 'rgb(255, 255, 255)';
+  // 주문 1116-0300(사장님 2026-11-16(마카오) 02:00 「예전 디자인은 모두 삭제 하고 손자병법에 맞게 처음부터 끝까지 깔끔하개」) — 손자병법에서 넘어간 옛 쪽은 손자병법 종이 판(바탕 · 위 · 아래 막대 #F1E3D3 · 창 위 띠 종이색) · 맨 위 「선물」도 손자병법 틀 안
+  const ROUTES = ['/next/?su=guide#/find', '/next/?su=guide#/gift', '/next/?su=guest#/share', '/next/?su=stop#/me', '/next/?su=guide#/', '/next/?su=back#/jinhwa', '/next/?su=back#/help', '/hello.html?su=guest', '/su/privacy.html'];
+  const WHITE = 'rgb(255, 255, 255)', PAPER = 'rgb(241, 227, 211)';
   const lookOld = p => p.evaluate(() => {
     const cs = e => getComputedStyle(e), de = document.documentElement, vw = innerWidth, vh = innerHeight;
     const L = c => { const m = /rgba?\(([^)]+)\)/.exec(c); if (!m) return null; const v = m[1].split(',').map(x => parseFloat(x)); if (v.length > 3 && v[3] < 0.5) return null; const q = v.slice(0, 3).map(x => x / 255).map(x => (x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)); return 0.2126 * q[0] + 0.7152 * q[1] + 0.0722 * q[2]; };
@@ -494,7 +495,7 @@ for (const width of [390, 360, 320]) {
     return {cls: de.className, body: cs(document.body).backgroundColor, view: view ? cs(view).backgroundColor : null, top: top ? cs(top).backgroundColor : null, bar: bar ? cs(bar).backgroundColor : null,
       frame: cs(de, '::after').content, tc: [...document.querySelectorAll('meta[name="theme-color"]')].map(m => m.getAttribute('content')), darkMax: +darkMax.toFixed(3), darkSel, low: low.slice(0, 6), lowN: low.length};
   });
-  const okBg = c => c == null || c === WHITE || c === 'rgba(0, 0, 0, 0)';
+  const okBg = c => c == null || c === WHITE || c === 'rgba(0, 0, 0, 0)', okPaper = c => c == null || c === PAPER || c === 'rgba(0, 0, 0, 0)';
   R.m.old = {};
   for (const scheme of ['light', 'dark']) {
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', colorScheme: scheme});
@@ -505,8 +506,8 @@ for (const width of [390, 360, 320]) {
       await p.waitForTimeout(1500);
       const o = await lookOld(p); R.m.old[scheme + ' ' + u] = o;
       const cl = o.cls.split(/\s+/);
-      check(cl.includes('su-wrapped') && cl.includes('su-jobs') && !cl.includes('clock') && o.body === WHITE && (okBg(o.view) || (/pg-(sage|roman)/.test(o.cls) && o.view === 'rgb(253, 249, 245)')) && okBg(o.top) && o.bar === WHITE && (o.frame === 'none' || o.frame === 'normal') && o.tc.every(c => c === '#FFFFFF') && o.darkMax <= 0.12 && o.lowN === 0,
-        '⑯ 손자병법에서 넘어간 옛 쪽도 첫 페이지 판(' + scheme + ' · ' + u + ') — 밤 판 뗌 · 바탕 · 위 · 아래 막대 흰색 · 금빛 테두리 0 · 어두운 판 0 · 흐린 글 0', JSON.stringify(o).slice(0, 400));
+      check(cl.includes('su-wrapped') && cl.includes('su-jobs') && !cl.includes('clock') && o.body === PAPER && okPaper(o.view) && okPaper(o.top) && o.bar === PAPER && (o.frame === 'none' || o.frame === 'normal') && o.tc.length > 0 && o.tc.every(c => c === '#F1E3D3') && o.darkMax <= 0.12 && o.lowN === 0,
+        '⑯ 손자병법에서 넘어간 옛 쪽도 손자병법 종이 판(' + scheme + ' · ' + u + ') — 밤 판 뗌 · 바탕 · 위 · 아래 막대 종이색 · 창 위 띠 종이색 · 금빛 테두리 0 · 어두운 판 0 · 흐린 글 0', JSON.stringify(o).slice(0, 400));
     }
     await ctx.close();
   }
