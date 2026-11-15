@@ -499,6 +499,9 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
   { // 주문 2011 · 2250 — 옛 쪽 첫 페이지 색 파일 셋(모든 선택자가 html.su-jobs 로 시작) · 밤 판을 뗀 뒤 자리 · 크기 지킴 칸 = 옛 꾸밈 파일에서 지은 그대로 · 색 파일을 받은 뒤 밤 판을 뗌
     const {execFileSync} = await import('node:child_process');
     execFileSync('python3', [path.join(ROOT, 'scripts/atlas11/next/wrap_keep.py'), '--check'], {cwd: ROOT, stdio: 'pipe'});
+    // 주문 1116-0300 — 손자병법에서 넘어간 옛 쪽 종이 판 색(su-wrap-sj.css)은 옛 쪽 색 파일에서 지은 그대로 · 손자병법에서 넘어온 때만 받음(바로 온 손님 첫 그림 2.5초 — check_white ③)
+    execFileSync('node', [path.join(ROOT, 'scripts/atlas11/next/wrap_sj.mjs'), '--check'], {cwd: ROOT, stdio: 'pipe'});
+    assert.ok(/SJ_CSS = '\/su\/su-wrap-sj\.css'/.test(W) && !/su-wrap-sj/.test(['next/index.html', 'hello.html', 'letter.html', 'invite.html', 'atlas/index.html'].map(f => fs.readFileSync(path.join(ROOT, 'site', f), 'utf8')).join('')), '종이 판 색은 손자병법에서 넘어온 때만(쪽 머리는 받지 않음)');
     const J = ['su-wrap-jobs.css', 'su-wrap-app.css', 'su-wrap-solo.css'].map(f => fs.readFileSync(path.join(ROOT, 'site/su', f), 'utf8')).join('\n').replace(/\/\*[\s\S]*?\*\//g, '');
     const top = []; let d = 0, cur = '', ins = [];
     for (const ch of J) { if (ch === '{') { const pre = cur.trim(); if (!pre.startsWith('@')) top.push(pre); ins.push(pre.startsWith('@')); cur = ''; d++; } else if (ch === '}') { ins.pop(); cur = ''; d--; } else if (ch === ';' && !ins.length) cur = ''; else cur += ch; }

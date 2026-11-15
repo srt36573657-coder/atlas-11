@@ -2,9 +2,10 @@
 // 손자병법에서 넘어간 옛 쪽(찾기 · 선물 · 고객센터 · 개인정보 처리방침 …)을 손자병법 종이 판으로 — 주문 1116-0300
 //   사장님 2026-11-16(마카오) 02:00 「… 예전 디자인은 모두 삭제 하고 손자병법에 맞게 처음부터 끝까지 깔끔하개 작업해 …」
 //   옛 쪽 색 파일(su-wrap-jobs.css · su-wrap-app.css · su-wrap-solo.css · su-privacy.css = 흰 판)에서 색이 든 줄만 골라
-//   흰 판 색 → 손자병법 종이 판 색으로 바꾸고, 선택자마다 html.su-wrapped(손자병법에서 넘어온 때만)를 붙여 su-wrap.css 의 「SJ」 칸에 씀
+//   흰 판 색 → 손자병법 종이 판 색으로 바꾸고, 선택자마다 html.su-wrapped(손자병법에서 넘어온 때만)를 붙여 site/su/su-wrap-sj.css 로 씀
+//   이 파일은 손자병법에서 넘어온 때만 받음(su-wrap.js 가 붙임 · 짝 쪽 /su/privacy.html 은 머리에) — 옛 주소로 바로 온 손님 첫 그림을 늦추지 않음(check_white ③ 2.5초)
 //   옛 주소로 바로 온 손님(수르 틀 없음)은 흰 판 그대로 · 글 · 숫자 · 자리 · 크기는 그대로(색만)
-//   쓰는 법: node scripts/atlas11/next/wrap_sj.mjs          → site/su/su-wrap.css 의 SJ 칸을 새로 씀
+//   쓰는 법: node scripts/atlas11/next/wrap_sj.mjs          → site/su/su-wrap-sj.css 를 새로 씀
 //            node scripts/atlas11/next/wrap_sj.mjs --check  → 지금 파일이 새로 지은 것과 같은지만 봄(다르면 끝 코드 1)
 import fs from 'node:fs';
 import path from 'node:path';
@@ -15,9 +16,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const require = createRequire(path.join(ROOT, 'package.json'));
 const postcss = require('postcss');
 const SRC = ['su-wrap-jobs.css', 'su-wrap-app.css', 'su-wrap-solo.css', 'su-privacy.css'];
-const OUT = path.join(ROOT, 'site/su/su-wrap.css');
-const A = '/* SJ< 손자병법 종이 판 — scripts/atlas11/next/wrap_sj.mjs 가 옛 쪽 색 파일에서 지음(손으로 고치지 않음) */';
-const B = '/* >SJ */';
+const OUT = path.join(ROOT, 'site/su/su-wrap-sj.css');
+const A = '/* 손자병법 종이 판(주문 1116-0300) — scripts/atlas11/next/wrap_sj.mjs 가 옛 쪽 색 파일에서 지음(손으로 고치지 않음 · 손자병법에서 넘어온 때만 받음) */';
 
 /** 흰 판 색 → 종이 판 색(바탕 #F1E3D3 · 먹 #3B1A14 · 밤색 강조 · 글은 종이 위 대비 4.5 넘게) */
 export const MAP = Object.freeze({
@@ -59,21 +59,18 @@ export function build() {
     const o = walk(root);
     if (o.length) out.push('/* ← ' + f + ' */\n' + o.join('\n'));
   }
-  return A + '\n' + out.join('\n') + '\n' + B;
+  return A + '\n' + out.join('\n') + '\n';
 }
 
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
-  const cur = fs.readFileSync(OUT, 'utf8');
-  const i = cur.indexOf(A.slice(0, 8)), j = cur.indexOf(B);
-  const head = i >= 0 ? cur.slice(0, i).replace(/\s*$/, '\n') : cur.replace(/\s*$/, '\n');
-  const tail = j >= 0 ? cur.slice(j + B.length) : '';
-  const next = head + build() + (tail.trim() ? tail : '\n');
+  const next = build();
+  const cur = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
   if (process.argv.includes('--check')) {
-    if (next !== cur) { console.error('su-wrap.css 의 SJ 칸이 옛 쪽 색 파일에서 새로 지은 것과 달라요 — node scripts/atlas11/next/wrap_sj.mjs 로 다시 지어요'); process.exit(1); }
-    console.log('SJ 칸 = 새로 지은 그대로');
+    if (next !== cur) { console.error('su-wrap-sj.css 가 옛 쪽 색 파일에서 새로 지은 것과 달라요 — node scripts/atlas11/next/wrap_sj.mjs 로 다시 지어요'); process.exit(1); }
+    console.log('su-wrap-sj.css = 새로 지은 그대로');
   } else {
     fs.writeFileSync(OUT, next);
-    console.log('su-wrap.css SJ 칸 — ' + (next.match(/\{/g) ?? []).length + '칸 · ' + Buffer.byteLength(next) + '바이트');
+    console.log('su-wrap-sj.css — ' + (next.match(/\{/g) ?? []).length + '칸 · ' + Buffer.byteLength(next) + '바이트');
   }
 }

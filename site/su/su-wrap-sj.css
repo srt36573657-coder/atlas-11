@@ -1,0 +1,701 @@
+/* 손자병법 종이 판(주문 1116-0300) — scripts/atlas11/next/wrap_sj.mjs 가 옛 쪽 색 파일에서 지음(손으로 고치지 않음 · 손자병법에서 넘어온 때만 받음) */
+/* ← su-wrap-jobs.css */
+html.su-wrapped.su-jobs, html.su-wrapped.su-jobs.white, html.su-wrapped.su-jobs.su-jobs #view, html.su-wrapped.su-jobs .wy { --bg: #F1E3D3; --night: #F1E3D3; --band: #F1E3D3; --violet: #3B1A14; --card: #F1E3D3; --card2: #E9D8C5; --card3: #E3CFBA; --hair: #CDB49C; --hair2: #C2A88F; --line: #D8C2AA; --hair-soft: #EBDCCB; --seam: #EBDCCB; --press: #EBDCCB; --lift: #F1E3D3; --ink: #3B1A14; --ink-hi: #3B1A14; --sub: #4A2C22; --mute: #6B4A3C; --flat: #6B4A3C; --violet-ink: #3B1A14; --violet-wash: #F1E3D3; --violet-line: #CDB49C; --violet-glow: #E9D8C5; --gold: #7A4E3A; --gold-wash: #EBD9C4; --gold-line: #8A5A44; --up: #7A4E3A; --down: #4A2C22; --up-ink: #7A4E3A; --down-ink: #4A2C22; --up-bg: #8A5A44; --down-bg: #8E7466; --up-fill: rgba(138, 90, 68, .14); --down-fill: rgba(142, 116, 102, .16); --up-fade: rgba(138, 90, 68, .06); --down-fade: rgba(142, 116, 102, .06); --lacquer: #F1E3D3; --lacquer-ink: #3B1A14; --lacquer-sub: #4A2C22; --lacquer-gold: #7A4E3A; --moon: #3B1A14; --moonrow: #E9D8C5; --m4-band: #F1E3D3; --m4-line: #CDB49C; --m4-soft: #C2A88F; --m4-neu: #4A2C22; --m4-line2: #EBDCCB; --pk-bg: #F1E3D3; --pk-card: #F1E3D3; --pk-tint: #E9D8C5; --pk-line: #D8C2AA; --pk-ink: #3B1A14; --pk-sub: #6B4A3C; --pk-acc: #7A4E3A; --pk-wine: #3B1A14; }
+html.su-wrapped.su-jobs, html.su-wrapped.su-jobs body, html.su-wrapped.su-jobs.su-jobs #view { background: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs .top { background: #F1E3D3; border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped.su-jobs .top .logo { color: #3B1A14; }
+html.su-wrapped.su-jobs .top .ibtn, html.su-wrapped.su-jobs .top #langBtn, html.su-wrapped.su-jobs .top #findBtn { color: #3B1A14; }
+html.su-wrapped.su-jobs .top #jhBtn { border: 1px solid #CDB49C; background: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs .top .ibtn.tgift { border: 1px solid #D9BFA3; background: #EBD9C4; color: #7A4E3A; }
+html.su-wrapped.su-jobs .kk-gift { background: #E9D8C5; color: #3B1A14; border: 1px solid #8E7466; }
+html.su-wrapped.su-jobs .kk-gift:active { background: #E3CFBA; }
+html.su-wrapped.su-jobs .tabs, html.su-wrapped.su-jobs nav.tabs { background: #F1E3D3; border-top: 1px solid #D8C2AA; }
+html.su-wrapped.su-jobs .tabs a { color: #6B4A3C; }
+html.su-wrapped.su-jobs .tabs a[aria-current="page"] { color: #3B1A14; }
+html.su-wrapped.su-jobs .tabs a[aria-current="page"] .ic, html.su-wrapped.su-jobs .tabs a.plus .ic { color: #8A5A44; }
+html.su-wrapped.su-jobs .tabs a:active { background: #E3CFBA; }
+html.su-wrapped.su-jobs :is(a[href], button, summary, input, select, textarea, [role="button"]) { border-color: #8E7466 !important; outline-color: #8E7466 !important; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.su-jobs.pg-sage #view, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.su-jobs.pg-roman #view { background: #F1E3D3; --bg: #F1E3D3; --card: #F1E3D3; --sub: #4A2C22; --mute: #4A2C22; --flat: #4A2C22; --violet-ink: #3B1A14; --gold: #5E4034; --up: #5E4034; --up-ink: #5E4034; --lacquer-gold: #5E4034; --pk-acc: #5E4034; }
+html.su-wrapped:where(.white.su-jobs) i.play { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .m4-msg .m4-moon { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .m4-letter .hpi .m4-bm { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .m4-letter .hpi .hpi-b { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .m4-seal { border: 1.5px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs .kk-gift { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .dm-it { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .jb-more { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .pchx-key .k-avg { border-top: 2px dashed #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .pchx-key .k-b0 { border-top: 1px dotted #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .ps-after .ps-t { border: 1px solid var(--hair2, ) #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .ps-after .ps-qb { border: 1px solid var(--hair2, ) #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .ps-lock { border: 1px dashed var(--hair2, ) #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .ps-offer { border: 1px solid var(--hair2, ) #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .psurge-key .psurge-kb0 { border-top: 1px dashed #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-say { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-who { border-right: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-steps li { border-top: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-sn { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-ck { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-ck > b.n { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-box { border: 1px dashed #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-li { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-cor { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-srow { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-two p { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-al { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-sw { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-rb.all { border-top: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-fold { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-found { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-why { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-gh { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-gfold > summary { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-calc { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-calm i.no { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-calkey i.no { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pkrec { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pkrow { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pkcal { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pkc.w { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-day { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-sinr { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-ch { border-top: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-ch.th-chend { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-chk { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-chb { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pkhowf { border-top: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pki { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pkcp { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pkr { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-score { border: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-scr { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-tile { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-tbadge { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-chip { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .ptime-key .k-pool { border-top: 2px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs .top { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs .top #jhBtn { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs .top .ibtn { border-top: 1px solid #D8C2AA; border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs .top #langBtn { border-left: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs .top #findBtn { border-right: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs .tabs { border-top: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .w-say p { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .w-say .s-who { border-right: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .w-say .w-kk { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .s-ch + .s-ch { border-top: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .s-no { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .w-ess .ess-d > summary::after { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .w-news .w-why { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .w-news .w-qs li { border-top: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home a.s-ghost { border: 1px dashed #D8C2AA; }
+html.su-wrapped.white.su-jobs.home a.w-month { border: 1px dashed #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .s-thumb { border-top: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .s-thumb form.w-find { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.home .s-short { border-top: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-three a { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-row { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-tg { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-more { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-rec { border: 1px dashed #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-next { border: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-hfold { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped:where(.white.su-jobs) .th-pkhgo { border-top: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .top { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .top .tbtn, html.su-wrapped.white.su-jobs.su-jobs.su-jobs .top .ibtn { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .tabs { border-top: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .tabs a .ic { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .th-ar { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .dm-it { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .th-tbadge { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .th-chip { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .th-pkcp { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs .s-badge { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .top { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .top .tbtn, html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .top .ibtn { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .top #jhBtn { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .tabs { border-top: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .top { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .top .tbtn, html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .top .ibtn { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .top #jhBtn { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs .tabs { border-top: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kick { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home .top { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home .tabs { border-top: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fact { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-mkt .w-news .w-why { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-why a.w-month { border: 1px dashed #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home .s-thumb { border-top: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home .s-thumb form.w-find { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .w-ess .ess-d > summary::after { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home .top #jhBtn { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-idx { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chart { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fig { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-map .th-news { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view details.nh-fold { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-q { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3w { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chk { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chk li i { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-ktw { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-part a.w-month { border: 1px dashed #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fm { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tw { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tp { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-part .nh-sage > i { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > .nh-scap { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sall { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sallr { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sallc { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-x { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home .top { border-bottom: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home .tabs { border-top: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-fact { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-mkt .w-news .w-why { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-why a.w-month { border: 1px dashed #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home .s-thumb { border-top: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home .s-thumb form.w-find { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .w-ess .ess-d > summary::after { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home .top #jhBtn { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-idx { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-chart { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-fig { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-l-sw i { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-map .th-news { border: 1px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.home #view .nh-part a.w-month { border: 1px dashed #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf[data-s="off"] > .y11-lf { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf[data-s="q"] > .y11-lf { border: 2px dashed #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bub { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bub::before { border-left: 2px solid #D8C2AA; border-top: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-god { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gw .rms-cap { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-a-off { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-a-q { border: 2px dashed #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > button { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-all { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-allr { border: 2px solid #D8C2AA; }
+html.su-wrapped.white.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-allc { border: 2px solid #D8C2AA; }
+/* ← su-wrap-app.css */
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rmt-p { background-color: #E9D8C5; color: #3B1A14; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt a.rmt-k { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rmt-l { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rmt-n, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt a.rmt-k i { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rms-cap { background-color: #E9D8C5; color: #3B1A14; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rms-spk circle { fill: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rmt .rms-face[aria-pressed="true"] img, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rmt .rms-face:focus-visible, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rmt a.rmt-k:focus-visible { outline-color: #8A5A44; }
+@media (hover: hover) {
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rms-face:hover img { outline-color: #8A5A44; }
+}
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs :is([fill="#007A35"], [fill="#007a35"]) { fill: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs :is([fill="#6B2A8C"], [fill="#6b2a8c"]) { fill: #A88B76; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs :is([stroke="#6B2A8C"], [stroke="#6b2a8c"]) { stroke: #A88B76; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .th-next { background-color: #3B1A14; border-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .th-nx small { color: #CDB49C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .th-why .th-nx small { color: #CDB49C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view { --nh-card: #F1E3D3; --nh-ink: #3B1A14; --nh-sub: #6B4A3C; --nh-line: #D8C2AA; --nh-go: #3B1A14; --nh-link: #7A4E3A; --nh-S: #8A5A44; --nh-B: #8A5A44; --nh-W: #8E7466; --nh-Q: #C2A88F; --nh-zS: #EBD9C4; --nh-zB: #EBD9C4; --nh-zW: #EBD9C4; --nh-zQ: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-hero { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kick { border-color: #D8C2AA; color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-h1 { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-h1 .nh-acc { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sub { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fact { background-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fact b { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fact span { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-no { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-how { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zline { stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-dot { stroke: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-dot4 { stroke: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-dl, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tick { stroke: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl-S { fill: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl-B { fill: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl-W { fill: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl-Q { fill: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tick { fill: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-dl { fill: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-lg { border-bottom-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rule { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-bt { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-cmp-up .nh-me { background-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-cmp-up .nh-all { background-color: #C2A88F; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-cmp-dn .nh-me { background-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-cmp-dn .nh-all { background-color: #C2A88F; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-won { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-w1 i, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-stack .nh-w1 { background-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-w0 i, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-stack .nh-w0 { background-color: #D9BFA3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-w2 i, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-stack .nh-w2 { background-color: #C2A88F; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-warn { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-warn.nh-worse { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-wt { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sec.nh-mkt { border-color: #D8C2AA; color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-mkt .nh-h2 { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-go { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-foot { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fh { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fp { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rb { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rb i { background-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rb.on span { text-decoration-color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pm { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pm i { background-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb b { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb b.nh-pb2 { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb b.up { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb b.dn { color: #4A2C22; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb span { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pl { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pc { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt span { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt b { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt b.up { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt b.dn { color: #4A2C22; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt b.fl { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view details.nh-fold { border-color: #D8C2AA; background-color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-waf rect.off { fill: #F1E3D3; stroke: #CDB49C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-waf.me rect.on { fill: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-waf.all rect.on { fill: #C2A88F; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-wf figcaption b { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-wf figcaption span { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-honest { border-left-color: #8A5A44; background-color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-honest span { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-honest b { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-part::before { border-top-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-q { background-color: #F1E3D3; border-color: #D8C2AA; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-yrsum { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c i { background-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c b { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c span { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3w { border-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3w b { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chk { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chkh { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chk li i { border-color: #8A5A44; background-color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chkt { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chk li b { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pc2 { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-ktw { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rng .nh-rl0 { stroke: #CDB49C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rng .nh-rt { stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rng .nh-rd { fill: #8A5A44; stroke: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rc { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3h { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3how { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-path ol::before { background-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pt { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pt i { border-color: #D8C2AA; background-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pt b { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pt small { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pm small { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-hero > .nh-pm .nh-mans { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fm { background-color: #F1E3D3; border-color: #D8C2AA; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fk { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fk-up i { border-bottom-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fk-dn i { border-top-color: #4A2C22; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fr { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fl-up .nh-fbar { background-color: #EBD9C4; border-left-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fl-dn .nh-fbar { background-color: #E9D8C5; border-left-color: #4A2C22; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fn { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fl-up .nh-fr > b { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fl-dn .nh-fr > b { color: #4A2C22; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fc { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tw { background-color: #F1E3D3; border-color: #8E7466; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twi-bl { background-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twi-mo { border-bottom-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twk { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twc { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twg { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twn { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twd { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twe { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage i { background-color: #E9D8C5; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage b { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tp { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view p.nh-tp.nh-tp0 { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpk { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twn.nh-twnr { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpnr .nh-tp0 { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpnote { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpl b { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpl small { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-say { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-part .nh-sage > i { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > button.nh-sf[aria-pressed="true"] img { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > button.nh-sf:focus-visible { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > a.nh-sl:focus-visible { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > .nh-scap { background-color: #E9D8C5; border-color: #D8C2AA; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw.rm-say { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > button.nh-sf:hover img { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sall { border-color: #8A5A44; background-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sall.nh-sallon { background-color: #F1E3D3; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sall:focus-visible { outline-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sallr { border-color: #8A5A44; background-color: #F1E3D3; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sallr:focus-visible { outline-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sallc { background-color: #E9D8C5; border-color: #D8C2AA; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-l { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-q { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-t { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-g > i { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-on { fill: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-off { fill: #F1E3D3; stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-qd { fill: #E9D8C5; stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-qt { stroke: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-qdot { fill: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-m { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-x { background-color: #F1E3D3; border-color: #D8C2AA; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-wt { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-hint { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-key { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bd { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bn { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-c { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-c-on { background-color: #3B1A14; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-c-off { background-color: #F1E3D3; border-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-c-q { background-color: #E9D8C5; border-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp[aria-pressed="true"] > .y11-c { outline-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp:focus-visible { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf > .y11-lf { border-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf[data-s="off"] > .y11-lf { border-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf[data-s="q"] > .y11-lf { border-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf[aria-pressed="true"] > .y11-lf { outline-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bub { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bub::before { background-color: #F1E3D3; border-left-color: #D8C2AA; border-top-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-god { background-color: #E9D8C5; border-color: #D8C2AA; color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gs[aria-pressed="true"] img { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gs:focus-visible { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gk { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gl { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gn { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gg { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gk:focus-visible { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gw .rms-cap { background-color: #E9D8C5; border-color: #D8C2AA; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bk { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-a-on { background-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-a-off { border-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-a-q { border-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bq { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-cap { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-tt { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sub { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ez { background-color: #E9D8C5; color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ez > b { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > button { border-color: #8E7466; background-color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > .y11-nx { background-color: #3B1A14; border-color: #8A5A44; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > .y11-snd[aria-pressed="true"] { background-color: #E9D8C5; border-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > button:focus-visible { outline-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-note { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sc { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sky { fill: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gnd { fill: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sun { fill: #D9BFA3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ray { stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-cld { fill: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-rain { stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-umb { fill: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bod { fill: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ln { stroke: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-wal { fill: #F1E3D3; stroke: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-aw1 { fill: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-aw2 { fill: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-aw3 { fill: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-awo { stroke: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gls { fill: #E9D8C5; stroke: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-knb { fill: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-pan { fill: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-cak { fill: #D9BFA3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-oni { stroke: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-stm { stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-dor { fill: #D8C2AA; stroke: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-glo { fill: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sl-on { fill: #8A5A44; stroke: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sl-off { fill: #F1E3D3; stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sl-q { fill: #E9D8C5; stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sq { stroke: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sqd { fill: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sea { fill: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-arc { stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-qbox { stroke: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-s9l { background-color: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-all { border-color: #8A5A44; background-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-all.y11-allon { background-color: #F1E3D3; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-all:focus-visible { outline-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-allr { border-color: #8A5A44; background-color: #F1E3D3; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-allr:focus-visible { outline-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-allc { background-color: #E9D8C5; border-color: #D8C2AA; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view { --nh-card: #F1E3D3; --nh-ink: #3B1A14; --nh-sub: #6B4A3C; --nh-line: #D8C2AA; --nh-go: #3B1A14; --nh-link: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-hero { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-kick { border-color: #8A5A44; color: #7A4E3A; background-color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-h1 { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-h1 .nh-acc { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sub { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fact { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fact b { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fact span, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-no { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-how, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-rule, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-warn { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-won { background-color: #EBD9C4; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-warn.nh-worse { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-wt { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-zl, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dl, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-tick { stroke: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-bt { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cmp-up .nh-me { background-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cmp-up .nh-all { background-color: #C2A88F; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cmp-dn .nh-me { background-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cmp-dn .nh-all { background-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg { border-bottom-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sec.nh-mkt { background-color: #F1E3D3; border-color: #D8C2AA; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .nh-h2 { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt a.hm-band, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt a.hm-band * { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt a.hm-band .dn, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .dn { color: #4A2C22; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt a.hm-band .up, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .up { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .w-lb, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .w-ans p { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .w-why { border-color: #8A5A44; color: #7A4E3A; background-color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .s-split .gu { background-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .s-split .gd { background-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-why a.w-month { border-color: #8A5A44; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-all .w-rows a, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-all .w-rows a * { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-foot { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fh { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fp { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-ess .ess-t, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-ess .ess-l, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-ess .ess-l.q { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-ess .ess-d > summary::after { border-color: #8A5A44; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view { --c-me: #8A5A44; --c-all: #C2A88F; --c-up: #8A5A44; --c-dn: #8E7466; --c-ink: #3B1A14; --c-sub: #6B4A3C; --c-wine: #3B1A14; --c-soft: #D8C2AA; --c-pale: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-idx { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ic.up { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ic.dn { color: #4A2C22; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ka { fill: rgba(138, 90, 68, 0.13); }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-klast { stroke: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz b { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz-S { background-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz-B { background-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz-W { background-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz-Q { background-color: #C2A88F; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg-S i { background-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg-B i { background-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg-W i { background-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg-Q i { background-color: #C2A88F; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-rk { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-real b { color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dv4 { fill: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-chart { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fig { background-color: #F1E3D3; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dn.nh-w0 { stroke: #CDB49C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ml li.nh-w0 > i { background-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-s0 { fill: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-vsa b { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fv1 { fill: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sc { fill: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sk { fill: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sk1 { fill: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view details.nh-more > summary { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-map .th-news { background-color: #E9D8C5; border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-map .th-news a.th-hi { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-golist { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-part a.w-month { border-color: #8A5A44; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-part .nh-link { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.home #view { --nh-S: #8A5A44; --nh-B: #3B1A14; --nh-W: #8E7466; --nh-Q: #C2A88F; --nh-zS: #EBD9C4; --nh-zB: #E9D8C5; --nh-zW: #E9D8C5; --nh-zQ: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-zl-B { fill: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-zl-W { fill: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-zl-S { fill: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sec.nh-mkt, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .nh-h2 { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view :is(.nh-sall, .y11-all, .y11-ctl > .y11-nx, .nh-go, .nh-mans) { background-color: #3B1A14; border-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view :is(.nh-sall.nh-sallon, .y11-all.y11-allon) { background-color: #F1E3D3; border-color: #8A5A44; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view :is(.nh-sallr, .y11-allr) { border-color: #3B1A14; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .y11-c-on { background-color: #8A5A44; border-color: #EBD9C4; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .w-find .w-go { background-color: #3B1A14; border-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-real { background-color: #E9D8C5; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-rk { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-real b { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-tw { border-color: #CDB49C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view :is(.y11-gn, .y11-gg, .nh-wt, .y11-ez > b, .nh-fl-up .nh-fr > b, .nh-sl > b) { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy { --wm-dark: #F1E3D3; --wm-cream: #F1E3D3; --wm-line: #D8C2AA; --wm-mint: #8A5A44; --wm-pink1: #3B1A14; --wm-pink2: #3B1A14; --wm-pinkt: #F1E3D3; --wm-sel: #EBD9C4; --wm-selr: #8A5A44; --wm-sun: #EBD9C4; --wm-sunt: #6B4A3C; --wm-mind: #E9D8C5; --wm-tab: #3B1A14; --wm-prog: #8A5A44; --wm-track: #E3CFBA; --wm-teal: #7A4E3A; --card: #F1E3D3; --card2: #E9D8C5; --ink: #3B1A14; --sub: #6B4A3C; --mute: #6B4A3C; --hair: #D8C2AA; --hair2: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy[data-step="start"] { background-color: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-hero .wy-up, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-h { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-h em { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-sub, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-time { color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-hl { background-color: #E9D8C5; outline-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-hl li { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-hl .wl-ic { background-color: #EBD9C4; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-hl .wl-ic path { stroke: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg rect { fill: #E9D8C5; stroke: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg g, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg g > circle { fill: #E3CFBA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg path, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-scfg path { stroke: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg > circle { fill: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy :is(.wy-go, .wy-next, .wy-detb) { background-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy[data-step="q"] .wy-nav { background-color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy .wy-back, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy .wy-again { border-color: #D8C2AA; background-color: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-pg .wy-step { color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-oi { background-color: #E9D8C5; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-opt.on .wy-oi { background-color: #EBD9C4; color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs .wy-err { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-dot.s1, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view li.s1 > i { fill: #3B1A14; background-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-dot.s2, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view li.s2 > i { fill: #8A5A44; background-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-dot.s3, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view li.s3 > i { fill: #6B4A3C; background-color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-dot.s4, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view li.s4 > i { fill: #A88B76; background-color: #A88B76; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view :is(.sg-jump, .sg-step, .sg-tile, .sg-sn):is(.s1, .s2, .s3, .s4), html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-step :is(.sg-tile, .sg-sn) { border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-jump .sg-gl, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-jump .sg-gl path { stroke: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view :is(.sg-allb, .rm-allb) { background-color: #3B1A14; border-color: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g1 > i { background-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g2 > i { background-color: #8A5A44; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g3 > i { background-color: #4A2C22; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g4 > i { background-color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g5 > i { background-color: #8E7466; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g6 > i { background-color: #A88B76; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-card .rm-goa { border-color: #CDB49C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-why .rm-wl, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-card .rm-spot { color: #5E4034; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .th-ck b.y { background-color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .ptoday-al .nw-t { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view :is(.sg-chip, .sg-sp, .sg-say, .sg-card):is(.s1, .s2, .s3, .s4), html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-card :is(.sg-say, .sg-sp), html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-top .sg-chip, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-bh .sg-sp { border-color: #D8C2AA; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-gl, html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-gl path { stroke: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-bh .sg-bl { color: #5E4034; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc { background-color: #E9D8C5; color: #6B4A3C; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc.up { background-color: #7A4E3A; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc.dn { background-color: #4A2C22; color: #F1E3D3; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc.w { border-color: #3B1A14; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pknl-x li { color: #7A4E3A; }
+html.su-wrapped.su-jobs.su-jobs.su-jobs.su-jobs #view section.wy.page { border-color: #D8C2AA; }
+/* ← su-wrap-solo.css */
+html.su-wrapped.su-jobs body.hp :is(.hp-h, .hp-lead, .hp-msg, .hp-uleft) { color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-go { background: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs body.hp .hp-data { border-color: #D8C2AA; background: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-dl li { border-top-color: #D8C2AA; }
+html.su-wrapped.su-jobs body.hp .hp-dl b { color: #7A4E3A; }
+html.su-wrapped.su-jobs body.hp .hp-pbar { background: #EBD9C4; color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-talk { border-color: #D8C2AA; background: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-which { color: #7A4E3A; }
+html.su-wrapped.su-jobs body.hp .hp-send { background: #E9D8C5; color: #3B1A14; box-shadow: inset 0 0 0 1px #D8C2AA; }
+html.su-wrapped.su-jobs body.hp .hp-send:active { background: #E3CFBA; }
+html.su-wrapped.su-jobs body.hp .hp-promo { border-color: #D9BFA3; background: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-pt { color: #7A4E3A; }
+html.su-wrapped.su-jobs body.hp .hp-vow { border-color: #D9BFA3; background: #EBD9C4; color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-vow b { color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-steps b, html.su-wrapped.su-jobs body.hp .hp-num b { color: #7A4E3A; }
+html.su-wrapped.su-jobs body.hp .hp-num { color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-ucap { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.hp .hp-ucap b { color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp .hp-uplay { border-color: #3B1A14; background: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs body.hp .hp-ubar { border-color: #CDB49C; }
+html.su-wrapped.su-jobs body.hp .hp-ubar::-webkit-progress-value { background: #8A5A44; }
+html.su-wrapped.su-jobs body.hp .hp-ubar::-moz-progress-bar { background: #8A5A44; }
+html.su-wrapped.su-jobs body.hp .hp-lock { border-color: #CDB49C; color: #6B4A3C; }
+html.su-wrapped.su-jobs body.hp .hp-thx { color: #7A4E3A; }
+html.su-wrapped.su-jobs body.hp .hp-sms { background: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs body.hp .hp-call { border-color: #D8C2AA; background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp :is(.hp-pn, .hp-foot, .hp-priv a) { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.hp :is(.hp-go, .hp-send, .hp-vid, .hp-pbar, .hp-which, .hp-uplay, .hp-sms, .hp-call, .hp-priv a):focus-visible { outline-color: #7A4E3A; }
+html.su-wrapped.su-jobs #lt .hero { background: #F1E3D3; }
+html.su-wrapped.su-jobs #lt .kick { color: #7A4E3A; }
+html.su-wrapped.su-jobs #lt .hbig { color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .hsub { color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt .clock { border-color: #D8C2AA; background: #F1E3D3; }
+html.su-wrapped.su-jobs #lt .clock small { color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt .clock.guest small { color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .clk { color: #7A4E3A; }
+html.su-wrapped.su-jobs #lt .live { color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt .live b { color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .card { background: #F1E3D3; color: #3B1A14; box-shadow: 0 0 0 1px #D8C2AA; }
+html.su-wrapped.su-jobs #lt .card.own { background: #EBD9C4; box-shadow: 0 0 0 1px #D9BFA3; }
+html.su-wrapped.su-jobs #lt :is(.bodri, .bod)::before { box-shadow: 0 0 0 2px #D8C2AA; }
+html.su-wrapped.su-jobs #lt :is(.in, .ta) { border-color: #D8C2AA; background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt :is(.in, .ta)::placeholder { color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt :is(.note, .cnt) { color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt .msg { color: #7A4E3A; }
+html.su-wrapped.su-jobs #lt :is(.card.own, .lt .own) .msg { color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .bod, html.su-wrapped.su-jobs #lt .bod.ok, html.su-wrapped.su-jobs #lt .mine .quiet { color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .bod.no { color: #7A4E3A; }
+html.su-wrapped.su-jobs #lt .kk .kkr.ok { color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .chip { border-color: #D8C2AA; background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .chip[aria-pressed=true] { border-color: #8A5A44; background: #EBD9C4; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .gold { background: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs #lt .gold:disabled { background: #E9D8C5; color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt .ghost { border-color: #D8C2AA; background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt :is(.chip, .ghost, .pill):active { background: #E3CFBA; }
+html.su-wrapped.su-jobs #lt .lt { background: #F1E3D3; color: #3B1A14; box-shadow: 0 0 0 1px #D8C2AA; }
+html.su-wrapped.su-jobs #lt .lt.hid { outline-color: #8A5A44; }
+html.su-wrapped.su-jobs #lt :is(.lth span, .lt .note) { color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt .lt .msg { color: #7A4E3A; }
+html.su-wrapped.su-jobs #lt .rec { background: #F1E3D3; color: #3B1A14; box-shadow: 0 0 0 1px #D8C2AA; }
+html.su-wrapped.su-jobs #lt :is(.rt, .rd, .lt .rec .note) { color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt :is(.rt .q, .qq) { color: #7A4E3A; }
+html.su-wrapped.su-jobs #lt .qq { border-color: #CDB49C; }
+html.su-wrapped.su-jobs #lt .rd .gd { color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .sp [stroke="#FF5A65"] { stroke: #8A5A44; }
+html.su-wrapped.su-jobs #lt .sp [stroke="#5B96FF"] { stroke: #8E7466; }
+html.su-wrapped.su-jobs #lt .sp [fill="#FF5A65"] { fill: #8A5A44; }
+html.su-wrapped.su-jobs #lt .sp [fill="#5B96FF"] { fill: #8E7466; }
+html.su-wrapped.su-jobs #lt .sp .seal-dot { fill: #3B1A14; }
+html.su-wrapped.su-jobs #lt .look span { background: #EBD9C4; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .pill { border-color: #D8C2AA; background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .pill.on { border-color: #8A5A44; background: #EBD9C4; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .pill.dim { border-color: #D8C2AA; color: #4A2C22; }
+html.su-wrapped.su-jobs #lt .lt .rep .in { border-color: #D8C2AA; background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt :is(.lt .rep .ghost, .lt .own .ghost) { border-color: #D8C2AA; background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .lt .own { background: #EBD9C4; }
+html.su-wrapped.su-jobs #lt .tk { border-color: #8A5A44; color: #3B1A14; }
+html.su-wrapped.su-jobs #lt .tk.used { border-color: #D8C2AA; color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt .foot { color: #6B4A3C; }
+html.su-wrapped.su-jobs #lt ~ .toast { background: #E9D8C5; color: #3B1A14; box-shadow: 0 0 0 1px #D8C2AA; }
+html.su-wrapped.su-jobs #lt ~ .seal-ov { background: rgba(241, 227, 211, .96); color: #3B1A14; }
+html.su-wrapped.su-jobs #lt ~ .seal-ov .t2 { color: #7A4E3A; }
+html.su-wrapped.su-jobs body.iv-day .iv-top { background: #F1E3D3; color: #3B1A14; box-shadow: inset 0 -1px 0 #D8C2AA; }
+html.su-wrapped.su-jobs body.iv-day .iv-top a { color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-day .iv-top .iv-back { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.iv-day .iv-hero p { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.iv-day .iv-form { background: #F1E3D3; box-shadow: 0 0 0 1px #D8C2AA; }
+html.su-wrapped.su-jobs body.iv-day :is(.iv-field label small, .iv-label small, .iv-row, .iv-pv-h p, .iv-hint, .iv-made label, .iv-photo-drop, .iv-photo-note) { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.iv-day .iv-in { border-color: #D8C2AA; background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-day .iv-in::placeholder { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.iv-day .iv-in:focus { border-color: #7A4E3A; box-shadow: 0 0 0 3px #EBD9C4; }
+html.su-wrapped.su-jobs body.iv-day .iv-in[aria-invalid="true"] { border-color: #7A4E3A; }
+html.su-wrapped.su-jobs body.iv-day :is(.iv-row button, .iv-share .iv-link, .iv-err, .iv-status.bad) { color: #7A4E3A; }
+html.su-wrapped.su-jobs body.iv-day .iv-privacy { background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-day .iv-privacy b { color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-day :is(.iv-form, .iv-share) .iv-btn.pri { background: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs body.iv-day :is(.iv-form, .iv-share) .iv-btn.pri:hover { background: #4A2C22; }
+html.su-wrapped.su-jobs body.iv-day .iv-share .iv-btn.sec { background: #E9D8C5; color: #3B1A14; box-shadow: inset 0 0 0 1.5px #D8C2AA; }
+html.su-wrapped.su-jobs body.iv-day .iv-share .iv-btn.sec:active { background: #E3CFBA; }
+html.su-wrapped.su-jobs body.iv-day .iv-made { background: #E9D8C5; }
+html.su-wrapped.su-jobs body.iv-day .iv-made input { border-color: #D8C2AA; background: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-day .iv-status { color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-day .iv-owner-ok { background: #EBD9C4; color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-day .iv-photo-thumb { background: #E9D8C5; box-shadow: 0 0 0 1px #D8C2AA; }
+html.su-wrapped.su-jobs body.iv-day .iv-photo-pick { background: #E9D8C5; color: #3B1A14; box-shadow: inset 0 0 0 1.5px #D8C2AA; }
+html.su-wrapped.su-jobs body.iv-day .iv-photo:focus-within .iv-photo-pick { outline-color: #7A4E3A; }
+html.su-wrapped.su-jobs body.iv-day :focus-visible:not(.iv-frame *) { outline-color: #7A4E3A; }
+html.su-wrapped.su-jobs body.iv-day .iv-frame { box-shadow: 0 0 0 8px #3B1A14; }
+html.su-wrapped.su-jobs body.iv-night .iv-scene { background: #F1E3D3; }
+html.su-wrapped.su-jobs body.iv-night :is(.iv-to, .iv-from b, .iv-msg, .iv-sign b) { color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-night :is(.iv-brand, .iv-to small, .iv-from, .iv-note p, .iv-go-sub, .iv-what, .iv-foot, .iv-foot a, .iv-sign) { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.iv-night .iv-msg.none { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.iv-night .iv-scene .iv-link { color: #6B4A3C; }
+html.su-wrapped.su-jobs body.iv-night .iv-scene .iv-link:hover { color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-night .iv-sky polyline { stroke: #CDB49C; }
+html.su-wrapped.su-jobs body.iv-night .iv-star, html.su-wrapped.su-jobs body.iv-night .iv-lite .iv-star { background: radial-gradient(closest-side, #8A5A44 0 24%, rgba(138, 90, 68, 0) 26%); }
+html.su-wrapped.su-jobs body.iv-night .iv-star.empty { background: radial-gradient(closest-side, rgba(138, 90, 68, 0) 0 15%, #8A5A44 17% 21%, rgba(138, 90, 68, 0) 23%); }
+html.su-wrapped.su-jobs body.iv-night .iv-wait { background: radial-gradient(closest-side, #8A5A44 0 22%, rgba(138, 90, 68, 0) 24%); }
+html.su-wrapped.su-jobs body.iv-night .iv-scene .iv-btn.pri { background: #3B1A14; color: #F1E3D3; }
+html.su-wrapped.su-jobs body.iv-night .iv-scene .iv-btn.pri:hover { background: #4A2C22; }
+html.su-wrapped.su-jobs body.iv-night .iv-card { background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs body.iv-night :focus-visible { outline-color: #7A4E3A; }
+html.su-wrapped.su-jobs body.iv-night .iv-has-photo.iv-open :is(.iv-brand, .iv-go-sub, .iv-what) { color: #E9D8C5; }
+html.su-wrapped.su-jobs body.iv-night .iv-has-photo.iv-open .iv-link, html.su-wrapped.su-jobs body.iv-night .iv-has-photo.iv-open .iv-link:hover { color: #F1E3D3; }
+html.su-wrapped.su-jobs body.iv-night .iv-has-photo.iv-open .iv-btn.pri { background: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs body.hp :is(.ps-go, .ps-toast), html.su-wrapped.su-jobs #lt ~ .ps-dlg .ps-go, html.su-wrapped.su-jobs #lt ~ .ps-toast { color: #F1E3D3; }
+html.su-wrapped.su-jobs body.hp .ps-t::placeholder, html.su-wrapped.su-jobs #lt ~ .ps-dlg .ps-t::placeholder { color: #6B4A3C; }
+html.su-wrapped.su-jobs :is(body.iv-day, body.iv-night) .iv-skip { background: #E9D8C5; color: #3B1A14; }
+html.su-wrapped.su-jobs :is(body.iv-day, body.iv-night) .pv-foot a { color: #6B4A3C; }
+/* ← su-privacy.css */
+html.su-wrapped.su-jobs { --bg: #F1E3D3; --card: #E9D8C5; --hair: #D8C2AA; --ink: #3B1A14; --sub: #4A2C22; --mute: #6B4A3C; --gold: #7A4E3A; background: #F1E3D3; }
+html.su-wrapped.su-jobs body { background: #F1E3D3; color: #3B1A14; }
+html.su-wrapped.su-jobs .pv-jump a { border-color: #CDB49C; background: #F1E3D3; }
+html.su-wrapped.su-jobs .pv-jump a:active { background: #E3CFBA; }
+html.su-wrapped.su-jobs .tabs { background: #F1E3D3; border-top: 1px solid #D8C2AA; }
+html.su-wrapped.su-jobs .tabs a { color: #6B4A3C; }
+html.su-wrapped.su-jobs .tabs a.plus .ic { color: #8A5A44; }
