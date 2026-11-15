@@ -8,6 +8,8 @@ import {h} from '/su/su-fig.js';
 import {NAME} from '/next/brand.js';
 
 export const ART = '/su/su-sonja-hero.svg';
+/** 표지 화제(세로 글 두 줄 · 오른쪽 줄부터) — 주문 1115-1843 「병법으로 … 손실을 보지 않을 방법을 병법으로 풀어 내는 곳」 · 옛 「불장 · 꽃이 될 · 돈이 몰리는 곳을 찾아요」는 지움 */
+export const HWA = ['형세를 읽고', '덜 잃는 꾀를 찾아요'];
 
 /** 「글씨」 단추 — 누르면 한 단 크게(html.su-lg · 다음에 열어도 그대로) */
 function bigText(big) {
@@ -31,7 +33,9 @@ export function topBar() {
 /** 표지 — 큰 붓 글씨 그림 한 장 · 걸음 「기 · 1 / 8 · 오늘」(dd = 「11월 13일」 같은 자료 날 · 없으면 뒤에 붙임) */
 export function cover(dd = null) {
   return h('section', {class: 'sj-cover', 'aria-label': NAME + ' 표지'},
-    h('img', {class: 'sj-art', src: ART, width: '390', height: '470', alt: '붓 글씨 「' + NAME + '」 · 불장 · 꽃이 될 · 돈이 몰리는 곳을 찾아요', decoding: 'async', fetchpriority: 'high'}),
+    h('div', {class: 'sj-artw'},
+      h('img', {class: 'sj-art', src: ART, width: '390', height: '470', alt: '붓 글씨 「' + NAME + '」 · 먼 산과 붓 한 획', decoding: 'async', fetchpriority: 'high'}),
+      h('p', {class: 'sj-hwa'}, ...HWA.map(t => h('span', {text: t})))),
     h('p', {class: 'sj-step', 'aria-label': '1 / 8 · 오늘'}, h('b', {text: '기'}), h('span', {text: '1 / 8 · 오늘'}), dd ? stepDay(dd) : null));
 }
 /** 걸음 줄 끝의 자료 날 */

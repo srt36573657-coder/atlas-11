@@ -50,6 +50,10 @@ html.sj-on #su :focus-visible { outline: 3px solid #1F2A44; outline-offset: 2px;
 /* ── 표지 — 큰 붓 글씨 · 화제 · 먼 산과 한 획(그림 한 장) · 걸음 ── */
 #su .sj-cover { display: grid; gap: 4px; padding-top: 6px; }
 #su .sj-art { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 390 / 470; }
+/* 표지 화제 — 세로 명조 두 줄(오른쪽 줄부터 · 글로 둠 — 그림 속 글이 아니라 읽기 · 크게 보기가 됨 · 그림 파일도 반으로 줄어 첫 화면이 빨라짐 · 주문 1115-1843) */
+#su .sj-artw { position: relative; container-type: inline-size; }
+#su .sj-hwa { position: absolute; top: 9%; right: 3.5%; margin: 0; display: flex; gap: .3em; writing-mode: vertical-rl; text-orientation: upright; font-family: var(--sj-serif); font-weight: 700; font-size: 1.1875rem; font-size: clamp(1.0625rem, 5.2cqi, 1.75rem); letter-spacing: .2em; line-height: 1.5; color: #3B1A14; }
+#su .sj-hwa span { display: block; }
 #su .sj-step { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 700; letter-spacing: .08em; color: #8A5A44; }
 #su .sj-step b { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1.5px solid #8A5A44; border-radius: 50%; font-weight: 800; letter-spacing: 0; }
 #su .sj-stepd { color: #3B1A14; }

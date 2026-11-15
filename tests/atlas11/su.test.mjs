@@ -575,10 +575,10 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
   assert.ok(/new URLSearchParams\(search\)\.get\('su'\)/.test(W) && /hasOwnProperty\.call\(GROUPS, g\)/.test(W), '수르 틀은 ?su=<묶음> 일 때만(모르는 값은 씌우지 않음)');
   for (const f of ['site/next/index.html', 'site/atlas/index.html']) assert.ok(fs.readFileSync(path.join(ROOT, f), 'utf8').includes('/su/su-wrap.js'), '옛 쪽에 수르 틀 — ' + f);
   const {ESSENCE} = await import('../../site/next/essence.js');
-  assert.ok(ESSENCE[0].includes('불장') && ESSENCE[0].includes('꽃이 될') && ESSENCE[0].includes('돈이 몰리는') && ESSENCE[0].includes('365'), '첫 화면 본질 첫 줄 = 셋 · 365(자료 0)');
+  assert.ok(ESSENCE[0].includes('병법') && ESSENCE[0].includes('서른여섯') && ESSENCE[0].includes('손실을 덜 보는지') && !/불장|꽃이 될|돈이 몰리는/.test(ESSENCE[0]), '첫 화면 본질 첫 줄 = 병법 서른여섯 · 손실을 덜 봄(주문 1115-1843 — 불장 · 꽃 · 돈은 지움)');
   const doc = fs.readFileSync(path.join(ROOT, 'docs/손자병법_본질.md'), 'utf8');
-  assert.ok(/^1\. 손자병법의 본질: 불장 종목, 꽃이 될 종목, 돈이 몰리는 종목을 찾아내는 탐지다\./m.test(doc), '본질 문서 1번 = 자료 0');
-  assert.ok(/^2\. 셋을 돕는 일/m.test(doc), '옛 하는 일 셋 → 셋을 돕는 일');
+  assert.ok(/^1\. 손자병법의 본질: 병법으로 주식해서 손실을 보지 않도록 돕는 곳이다\./m.test(doc) && /병법 서른여섯 가지만 보인다/.test(doc), '본질 문서 1번 = 사장님 2026-11-15 17:43 말씀');
+  assert.ok(/^2\. 꾀를 돕는 일/m.test(doc) && /^7\. \(지움/m.test(doc), '셋을 돕는 일 → 꾀를 돕는 일 · 7번(될 듯 일곱) 지움');
 });
 
 /** 주문 0123(사장님 2026-11-09 01:23 · 01:44 · 02:01 · 02:02 · 02:04 「어」) · 주문 0200(02:00 「어」) — 「왜?」 쪽 · 42칸 첫 발견 · 며칠째 · 포모지수 · 회사 쪽 현재가 */
@@ -647,7 +647,7 @@ test('손자병법 계산법 표 — 42칸 그대로 · 엄격 셈을 모두 지
   assert.ok(!/HOT, BLOOM, MONEY, HOTN, MONEYN, BLOOMN = PICK/.test(py), 'su21.py — 칸은 일곱 그대로(주문 1422 뒤에는 몬테카를로 차례 · 표는 1등 · 2등 · 3등)');
   assert.ok(/const MARK = d\?\.strict\?\.mode === 'mark'/.test(ap) && /function sxTag\(/.test(ap) && /function legendSx\(/.test(ap) && ap.includes("SXT = '손자병법 계산법'") && ap.includes("SXL = '손자병법 계산법으로 찾은 종목'") && /'data-sx': it\.sx \? '1' : ''/.test(ap), '첫 페이지 — 표 · 풀이 · data-sx');
   assert.ok(y.includes('손자병법 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지') && y.includes('몬테카를로에서 걸려 기준 31가지는 세지 않았어요'), '「왜?」 쪽 — 표가 붙은 곳 · 걸린 곳');
-  assert.ok(ck.includes('⑳ 첫 페이지(주문 1209)') && ck.includes('⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지'), '검사 ⑳ — 표시 판');
+  assert.ok(ck.includes('⑳ 처음 쪽 42칸 · 1 · 2 · 3등 칸 0(병법 서른여섯만 — 주문 1115-1843') && ck.includes('⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지'), '검사 ⑳ — 표시 판(처음 쪽 칸은 지움 — 주문 1115-1843 · 「왜?」 쪽은 그대로)');
   assert.ok(rp.includes("s?.mode === 'mark' ? null") && dy.includes("su?.strict?.mode === 'mark' ? null"), '며칠째 — 표시 판은 칸이 옛 셈 일곱이라 옛 규칙');
   assert.ok(/const FILT = T => !!T\?\.strict && T\.strict\.mode !== 'mark'/.test(s21) && s21.includes('그 가운데 손자병법 계산법으로 찾은 곳은'), '21곳 쪽 — 표시 판 글');
   assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = (UP3 \? (720|PY0 \+ \d+ \+ UP3H) : )?MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(손자병법 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
@@ -666,7 +666,7 @@ test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소�
   assert.ok(/const RANK = !!d\?\.top3/.test(ap) && /function legendR3\(/.test(ap) && ap.includes("note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4')") && /sxTag\(x \+ 6, y \+ 8, it\.r3 \+ '등', 'sa-r3'\)/.test(ap), '첫 페이지 — 1등 · 2등 · 3등 표 · 풀이 두 줄');
   assert.ok(/export function crit7mc\(/.test(y) && /export function top3Box\(/.test(y) && y.includes("'손자병법 계산법 ' + place + '등 — 1억 번 셈'"), '「왜?」 쪽 — 기준 일곱(몬테카를로) · 1억 번 셈 상자');
   assert.ok(/const MCR = T => T\?\.listRule === 'mc365-v1'/.test(s21) && s21.includes("예전 셈은 ' + p.old100"), '21곳 쪽 — 몬테카를로 글 · 지난 1년(예전 셈과 견줌)');
-  assert.ok(ck.includes('⑳ 1억 번 셈 — 1억 판') && ck.includes('⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표'), '검사 ⑳ — 몬테카를로 차례 판');
+  assert.ok(ck.includes('⑳ 1억 번 셈 — 1억 판') && ck.includes('⑳ 처음 쪽 42칸 · 1 · 2 · 3등 칸 0(병법 서른여섯만 — 주문 1115-1843'), '검사 ⑳ — 몬테카를로 차례 판(처음 쪽 칸은 지움 — 주문 1115-1843)');
   const P = JSON.parse(rd('reports/atlas11/su-next/past-mc.json'));
   assert.equal(P.rule, 'mc365-v1');
   for (const g of ['hotNext', 'moneyNext', 'bloomNext']) for (const k of ['mc', 'old', 'base']) assert.ok(P.res[g][k].picks > 0 && Number.isFinite(P.res[g][k].per100), g + ' ' + k);

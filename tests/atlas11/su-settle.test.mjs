@@ -361,7 +361,7 @@ test('겹친 곳(주문 1114-0802 「… 36개 정도 겹치는 그 종목을 �
   assert.ok(ap.includes("n ? h('span', {class: 's36-cn', text: n + '묶음'}) : null") && ap.includes("(n ? ' · ' + n + '묶음' : '')"), '칸마다 든 묶음 수(글 · 소리 이름표)');
   for (const x of ['처음 쪽', '겹친 곳', '세 묶음 이상에 든 곳', '첫 화면 마흔세 묶음 가운데 세 묶음 이상에 같이 든 회사예요. 많이 겹친 곳이 먼저예요. 칸마다 든 묶음 수를 적었어요.']) assert.ok(!x.includes('%') && !/[A-Za-z]/.test(x), x);
   const ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.ok(ck.includes('㉔ 겹친 곳 자료(주문 1114-0802)') && ck.includes("W + '겹친 곳(주문 1114-0802) — 꾀 칸 머리 바로 아래 한 묶음") && ck.includes("W + '겹친 곳(주문 1114-0802) — 묶음마다 표 바로 아래"), '검사 ㉓ · ㉔');
+  assert.ok(ck.includes('㉔ 겹친 곳 자료(주문 1114-0802)') && ck.includes("W + '겹친 곳 0(네 창 · 될 듯 세 창과 함께 센 묶음 — 병법 서른여섯만 · 주문 1115-1843)'") && ck.includes("W + '겹친 곳(주문 1114-0802) — 묶음마다 표 바로 아래"), '검사 ㉓ · ㉔(처음 쪽 겹친 곳은 지움 — 주문 1115-1843 · 정산 쪽 묶음은 그대로)');
   const css = rd('site/su/su-apple.css');
   assert.ok(css.includes('.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-oc.s36-csp { grid-template-areas: "n n" "c s" "d s"; }'), '칸 = 위 이름 · 아래 왼쪽 ○묶음 · ○일째 · 오른쪽 꺾은선');
 });
