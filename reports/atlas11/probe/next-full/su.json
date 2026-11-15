@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-15T18:38:30.474Z",
+ "at": "2026-11-15T19:28:11.195Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 461,
+  "pass": 463,
   "fail": 0
  },
  "fails": [],
@@ -106,9 +106,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 452,
+   "lcp": 532,
    "cls": 0,
-   "pic": 451
+   "pic": 527
   },
   "white": {
    "light #/": {
@@ -332,13 +332,28 @@
   "old": {
    "light /next/?su=guide#/find": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=guide#/gift": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -347,13 +362,13 @@
    },
    "light /next/?su=guest#/share": {
     "cls": "m4 white space su-jobs su-wrapped home",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.012,
     "darkSel": "a.nh-mans",
@@ -362,13 +377,13 @@
    },
    "light /next/?su=stop#/me": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
@@ -377,13 +392,13 @@
    },
    "light /next/?su=guide#/": {
     "cls": "m4 white home space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.012,
     "darkSel": "a.nh-mans",
@@ -392,13 +407,13 @@
    },
    "light /next/?su=back#/jinhwa": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -407,13 +422,13 @@
    },
    "light /next/?su=back#/help": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.012,
     "darkSel": "button.hp-vb",
@@ -422,13 +437,13 @@
    },
    "light /hello.html?su=guest": {
     "cls": "su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
     "view": null,
     "top": null,
-    "bar": "rgb(255, 255, 255)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.026,
     "darkSel": "a.hp-go",
@@ -437,13 +452,13 @@
    },
    "light /su/privacy.html": {
     "cls": "su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
     "view": null,
     "top": null,
-    "bar": "rgb(255, 255, 255)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -452,13 +467,28 @@
    },
    "dark /next/?su=guide#/find": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=guide#/gift": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -467,13 +497,13 @@
    },
    "dark /next/?su=guest#/share": {
     "cls": "m4 white space su-jobs su-wrapped home",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.012,
     "darkSel": "a.nh-mans",
@@ -482,13 +512,13 @@
    },
    "dark /next/?su=stop#/me": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
@@ -497,13 +527,13 @@
    },
    "dark /next/?su=guide#/": {
     "cls": "m4 white home space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.012,
     "darkSel": "a.nh-mans",
@@ -512,13 +542,13 @@
    },
    "dark /next/?su=back#/jinhwa": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -527,13 +557,13 @@
    },
    "dark /next/?su=back#/help": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "bar": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.012,
     "darkSel": "button.hp-vb",
@@ -542,13 +572,13 @@
    },
    "dark /hello.html?su=guest": {
     "cls": "su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
     "view": null,
     "top": null,
-    "bar": "rgb(255, 255, 255)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0.026,
     "darkSel": "a.hp-go",
@@ -557,13 +587,13 @@
    },
    "dark /su/privacy.html": {
     "cls": "su-jobs su-wrapped",
-    "body": "rgb(255, 255, 255)",
+    "body": "rgb(241, 227, 211)",
     "view": null,
     "top": null,
-    "bar": "rgb(255, 255, 255)",
+    "bar": "rgb(241, 227, 211)",
     "frame": "normal",
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ],
     "darkMax": 0,
     "darkSel": "",
