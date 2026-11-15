@@ -1,12 +1,21 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-14T06:54:16.112Z",
+ "at": "2026-11-15T10:22:10.978Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1663,
-  "fail": 0
+  "pass": 1408,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  [
+   "[390] 될 듯 21곳 가로 넘침",
+   "396 > 390"
+  ],
+  [
+   "[320] 될 듯 21곳 가로 넘침",
+   "336 > 320"
+  ]
+ ],
  "m": {
   "dropped": [],
   "data": {
@@ -19,32 +28,29 @@
    ]
   },
   "home": {
-   "screens": 7.66,
-   "links": 71
+   "screens": 1.77,
+   "links": 15
   },
   "t21": {
    "listed": 2557,
    "b365": 365,
-   "n": 21,
+   "n": 0,
    "overlap": 3,
    "distinct": 18
   },
   "path": [
    {
-    "h1": "요즘 눈에 띄는 회사",
-    "heroShare": 72.4,
-    "share": 89,
-    "outside": 21,
-    "two": 2,
-    "labels": 322,
-    "mucha": [],
-    "anim": 29,
-    "need": 0,
-    "means": 4,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 10,
-    "orn": 5
+    "h1": "서른여섯 꾀",
+    "sonja": true,
+    "kids": [
+     "sj-cover",
+     "sj-sun",
+     "sj-more",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 2,
+    "hardWords": "코스피,코스닥"
    },
    {
     "h1": "땅 지도",
@@ -159,8 +165,10 @@
     "orn": 7
    }
   ],
-  "hard": 1,
+  "hard": 3,
   "hardWords": [
+   "코스피",
+   "코스닥",
    "종가"
   ],
   "drawers": {
@@ -180,25 +188,22 @@
    "lines": 5
   },
   "speed": {
-   "lcp": 2264,
-   "cls": 0.143,
-   "pic": 3171
+   "lcp": 536,
+   "cls": 0,
+   "pic": 531
   },
   "white": {
    "light #/": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": true,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
    "light #/n": {
@@ -282,19 +287,16 @@
     ]
    },
    "dark #/": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": true,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
    "dark #/n": {
@@ -386,14 +388,8 @@
   },
   "price": {
    "#/": {
-    "cells": 49,
-    "bad": 0,
-    "note": [
-     "현재가는 11월 6일 마지막 값이에요.",
-     "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "될 듯은 지난 기록의 앞 모습이에요.",
-     "지난 기록 차례예요. 앞날은 몰라요."
-    ]
+    "cells": 0,
+    "gone": "주문 1115-1843 — 처음 쪽은 병법 서른여섯만(줄 없음)"
    },
    "#/n": {
     "cells": 42,
@@ -407,11 +403,8 @@
    }
   },
   "live": {
-   "asked": 1,
-   "px": "202179",
-   "live": "2026-11-09T14:31",
-   "note": "현재가는 11월 9일 오후 2시 31분 값이에요.",
-   "shape": true
+   "asked": 0,
+   "first": "none"
   },
   "old": {
    "light /next/?su=guide#/find": {
@@ -454,7 +447,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.011,
+    "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
@@ -514,7 +507,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.023,
+    "darkMax": 0.026,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0
@@ -574,7 +567,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.011,
+    "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
@@ -634,7 +627,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.023,
+    "darkMax": 0.026,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0
@@ -744,7 +737,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.023,
+    "darkMax": 0.026,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0,
@@ -888,7 +881,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.023,
+    "darkMax": 0.026,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0,
@@ -1194,19 +1187,6 @@
    "2:티에스이:6.85:",
    "3:삼성전기:5.56:"
   ],
-  "v42": {
-   "cells": 49,
-   "bad": 0,
-   "cap": [
-    "bloomNext:닷새 동안 시장보다",
-    "quiet:한 달 흔들림",
-    "quiet:한 달 흔들림"
-   ],
-   "eg": [
-    "100원이 150.5원",
-    "100원이 95.8원"
-   ]
-  },
   "kr7": {
    "cards": 7,
    "rows": 7,
@@ -1225,17 +1205,13 @@
     "to": "2026-11-09",
     "ix": false,
     "lab": "100원이 153.3원"
-   },
-   "shape": true
+   }
   },
   "coReal": {
    "live": null,
-   "cellLive": null,
    "px": "196100",
-   "cellPx": "196100",
    "from": "2026-10-08",
-   "to": "2026-11-06",
-   "both": false
+   "to": "2026-11-06"
   },
   "book": {
    "days": 6,
@@ -1397,5 +1373,5 @@
    }
   }
  },
- "ok": true
+ "ok": false
 }
