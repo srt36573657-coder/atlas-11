@@ -1,0 +1,73 @@
+{
+ "id": 32,
+ "topic": "가벼운 첫 화면 · 빠른 열림이 디자인에 주는 영향",
+ "finds": [
+  {
+   "trend": "한글 글꼴은 쪼개서 가볍게",
+   "what": "한글 · 한자 · 일본어 글꼴은 글자 수가 많아 통째로 쓰면 메가바이트 단위. 필요한 글자 묶음만 받게 쪼개고(unicode-range) WOFF2로 줄인다.",
+   "src": [
+    {
+     "t": "Reduce web font size (web.dev)",
+     "u": "https://web.dev/articles/reduce-webfont-size",
+     "d": "2019-08-16 갱신(오래된 글, 원리는 유효)"
+    }
+   ],
+   "apply": "새 글꼴을 들이지 말고 폰 기본 글꼴 우선(local 먼저) 쓰거나, 쓰더라도 한글 쪼갠 WOFF2 한 벌만. 굵기 변형은 둘 안쪽.",
+   "risk": "글꼴 하나 더 받으면 첫 화면이 늦어짐. 가변 글꼴 한 파일은 개별 굵기 한 개보다 큼(같은 글에 적힘). font-display swap은 글자 위치 흔들림 가능."
+  },
+  {
+   "trend": "뼈대 화면(스켈레톤)은 만능이 아님",
+   "what": "모바일 사용자 약 136명 시험에서 뼈대 화면이 돌림 표시나 빈 화면보다 체감 대기가 길고(2.82초 대 2.41 · 2.29) 과제 완료도 느렸다. 같은 길이 대기 비교.",
+   "src": [
+    {
+     "t": "A Bone to Pick with Skeleton Screens (Viget)",
+     "u": "https://viget.com/articles/a-bone-to-pick-with-skeleton-screens",
+     "d": "날짜 확인 못 함"
+    }
+   ],
+   "apply": "첫 쪽은 아예 기다림이 없게 글과 칸을 바로 그린다. 뼈대 · 반짝이는 로딩 줄은 넣지 않음(규칙의 반짝임 0과도 맞음).",
+   "risk": "표본 작고 저자도 추가 시험 필요라고 함. 확정 근거는 못 됨."
+  },
+  {
+   "trend": "성능이 곧 디자인이라는 흐름",
+   "what": "검색에서 2025~26년 글들이 첫 화면 표시 속도(LCP 2.5초 안쪽)를 디자인 결정의 일부로 다룸. 제목과 주소만 확인, 본문 수치는 직접 못 읽음.",
+   "src": [
+    {
+     "t": "Performance Is Design: Why Page Speed Is the Most Important UX Decision You Make",
+     "u": "https://homepagedream.vercel.app/blog/performance-is-design",
+     "d": "날짜 확인 못 함"
+    },
+    {
+     "t": "Core Web Vitals 2025: Mobile Performance Standards Tighten...",
+     "u": "https://systemsarchitect.net/core-web-vitals-2025/",
+     "d": "2025~2026"
+    }
+   ],
+   "apply": "첫 쪽 약속: 그림 파일 없이 글자와 색 칸 중심, 큰 그림은 서랍 안에서만 불러옴.",
+   "risk": "출처가 개인 · 소규모 블로그라 신뢰 낮음. 숫자는 쓰지 말 것."
+  }
+ ],
+ "board": {
+  "name": "가벼운 한지",
+  "idea": "받는 것 없이 바로 뜨는 판 — 폰 기본 글꼴, 그림 대신 색 칸과 글자만, 서랍은 열 때 그린다.",
+  "colors": [
+   [
+    "바탕",
+    "#F4EFE3"
+   ],
+   [
+    "글",
+    "#1F1B16"
+   ],
+   [
+    "강조",
+    "#1E2A4A"
+   ]
+  ],
+  "font": "폰 기본 고딕(시스템 글꼴) 우선, 필요 시 한글 쪼갠 WOFF2 한 벌 · 굵기 둘(보통 · 굵게)",
+  "shape": "모서리 8px · 그림자 없음(테두리 한 줄) · 칸 두 줄 바둑판 유지",
+  "motion": "없음(서랍 펼침은 즉시, 전환 효과 0)",
+  "band": "띠는 그림이 아니라 글자와 단색 칸으로만 그려 가장 먼저 뜬다: 내림은 남색 굵은 띠+흰 글씨 「한 달 내림」, 오름은 옅고 가는 띠+「오름」. 빨강 · 반짝임 · 화살표 없음.",
+  "why": "빠른 첫 화면은 2025~26 성능 지침의 중심이고, 가볍게 만들면 장식이 줄어 오히려 차분한 저자극 판과 같은 방향이 된다."
+ }
+}
