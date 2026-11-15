@@ -212,7 +212,7 @@ for (const width of [390, 360, 320]) {
     check(jm.h1 === '내 매매일지', W + '「왜 사?」 결과 → 매매일지', jm.h1);
     const jn = await p.evaluate(() => ({big: (document.querySelector('#su .su-big b')?.textContent ?? '').trim(), rows: document.querySelectorAll('#su .su-jr').length, figs: document.querySelectorAll('#su figure.su-fig').length,
       names: [...document.querySelectorAll('#su .su-jr .su-jrh .su-ma span')].map(e => e.textContent), due: document.querySelector('#su .su-due .su-lead')?.textContent ?? null, all: document.getElementById('su')?.textContent ?? '',
-      t3: [...document.querySelectorAll('#su figure.su-f-tally3 text.g-ts')].map(e => e.textContent), t3n: [...document.querySelectorAll('#su figure.su-f-tally3 text.g-tk')].map(e => e.textContent),
+      t3: [...document.querySelectorAll('#su svg.ik-tally text.g-ts')].map(e => e.textContent), t3n: [...document.querySelectorAll('#su svg.ik-tally text.g-tk')].map(e => e.textContent),
       lv: [...document.querySelectorAll('#su .su-jr .su-jrv')].map(e => ({t: e.textContent, b: [...e.querySelectorAll('b.su-lv')].map(x => x.textContent)}))}));
     check(+jn.big >= 1 && jn.rows >= 1 && jn.figs >= 3, W + '매매일지 — 멈춘 횟수 · 기록 줄 · 그림 셋 넘게', JSON.stringify({big: jn.big, rows: jn.rows, figs: jn.figs}));
     const recs = await p.evaluate(k => { try { const x = JSON.parse(localStorage.getItem(k) || '[]'); return Array.isArray(x) ? x : []; } catch { return []; } }, KEYW);
@@ -230,9 +230,9 @@ for (const width of [390, 360, 320]) {
     const shapeSj = () => p.evaluate(() => {
       const main = document.querySelector('#su main.sj-page'); if (!main) return null;
       const page = main.getAttribute('data-page') ?? '';
-      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|costop)$/.test(c)) ?? e.className);
-      const want = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-s36', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kst', 'sj-kpn', 'sj-end'] : page === 'co' ? ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'] : [];
-      const must = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kpn', 'sj-end'] : ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'];
+      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|costop|two|act|body|figs|whymore)$/.test(c)) ?? e.className);
+      const want = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-s36', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kst', 'sj-kpn', 'sj-end'] : page === 'co' ? ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'] : page === 'why' || page === 'journal' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-body', 'sj-figs', 'sj-whymore', 'sj-end'] : [];
+      const must = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kpn', 'sj-end'] : page === 'why' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-end'] : page === 'journal' ? ['sj-ph', 'sj-two', 'sj-end'] : ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'];
       const order = kids.every(k => want.includes(k)) && kids.map(k => want.indexOf(k)).every((v, i, a) => !i || v > a[i - 1]) && must.every(k => kids.includes(k));
       const last = main.lastElementChild, more = main.querySelector(':scope > details.sj-more');
       const step = document.querySelector('#su .sj-step'), art = document.querySelector('#su .sj-cover img.sj-art');
@@ -291,13 +291,13 @@ for (const width of [390, 360, 320]) {
         foot: [...document.querySelectorAll('#su main > .su-src .su-srcl a')].map(a => [a.getAttribute('href'), a.querySelector('span')?.textContent ?? ''])};
     });
     const STEP5 = ['오늘', '꾀', '회사', '「왜 사?」', '내 매매일지']; // 다섯 화면 이름(화면 코드 STEP5 를 쓰지 않고 따로 적음 · 주문 1115-2328)
-    const TAB5 = '오늘 꾀 멈춤 일지 정산', TAB5L = '탭 — 오늘 · 꾀 · 멈춤 · 일지 · 정산', PAGE3 = ['sonja', 'kkoe', 'co'], CUR3 = [0, 1, -1]; // 회사 쪽은 탭 밖(켜진 탭 0)
+    const TAB5 = '오늘 꾀 멈춤 일지 정산', TAB5L = '탭 — 오늘 · 꾀 · 멈춤 · 일지 · 정산', PAGE3 = ['sonja', 'kkoe', 'co', 'why', 'journal'], CUR3 = [0, 1, -1, 2, 3]; // 회사 쪽은 탭 밖(켜진 탭 0)
     const FOOTW = JSON.stringify([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]);
     await open(p, '#/');
     const seen = [], STEPS9 = FC ? [0, 1, 2, 3, 4] : [0, 1, 3, 4]; // 꾀가 고른 곳이 없는 날(꾀 칸 자료 없음)은 꾀 → 「왜 사?」로 바로(회사 화면을 건너뜀)
     for (const k of STEPS9) {
       await p.waitForTimeout(150);
-      if (k <= 2) { // 손자병법 판 세 화면(오늘 · 꾀 · 회사)
+      if (k <= 4) { // 손자병법 판 다섯 화면(오늘 · 꾀 · 회사 · 「왜 사?」 · 매매일지 — 주문 1116-0300 옛 틀 지움)
         const sj = await shapeSj();
         check(!!sj && sj.page === PAGE3[k], W + '⑨ ' + (k + 1) + '번째 화면 = 손자병법 판 ' + PAGE3[k] + '(main.sj-page · 주문 1115-1706 · 1115-2328)', JSON.stringify(sj?.page ?? null));
         if (!sj) break;
@@ -313,9 +313,10 @@ for (const width of [390, 360, 320]) {
         check(sj.sealsOk, W + '⑪ 한눈 판별 — 회사 단추의 한 달 표(내림 · 오름 · 같음) = 그 회사 한 달 방향 · 내림 도장 = 짙은 남빛 찬 도장 + 흰 글(샘플 사) — ' + sj.h1, sj.seals.length + ' · ' + JSON.stringify(sj.sunSeal));
         check(sj.red === 0, W + '⑪ 빨강 글 0(한국에서 빨강은 오름 — 내림을 빨강으로 읽지 않게) — ' + sj.h1, String(sj.red));
         check(Number.isFinite(sj.hard), W + '⑩ 어려운 낱말 셈 — ' + sj.h1, String(sj.hard) + ' ' + sj.hardWords);
-        const nxW = k === 0 ? ['#/k/' + FK, '2 / 5'] : k === 1 ? (FC ? ['#/c/' + FC.code, '3 / 5'] : ['#/q', '4 / 5']) : [FC ? '#/q/' + FC.code : '#/q', '4 / 5'];
+        const nxW = k === 0 ? ['#/k/' + FK, '2 / 5'] : k === 1 ? (FC ? ['#/c/' + FC.code, '3 / 5'] : ['#/q', '4 / 5']) : k === 2 ? [FC ? '#/q/' + FC.code : '#/q', '4 / 5'] : k === 3 ? ['#/j', '5 / 5'] : ['#/', '1 / 5'];
         check(sj.next === nxW[0] && sj.nextK === nxW[1], W + '⑨ 다음 단추 = ' + nxW[1] + ' ' + nxW[0] + ' — ' + sj.h1, JSON.stringify([sj.next, sj.nextK]));
         pageRules(await measure(p), W + '⑨ ' + (k + 1) + '번째 화면 ' + sj.h1);
+        if (k === 4) continue; // 끝 화면(매매일지) — 다음 단추는 처음으로
         const a = await p.$('#su .sj-next'); if (!a) { check(false, W + '⑨ 다음 단추 — ' + sj.h1, ''); break; } await a.click(); await settle(p); await p.waitForTimeout(400);
         continue;
       }
@@ -403,7 +404,7 @@ for (const width of [390, 360, 320]) {
       check((w.frame === 'none' || w.frame === 'normal') && w.orn === 0, W1 + '— 둘레 겹테 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, orn: w.orn}));
       check(w.tc.length >= 1 && w.tc.every(c => c === '#F1E3D3'), W1 + '— 휴대폰 맨 위 띠 한지 색', w.tc.join(' '));
     }
-    for (const hh of ['#/k', '#/k/' + FK, ...(FC ? ['#/c/' + FC.code] : []), '#/r/t']) { // 주문 1115-2328 — 꾀 모음 · 꾀 · 회사 · 정산도 첫 쪽과 같은 한지 판(샘플 사)
+    for (const hh of ['#/k', '#/k/' + FK, ...(FC ? ['#/c/' + FC.code] : []), '#/r/t', '#/q', '#/j']) { // 주문 1115-2328 — 꾀 모음 · 꾀 · 회사 · 정산도 첫 쪽과 같은 한지 판(샘플 사) · 주문 1116-0300 — 「왜 사?」 · 매매일지도(옛 흰 판 · 옛 틀 지움)
       const PAPER = 'rgb(241, 227, 211)';
       await open(p, hh); await p.waitForTimeout(600);
       const w = await p.evaluate(() => { const bg = e => (e ? getComputedStyle(e).backgroundColor : 'none'), h1 = document.querySelector('#su h1');
@@ -416,13 +417,6 @@ for (const width of [390, 360, 320]) {
       check(con(w.h1, PAPER) >= 7, W1 + '— 큰 제목 먹 글 대비 7 넘게', w.h1);
       check((w.frame === 'none' || w.frame === 'normal') && w.orn === 0, W1 + '— 둘레 겹테 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, orn: w.orn}));
       check(w.tc.length >= 1 && w.tc.every(c => c === '#F1E3D3'), W1 + '— 휴대폰 맨 위 띠 한지 색', w.tc.join(' '));
-    }
-    // 「왜 사?」 · 매매일지는 옛 흰 판 그대로(주문 2011 「모든 페이지를 첫페이지 기준으로」 때의 흰 판 · 주문 1115-2328 에서 남긴 옛 틀 두 쪽)
-    for (const hh of ['#/q', '#/j']) {
-      await open(p, hh); await p.waitForTimeout(400);
-      const o = await look(p); R.m.white[scheme + ' ' + hh] = o;
-      check([o.body, o.top, o.dock, o.tabs].every(c => c === WHITE || c === 'none') && o.top === WHITE && o.frame === 'none' && o.wave === 'none' && o.curve === 'none' && o.orn === 0 && o.tc.every(c => c === '#FFFFFF') && con(o.h1, WHITE) >= 7,
-        '⑫ 옛 틀 두 쪽도 흰 판(' + scheme + ' · ' + hh + ') — 바탕 · 위아래 흰색 · 둘레 겹테 · 물결 줄 · 무하 꾸밈 0 · 큰 제목 대비 7', JSON.stringify({body: o.body, top: o.top, dock: o.dock, tabs: o.tabs, frame: o.frame, orn: o.orn, tc: o.tc}).slice(0, 300));
     }
     await ctx.close();
   }

@@ -503,3 +503,66 @@ html.sj-sub #su > main.sj-pre { display: none; }
 @keyframes ik-shake { 0% { transform: translateX(0); } 20% { transform: translateX(-3px); } 40% { transform: translateX(3px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(1px); } }
 #su svg.ik-wait:not(.ik-play) .ik-m { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { #su svg.ik-play .ik-m { animation: none !important; } #su svg.ik-wait .ik-m { opacity: 1; } }
+
+/* ── 「왜 사?」 · 매매일지 · 찾지 못한 쪽(주문 1116-0300 — 옛 틀 · 옛 꾸밈을 지우고 손자병법 판으로 · 고르개는 #su .sj-page 안에서만) ── */
+#su .sj-page .su-two { display: grid; gap: 6px; }
+#su .sj-page .su-big .su-bv { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; font-family: var(--sj-serif); }
+#su .sj-page .su-big b { font-size: 2.75rem; line-height: 1.1; font-weight: 900; color: #3B1A14; }
+#su .sj-page .su-big span, #su .sj-page .su-big em { font-size: 1.25rem; font-weight: 700; font-style: normal; color: #6B4A3E; }
+#su .sj-page .su-bl { font-size: 1.125rem; font-weight: 700; color: #6B4A3E; }
+#su .sj-page .su-mean { display: flex; gap: 8px; align-items: baseline; font-size: 1.25rem; line-height: 1.5; }
+#su .sj-page .su-mean i { flex: none; font-style: normal; font-family: var(--sj-serif); font-weight: 800; color: #8A5A44; }
+#su .sj-page .sj-act, #su .sj-page .sj-body, #su .sj-page .sj-figs { margin-top: 18px; }
+#su .sj-page .sj-figs figure + figure { margin-top: 16px; }
+#su .sj-whyfig svg { max-width: 440px; margin: 0 auto; }
+#su .sj-page .su-ans { display: grid; gap: 10px; }
+#su .sj-page .su-a { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 60px; padding: 12px 14px; border: 1.5px solid #3B1A14; border-radius: 4px; background: transparent; color: #3B1A14; text-align: left; font-size: 1.25rem; font-weight: 700; line-height: 1.4; cursor: pointer; }
+#su .sj-page .su-a.on { background: #3B1A14; color: #F1E3D3; }
+#su .sj-page .su-shape { flex: none; width: 30px; text-align: center; font-style: normal; font-size: 1.375rem; }
+#su .sj-page .su-shape.g, #su .sj-page .su-ma.g i, #su .sj-page .su-rk.g i { color: #3B1A14; }
+#su .sj-page .su-shape.y, #su .sj-page .su-ma.y i { color: #8A5A44; }
+#su .sj-page .su-shape.r, #su .sj-page .su-ma.r i { color: #1F2A44; }
+#su .sj-page .su-a.on .su-shape { color: #F1E3D3; }
+#su .sj-page .su-qnext { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 60px; margin-top: 14px; padding: 10px 16px; border: 0; border-radius: 4px; background: #1F2A44; color: #F1E3D3; font-size: 1.3125rem; font-weight: 800; cursor: pointer; }
+#su .sj-page .su-qnext .su-nk { font-size: 1.0625rem; font-weight: 700; }
+#su .sj-page .su-qnext i { font-style: normal; font-size: 1.625rem; }
+#su .sj-page .su-qback { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; margin-top: 12px; padding: 6px 14px; border: 1.5px solid #8E7466; border-radius: 4px; background: transparent; color: #3B1A14; font-size: 1.125rem; font-weight: 700; cursor: pointer; }
+#su .sj-page .su-qback i { font-style: normal; }
+#su .sj-page .su-qwhy { font-size: 1.25rem; line-height: 1.55; }
+#su .sj-page .su-reply { margin-top: 12px; padding: 12px 14px; border-left: 4px solid #3B1A14; background: #E7D3BF; }
+#su .sj-page .su-reply.y { border-left-color: #8A5A44; }
+#su .sj-page .su-reply.r { border-left-color: #1F2A44; }
+#su .sj-page .su-rk { display: flex; gap: 8px; align-items: center; font-size: 1.25rem; font-weight: 800; }
+#su .sj-page .su-rk i { font-style: normal; }
+#su .sj-page .su-rt2 { margin-top: 4px; font-size: 1.1875rem; line-height: 1.55; }
+#su .sj-page .su-note { margin-top: 10px; font-size: 1.125rem; line-height: 1.55; color: #4A2C22; }
+#su .sj-page .su-lead { font-size: 1.25rem; line-height: 1.55; }
+#su .sj-page .su-quote { font-family: var(--sj-serif); font-size: 1.375rem; line-height: 1.55; font-weight: 700; }
+#su .sj-page .su-why { margin-top: 18px; }
+#su .sj-page .su-ft { font-family: var(--sj-serif); font-size: 1.375rem; font-weight: 800; margin-bottom: 8px; }
+#su .sj-page .su-myans { display: grid; }
+#su .sj-page .su-myans li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #B8A08E; font-size: 1.125rem; }
+#su .sj-page .su-ma { display: inline-flex; gap: 6px; align-items: center; font-weight: 800; }
+#su .sj-page .su-ma i { font-style: normal; }
+#su .sj-page .su-ask { display: grid; gap: 4px; min-height: 56px; margin-top: 14px; padding: 12px 14px; border-radius: 3px; background: #3B1A14; color: #F1E3D3; text-decoration: none; }
+#su .sj-page .su-ask b { font-size: 1.25rem; }
+#su .sj-page .su-ask span { font-size: 1.0625rem; }
+#su .sj-page .su-due { padding: 14px; border: 2px solid #1F2A44; border-radius: 4px; }
+#su .sj-page .su-kq { margin-top: 8px; font-family: var(--sj-serif); font-size: 1.375rem; font-weight: 800; }
+#su .sj-page .su-kbs { display: flex; gap: 10px; margin-top: 10px; }
+#su .sj-page .su-kb { flex: 1; min-height: 56px; border: 1.5px solid #3B1A14; border-radius: 4px; background: transparent; color: #3B1A14; font-size: 1.25rem; font-weight: 800; cursor: pointer; }
+#su .sj-page .su-jl { display: grid; }
+#su .sj-page .su-jr { padding: 12px 0; border-top: 1.5px solid #3B1A14; }
+#su .sj-page .su-jrh { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 1.25rem; }
+#su .sj-page .su-jrs, #su .sj-page .su-jrk, #su .sj-page .su-jrv { margin-top: 4px; font-size: 1.125rem; line-height: 1.5; }
+#su .sj-page .su-jrk i { font-style: normal; margin-right: 6px; }
+#su .sj-page .su-lv { font-weight: 800; }
+#su .sj-page .su-lv.dn { color: #1F2A44; }
+#su .sj-page .sj-pro { display: grid; margin-top: 10px; }
+#su .sj-page .sj-pro dt { margin-top: 10px; font-weight: 800; font-size: 1.125rem; }
+#su .sj-page .sj-pro dd { font-size: 1.0625rem; line-height: 1.5; color: #4A2C22; }
+#su main[data-page="why"] > .sj-sec, #su main[data-page="journal"] > .sj-sec, #su main[data-page="miss"] > .sj-sec { padding: 16px 0 18px; width: 100%; min-width: 0; }
+#su main[data-page="why"] > .sj-ph, #su main[data-page="journal"] > .sj-ph, #su main[data-page="miss"] > .sj-ph { padding-top: 22px; }
+#su .sj-page .su-ans { width: 100%; grid-template-columns: minmax(0, 1fr); }
+#su .sj-page .su-ans > li { width: 100%; }
+#su main[data-page="why"] > *, #su main[data-page="journal"] > *, #su main[data-page="miss"] > * { width: 100%; min-width: 0; }

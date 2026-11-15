@@ -269,7 +269,7 @@ test('화면 셈 — 산 셈 줄 · 묶음마다 여덟 줄(사장님 말씀 차
 
 test('탭 · 길 · 묶기 · 검사 — 아래 탭 다섯째 「정산」 #/r/t · 손자병법 판 서른여섯 꾀 표만(주문 1115-2328) · 올리기 작업만 장부를 씀 · 검사 ㉓ · 화면 글', () => {
   const su = rd('site/su/su.js'), kk = rd('site/su/su-sonja-kkoe.js'), top = rd('site/su/su-sonja-top.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.ok(su.includes("['정산', '#/r/t', ") && su.includes('export const TAB_ORDER = Object.freeze([0, 1, 2, 3, 4]);') && top.includes("['정산', '#/r/t']]);"), '정산 탭은 맨 끝(다섯째 · 옛 틀 · 손자병법 판 둘 다)');
+  assert.ok(!su.includes('TAB_ORDER') && top.includes("['정산', '#/r/t']]);"), '정산 탭은 맨 끝(다섯째 · 손자병법 판 한 곳 — 주문 1116-0300 옛 틀 지움)');
   assert.ok(su.includes("if (hh === '#/r/t') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vSettle36(XS)); }"), '길 #/r/t → 손자병법 판 정산(su-sonja-kkoe.js vSettle36)');
   assert.equal(forwardTo('', '#/r/t'), null, '#/r/t 는 새 판 안(옛 판으로 넘기지 않음)');
   assert.ok(kk.includes("return frame({title: '정산', page: 'settle', kids, tab: 4,"), '정산 쪽을 열면 정산 탭(다섯째)이 켜짐');

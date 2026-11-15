@@ -399,6 +399,12 @@ export function sonmuPic({w = 200, h = 240, cls = 'ik-sonmu'} = {}) {
     s('rect', {x: 1.5, y: 1.5, width: 197, height: 237, fill: PAPER, stroke: INK, 'stroke-width': 1.2, 'stroke-opacity': 0.35}), M('rise', 1, sonmuBust(100, 238, 1)))); // 1 손무가 떠오름 · 2 ~ 3 두건 끈이 바람에 날림
 }
 
+/* ── 「왜 사?」 · 매매일지 먹그림(주문 1116-0300 — 옛 꽃잎 · 시간 줄 · 기둥 · 막대를 지우고 손자병법 판으로 · 그림 일꾼이 빈 판에서 그림 · 아래 WHYK 덩이) ──
+   whyPic(tones, cur) 열한 질문 디딤돌(고개 위 손무) · journalPic(items) 내 기록 길(돌 = 그날 판정 · 고리 = 한 달 뒤) · groupInk(rows) 네 묶음 붓 막대 · tallyInk(counts) 판정 셋 도장 */
+export const whyPic = (tones, cur = null) => watch(WHYK.whyPic(tones, cur));
+export const journalPic = items => watch(WHYK.journalPic(items));
+export const groupInk = rows => watch(WHYK.groupInk(rows));
+export const tallyInk = counts => watch(WHYK.tallyInk(counts));
 /** 그림 부품 모음(시험 · 그림 일꾼이 장면을 짜 볼 때만 — 화면 코드는 위 함수를 바로 씀) */
 export const KIT = Object.freeze({br, wash, dot, ring, line, g, at, motif, banner, arrow, stone, mountain, farHills, mist, waves, moon, sun, general, sitter, walker, label, GROUND, P_, s, INK, NAVY, PAPER, ACC, SOFT, rng});
 /* SONMU< — 손무 그림(그림 일꾼 v2 · 빈 판에서 새로 그림) */
@@ -551,3 +557,128 @@ const SONMU = ((K) => {
   return {bust, stand};
 })(KIT);
 /* >SONMU */
+/* WHYK< — 「왜 사?」 · 매매일지 그림(그림 일꾼 · 빈 판에서 새로 그림) */
+const WHYK = ((K, F) => {
+  const {INK, NAVY, PAPER, ACC, SOFT} = K;
+  const r1 = v => Math.round(v * 10) / 10;
+  // wobbly ellipse points (same every draw)
+  const blob = (x, y, rx, ry, seed = 1, n = 26) => {
+    const P = [];
+    for (let i = 0; i < n; i++) {
+      const t = (i / n) * Math.PI * 2, k = 1 + 0.06 * Math.sin(3 * t + seed * 1.7) + 0.045 * Math.sin(5 * t + seed * 2.9);
+      P.push([x + Math.cos(t) * rx * k, y + Math.sin(t) * ry * k]);
+    }
+    return P;
+  };
+  const outline = (P, w = 1.6, c = INK, al = 0.75, fill = PAPER) => K.s('path', {d: 'M' + P.map(p => r1(p[0]) + ' ' + r1(p[1])).join('L') + 'Z', fill, stroke: c, 'stroke-width': w, 'stroke-opacity': al, 'stroke-linejoin': 'round'});
+  // tone shape: g = ink circle, y = acc triangle, r = navy square
+  const mark = (tone, x, y, k) => {
+    if (tone === 'g') return K.dot(x, y, k, 1, INK);
+    if (tone === 'y') return K.s('path', {d: `M${r1(x)} ${r1(y - k * 1.15)}L${r1(x + k * 1.12)} ${r1(y + k * 0.8)}L${r1(x - k * 1.12)} ${r1(y + k * 0.8)}Z`, fill: ACC});
+    if (tone === 'r') return K.s('rect', {x: r1(x - k * 0.88), y: r1(y - k * 0.88), width: r1(k * 1.76), height: r1(k * 1.76), fill: NAVY});
+    return null;
+  };
+  const tq = i => 'ik-tq' + Math.max(0, Math.min(20, i | 0));
+  const svg = (cls, vb, aria, extra, kids) => K.s('svg', {class: cls, viewBox: vb, role: 'img', 'aria-label': aria, focusable: 'false', ...extra}, ...kids.flat().filter(Boolean));
+
+  /* 1. 사기 전 열한 물음 — 산길 디딤돌 열하나 · 고개 위 손무가 뒤돌아 내려다봄 */
+  function whyPic(tones = [], cur = null) {
+    const T = Array.from({length: 11}, (_, i) => tones[i] ?? null);
+    const S = [[40, 330], [100, 319], [160, 307], [220, 295], [274, 268], [224, 237], [164, 223], [104, 208], [66, 174], [146, 152], [228, 131]];
+    const PASS = [298, 106];
+    const done = T.filter(Boolean).length;
+    const c = Number.isInteger(cur) && cur >= 0 && cur <= 10 ? cur : null;
+    const kids = [
+      K.M('fade', 1, K.farHills([[0, 74], [60, 54], [130, 66], [200, 44], [262, 58], [330, 26], [390, 38]], 160, 0.06)),
+      K.M('fade', 1, K.mountain([[0, 150], [52, 120], [122, 98], [192, 86], [252, 92], [298, 106], [334, 70], [366, 44], [390, 52]], 360, {al: 0.07, w: 3, seed: 5, tex: 7})),
+      K.M('fade', 2, K.mist(120, 190, 260, 16, 0.55), K.mist(300, 300, 200, 14, 0.5)),
+      K.M('wipe', 2, K.br([...S, PASS], 10, {a: 0.7, b: 0.5, peak: 0.5, al: 0.13})),
+      K.M('rise', 3, F.stand(PASS[0] + 8, PASS[1] + 3, 0.68, {facing: -1, slips: true, st: 4})),
+    ];
+    S.forEach(([x, y], i) => {
+      const t = T[i], P = blob(x, y, 19, 12, i + 3), now = i === c;
+      kids.push(K.M('pop', tq(i), K.s('g', {class: 'ik-wq', 'data-q': String(i + 1), 'data-tone': t || 'none'},
+        t ? K.wash(P, 0.16, INK) : null,
+        outline(P, t ? 1.7 : 1.6, INK, t ? 0.85 : 0.7, t ? 'none' : PAPER),
+        t ? mark(t, x, y + 0.5, 6.4) : null,
+        K.label(x, y - 20, String(i + 1), {size: 17, c: now ? NAVY : INK}))));
+    });
+    if (c !== null) kids.push(K.M('pulse', 'ik-tq21', K.s('ellipse', {cx: S[c][0], cy: S[c][1], rx: 27, ry: 18, fill: 'none', stroke: NAVY, 'stroke-width': 2.4})));
+    return svg('ik-why', '0 0 390 360', '사기 전 열한 물음 — ' + done + '개 답함', {'data-done': String(done), 'data-cur': c === null ? '' : String(c)}, kids);
+  }
+
+  /* 2. 매매 일기 — 왼쪽에서 오른쪽으로 난 붓 길 · 기록마다 돌 하나 · 위의 작은 고리 = 한 달 뒤 */
+  function journalPic(items = []) {
+    const L = (items || []).slice(0, 40);
+    const Y = x => 236 - 0.09 * x + 8 * Math.sin(x / 48);
+    const path = []; for (let x = 4; x <= 386; x += 22) path.push([x, Y(x)]);
+    path.push([386, Y(386)]);
+    const X0 = 22, X1 = 314, XT = 326;
+    const kids = [
+      K.M('fade', 1, K.farHills([[0, 150], [70, 118], [150, 140], [232, 106], [312, 128], [390, 96]], 270, 0.055)),
+      K.M('fade', 1, K.mountain([[0, 166], [46, 136], [104, 154], [160, 140], [214, 162]], 270, {al: 0.05, w: 2.2, seed: 8, tex: 3})),
+      K.M('fade', 2, K.mist(140, 200, 300, 12, 0.5)),
+      K.M('wipe', 2, K.br(path, 9, {a: 0.5, b: 0.4, peak: 0.4, al: 0.2})),
+      K.M('fade', 3, K.br([[XT, Y(XT) - 30], [XT, Y(XT) + 10]], 2, {a: 0.6, b: 0.6, c: NAVY, al: 0.75}), K.label(XT, Y(XT) - 38, '오늘', {size: 17, c: NAVY})),
+      K.M('walkL', 3, F.stand(364, Y(364) + 3, 0.46, {facing: -1, slips: true, st: 4})),
+    ];
+    if (!L.length) {
+      kids.push(K.M('fade', 2, K.label(186, 104, '아직 기록이 없어요', {size: 19})), K.M('fade', 3, K.label(186, 136, '「왜 사?」에 답하면 돌이 놓여요', {size: 17, c: ACC, weight: 600})));
+    } else {
+      const n = L.length, d = Math.min(14, (X1 - X0) / Math.max(1, n - 1));
+      const ord = L.map((it, i) => ({it, i, X: X0 + Math.max(0, Math.min(1, +it.x || 0)) * (X1 - X0)})).sort((a, b) => a.X - b.X || a.i - b.i);
+      for (let k = 1; k < n; k++) ord[k].X = Math.max(ord[k].X, ord[k - 1].X + d);
+      ord[n - 1].X = Math.min(ord[n - 1].X, X1);
+      for (let k = n - 2; k >= 0; k--) ord[k].X = Math.min(ord[k].X, ord[k + 1].X - d);
+      const rx = d >= 12 ? 8 : 6.2, ry = rx * 0.68;
+      ord.forEach(({it, X}, k) => {
+        const y = Y(X), ty = y - 21, due = !!it.due, rr = rx >= 8 ? 4.4 : 3.6;
+        const P = blob(X, y, rx, ry, k + 2, 18);
+        kids.push(K.M('pop', tq(n > 21 ? Math.round((k * 20) / (n - 1)) : k), K.s('g', {class: 'ik-jr', 'data-tone': it.tone || 'none', 'data-due': due ? '1' : '0', 'data-kept': it.kept || ''},
+          K.line(X, y - ry - 1.5, X, ty + rr + 1, 1, SOFT, 0.9),
+          K.wash(P, 0.14, INK), outline(P, 1.2, INK, 0.8, 'none'),
+          mark(it.tone, X, y + 0.3, rx * 0.5),
+          K.s('circle', {cx: r1(X), cy: r1(ty), r: rr, fill: due ? NAVY : PAPER, stroke: NAVY, 'stroke-width': 1.3, 'stroke-opacity': due ? 1 : 0.6}),
+          it.kept === 'no' ? K.line(X - rr - 1.5, ty + rr + 1.5, X + rr + 1.5, ty - rr - 1.5, 1.4, due ? PAPER : NAVY) : null,
+          it.kept === 'yes' && due ? K.dot(X, ty, 1.5, 1, PAPER) : null)));
+      });
+    }
+    return svg('ik-journal', '0 0 390 300', L.length ? '매매 일기 — 기록 ' + L.length + '개' : '매매 일기 — 아직 기록 없음', {'data-n': String(L.length)}, kids);
+  }
+
+  /* 3. 네 갈래 준비 — 이유 · 돈 · 때 · 마음 · 붓 막대 길이 = 준비된 몫 */
+  function groupInk(rows = []) {
+    const R = (rows || []).slice(0, 4), XS = 80, LEN = 220;
+    const kids = [];
+    R.forEach((row, i) => {
+      const y = 38 + i * 48, mx = Math.max(1, +row.max || 1), rd = row.ready == null ? null : Math.max(0, Math.min(mx, +row.ready));
+      const len = rd == null ? 0 : rd === 0 ? 0 : Math.max(10, (rd / mx) * LEN);
+      kids.push(K.M('fade', 1, K.label(16, y + 6, row.n, {size: 18, anchor: 'start'}),
+        K.br([[XS, y + 1], [XS + LEN / 2, y], [XS + LEN, y + 1]], 2, {a: 1, b: 1, c: SOFT, al: 0.7}),
+        K.br([[XS - 2, y - 11], [XS - 2, y + 12]], 2.2, {a: 0.7, b: 0.5, al: 0.8})));
+      if (len) kids.push(K.M('wipe', 2 + i, K.br([[XS, y + 1.5], [XS + len * 0.5, y - 1], [XS + len, y + 0.5]], 15, {a: 0.75, b: 0.3, peak: 0.25, c: rd >= mx ? NAVY : INK, al: 0.88})));
+      kids.push(K.M('fade', 2 + i, K.label(376, y + 6, (rd == null ? '–' : String(rd)) + ' / ' + mx, {size: 17, anchor: 'end', c: rd == null ? ACC : INK})));
+    });
+    return svg('ik-groups', '0 0 390 220', '네 갈래 준비 — ' + R.map(r => r.n + ' ' + (r.ready == null ? '안 함' : r.ready + '/' + r.max)).join(', '), {}, kids);
+  }
+
+  /* 4. 판정 세 가지 — 도장 셋 · 안에 몇 번 · 아래 이름 */
+  function tallyInk(counts = []) {
+    const C = [0, 1, 2].map(i => counts[i] || {name: ['쉬어', '반만', '준비됨'][i], v: 0});
+    const COL = [NAVY, ACC, INK], XS = [70, 195, 320], ROT = [-4, 3, -2];
+    const kids = [K.M('fade', 1, K.br([[18, 150], [195, 147], [372, 150]], 1.6, {a: 0.4, b: 0.4, c: SOFT, al: 0.6}))];
+    C.forEach((c, i) => {
+      const x = XS[i], y = 68, v = Math.max(0, +c.v || 0);
+      const P = []; for (let k = 0; k < 24; k++) { const t = (k / 24) * Math.PI * 2, sq = 1 / Math.max(Math.abs(Math.cos(t)), Math.abs(Math.sin(t))), w = 1 + 0.035 * Math.sin(7 * t + i * 2); P.push([Math.cos(t) * Math.min(sq, 1.3) * 36 * w, Math.sin(t) * Math.min(sq, 1.3) * 36 * w]); }
+      kids.push(K.M('pop', 2 + i, K.g(K.at(x, y, 1, ROT[i]),
+        K.wash(P, 0.92, COL[i]),
+        K.s('rect', {x: -29, y: -29, width: 58, height: 58, rx: 4, fill: 'none', stroke: PAPER, 'stroke-width': 1.6, 'stroke-opacity': 0.75}),
+        K.s('text', {x: 0, y: 9, class: 'g-tk', 'font-size': 25, 'text-anchor': 'middle', fill: PAPER, 'font-weight': 700, text: v + '번'}))));
+      kids.push(K.M('fade', 2 + i, K.s('text', {x, y: 136, class: 'g-ts', 'font-size': 18, 'text-anchor': 'middle', fill: INK, 'font-weight': 700, text: c.name})));
+    });
+    return svg('ik-tally', '0 0 390 170', '판정 — ' + C.map(c => c.name + ' ' + (+c.v || 0) + '번').join(', '), {}, kids);
+  }
+
+  return {whyPic, journalPic, groupInk, tallyInk};
+})({...KIT, M}, {stand: (x, y, sc, o) => SONMU.stand(x, y, sc, o)});
+/* >WHYK */

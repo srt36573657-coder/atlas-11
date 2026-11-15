@@ -3,7 +3,8 @@
    화면(꽃잎 열하나 · 한 달 뒤 활 · 기록 시간 줄 · 판정 기둥)은 새로 씀(시안 11 「사기 전에 멈춤」) · 주문 1807: 값마다 「그래서」 뜻 줄 · 「전문가용 자세히」(점수 셈 · 판정 문턱 · 기록 줄) */
 import {CODE, won100, dateKo} from '/su/su-data.js';
 import {NEED, val, eQuizResult, eJournal} from '/su/su-six.js';
-import {h, s, fig, bars, tally3} from '/su/su-fig.js';
+import {h} from '/su/su-fig.js';
+import {whyPic, journalPic, groupInk, tallyInk} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0300 — 옛 꽃잎 · 시간 줄 · 기둥 · 막대 그림을 지우고 손자병법 판으로)
 import {tally} from '/next/tally.js'; // 합계 칸 신호(① 멈춤 · 약속) — 예전 앱 「왜 사?」와 같은 한 곳
 
 const cache = new Map();
@@ -130,21 +131,8 @@ async function laterOf(r, W) {
 const SHAPE = {g: '●', y: '▲', r: '■'}, TONE_W = {g: '좋아요', y: '한 번 더 생각', r: '멈춰요'};
 const PETAL = 'M0 0 C 10 -14, 10 -40, 0 -58 C -10 -40, -10 -14, 0 0 Z';
 /** 꽃잎 열하나 — tones[k] = 'g' | 'y' | 'r' | null · cur = 지금 질문 */
-function petals(tones, {cur = null, label = '열한 질문 꽃잎', hero = false, cap = null, arc = null, title = null} = {}) {
-  const W = 390, H = arc ? 540 : 460, cx = W / 2, cy = 228, n = WHY_QS.length, RN = 152; // 번호는 꽃잎 밖(크기를 바꾸지 않은 칸 · 글 21)
-  const R = 2.2; // 꽃잎 크기(그림이 주인)
-  const leaves = tones.map((t, k) => s('g', {transform: `translate(${cx} ${cy}) rotate(${k * 360 / n}) scale(${R})`}, // 움직임은 안쪽 칸에만(밖 칸의 자리 · 돌림을 css 가 덮지 않게)
-    s('g', {class: (t ? (t === 'g' ? 'b2' : 'b3') : 'b1') + ' a-pop'}, s('path', {d: PETAL, class: t ? 'g-pt-' + t : k === cur ? 'g-pt-cur' : 'g-pt-0'}))));
-  const nums = tones.map((t, k) => { const a = k * 2 * Math.PI / n; return s('text', {x: (cx + RN * Math.sin(a)).toFixed(1), y: (cy - RN * Math.cos(a) + 8).toFixed(1), class: 'g-tx b1 a-fade' + (k === cur ? ' g-on' : ''), 'text-anchor': 'middle', text: String(k + 1)}); });
-  const core = s('g', {class: 'b4 a-pop'}, s('circle', {cx, cy, r: 40, class: 'g-pc2'}), s('text', {x: cx, y: cy + 9, class: 'g-tk', 'text-anchor': 'middle', text: tones.filter(Boolean).length + '/' + n}));
-  const bow = arc ? s('g', {class: 'b4 a-up'},
-    s('path', {d: `M 40 ${H - 40} Q ${cx} ${H - 110} ${W - 40} ${H - 40}`, class: 'g-arc', pathLength: 1}),
-    s('circle', {cx: 40, cy: H - 40, r: 9, class: 'g-ok'}), s('circle', {cx: W - 40, cy: H - 40, r: 9, class: 'g-cur'}),
-    s('text', {x: 40, y: H - 10, class: 'g-tx', 'text-anchor': 'start', text: '오늘'}), s('text', {x: W - 40, y: H - 10, class: 'g-tx', 'text-anchor': 'end', text: arc})) : null;
-  return fig('petals', label, s('svg', {class: 'su-svg', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': label}, leaves, nums, core, bow), {hero, cap, title});
-}
-/** 네 묶음 막대 — 준비된 만큼(높을수록 좋음) */
-const groupBars = (rows, title) => bars(rows.map(r => ({name: r.n, v: r.ready, v2: null, key: r.n, cls: 'g-tone-' + r.tone, t: r.ready + ' / ' + r.max})), {label: '네 묶음 · 준비된 만큼', title, max: Math.max(...rows.map(r => r.max))});
+/** 네 묶음 — 준비된 만큼(높을수록 좋음) · 먹 붓 막대 */
+const groupFig = rows => groupInk(rows.map(r => ({n: r.n, ready: r.ready, max: r.max})));
 const groupRowsOf = groups => WHY_GROUPS.map(([n, qs]) => { const max = qs.length * 2, v = groups?.[n]; const val = Number.isFinite(v) ? v : null; return {n, max, ready: val == null ? null : Math.round((max - val) * 10) / 10, tone: val == null ? 'y' : val === 0 ? 'g' : val * 2 >= max ? 'r' : 'y'}; });
 
 /** 7 「왜 사?」 — 질문 하나씩 · 다 답하면 결과(같은 쪽에서 다시 그림) */
@@ -154,8 +142,6 @@ export async function vQuiz(code0, X) {
   const co = code ? await get(D.co(code)) : null, c = co?.c ?? null, name = typeof c?.name === 'string' ? c.name : null;
   if (code && name) X.setCur({code, name, ind: typeof c.i === 'string' ? c.i : null});
   const Q = {i: 0, ans: new Array(WHY_QS.length).fill(null), J: null, saved: false};
-  const ART = await X.artMod?.('su-stop-jobs', 'quiz'); // 무하 「달과 별」 — 모래시계를 든 여인 · 열한 질문 별자리(주문 1023) · 누를 때마다 다시 그리므로 한 번만 받음
-  const pic = (cur, done, old) => X.heroOf(X.artFig?.(ART, {cur, done}) ?? null, old);
   const tonesNow = () => Q.ans.map((k, i) => (k == null ? null : WHY_A[i][k][0]));
   const btn = (cls, kids, on) => { const b = h('button', {class: cls, type: 'button'}, kids); b.addEventListener('click', on); return b; };
   const redraw = (keep = false) => {
@@ -182,7 +168,7 @@ export async function vQuiz(code0, X) {
         {k: '답 셋의 점수', v: '● 0 · ▲ 1 · ■ 2', how: '■ 은 빨간 답 · 답 점수는 답마다 이 점수를 더한 값이라 낮을수록 준비됨 · 준비 점수는 ' + WHY_MAX + '에서 답 점수를 뺀 값이라 높을수록 준비됨'},
         {k: '판정 문턱', v: '쉬어 · 반만 · 준비됨', how: JUDGE_HOW},
         {k: '답한 질문', v: Q.ans.filter(x => x != null).length + ' / ' + WHY_QS.length, how: '이 휴대폰에서 지금 답한 수'}],
-      ...pic(i + 1, Q.ans.filter(x => x != null).length, petals(tonesNow(), {cur: i, label: '열한 질문 꽃잎', hero: true, cap: ['사기 전에 열한 가지를 물어요.', (i + 1) + '번째 질문이에요. 답한 잎에 색이 들어요.', '그런데 맞히는 시험이 아니에요.', '그래서 내 마음 그대로 답해요.']})),
+      seal: '멈춤', ink: whyPic(tonesNow(), i), say: '사기 전에 한 번 멈춰요. ' + (i + 1) + '번째 질문이에요. 맞히는 시험이 아니니 내 마음 그대로 답해요.',
       act: [h('ul', {class: 'su-ans', 'aria-label': '답 셋'}, WHY_A[i].map(([tone, label], k) => h('li', {}, // 누르는 곳은 그림 바로 아래(신문 짜임에서도 기능은 그대로 — 주문 1023 [2] 3)
           btn('su-a' + (a === k ? ' on' : ''), [h('i', {class: 'su-shape ' + tone, 'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label})], () => { Q.ans[i] = k; redraw(true); })))),
         ch ? btn('su-big-btn su-qnext', [h('span', {class: 'su-nk', text: last ? '끝 · 결과' : (i + 2) + ' / ' + WHY_QS.length}), h('b', {text: last ? '결과 보기' : '다음 질문'}), h('i', {'aria-hidden': 'true', text: '›'})], () => { if (last) finish(); else { Q.i = i + 1; redraw(); } }) : null,
@@ -197,13 +183,11 @@ export async function vQuiz(code0, X) {
     const e = eQuizResult({score: J.ready, max: WHY_MAX, verdict: J.verdict, reds: J.reds, type: T[0], day: seoulDay(Date.now()), name});
     const big = J.sell ? Object.freeze({...e.big, mean: WHY_SELL_SAY}) : e.big; // 7번 「안 정함」 — 큰 값 밑 「그래서」 줄(그림 밖에 보이는 설명 두 줄)이 안내 한 줄(주문 1114-1306 ④)
     return {title: '왜 사? 결과', tab: 2, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 결과', h1: J.verdict, big,
-      ...pic(WHY_QS.length, WHY_QS.length, petals(tonesNow(), {label: '내 답 꽃잎 열하나와 한 달 뒤', hero: true, arc: '한 달 뒤 · 장 스무 번',
-        cap: ['질문 열한 개에 모두 답했어요.', '준비는 ' + WHY_MAX + '점 가운데 ' + J.ready + '점이에요.',
+      seal: '멈춤', ink: whyPic(tonesNow(), null), say: ['질문 열한 개에 모두 답했어요.', '준비는 ' + WHY_MAX + '점 가운데 ' + J.ready + '점이에요.',
           J.money && J.sell ? '그런데 빌린 돈이나 곧 쓸 돈이고, 팔 곳도 안 정했어요.' : J.money ? '그런데 내 돈 거의 다나 빌린 돈, 곧 쓸 돈이라고 답했어요.' : J.sell ? '그런데 떨어질 때 팔 곳을 안 정했다고 답했어요.'
             : weak ? '그런데 ' + weak.n + ' 묶음이 가장 덜 준비됐어요.' : '그런데 답은 오늘 마음일 뿐이에요.',
-          v === 'go' ? '그래서 정해 둔 대로만 해요.' : v === 'wait' ? '그래서 덜 된 묶음부터 채워요.' : '그래서 오늘은 하루 쉬어 가요.']})),
-      mids: e.mids,
-      figs: [groupBars(rows, '네 묶음 · 준비된 만큼')],
+          v === 'go' ? '그래서 정해 둔 대로만 해요.' : v === 'wait' ? '그래서 덜 된 묶음부터 채워요.' : '그래서 오늘은 하루 쉬어 가요.'].join(' '),
+      figs: [groupFig(rows)],
       pro: [{k: '준비 점수', v: J.ready + ' / ' + WHY_MAX, how: '답마다 ● 0 · ▲ 1 · ■ 2 를 더한 값을 ' + WHY_MAX + '에서 뺌'}, {k: '빨간 답', v: J.reds + '개', how: '■ 멈춰요 쪽 답'},
         ...WHY_GROUPS.map(([g, qs]) => ({k: g + ' 묶음 점수', v: (J.groups[g] ?? 0) + ' / ' + qs.length * 2, how: '질문 ' + qs.join(' · ') + '번 · 낮을수록 준비됨'})),
         {k: '판정 문턱', v: '쉬어 · 반만 · 준비됨', how: JUDGE_HOW}],
@@ -221,20 +205,6 @@ export async function vQuiz(code0, X) {
   return model();
 }
 
-/** 기록 시간 줄 — 기록마다 점(판정 색) · 한 달 뒤 동그라미(지났으면 채움) */
-function timeline(metas, {label = '내 기록 시간 줄', hero = false, cap = null} = {}) {
-  const W = 390, H = 440, L = 24, R = 24, ts = metas.map(m => Date.parse(m.r.at)).filter(Number.isFinite), now = Date.now();
-  const t0 = ts.length ? Math.min(...ts) : now - 30 * 864e5, t1 = Math.max(now, ...ts.map(t => t + 30 * 864e5));
-  const x = t => L + (W - L - R) * ((t - t0) / Math.max(1, t1 - t0));
-  const g = metas.slice(0, 40).map((m, i) => { const t = Date.parse(m.r.at); if (!Number.isFinite(t)) return null; const y = 70 + (i % 5) * 34, tone = toneOf(WHY_V[m.r.verdict]);
-    return s('g', {}, s('line', {x1: x(t), y1: y, x2: x(t + 30 * 864e5), y2: y, class: 'g-grid b2 a-fade'}), s('circle', {cx: x(t), cy: y, r: 10, class: 'g-pt-' + tone + ' b2 a-pop'}),
-      s('circle', {cx: x(t + 30 * 864e5), cy: y, r: 10, class: (m.due ? 'g-cur' : 'g-empty') + ' b3 a-pop'})); });
-  return fig('timeline', label, s('svg', {class: 'su-svg', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': label},
-    s('text', {x: L, y: 36, class: 'g-tx b1 a-fade', text: '● 답한 날 · ○ 한 달 뒤 묻는 날'}),
-    s('line', {x1: L, y1: 390, x2: W - R, y2: 390, class: 'g-axis b1 a-fade'}), s('line', {x1: x(now), y1: 56, x2: x(now), y2: 396, class: 'g-baseline b4 a-fade'}),
-    s('text', {x: Math.min(W - R, Math.max(L, x(now))), y: 424, class: 'g-tx b4 a-fade', 'text-anchor': 'middle', text: '오늘'}), g,
-    metas.length ? null : s('g', {class: 'b2 a-fade'}, s('text', {x: W / 2, y: 200, class: 'g-t', 'text-anchor': 'middle', text: '아직 기록이 없어요'}), s('text', {x: W / 2, y: 236, class: 'g-tx', 'text-anchor': 'middle', text: '「왜 사?」에 답하면 여기 점이 생겨요'}))), {hero, cap});
-}
 function dueBox(dues, X) {
   const r = dues[0], b1 = h('button', {class: 'su-kb', type: 'button', text: '했어'}), b2 = h('button', {class: 'su-kb', type: 'button', text: '안 했어'});
   const ask = yes => () => { if (b1.disabled) return; b1.disabled = b2.disabled = true; keepWhy(r, yes); tally(yes ? 'promise_yes' : 'promise'); window.dispatchEvent(new HashChangeEvent('hashchange')); };
@@ -259,6 +229,11 @@ function recCard(r, W, L) {
       h('span', {text: ' · 코스피 '}), wonSpan(L.kospi), h('span', {text: ' · 모든 회사 가운데 값 '}), wonSpan(L.med)) : null,
     !r.kept && !W?.e ? h('p', {class: 'su-note', text: '한 달이 지나면 그날 정한 대로 했는지 먼저 물어요.'}) : null);
 }
+/** 기록 → 먹그림 돌(날짜 자리 0 ~ 1 · 판정 모양 · 한 달 지남 · 약속 답) */
+function inkItems(metas) {
+  const ts = metas.map(m => Date.parse(m.r.at)).filter(Number.isFinite), now = Date.now(), t0 = ts.length ? Math.min(...ts) : now - 30 * 864e5, t1 = Math.max(now, ...ts) + 1;
+  return metas.slice(0, 40).map(m => { const t = Date.parse(m.r.at); return Number.isFinite(t) ? {x: (t - t0) / Math.max(1, t1 - t0), tone: toneOf(WHY_V[m.r.verdict]), due: !!m.due, kept: m.r.kept?.a ?? null} : null; }).filter(Boolean);
+}
 /** 8 내 매매일지(결 · 끝) */
 export async function vJournal(X) {
   const {S, asOf} = await X.base();
@@ -271,10 +246,8 @@ export async function vJournal(X) {
   const avg = {}; for (const [n] of WHY_GROUPS) { const v = full.map(r => r.groups?.[n]).filter(Number.isFinite); avg[n] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }
   const e = eJournal({recs: full, due: dues.length, kept, asked, lastDay: full[0] ? dayOf(full[0]) : null});
   return {title: '매매일지', tab: 3, step: 5, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
-    ...X.artHero('su-stop-jobs', 'journal', timeline(metas, {label: '내 기록 시간 줄 · 한 달 뒤 동그라미', hero: true, cap: e.say})),
-    mids: e.mids,
-    figs: full.length ? [tally3([{name: VSHORT.rest, v: vc.rest, cls: 'g-pt-r'}, {name: VSHORT.wait, v: vc.wait, cls: 'g-pt-y'}, {name: VSHORT.go, v: vc.go, cls: 'g-pt-g'}], {label: '판정 셋', title: '판정 · 쉬어 · 반만 · 준비됨'}),
-      groupBars(groupRowsOf(avg), '네 묶음 평균 · 준비된 만큼')] : [petals(new Array(WHY_QS.length).fill(null), {label: '열한 질문 꽃잎', title: '열한 질문 · 아직 빈 꽃잎'})], // 기록이 없으면 0 칸 기둥 대신 빈 꽃잎 하나(판정 칸은 첫 기록 뒤에)
+    seal: '일지', ink: journalPic(inkItems(metas)), say: [e.say].flat().filter(Boolean).slice(0, 2).join(' '),
+    figs: full.length ? [tallyInk([{name: VSHORT.rest, v: vc.rest}, {name: VSHORT.wait, v: vc.wait}, {name: VSHORT.go, v: vc.go}]), groupFig(groupRowsOf(avg))] : [whyPic(new Array(WHY_QS.length).fill(null), null)], // 기록이 없으면 빈 돌 열하나(판정 칸은 첫 기록 뒤에)
     act: dues.length ? [dueBox(dues, X)] : null, // 한 달 전 약속 — 답할 것이 있을 때만 그림 바로 아래(누르는 곳 · 주문 1023 [2] 3)
     body: [
       full.length ? h('section', {class: 'su-why', 'aria-label': '쌓인 기록'}, h('h2', {class: 'su-ft', text: '쌓인 기록 ' + full.length + '번'}),
