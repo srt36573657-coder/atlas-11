@@ -50,6 +50,41 @@ const ring = (x, y, r, w = 1.6, c = INK, al = 1) => s('circle', {cx: r1(x), cy: 
 const line = (x1, y1, x2, y2, w = 1.4, c = INK, al = 1) => s('line', {x1: r1(x1), y1: r1(y1), x2: r1(x2), y2: r1(y2), stroke: c, 'stroke-width': w, 'stroke-linecap': 'round', ...(al < 1 ? {'stroke-opacity': al} : {})});
 const g = (tr, ...kids) => s('g', tr ? {transform: tr} : {}, ...kids.flat().filter(Boolean));
 const at = (x, y, sc = 1, rot = 0) => 'translate(' + r1(x) + ' ' + r1(y) + ')' + (rot ? ' rotate(' + rot + ')' : '') + (sc !== 1 ? ' scale(' + sc + ')' : '');
+/* ── 움직임(주문 1116-0209 — 사장님 01:09 「… 지금 그린그림들이 상황애 맞게 3단애서 7간으로 자연스럽게 움직이게 …」 · 01:12 「응」)
+   · 그림이 화면에 들어오면 한 번 놀고 멈춤(단계 1 ~ 7 · 단계마다 0.5초) · 움직임은 변환이 없는 감싼 묶음(g.ik-m)에만 — 제자리 변환(transform 속성)을 덮지 않게
+   · 움직이기 전 모습 = 끝 모습(바른 셈 · 움직임이 없는 휴대폰도 같은 그림) · 휴대폰에서 움직임을 줄여 두면 멈춘 그림 그대로(su-sonja.css)
+   · 무엇이 어떻게 움직이나 = 그림 부품 이름(data-mo) → 움직임(MO) · 꾀 그림마다 따로 정한 움직임(ANIM) */
+const mo = (name, el) => { el?.setAttribute?.('data-mo', name); return el; };
+/** 감싼 묶음 — motion(움직임 이름) · st(단계 1 ~ 7 또는 차례 이름 'ik-bq3' 같은 것) */
+export const M = (motion, st, ...kids) => s('g', {class: 'ik-m ik-' + motion + ' ' + (typeof st === 'number' ? 'ik-s' + Math.max(1, Math.min(7, st | 0)) : st)}, ...kids.flat().filter(Boolean));
+let IO = null;
+const lessMotion = () => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; } };
+/** 그림 하나를 지켜봄 — 화면 가까이 오면 ik-play(한 번) · 지켜볼 수 없으면 끝 모습 그대로 */
+export function watch(svg) {
+  svg.classList.add('ik-anim');
+  if (typeof IntersectionObserver !== 'function' || lessMotion()) return svg;
+  svg.classList.add('ik-wait'); // 처음 칠할 때 끝 모습이 한 번 번쩍이지 않게(지켜볼 수 있을 때만 · 화면 가까이 오면 ik-play)
+  IO ??= new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) { e.target.classList.add('ik-play'); IO.unobserve(e.target); } }, {rootMargin: '0px', threshold: 0.2});
+  IO.observe(svg);
+  return svg;
+}
+/** 그림 부품 → 움직임(상황에 맞게: 배는 나아가고 · 불은 일렁이고 · 새는 날아들고 · 깃발은 서고 · 나무는 자람) */
+const MO = Object.freeze({ground: 'fade', hills: 'fade', mountain: 'rise', mist: 'drift', waves: 'drift', moon: 'glow', sun: 'glow', general: 'walk', walker: 'walk', sitter: 'rise',
+  boat: 'sail', castle: 'rise', gate: 'rise', pavilion: 'rise', tent: 'rise', roof: 'drop', frame: 'rise', brick: 'drop', steps: 'rise', road: 'fade', cliff: 'rise', cage: 'drop', shield: 'rise', cauldron: 'rise', logs: 'drop', qin: 'rise',
+  pine: 'grow', tree: 'grow', bare: 'grow', grass: 'grow', blossom: 'pop', peony: 'pop', fire: 'flicker', drum: 'beat', sound: 'pulse', sword: 'strike', staff: 'strike', hand: 'strike', fan: 'sway',
+  sheep: 'walk', tiger: 'walk', rope: 'drop', chain: 'drop', net: 'drop', snake: 'rear', bird: 'fly', cicada: 'fly', jade: 'glow', fish: 'swim', shell: 'fade', letter: 'drop', ladder: 'rise', bigFlag: 'wave', bundle: 'drop', arrowsOut: 'shoot', scarecrow: 'sway',
+  banner: 'stand', bannerDn: 'lean', arrow: 'shoot', stone: 'pop'});
+export const MOTIONS = Object.freeze(['fade', 'rise', 'sail', 'sailL', 'drift', 'flicker', 'fly', 'flyL', 'stand', 'lean', 'grow', 'drop', 'sway', 'pulse', 'glow', 'walk', 'walkL', 'swim', 'beat', 'strike', 'rear', 'wave', 'shoot', 'snap', 'pop', 'wipe', 'wipeL', 'roll', 'tie', 'shake', 'none']);
+const moOf = el => { const m = el?.getAttribute?.('data-mo'); if (m) return m; const c = el?.getAttribute?.('class') ?? ''; return /ik-bn/.test(c) ? (/ik-dn/.test(c) ? 'bannerDn' : 'banner') : /ik-ar/.test(c) ? 'arrow' : /ik-st/.test(c) ? 'stone' : null; };
+/** 꾀 그림 부품들을 단계대로 감쌈 — spec[i] = [움직임, 단계](없으면 부품 이름으로 · 차례대로 3 ~ 7 단계) */
+function wrapItems(items, spec) {
+  const n = items.length, S = Math.min(7, Math.max(3, n));
+  return items.map((el, i) => {
+    const sp = Array.isArray(spec?.[i]) ? spec[i] : null, m = moOf(el), motion = sp && MOTIONS.includes(sp[0]) ? sp[0] : MO[m] ?? 'fade';
+    if (motion === 'none') return el;
+    return M(motion, sp && Number.isFinite(sp[1]) ? sp[1] : m === 'ground' || m === 'hills' ? 1 : 1 + Math.floor((i * S) / n), el);
+  });
+}
 /** 그림 속 이름표(글 — 18 넘게 · 먹 색 · 가운데 맞춤 기본) */
 export const label = (x, y, t, {size = 19, anchor = 'middle', c = INK, weight = 700, cls = 'ik-t'} = {}) => s('text', {x: r1(x), y: r1(y), 'font-size': size, 'text-anchor': anchor, fill: c, 'font-weight': weight, class: cls, text: t});
 
@@ -63,12 +98,12 @@ export function mountain(ridge, base, {al = 0.13, w = 3.2, seed = 1, tex = 6, ed
     const j = 1 + Math.floor(R() * (ridge.length - 2)), p = ridge[j], d = 10 + R() * 22, x = p[0] + (R() - 0.5) * 18;
     kids.push(br([[x, p[1] + 6], [x - 4 - R() * 6, p[1] + 6 + d * 0.5], [x - 8 - R() * 8, p[1] + 6 + d]], 1.6 + R() * 1.4, {a: 0.3, b: 0.1, al: 0.45}));
   }
-  return g(null, kids);
+  return mo('mountain', g(null, kids));
 }
 /** 먼 산(옅음 · 등선 없음) */
-export const farHills = (ridge, base, al = 0.07) => wash([...ridge, [ridge[ridge.length - 1][0], base], [ridge[0][0], base]], al);
+export const farHills = (ridge, base, al = 0.07) => mo('hills', wash([...ridge, [ridge[ridge.length - 1][0], base], [ridge[0][0], base]], al));
 /** 안개 띠(한지 색) */
-export const mist = (x, y, w, h, al = 0.82) => s('ellipse', {cx: r1(x), cy: r1(y), rx: r1(w / 2), ry: r1(h / 2), fill: PAPER, 'fill-opacity': al});
+export const mist = (x, y, w, h, al = 0.82) => s('ellipse', {cx: r1(x), cy: r1(y), rx: r1(w / 2), ry: r1(h / 2), fill: PAPER, 'fill-opacity': al, 'data-mo': 'mist'});
 /** 물결 — 가는 획 여러 줄 */
 export function waves(x0, x1, y, {rows = 3, amp = 3, gap = 9, seed = 2, al = 0.7, w = 1.3} = {}) {
   const R = rng(seed), kids = [];
@@ -77,10 +112,10 @@ export function waves(x0, x1, y, {rows = 3, amp = 3, gap = 9, seed = 2, al = 0.7
     for (let x = xs; x <= xe; x += 12) P.push([x, yy + Math.sin((x + r * 7) / 8) * amp]);
     if (P.length > 1) kids.push(br(P, w + R() * 0.8, {a: 0.2, b: 0.2, peak: 0.5, al: al - r * 0.12}));
   }
-  return g(null, kids);
+  return mo('waves', g(null, kids));
 }
-export const moon = (x, y, r) => g(null, dot(x, y, r + 7, 0.06), s('circle', {cx: r1(x), cy: r1(y), r: r1(r), fill: PAPER, stroke: INK, 'stroke-width': 1.3, 'stroke-opacity': 0.55}));
-export const sun = (x, y, r) => g(null, dot(x, y, r + 8, 0.07, ACC), dot(x, y, r, 0.55, ACC));
+export const moon = (x, y, r) => mo('moon', g(null, dot(x, y, r + 7, 0.06), s('circle', {cx: r1(x), cy: r1(y), r: r1(r), fill: PAPER, stroke: INK, 'stroke-width': 1.3, 'stroke-opacity': 0.55})));
+export const sun = (x, y, r) => mo('sun', g(null, dot(x, y, r + 8, 0.07, ACC), dot(x, y, r, 0.55, ACC)));
 
 /* ── 장수(뒷모습 실루엣 · 얼굴 0) ── */
 /** 장수 — 발 자리(x, y) · 키 = 100 × sc · 창과 깃발 · facing = -1 이면 왼쪽을 봄 */
@@ -95,17 +130,17 @@ export function general(x, y, sc = 1, {facing = -1, flag = true, spear = true} =
   const sx = 16 * -f;
   const sp = spear ? [br([[sx, 2], [sx + 2 * -f, -60], [sx + 3 * -f, -128]], 2.6, {a: 0.9, b: 0.6, peak: 0.5}), s('path', {fill: INK, d: `M${sx + 3 * -f - 3} -126 L${sx + 3 * -f} -140 L${sx + 3 * -f + 3} -126Z`})] : [];
   const fl = spear && flag ? s('path', {fill: ACC, 'fill-opacity': 0.85, d: `M${sx + 3 * -f} -122 C${sx + 3 * -f + 14 * f} -120 ${sx + 3 * -f + 22 * f} -116 ${sx + 3 * -f + 34 * f} -118 C${sx + 3 * -f + 28 * f} -108 ${sx + 3 * -f + 30 * f} -100 ${sx + 3 * -f + 36 * f} -92 C${sx + 3 * -f + 22 * f} -96 ${sx + 3 * -f + 12 * f} -94 ${sx + 3 * -f} -98Z`}) : null;
-  return g(at(x, y, sc), dot(0, 1, 16, 0.12), ...legs, body, hem, brim, head, plume, ...sp, fl);
+  return mo('general', g(at(x, y, sc), dot(0, 1, 16, 0.12), ...legs, body, hem, brim, head, plume, ...sp, fl));
 }
 /** 앉은 사람(뒷모습 · 삿갓) */
 export function sitter(x, y, sc = 1) {
-  return g(at(x, y, sc), dot(0, 0, 14, 0.1), s('path', {fill: INK, d: 'M-14 0 C-16 -10 -12 -24 -6 -28 C-2 -30 2 -30 6 -28 C12 -24 16 -10 14 0Z'}),
-    s('path', {fill: INK, d: 'M-16 -30 L0 -42 L16 -30 C8 -28 -8 -28 -16 -30Z'}));
+  return mo('sitter', g(at(x, y, sc), dot(0, 0, 14, 0.1), s('path', {fill: INK, d: 'M-14 0 C-16 -10 -12 -24 -6 -28 C-2 -30 2 -30 6 -28 C12 -24 16 -10 14 0Z'}),
+    s('path', {fill: INK, d: 'M-16 -30 L0 -42 L16 -30 C8 -28 -8 -28 -16 -30Z'})));
 }
 /** 걷는 사람(뒷모습 · 봇짐) */
 export function walker(x, y, sc = 1) {
-  return g(at(x, y, sc), s('path', {fill: INK, d: 'M-8 -4 C-10 -18 -9 -34 -6 -40 C-3 -44 3 -44 6 -40 C9 -34 10 -18 8 -4Z'}), s('ellipse', {cx: 0, cy: -48, rx: 5.5, ry: 6.5, fill: INK}),
-    br([[-4, -4], [-9, 6]], 3.4, {a: 1, b: 0.7}), br([[4, -4], [7, 5]], 3.4, {a: 1, b: 0.7}), br([[6, -36], [18, -52]], 2, {a: 1, b: 1}), s('ellipse', {cx: 20, cy: -54, rx: 6, ry: 5, fill: INK, 'fill-opacity': 0.8}));
+  return mo('walker', g(at(x, y, sc), s('path', {fill: INK, d: 'M-8 -4 C-10 -18 -9 -34 -6 -40 C-3 -44 3 -44 6 -40 C9 -34 10 -18 8 -4Z'}), s('ellipse', {cx: 0, cy: -48, rx: 5.5, ry: 6.5, fill: INK}),
+    br([[-4, -4], [-9, 6]], 3.4, {a: 1, b: 0.7}), br([[4, -4], [7, 5]], 3.4, {a: 1, b: 0.7}), br([[6, -36], [18, -52]], 2, {a: 1, b: 1}), s('ellipse', {cx: 20, cy: -54, rx: 6, ry: 5, fill: INK, 'fill-opacity': 0.8})));
 }
 
 /* ── 깃발 · 화살 · 디딤돌(셈을 그림으로) ── */
@@ -121,13 +156,13 @@ export function banner(x, y, h = 46, up = true, sc = 1, c = ACC) {
 export function arrow(x, y, len = 44, broken = false, sc = 1) {
   if (!broken) return s('g', {class: 'ik-ar', transform: at(x, y, sc)}, br([[0, 0], [0, -len]], 2.2, {a: 1, b: 1}), s('path', {fill: INK, d: `M-4 ${-len + 4} L0 ${-len - 6} L4 ${-len + 4}Z`}), br([[0, -2], [-5, 6]], 1.6, {a: 1, b: 0.4}), br([[0, -2], [5, 6]], 1.6, {a: 1, b: 0.4}));
   return s('g', {class: 'ik-ar ik-broken', transform: at(x, y, sc)}, br([[0, 0], [0, -len * 0.45]], 2.2, {a: 1, b: 1, al: 0.75}), br([[0, -2], [-5, 6]], 1.6, {a: 1, b: 0.4, al: 0.75}), br([[0, -2], [5, 6]], 1.6, {a: 1, b: 0.4, al: 0.75}),
-    g('translate(6 ' + r1(-len * 0.5) + ') rotate(38)', br([[0, 0], [0, -len * 0.42]], 2.2, {a: 1, b: 1, c: NAVY}), s('path', {fill: NAVY, d: `M-4 ${-len * 0.42 + 4} L0 ${-len * 0.42 - 6} L4 ${-len * 0.42 + 4}Z`})));
+    M('snap', 4, g('translate(0 ' + r1(-len * 0.45) + ') rotate(38)', br([[0, 0], [0, -len * 0.42]], 2.2, {a: 1, b: 1, c: NAVY}), s('path', {fill: NAVY, d: `M-4 ${-len * 0.42 + 4} L0 ${-len * 0.42 - 6} L4 ${-len * 0.42 + 4}Z`}))));
 }
 /** 디딤돌 — 칠한 돌(same) · 오늘 돌(now) */
 export function stone(x, y, r = 7, same = false, now = false, seed = 3) {
   const R = rng(seed), P = [];
   for (let i = 0; i < 9; i++) { const t = (i / 9) * Math.PI * 2, k = r * (0.82 + R() * 0.3); P.push([x + Math.cos(t) * k * 1.25, y + Math.sin(t) * k * 0.72]); }
-  return s('g', {class: 'ik-st' + (same ? ' ik-same' : '') + (now ? ' ik-now' : '')}, now ? ring(x, y, r * 1.7, 1.6, NAVY) : null, same ? wash(P, 0.85, now ? NAVY : INK) : s('path', {d: 'M' + spline([...P, P[0]], 30).map(p => r1(p[0]) + ' ' + r1(p[1])).join('L') + 'Z', fill: 'none', stroke: INK, 'stroke-width': 1.4, 'stroke-opacity': 0.6}));
+  return s('g', {class: 'ik-st' + (same ? ' ik-same' : '') + (now ? ' ik-now' : '')}, now ? M('pulse', 'ik-tq21', ring(x, y, r * 1.7, 1.6, NAVY)) : null, same ? wash(P, 0.85, now ? NAVY : INK) : s('path', {d: 'M' + spline([...P, P[0]], 30).map(p => r1(p[0]) + ' ' + r1(p[1])).join('L') + 'Z', fill: 'none', stroke: INK, 'stroke-width': 1.4, 'stroke-opacity': 0.6}));
 }
 
 /* ── 사물(꾀 그림 부품) — 모두 제 자리(0,0) 둘레 · 크기 ≈ 60 ── */
@@ -187,15 +222,15 @@ const P_ = {
   bigFlag: () => g(null, br([[0, 0], [0, -56]], 3.2, {a: 1, b: 0.6}), s('path', {fill: NAVY, 'fill-opacity': 0.88, d: 'M0 -56 C12 -58 22 -52 34 -56 C30 -44 32 -36 38 -26 C24 -30 12 -28 0 -32Z'}), ring(18, -42, 26, 1.4, INK, 0.45)),
   hand: () => g(null, br([[-20, 0], [-6, -2], [8, -8], [18, -16]], 5, {a: 0.6, b: 0.5, al: 0.85})),
 };
-const motif = (name, x, y, sc = 1, rot = 0) => (P_[name] ? g(at(x, y, sc, rot), P_[name]()) : null);
+const motif = (name, x, y, sc = 1, rot = 0) => (P_[name] ? mo(name, g(at(x, y, sc, rot), P_[name]())) : null);
 
 /* ── 꾀 서른여섯 그림(삼십육계 옛 이야기를 새로 그림 · 200 × 150) ── */
-const GROUND = (y = 128, al = 0.1) => wash([[0, y], [60, y - 4], [140, y - 2], [200, y - 5], [200, 150], [0, 150]], al);
+const GROUND = (y = 128, al = 0.1) => mo('ground', wash([[0, y], [60, y - 4], [140, y - 2], [200, y - 5], [200, 150], [0, 150]], al));
 const SC = {
-  g01: () => [farHills([[0, 70], [40, 52], [90, 62], [150, 48], [200, 60]], 100, 0.06), moon(160, 32, 12), waves(10, 190, 96, {rows: 4, seed: 11}), mist(70, 90, 120, 18, 0.85), motif('boat', 92, 108, 0.9)], // 몰래 바다 건너기
+  g01: () => [farHills([[0, 70], [40, 52], [90, 62], [150, 48], [200, 60]], 100, 0.06), moon(126, 30, 11), waves(10, 190, 96, {rows: 4, seed: 11}), mist(70, 90, 120, 18, 0.85), motif('boat', 92, 108, 0.9)], // 몰래 바다 건너기
   g02: () => [GROUND(), motif('castle', 52, 124, 0.8), motif('castle', 152, 118, 0.62), motif('arrowsOut', 80, 92, 1), ...[0, 1, 2].map(i => motif('fire', 140 + i * 9, 92, 0.3))], // 딴 데 쳐서 구하기
   g03: () => ([farHills([[0,96],[50,84],[110,92],[200,80]],128,0.06), GROUND(), general(30,128,0.58,{facing:1,flag:false,spear:false}), wash([[200,54],[168,58],[150,64],[144,73],[156,80],[200,78]],0.8,NAVY), motif('sword',146,72,1.15,-135), banner(56,131,52,false,1), banner(70,137,40,false,0.85)]), // 남의 칼 빌리기 · 다시 그림(주문 1116-0118)
-  g04: () => [GROUND(), moon(158, 30, 10), motif('tent', 78, 124, 1.1), ...[0, 1, 2].map(i => br([[124 + i * 10, 128], [126 + i * 10, 86]], 2, {a: 1, b: 0.5}))], // 쉬다가 치기
+  g04: () => [GROUND(), moon(128, 28, 10), motif('tent', 78, 124, 1.1), ...[0, 1, 2].map(i => br([[124 + i * 10, 128], [126 + i * 10, 86]], 2, {a: 1, b: 0.5}))], // 쉬다가 치기
   g05: () => [GROUND(), motif('castle', 100, 120, 1.05), motif('fire', 78, 86, 0.8), motif('fire', 118, 80, 0.95), banner(170, 128, 50, true)], // 불난 틈 타기
   g06: () => ([GROUND(), motif('castle',90,124,0.85), motif('drum',138,124,0.8), motif('sound',150,106,0.75), banner(14,130,46,true,0.9), banner(30,132,40,true,0.9), motif('arrowsOut',38,108,0.9)]), // 동쪽 소리 서쪽 치기 · 다시 그림(주문 1116-0118)
   g07: () => ([moon(26,24,9), GROUND(134), motif('castle',100,66,1.45), ...[62,100,138].map((x,i)=>g(null, line(x,66,x,77,1.3,INK,0.8), g(at(x,123,1.1),P_.scarecrow()), ...[0,1,2].map(j=>g(at(x+21,95+j*8-(i%2)*3,0.42,-90+(j-1)*10), arrow(0,0,40)))))]), // 없는 데서 만들기 · 다시 그림(주문 1116-0118)
@@ -222,22 +257,64 @@ const SC = {
   g28: () => ([GROUND(), s('rect', {x: 60, y: 98, width: 48, height: 28, fill: INK, opacity: 0.2}), s('rect', {x: 79, y: 108, width: 10, height: 18, fill: INK, opacity: 0.5}), motif('roof', 84, 98, 1.2), walker(84, 52, 0.42), motif('ladder', 146, 116, 0.9, -24), walker(170, 124, 0.62)]), // 지붕 올리고 사다리 치우기 · 다시 그림(주문 1116-0118)
   g29: () => [GROUND(), motif('bare', 100, 128, 1.6), ...[[78, 76], [110, 64], [124, 82], [92, 92], [70, 96]].map(([x, y]) => motif('blossom', x, y, 0.8))], // 나무에 꽃 달기
   g30: () => [GROUND(), motif('pavilion', 100, 120, 1.4), banner(84, 86, 26, true, 0.8, NAVY), banner(132, 128, 30, false, 0.8)], // 손님이 주인 되기
-  g31: () => [GROUND(), moon(150, 36, 12), motif('peony', 86, 84, 1.3), motif('fan', 132, 118, 0.7)], // 미인 꾀
+  g31: () => [GROUND(), moon(128, 34, 12), motif('peony', 86, 84, 1.3), motif('fan', 132, 118, 0.7)], // 미인 꾀
   g32: () => [GROUND(), motif('castle', 100, 124, 1.5), motif('qin', 100, 80, 0.7), sitter(100, 76, 0.4)], // 빈 성 꾀
   g33: () => ([GROUND(), moon(26, 28, 8), motif('tent', 40, 120, 0.8), general(22, 124, 0.5, {facing: 1}), ...[70, 78, 86, 94].map((x, i) => dot(x, 130 - (i % 2) * 2, 1.4, 0.5, INK)), walker(110, 124, 0.8), motif('letter', 124, 101, 0.5), motif('castle', 166, 124, 0.85)]), // 적 첩자 쓰기 · 다시 그림(주문 1116-0118)
   g34: () => ([GROUND(), general(64, 124, 0.72, {facing: 1}), br([[78, 92], [102, 72], [126, 82]], 1.3, {a: 0.3, b: 0.3, al: 0.35}), br([[70, 100], [124, 90]], 3, {a: 1, b: 0.5, al: 0.95}), sitter(128, 126, 0.95), br([[140, 96], [150, 90]], 1.6, {a: 1, b: 0.2, al: 0.9, c: ACC}), br([[142, 103], [153, 98]], 1.6, {a: 1, b: 0.2, al: 0.9, c: ACC}), br([[143, 110], [154, 106]], 1.6, {a: 1, b: 0.2, al: 0.9, c: ACC})]), // 제 몸 다치기 · 다시 그림(주문 1116-0118)
   g35: () => [waves(6, 194, 108, {rows: 3, seed: 35}), motif('boat', 46, 104, 0.7), motif('boat', 100, 100, 0.7), motif('boat', 154, 104, 0.7), motif('chain', 73, 104, 0.8), motif('chain', 127, 104, 0.8)], // 고리 잇기
   g36: () => [farHills([[0, 60], [60, 44], [120, 54], [200, 40]], 96, 0.08), GROUND(), br([[30, 146], [80, 120], [120, 104], [160, 92]], 6, {a: 1, b: 0.2, al: 0.22}), walker(118, 104, 0.8)], // 달아나기
 };
+/* ANIM< — 꾀 그림마다 따로 정한 움직임(부품 차례마다 [움직임, 단계] · 없는 칸은 부품 이름으로 · 그림 일꾼이 꾀 이야기에 맞춰 정함) */
+const ANIM = Object.freeze({
+  g01: [['fade',1],['glow',2],['drift',2],['drift',4],['sail',3]],
+  g02: [['fade',1],['rise',2],['rise',2],['fly',3],['flicker',4],['flicker',4],['flicker',5]],
+  g03: [['fade',1],['fade',1],['walk',2],['wipeL',3],['strike',4],['drop',5],['drop',5]],
+  g04: [['fade',1],['glow',2],['rise',2],['rise',4],['rise',5],['rise',6]],
+  g05: [['fade',1],['rise',2],['flicker',3],['flicker',4],['sailL',5]],
+  g06: [['fade',1],['rise',2],['pop',3],['pulse',4],['sail',5],['sail',5],['fly',6]],
+  g07: [['glow',1],['fade',1],['rise',2],['drop',3],['drop',4],['drop',5]],
+  g08: [['rise',2],['fade',3],['drift',1]],
+  g09: [['fade',1],['drift',1],['flicker',4],['rise',2],['rise',3],['fade',3]],
+  g10: [['fade',1],['strike',4],['rise',2]],
+  g11: [['fade',1],['grow',2],['pop',3],['pop',3],['drop',4]],
+  g12: [['drift',1],['fade',1],['grow',2],['grow',2],['walk',2],['wipeL',4],['walkL',3]],
+  g13: [['fade',1],['walk',2],['strike',3],['fade',4],['fade',4],['fade',4],['shake',4],['shake',4],['rear',5],['rear',5],['fade',6],['fade',6],['fade',6],['pulse',6]],
+  g14: [['fade',1],['glow',2],['fade',1],['fade',1],['fade',1],['rise',1],['fade',1],['fade',1],['grow',3],['pop',4],['pop',4],['pop',5],['pop',5],['glow',6]],
+  g15: [['wipe',2],['fade',1],['walk',3]],
+  g16: [['fade',1],['rise',2],['fly',3],['fly',4]],
+  g17: [['fade',1],['pop',2],['wipe',3],['glow',4]],
+  g18: [['fade',1],['rise',2],['rise',2],['rise',2],['rise',3],['rise',3],['pop',4]],
+  g19: [['fade',1],['rise',2],['fade',3],['sail',4]],
+  g20: [['drift',1],['drift',2],['drop',4],['swim',3],['swim',3]],
+  g21: [['grow',1],['fade',2],['fly',3]],
+  g22: [['fade',1],['drift',1],['fade',2],['fade',2],['walk',3],['drop',4],['pop',5],['walk',6],['walkL',6]],
+  g23: [['fade',1],['rise',2],['fade',1],['fade',1],['flyL',3]],
+  g24: [['fade',1],['fade',1],['wipe',2],['fade',1],['fade',1],['flicker',7],['flicker',7],['walk',3],['walk',4],['walk',4],['walk',4],['walk',5],['walk',5],['walk',5],['walk',5],['fly',6]],
+  g25: [['fade',1],['fade',2],['walkL',3],['walkL',3],['fade',4],['fade',4]],
+  g26: [['fade',1],['grow',2],['grow',3],['strike',4]],
+  g27: [['fade',1],['drift',2],['fade',3],['wipe',4]],
+  g28: [['fade',1],['rise',1],['fade',2],['drop',2],['rise',3],['sail',4],['walk',4]],
+  g29: [['fade',1],['grow',2],['pop',3],['pop',4],['pop',3],['pop',5],['pop',4]],
+  g30: [['fade',1],['rise',2],['rise',4],['drop',3]],
+  g31: [['fade',1],['glow',2],['grow',3],['pop',4]],
+  g32: [['fade',1],['rise',2],['fade',3],['rise',4]],
+  g33: [['fade',1],['glow',1],['fade',2],['rise',3],['fade',4],['fade',4],['fade',5],['fade',5],['walk',5],['pop',6],['fade',2]],
+  g34: [['fade',1],['rise',1],['fade',3],['strike',3],['fade',2],['pop',4],['pop',4],['pop',5]],
+  g35: [['drift',1],['sail',2],['sail',2],['sailL',2],['wipe',3],['wipe',4]],
+  g36: [['drift',1],['fade',1],['wipe',2],['walk',3]]
+});
+/* >ANIM */
 /** 꾀 그림 하나 — k = g01 ~ g36 · no = 제 몇 계(오른쪽 위 도장) · 빈 테두리(앨범 한 장) */
-export function kkoePic(k, {w = 200, h = 150, seal = true, frame = true, cls = 'ik-kk', label: lab = null} = {}) {
-  const make = SC[k], n = +String(k).slice(1);
+export function kkoePic(k, {w = 200, h = 150, seal = true, frame = true, cls = 'ik-kk', label: lab = null, anim = null} = {}) {
+  const make = SC[k], n = +String(k).slice(1), items = make ? [make()].flat(9).filter(Boolean) : [];
   const svg = s('svg', {class: cls, viewBox: '0 0 200 150', width: w, height: h, role: 'img', 'aria-label': lab ?? '꾀 그림', 'data-k': k, focusable: 'false'},
     frame ? s('rect', {x: 1.5, y: 1.5, width: 197, height: 147, fill: 'none', stroke: INK, 'stroke-width': 1.2, 'stroke-opacity': 0.35}) : null,
-    g(null, make ? make() : []),
+    g(null, wrapItems(items, anim ?? ANIM[k] ?? null)),
     seal ? g(null, s('rect', {x: 166, y: 8, width: 26, height: 26, rx: 2, fill: ACC, 'fill-opacity': 0.9}), s('text', {x: 179, y: 27, 'font-size': 17, 'text-anchor': 'middle', fill: PAPER, 'font-weight': 800, class: 'ik-seal', text: String(n)})) : null);
-  return svg;
+  return watch(svg);
 }
+/** 꾀 그림 부품 목록(움직임을 정할 때 — 차례 · 부품 이름 · 꼴) */
+export const inkItems = k => (SC[k] ? [SC[k]()].flat(9).filter(Boolean).map((el, i) => ({i, mo: moOf(el), tag: el.tagName})) : []);
 
 /* ── 제1장 땅을 살피다 — 첫 쪽 형세 큰 그림(390 × 440) ── */
 const LANDSHAPE = { // 땅마다 가운데 산세(봉우리 점 줄)와 앞 땅
@@ -250,33 +327,34 @@ const LANDSHAPE = { // 땅마다 가운데 산세(봉우리 점 줄)와 앞 땅
 /** 형세 그림 — land · 깃발 열(up 개 섬) · 디딤돌 스물(path: 땅 열쇠 줄 · 끝 = 오늘) */
 export function landPic({land = 'calm', name = '', up = 0, path = [], sameName = '', title = true} = {}) {
   const L = LANDSHAPE[land] ?? LANDSHAPE.calm, W = 390, H = 440, kids = [];
-  kids.push(farHills(L.far, 300, 0.07));
-  if (land === 'rise') kids.push(sun(318, 70, 18)); else if (land === 'calm') kids.push(moon(318, 70, 16)); else if (land === 'fall') kids.push(moon(320, 66, 13));
-  kids.push(mountain(L.mid, 330, {al: 0.16, w: 3.6, seed: 7, tex: 9}));
-  if (land === 'shake') kids.push(waves(20, 370, 258, {rows: 4, amp: 5, gap: 11, seed: 4, w: 1.8}), ...[[60, 150], [300, 140]].map(([x, y]) => br([[x, y], [x + 30, y - 6], [x + 60, y + 2]], 1.6, {a: 0.2, b: 0.2, peak: 0.5, al: 0.5})));
-  if (land === 'calm') kids.push(waves(40, 350, 262, {rows: 3, amp: 1.2, gap: 12, seed: 5, al: 0.45}));
-  if (land === 'narrow') kids.push(wash([[150, 250], [195, 236], [240, 250], [232, 300], [158, 300]], 0.1));
-  kids.push(mist(120, 214, 260, 26, 0.7), mist(300, 232, 200, 20, 0.6));
+  // 움직임 일곱 단계 — 1 땅 · 2 해와 달 · 안개 · 손무 · 3 두건 끈 · 깃발이 하나씩 섬 · 5 「열에 ○」 · 6 디딤돌이 하나씩 · 7 오늘 돌이 빛남
+  kids.push(M('fade', 1, farHills(L.far, 300, 0.07)));
+  if (land === 'rise') kids.push(M('glow', 2, sun(318, 70, 18))); else if (land === 'calm') kids.push(M('glow', 2, moon(318, 70, 16))); else if (land === 'fall') kids.push(M('glow', 2, moon(320, 66, 13)));
+  kids.push(M('rise', 1, mountain(L.mid, 330, {al: 0.16, w: 3.6, seed: 7, tex: 9})));
+  if (land === 'shake') kids.push(M('drift', 2, waves(20, 370, 258, {rows: 4, amp: 5, gap: 11, seed: 4, w: 1.8})), M('fly', 3, ...[[60, 150], [300, 140]].map(([x, y]) => br([[x, y], [x + 30, y - 6], [x + 60, y + 2]], 1.6, {a: 0.2, b: 0.2, peak: 0.5, al: 0.5}))));
+  if (land === 'calm') kids.push(M('drift', 2, waves(40, 350, 262, {rows: 3, amp: 1.2, gap: 12, seed: 5, al: 0.45})));
+  if (land === 'narrow') kids.push(M('fade', 2, wash([[150, 250], [195, 236], [240, 250], [232, 300], [158, 300]], 0.1)));
+  kids.push(M('drift', 2, mist(120, 214, 260, 26, 0.7), mist(300, 232, 200, 20, 0.6)));
   // 깃발 열 — 오른 몫만큼 섬(오른쪽 = 선 깃발)
   const bx = 24, by = 304;
-  for (let i = 0; i < 10; i++) kids.push(banner(bx + i * 28, by + (i % 2) * 3, 40, i < up, 0.9));
-  kids.push(label(bx + 126, by + 36, '열에 ' + ['영', '하나', '둘', '셋', '넷', '다섯', '여섯', '일곱', '여덟', '아홉', '열'][Math.max(0, Math.min(10, up))] + ' 올랐어요', {size: 19}));
+  for (let i = 0; i < 10; i++) kids.push(M(i < up ? 'stand' : 'lean', 'ik-bq' + i, banner(bx + i * 28, by + (i % 2) * 3, 40, i < up, 0.9)));
+  kids.push(M('fade', 6, label(bx + 126, by + 36, '열에 ' + ['영', '하나', '둘', '셋', '넷', '다섯', '여섯', '일곱', '여덟', '아홉', '열'][Math.max(0, Math.min(10, up))] + ' 올랐어요', {size: 19})));
   // 앞 언덕 · 손무(땅을 내려다봄)
-  kids.push(wash([[296, 372], [322, 344], [362, 336], [390, 342], [390, 376]], 0.2), hero(350, 348, 0.78, {facing: -1, slips: true}));
+  kids.push(M('fade', 1, wash([[296, 372], [322, 344], [362, 336], [390, 342], [390, 376]], 0.2)), M('walkL', 2, hero(350, 348, 0.78, {facing: -1, slips: true, st: 3})));
   // 디딤돌 스물 — 같은 땅 날 칠함 · 끝 = 오늘
   const P = path.slice(-20), n = P.length;
-  for (let i = 0; i < n; i++) { const x = 22 + i * 17.4, y = 400 - Math.sin(i / 3) * 4; kids.push(stone(x, y, 6.4, P[i] === land, i === n - 1, 40 + i)); }
-  if (n) kids.push(label(22, 432, (n === 20 ? '지난 스무 날' : '지난 ' + n + '거래일') + ' · ' + (sameName || '같은 땅') + ' ' + P.filter(k => k === land).length + '날', {size: 18, anchor: 'start'}), label(22 + (n - 1) * 17.4, 382, '오늘', {size: 17, c: NAVY}));
-  return s('svg', {class: 'ik-land', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': (name || '오늘 땅') + ' 그림 · 깃발 열 가운데 ' + up + '개가 섬 · 지난 스무 날 디딤돌', 'data-land': land, 'data-up': String(up), 'data-stones': String(n), focusable: 'false'},
-    title && name ? label(18, 46, name, {size: 38, anchor: 'start', cls: 'ik-t ik-brush', weight: 400}) : null, ...kids);
+  for (let i = 0; i < n; i++) { const x = 22 + i * 17.4, y = 400 - Math.sin(i / 3) * 4; kids.push(M('pop', 'ik-tq' + i, stone(x, y, 6.4, P[i] === land, i === n - 1, 40 + i))); }
+  if (n) kids.push(M('fade', 7, label(22, 432, (n === 20 ? '지난 스무 날' : '지난 ' + n + '거래일') + ' · ' + (sameName || '같은 땅') + ' ' + P.filter(k => k === land).length + '날', {size: 18, anchor: 'start'})), M('fade', 'ik-tq20', label(22 + (n - 1) * 17.4, 382, '오늘', {size: 17, c: NAVY})));
+  return watch(s('svg', {class: 'ik-land', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': (name || '오늘 땅') + ' 그림 · 깃발 열 가운데 ' + up + '개가 섬 · 지난 스무 날 디딤돌', 'data-land': land, 'data-up': String(up), 'data-stones': String(n), focusable: 'false'},
+    title && name ? label(18, 46, name, {size: 38, anchor: 'start', cls: 'ik-t ik-brush', weight: 400}) : null, ...kids));
 }
 
 /** 화살 열 — 잃은 몫(lost = 0 ~ 10)만큼 꺾임 · 그림 아래 짧은 이름표 */
 export function arrowsPic(lost, {say = null, w = 340, h = 96} = {}) {
   const kids = [];
-  for (let i = 0; i < 10; i++) kids.push(arrow(22 + i * 33, 66, 46, i >= 10 - lost, 1));
-  return s('svg', {class: 'ik-arrows', viewBox: '0 0 340 96', width: w, height: h, role: 'img', 'aria-label': '화살 열 가운데 꺾인 화살 ' + lost + '개 · 꺾인 화살 = 잃은 싸움', 'data-lost': String(lost), focusable: 'false'},
-    ...kids, say ? label(170, 92, say, {size: 18}) : null);
+  for (let i = 0; i < 10; i++) kids.push(M('shoot', 'ik-aq' + i, arrow(22 + i * 33, 66, 46, i >= 10 - lost, 1))); // 1 ~ 3 화살이 하나씩 날아와 섬 · 4 잃은 몫만큼 꺾임 · 5 이름표
+  return watch(s('svg', {class: 'ik-arrows', viewBox: '0 0 340 96', width: w, height: h, role: 'img', 'aria-label': '화살 열 가운데 꺾인 화살 ' + lost + '개 · 꺾인 화살 = 잃은 싸움', 'data-lost': String(lost), focusable: 'false'},
+    ...kids, say ? M('fade', 5, label(170, 92, say, {size: 18})) : null));
 }
 
 /** 한 달 산세 — 회사 한 달 값(21개)을 산등성이 먹선으로(제4장 성을 살피다) · 마지막 봉우리에 작은 성 */
@@ -284,31 +362,30 @@ export function ridgePic(sp, {first = '', last = '', down = false} = {}) {
   const W = 390, H = 220, P = 18, lo = Math.min(...sp), hi = Math.max(...sp), n = sp.length;
   const x = i => P + ((W - 2 * P) * i) / (n - 1), y = v => (hi === lo ? 110 : 40 + 120 * (1 - (v - lo) / (hi - lo)));
   const ridge = sp.map((v, i) => [x(i), y(v)]);
-  return s('svg', {class: 'ik-ridge', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '한 달 값 산세 · 한 달 전 ' + first + ' · 마지막 값 ' + last, 'data-mon': down ? 'dn' : 'up', focusable: 'false'},
-    farHills([[0, 90], [100, 70], [220, 84], [390, 66]], 180, 0.06), mountain(ridge, 186, {al: 0.16, w: 3.4, seed: 21, tex: 8}),
-    s('path', {d: `M${P} ${r1(y(sp[0]))}H${W - P}`, stroke: INK, 'stroke-width': 1.2, 'stroke-dasharray': '4 5', 'stroke-opacity': 0.55, fill: 'none'}),
-    g(at(x(n - 1), y(sp[n - 1]) - 2, 0.42), P_.castle()), dot(x(n - 1), y(sp[n - 1]), 4.4, 1, down ? NAVY : INK),
-    first ? label(P, 210, '한 달 전 ' + first, {size: 18, anchor: 'start'}) : null, last ? label(W - P, 210, last, {size: 18, anchor: 'end', c: down ? NAVY : INK}) : null);
+  return watch(s('svg', {class: 'ik-ridge', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '한 달 값 산세 · 한 달 전 ' + first + ' · 마지막 값 ' + last, 'data-mon': down ? 'dn' : 'up', focusable: 'false'},
+    M('fade', 1, farHills([[0, 90], [100, 70], [220, 84], [390, 66]], 180, 0.06)), M('wipe', 2, mountain(ridge, 186, {al: 0.16, w: 3.4, seed: 21, tex: 8})), // 1 먼 산 · 2 산등성이가 왼쪽부터 · 3 한 달 전 줄 · 4 끝 봉우리 성 · 5 끝 점
+    M('fade', 3, s('path', {d: `M${P} ${r1(y(sp[0]))}H${W - P}`, stroke: INK, 'stroke-width': 1.2, 'stroke-dasharray': '4 5', 'stroke-opacity': 0.55, fill: 'none'})),
+    M('rise', 4, g(at(x(n - 1), y(sp[n - 1]) - 2, 0.42), P_.castle())), M('pulse', 5, dot(x(n - 1), y(sp[n - 1]), 4.4, 1, down ? NAVY : INK)),
+    first ? M('fade', 5, label(P, 210, '한 달 전 ' + first, {size: 18, anchor: 'start'})) : null, last ? M('fade', 5, label(W - P, 210, last, {size: 18, anchor: 'end', c: down ? NAVY : INK})) : null));
 }
 
 /** 장수 작은 그림(쪽 머리 — 같은 장수가 장마다) — what = 'scroll'(꾀를 펼치다) · 'castle'(성을 살피다) · 'ledger'(장부) · 'book'(병서) */
-export function heroPic(what = 'scroll') {
-  const kids = [farHills([[0, 96], [90, 70], [180, 86], [300, 64], [390, 80]], 150, 0.07), wash([[0, 150], [120, 140], [260, 146], [390, 138], [390, 170], [0, 170]], 0.12)];
-  if (what === 'castle') kids.push(g(at(110, 140, 1.25), P_.castle()), hero(304, 152, 0.86, {facing: -1, slips: false}));
-  else if (what === 'ledger') kids.push(g(at(170, 150, 1.1), P_.pavilion()), sitter(170, 146, 0.8), g(at(250, 148, 1), P_.letter()), hero(334, 154, 0.8, {facing: -1, slips: true}));
-  else if (what === 'book') kids.push(...[0, 1, 2, 3, 4, 5].map(i => g(at(60 + i * 38, 140, 0.55), s('rect', {x: -22, y: -60, width: 44, height: 60, fill: INK, 'fill-opacity': 0.12 + (i % 2) * 0.08, stroke: INK, 'stroke-width': 1.2, 'stroke-opacity': 0.5}))), hero(336, 154, 0.86, {facing: -1, slips: true}));
-  else kids.push(s('rect', {x: 90, y: 92, width: 160, height: 46, fill: PAPER, stroke: INK, 'stroke-width': 1.6}), br([[86, 90], [86, 140]], 6, {a: 1, b: 1}), br([[254, 90], [254, 140]], 6, {a: 1, b: 1}),
-    ...[0, 1, 2, 3].map(i => br([[104 + i * 36, 104], [104 + i * 36, 128]], 3, {a: 0.6, b: 0.2, al: 0.7})), hero(322, 154, 0.86, {facing: -1, slips: true}));
-  return s('svg', {class: 'ik-hero', viewBox: '0 0 390 170', role: 'img', 'aria-label': '손무 그림', 'data-hero': what, focusable: 'false'}, ...kids);
+export function heroPic(what = 'scroll') { // 움직임: 1 먼 산 · 땅 → 2 성 · 정자 · 책 · 두루마리가 섬(펼침) → 3 ~ 5 손무가 걸어 들어옴 · 두건 끈 · 편지
+  const kids = [M('fade', 1, farHills([[0, 96], [90, 70], [180, 86], [300, 64], [390, 80]], 150, 0.07), wash([[0, 150], [120, 140], [260, 146], [390, 138], [390, 170], [0, 170]], 0.12))];
+  if (what === 'castle') kids.push(M('rise', 2, g(at(110, 140, 1.25), P_.castle())), M('walkL', 3, hero(304, 152, 0.86, {facing: -1, slips: false, st: 4})));
+  else if (what === 'ledger') kids.push(M('rise', 2, g(at(170, 150, 1.1), P_.pavilion())), M('rise', 3, sitter(170, 146, 0.8)), M('drop', 4, g(at(250, 148, 1), P_.letter())), M('walkL', 3, hero(334, 154, 0.8, {facing: -1, slips: true, st: 4})));
+  else if (what === 'book') kids.push(...[0, 1, 2, 3, 4, 5].map(i => M('rise', 2 + (i >> 1), g(at(60 + i * 38, 140, 0.55), s('rect', {x: -22, y: -60, width: 44, height: 60, fill: INK, 'fill-opacity': 0.12 + (i % 2) * 0.08, stroke: INK, 'stroke-width': 1.2, 'stroke-opacity': 0.5})))), M('walkL', 5, hero(336, 154, 0.86, {facing: -1, slips: true, st: 6})));
+  else kids.push(M('wipe', 2, s('rect', {x: 90, y: 92, width: 160, height: 46, fill: PAPER, stroke: INK, 'stroke-width': 1.6})), M('fade', 2, br([[86, 90], [86, 140]], 6, {a: 1, b: 1})), M('roll', 2, br([[254, 90], [254, 140]], 6, {a: 1, b: 1})), // 두루마리가 왼쪽에서 오른쪽으로 펼쳐짐
+    M('fade', 4, ...[0, 1, 2, 3].map(i => br([[104 + i * 36, 104], [104 + i * 36, 128]], 3, {a: 0.6, b: 0.2, al: 0.7}))), M('walkL', 5, hero(322, 154, 0.86, {facing: -1, slips: true, st: 6})));
+  return watch(s('svg', {class: 'ik-hero', viewBox: '0 0 390 170', role: 'img', 'aria-label': '손무 그림', 'data-hero': what, focusable: 'false'}, ...kids));
 }
-
 
 /** 정산 붓 막대 — 가운데 세로 먹줄 · 늘면 오른쪽 먹 획 · 줄면 왼쪽 남빛 획(길이 = 몫 · 늘고 줆 같은 크기) · r = 늘고 준 몫 · mx = 가장 큰 몫 */
 export function brushBar(r, mx, {cls = 'sj-stbar'} = {}) {
   const w = r !== null && mx > 0 ? Math.max(4, Math.round((Math.abs(r) / mx) * 140)) : 0, up = r > 0;
-  return s('svg', {class: cls, viewBox: '0 0 300 22', preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false', 'data-w': String(w), 'data-way': w ? (up ? 'up' : 'dn') : 'none'},
-    br([[150, 1], [150, 21]], 1.6, {a: 1, b: 1, al: 0.6}),
-    w ? br(up ? [[152, 12], [152 + w * 0.5, 10.5], [152 + w, 11.5]] : [[148, 12], [148 - w * 0.5, 10.5], [148 - w, 11.5]], 11, {a: 0.75, b: 0.3, peak: 0.25, c: up ? INK : NAVY, al: 0.88}) : null);
+  return watch(s('svg', {class: cls, viewBox: '0 0 300 22', preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false', 'data-w': String(w), 'data-way': w ? (up ? 'up' : 'dn') : 'none'},
+    M('fade', 1, br([[150, 1], [150, 21]], 1.6, {a: 1, b: 1, al: 0.6})), // 1 가운데 먹줄 · 2 붓 획이 가운데서 뻗음(늘면 오른쪽 · 줄면 왼쪽) · 3 끝에서 멈춤
+    w ? M(up ? 'wipe' : 'wipeL', 2, br(up ? [[152, 12], [152 + w * 0.5, 10.5], [152 + w, 11.5]] : [[148, 12], [148 - w * 0.5, 10.5], [148 - w, 11.5]], 11, {a: 0.75, b: 0.3, peak: 0.25, c: up ? INK : NAVY, al: 0.88})) : null));
 }
 
 /* ── 손무(이야기의 한 사람 · 사장님 2026-11-16 00:32 「이사진이 손무 선생이다 … 기품있게 만들고 이기준으로 만귿어라 … 단 이그림 이 기준이다」)
@@ -318,8 +395,8 @@ export const sonmuBust = (x, y, sc = 1) => SONMU.bust(x, y, sc);
 export const sonmuStand = (x, y, sc = 1, o = {}) => SONMU.stand(x, y, sc, o);
 /** 손무 초상 한 장(첫 쪽 · 쪽 머리) — 가슴 위 · 한지 테두리 */
 export function sonmuPic({w = 200, h = 240, cls = 'ik-sonmu'} = {}) {
-  return s('svg', {class: cls, viewBox: '0 0 200 240', width: w, height: h, role: 'img', 'aria-label': '손무 초상', focusable: 'false'},
-    s('rect', {x: 1.5, y: 1.5, width: 197, height: 237, fill: PAPER, stroke: INK, 'stroke-width': 1.2, 'stroke-opacity': 0.35}), sonmuBust(100, 238, 1));
+  return watch(s('svg', {class: cls, viewBox: '0 0 200 240', width: w, height: h, role: 'img', 'aria-label': '손무 초상', focusable: 'false'},
+    s('rect', {x: 1.5, y: 1.5, width: 197, height: 237, fill: PAPER, stroke: INK, 'stroke-width': 1.2, 'stroke-opacity': 0.35}), M('rise', 1, sonmuBust(100, 238, 1)))); // 1 손무가 떠오름 · 2 ~ 3 두건 끈이 바람에 날림
 }
 
 /** 그림 부품 모음(시험 · 그림 일꾼이 장면을 짜 볼 때만 — 화면 코드는 위 함수를 바로 씀) */
@@ -387,10 +464,10 @@ const SONMU = ((K) => {
   function bust(x, y, sc) {
     const RD = 'M -22 -108 C -50 -100 -78 -88 -90 -66 C -98 -48 -101 -24 -101 0 L 101 0 C 101 -24 99 -50 90 -70 C 80 -90 56 -102 24 -110 Z';
     return K.g(K.at(x, y, sc),
-      // ties trailing behind the shoulders
-      B([[40, -196], [53, -170], [61, -140], [68, -108]], 10, 0.8, 0.5, 0.3, NAVY, 0.5),
-      B([[36, -194], [44, -166], [47, -136], [51, -110]], 7.5, 0.8, 0.5, 0.3, NAVY, 0.42),
-      B([[42, -196], [56, -170], [64, -140], [70, -108]], 1.6, 0.6, 0.6, 0.5, INK, 0.6),
+      // ties trailing behind the shoulders — 바람에 날림(움직임 ik-tie)
+      K.s('g', {class: 'ik-m ik-tie ik-s2'}, B([[40, -196], [53, -170], [61, -140], [68, -108]], 10, 0.8, 0.5, 0.3, NAVY, 0.5),
+        B([[36, -194], [44, -166], [47, -136], [51, -110]], 7.5, 0.8, 0.5, 0.3, NAVY, 0.42),
+        B([[42, -196], [56, -170], [64, -140], [70, -108]], 1.6, 0.6, 0.6, 0.5, INK, 0.6)),
       // robe — pale paper-grey, few bold strokes
       K.s('path', {d: RD, fill: PAPER}), K.s('path', {d: RD, fill: SOFT, 'fill-opacity': 0.42}),
       K.s('path', {d: 'M -58 -92 C -80 -82 -96 -60 -100 -30 L -101 0 L -64 0 C -66 -30 -66 -60 -58 -92 Z', fill: SOFT, 'fill-opacity': 0.35}),
@@ -418,14 +495,14 @@ const SONMU = ((K) => {
     );
   }
 
-  function stand(x, y, sc, {facing = -1, slips = true} = {}) {
+  function stand(x, y, sc, {facing = -1, slips = true, st = 3} = {}) {
     const M = facing > 0 ? 'scale(-1 1)' : null;
     const sh = (facing + 1) * 1.5; // collar shift when mirrored (keeps the "y" crossing)
     const body = [[-4, -81], [-11, -78.5], [-15.5, -72], [-17.5, -60], [-17, -44], [-16, -24], [-18, -4], [-19.5, 0], [16.5, 0], [15.5, -6], [14.5, -26], [15.5, -46], [16.5, -62], [14.5, -73], [9, -78.5], [3, -81]];
     const sleeve = [[-17.5, -66], [-19.5, -54], [-19, -42], [-15.5, -34.5], [-9, -32], [-4, -34], [-1.6, -38], [1, -34], [6, -32], [13, -33.5], [17.5, -40], [18.5, -53], [16.5, -64], [8, -58.5], [-2, -56], [-10, -58.5]];
     const back = K.g(M,
-      B([[6, -94], [10, -87], [13.5, -78], [17, -66]], 2.6, 0.8, 0.45, 0.3, NAVY, 0.62),
-      B([[5, -93], [7.6, -85], [9.6, -77], [11.5, -68]], 2, 0.8, 0.45, 0.3, NAVY, 0.52),
+      K.s('g', {class: 'ik-m ik-tie ik-s' + st}, B([[6, -94], [10, -87], [13.5, -78], [17, -66]], 2.6, 0.8, 0.45, 0.3, NAVY, 0.62),
+        B([[5, -93], [7.6, -85], [9.6, -77], [11.5, -68]], 2, 0.8, 0.45, 0.3, NAVY, 0.52)),
       W(body, 1, PAPER), W(body, 0.45, SOFT),
       W([[-17.5, -30], [-8, -30], [-10, 0], [-19.5, 0]], 0.38, SOFT),
       B([[-11, -78.5], [-16, -70], [-18, -58], [-19, -46]], 2.6, 0.3, 0.3, 0.4, INK, 0.9),

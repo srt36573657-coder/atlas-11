@@ -886,6 +886,35 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
   }
+  // ㉖ 주문 1116-0209(사장님 2026-11-16(마카오) 01:09 「에이전트 100개 동원해서 지금 그린그림들이 상황애 맞게 3단애서 7간으로 자연스럽게 움직이게 …」 · 01:12 「응」) — 먹그림 움직임
+  //   가) 쪽마다 그림 = svg.ik-anim · 그림마다 감싼 묶음(g.ik-m) · 감싼 묶음에 transform 속성 0(제자리 변환을 덮지 않음) · 단계 표 1 ~ 7(또는 차례 표)
+  //   나) 화면 밖 그림은 처음에 ik-play 0 → 끝까지 내려 보면 모두 ik-play · 움직임은 모두 한 번 · 7초 안에 끝남(멈춘 그림으로 돌아옴)
+  //   다) 움직임을 줄여 둔 휴대폰(reducedMotion: reduce) — 끝까지 내려 봐도 그림 움직임 0
+  for (const rm of ['no-preference', 'reduce']) {
+    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: rm});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = [];
+    p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    const W = '㉖ 먹그림 움직임 [' + (rm === 'reduce' ? '움직임 줄임' : '보통') + '] ';
+    for (const hh of ['#/', '#/k', '#/k/' + (ORD36[0] ?? 'g01'), '#/r/t']) {
+      await open(p, hh);
+      if (hh === '#/' && same) await p.waitForFunction(() => document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), null, {timeout: 15000}).catch(() => {});
+      const a = await p.evaluate(() => { const svgs = [...document.querySelectorAll('#su main svg.ik-anim')].filter(s => !s.closest('details:not([open])')), vh = innerHeight, below = svgs.filter(s => s.getBoundingClientRect().top > vh + 200), wraps = [...document.querySelectorAll('#su main svg.ik-anim g.ik-m')]; // 닫힌 서랍 안 그림은 열어야 보임(그때 놂)
+        return {n: svgs.length, noM: svgs.filter(s => !s.querySelector('g.ik-m')).length, tr: wraps.filter(w => w.hasAttribute('transform')).length, st: wraps.filter(w => !/\bik-(s[1-7]|bq\d|tq\d+|aq\d)\b/.test(w.getAttribute('class') ?? '')).length,
+          below: below.length, belowPlay: below.filter(s => s.classList.contains('ik-play')).length}; });
+      await p.evaluate(async () => { for (let y = 0; y < document.documentElement.scrollHeight; y += 400) { scrollTo(0, y); await new Promise(r => setTimeout(r, 70)); } });
+      await p.waitForTimeout(400);
+      const b = await p.evaluate(() => { const an = document.getAnimations().filter(x => x.effect?.target?.closest?.('svg.ik-anim'));
+        const shown = [...document.querySelectorAll('#su main svg.ik-anim')].filter(s => !s.closest('details:not([open])'));
+        return {all: shown.length, play: shown.filter(s => s.classList.contains('ik-play')).length, an: an.length,
+          long: an.filter(x => { const t = x.effect?.getComputedTiming?.(); return !t || !Number.isFinite(t.endTime) || t.endTime > 7000 || t.iterations !== 1; }).length}; });
+      const wantN = hh !== '#/' || okSunD || same;
+      check(rm === 'reduce' ? b.an === 0 && b.play === 0 : (!wantN || a.n > 0) && a.noM === 0 && a.tr === 0 && a.st === 0 && a.belowPlay === 0 && b.play === b.all && b.an > 0 && b.long === 0,
+        W + hh + (rm === 'reduce' ? ' — 끝까지 내려 봐도 그림 움직임 0(멈춘 그림)' : ' — 그림마다 감싼 묶음 · 제자리 변환 0 · 단계 1 ~ 7 · 화면 밖은 기다림 → 내려 보면 한 번 놂 · 7초 안에 끝'), JSON.stringify({...a, ...b}));
+    }
+    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+    await ctx.close();
+  }
 }
 await browser.close();
 R.ok = R.counts.fail === 0;
