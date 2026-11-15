@@ -19,6 +19,7 @@ import {createRequire} from 'node:module';
 import {screenHits, ruinHits} from '../../../site/next/words.js'; // 화면 낱말 · 망치는 길(수익 자랑 gainHits 는 보내는 글 잣대 — 화면 %는 사실 글)
 import {essenceData, essenceLines} from '../../../site/next/essence.js'; // 본질 세 줄(첫 화면)
 import {START as SETTLE_START} from './su21_settle.mjs'; // 정산 첫날(주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」)
+import * as S36C from '../../../site/su/su-sonja-36.js'; // 서른여섯 꾀 바탕 글(= su21_s36.py --defs · 시험 su-settle.test.mjs 가 맞댐) — 꾀 칸 자료가 없는 날 쪽이 쓰는 글과 맞댐(주문 1115-2328)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -62,7 +63,8 @@ const T0 = await J('/su/data/su21.json').catch(() => null), G0 = await J('/su/da
 const K36A = Array.from({length: 36}, (_, i) => 'g' + String(i + 1).padStart(2, '0'));
 const sun0 = T0?.sun?.rule === 'sun-v1' && Array.isArray(T0.sun.rank) && T0.sun.rank.length === 36 && new Set(T0.sun.rank.map(r => r?.k)).size === 36 && T0.sun.rank.every(r => K36A.includes(r.k) && Number.isInteger(r.n)) && ['fall', 'shake', 'rise', 'narrow', 'calm'].includes(T0.sun.land) && Number.isInteger(T0.sun.m?.n) && T0.sun.m.n > 0;
 const FK = sun0 ? T0.sun.rank[0].k : 'g01';
-const FC = (Array.isArray(G0?.lists?.[FK]) ? G0.lists[FK] : []).find(c => /^[0-9A-Z]{6}$/.test(c?.code ?? '') && typeof c.name === 'string') ?? null;
+const SN0 = !!T0?.s36n && typeof T0.s36n === 'object' && Object.values(T0.s36n).length === 36 && Object.values(T0.s36n).every(x => Number.isInteger(x) && x >= 0); // 쪽은 이 수가 있을 때만 꾀 칸 자료를 받음
+const FC = SN0 ? (Array.isArray(G0?.lists?.[FK]) ? G0.lists[FK] : []).find(c => /^[0-9A-Z]{6}$/.test(c?.code ?? '') && typeof c.name === 'string') ?? null : null;
 // 지운 쪽(주문 1115-2328) — 옛 고리로 오면 첫 쪽 · 주소 #/
 const GONE = ['#/b', '#/m', '#/m/fall', '#/n', '#/s', '#/f', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/k', '#/r/i', '#/r/c', '#/r/s', '#/r/n', '#/r/005930', '#/i/' + encodeURIComponent('반도체'), '#/c/005930/more', '#/c/005930/t', '#/c/005930/y/hot', '#/g', '#/g/hot'];
 R.m.data = {fk: FK, fc: FC?.name ?? null, sun: sun0};
@@ -292,8 +294,8 @@ for (const width of [390, 360, 320]) {
     const TAB5 = '오늘 꾀 멈춤 일지 정산', TAB5L = '탭 — 오늘 · 꾀 · 멈춤 · 일지 · 정산', PAGE3 = ['sonja', 'kkoe', 'co'], CUR3 = [0, 1, -1]; // 회사 쪽은 탭 밖(켜진 탭 0)
     const FOOTW = JSON.stringify([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]);
     await open(p, '#/');
-    const seen = [];
-    for (let k = 0; k <= 4; k++) {
+    const seen = [], STEPS9 = FC ? [0, 1, 2, 3, 4] : [0, 1, 3, 4]; // 꾀가 고른 곳이 없는 날(꾀 칸 자료 없음)은 꾀 → 「왜 사?」로 바로(회사 화면을 건너뜀)
+    for (const k of STEPS9) {
       await p.waitForTimeout(150);
       if (k <= 2) { // 손자병법 판 세 화면(오늘 · 꾀 · 회사)
         const sj = await shapeSj();
@@ -341,7 +343,7 @@ for (const width of [390, 360, 320]) {
       pageRules(await measure(p), W + '⑨ ' + (k + 1) + '번째 화면 ' + m.h1);
       if (k < 4) { const a = await p.$('#su .su-next'); if (!a) { check(false, W + '⑨ 다음 단추 — ' + m.h1, ''); break; } await a.click(); await settle(p); await p.waitForTimeout(300); }
     }
-    check(seen.length === 5 && new Set(seen.map(m => m.h1)).size === 5 && seen[4]?.h1 === '내 매매일지', W + '⑨ 다음 네 번에 끝(다섯 화면 · 끝 = 내 매매일지 — 주문 1115-2328 오늘 → 꾀 → 회사 → 왜 사? → 매매일지)', seen.map(m => m.h1).join(' → '));
+    check(seen.length === STEPS9.length && new Set(seen.map(m => m.h1)).size === STEPS9.length && seen[seen.length - 1]?.h1 === '내 매매일지', W + '⑨ 다음 단추로 끝까지(다섯 화면 · 끝 = 내 매매일지 — 주문 1115-2328 오늘 → 꾀 → 회사 → 왜 사? → 매매일지 · 꾀가 고른 곳이 없으면 회사를 건너뜀)', seen.map(m => m.h1).join(' → '));
     R.m.path = seen.map(m => (m.sonja ? {h1: m.h1, page: m.page, kids: m.kids, seals: m.seals.length, hard: m.hard, hardWords: m.hardWords} : {h1: m.h1, heroShare: m.heroShare, share: m.share, outside: m.outside.length, two: m.twoN, labels: m.labels, mucha: m.mucha, anim: m.anim, need: m.tiles.filter(t => t.need).length, means: m.means, pro: m.pro.rows, hard: m.hard, glossed: m.glossed, orn: m.orn, ornN: m.ornN}));
     R.m.hard = seen.reduce((a, m) => a + (Number.isFinite(m.hard) ? m.hard : 0), 0); R.m.hardWords = [...new Set(seen.flatMap(m => m.hardWords.split(',').filter(Boolean)))];
   }
@@ -614,7 +616,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   // 주문 1115-2328 — 정산 쪽(#/r/t)은 서른여섯 꾀 표만(옛 여덟 묶음 · 겹친 곳 표 · 업종 · 회사 표는 지움 · 장부 자료는 그대로) · 손자병법 판(샘플 사)
   //   이 검사가 장부에서 따로 셈: 맨 위 산 돈 · 지금 · 늘었나 줄었나 · 작은 줄(첫날 · 산 셈 수 · 고른 날 수 · 못 센 수 · 값까지 날) · 꾀마다 서른여섯 줄 수익이 높은 차례(같으면 꾀 차례 · 하루치 · 산 셈 없음은 맨 아래)
   //   · 줄어든 꾀 수 · 가장 많이 줄어든 꾀 · 줄마다 이름(누르면 그 꾀 쪽) · 산 돈 · 늘었나 줄었나(모양 + 글) · 모두 = 서른여섯 합
-  const G23 = await J('/su/data/su21-s36.json').catch(() => null), nm36 = k => (typeof G23?.name?.[k] === 'string' ? G23.name[k] : KNAME[k]);
+  const nm36 = k => S36C.NAME[k]; // 꾀 쉬운 이름(su21_s36.py NAME = su21-s36.json name — 자료가 없는 날도 같은 이름)
   const SAIDs = st => (st === 'none' ? '아직 산 셈이 없어요' : st === 'one' ? '아직 하루치예요' : null);
   const resW = g => (!g || !g.n ? '아직 산 셈이 없어요' : g.one ? '아직 하루치예요' : movedM(g.diff));
   const stW = g => (!g || !g.n ? 'none' : g.st);
@@ -804,23 +806,24 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   //   나) 꾀 한 가지 #/k/g01 ~ g36(390 은 서른여섯 모두 · 320 은 셋) — 걸음 2 / 5 · 머리(묶음 · 도장 = 오늘 차례 · 뜻 · 지금 땅에서 몇 위) · 고르는 법 · 같은 땅 기록 · 오늘 닮은 곳(누르면 그 회사) · 이 꾀 정산 · 앞뒤 꾀 · 다음 단추
   //   다) 회사 #/c/<번호>(길 셋째 회사 · 오늘 어느 꾀에도 없는 회사 하나) — 걸음 3 / 5 · 이름 · 시장 · 업종 · 고른 꾀(덜 잃은 차례 · 지난 기록 · 고르는 법 · 누르면 그 꾀) · 한 달 꺾은선 글 · 「왜 사?」 고리
   const ST25 = await J('/su/data/su21-settle.json').catch(() => null);
-  const okT25 = okG && ['mean', 'set', 'say', 'name', 'han'].every(f => K36.every(k => typeof G36[f]?.[k] === 'string' && G36[f][k]));
+  const useG25 = !!SN && okG && ['mean', 'set', 'say', 'name', 'han'].every(f => K36.every(k => typeof G36[f]?.[k] === 'string' && G36[f][k])), G25 = useG25 ? G36 : S36C.base36(), okT25 = true; // 꾀 칸 자료가 없는 날 = 바탕 글(오늘 고른 곳 0)
+  const spW25 = c => (useG25 ? spW36(c) : null);
   const sun25 = okSunD && !sunBad.length ? SUN : null, ymW25 = t => (DAYz.test(t ?? '') ? t.slice(0, 4) + '년 ' + +t.slice(5, 7) + '월' : null), kn25 = k => +k.slice(1);
   const set25 = k => { if (!ST25 || !Array.isArray(ST25.buys) || !Array.isArray(ST25.kinds)) return null; const q = Number.isFinite(ST25.qty) ? ST25.qty : 10;
     const rs = ST25.buys.filter(b => ST25.kinds[b[1]] === k && Number.isFinite(b[3]) && b[3] > 0).map(([d, , code, buy]) => { const [now, nd] = ST25.now?.[code] ?? [buy, d]; return {cost: buy * q, val: now * q, one: !(nd > d)}; });
     const cost = rs.reduce((a, r) => a + r.cost, 0), val = rs.reduce((a, r) => a + r.val, 0), one = rs.length > 0 && rs.every(r => r.one);
     return {dd: [wonM(cost), rs.length ? wonM(val) : '아직 산 셈이 없어요'], res: !rs.length ? '아직 산 셈이 없어요' : one ? '아직 하루치예요' : movedM(val - cost)}; };
   const none25 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
-  const in25 = code => (okG ? K36.filter(k => G36.lists[k].slice(0, 7).some(c => c.code === code)) : []);
+  const in25 = code => (useG25 ? K36.filter(k => G25.lists[k].slice(0, 7).some(c => c.code === code)) : []);
   let other25 = null; for (const c of ['005930', '000660', '035420', '005380', '051910', '035720', '068270']) { if (in25(c).length) continue; const co = await J('/atlas/data/co/' + c + '.json').catch(() => null); if (typeof co?.c?.name === 'string') { other25 = {code: c, co}; break; } }
-  const coW25 = async code => { const co = await J('/atlas/data/co/' + code + '.json').catch(() => null), mine = in25(code), it = mine.length ? G36.lists[mine[0]].find(c => c.code === code) : null;
+  const coW25 = async code => { const co = await J('/atlas/data/co/' + code + '.json').catch(() => null), mine = in25(code), it = mine.length ? G25.lists[mine[0]].find(c => c.code === code) : null;
     const name = typeof co?.c?.name === 'string' && co.c.name ? co.c.name : it?.name ?? null, mk = co?.c?.market === 'KOSDAQ' ? '코스닥' : co?.c?.market === 'KOSPI' ? '코스피' : null;
-    const v = spW36({code}), bd = DAYz.test(G36?.asOf?.board ?? '') ? mdM(G36.asOf.board) + ' ' : '', m = v ? (v[20] < v[0] ? 'dn' : v[20] > v[0] ? 'up' : 'eq') : null;
+    const v = spW25({code}), bd = DAYz.test(G25?.asOf?.board ?? '') ? mdM(G25.asOf.board) + ' ' : '', m = v ? (v[20] < v[0] ? 'dn' : v[20] > v[0] ? 'up' : 'eq') : null;
     const ord = [...mine].sort((a, b) => (RK36[a]?.i ?? 99) - (RK36[b]?.i ?? 99) || kn25(a) - kn25(b));
     return {h1: name, kick: [mk, typeof co?.c?.i === 'string' && co.c.i ? co.c.i + ' 업종' : null].filter(Boolean).join(' · ') || '회사', step: '3 / 5 · 회사',
       say: mine.length ? '오늘 서른여섯 꾀 가운데 ' + mine.length + '가지가 이 회사를 골랐어요.' : '오늘은 서른여섯 꾀 어디에도 들지 않았어요.', seal: m ? {dn: '내림', up: '오름', eq: '같음'}[m] : '',
       cap: v ? ['한 달 전 ' + wonM(v[0]), bd + '마지막 값 ' + wonM(v[20]), '한 달 동안 100원이 ' + w100(v[20] / v[0] - 1) + '이 됐어요.'] : [],
-      ks: ord.map(k => [k, '#/k/' + k, RK36[k] ? recW(RK36[k]) : '', G36.say[k]]), ask: '#/q/' + code, next: ['#/q/' + code, '4 / 5']}; };
+      ks: ord.map(k => [k, '#/k/' + k, RK36[k] ? recW(RK36[k]) : '', G25.say[k]]), ask: '#/q/' + code, next: ['#/q/' + code, '4 / 5']}; };
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
@@ -837,11 +840,11 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const ga = await p.evaluate(new Function(txtJS + `const main = document.querySelector('#su main.sj-page[data-page="kkoes"]');
       return {main: !!main, h1: txt(document.querySelector('#su h1')), tab: txt(document.querySelector('#su .sj-tabs a[aria-current="page"]')), next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null,
         sets: [...(main?.querySelectorAll('section.sj-kset') ?? [])].map(s => ({n: s.getAttribute('data-set'), h: txt(s.querySelector('h2')), rows: [...s.querySelectorAll('li.sj-kr')].map(li => [li.getAttribute('data-k'), li.querySelector('a.sj-ka')?.getAttribute('href') ?? '', txt(li.querySelector('.sj-kno')), txt(li.querySelector('.sj-kt b')), txt(li.querySelector('.sj-khan')), txt(li.querySelector('.sj-krk')), txt(li.querySelector('.sj-kmean'))])}))};`));
-    const setsW = okT25 ? [0, 1, 2, 3, 4, 5].map(i => ({n: String(i + 1), h: G36.set[K36[i * 6]], rows: K36.slice(i * 6, i * 6 + 6).map(k => [k, '#/k/' + k, '제' + kn25(k) + '계', G36.name[k], G36.han[k], RK36[k] ? RK36[k].i + '번째' : '', G36.mean[k]])})) : null;
+    const setsW = [0, 1, 2, 3, 4, 5].map(i => ({n: String(i + 1), h: G25.set[K36[i * 6]], rows: K36.slice(i * 6, i * 6 + 6).map(k => [k, '#/k/' + k, '제' + kn25(k) + '계', G25.name[k], G25.han[k], RK36[k] ? RK36[k].i + '번째' : '', G25.mean[k]])}));
     check(okT25 && ga.main && ga.h1 === '병법 서른여섯 가지' && ga.tab === '꾀' && JSON.stringify(ga.sets) === JSON.stringify(setsW) && ga.next === '#/k/' + (sun25 ? ORD36[0] : 'g01'),
       W + '가) 꾀 모음 — 여섯 묶음 × 여섯 꾀(삼십육계 차례 · 묶음 이름 = 자료) · 제 ○계 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 탭 「꾀」 · 다음 = 맨 위 꾀', JSON.stringify({main: ga.main, h1: ga.h1, tab: ga.tab, next: ga.next, bad: setsW ? ga.sets.map((s, i) => (JSON.stringify(s) === JSON.stringify(setsW[i]) ? null : [s.n, s.h, s.rows.find((r, j) => JSON.stringify(r) !== JSON.stringify(setsW[i].rows[j]))])).filter(Boolean).slice(0, 2) : 'data'}).slice(0, 500));
     // 나) 꾀 한 가지
-    const KS25 = width === 390 ? ORD36 : [...new Set([ORD36[0], ORD36[35], ...K36.filter(k => G36?.by?.[k] === 'vol').slice(0, 1)])];
+    const KS25 = width === 390 ? ORD36 : [...new Set([ORD36[0], ORD36[35], ...K36.filter(k => G25.by?.[k] === 'vol').slice(0, 1)])];
     const badK = [];
     for (const k of KS25) {
       await open(p, '#/k/' + k);
@@ -851,13 +854,13 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
           cs: [...(kco?.querySelectorAll('a.sj-chip') ?? [])].map(a => [a.getAttribute('href'), txt(a.querySelector('b')), txt(a.querySelector('.sj-chipd'))]), none: txt(kco?.querySelector('.sj-tnone')), n: kco?.getAttribute('data-n') ?? null,
           st: kst ? {dd: [...kst.querySelectorAll('dl.sj-money dd')].map(txt), res: txt(kst.querySelector('.sj-res b')), go: kst.querySelector('a.sj-go')?.getAttribute('href') ?? ''} : null,
           pn: [...(main?.querySelectorAll('nav.sj-kpn a') ?? [])].map(a => a.getAttribute('href')), next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null, nextK: txt(document.querySelector('#su .sj-next .sj-nk')), tab: txt(document.querySelector('#su .sj-tabs a[aria-current="page"]'))};`));
-      const r = RK36[k] ?? null, H = sun25?.hist ?? null, at = ORD36.indexOf(k), L = okG ? G36.lists[k].slice(0, 7) : [], S25 = set25(k);
-      const want = okT25 ? {main: true, k, h1: G36.name[k], kick: '삼십육계 제' + kn25(k) + '계 · ' + G36.set[k], seal: r ? '차례 ' + r.i : '꾀', q: '「' + G36.mean[k] + '」', cite: '삼십육계 제' + kn25(k) + '계 ' + G36.han[k], step: '2 / 5 · 꾀',
+      const r = RK36[k] ?? null, H = sun25?.hist ?? null, at = ORD36.indexOf(k), L = useG25 ? G25.lists[k].slice(0, 7) : [], S25 = set25(k);
+      const want = okT25 ? {main: true, k, h1: G25.name[k], kick: '삼십육계 제' + kn25(k) + '계 · ' + G25.set[k], seal: r ? '차례 ' + r.i : '꾀', q: '「' + G25.mean[k] + '」', cite: '삼십육계 제' + kn25(k) + '계 ' + G25.han[k], step: '2 / 5 · 꾀',
         say: sun25 ? (r?.n ? '지금 ' + sun25.name + '에서 서른여섯 꾀 가운데 덜 잃은 차례 ' + r.i + '번째예요. 지난 같은 땅 기록으로 셌어요.' : '지금 ' + sun25.name + '이에요. 이 꾀는 지난 기록을 세지 못해 맨 아래에 놓았어요.') : '오늘 형세는 아직 세지 못했어요. 꾀 차례 대신 옛 차례로 놓았어요.',
-        way: G36.say[k], vol: G36.by?.[k] === 'vol',
+        way: G25.say[k], vol: G25.by?.[k] === 'vol',
         rule: sun25 && H ? (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + sun25.name + '이었던 ' + H.same + '날을 골라, ') + '이 꾀가 고른 일곱 곳을 닷새 뒤 값과 견줬어요.' + (ymW25(H.from) && ymW25(H.to) ? ' 센 때는 ' + ymW25(H.from) + '부터 ' + ymW25(H.to) + '까지예요.' : '') : '',
         tl: r ? recW(r) : '오늘 형세를 아직 세지 못해 같은 땅 기록이 없어요.', dots: r?.n && r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0,
-        cs: L.map(c => ['#/c/' + c.code, c.name, Number.isInteger(c.days) && c.days >= 1 ? c.days + '일째' : '']), none: L.length ? '' : none25(G36.why?.[k]), n: String(L.length),
+        cs: L.map(c => ['#/c/' + c.code, c.name, Number.isInteger(c.days) && c.days >= 1 ? c.days + '일째' : '']), none: L.length ? '' : useG25 ? none25(G25.why?.[k]) : '오늘 고른 곳 자료를 아직 받지 못했어요.', n: String(L.length),
         st: S25 ? {dd: S25.dd, res: S25.res, go: '#/r/t'} : null,
         pn: [at > 0 ? '#/k/' + ORD36[at - 1] : null, at < 35 ? '#/k/' + ORD36[at + 1] : null, '#/k'].filter(Boolean), next: L.length ? '#/c/' + L[0].code : '#/q', nextK: L.length ? '3 / 5' : '4 / 5', tab: '꾀'} : null;
       const diff = want ? Object.keys(want).filter(x => JSON.stringify(want[x]) !== JSON.stringify(gk[x])) : ['data'];

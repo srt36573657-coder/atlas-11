@@ -11,7 +11,8 @@ import {NAME, josa} from '/next/brand.js';
 import {kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js';
 import {topBar, stepTag, endSec, dockNav, tabNav} from '/su/su-sonja-top.js';
-import {D36, DST, load21, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin} from '/su/su-sonja.js';
+import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin} from '/su/su-sonja.js';
+import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날의 바탕 글(su21_s36.py 그대로)
 
 const CODE = /^[0-9A-Z]{6}$/;
 export const KKOE = /^g(0[1-9]|[12]\d|3[0-6])$/;
@@ -24,6 +25,8 @@ const coUrl = c => '/atlas/data/co/' + c + '.json';
 /** 꾀 칸 자료(su21-s36.json)가 쓸 만한가 — 이름 · 뜻 · 고르는 법 · 묶음이 서른여섯 모두 있음 */
 const okG = g => !!g && g.schema === 'su21-s36-1' && Array.isArray(g.kinds) && g.kinds.length === 36 && g.kinds.every((k, i) => k === K36[i])
   && ['name', 'han', 'mean', 'say', 'set'].every(f => g[f] && K36.every(k => typeof g[f][k] === 'string' && g[f][k])) && !!g.lists && typeof g.lists === 'object';
+/** 꾀 칸 자료 — 첫 화면 자료(su21.json)에 꾀 수(s36n)가 있을 때만 받음(없는 날 404 를 부르지 않음) · 못 받거나 꼴이 틀리면 바탕 글(오늘 고른 곳 0 · fallback) */
+const g36Of = async (X, T) => { const g = n36of(T) != null ? await X.get(D36) : null; return okG(g) ? g : base36(); };
 /** 덜 잃은 차례 — {k: {…기록, i: 차례}} · 형세가 없으면 빈 것 */
 const rankOf = T => (okSun(T?.sun) && new Set(T.sun.rank.map(r => r.k)).size === 36 ? Object.fromEntries(T.sun.rank.map((r, i) => [r.k, {...r, i: i + 1}])) : {});
 const kNo = k => +k.slice(1); // 제 몇 계
@@ -105,8 +108,7 @@ function kkoeRow(g, k, r, extra = null) {
 
 /* ── 꾀 모음(#/k) ── */
 export async function vKkoeAll(X) {
-  const [T, g, {S}] = await Promise.all([load21(X.get), X.get(D36), X.base()]);
-  if (!okG(g)) return missPage(X, '서른여섯 꾀', '서른여섯 꾀 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
+  const [T, {S}] = await Promise.all([load21(X.get), X.base()]), g = await g36Of(X, T);
   const RB = rankOf(T), sun = okSun(T?.sun) ? T.sun : null, first = sun?.rank[0]?.k ?? null;
   const sets = []; for (let i = 0; i < 6; i++) sets.push(K36.slice(i * 6, i * 6 + 6));
   const kids = [
@@ -125,8 +127,8 @@ export async function vKkoeAll(X) {
 
 /* ── 꾀 한 가지(#/k/g01 ~ g36) ── */
 export async function vKkoe(X, k) {
-  const [T, g, D, {S}] = await Promise.all([load21(X.get), X.get(D36), X.get(DST), X.base()]);
-  if (!okG(g) || !KKOE.test(k)) return missPage(X, '꾀', '이 꾀를 찾지 못했어요.');
+  if (!KKOE.test(k)) return missPage(X, '꾀', '이 꾀를 찾지 못했어요.');
+  const [T, D, {S}] = await Promise.all([load21(X.get), X.get(DST), X.base()]), g = await g36Of(X, T);
   const RB = rankOf(T), r = RB[k] ?? null, sun = okSun(T?.sun) ? T.sun : null, H = sun?.hist ?? null;
   const L = (Array.isArray(g.lists[k]) ? g.lists[k] : []).filter(c => CODE.test(String(c?.code ?? ''))).slice(0, 7), bd = mday(g.asOf?.board), dd = mday(g.asOf?.data) ?? bd;
   const anySp = L.some(c => sp36(g, c.code)), vol = g.by?.[k] === 'vol';
@@ -152,7 +154,7 @@ export async function vKkoe(X, k) {
     h('section', {class: 'sj-sec sj-kco', 'aria-label': '오늘 이 꾀를 닮은 곳', 'data-n': String(L.length)},
       head('곳', '제3장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '오늘 이 꾀를 닮은 곳'}), h('span', {class: 'sj-h2n', text: ' ' + L.length + '곳'}))),
       h('p', {class: 'sj-dayl', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 점선은 한 달 전 값이에요. ' : '') + '사도 된다는 뜻이 아니에요.'}),
-      L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: none36(g.why?.[k])}),
+      L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: g.fallback ? '오늘 고른 곳 자료를 아직 받지 못했어요.' : none36(g.why?.[k])}),
       endSeal('곳')),
     me ? h('section', {class: 'sj-sec sj-kst', 'aria-label': '이 꾀 정산', 'data-st': me.st},
       head('셈', '제4장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 꾀 정산'})), true),
@@ -166,7 +168,7 @@ export async function vKkoe(X, k) {
       prev ? h('a', {class: 'sj-kp', href: '#/k/' + prev}, h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: (sun ? at + '번째 · ' : '') + g.name[prev]})) : null,
       nxt ? h('a', {class: 'sj-kp sj-kn', href: '#/k/' + nxt}, h('span', {text: (sun ? (at + 2) + '번째 · ' : '') + g.name[nxt]}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
       goLink('#/k', '서른여섯 꾀 모두 보기')),
-    endSec(day(g.asOf?.board), gotOf(S))];
+    endSec(day(g.asOf?.board ?? T?.asOf?.board), gotOf(S))];
   const c0 = L[0] ?? null;
   return frame({title: g.name[k], page: 'kkoe', attrs: {'data-k': k}, kids, step: 2, tab: 1, lc: X.cur?.()?.code ?? null,
     next: c0 ? {href: '#/c/' + c0.code, k: '3 / 5', label: '이 꾀가 고른 ' + josa(String(c0.name ?? '첫 곳'), '는') + ' 어떤 곳인가?'} : {href: '#/q', k: '4 / 5', label: '사기 전에 한 번 멈출까?'}});
@@ -174,8 +176,8 @@ export async function vKkoe(X, k) {
 
 /* ── 회사(#/c/<번호>) ── */
 export async function vCo36(X, code) {
-  const [T, g, co, {S}] = await Promise.all([load21(X.get), X.get(D36), X.get(coUrl(code)), X.base()]);
-  const G = okG(g) ? g : null, mine = G ? K36.filter(k => (G.lists[k] ?? []).slice(0, 7).some(c => String(c?.code) === code)) : [];
+  const [T, co, {S}] = await Promise.all([load21(X.get), X.get(coUrl(code)), X.base()]), g = await g36Of(X, T);
+  const G = g, mine = G ? K36.filter(k => (G.lists[k] ?? []).slice(0, 7).some(c => String(c?.code) === code)) : [];
   const inList = mine.length ? (G.lists[mine[0]] ?? []).find(c => String(c?.code) === code) : null;
   const c = co?.c ?? null, name = typeof c?.name === 'string' && c.name ? c.name : typeof inList?.name === 'string' ? inList.name : null;
   if (!name) return missPage(X, '찾지 못했어요', '이 회사를 찾지 못했어요.');
@@ -212,8 +214,7 @@ export async function vCo36(X, code) {
 
 /* ── 정산(#/r/t) — 서른여섯 꾀 표만 ── */
 export async function vSettle36(X) {
-  const [D, g, T, {S}] = await Promise.all([X.get(DST), X.get(D36), load21(X.get), X.base()]);
-  const G = okG(g) ? g : null, nameOf = k => G?.name[k] ?? '제' + kNo(k) + '계';
+  const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
   if (!D || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return missPage(X, '정산', '정산 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
   const ST = settle36(D), {K, T: TT, rows} = ST, first = rows.map(r => r.day).sort()[0] ?? null, rated = K.some(x => rateOf(x) !== null);
   const mx = Math.max(0, ...K.map(rateOf).filter(v => v !== null).map(Math.abs));

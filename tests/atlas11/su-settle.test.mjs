@@ -360,3 +360,15 @@ test('겹친 곳(주문 1114-0802 「… 36개 정도 겹치는 그 종목을 �
   const css = rd('site/su/su-apple.css');
   assert.ok(css.includes('.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-oc.s36-csp { grid-template-areas: "n n" "c s" "d s"; }'), '칸 = 위 이름 · 아래 왼쪽 ○묶음 · ○일째 · 오른쪽 꺾은선');
 });
+
+/** 주문 1115-2328 — 꾀 칸 자료를 못 받은 날의 바탕 글(site/su/su-sonja-36.js) = su21_s36.py --defs 그대로(꾀 모음 · 꾀 쪽 · 정산이 같은 이름과 뜻) */
+test('서른여섯 꾀 바탕 글(su-sonja-36.js) = su21_s36.py --defs — 쉬운 이름 · 꾀 이름 · 뜻 · 고르는 법 · 여섯 묶음 · 사고판 양 다섯', async () => {
+  const defs = JSON.parse(execFileSync('python3', [path.join(ROOT, 'scripts/atlas11/next/su21_s36.py'), '--defs'], {cwd: path.join(ROOT, 'scripts/atlas11/next'), encoding: 'utf8'}));
+  const M = await import('../../site/su/su-sonja-36.js');
+  assert.deepEqual([...M.K36], defs.kinds, '꾀 차례 g01 ~ g36');
+  for (const k of M.K36) { assert.equal(M.NAME[k], defs.name[k], k); assert.equal(M.HAN[k], defs.han[k], k); assert.equal(M.MEAN[k], defs.mean[k], k); assert.equal(M.SAY[k], defs.say[k], k); assert.equal(M.SETOF[k], defs.set[k], k); }
+  assert.deepEqual({...M.BY}, defs.by, '사고판 양으로 고르는 다섯');
+  const B = M.base36();
+  assert.ok(B.fallback === true && B.schema === 'su21-s36-1' && B.kinds.length === 36 && Object.keys(B.lists).length === 0, '바탕 = 오늘 고른 곳 0');
+  for (const t of [...Object.values(M.NAME), ...Object.values(M.MEAN), ...Object.values(M.SAY), ...M.SET6]) { assert.ok(!t.includes('%') && !/[A-Za-z]/.test(t), t); assert.deepEqual([...screenHits(t), ...ruinHits(t)], [], t); }
+});
