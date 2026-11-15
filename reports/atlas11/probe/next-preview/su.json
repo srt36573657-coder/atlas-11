@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-15T10:56:11.296Z",
+ "at": "2026-11-15T11:48:39.357Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 1410,
@@ -137,7 +137,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "친구에게",
@@ -153,7 +153,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 0,
-    "orn": 5
+    "orn": 7
    }
   ],
   "hard": 3,
@@ -179,9 +179,9 @@
    "lines": 5
   },
   "speed": {
-   "lcp": 552,
+   "lcp": 544,
    "cls": 0,
-   "pic": 551
+   "pic": 549
   },
   "white": {
    "light #/": {
