@@ -1,38 +1,30 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-15T11:59:35.644Z",
+ "at": "2026-11-15T16:17:26.420Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1414,
+  "pass": 455,
   "fail": 0
  },
  "fails": [],
  "m": {
-  "dropped": [],
   "data": {
-   "picks": 0,
-   "near": 3,
-   "money": [
-    "한진칼",
-    "삼성에스디에스",
-    "SBS"
-   ]
+   "fk": "g09",
+   "fc": "제일기획",
+   "sun": true
   },
   "home": {
-   "screens": 9.78,
-   "links": 65
+   "screens": 9.81,
+   "links": 71
   },
   "t21": {
    "listed": 2557,
-   "b365": 365,
-   "n": 0,
-   "overlap": 2,
-   "distinct": 19
+   "board": "2026-11-13"
   },
   "path": [
    {
     "h1": "지금은 내리는 땅 이에요.",
-    "sonja": true,
+    "page": "sonja",
     "kids": [
      "sj-cover",
      "sj-sun",
@@ -45,68 +37,33 @@
     "hardWords": "코스피,코스닥,업종,꽃,거래일"
    },
    {
-    "h1": "땅 지도",
-    "heroShare": 72.4,
-    "share": 77,
-    "outside": 15,
-    "two": 2,
-    "labels": 49,
-    "mucha": [],
-    "anim": 29,
-    "need": 0,
-    "means": 1,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 2,
-    "orn": 5
+    "h1": "강 건너 불 보기",
+    "page": "kkoe",
+    "kids": [
+     "sj-ph",
+     "sj-kway",
+     "sj-krec",
+     "sj-kco",
+     "sj-kst",
+     "sj-kpn",
+     "sj-end"
+    ],
+    "seals": 7,
+    "hard": 2,
+    "hardWords": "주식,거래일"
    },
    {
-    "h1": "K-소비재 · 콘텐츠 땅",
-    "heroShare": 72.4,
-    "share": 89,
-    "outside": 15,
-    "two": 2,
-    "labels": 33,
-    "mucha": [],
-    "anim": 28,
-    "need": 0,
-    "means": 1,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 2,
-    "orn": 7
-   },
-   {
-    "h1": "롯데칠성",
-    "heroShare": 72.4,
-    "share": 173,
-    "outside": 14,
-    "two": 2,
-    "labels": 20,
-    "mucha": [],
-    "anim": 5,
-    "need": 1,
-    "means": 6,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 7,
-    "orn": 5
-   },
-   {
-    "h1": "롯데칠성 한 달 하루씩",
-    "heroShare": 72.4,
-    "share": 178,
-    "outside": 15,
-    "two": 2,
-    "labels": 32,
-    "mucha": [],
-    "anim": 12,
-    "need": 0,
-    "means": 4,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 5,
-    "orn": 5
+    "h1": "제일기획",
+    "page": "co",
+    "kids": [
+     "sj-ph",
+     "sj-cok",
+     "sj-costop",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 2,
+    "hardWords": "코스피,업종"
    },
    {
     "h1": "왜 사?",
@@ -118,11 +75,15 @@
     "mucha": [],
     "anim": 7,
     "need": 0,
-    "means": 1,
+    "means": {
+     "vals": 1,
+     "with": 1
+    },
+    "pro": 5,
     "hard": 0,
-    "hardWords": "",
     "glossed": 1,
-    "orn": 7
+    "orn": 0,
+    "ornN": 7
    },
    {
     "h1": "내 매매일지",
@@ -134,57 +95,30 @@
     "mucha": [],
     "anim": 11,
     "need": 0,
-    "means": 3,
+    "means": {
+     "vals": 3,
+     "with": 3
+    },
+    "pro": 9,
     "hard": 0,
-    "hardWords": "",
-    "glossed": 4,
-    "orn": 5
-   },
-   {
-    "h1": "친구에게",
-    "heroShare": 72.4,
-    "share": 79,
-    "outside": 15,
-    "two": 2,
-    "labels": 15,
-    "mucha": [],
-    "anim": 13,
-    "need": 0,
-    "means": 1,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 0,
-    "orn": 5
+    "glossed": 3,
+    "orn": 0,
+    "ornN": 5
    }
   ],
-  "hard": 5,
+  "hard": 9,
   "hardWords": [
    "코스피",
    "코스닥",
    "업종",
    "꽃",
-   "거래일"
+   "거래일",
+   "주식"
   ],
-  "drawers": {
-   "#/r/d": {
-    "h1": "날마다 지난 기록",
-    "share": 79,
-    "moving": 1
-   },
-   "#/r/y": {
-    "h1": "해마다 지난 기록",
-    "share": 66,
-    "moving": 1
-   }
-  },
-  "nearYears": {
-   "has": true,
-   "lines": 5
-  },
   "speed": {
-   "lcp": 448,
+   "lcp": 468,
    "cls": 0,
-   "pic": 457
+   "pic": 465
   },
   "white": {
    "light #/": {
@@ -200,23 +134,67 @@
      "#F1E3D3"
     ]
    },
-   "light #/n": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+   "light #/k": {
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": true,
+    "old": 0,
+    "cover": 0,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
-   "light #/m": {
+   "light #/k/g09": {
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F1E3D3"
+    ]
+   },
+   "light #/c/030000": {
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F1E3D3"
+    ]
+   },
+   "light #/r/t": {
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F1E3D3"
+    ]
+   },
+   "light #/q": {
     "clean": true,
     "body": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -232,39 +210,7 @@
      "#FFFFFF"
     ]
    },
-   "light #/r": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
-    "frame": "none",
-    "wave": "none",
-    "curve": "none",
-    "orn": 0,
-    "sky": false,
-    "tc": [
-     "#FFFFFF"
-    ]
-   },
-   "light #/r/d": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
-    "frame": "none",
-    "wave": "none",
-    "curve": "none",
-    "orn": 0,
-    "sky": false,
-    "tc": [
-     "#FFFFFF"
-    ]
-   },
-   "light #/r/y": {
+   "light #/j": {
     "clean": true,
     "body": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -293,23 +239,67 @@
      "#F1E3D3"
     ]
    },
-   "dark #/n": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
+   "dark #/k": {
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
     "frame": "none",
-    "wave": "none",
-    "curve": "none",
     "orn": 0,
-    "sky": true,
+    "old": 0,
+    "cover": 0,
     "tc": [
-     "#FFFFFF"
+     "#F1E3D3"
     ]
    },
-   "dark #/m": {
+   "dark #/k/g09": {
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F1E3D3"
+    ]
+   },
+   "dark #/c/030000": {
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F1E3D3"
+    ]
+   },
+   "dark #/r/t": {
+    "sj": true,
+    "body": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "dock": "rgb(241, 227, 211)",
+    "tabs": "rgb(241, 227, 211)",
+    "h1": "rgb(59, 26, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F1E3D3"
+    ]
+   },
+   "dark #/q": {
     "clean": true,
     "body": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -325,39 +315,7 @@
      "#FFFFFF"
     ]
    },
-   "dark #/r": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
-    "frame": "none",
-    "wave": "none",
-    "curve": "none",
-    "orn": 0,
-    "sky": false,
-    "tc": [
-     "#FFFFFF"
-    ]
-   },
-   "dark #/r/d": {
-    "clean": true,
-    "body": "rgb(255, 255, 255)",
-    "top": "rgb(255, 255, 255)",
-    "dock": "rgb(255, 255, 255)",
-    "tabs": "rgb(255, 255, 255)",
-    "h1": "rgb(29, 29, 31)",
-    "frame": "none",
-    "wave": "none",
-    "curve": "none",
-    "orn": 0,
-    "sky": false,
-    "tc": [
-     "#FFFFFF"
-    ]
-   },
-   "dark #/r/y": {
+   "dark #/j": {
     "clean": true,
     "body": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -380,25 +338,10 @@
    "lost": 2,
    "at": "#/"
   },
-  "price": {
-   "#/": {
-    "cells": 0,
-    "gone": "주문 1115-1843 — 처음 쪽은 병법 서른여섯만(줄 없음)"
-   },
-   "#/n": {
-    "cells": 42,
-    "bad": 0,
-    "note": [
-     "현재가는 11월 13일 마지막 값이에요.",
-     "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "될 듯은 지난 기록의 앞 모습이에요.",
-     "지난 기록 차례예요. 앞날은 몰라요."
-    ]
-   }
-  },
   "live": {
    "asked": 0,
-   "first": "none"
+   "first": "none",
+   "sub": 0
   },
   "old": {
    "light /next/?su=guide#/find": {
@@ -441,7 +384,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.014,
+    "darkMax": 0.013,
     "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
@@ -929,342 +872,6 @@
     "lowN": 0,
     "tabs": "rgb(255, 255, 255)"
    }
-  },
-  "why": {
-   "board": "2026-11-13",
-   "cells": 42,
-   "codes": 34,
-   "fomoPass": 34,
-   "days": {
-    "hot 028050": [
-     4,
-     "2026-11-10",
-     78
-    ],
-    "hot 005430": [
-     2,
-     "2026-11-12",
-     98
-    ],
-    "hot 180640": [
-     1,
-     "2026-11-13",
-     66
-    ],
-    "hot 272450": [
-     3,
-     "2026-11-11",
-     98
-    ],
-    "hot 093320": [
-     5,
-     "2026-11-09",
-     43
-    ],
-    "hot 302440": [
-     1,
-     "2026-11-13",
-     78
-    ],
-    "hot 009420": [
-     1,
-     "2026-11-13",
-     94
-    ],
-    "bloom 005290": [
-     1,
-     "2026-11-13",
-     46
-    ],
-    "bloom 357780": [
-     2,
-     "2026-11-12",
-     59
-    ],
-    "bloom 189300": [
-     2,
-     "2026-11-12",
-     59
-    ],
-    "bloom 204270": [
-     1,
-     "2026-11-13",
-     84
-    ],
-    "bloom 095340": [
-     1,
-     "2026-11-13",
-     56
-    ],
-    "bloom 077970": [
-     1,
-     "2026-11-13",
-     61
-    ],
-    "bloom 082740": [
-     1,
-     "2026-11-13",
-     49
-    ],
-    "money 028050": [
-     3,
-     "2026-11-11",
-     78
-    ],
-    "money 180640": [
-     1,
-     "2026-11-13",
-     66
-    ],
-    "money 086280": [
-     9,
-     "2026-11-03",
-     68
-    ],
-    "money 079160": [
-     1,
-     "2026-11-13",
-     44
-    ],
-    "money 034120": [
-     1,
-     "2026-11-13",
-     92
-    ],
-    "money 122870": [
-     2,
-     "2026-11-12",
-     78
-    ],
-    "money 005300": [
-     1,
-     "2026-11-13",
-     34
-    ],
-    "hotNext 053800": [
-     1,
-     "2026-11-13",
-     44
-    ],
-    "hotNext 028100": [
-     2,
-     "2026-11-12",
-     61
-    ],
-    "hotNext 089590": [
-     1,
-     "2026-11-13",
-     65
-    ],
-    "hotNext 003490": [
-     3,
-     "2026-11-11",
-     78
-    ],
-    "hotNext 131290": [
-     2,
-     "2026-11-12",
-     73
-    ],
-    "hotNext 218410": [
-     2,
-     "2026-11-12",
-     73
-    ],
-    "hotNext 222800": [
-     2,
-     "2026-11-12",
-     70
-    ],
-    "moneyNext 034020": [
-     1,
-     "2026-11-13",
-     39
-    ],
-    "moneyNext 007660": [
-     2,
-     "2026-11-12",
-     74
-    ],
-    "moneyNext 100790": [
-     1,
-     "2026-11-13",
-     55
-    ],
-    "moneyNext 218410": [
-     2,
-     "2026-11-12",
-     73
-    ],
-    "moneyNext 131290": [
-     1,
-     "2026-11-13",
-     73
-    ],
-    "moneyNext 171090": [
-     1,
-     "2026-11-13",
-     65
-    ],
-    "moneyNext 204270": [
-     2,
-     "2026-11-12",
-     84
-    ],
-    "bloomNext 131290": [
-     2,
-     "2026-11-12",
-     73
-    ],
-    "bloomNext 281820": [
-     2,
-     "2026-11-12",
-     48
-    ],
-    "bloomNext 007660": [
-     2,
-     "2026-11-12",
-     74
-    ],
-    "bloomNext 103590": [
-     1,
-     "2026-11-13",
-     73
-    ],
-    "bloomNext 036930": [
-     2,
-     "2026-11-12",
-     63
-    ],
-    "bloomNext 171090": [
-     1,
-     "2026-11-13",
-     65
-    ],
-    "bloomNext 353200": [
-     2,
-     "2026-11-12",
-     32
-    ]
-   },
-   "daysFrom": "2026-10-02",
-   "screens": 3.95,
-   "pages": 42,
-   "reasons": 1512
-  },
-  "coLine": {
-   "companies": 34,
-   "ok": 34,
-   "idx": 34,
-   "cd": 34,
-   "bad": []
-  },
-  "mc": {
-   "hot": 29,
-   "bloom": 67,
-   "money": 34,
-   "hotNext": 180,
-   "moneyNext": 70,
-   "bloomNext": 85
-  },
-  "culture": [
-   "테마 몰림:185",
-   "고점 앞 팔기:24",
-   "본전 버티기:23",
-   "빚투 쏠림:70",
-   "국민주 쏠림:36",
-   "한방 쫓기:34",
-   "눈길 따라 사기:37"
-  ],
-  "top3": [
-   "1:삼성전기:4.84:",
-   "2:현대오토에버:4.71:",
-   "3:삼천당제약:4.08:"
-  ],
-  "kr7": {
-   "cards": 7,
-   "rows": 7,
-   "screens": 17.41
-  },
-  "ant11": {
-   "cards": 11,
-   "rows": 11,
-   "screens": 20.09
-  },
-  "coLive": {
-   "a": {
-    "px": "70933",
-    "live": "2026-11-16T14:31",
-    "from": "2026-10-19",
-    "to": "2026-11-16",
-    "ix": false,
-    "lab": "100원이 156.6원"
-   }
-  },
-  "coReal": {
-   "live": null,
-   "px": "68800",
-   "from": "2026-10-16",
-   "to": "2026-11-13"
-  },
-  "book": {
-   "days": 6,
-   "rows": 18,
-   "shapes": {
-    "up": 4,
-    "dn": 11,
-    "eq": 0,
-    "one": 3
-   },
-   "folds": 1,
-   "ledger": {
-    "rows": 5,
-    "months": 1
-   },
-   "who": "모든 사람(주문 1513)"
-  },
-  "bookFold": {
-   "320": {
-    "lim": 716,
-    "name": 721,
-    "line": 2657,
-    "money": 485
-   },
-   "390": {
-    "lim": 716,
-    "name": 636,
-    "line": 2135,
-    "money": 426
-   }
-  },
-  "bookLedger": {
-   "rows": 6,
-   "months": 1,
-   "bad": 0
-  },
-  "quiet": {
-   "n": 7,
-   "pool": 9,
-   "steps": [
-    365,
-    342,
-    323,
-    39,
-    36,
-    21,
-    9,
-    9,
-    8,
-    7
-   ],
-   "rank": [
-    "1:한일홀딩스",
-    "2:경동나비엔",
-    "3:동서"
-   ]
-  },
-  "qbook": {
-   "days": 4
   },
   "settle": {
    "buys": 389,
