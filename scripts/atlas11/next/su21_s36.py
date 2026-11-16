@@ -6,9 +6,10 @@
     종가로 재는 서른하나 + 그날 사고판 양으로 재는 다섯(올리기 작업만 네이버 일봉 거래량을 받음 — su21_vol.mjs)
     거래량을 받은 회사가 열에 아홉이 안 되면 그 다섯은 빈 목록(까닭을 적음) — 지어낸 값 없음 · 한 번 적으면 고치지 않으므로 일부 회사만으로 고르지 않음
   앞날을 맞히지 않음 — 지금 모습을 셀 뿐 · 사고팔기를 권하지 않음"""
+import hashlib
 import numpy as np
 
-RULE_ID = 's36-v1'
+RULE_ID = 's36-v2'   # 주문 1116-1539 — 흉내 내 보기 열 번 · 소거 열 가지 · 거름 일곱 가지를 모두 지난 곳만(옛 s36-v1 = 모자라면 덜 닮은 곳으로 채움)
 K = 7
 KINDS = ['g%02d' % i for i in range(1, 37)]
 # 꾀 이름(사자성어) · 쉬운 이름(화면 표) · 꾀 뜻 · 고르는 법 · 갈래
@@ -59,16 +60,33 @@ SETOF = {k: SET[i // 6] for i, k in enumerate(KINDS)}
 BY = {k: 'vol' for k in ('g08', 'g13', 'g19', 'g29', 'g32')}   # 그날 사고판 양이 있어야 잼
 VOL_MIN = 0.9    # 그날 거래량을 받은 회사가 365곳 가운데 이만큼 넘을 때만 다섯을 셈
 NEED_T = 260     # 지난 값이 이만큼(한 해 남짓) 있어야 셈
-BON = 10.0       # 꾀의 모습에 맞는 곳을 먼저(점수에 더함) — 맞는 곳이 일곱이 안 되면 가장 가까운 곳으로 채움
 
-
-def _rank(codes, score, ok, k=K):
-    """점수가 큰 차례로 k 곳(점수가 없거나 ok 가 거짓이면 뺌) · 같은 점수면 번호 차례"""
-    s = np.asarray(score, float)
-    g = [(s[j], codes[j]) for j in range(len(codes)) if ok[j] and np.isfinite(s[j])]
-    g.sort(key=lambda x: (-x[0], x[1]))
-    return [c for _, c in g[:k]]
-
+# ── 새 판(주문 1116-1539 · 사장님 2026-11-16(마카오) 14:39 「너만 믿고 할 순 없잖아 그래서 몬테카를로 … 10번 돌리고 [소거]로 10번 돌리고 그리고 또 다른 방식으로 일곱 가지를 필터링 한다음에 …
+#    36개 7개 종목을 다시 [뽑아] … 말과 … 니가 찾아 낸 종목이 말이 같아야 될 거 아니야 지금은 틀린단 말이야」 · 15:01 「이작업도 같이해」 — docs/design/sonja-pick-2026-11-16/order-1539.txt)
+#   옛 판은 꾀 모습에 맞는 곳에 점수를 더해 먼저 놓되, 맞는 곳이 일곱이 안 되면 덜 닮은 곳으로 채웠다 → 꾀 뜻과 다른 회사가 섞임
+#   새 판 — 꾀마다 셋을 모두 지난 곳만 · 꾀를 가장 닮은 차례로 일곱까지 · 모자라면 모자란 대로(채우지 않음)
+#     ① 흉내 내 보기 열 번(몬테카를로) — 그 회사 지난 값으로 우연 길 이백 개씩 씨앗을 바꿔 열 번(모두 이천 개)을 그려 꾀 모습이 우연보다 뚜렷한지 봄
+#        드묾(rare) = 창 앞 지난 250거래일 하루 값을 뽑아 그린 이천 길 가운데 지금 값 이상이 열에 하나 이하 · 굳음(sure) = 창 안 날을 다시 뽑아 그린 이천 길의 열에 아홉 넘게 같은 모습
+#        (한 번 이백 길은 우연이 커서 번마다 따로 재면 가장자리 회사가 오락가락함 — 열 번을 모아 잼 · 씨앗 = 판 날 · 꾀 · 번)
+#     ② 소거 열 가지 — 믿을 만한 값인가(아래 CUT · 하나라도 걸리면 뺌)
+#     ③ 거름 일곱 가지 — 꾀 뜻을 일곱 쪽(한 달 · 닷새 · 오늘 · 값 자리 · 흔들림 · 업종과 시장 · 사고판 양)에서 맞대 봄 · 그 꾀 뜻에 든 쪽은 모두 맞아야 남음
+#   앞날을 맞히지 않음 — 지금 모습이 꾀 뜻과 같은지 셀 뿐 · 사고팔기를 권하지 않음
+MC_RUNS = 10          # 흉내 내 보기 열 번(씨앗 열 개)
+MC_PATHS = 200        # 한 번에 우연 길 이백 개
+MC_P = 0.1            # 드묾 — 지금 값 이상인 우연 길이 열에 하나 이하
+MC_SURE = 0.9         # 굳음 — 다시 뽑아 그린 길의 열에 아홉 넘게 같은 모습
+MC_HIST = 250         # 드묾의 바탕 — 창 앞 지난 250거래일
+MC_MIN_HIST = 120     # 바탕이 이만큼 안 되면 뚜렷하다고 하지 않음
+VOL_HIST = 60         # 사고판 양의 바탕 — 창 앞 60거래일
+CAP_MIN = 2000.0      # 회사 크기 2천억 원(억 원)
+PX_MIN = 1000.0       # 한 주 값 천 원
+JUMP = float(np.log(1.35))    # 나눔 흔적 — 하루 100원이 135원 넘게 · 74원 아래
+LIMIT = float(np.log(1.29))   # 한도 — 하루 100원이 129원 넘게 · 77원 아래(오르내림 한도 30 가까이)
+NONE_MEAN = '꾀 뜻에 맞는 곳이 없어 고르지 않음'   # 셋을 모두 지난 곳이 없는 날(채우지 않음)
+CUT = [('late', '값이 늦지 않음'), ('today', '그날 값이 있음'), ('m21', '한 달 값이 모두 있음'), ('y240', '지난 1년 값이 넉넉함'),
+       ('split', '나눔 흔적 없음'), ('halt', '멈춘 날 없음'), ('cap', '회사 크기 2천억 원 넘음'), ('px', '한 주 값 천 원 넘음'),
+       ('wild', '흔들림이 지나치지 않음'), ('limit', '한도까지 움직인 날 없음')]
+ANGLES = [('m1', '한 달 모습'), ('m5', '닷새 모습'), ('d1', '오늘 모습'), ('lv', '값 자리'), ('vo', '흔들림'), ('rel', '업종과 시장'), ('qty', '사고판 양')]
 
 def vol_mats(codes, rows, dates, t):
     """[날, 종가, 거래량] 줄 → 날 차례(dates · 판 날 t 까지) 거래량 행렬(없으면 nan) · 그날 값이 있는 회사 수"""
@@ -101,7 +119,7 @@ def _others_med(x, IX):
 
 
 def feats(codes, IX, P, t, cap):
-    """종가로 재는 값들(회사마다)"""
+    """종가로 재는 값들(회사마다) · 흉내 내 보기에 쓰는 하루 값 줄(LR 회사 · mk 시장 · loo 같은 업종 다른 회사 평균 · iall 업종 평균)"""
     N = len(codes)
     with np.errstate(invalid='ignore', divide='ignore'):
         LR = np.log(P[:, 1:t + 1] / P[:, :t])            # LR[:, i] = i → i+1 날 · 마지막 = 판 날
@@ -122,6 +140,7 @@ def feats(codes, IX, P, t, cap):
         F['hi20'] = np.nanmax(w20, axis=1); F['lo20'] = np.nanmin(w20, axis=1)
         F['rng20'] = (F['hi20'] - F['lo20']) / np.nanmean(w20, axis=1)
         F['ma120'] = np.nanmean(P[:, t - 119:t + 1], axis=1)
+        F['maxday20'] = np.nanmax(LR[:, -20:], axis=1)                     # 한 달 안 가장 크게 오른 하루
     F['up20'] = (LR[:, -20:] > 0).sum(axis=1).astype(float)
     st = np.zeros(N)
     for j in range(N):
@@ -131,10 +150,11 @@ def feats(codes, IX, P, t, cap):
             else: break
         st[j] = n
     F['streak'] = st
-    mk = np.nanmean(LR, axis=0)                                            # 시장 = 365곳 고른 평균(하루)
+    with np.errstate(invalid='ignore'):
+        mk = np.nanmean(LR, axis=0)                                        # 시장 = 365곳 고른 평균(하루)
     mk = np.nan_to_num(mk)
     F['mk'] = mk
-    # 같은 업종 다른 회사들의 하루 평균(자기 빼고)
+    # 같은 업종 다른 회사들의 하루 평균(자기 빼고) · 업종 평균(자기 넣고)
     S = np.zeros_like(Z); C = np.zeros_like(Z)
     fin = np.isfinite(LR).astype(float)
     for i in np.unique(IX):
@@ -142,6 +162,8 @@ def feats(codes, IX, P, t, cap):
         S[m] = Z[m].sum(axis=0); C[m] = fin[m].sum(axis=0)
     with np.errstate(invalid='ignore', divide='ignore'):
         loo = np.where(C - fin > 0, (S - Z) / (C - fin), np.nan)
+        F['iall'] = np.where(C > 0, S / C, np.nan)
+    F['LR'] = LR; F['loo'] = loo
     w = slice(-60, None)
     F['cmk'] = _corr(Z[:, w], np.broadcast_to(mk[w], Z[:, w].shape))
     li = np.nan_to_num(loo[:, w]); has = np.isfinite(loo[:, w]).sum(axis=1) >= 40
@@ -151,6 +173,7 @@ def feats(codes, IX, P, t, cap):
         F['beta'] = (Z[:, w] - Z[:, w].mean(axis=1, keepdims=True)) @ m60 / (m60 @ m60)
     worst = np.argsort(mk[-20:])[:5]                                       # 한 달 안 시장이 가장 크게 내린 닷새
     F['onworst'] = np.nanmean(LR[:, -20:][:, worst], axis=1)
+    F['mkworst'] = np.full(N, float(np.mean(mk[-20:][worst])))
     for k in ('r5', 'r20', 'r20p'): F['ind_' + k] = _others_med(F[k], IX)
     # 업종 몸집 1등 · 업종 한 달(모두) 가운데 값
     lead = np.full(N, False); leadOf = np.full(N, -1)
@@ -164,58 +187,273 @@ def feats(codes, IX, P, t, cap):
     return F
 
 
-def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=(), vmat=None):
-    """codes(365 · 차례) · IX(업종 번호) · P(종가 행렬 회사 × 날) · t(판 날 번호) · cap(몸집 · 억 원)
-       · vol({번호: [[YYYYMMDD, 종가, 거래량], …]} 또는 None) → {lists: {k: [번호 일곱]}, why: {k: 까닭}, volDay, volN}"""
-    if P is None or t < NEED_T:
-        return {'lists': {k: [] for k in KINDS}, 'why': {k: '지난 값이 모자라 못 셈' for k in KINDS}, 'volDay': None, 'volN': 0}
-    N = len(codes)
-    ok = np.array([c not in late and np.isfinite(P[j, t]) and np.isfinite(P[j, t - 20]) for j, c in enumerate(codes)])
-    F = feats(codes, IX, P, t, cap)
-    nz = lambda x: np.nan_to_num(np.asarray(x, float), nan=-1e9)
-    B = lambda cond: np.where(np.asarray(cond, bool), BON, 0.0)
-    L, why = {}, {}
+def cuts(codes, P, t, cap, late, F):
+    """② 소거 열 가지 — {열쇠: 참(지남) 배열}"""
     with np.errstate(invalid='ignore', divide='ignore'):
-        r1, r1p, r5, r20, r60, r120, r5p = (F[k] for k in ('r1', 'r1p', 'r5', 'r20', 'r60', 'r120', 'r5p'))
-        i5, i20, i20p = F['ind_r5'], F['ind_r20'], F['ind_r20p']
-        dd = np.log(P[:, t] / F['hi250'])
-        L['g01'] = _rank(codes, B(r20 > 0) + r20 / (F['vol20'] * np.sqrt(20)), ok)                       # 만천과해
-        L['g02'] = _rank(codes, B((i5 < 0) & (r5 > 0)) + (r5 - i5), ok)                                   # 위위구조
-        L['g03'] = _rank(codes, B((i20 > 0) & (r20 > 0)) + i20 * np.clip(F['cind'], 0, None), ok)         # 차도살인
-        L['g04'] = _rank(codes, B(r5 > 0) + r5 / (F['volq'] * np.sqrt(5)), ok)                            # 이일대로
-        L['g05'] = _rank(codes, F['onworst'], ok)                                                         # 진화타겁
-        L['g06'] = _rank(codes, B((r1p < 0) & (r1 > 0)) + (r1 - r1p), ok)                                 # 성동격서
-        L['g07'] = _rank(codes, np.log(P[:, t] / F['hi60']) / np.maximum(F['rng60'], 0.02), ok)          # 무중생유
-        L['g09'] = _rank(codes, -np.abs(F['beta']), ok)                                                   # 격안관화
-        L['g10'] = _rank(codes, B((r20 > 0) & (r5 < 0)) + np.minimum(r20, -r5), ok)                       # 소리장도
-        L['g11'] = _rank(codes, B((i5 >= 0) & (r5 < 0)) + (i5 - r5), ok)                                  # 이대도강
-        L['g12'] = _rank(codes, F['up20'] - F['vol20'], ok)                                               # 순수견양
-        lo20 = F['lo20']
-        L['g14'] = _rank(codes, B(np.log(F['hi250'] / lo20) > np.log(1 / 0.7)) + np.log(P[:, t] / lo20), ok)   # 차시환혼
-        L['g15'] = _rank(codes, np.log(P[:, t] / F['ma120']), ok)                                         # 조호리산
-        L['g16'] = _rank(codes, B((r120 > 0) & (r20 < 0)) + np.minimum(r120, -r20), ok)                   # 욕금고종
-        L['g17'] = _rank(codes, B((r5p > 0) & (r5 > r5p)) + (r5 - r5p), ok)                               # 포전인옥
-        L['g18'] = _rank(codes, np.where(F['lead'], F['indall20'], np.nan), ok)                           # 금적금왕
-        L['g20'] = _rank(codes, F['abs5'], ok)                                                            # 혼수모어
-        L['g21'] = _rank(codes, np.log(P[:, t] / F['hi250']), ok)                                         # 금선탈각
-        L['g22'] = _rank(codes, -F['rng20'], ok)                                                          # 관문착적
-        L['g23'] = _rank(codes, F['cmk'] - F['cind'], ok)                                                 # 원교근공
-        L['g24'] = _rank(codes, B((i20p < 0) & (i5 > 0) & (r5 > 0)) + r5, ok)                             # 가도벌괵
-        L['g25'] = _rank(codes, np.log(F['vol20'] / F['vol120']), ok)                                     # 투량환주
-        L['g26'] = _rank(codes, B((i20 < 0) & (r20 >= 0)) - i20, ok)                                      # 지상매괴
-        L['g27'] = _rank(codes, B(dd < np.log(0.7)) - F['vol20'] * 100, ok)                               # 가치부전
-        L['g28'] = _rank(codes, B(P[:, t] >= 0.97 * F['hi20']) + r20, ok)                                 # 상옥추제
-        lo = F['leadOf']
-        L['g30'] = _rank(codes, np.where(~F['lead'] & (lo >= 0), r60 - r60[np.maximum(lo, 0)], np.nan), ok)   # 반객위주
-        L['g31'] = _rank(codes, r1, ok)                                                                   # 미인계
-        L['g33'] = _rank(codes, -F['cind'], ok)                                                           # 반간계
-        L['g34'] = _rank(codes, -r1, ok)                                                                  # 고육계
-        L['g35'] = _rank(codes, F['streak'] + np.nan_to_num(r5) / 10, ok)                                 # 연환계
-        L['g36'] = _rank(codes, -r20, ok)                                                                 # 주위상
+        last = P[:, t]
+        y = P[:, max(0, t - 249):t + 1]
+        LRy = np.log(y[:, 1:] / y[:, :-1])
+        h = P[:, max(0, t - 63):t + 1]
+        same = np.isfinite(h[:, 1:]) & (h[:, 1:] == h[:, :-1])            # 그 앞날과 같은 값
+        run4 = same[:, 2:] & same[:, 1:-1] & same[:, :-2]                  # 나흘 잇달아 같은 값
+        v20 = F['vol20']; fv = v20[np.isfinite(v20)]
+        q99 = float(np.percentile(fv, 99)) if len(fv) else np.inf
+        lr20 = F['LR'][:, -20:]
+    return {
+        'late': np.array([c not in late for c in codes]),
+        'today': np.isfinite(last),
+        'm21': np.isfinite(P[:, t - 20:t + 1]).all(axis=1),
+        'y240': np.isfinite(y).sum(axis=1) >= 240,
+        'split': ~(np.nan_to_num(np.abs(LRy), nan=0.0) > JUMP).any(axis=1),
+        'halt': ~run4.any(axis=1),
+        'cap': np.nan_to_num(np.asarray(cap, float), nan=-1.0) > CAP_MIN,
+        'px': np.nan_to_num(last, nan=0.0) > PX_MIN,
+        'wild': np.nan_to_num(v20, nan=np.inf) < q99,
+        'limit': ~(np.nan_to_num(np.abs(lr20), nan=0.0) >= LIMIT).any(axis=1),
+    }
+
+
+def _med(x):
+    x = np.asarray(x, float); f = x[np.isfinite(x)]
+    return float(np.median(f)) if len(f) else np.nan
+
+
+def means(F, P, t):
+    """③ 거름 일곱 가지 — 꾀마다 그 뜻에 든 쪽(ANGLES)의 조건 → {꾀: {쪽: 참 배열}}(값이 없으면 거짓)"""
+    r1, r1p, r5, r5p, r20, r60, r120 = (F[x] for x in ('r1', 'r1p', 'r5', 'r5p', 'r20', 'r60', 'r120'))
+    i5, i20, i20p = F['ind_r5'], F['ind_r20'], F['ind_r20p']
+    pt = P[:, t]
+    lo = F['leadOf']
+    with np.errstate(invalid='ignore', divide='ignore'):
+        dd = np.log(pt / F['hi250'])
+        vr = np.abs(np.log(F['vol20'] / F['vol120']))
+        r60l = np.where(lo >= 0, r60[np.maximum(lo, 0)], np.nan)
+        M = {
+            'g01': {'m1': (r20 > 0) & (r20 - F['maxday20'] > 0), 'vo': F['vol20'] <= _med(F['vol20'])},   # 한 달 오름(가장 크게 오른 하루를 빼도) · 하루하루 잔잔
+            'g02': {'m5': r5 > 0, 'rel': i5 < 0},
+            'g03': {'m1': r20 > 0, 'rel': (i20 > 0) & (F['cind'] > 0)},
+            'g04': {'m5': r5 > 0, 'vo': F['volq'] <= _med(F['volq'])},
+            'g05': {'rel': (F['onworst'] > 0) & (F['mkworst'] < 0)},
+            'g06': {'d1': (r1p < 0) & (r1 > 0)},
+            'g07': {'d1': r1 > 0, 'lv': pt > F['hi60'], 'vo': F['rng60'] <= _med(F['rng60'])},
+            'g09': {'rel': np.abs(F['beta']) < 0.5},
+            'g10': {'m1': r20 > 0, 'm5': r5 < 0},
+            'g11': {'m5': r5 < 0, 'rel': i5 >= 0},
+            'g12': {'m1': F['up20'] >= 11},
+            'g14': {'lv': (F['hi250'] / F['lo20'] >= 1 / 0.7) & (pt >= 1.05 * F['lo20'])},
+            'g15': {'lv': pt > F['ma120']},
+            'g16': {'lv': r120 > 0, 'm1': r20 < 0},
+            'g17': {'m5': (r5p > 0) & (r5 > r5p)},
+            'g18': {'rel': F['lead'] & (F['indall20'] > 0)},
+            'g20': {'vo': F['abs5'] > _med(F['abs5'])},
+            'g21': {'lv': pt > F['hi250']},
+            'g22': {'vo': F['rng20'] < _med(F['rng20'])},
+            'g23': {'rel': F['cmk'] > F['cind']},
+            'g24': {'m5': r5 > 0, 'rel': (i20p < 0) & (i5 > 0)},
+            'g25': {'vo': vr > np.log(1.25)},
+            'g26': {'m1': r20 >= 0, 'rel': i20 < 0},
+            'g27': {'lv': dd <= np.log(0.7), 'vo': F['vol20'] <= _med(F['vol20'])},
+            'g28': {'m1': r20 > 0, 'lv': pt >= 0.97 * F['hi20']},
+            'g30': {'rel': ~F['lead'] & (lo >= 0) & (r60 > r60l)},
+            'g31': {'d1': r1 > 0},
+            'g33': {'rel': F['cind'] < 0},
+            'g34': {'d1': r1 < 0},
+            'g35': {'d1': (r1 > 0) & (F['streak'] >= 2)},
+            'g36': {'m1': r20 < 0},
+        }
+    return {k: {a: np.asarray(v, bool) for a, v in d.items()} for k, d in M.items()}
+
+
+def scores(F, P, t):
+    """꾀를 닮은 만큼(큰 차례로 일곱) — 셋을 지난 곳끼리만 견줌"""
+    r1, r1p, r5, r5p, r20, r60, r120 = (F[x] for x in ('r1', 'r1p', 'r5', 'r5p', 'r20', 'r60', 'r120'))
+    i5, i20 = F['ind_r5'], F['ind_r20']
+    pt = P[:, t]
+    lo = F['leadOf']
+    with np.errstate(invalid='ignore', divide='ignore'):
+        r60l = np.where(lo >= 0, r60[np.maximum(lo, 0)], np.nan)
+        return {
+            'g01': r20 / (F['vol20'] * np.sqrt(20)), 'g02': r5 - i5, 'g03': i20 * np.clip(F['cind'], 0, None), 'g04': r5 / (F['volq'] * np.sqrt(5)),
+            'g05': F['onworst'], 'g06': r1 - r1p, 'g07': np.log(pt / F['hi60']) / np.maximum(F['rng60'], 0.02), 'g09': -np.abs(F['beta']),
+            'g10': np.minimum(r20, -r5), 'g11': i5 - r5, 'g12': F['up20'] - F['vol20'], 'g14': np.log(pt / F['lo20']), 'g15': np.log(pt / F['ma120']),
+            'g16': np.minimum(r120, -r20), 'g17': r5 - r5p, 'g18': np.where(F['lead'], F['indall20'], np.nan), 'g20': F['abs5'],
+            'g21': np.log(pt / F['hi250']), 'g22': -F['rng20'], 'g23': F['cmk'] - F['cind'], 'g24': r5, 'g25': np.abs(np.log(F['vol20'] / F['vol120'])),
+            'g26': r20 - i20, 'g27': -F['vol20'], 'g28': r20, 'g30': r60 - r60l, 'g31': r1, 'g33': -F['cind'], 'g34': -r1,
+            'g35': F['streak'] + np.nan_to_num(r5) / 10, 'g36': -r20}
+
+
+# ① 흉내 내 보기 — 꾀마다 (방법, 창, 쓰는 줄, 셈) · 줄: R 회사 · M 시장 · I 같은 업종 다른 회사 평균 · A 업종 평균 · L 업종 몸집 1등 · V 사고판 양(평소의 몇 배) · med 365곳 가운데 흔들림
+def _sum(x): return x.sum(-1)
+def _std(x): return x.std(-1)
+def _corr3(a, b):
+    a = a - a.mean(-1, keepdims=True); b = b - b.mean(-1, keepdims=True)
+    den = np.sqrt((a * a).sum(-1) * (b * b).sum(-1))
+    return np.where(den > 0, (a * b).sum(-1) / np.where(den > 0, den, 1.0), 0.0)
+def _beta3(a, m):
+    a = a - a.mean(-1, keepdims=True); m = m - m.mean(-1, keepdims=True)
+    v = (m * m).sum(-1)
+    return np.where(v > 0, (a * m).sum(-1) / np.where(v > 0, v, 1.0), 0.0)
+def _brk(x):    # 마지막 날 값이 창 안 그 앞 가장 높은 값(처음 값 넣고)보다 위로 나온 만큼
+    c = np.cumsum(x, -1); return c[..., -1] - np.maximum(np.max(c[..., :-1], -1), 0.0)
+def _reb(x):    # 창 안 가장 낮은 값에서 살아난 만큼
+    c = np.cumsum(x, -1); return c[..., -1] - np.minimum(np.min(c, -1), 0.0)
+def _rng(x):    # 창 안 높낮이 폭(좁을수록 큼)
+    c = np.cumsum(x, -1); return -(np.maximum(c.max(-1), 0.0) - np.minimum(c.min(-1), 0.0))
+def _ma(x):     # 마지막 날 값이 창 평균 값보다 위인 만큼
+    c = np.cumsum(x, -1); return c[..., -1] - np.log(np.mean(np.exp(c), -1))
+def _streak(x): # 끝에서부터 잇달아 오른 날
+    return np.cumprod(x[..., ::-1] > 0, -1).sum(-1).astype(float)
+def _worst(x, m):  # 창 안 시장이 가장 크게 내린 닷새에 회사가 움직인 평균
+    idx = np.argsort(m, -1)[..., :5]
+    idx = np.broadcast_to(idx, x.shape[:-1] + (5,))
+    return np.take_along_axis(x, idx, -1).mean(-1)
+MCS = {
+    'g01': ('rare', 20, 'R', lambda S: _sum(S['R']) / (_std(S['R']) * np.sqrt(20) + 1e-9)),
+    'g02': ('rare', 5, 'RI', lambda S: _sum(S['R'] - S['I'])),
+    'g03': ('sure', 60, 'RI', lambda S: _corr3(S['R'], S['I']) > 0),
+    'g04': ('rare', 5, 'R', lambda S: _sum(S['R'])),
+    'g05': ('rare', 20, 'RM', lambda S: _worst(S['R'], S['M'])),
+    'g06': ('rare', 2, 'R', lambda S: S['R'][..., -1] - S['R'][..., -2]),
+    'g07': ('rare', 60, 'R', lambda S: _brk(S['R'])),
+    'g08': ('rare', 5, 'V', lambda S: S['V'].mean(-1)),
+    'g09': ('sure', 60, 'RM', lambda S: np.abs(_beta3(S['R'], S['M'])) < 0.5),
+    'g10': ('rare', 20, 'R', lambda S: np.minimum(_sum(S['R']), -_sum(S['R'][..., -5:]))),
+    'g11': ('rare', 5, 'RI', lambda S: _sum(S['I'] - S['R'])),
+    'g12': ('rare', 20, 'R', lambda S: (S['R'] > 0).sum(-1).astype(float)),
+    'g13': ('rare', 1, 'V', lambda S: S['V'][..., -1]),
+    'g14': ('rare', 20, 'R', lambda S: _reb(S['R'])),
+    'g15': ('rare', 120, 'R', lambda S: _ma(S['R'])),
+    'g16': ('rare', 120, 'R', lambda S: np.minimum(_sum(S['R']), -_sum(S['R'][..., -20:]))),
+    'g17': ('rare', 10, 'R', lambda S: _sum(S['R'][..., -5:]) - _sum(S['R'][..., :5])),
+    'g18': ('rare', 20, 'A', lambda S: _sum(S['A'])),
+    'g19': ('rare', 5, 'V', lambda S: -S['V'].mean(-1)),
+    'g20': ('rare', 5, 'R', lambda S: np.abs(S['R']).mean(-1)),
+    'g21': ('rare', 250, 'R', lambda S: _brk(S['R'])),
+    'g22': ('rare', 20, 'R', lambda S: _rng(S['R'])),
+    'g23': ('sure', 60, 'RMI', lambda S: _corr3(S['R'], S['M']) > _corr3(S['R'], S['I'])),
+    'g24': ('rare', 5, 'R', lambda S: _sum(S['R'])),
+    'g25': ('rare', 120, 'R', lambda S: np.abs(np.log((_std(S['R'][..., -20:]) + 1e-9) / (_std(S['R']) + 1e-9)))),
+    'g26': ('rare', 20, 'RI', lambda S: _sum(S['R'] - S['I'])),
+    'g27': ('sure', 20, 'R', lambda S: _std(S['R']) <= S['med']),
+    'g28': ('rare', 20, 'R', lambda S: _sum(S['R'])),
+    'g29': ('rare', 5, 'R', lambda S: _sum(S['R'])),
+    'g30': ('rare', 60, 'RL', lambda S: _sum(S['R'] - S['L'])),
+    'g31': ('rare', 1, 'R', lambda S: S['R'][..., -1]),
+    'g32': ('rare', 20, 'V', lambda S: -S['V'].mean(-1)),
+    'g33': ('sure', 60, 'RI', lambda S: _corr3(S['R'], S['I']) < 0),
+    'g34': ('rare', 1, 'R', lambda S: -S['R'][..., -1]),
+    'g35': ('rare', 10, 'R', lambda S: _streak(S['R'])),
+    'g36': ('rare', 20, 'R', lambda S: -_sum(S['R'])),
+}
+assert sorted(MCS) == KINDS
+
+
+def _seed(*xs):
+    return int(hashlib.sha256('|'.join(map(str, xs)).encode()).hexdigest()[:16], 16)
+
+
+class _MC:
+    """흉내 내 보기 열 번 — 판 날 하나 · 회사들 묶음마다(뽑는 날 자리는 꾀 · 씨앗마다 한 번만 뽑아 모든 회사가 같은 자리를 씀 → 묶음을 어떻게 나눠도 같은 답)"""
+    def __init__(self, F, t, day, V=None, base=None):
+        self.t, self.day = t, day
+        self.ser = {'R': np.nan_to_num(F['LR']), 'M': np.nan_to_num(F['mk'])[None, :], 'I': np.nan_to_num(F['loo']), 'A': np.nan_to_num(F['iall'])}
+        self.ser['L'] = self.ser['R'][np.maximum(F['leadOf'], 0)]
+        if V is not None and base is not None:
+            with np.errstate(invalid='ignore', divide='ignore'):
+                self.ser['V'] = np.nan_to_num(V / base[:, None], nan=1.0, posinf=1.0, neginf=1.0)
+        self.med = _med(F['vol20'])
+        self.idx = {}
+
+    def _ix(self, k, run, hi, w):
+        key = (k, run, hi, w)
+        if key not in self.idx:
+            self.idx[key] = np.random.default_rng(_seed(self.day, k, run, 's36-mc')).integers(0, hi, size=(MC_PATHS, w))
+        return self.idx[key]
+
+    def ok(self, k, js):
+        """js(회사 자리) 마다 열 번 모두 뚜렷하면 참"""
+        mode, w, use, fn = MCS[k]
+        js = np.asarray(js, int)
+        out = np.ones(len(js), bool)
+        if not len(js): return out
+        if 'V' in use and 'V' not in self.ser: return ~out
+        vol = use == 'V'
+        end = self.t + 1 if vol else self.t           # 줄 끝(날 차례) — 사고판 양은 판 날까지 · 하루 값은 판 날로 끝나는 오르내림까지
+        a = end - w                                    # 창 [a, end)
+        hist = min(VOL_HIST if vol else MC_HIST, a)    # 바탕 [a - hist, a)
+        if mode == 'rare' and hist < (20 if vol else MC_MIN_HIST): return ~out
+        step = max(1, 2_000_000 // (MC_PATHS * w))
+        for s0 in range(0, len(js), step):
+            jj = js[s0:s0 + step]
+            win = {n: self.ser[n][(jj if self.ser[n].shape[0] > 1 else [0]), a:end] for n in use}
+            obs = fn({**{n: v[:, None, :] for n, v in win.items()}, 'med': self.med})
+            tot = MC_RUNS * MC_PATHS
+            cnt = np.zeros(len(jj))                    # 드묾: 지금 값 이상인 우연 길 수 · 굳음: 같은 모습인 길 수(열 번을 모아 셈)
+            live = np.ones(len(jj), bool)
+            for run in range(MC_RUNS):
+                if mode == 'rare':
+                    ix = self._ix(k, run, hist, w)
+                    S = {n: self.ser[n][(jj if self.ser[n].shape[0] > 1 else [0]), a - hist:a][:, ix] for n in use}
+                    cnt += (fn({**S, 'med': self.med}) >= obs - 1e-12).sum(axis=1)
+                    live &= (cnt + 1) / (tot + 1) <= MC_P                       # 남은 번이 모두 넘지 않아도 이미 열에 하나를 넘으면 뺌
+                else:
+                    ix = self._ix(k, run, w, w)
+                    S = {n: v[:, ix] for n, v in win.items()}
+                    cnt += fn({**S, 'med': self.med}).sum(axis=1)
+                    live &= (cnt + (MC_RUNS - run - 1) * MC_PATHS) / tot >= MC_SURE   # 남은 번이 모두 같아도 열에 아홉이 안 되면 뺌
+                if not live.any(): break
+            good = live & (((cnt + 1) / (tot + 1) <= MC_P) if mode == 'rare' else (cnt / tot >= MC_SURE))
+            out[s0:s0 + step] = good
+        return out
+
+
+def _pick(k, cand, score, codes, mc, mask=None):
+    """셋을 지난 곳 가운데 꾀를 닮은 차례로 K 곳(흉내 내 보기는 닮은 차례로 묶음마다 — 일곱이 차면 멈춤) · mask = 흉내 내 보기를 미리 센 값(판 날)"""
+    s = np.asarray(score, float)
+    order = sorted([j for j in cand if np.isfinite(s[j])], key=lambda j: (-s[j], codes[j]))
+    out = []
+    for a in range(0, len(order), 16):
+        chunk = order[a:a + 16]
+        ok = mask[chunk] if mask is not None else mc.ok(k, chunk)
+        out += [codes[j] for j, o in zip(chunk, ok) if o]
+        if len(out) >= K: break
+    return out[:K]
+
+
+def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=(), vmat=None, full=False):
+    """codes(365 · 차례) · IX(업종 번호) · P(종가 행렬 회사 × 날) · t(판 날 번호) · cap(몸집 · 억 원)
+       · vol({번호: [[YYYYMMDD, 종가, 거래량], …]} 또는 None) · full = 판 날(흉내 내 보기를 365곳 모두 세어 걸러진 수를 남김)
+       → {lists: {k: [번호 일곱까지]}, why: {k: 까닭}, volDay, volN, funnel(full 일 때 꾀마다 수)}"""
+    if P is None or t < NEED_T:
+        return {'lists': {k: [] for k in KINDS}, 'why': {k: '지난 값이 모자라 못 셈' for k in KINDS}, 'volDay': None, 'volN': 0, 'funnel': None}
+    N = len(codes)
+    F = feats(codes, IX, P, t, cap)
+    C = cuts(codes, P, t, cap, late, F)
+    cutAll = np.logical_and.reduce([C[x] for x, _ in CUT])
+    dataOk = C['today'] & C['m21'] & C['y240']
+    Mn, Sc = means(F, P, t), scores(F, P, t)
+    day = dates[t] if dates is not None and t < len(dates) else 't%d' % t
+    L, why, fun = {}, {}, {}
+
+    def one(k, mc, mk):
+        cand = np.where(cutAll & mk)[0]
+        if full:
+            mcm = np.zeros(N, bool); dj = np.where(dataOk)[0]; mcm[dj] = mc.ok(k, dj)
+            L[k] = _pick(k, cand, Sc[k], codes, mc, mask=mcm)
+            fun[k] = {'n': int(N), 'mc': int(mcm.sum()), 'cut': int(cutAll.sum()), 'mean': int(mk.sum()), 'all': int((mcm & cutAll & mk).sum()), 'k': len(L[k])}
+        else:
+            L[k] = _pick(k, cand, Sc[k], codes, mc)
+        if not L[k]: why[k] = NONE_MEAN
+
+    mc = _MC(F, t, day)
+    for k in KINDS:
+        if k in BY: continue
+        one(k, mc, np.logical_and.reduce(list(Mn[k].values())))
     # 거래량 다섯
     volDay, volN = None, 0
+    V = None
     if vmat is not None and dates is not None:   # 지난 날을 여러 번 셀 때(su21_sun.py) — 미리 만든 거래량 행렬(날 차례 · 판 날 t 뒤는 쓰지 않음)
-        V = vmat[:, :t + 1]; volN = int(np.isfinite(V[:, t]).sum()) if t < vmat.shape[1] else 0   # 판 날까지만 자름(아래 [:, -5:] · [:, -20:] 이 판 날 앞 닷새 · 스무 날이 되게)
+        V = vmat[:, :t + 1]; volN = int(np.isfinite(V[:, t]).sum()) if t < vmat.shape[1] else 0   # 판 날까지만 자름
         volDay = dates[t] if volN else None
     elif vol and dates is not None:
         V, volN = vol_mats(codes, vol, dates, t)
@@ -223,8 +461,8 @@ def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=(), vmat=None):
     if volN < VOL_MIN * N:
         msg = '거래량 자료가 없어 못 셈(올리기 작업만 받음)' if not volN else '그날 거래량을 받은 회사가 모자라 못 셈(%d곳 가운데 %d곳)' % (N, volN)
         for k in BY: L[k], why[k] = [], msg
-        return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN}
-    vok = ok & np.isfinite(V[:, t])
+        return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN, 'funnel': fun if full else None}
+    vok = np.isfinite(V[:, t])
     with np.errstate(invalid='ignore', divide='ignore'):
         base = np.array([np.nanmedian(V[j, max(0, t - 64):t - 4]) if np.isfinite(V[j, max(0, t - 64):t - 4]).sum() >= 20 else np.nan for j in range(N)])
         v5 = np.nanmean(V[:, -5:], axis=1) / base                                      # 닷새 평균 ÷ 그 앞 60거래일 가운데 값
@@ -232,12 +470,13 @@ def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=(), vmat=None):
         sh = np.asarray(cap, float) * 1e8 / P[:, t]                                    # 주식 수 어림 = 몸집 ÷ 그날 종가
         to20 = np.nanmean(V[:, -20:], axis=1) / sh
         r5, r20, r60 = F['r5'], F['r20'], F['r60']
-        L['g08'] = _rank(codes, B(np.abs(r20) < 0.05) + np.log(v5), vok)              # 암도진창
-        L['g13'] = _rank(codes, np.log(v1), vok)                                       # 타초경사
-        L['g19'] = _rank(codes, B(r60 > 0.1) - np.log(v5), vok)                        # 부저추신
-        L['g29'] = _rank(codes, B(v5 < 1) + r5, vok)                                   # 수상개화
-        L['g32'] = _rank(codes, B(r20 >= 0) - np.log(to20), vok)                       # 공성계
-    return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN}
+        VM = {'g08': {'m1': np.abs(r20) < 0.05, 'qty': v5 > 1}, 'g13': {'qty': v1 > 1.5}, 'g19': {'lv': r60 > 0.1, 'qty': v5 < 1},
+              'g29': {'m5': r5 > 0, 'qty': v5 < 1}, 'g32': {'m1': r20 >= 0, 'qty': to20 <= _med(to20)}}
+        Sc.update({'g08': np.log(v5), 'g13': np.log(v1), 'g19': -np.log(v5), 'g29': r5, 'g32': -np.log(to20)})
+    Mn.update({k: {a: np.asarray(v, bool) & vok for a, v in d.items()} for k, d in VM.items()})
+    mcv = _MC(F, t, day, V=V, base=base)
+    for k in sorted(BY): one(k, mcv, np.logical_and.reduce(list(Mn[k].values())))
+    return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN, 'funnel': fun if full else None}
 
 
 # 겹친 곳(주문 1114-0802 · 사장님 2026-11-14 08:02 「36 갠가 40 개인가 42 개인가의 종류가 있잖아 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」
@@ -263,32 +502,61 @@ def overlap(groups, need=OV_NEED, order=None, k=K):
 
 
 if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selftest · --defs(이름 · 뜻 JSON)
-    import sys, json
+    import sys, json, time
     if '--defs' in sys.argv:
         print(json.dumps({'rule': RULE_ID, 'kinds': KINDS, 'han': HAN, 'name': NAME, 'mean': MEAN, 'say': SAY, 'set': SETOF, 'by': BY}, ensure_ascii=False))
     if '--selftest' in sys.argv:
         assert len(KINDS) == 36 == len(DEF) and len(set(HAN.values())) == 36 and len(set(NAME.values())) == 36 and len(set(SAY.values())) == 36
         assert all('%' not in s and not any('A' <= ch <= 'z' for ch in s) for d in DEF for s in d), '「%」 · 영어 0'
+        assert len(CUT) == 10 and len({c[0] for c in CUT}) == 10 and len(ANGLES) == 7, '소거 열 가지 · 거름 일곱 가지'
         rng = np.random.default_rng(1)
-        N, T = 60, 300
-        P = np.exp(np.cumsum(rng.normal(0, 0.02, (N, T)), axis=1)) * 1000
+        N, T = 60, 520
+        sd = 0.012 + 0.0003 * np.arange(N)                                    # 회사마다 흔들림이 다름(가장 흔들리는 곳 = 59)
+        LRm = rng.normal(0, 1, (N, T - 1)) * sd[:, None]
+        LRm[3, -20:] = 0.006 + rng.normal(0, 0.002, 20)                         # 3 = 한 달 꾸준히 · 잔잔하게 오름(몰래 바다 건너기)
+        LRm[5, -1] = 0.07                                                       # 5 = 오늘 크게 오름(미인 꾀)
+        LRm[6, -1] = -0.07                                                      # 6 = 오늘 크게 내림(제 몸 다치기)
+        P = np.exp(np.concatenate([np.zeros((N, 1)), np.cumsum(LRm, axis=1)], axis=1)) * 5000
         codes = ['%06d' % (j + 1) for j in range(N)]; IX = np.array([j % 10 for j in range(N)]); cap = np.arange(N, 0, -1) * 100.0
         dates = ['2026-%02d-%02d' % (1 + i // 28, 1 + i % 28) for i in range(T)]
-        r = lists36(codes, IX, P, T - 1, cap, late={'000001'})
-        assert all(len(r['lists'][k]) == 7 for k in KINDS if k not in BY), {k: len(v) for k, v in r['lists'].items()}
-        assert all(r['lists'][k] == [] for k in BY) and r['volN'] == 0 and '없어' in r['why']['g13']
-        assert '000001' not in sum(r['lists'].values(), []), '값이 늦은 회사는 뺌'
-        lr = np.log(P[:, -1] / P[:, -2]); top = [codes[j] for j in sorted([j for j in range(1, N)], key=lambda j: (-lr[j], codes[j]))[:7]]
-        assert r['lists']['g31'] == top, '미인계 = 오늘 하루 가장 크게 오른 곳'
-        assert r['lists']['g34'] == [codes[j] for j in sorted(range(1, N), key=lambda j: (lr[j], codes[j]))[:7]], '고육계 = 오늘 하루 가장 크게 내린 곳'
-        assert all(x in [codes[j] for j in range(1, 10)] for x in r['lists']['g18']), '금적금왕 = 업종 몸집 1등만(업종 열 · 몸집 큰 차례 = 번호 차례 · 늦은 000001 뺌)'
-        vol = {c: [[dates[i].replace('-', ''), float(P[j, i]), float(1e5 * (1 + (i == T - 1 and j == 5) * 9))] for i in range(T - 80, T)] for j, c in enumerate(codes)}
-        r2 = lists36(codes, IX, P, T - 1, cap, vol=vol, dates=dates)
-        assert r2['volN'] == N and r2['volDay'] == dates[-1] and all(len(r2['lists'][k]) == 7 for k in KINDS), {k: len(v) for k, v in r2['lists'].items()}
-        assert r2['lists']['g13'][0] == '000006', '타초경사 = 오늘 사고판 양이 평소보다 가장 크게 는 곳'
+        t0 = time.time()
+        r = lists36(codes, IX, P, T - 1, cap, dates=dates, late={'000001'}, full=True)
+        took = time.time() - t0
+        Lk = r['lists']
+        assert '000004' == Lk['g01'][0], ('몰래 바다 건너기 = 꾸준히 잔잔하게 오른 곳이 맨 앞', Lk['g01'])
+        assert '000006' in Lk['g31'] and '000007' in Lk['g34'], ('오늘 크게 오른 곳 · 내린 곳', Lk['g31'], Lk['g34'])
+        assert '000001' not in sum(Lk.values(), []), '값이 늦은 회사는 뺌'
+        assert all(Lk[k] == [] for k in BY) and r['volN'] == 0 and '없어' in r['why']['g13']
+        # 고른 곳은 모두 소거 열 가지 · 거름 일곱 가지 · 흉내 내 보기 열 번을 지남 · 닮은 차례 · 일곱까지 · 모자라면 모자란 대로(채우지 않음)
+        F = feats(codes, IX, P, T - 1, cap); C = cuts(codes, P, T - 1, cap, {'000001'}, F); Mn = means(F, P, T - 1); Sc = scores(F, P, T - 1)
+        cutAll = np.logical_and.reduce([C[x] for x, _ in CUT]); mc = _MC(F, T - 1, dates[T - 1])
+        at = {c: j for j, c in enumerate(codes)}
+        for k in KINDS:
+            if k in BY: continue
+            js = [at[c] for c in Lk[k]]
+            assert len(js) <= K and all(cutAll[j] for j in js), (k, '소거')
+            assert all(all(v[j] for v in Mn[k].values()) for j in js), (k, '거름 — 꾀 뜻')
+            assert all(mc.ok(k, [j])[0] for j in js), (k, '흉내 내 보기(하나씩 세어도 같음)')
+            s = [Sc[k][j] for j in js]; assert s == sorted(s, reverse=True), (k, '닮은 차례')
+            f = r['funnel'][k]
+            assert f['n'] == N and f['k'] == len(js) and f['all'] <= min(f['mc'], f['cut'], f['mean']) and f['k'] == min(K, f['all']), (k, f)
+            if not js: assert r['why'][k] == NONE_MEAN, (k, r['why'].get(k))
+        # 묶음을 어떻게 나눠도 같은 답 · 다시 세어도 같은 답(씨앗 = 판 날 · 꾀 · 번)
+        js = list(range(N)); a1 = mc.ok('g01', js); a2 = np.concatenate([mc.ok('g01', js[:7]), mc.ok('g01', js[7:])]); assert (a1 == a2).all()
+        r2 = lists36(codes, IX, P, T - 1, cap, dates=dates, late={'000001'})
+        assert r2['lists'] == Lk and r2['funnel'] is None, '판 날을 다시 세어도(지난 날 다시 세기 길) 같은 일곱'
+        # 내리는 장 — 오른 꾀는 비우고(채우지 않음) 내린 꾀는 고름
+        D = LRm.copy(); D[:, -20:] = -0.01 + rng.normal(0, 0.008, (N, 20))
+        P2 = np.exp(np.concatenate([np.zeros((N, 1)), np.cumsum(D, axis=1)], axis=1)) * 5000
+        q = lists36(codes, IX, P2, T - 1, cap, dates=dates)
+        assert q['lists']['g01'] == [] and q['why']['g01'] == NONE_MEAN and len(q['lists']['g36']) >= 1, (q['lists']['g01'], q['lists']['g36'])
+        # 거래량 다섯 — 오늘 사고판 양이 평소의 열 배(풀 쳐서 뱀 놀래기)
+        vol = {c: [[dates[i].replace('-', ''), float(P[j, i]), float(1e5 * (1 + 0.1 * np.sin(i + j)) * (10 if (i == T - 1 and j == 8) else 1))] for i in range(T - 120, T)] for j, c in enumerate(codes)}
+        r3 = lists36(codes, IX, P, T - 1, cap, vol=vol, dates=dates, full=True)
+        assert r3['volN'] == N and r3['volDay'] == dates[-1] and r3['lists']['g13'][:1] == ['000009'], r3['lists']['g13']
         half = {c: v for i, (c, v) in enumerate(vol.items()) if i % 2}
-        r3 = lists36(codes, IX, P, T - 1, cap, vol=half, dates=dates)
-        assert all(r3['lists'][k] == [] for k in BY) and '모자라' in r3['why']['g08'] and len(r3['lists']['g01']) == 7, '거래량을 덜 받은 날은 다섯을 사지 않음'
+        r4 = lists36(codes, IX, P, T - 1, cap, vol=half, dates=dates)
+        assert all(r4['lists'][k] == [] for k in BY) and '모자라' in r4['why']['g08'], '거래량을 덜 받은 날은 다섯을 고르지 않음'
         r0 = lists36(codes, IX, None, 0, cap)
         assert all(r0['lists'][k] == [] for k in KINDS) and r0['why']['g01'] == '지난 값이 모자라 못 셈'
         # 겹친 곳(주문 1114-0802) — 세 묶음 이상 · 많이 든 차례 · 같으면 첫 화면에서 먼저 · 한 묶음 두 번은 한 번 · 앞 일곱만
@@ -296,4 +564,4 @@ if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selfte
         ov = overlap(G)
         assert ov == [('B', 3, ['hot', 'bloom', 'money']), ('C', 3, ['hot', 'g01', 'g02']), ('D', 3, ['bloom', 'quiet', 'g01']), ('E', 3, ['quiet', 'g01', 'g02'])], ov
         assert [c for c, n, _ in overlap(G, need=2)] == ['B', 'C', 'D', 'E', 'A'] and overlap({}) == [] and len(OV_ORDER) == 43 == len(set(OV_ORDER))
-        print('ok', sum(len(v) for v in r2['lists'].values()), 'ovl', len(ov))
+        print('ok', sum(len(v) for v in Lk.values()), 'of', 7 * 31, '· vol', sum(len(r3['lists'][k]) for k in BY), '· full %.1fs' % took, '· ovl', len(ov))

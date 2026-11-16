@@ -577,3 +577,40 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su .sj-kr > .sj-pm { grid-column: 1 / -1; grid-row: 1; margin-bottom: 4px; }
 #su .sj-kr > .sj-kpic, #su .sj-kr > .sj-ka { grid-row: 2; }
 #su .sj-tk > .sj-pm { margin-bottom: 2px; }
+/* 큰 갈래 차례(주문 1116-1601) — 꾀 칸 맨 위 · 갈래 다섯(꾀 답에 나온 번 차례) · 붓 막대 = 한 달 평균 · 서랍 = 그 갈래 회사 */
+#su .sj-th { margin: 18px 0 8px; padding: 14px 0 6px; border-top: 2px solid #3B1A14; border-bottom: 2px solid #3B1A14; }
+#su .sj-thh3 { margin: 0 0 4px; }
+#su .sj-thlead { margin: 0 0 12px; font-size: 1.1875rem; line-height: 1.55; }
+#su .sj-thl { display: grid; margin: 4px 0 0; padding: 0; list-style: none; }
+#su .sj-thr { display: grid; gap: 4px; padding: 10px 0 8px; border-top: 1.5px solid #B8A08E; }
+#su .sj-thl > li:first-child { border-top: 0; }
+#su .sj-thh { display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 2px; margin: 0; }
+#su .sj-thn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 40px; height: 36px; border: 1.5px solid #3B1A14; border-radius: 3px; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 800; }
+#su .sj-thl > li:first-child .sj-thn { background: #3B1A14; color: #F1E3D3; }
+#su .sj-thg { flex: 1 1 auto; min-width: 0; font-size: 1.3125rem; line-height: 1.35; }
+#su .sj-thc { flex: 1 1 100%; font-size: 1.0625rem; font-weight: 700; color: #6B4A3E; }
+#su .sj-thbar { display: block; width: 100%; height: 22px; margin-top: 2px; }
+#su svg.ik-anim.sj-thbar { background-image: none; }
+#su .sj-thv { margin: 0; font-size: 1.1875rem; line-height: 1.45; font-weight: 800; }
+#su .sj-thud { margin: 0; font-size: 1.0625rem; line-height: 1.45; font-weight: 700; color: #4A2C22; }
+#su .sj-thd > summary { min-height: 52px; }
+#su .sj-thcos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 6px 0 4px; padding: 0; list-style: none; }
+#su .sj-thco { display: flex; flex-direction: column; justify-content: center; min-height: 52px; height: 100%; box-sizing: border-box; padding: 6px 8px; border: 1.5px solid #B8A08E; border-radius: 3px; color: inherit; text-decoration: none; }
+#su .sj-thco b { font-size: 1.125rem; line-height: 1.3; overflow-wrap: anywhere; }
+#su .sj-thco span { font-size: 1.0625rem; font-weight: 700; color: #8A5A44; }
+#su .sj-thnote { margin: 10px 0 4px; font-size: 1.0625rem; line-height: 1.5; font-weight: 700; color: #4A2C22; }
+/* 세 거름(주문 1116-1539) — 고르는 법 칸 · 꾀 쪽 · 꾀 차례 센 법 칸 */
+#su .sj-fun { margin: 10px 0 2px; padding: 8px 0 0; border-top: 1.5px dashed #B8A08E; }
+#su .sj-funl { margin: 0 0 4px; font-size: 1.125rem; line-height: 1.5; font-weight: 700; }
+#su .sj-funs { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+#su .sj-funs > li { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 4px 0; border-bottom: 1px solid #E4D0B6; font-size: 1.0625rem; line-height: 1.45; }
+#su .sj-funs > li b { flex: none; font-size: 1.125rem; font-weight: 900; }
+#su .sj-funs > li.sj-funall { font-weight: 800; border-bottom: 2px solid #3B1A14; }
+#su .sj-funk { margin: 6px 0 0; font-size: 1.125rem; line-height: 1.5; font-weight: 800; color: #3B1A14; }
+#su .sj-pick { margin: 10px 0 0; font-size: 1.125rem; line-height: 1.55; }
+#su .sj-pick b { font-weight: 900; }
+#su .sj-pickcut { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 10px; margin: 4px 0 0; padding: 0 0 0 4px; list-style: none; }
+#su .sj-pickcut > li { position: relative; padding-left: 14px; font-size: 1.0625rem; line-height: 1.5; }
+#su .sj-pickcut > li::before { content: ''; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: #8A5A44; }
+#su .sj-picknone { font-weight: 800; }
+@media (max-width: 345px) { #su .sj-pickcut, #su .sj-thcos { grid-template-columns: minmax(0, 1fr); } }

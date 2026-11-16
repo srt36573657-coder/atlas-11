@@ -752,8 +752,41 @@ test('그림 뜻 한 줄 — 그림마다 맨 위 · 꾀 서른여섯 · 쉬운 
   assert.equal(calls(sj + kk + wy, /sonmuPic\(\{w: 84/g), calls(sj + kk + wy, /meanCap\(PM\.sonmu\), h\('span', \{class: 'sj-saysp'/g), '손무 말 상자마다 그림 뜻');
   for (const w of ['book', 'castle', 'ledger']) assert.ok(new RegExp("meanCap\\(PM\\." + w + ", 'figcaption'\\), heroPic\\('" + w + "'\\)").test(kk), '쪽 머리 그림 ' + w);
   assert.ok(/line \? meanCap\(PM\.ridge\) : null, line,/.test(kk) && /meanCap\(PM\.bars\),[^\n]*\n\s*h\('ol', \{class: 'sj-stl'\}/.test(kk), '회사 산세 · 정산 붓 막대 바로 위');
+  assert.ok(/meanCap\(PM\.themes\),[^\n]*\n\s*h\('ol', \{class: 'sj-thl'\}/.test(sj), '첫 쪽 큰 갈래 붓 막대 바로 위(주문 1116-1601)');
   assert.ok(/capOf\(m\.ink\), m\.ink/.test(wy) && /capOf\(f\), f\)/.test(wy), '「왜 사?」 · 매매일지 그림 맨 위');
   assert.ok(/meanCap\(PM\.cover\)/.test(top) && src('index.html').includes('<section class="sj-cover" aria-label="손자병법 표지"><p class="sj-pm"><span class="sj-pmt">' + M.MEAN_TAG + '</span><b class="sj-pmb">' + M.PM.cover + '</b></p><div class="sj-artw">'), '표지 그림 뜻 = 첫 칠함 판 글 그대로');
   const css = src('su-sonja.css'), fz = sel => { const m = new RegExp(sel.replace(/[.]/g, '\\.') + ' \\{[^}]*font-size: ([\\d.]+)rem').exec(css); return m ? +m[1] * 16 : 0; };
   assert.ok(fz('#su .sj-page .sj-pmb') >= 22 && fz('#su .sj-page .sj-pmt') >= 17, '그림 뜻 글 크게(22px 넘게) · 이름표 17px 넘게');
+});
+
+test('세 거름 · 큰 갈래 차례 — 흉내 내 보기 · 소거 · 꾀 뜻을 모두 지난 곳만 · 채우지 않음 · 갈래 다섯 · 100원이 평균(주문 1116-1539 · 1116-1601)', async () => {
+  const W = await import('../../site/su/su-word.js'), {screenHits, ruinHits} = await import('../../site/next/words.js');
+  const src = f => fs.readFileSync(path.join(ROOT, f), 'utf8'), sj = src('site/su/su-sonja.js'), kk = src('site/su/su-sonja-kkoe.js'), css = src('site/su/su-sonja.css');
+  const py = src('scripts/atlas11/next/su21.py'), s36 = src('scripts/atlas11/next/su21_s36.py'), ck = src('scripts/atlas11/next/check_su.mjs');
+  // 화면 글 — 영어 · 「%」 · 쓰지 않을 말 · 어려운 낱말 0 · 쪽 코드에 그대로 있음
+  const said = ['꾀가 고른 회사, 큰 갈래 차례', '서른여섯 꾀 답에 회사가 많이 나온 갈래부터 ', '가지예요. 같은 일 하는 회사끼리 묶었어요.', '나온 회사 ', '곳 · 꾀 답에 ', '한 달 동안 100원이 평균 ', '한 달 값이 모자라 평균을 못 셌어요.', '오른 곳 ', ' · 내린 곳 ', ' · 그대로 ', '이 갈래 회사 ',
+    '많이 나온 차례예요. 많이 오른 차례가 아니에요.', '오늘은 꾀 뜻에 맞는 곳이 없어요. 다른 곳으로 채우지 않았어요.', '세 가지 거름을 모두 지난 곳 가운데 그 꾀를 가장 닮은 일곱 곳까지예요.', '곳을 세 가지로 걸렀어요.',
+    '열 가지로 빼고 남은 곳', '꾀 뜻에 맞는 곳', '흉내 내 보기를 지난 곳', '셋 다 지난 곳', '셋 다 지난 곳이 없어 오늘은 고르지 않았어요.', '그 가운데 꾀를 가장 닮은 7곳을 골랐어요.', '곳을 모두 골랐어요.',
+    '하나, 빼기 ', ' — 이런 곳만 남겨요.', '둘, 꾀 뜻', ' — 「고르는 법」에 적힌 값 모습과 맞아야 해요.', '셋, 흉내 내 보기', '번 다시 놓아 봐요. 우연으로 보기 어려울 때만 남겨요.', '셋 다 지난 곳이 일곱 곳보다 적으면 적은 대로 둬요. 다른 곳으로 채우지 않아요.'];
+  const cutN = [...(/^CUT = \[([^\]]*)\]/m.exec(s36)?.[1] ?? '').matchAll(/\('\w+',\s*'([^']+)'\)/g)].map(m => m[1]); // 빼기 열 가지 이름(센 법 칸에 그대로 보임)
+  assert.equal(cutN.length, 10, '빼기 열 가지 이름');
+  for (const t of [...said, ...cutN]) {
+    assert.ok(cutN.includes(t) || sj.includes(t), '쪽 코드에 있음 — ' + t);
+    assert.ok(!/[A-Za-z%]/.test(t) && !/[㐀-鿿]/.test(t), '영어 · 「%」 · 한자 0 — ' + t);
+    assert.deepEqual([...screenHits(t), ...ruinHits(t)], [], '쓰지 않을 말 0 — ' + t);
+    assert.deepEqual(W.HARD.filter(w => W.has(t, w)), [], '어려운 낱말 0 — ' + t);
+    assert.ok(!/(^|[^0-9])위([^가-힣]|$)/.test(t) && !/수익률|추천|매수|매도/.test(t), '「○위」 · 권하는 말 0 — ' + t);
+  }
+  // 첫 쪽 · 꾀 쪽 자리 — 큰 갈래는 꾀 일곱 바로 앞 · 세 거름 수는 「고르는 법」 칸과 꾀 쪽 · 센 법 칸에 풀이 · 회사 단추가 아닌 이름(꾀 칸 회사 수 검사를 흔들지 않음)
+  assert.ok(/themesBox\(g\),[^\n]*\n\s*h\('ol', \{class: 'sj-tricks'\}/.test(sj), '큰 갈래 = 꾀 일곱 바로 앞');
+  assert.ok(/h\('p', \{class: 'sj-say', text: g\.say\?\.\[k\] \?\? ''\}\), funnel36\(g, k\)\)/.test(sj) && /\.\.\.pickHow\(g\)/.test(sj) && /funnel36\(g, k\),/.test(kk), '세 거름 수 · 풀이 자리');
+  assert.ok(/class: 'sj-thco'/.test(sj) && !/sj-thco[^']*sj-chip|sj-chip[^']*sj-thco/.test(sj), '갈래 회사 단추 = sj-thco(꾀 칸 sj-chip 과 따로)');
+  assert.ok(/#su \.sj-thco \{[^}]*min-height: 52px/.test(css) && /#su svg\.ik-anim\.sj-thbar \{ background-image: none; \}/.test(css), '갈래 회사 단추 누름 48 넘게 · 붓 막대에 종이 결 없음');
+  for (const m of css.matchAll(/#su \.sj-(?:th|fun|pick)[^{]*\{[^}]*font-size: ([\d.]+)rem/g)) assert.ok(+m[1] * 16 >= 17, '글씨 17px 넘게 — ' + m[0].slice(0, 60));
+  // 자료 — 꾀 칸 자료에 거른 법 · 걸러진 수 · 큰 갈래 · 회사마다 갈래 · 꺾은선 = 꾀를 고른 값
+  assert.ok(/RULE_ID = 's36-v2'/.test(s36) && /^MC_RUNS = 10\b/m.test(s36) && /^MC_PATHS = 200\b/m.test(s36), 'su21_s36.py — s36-v2 · 흉내 내 보기 200번씩 10번');
+  assert.ok(/NONE_MEAN = '꾀 뜻에 맞는 곳이 없어 고르지 않음'/.test(s36) && !/BON|가장 가까운 곳으로 채움/.test(s36.split('\n').filter(l => !l.trim().startsWith('#')).join('\n')), '모자라면 모자란 대로(채우지 않음)');
+  assert.ok(/rows\.sort\(key=lambda r: \(-r\['n'\], -r\['hits'\], r\['name'\]\)\)/.test(py) && /'ind': \{c: ind36\(c\) for c in sorted/.test(py) && /'line': \{c: line36\(c\) for c in sorted/.test(py), 'su21.py — 회사 수 차례(같으면 나온 번) · 회사마다 갈래 · 꺾은선 = 꾀를 고른 값');
+  const easy = /EASY_IND = (\{[^}]*\})/.exec(py); assert.ok(easy && !/[A-Za-z]/.test(Object.values(JSON.parse(easy[1].replace(/'/g, '"'))).join('')), '영어 든 갈래 이름 = 우리말');
+  assert.ok(/㉘ 세 거름 자료/.test(ck) && /㉘ 꾀 뜻 = 고른 회사/.test(ck) && /㉘ 큰 갈래 다섯 자료/.test(ck) && /ol\.sj-stl, ol\.sj-thl'/.test(ck), 'check_su — 세 거름 · 꾀 뜻 · 큰 갈래 따로 셈 · 붓 막대 그림 뜻');
 });

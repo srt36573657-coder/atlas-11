@@ -2,7 +2,7 @@
    = scripts/atlas11/next/su21_s36.py NAME · HAN · MEAN · SAY · SETOF · BY 그대로(시험 tests/atlas11/su-settle.test.mjs 가 --defs 와 맞댐)
    꾀 칸 자료(su21-s36.json)를 못 받은 날에도 꾀 모음 · 꾀 쪽 · 정산이 꾀 이름과 뜻을 보이게(오늘 고른 곳 · 한 달 값은 자료가 있을 때만)
    보안 규칙: 글만(스크립트 · 꾸밈 0) */
-export const RULE = 's36-v1';
+export const RULE = 's36-v2';
 export const K36 = Object.freeze(['g01','g02','g03','g04','g05','g06','g07','g08','g09','g10','g11','g12','g13','g14','g15','g16','g17','g18','g19','g20','g21','g22','g23','g24','g25','g26','g27','g28','g29','g30','g31','g32','g33','g34','g35','g36']);
 export const NAME = Object.freeze({
   g01: '몰래 바다 건너기',

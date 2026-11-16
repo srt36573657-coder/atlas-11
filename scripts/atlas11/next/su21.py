@@ -434,7 +434,43 @@ try:
     VOL = json.load(open(A.vol, encoding='utf-8')) if A.vol else None
 except Exception: VOL = None
 _vday = DATES[CTX.T] if DATES and 0 <= CTX.T < len(DATES) else None
-S36R = S36.lists36(CODES, IXc, PM, CTX.T, capv, vol=(VOL or {}).get('rows'), dates=DATES, late=late) if PM is not None else S36.lists36(CODES, IXc, None, 0, capv)
+S36R = S36.lists36(CODES, IXc, PM, CTX.T, capv, vol=(VOL or {}).get('rows'), dates=DATES, late=late, full=True) if PM is not None else S36.lists36(CODES, IXc, None, 0, capv)
+# 주문 1116-1601(사장님 2026-11-16(마카오) 15:01 어떤 분 의견 「서른 여섯가지의 답에 나오는 회사들이 큰 테마로 보면 항공 쪽인건지 반도체 쪽인건지 … 큰 테마들의 1~5위 … 등수 별로 오르고 내린 주식의 평균 퍼센트」 · 「이작업도 같이해」)
+#   큰 갈래 다섯 — 서른여섯 꾀가 고른 회사(같은 회사는 한 번)를 판의 업종 묶음으로 모아, 회사가 많은 차례(같으면 꾀 답에 나온 번 · 이름)로 다섯
+#   갈래마다 한 달(꾀를 고른 값 = 회사 단추 꺾은선과 같은 값) 100원이 평균 몇 원 · 오른 곳 · 내린 곳 · 회사들(꾀에 많이 나온 차례)
+#   차례는 오른 만큼이 아니라 많이 나온 차례(수익 순위로 읽히지 않게) · 「%」 대신 100원 말(주문 1114-1306)
+IDX36 = {c: j for j, c in enumerate(CODES)}
+def line36(c):
+    """꾀 칸 회사 단추의 한 달 꺾은선 — 꾀를 고른 값(종가 행렬 PM · 판 날까지 21개)과 같은 값(주문 1116-1539 · 판 21 값과 회사 자료 값이 어긋나는 날에도 꾀 뜻과 꺾은선이 갈리지 않게) · 없으면 판 값"""
+    j = IDX36.get(c)
+    if PM is not None and j is not None and CTX.T >= 20 and DATES[CTX.T] == b['asOf']: # 꾀를 고른 날 = 판 날일 때만(날이 어긋나면 옛 판 값 그대로)
+        v = PM[j, CTX.T - 20:CTX.T + 1]
+        if _np.all(_np.isfinite(v)) and _np.all(v > 0):
+            vv = [int(x) if float(x).is_integer() else round(float(x), 2) for x in v]
+            return {'c': vv, 'close': vv[-1], 'date': b['asOf']}
+    return {'c': B[c].get('c'), 'close': B[c].get('close'), 'date': B[c].get('date')}
+EASY_IND = {'IT서비스': '전산 서비스', 'IT 시스템 통합': '전산 시스템 통합'} # 손자병법 쪽은 영어 글자 0(회사 이름 빼고) — 판 업종 묶음 73 가운데 영어가 든 두 이름만 우리말로
+ind36 = lambda c: EASY_IND.get(INDN(c), INDN(c))
+def themes36(lists, top=5):
+    """큰 갈래 다섯(주문 1116-1601) — 서른여섯 꾀 답에 나온 회사를 판 업종 묶음(73 · 묶음마다 다섯 곳)으로 모음
+    차례 = 꾀 답에 나온 그 갈래 회사가 많은 차례(「업종이 전체적으로」 — 한 회사가 여러 꾀에 든 것보다 여러 회사가 든 갈래가 위) · 같으면 꾀 답에 나온 번 · 이름
+    한 달 = 꾀 칸 꺾은선과 같은 값(line36) 21개의 처음과 끝 · 회사마다 한 번"""
+    hit = collections.Counter(c for L in lists.values() for c in L)
+    by = collections.defaultdict(list)
+    for c in hit:
+        if c in B: by[ind36(c)].append(c)
+    rows = []
+    for g, cs in by.items():
+        rr = []
+        for c in cs:
+            v = line36(c).get('c')
+            if isinstance(v, list) and len(v) == 21 and all(isinstance(x, (int, float)) and x > 0 for x in v): rr.append(v[20] / v[0])
+        cs = sorted(cs, key=lambda c: (-hit[c], c))
+        rows.append({'name': g, 'n': len(cs), 'hits': sum(hit[c] for c in cs), 'avg': round(sum(rr) / len(rr), 4) if rr else None,
+                     'up': sum(1 for x in rr if x > 1), 'dn': sum(1 for x in rr if x < 1), 'm': len(rr), 'codes': cs})
+    rows.sort(key=lambda r: (-r['n'], -r['hits'], r['name']))
+    return rows[:top]
+THEMES = themes36(S36R['lists'])
 # 겹친 곳(주문 1114-0802 · 사장님 2026-11-14 08:02 「… 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」)
 #   첫 화면 묶음 마흔셋(지금 셋 · 될 듯 셋 · 조용한 힘 · 꾀 서른여섯) 가운데 세 묶음 이상에 든 회사 — 꾀 칸 자료(su21-s36.json ovl)에 · 화면은 꾀 칸 맨 위 · 정산 장부도 이 목록으로
 OV = S36.overlap({**lists, **S36R['lists']})
@@ -457,9 +493,14 @@ json.dump({'schema': 'su21-s36-1', 'asOf': {'board': b['asOf'], 'data': _vday}, 
            'set': S36.SETOF, 'by': S36.BY, 'lists': {k: [{'code': c, 'name': nm(c)} for c in L] for k, L in S36R['lists'].items()}, 'why': S36R['why'],
            # 주문 1114-0325(사장님 2026-11-14 03:25 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 꾀 칸 회사 단추마다 한 달 꺾은선 = 42칸과 같은 값(판 21 마지막 값 c · 그날 마지막 값 close · 판 날 date)
            #   같은 회사가 여러 꾀에 들어도 한 번만(회사 번호 → 값 · 꾀 칸 자료를 가볍게 — 그림을 그린 뒤에 받음)
-           'line': {c: {'c': B[c].get('c'), 'close': B[c].get('close'), 'date': B[c].get('date')} for c in sorted({c for L in S36R['lists'].values() for c in L} | {c for c, _, _ in OV}) if c in B},
+           'line': {c: line36(c) for c in sorted({c for L in S36R['lists'].values() for c in L} | {c for c, _, _ in OV}) if c in B},
            'ovl': {'rule': S36.OV_RULE, 'need': S36.OV_NEED, 'groups': len(S36.OV_ORDER), 'order': S36.OV_ORDER, 'list': [{'code': c, 'name': nm(c), 'n': n, 'in': v} for c, n, v in OV], 'src': 'docs/design/s36-2026-11-13/order-0802.txt'},
-           'vol': {'day': S36R['volDay'], 'n': S36R['volN'], 'last': (VOL or {}).get('last'), 'ok': (VOL or {}).get('ok')}, 'src': 'docs/design/s36-2026-11-13/order-2224.txt'},
+           'vol': {'day': S36R['volDay'], 'n': S36R['volN'], 'last': (VOL or {}).get('last'), 'ok': (VOL or {}).get('ok')}, 'src': 'docs/design/s36-2026-11-13/order-2224.txt',
+           # 주문 1116-1539 — 꾀마다 걸러진 수(365곳 · 흉내 내 보기 열 번 · 소거 열 가지 · 거름 일곱 가지 · 셋 다 · 고른 곳) · 거른 법 이름 · 주문 1116-1601 큰 갈래 다섯
+           'funnel': S36R.get('funnel'), 'pick': {'rule': S36.RULE_ID, 'runs': S36.MC_RUNS, 'paths': S36.MC_PATHS, 'p': S36.MC_P, 'sure': S36.MC_SURE, 'hist': S36.MC_HIST,
+                    'cut': [n for _, n in S36.CUT], 'angles': [n for _, n in S36.ANGLES], 'src': 'docs/design/sonja-pick-2026-11-16/order-1539.txt'},
+           'themes': {'rule': 'themes-v1', 'top': 5, 'rows': THEMES, 'src': 'docs/design/sonja-pick-2026-11-16/order-1601.txt'},
+           'ind': {c: ind36(c) for c in sorted({c for L in S36R['lists'].values() for c in L}) if c in B}}, # 고른 회사마다 갈래 이름(검사가 큰 갈래를 따로 다시 셈)
           open(A.out.replace('su21.json', 'su21-s36.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음
 print('ok', {k: [nm(c) for c in L] for k, L in lists.items()}, 'quiet', [(n, k) for n, k in Q['steps']], 'distinct', len(inl), 'overlap', [o['name'] for o in out['overlap']], 'lands', len(lands_out),

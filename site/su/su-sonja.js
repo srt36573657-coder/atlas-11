@@ -14,7 +14,7 @@ import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
 import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
-import {landPic, kkoePic, arrowsPic, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
+import {landPic, kkoePic, arrowsPic, sonmuPic, brushBar} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
 
 export const CSS = '/su/su-sonja.css';
 export const D21 = '/su/data/su21.json', D36 = '/su/data/su21-s36.json', DST = '/su/data/su21-settle.json'; // 첫 화면 자료 · 꾀 칸 자료(첫 칠함 뒤) · 정산 장부
@@ -63,7 +63,35 @@ export const okSun = x => !!x && x.rule === 'sun-v1' && LANDK.includes(x.land) &
 export const sp36 = (g, code) => { const v = g?.line?.[code]; return v && Array.isArray(v.c) && v.c.length === 21 && v.c.every(x => fin(x) && x > 0) && fin(v.close) && v.close === v.c[20] && typeof v.date === 'string' && v.date === g?.asOf?.board ? v.c : null; };
 const shakeSay = v => (!fin(v) ? null : v < 0.6 ? '평소의 절반쯤으로 잔잔해요' : v < 0.85 ? '평소보다 작아요' : v < 1.15 ? '평소와 비슷해요' : v < 1.5 ? '평소보다 커요' : '평소보다 훨씬 커요');
 export const lose10 = r => { if (!r?.n) return null; if (!r.lose) return '한 번도 잃지 않았어요.'; const k = Math.round(r.lose / r.n * 10); return k ? '열 번에 ' + KN[k] + ' 번 잃었어요.' : '열 번에 한 번이 안 되게 잃었어요.'; };
-export const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
+export const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : /꾀 뜻/.test(w ?? '') ? NONE36 : '지난 값이 모자라 고르지 못했어요.');
+/** 세 거름을 다 지난 곳이 없는 꾀(주문 1116-1539 — 모자라면 모자란 대로 · 다른 곳으로 채우지 않음) */
+export const NONE36 = '오늘은 꾀 뜻에 맞는 곳이 없어요. 다른 곳으로 채우지 않았어요.';
+/* ── 세 거름(주문 1116-1539 · 사장님 2026-11-16(마카오) 14:39 「몬테카를로 … 10번 돌리고 코로 10번 돌리고 … 일곱 가지를 필터링 … 말이 같아야 될 거 아니야」) ──
+   꾀마다 소거 열 가지 · 꾀 뜻 · 흉내 내 보기(값을 섞어 200번씩 10번)를 모두 지난 곳만 · 걸러진 수 = 자료 funnel(su21_s36.py lists36 full) */
+export const PICK36 = 's36-v2';
+export const fun36 = (g, k) => { const f = g?.funnel?.[k], L = g?.lists?.[k];
+  return g?.pick?.rule === PICK36 && f && ['n', 'cut', 'mean', 'mc', 'all', 'k'].every(x => Number.isInteger(f[x]) && f[x] >= 0) && f.all <= Math.min(f.cut, f.mean, f.mc)
+    && Math.max(f.cut, f.mean, f.mc) <= f.n && f.k === Math.min(7, f.all) && Array.isArray(L) && L.length === f.k ? f : null; };
+export const LEAD36 = g => '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, ' + (g?.pick?.rule === PICK36 ? '세 가지 거름을 모두 지난 곳 가운데 그 꾀를 가장 닮은 일곱 곳까지예요.' : '그날 그 꾀를 가장 닮은 일곱 곳이에요.');
+export const funW = f => [['열 가지로 빼고 남은 곳', f.cut], ['꾀 뜻에 맞는 곳', f.mean], ['흉내 내 보기를 지난 곳', f.mc], ['셋 다 지난 곳', f.all]];
+export const funK = f => (!f.all ? '셋 다 지난 곳이 없어 오늘은 고르지 않았어요.' : f.all > 7 ? '그 가운데 꾀를 가장 닮은 7곳을 골랐어요.' : '셋 다 지난 ' + f.all + '곳을 모두 골랐어요.');
+/** 꾀 하나의 걸러진 수(고르는 법 칸 · 꾀 쪽) — 자료가 맞지 않으면 그리지 않음 */
+export function funnel36(g, k) {
+  const f = fun36(g, k); if (!f) return null;
+  return h('div', {class: 'sj-fun', 'data-k': k},
+    h('p', {class: 'sj-funl', text: '우량주 ' + f.n + '곳을 세 가지로 걸렀어요.'}),
+    h('ol', {class: 'sj-funs'}, ...funW(f).map(([t, n], i) => h('li', {class: i === 3 ? 'sj-funall' : null}, h('span', {text: t}), h('b', {text: n + '곳'})))),
+    h('p', {class: 'sj-funk', text: funK(f)}));
+}
+/** 세 거름 풀이(꾀 차례 센 법 칸) — 소거 열 가지 이름 · 꾀 뜻 · 흉내 내 보기 · 채우지 않음 */
+export function pickHow(g) {
+  const P = g?.pick; if (P?.rule !== PICK36 || !Array.isArray(P.cut) || !P.cut.length || !Number.isInteger(P.runs) || !Number.isInteger(P.paths)) return [];
+  return [h('p', {class: 'sj-pick'}, h('b', {text: '하나, 빼기 ' + (KN[P.cut.length] ? KN[P.cut.length] + ' 가지' : P.cut.length + '가지')}), h('span', {text: ' — 이런 곳만 남겨요.'})),
+    h('ul', {class: 'sj-pickcut'}, ...P.cut.map(t => h('li', {text: t}))),
+    h('p', {class: 'sj-pick'}, h('b', {text: '둘, 꾀 뜻'}), h('span', {text: ' — 「고르는 법」에 적힌 값 모습과 맞아야 해요.'})),
+    h('p', {class: 'sj-pick'}, h('b', {text: '셋, 흉내 내 보기'}), h('span', {text: ' — 지난 값을 섞어 ' + P.paths + '번씩 ' + P.runs + '번 다시 놓아 봐요. 우연으로 보기 어려울 때만 남겨요.'})),
+    h('p', {class: 'sj-pick sj-picknone', text: '셋 다 지난 곳이 일곱 곳보다 적으면 적은 대로 둬요. 다른 곳으로 채우지 않아요.'})];
+}
 /* ── 1 머리 ── */
 /* ── 2 표지 · 형세 보고 ── */
 function sunSec(T) {
@@ -122,6 +150,33 @@ export function chip(g, c, bd, ov) {
     'aria-label': name + (n ? ' · ' + n + '묶음' : '') + (dz ? ' · ' + dz + '일째' : '') + (sp ? ' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[20]) + ' · ' + MONW[m] : '')},
     h('b', {text: name}), h('span', {class: 'sj-chipi'}, n ? h('span', {class: 'sj-chipn', text: n + '묶음'}) : null, h('span', {class: 'sj-chipd', text: dz ? dz + '일째' : ''})), sp ? spark(sp, 64, 26, 'sj-sps') : null, m ? h('i', {class: 'sj-chipm sj-chipm-' + m, 'aria-hidden': 'true', text: m === 'dn' ? '내림' : m === 'up' ? '오름' : '같음'}) : null));
 }
+/* ── 큰 갈래 차례(주문 1116-1601 · 사장님 2026-11-16(마카오) 15:01 어떤 분 의견 「서른 여섯가지의 답에 나오는 회사들이 큰 테마로 보면 … 1~5위 … 등수 별로 오르고 내린 주식의 평균 퍼센트」 · 「이작업도 같이해」) ──
+   서른여섯 꾀 답에 나온 회사를 같은 일 하는 회사끼리(판 업종 묶음) 모음 · 회사가 많이 나온 차례(같으면 꾀 답에 나온 번 · 많이 오른 차례가 아님) · 갈래마다 한 달 동안 100원이 평균 ○원(「%」 대신) · 오른 곳 · 내린 곳 · 회사들 */
+export const okTheme = r => !!r && typeof r.name === 'string' && r.name !== '' && Number.isInteger(r.hits) && r.hits > 0 && Number.isInteger(r.n) && r.n > 0 && Array.isArray(r.codes) && r.codes.length === r.n
+  && [r.up, r.dn, r.m].every(v => Number.isInteger(v) && v >= 0) && r.up + r.dn <= r.m && r.m <= r.n && (r.avg === null || (fin(r.avg) && r.avg > 0));
+export const thRows = g => (g?.themes?.rule === 'themes-v1' && Array.isArray(g.themes.rows) ? g.themes.rows.filter(okTheme).slice(0, 5) : []);
+export const thSt = r => (!fin(r.avg) ? 'na' : r.avg > 1 ? 'up' : r.avg < 1 ? 'dn' : 'eq');
+export const thUd = r => '오른 곳 ' + r.up + ' · 내린 곳 ' + r.dn + (r.m - r.up - r.dn ? ' · 그대로 ' + (r.m - r.up - r.dn) : '');
+export const thV = r => (fin(r.avg) ? '한 달 동안 100원이 평균 ' + w100(r.avg - 1) + '이 됐어요.' : '한 달 값이 모자라 평균을 못 셌어요.');
+function themesBox(g) {
+  const R = thRows(g); if (!R.length) return null;
+  const in7 = code => g.kinds.filter(k => (g.lists[k] ?? []).slice(0, 7).some(c => c?.code === code)).length;
+  const nameOf = code => { for (const k of g.kinds) { const c = (g.lists[k] ?? []).find(x => x?.code === code); if (c?.name) return String(c.name); } return NEED; };
+  const mx = Math.max(0, ...R.filter(r => fin(r.avg)).map(r => Math.abs(r.avg - 1)));
+  return h('div', {class: 'sj-th', 'data-n': String(R.length)},
+    h('h3', {class: 'sj-h3 sj-thh3', text: '꾀가 고른 회사, 큰 갈래 차례'}),
+    h('p', {class: 'sj-thlead', text: '서른여섯 꾀 답에 회사가 많이 나온 갈래부터 ' + R.length + '가지예요. 같은 일 하는 회사끼리 묶었어요.'}),
+    meanCap(PM.themes), // 붓 막대 그림 뜻 — 줄 맨 위 한 번(주문 1116-1313)
+    h('ol', {class: 'sj-thl'}, ...R.map((r, i) => h('li', {class: 'sj-thr', 'data-g': r.name, 'data-hits': String(r.hits), 'data-n': String(r.n), 'data-st': thSt(r)},
+      h('p', {class: 'sj-thh'}, h('span', {class: 'sj-thn', text: String(i + 1)}), h('b', {class: 'sj-thg', text: r.name}), h('span', {class: 'sj-thc', text: '나온 회사 ' + r.n + '곳 · 꾀 답에 ' + r.hits + '번'})), // 「회사」로 시작하면 「의료기기」 뒤에 붙어 「기회」로 읽힘(쓰지 않을 말)
+      brushBar(fin(r.avg) && r.avg !== 1 ? r.avg - 1 : null, mx, {cls: 'sj-thbar'}), // 그대로(100원 → 100원)면 획 없음
+      h('p', {class: 'sj-thv', text: thV(r)}),
+      h('p', {class: 'sj-thud', text: thUd(r)}),
+      h('details', {class: 'sj-drawer sj-thd'}, h('summary', {}, h('span', {class: 'sj-s1', text: '이 갈래 회사 ' + r.n + '곳'}), chev()),
+        h('ul', {class: 'sj-thcos'}, ...r.codes.map(code => h('li', {}, h('a', {class: 'sj-thco', href: '#/c/' + encodeURIComponent(String(code)), 'data-code': String(code)},
+          h('b', {text: nameOf(code)}), h('span', {text: '꾀 ' + in7(code) + '가지'}))))))))),
+    h('p', {class: 'sj-thnote', text: '많이 나온 차례예요. 많이 오른 차례가 아니에요.'}));
+}
 function trickSec(g, T) {
   const sun = okSun(T.sun) ? T.sun : null, N = g.kinds.reduce((a, k) => a + Math.min(7, (g.lists[k] ?? []).length), 0), dd = mday(g?.asOf?.data) ?? mday(T.asOf?.board), bd = mday(g?.asOf?.board);
   const anySp = g.kinds.some(k => (g.lists[k] ?? []).slice(0, 7).some(c => sp36(g, String(c?.code ?? ''))));
@@ -135,16 +190,18 @@ function trickSec(g, T) {
       ...rec36(r),
       L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: none36(g.why?.[k])}), // 회사 단추는 바로 보임(사장님 2026-11-16 01:56 「지금 7곳이라고 클릭해야 나오잖아 바로 종목들이 나오개 해」)
       h('details', {class: 'sj-drawer sj-cos'}, h('summary', {}, h('span', {class: 'sj-s1', text: '고르는 법'}), chev()), // 긴 풀이만 접은 칸(주문 1116-0118)
-        h('p', {class: 'sj-say', text: g.say?.[k] ?? ''}))); };
+        h('p', {class: 'sj-say', text: g.say?.[k] ?? ''}), funnel36(g, k))); }; // 세 거름을 지난 수(주문 1116-1539)
   const H = S ? S.hist : null, TOP = 7;
   return h('section', {class: 'sj-sec sj-s36', 'aria-label': (S ? '덜 잃은 꾀 차례 · ' : '') + '서른여섯 꾀 ' + N + '칸', 'data-n': String(N), 'data-order': S ? 'sun' : 'kind'},
     head('꾀', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + N + '칸'})), true),
     S?.rankQ ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + S.rankQ.pian})) : null,
+    themesBox(g), // 큰 갈래 차례(주문 1116-1601) — 꾀 서른여섯을 하나하나 보기 전에 한눈에
     h('ol', {class: 'sj-tricks'}, ...order.slice(0, TOP).map(one36)),
     order.length > TOP ? h('details', {class: 'sj-drawer sj-tmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: (S ? (TOP + 1) + '번째부터 ' + order.length + '번째까지 ' : '나머지 ') + '꾀 ' + (order.length - TOP) + '가지 더 보기'}), chev()),
       h('ol', {class: 'sj-tricks'}, ...order.slice(TOP).map(one36))) : null,
     h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '꾀 차례는 이렇게 셌어요'}), chev()), // 센 법 · 고른 날(긴 풀이는 접은 칸 — 주문 1116-0118)
-      h('p', {class: 'sj-lead', text: '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
+      h('p', {class: 'sj-lead', text: LEAD36(g)}),
+      ...pickHow(g), // 세 거름 풀이(주문 1116-1539)
       S && H ? h('p', {class: 'sj-rule', text: (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + S.name + '이었던 ' + H.same + '날을 골라, ')
         + '꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요.' + (ym(H.from) && ym(H.to) ? ' 센 때는 ' + ym(H.from) + '부터 ' + ym(H.to) + '까지예요.' : '')}) : null,
       h('p', {class: 'sj-dayl', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 점선은 한 달 전 값이에요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')}),

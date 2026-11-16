@@ -715,6 +715,40 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   R.m.s36 = {all: ALL36, now: N28, next: N21, s36: N36, sn: !!SN, same, empty: okG ? K36.filter(k => !G36.lists[k].length) : null, data: G36?.asOf?.data ?? null, sp: {want: spN36, chips: chips36.length},
     ovl: {n: OVLL.length, sp: ovSpN, top: OVLL.slice(0, 3).map(x => x.n), days: OVLL.map(c => c.days ?? null).filter(Boolean).slice(0, 3), from: OVL?.daysFrom ?? null},
     days: {from: G36?.daysFrom ?? null, max: Math.max(0, ...allC.map(c => c.days ?? 0)), n2: allC.filter(c => (c.days ?? 0) >= 2).length, q: QL36.map(c => c.days ?? null), qFrom: T36?.quietDays?.from ?? null}};
+  // ㉘ 세 거름 · 꾀 뜻 · 큰 갈래(주문 1116-1539 · 사장님 2026-11-16(마카오) 14:39 「몬테카를로 … 10번 … 일곱 가지를 필터링 … 말이 같아야 될 거 아니야」 · 주문 1116-1601 15:01 「큰 테마 … 1~5위 … 평균 퍼센트」) — 이 검사가 자료에서 따로 셈
+  //   가) 거른 법 s36-v2(흉내 내 보기 200번씩 10번 · 소거 열 가지 · 꾀 뜻 일곱 가지) · 꾀마다 걸러진 수(셋 다 ≤ 하나하나 · 고른 곳 = 셋 다와 7 가운데 작은 것 = 목록 수) · 빈 꾀 = 꾀 뜻에 맞는 곳 없음(채우지 않음)
+  //   나) 꾀 뜻 = 고른 회사 — 한 달 값 21개(꾀 칸 꺾은선 = 꾀를 고른 값)로 잴 수 있는 꾀마다(한 달 · 닷새 · 오늘 방향 · 스무 날 높낮이) 고른 곳이 모두 맞음
+  //   다) 큰 갈래 다섯 — 고른 회사를 갈래(ind)로 모아 회사가 많은 차례(같으면 꾀 답에 나온 번 · 이름) · 한 달 100원이 평균(넷째 자리) · 오른 곳 · 내린 곳 · 회사(나온 번 · 번호 차례) · 갈래 이름 영어 0
+  const PICK28 = 's36-v2', P28 = same ? G36.pick ?? null : null, v2 = P28?.rule === PICK28, NONE28 = '꾀 뜻에 맞는 곳이 없어 고르지 않음';
+  const FUN28 = k => { const f = v2 ? G36.funnel?.[k] : null, L = same ? G36.lists[k] : null;
+    return f && ['n', 'cut', 'mean', 'mc', 'all', 'k'].every(x => Number.isInteger(f[x]) && f[x] >= 0) && f.all <= Math.min(f.cut, f.mean, f.mc) && Math.max(f.cut, f.mean, f.mc) <= f.n && f.k === Math.min(7, f.all) && Array.isArray(L) && L.length === f.k ? f : null; };
+  const volMiss28 = k => G36?.by?.[k] === 'vol' && /거래량/.test(G36?.why?.[k] ?? '') && !G36.lists[k].length;
+  const funBad = !same || !v2 ? [] : K36.filter(k => !(FUN28(k) || volMiss28(k)) || (!G36.lists[k].length && !(G36.why?.[k] === NONE28 || volMiss28(k))));
+  check(!same || (v2 && P28.runs === 10 && P28.paths === 200 && Array.isArray(P28.cut) && P28.cut.length === 10 && P28.cut.every(t => typeof t === 'string' && t && !/[A-Za-z%]/.test(t)) && Array.isArray(P28.angles) && P28.angles.length === 7 && !funBad.length),
+    '㉘ 세 거름 자료(주문 1116-1539) — 거른 법 s36-v2(흉내 내 보기 200번씩 10번 · 소거 열 가지 · 꾀 뜻 일곱 가지) · 꾀마다 걸러진 수 · 고른 곳 = 셋 다와 7 가운데 작은 것 = 목록 수 · 빈 꾀는 채우지 않음', JSON.stringify({rule: P28?.rule ?? null, runs: P28?.runs ?? null, paths: P28?.paths ?? null, bad: funBad.slice(0, 4)}));
+  const mm28 = c => { const v = spW36(c); if (!v) return null; let st = 0; for (let i = 20; i > 0 && v[i] > v[i - 1]; i--) st++; const w20 = v.slice(1);
+    return {r20: v[20] / v[0] - 1, r5: v[20] / v[15] - 1, r5p: v[15] / v[10] - 1, r1: v[20] / v[19] - 1, r1p: v[19] / v[18] - 1, up: w20.filter((x, i) => x > v[i]).length, hi: Math.max(...w20), lo: Math.min(...w20), st, v}; };
+  const COND28 = {g01: x => x.r20 > 0, g02: x => x.r5 > 0, g03: x => x.r20 > 0, g04: x => x.r5 > 0, g06: x => x.r1 > 0 && x.r1p < 0, g07: x => x.r1 > 0, g08: x => Math.abs(Math.log(1 + x.r20)) < 0.05,
+    g10: x => x.r20 > 0 && x.r5 < 0, g11: x => x.r5 < 0, g12: x => x.up >= 11, g14: x => x.v[20] >= 1.05 * x.lo, g16: x => x.r20 < 0, g17: x => x.r5p > 0 && x.r5 > x.r5p,
+    g24: x => x.r5 > 0, g26: x => x.r20 >= 0, g28: x => x.r20 > 0 && x.v[20] >= 0.97 * x.hi, g29: x => x.r5 > 0, g31: x => x.r1 > 0, g32: x => x.r20 >= 0, g34: x => x.r1 < 0, g35: x => x.r1 > 0 && x.st >= 2, g36: x => x.r20 < 0};
+  const mmBad = []; let mmN = 0;
+  if (same && v2) for (const k of K36) { const fn = COND28[k]; if (!fn) continue; for (const c of G36.lists[k]) { const x = mm28(c); if (!x) continue; mmN++; if (!fn(x)) mmBad.push(k + ' ' + c.name); } }
+  check(!same || !v2 || !mmBad.length, '㉘ 꾀 뜻 = 고른 회사(주문 1116-1539 「말이 같아야」) — 한 달 값으로 잴 수 있는 꾀 ' + Object.keys(COND28).length + '가지 · 고른 곳마다 꾀 뜻(한 달 · 닷새 · 오늘 방향 · 스무 날 높낮이)에 맞음 · 어긋남 0', JSON.stringify({n: mmN, bad: mmBad.slice(0, 4)}));
+  const IND28 = same && G36.ind && typeof G36.ind === 'object' ? G36.ind : null, cmpS28 = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+  const thW = (() => { if (!same || !v2) return null; const hit = new Map();
+    for (const k of K36) for (const c of G36.lists[k]) hit.set(c.code, (hit.get(c.code) ?? 0) + 1);
+    const by = new Map(); for (const code of hit.keys()) { const gn = IND28?.[code]; if (typeof gn !== 'string' || !gn || /[A-Za-z%]/.test(gn)) return {bad: code}; if (!by.has(gn)) by.set(gn, []); by.get(gn).push(code); }
+    const rows = [...by].map(([name, cs]) => { const rr = cs.map(code => { const v = LINE36[code]?.c; return Array.isArray(v) && v.length === 21 && v.every(x => Number.isFinite(x) && x > 0) ? v[20] / v[0] : null; }).filter(x => x !== null);
+      cs.sort((a, b) => hit.get(b) - hit.get(a) || cmpS28(a, b));
+      return {name, n: cs.length, hits: cs.reduce((a, c) => a + hit.get(c), 0), avg: rr.length ? rr.reduce((a, x) => a + x, 0) / rr.length : null, up: rr.filter(x => x > 1).length, dn: rr.filter(x => x < 1).length, m: rr.length, codes: cs}; });
+    rows.sort((a, b) => b.n - a.n || b.hits - a.hits || cmpS28(a.name, b.name));
+    return rows.slice(0, 5); })();
+  const TH28 = same && G36.themes?.rule === 'themes-v1' && Array.isArray(G36.themes.rows) ? G36.themes.rows : null;
+  const thSame = Array.isArray(thW) && !!TH28 && TH28.length === thW.length && TH28.every((r, i) => { const w = thW[i];
+    return r.name === w.name && r.n === w.n && r.hits === w.hits && r.up === w.up && r.dn === w.dn && r.m === w.m && JSON.stringify(r.codes) === JSON.stringify(w.codes) && (w.avg === null ? r.avg === null : Number.isFinite(r.avg) && Math.abs(r.avg - w.avg) < 1.5e-4); });
+  check(!same || !v2 || thSame, '㉘ 큰 갈래 다섯 자료(주문 1116-1601) — 고른 회사를 갈래로 모아 회사가 많은 차례(같으면 꾀 답에 나온 번 · 이름) · 한 달 100원이 평균 · 오른 곳 · 내린 곳 · 회사 차례 = 이 검사가 따로 센 것 · 갈래 이름 영어 0',
+    JSON.stringify({got: (TH28 ?? []).map(r => r.name + ' ' + r.hits + '/' + r.n), want: Array.isArray(thW) ? thW.map(r => r.name + ' ' + r.hits + '/' + r.n) : thW}).slice(0, 400));
+  R.m.s36.pick = {rule: P28?.rule ?? null, empty: same ? K36.filter(k => !G36.lists[k].length).length : null, mm: {n: mmN, bad: mmBad.length}, themes: (TH28 ?? []).map(r => r.name + ' ' + r.hits)};
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
@@ -794,7 +828,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     check(g.qd.length === 0, W + '처음 쪽 조용한 힘 칸 0(병법 서른여섯만 — 주문 1115-1843)', JSON.stringify(g.qd).slice(0, 120));
     const HS = ORD36 !== K36 ? SUN.hist : null, ymW = t => (DAYz.test(t ?? '') ? t.slice(0, 4) + '년 ' + +t.slice(5, 7) + '월' : null);
     const ruleW = HS ? (HS.all ? '지난 ' + HS.days + '거래일을 모두 보고, ' : '지난 ' + HS.days + '거래일 가운데 오늘처럼 ' + SUN.name + '이었던 ' + HS.same + '날을 골라, ') + '꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요.' + (ymW(HS.from) && ymW(HS.to) ? ' 센 때는 ' + ymW(HS.from) + '부터 ' + ymW(HS.to) + '까지예요.' : '') : '';
-    check(!same || (g.h === (HS ? '덜 잃은 꾀 차례 ' : '서른여섯 꾀 ') + N36 + '칸' && g.lead === '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.' && g.rule === ruleW && g.day.endsWith(dayW) && g.go === '#/r/t' && g.small === 0),
+    check(!same || (g.h === (HS ? '덜 잃은 꾀 차례 ' : '서른여섯 꾀 ') + N36 + '칸' && g.lead === '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, ' + (G36?.pick?.rule === PICK28 ? '세 가지 거름을 모두 지난 곳 가운데 그 꾀를 가장 닮은 일곱 곳까지예요.' : '그날 그 꾀를 가장 닮은 일곱 곳이에요.') && g.rule === ruleW && g.day.endsWith(dayW) && g.go === '#/r/t' && g.small === 0),
       W + '꾀 칸 머리 · 한 줄 풀이(삼십육계 — 손자병법과 따로 · 주문 1114-0922) · 차례 까닭(같은 땅 날 · 닷새 뒤 · 덜 잃은 차례) · 고른 날 · 같은 회사 여러 꾀 · 정산 고리 · 누름 48', JSON.stringify({h: g.h, lead: g.lead, rule: [g.rule, ruleW], day: g.day, go: g.go, small: g.small}).slice(0, 500));
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
@@ -811,7 +845,10 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const rs = ST25.buys.filter(b => ST25.kinds[b[1]] === k && Number.isFinite(b[3]) && b[3] > 0).map(([d, , code, buy]) => { const [now, nd] = ST25.now?.[code] ?? [buy, d]; return {cost: buy * q, val: now * q, one: !(nd > d)}; });
     const cost = rs.reduce((a, r) => a + r.cost, 0), val = rs.reduce((a, r) => a + r.val, 0), one = rs.length > 0 && rs.every(r => r.one);
     return {dd: [wonM(cost), rs.length ? wonM(val) : '아직 산 셈이 없어요'], res: !rs.length ? '아직 산 셈이 없어요' : one ? '아직 하루치예요' : movedM(val - cost)}; };
-  const none25 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
+  const none25 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : /꾀 뜻/.test(w ?? '') ? '오늘은 꾀 뜻에 맞는 곳이 없어요. 다른 곳으로 채우지 않았어요.' : '지난 값이 모자라 고르지 못했어요.');
+  // 세 거름 수(주문 1116-1539) — 첫 쪽 「고르는 법」 칸 · 꾀 쪽 「주식에서는 이렇게 골라요」 = 자료 funnel(맞지 않으면 그리지 않음)
+  const funWant = k => { const f = useG25 ? FUN28(k) : null; return f ? {l: '우량주 ' + f.n + '곳을 세 가지로 걸렀어요.', rows: [['열 가지로 빼고 남은 곳', f.cut + '곳'], ['꾀 뜻에 맞는 곳', f.mean + '곳'], ['흉내 내 보기를 지난 곳', f.mc + '곳'], ['셋 다 지난 곳', f.all + '곳']],
+    k: !f.all ? '셋 다 지난 곳이 없어 오늘은 고르지 않았어요.' : f.all > 7 ? '그 가운데 꾀를 가장 닮은 7곳을 골랐어요.' : '셋 다 지난 ' + f.all + '곳을 모두 골랐어요.'} : null; };
   const in25 = code => (useG25 ? K36.filter(k => G25.lists[k].slice(0, 7).some(c => c.code === code)) : []);
   let other25 = null; for (const c of ['005930', '000660', '035420', '005380', '051910', '035720', '068270']) { if (in25(c).length) continue; const co = await J('/atlas/data/co/' + c + '.json').catch(() => null); if (typeof co?.c?.name === 'string') { other25 = {code: c, co}; break; } }
   const coW25 = async code => { const co = await J('/atlas/data/co/' + code + '.json').catch(() => null), mine = in25(code), it = mine.length ? G25.lists[mine[0]].find(c => c.code === code) : null;
@@ -848,14 +885,15 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       await open(p, '#/k/' + k);
       const gk = await p.evaluate(new Function(txtJS + `const main = document.querySelector('#su main.sj-page[data-page="kkoe"]'), ph = main?.querySelector('section.sj-ph'), way = main?.querySelector('section.sj-kway'), rec = main?.querySelector('section.sj-krec'), kco = main?.querySelector('section.sj-kco'), kst = main?.querySelector('section.sj-kst');
         return {main: !!main, k: main?.getAttribute('data-k') ?? null, h1: txt(document.querySelector('#su h1')), kick: txt(ph?.querySelector('.sj-k')), seal: txt(ph?.querySelector('.sj-seal-big')), q: txt(ph?.querySelector('.sj-q p')), cite: txt(ph?.querySelector('.sj-q cite')), step: ph?.querySelector('.sj-step')?.getAttribute('aria-label') ?? '', say: txt(ph?.querySelector('.sj-do')),
-          way: txt(way?.querySelector('.sj-lead')), vol: [...(way?.querySelectorAll('.sj-note') ?? [])].some(e => /사고판 양/.test(e.textContent)), rule: txt(rec?.querySelector('.sj-rule')), tl: txt(rec?.querySelector('.sj-tl')), dots: rec ? rec.querySelectorAll('svg.ik-arrows .ik-ar.ik-broken').length : -1, pic: ph?.querySelector('figure.sj-kfig svg.ik-kk')?.getAttribute('data-k') ?? null,
+          way: txt(way?.querySelector('.sj-lead')), vol: [...(way?.querySelectorAll('.sj-note') ?? [])].some(e => /사고판 양/.test(e.textContent)),
+          fun: (() => { const f = way?.querySelector('.sj-fun'); return f ? {l: txt(f.querySelector('.sj-funl')), rows: [...f.querySelectorAll('.sj-funs > li')].map(x => [txt(x.querySelector('span')), txt(x.querySelector('b'))]), k: txt(f.querySelector('.sj-funk'))} : null; })(), rule: txt(rec?.querySelector('.sj-rule')), tl: txt(rec?.querySelector('.sj-tl')), dots: rec ? rec.querySelectorAll('svg.ik-arrows .ik-ar.ik-broken').length : -1, pic: ph?.querySelector('figure.sj-kfig svg.ik-kk')?.getAttribute('data-k') ?? null,
           cs: [...(kco?.querySelectorAll('a.sj-chip') ?? [])].map(a => [a.getAttribute('href'), txt(a.querySelector('b')), txt(a.querySelector('.sj-chipd'))]), none: txt(kco?.querySelector('.sj-tnone')), n: kco?.getAttribute('data-n') ?? null,
           st: kst ? {dd: [...kst.querySelectorAll('dl.sj-money dd')].map(txt), res: txt(kst.querySelector('.sj-res b')), go: kst.querySelector('a.sj-go')?.getAttribute('href') ?? ''} : null,
           pn: [...(main?.querySelectorAll('nav.sj-kpn a') ?? [])].map(a => a.getAttribute('href')), next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null, nextK: txt(document.querySelector('#su .sj-next .sj-nk')), tab: txt(document.querySelector('#su .sj-tabs a[aria-current="page"]'))};`));
       const r = RK36[k] ?? null, H = sun25?.hist ?? null, at = ORD36.indexOf(k), L = useG25 ? G25.lists[k].slice(0, 7) : [], S25 = set25(k);
       const want = okT25 ? {main: true, k, h1: G25.name[k], kick: '삼십육계 제' + kn25(k) + '계 · ' + G25.set[k], seal: r ? '차례 ' + r.i : '꾀', q: '「' + G25.mean[k] + '」', cite: '삼십육계 제' + kn25(k) + '계 ' + G25.han[k], step: '2 / 5 · 꾀',
         say: sun25 ? (r?.n ? '지금 ' + sun25.name + '에서 서른여섯 꾀 가운데 덜 잃은 차례 ' + r.i + '번째예요. 지난 같은 땅 기록으로 셌어요.' : '지금 ' + sun25.name + '이에요. 이 꾀는 지난 기록을 세지 못해 맨 아래에 놓았어요.') : '오늘 형세는 아직 세지 못했어요. 꾀 차례 대신 옛 차례로 놓았어요.',
-        way: G25.say[k], vol: G25.by?.[k] === 'vol',
+        way: G25.say[k], vol: G25.by?.[k] === 'vol', fun: funWant(k),
         rule: sun25 && H ? (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + sun25.name + '이었던 ' + H.same + '날을 골라, ') + '이 꾀가 고른 일곱 곳을 닷새 뒤 값과 견줬어요.' + (ymW25(H.from) && ymW25(H.to) ? ' 센 때는 ' + ymW25(H.from) + '부터 ' + ymW25(H.to) + '까지예요.' : '') : '',
         tl: r ? recW(r) : '오늘 형세를 아직 세지 못해 같은 땅 기록이 없어요.', dots: r?.n && r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0, pic: k,
         cs: L.map(c => ['#/c/' + c.code, c.name, Number.isInteger(c.days) && c.days >= 1 ? c.days + '일째' : '']), none: L.length ? '' : useG25 ? none25(G25.why?.[k]) : '오늘 고른 곳 자료를 아직 받지 못했어요.', n: String(L.length),
@@ -931,9 +969,9 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
           if (e.matches('.sj-saysp')) return e.parentElement?.querySelector(':scope > .sj-pm:first-child') ?? null;
           if (e.matches('img.sj-art')) return e.closest('.sj-cover')?.querySelector(':scope > .sj-pm:first-child') ?? null;
           return null; };
-        const kind = e => e.matches('img.sj-art') ? 'cover' : e.matches('.sj-saysp') ? 'sonmu' : e.matches('ol.sj-stl') ? 'bars' : e.matches('figure.sj-coline') ? 'ridge' : e.matches('a.sj-tkpic, a.sj-kpic, figure.sj-kfig') ? 'kkoe'
+        const kind = e => e.matches('img.sj-art') ? 'cover' : e.matches('.sj-saysp') ? 'sonmu' : e.matches('ol.sj-stl') ? 'bars' : e.matches('ol.sj-thl') ? 'themes' : e.matches('figure.sj-coline') ? 'ridge' : e.matches('a.sj-tkpic, a.sj-kpic, figure.sj-kfig') ? 'kkoe'
           : e.querySelector('svg.ik-land') ? 'land' : e.querySelector('svg.ik-arrows') ? 'arrows' : e.querySelector('svg.ik-hero') ? 'hero' : e.querySelector('svg.ik-why, svg.ik-journal, svg.ik-tally, svg.ik-groups') ? 'why' : 'other';
-        const pics = [...main.querySelectorAll('img.sj-art, figure.sj-ink, figure.sj-coline, a.sj-tkpic, a.sj-kpic, .sj-saysp, ol.sj-stl')];
+        const pics = [...main.querySelectorAll('img.sj-art, figure.sj-ink, figure.sj-coline, a.sj-tkpic, a.sj-kpic, .sj-saysp, ol.sj-stl, ol.sj-thl')];
         return pics.map(e => { const c = capOf(e), sv = e.querySelector('svg'), shown = !e.closest('details:not([open]) > :not(summary)') && e.getBoundingClientRect().height > 0, cb = c?.getBoundingClientRect(), pb = e.getBoundingClientRect();
           return {kind: kind(e), k: e.closest('[data-k]')?.getAttribute('data-k') ?? null, hero: sv?.getAttribute('data-hero') ?? null, cls: sv?.getAttribute('class') ?? '', cur: sv?.getAttribute('data-cur') ?? '', n: sv?.getAttribute('data-n') ?? '',
             tag: txt(c?.querySelector('.sj-pmt')), t: txt(c?.querySelector('.sj-pmb')), shown, above: !c || !shown ? null : cb.bottom <= pb.top + 1 || (e.matches('figure') && c.parentElement === e) || e.matches('.sj-saysp, img.sj-art'),
@@ -945,6 +983,56 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       check(!!g && g.length > 0 && !bad.length && (hh !== '#/' || !same || (g.filter(x => x.kind === 'kkoe').length === 36 && g.filter(x => x.kind === 'arrows').length === K36.filter(k => RK36[k]?.n).length)),
         W + hh + ' — 그림 ' + (g?.length ?? 0) + '개(보이는 ' + seen + ')마다 맨 위 「그림 뜻」 한 줄 = su-sonja-mean.js 글 · 그림보다 위 · 큰 글 22px · 이름표 17px · 가로 넘침 0', JSON.stringify(bad.slice(0, 3)).slice(0, 400));
     }
+    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+    await ctx.close();
+  }
+  // ㉘ 화면(주문 1116-1601 · 1116-1539) — 첫 쪽 꾀 칸 맨 위 「큰 갈래 차례」 = 이 검사가 따로 센 다섯(차례 · 이름 · 꾀 답에 나온 번 · 회사 수 · 붓 막대 방향과 길이 · 100원이 평균 · 오른 곳 · 내린 곳 · 서랍 회사 = 누르면 그 회사)
+  //   · 꾀마다 「고르는 법」 칸에 세 거름 수 = 자료 · 센 법 칸에 세 거름 풀이(소거 이름 = 자료) · 영어 글자 · 「%」 0(회사 이름 빼고) · 누름 48 · 가로 넘침 0
+  const R28 = Array.isArray(thW) ? thW : [];
+  const in728 = code => K36.filter(k => G36.lists[k].slice(0, 7).some(c => c.code === code)).length, nm28 = code => { for (const k of K36) { const c = G36.lists[k].find(x => x.code === code); if (c) return c.name; } return ''; };
+  const avg28 = r => (TH28?.find(x => x.name === r.name)?.avg ?? null); // 화면은 자료의 평균(넷째 자리)으로 그림 — 값은 위 자료 검사가 따로 셈과 맞댐
+  const wantTh = same && v2 && R28.length ? {before: true, h: '꾀가 고른 회사, 큰 갈래 차례', lead: '서른여섯 꾀 답에 회사가 많이 나온 갈래부터 ' + R28.length + '가지예요. 같은 일 하는 회사끼리 묶었어요.', note: '많이 나온 차례예요. 많이 오른 차례가 아니에요.', cap: MEANC.PM.themes,
+    rows: R28.map((r, i) => { const a = avg28(r), ma = Math.max(0, ...R28.map(avg28).filter(x => x !== null).map(x => Math.abs(x - 1))), sw = a !== null && a !== 1 && ma > 0 ? Math.max(4, Math.round(Math.abs(a - 1) / ma * 140)) : 0;
+      return {g: r.name, num: String(i + 1), name: r.name, c: '나온 회사 ' + r.n + '곳 · 꾀 답에 ' + r.hits + '번', v: a !== null ? '한 달 동안 100원이 평균 ' + w100(a - 1) + '이 됐어요.' : '한 달 값이 모자라 평균을 못 셌어요.',
+        ud: '오른 곳 ' + r.up + ' · 내린 곳 ' + r.dn + (r.m - r.up - r.dn ? ' · 그대로 ' + (r.m - r.up - r.dn) : ''), way: sw ? (a > 1 ? 'up' : 'dn') : 'none', w: sw, sum: '이 갈래 회사 ' + r.n + '곳',
+        cos: r.codes.map(code => ['#/c/' + encodeURIComponent(code), nm28(code), '꾀 ' + in728(code) + '가지'])}; })} : null;
+  const pickW28 = v2 ? ['하나, 빼기 열 가지 — 이런 곳만 남겨요.', '둘, 꾀 뜻 — 「고르는 법」에 적힌 값 모습과 맞아야 해요.', '셋, 흉내 내 보기 — 지난 값을 섞어 ' + P28.paths + '번씩 ' + P28.runs + '번 다시 놓아 봐요. 우연으로 보기 어려울 때만 남겨요.', '셋 다 지난 곳이 일곱 곳보다 적으면 적은 대로 둬요. 다른 곳으로 채우지 않아요.'] : [];
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = [];
+    p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    const W = '㉘ 큰 갈래 · 세 거름 [' + width + '] ';
+    await open(p, '#/');
+    if (same) await p.waitForFunction(() => document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), null, {timeout: 15000}).catch(() => {});
+    const g = await p.evaluate(() => {
+      const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), sec = document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), th = sec?.querySelector(':scope > .sj-th');
+      for (const d of th?.querySelectorAll('details.sj-thd') ?? []) d.open = true; // 서랍을 열어 회사 단추 크기를 잼
+      return {sec: !!sec,
+        th: th ? {before: !!th.nextElementSibling?.matches?.('ol.sj-tricks'), h: txt(th.querySelector('.sj-thh3')), lead: txt(th.querySelector('.sj-thlead')), note: txt(th.querySelector('.sj-thnote')), cap: txt(th.querySelector(':scope > .sj-pm .sj-pmb')),
+          rows: [...th.querySelectorAll('ol.sj-thl > li.sj-thr')].map(li => { const bar = li.querySelector('svg.sj-thbar');
+            return {g: li.getAttribute('data-g'), num: txt(li.querySelector('.sj-thn')), name: txt(li.querySelector('.sj-thg')), c: txt(li.querySelector('.sj-thc')), v: txt(li.querySelector('.sj-thv')), ud: txt(li.querySelector('.sj-thud')),
+              way: bar?.getAttribute('data-way') ?? null, w: bar ? +bar.getAttribute('data-w') : null, sum: txt(li.querySelector('details.sj-thd > summary')),
+              cos: [...li.querySelectorAll('a.sj-thco')].map(a => [a.getAttribute('href'), txt(a.querySelector('b')), txt(a.querySelector('span'))])}; }),
+          wide: th.getBoundingClientRect().right <= innerWidth + 0.5 && th.getBoundingClientRect().left >= -0.5, small: [...th.querySelectorAll('a, summary')].filter(a => { const r = a.getBoundingClientRect(); return r.width < 47.5 || r.height < 47.5; }).length,
+          font: Math.min(...[...th.querySelectorAll('p, b, span, a, summary, h3')].filter(e => e.textContent.trim()).map(e => parseFloat(getComputedStyle(e).fontSize))), text: th.innerText} : null,
+        fun: [...(sec?.querySelectorAll('li.sj-tk') ?? [])].map(li => { const f = li.querySelector('details.sj-cos .sj-fun');
+          return [li.getAttribute('data-k'), f ? {l: txt(f.querySelector('.sj-funl')), rows: [...f.querySelectorAll('.sj-funs > li')].map(x => [txt(x.querySelector('span')), txt(x.querySelector('b'))]), k: txt(f.querySelector('.sj-funk'))} : null]; }),
+        pick: [...(sec?.querySelectorAll('details.sj-how .sj-pick') ?? [])].map(txt), cut: [...(sec?.querySelectorAll('details.sj-how .sj-pickcut > li') ?? [])].map(txt)};
+    });
+    const thGot = g.th ? {before: g.th.before, h: g.th.h, lead: g.th.lead, note: g.th.note, cap: g.th.cap, rows: g.th.rows} : null;
+    const names28 = [...new Set(K36.flatMap(k => same ? G36.lists[k].map(c => c.name) : []))].sort((a, b) => b.length - a.length);
+    const plain28 = names28.reduce((t, n) => t.split(n).join(''), g.th?.text ?? '');
+    check(!same ? !g.th : wantTh ? JSON.stringify(thGot) === JSON.stringify(wantTh) && g.th.wide && g.th.small === 0 && g.th.font >= 16.95 && !/[A-Za-z%]/.test(plain28) : !g.th,
+      W + '첫 쪽 꾀 칸 맨 위 큰 갈래 차례(주문 1116-1601) — 다섯 = 따로 센 것 · 차례 · 이름 · 회사 수 · 꾀 답에 나온 번 · 붓 막대(오르면 오른쪽 · 길이 = 평균) · 100원이 평균 · 오른 곳 · 내린 곳 · 서랍 회사(누르면 그 회사) · 글씨 17 · 누름 48 · 영어 · 「%」 0',
+      JSON.stringify({diff: wantTh && thGot ? Object.keys(wantTh).filter(x => JSON.stringify(wantTh[x]) !== JSON.stringify(thGot[x])) : [!!wantTh, !!thGot], row: wantTh && thGot ? (wantTh.rows.map((r, i) => (JSON.stringify(r) === JSON.stringify(thGot.rows[i]) ? null : [r, thGot.rows[i]])).find(Boolean) ?? null) : null,
+        wide: g.th?.wide, small: g.th?.small, font: g.th?.font, en: (plain28.match(/.{0,8}[A-Za-z%]+.{0,8}/) ?? [''])[0]}).slice(0, 500));
+    const funBadP = same ? g.fun.filter(([k, f]) => JSON.stringify(f) !== JSON.stringify(funWant(k))).map(([k]) => k) : [];
+    check(!same || (g.fun.length === 36 && !funBadP.length && (!v2 || g.fun.filter(([, f]) => f).length >= K36.filter(k => G36.by?.[k] !== 'vol').length)),
+      W + '꾀마다 「고르는 법」 칸 세 거름 수(주문 1116-1539) — 소거 · 꾀 뜻 · 흉내 내 보기 · 셋 다 · 고른 곳 = 자료(사고판 양 꾀는 그날 양이 있을 때)', JSON.stringify({n: g.fun.length, bad: funBadP.slice(0, 3), got: g.fun.find(([k]) => k === funBadP[0])?.[1] ?? null, want: funBadP[0] ? funWant(funBadP[0]) : null}).slice(0, 400));
+    check(!same || (JSON.stringify(g.pick) === JSON.stringify(pickW28) && JSON.stringify(g.cut) === JSON.stringify(v2 ? P28.cut : [])),
+      W + '꾀 차례 센 법 칸 — 세 거름 풀이(소거 열 가지 이름 = 자료 · 꾀 뜻 · 흉내 내 보기 200번씩 10번 · 채우지 않음)', JSON.stringify({pick: g.pick, cut: g.cut.length}).slice(0, 400));
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
   }

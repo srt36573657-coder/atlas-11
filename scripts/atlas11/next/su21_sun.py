@@ -129,7 +129,8 @@ if __name__ == '__main__':
         S = sun(codes, IX, P, Tn - 1, cap, dates, win=120)
         assert S and S['land'] in LANDS and len(S['rank']) == 36 and S['hist']['days'] == 120 - 0 or S['hist']['days'] > 0
         assert all(r['n'] == 0 for r in S['rank'] if r['k'] in S36.BY)            # 거래량이 없으면 거래량 다섯은 셀 수 없음 → 맨 뒤
-        assert [r['k'] for r in S['rank'][-5:]] == sorted(S36.BY)
+        zero = [r['k'] for r in S['rank'] if not r['n']]                        # 셀 날이 없는 꾀(거래량 다섯 · 세 거름을 지난 날이 없던 꾀 — 주문 1116-1539 채우지 않음) → 맨 뒤 · 꾀 차례
+        assert set(S36.BY) <= set(zero) and [r['k'] for r in S['rank'][-len(zero):]] == sorted(zero)
         ks = [_key(r['k'], r) for r in S['rank']]; assert ks == sorted(ks)
         P2 = P.copy(); P2[:, -25:] = P2[:, -26:-25] * np.linspace(1, 0.8, 25)    # 모두 내림 → 무너지는 땅
         assert land(market(P2, Tn - 1)) == 'fall'
