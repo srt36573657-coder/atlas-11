@@ -7,7 +7,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-16T17:54:28.252Z",
+ "at": "2026-11-16T18:03:12.057Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,17 +32,17 @@
    }
   }
  },
- "seconds": 66,
- "secondsSum": 196,
+ "seconds": 53,
+ "secondsSum": 159,
  "time": {
-  "old": 163.6,
-  "new": 163.5,
-  "wall": 65.6,
-  "wallSum": 196.4,
-  "opensOld": 7684,
+  "old": 8.3,
+  "new": 138.1,
+  "wall": 53,
+  "wallSum": 158.9,
+  "opensOld": 13,
   "opensNew": 10286,
-  "oldPct": 83.3,
-  "oldShare": 50
+  "oldPct": 5.2,
+  "oldShare": 5.7
  },
  "net": {
   "req": 5280,
@@ -65,12 +65,12 @@
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": false,
-   "why": "바뀐 파일 1개(/atlas/data/core.json)",
-   "made": null,
+   "use": true,
+   "why": "",
+   "made": "2026-11-16T17:49:52.720Z | 2026-11-16T17:49:52.958Z | 2026-11-16T17:49:52.654Z",
    "inputs": 2596,
    "reads": 2557,
-   "note": "기준값 새로 씀(파일 866개 · 값 853개) | 기준값 새로 씀(파일 865개 · 값 852개)"
+   "note": "기준값 다시 씀"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
@@ -82,7 +82,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 65,
+   "seconds": 53,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -95,7 +95,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 66,
+   "seconds": 53,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -108,7 +108,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 65,
+   "seconds": 53,
    "mine": 856,
    "kinds": {
     "c": 852,
