@@ -7,11 +7,14 @@ import {h} from '/su/su-fig.js';
 import {NAME} from '/next/brand.js';
 import {kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js';
-import {topBar, stepTag, endSec, dockNav, tabNav} from '/su/su-sonja-top.js';
+import {topBar, stepTag, endSec, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
+import {PM, whyMean} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {sonmuPic} from '/su/su-sonja-ink.js';
 import {chev, day} from '/su/su-sonja.js';
 
 const NEED = '확인 필요';
+/** 「왜 사?」 · 매매일지 그림(su-why.js 의 svg)의 그림 뜻 — 그림 안 맨 위(주문 1116-1313) */
+const capOf = (sv, tag = 'figcaption') => meanCap(sv?.getAttribute ? whyMean(sv.getAttribute('class') ?? '', sv.getAttribute('data-cur') ?? '', sv.getAttribute('data-n') ?? '') : null, tag);
 /** 큰 값 — 값 · 단위(둘째 값이 있으면 「대」) */
 const valText = v => (v.v == null ? [h('b', {class: 'su-needv', text: NEED})] : [h('b', {text: v.v}), v.unit ? h('span', {text: v.unit}) : null,
   ...(v.v2 != null ? [h('em', {text: '대'}), h('b', {text: v.v2}), v.unit ? h('span', {text: v.unit}) : null] : [])]);
@@ -28,12 +31,12 @@ export function sjPage(m, lc = null) {
     m.kick ? h('p', {class: 'sj-k', text: m.kick}) : null,
     h('div', {class: 'sj-today'}, h('h1', {class: 'sj-h1', ...(m.proper ? {'data-proper': ''} : {})}, h('b', {class: 'sj-land', text: m.h1 ?? m.title})),
       m.seal ? h('span', {class: 'sj-seal sj-seal-big sj-seal-up', 'aria-hidden': 'true', text: m.seal}) : null),
-    m.ink ? h('figure', {class: 'sj-ink su-fig sj-whyfig'}, m.ink) : null,
-    m.say ? h('div', {class: 'sj-says'}, h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), h('p', {class: 'sj-do', 'data-say': '', text: m.say})) : null);
+    m.ink ? h('figure', {class: 'sj-ink su-fig sj-whyfig'}, capOf(m.ink), m.ink) : null,
+    m.say ? h('div', {class: 'sj-says'}, meanCap(PM.sonmu), h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), h('p', {class: 'sj-do', 'data-say': '', text: m.say})) : null);
   const two = m.big ? h('section', {class: 'sj-sec sj-two su-two', 'aria-label': '큰 값과 그래서'}, h('div', {class: 'su-big'}, h('p', {class: 'su-bv'}, ...valText(m.big))), m.big.label ? h('p', {class: 'su-bl', text: m.big.label}) : null, meanLine(m.big)) : null;
   const act = m.act?.filter(Boolean).length ? h('section', {class: 'sj-sec sj-act', 'aria-label': '누르는 곳'}, ...m.act.filter(Boolean)) : null;
   const body = m.body?.filter(Boolean).length ? h('section', {class: 'sj-sec sj-body'}, ...m.body.filter(Boolean)) : null;
-  const figs = m.figs?.filter(Boolean).length ? h('section', {class: 'sj-sec sj-figs', 'aria-label': '그림'}, ...m.figs.filter(Boolean).map(f => (f.tagName === 'FIGURE' ? f : h('figure', {class: 'sj-ink su-fig'}, f)))) : null;
+  const figs = m.figs?.filter(Boolean).length ? h('section', {class: 'sj-sec sj-figs', 'aria-label': '그림'}, ...m.figs.filter(Boolean).map(f => (f.tagName === 'FIGURE' ? f : h('figure', {class: 'sj-ink su-fig'}, capOf(f), f)))) : null;
   const more = m.pro?.length || m.note ? h('details', {class: 'sj-drawer sj-whymore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '자세히'}), h('span', {class: 'sj-s2', text: '점수를 센 법'}), chev()),
     proList(m.pro), m.note ? h('p', {class: 'sj-note', text: m.note}) : null) : null;
   const main = h('main', {class: 'sj-page sj-sub', 'data-page': page}, head, two, act, body, figs, more, endSec(day(m.asOf ?? null), m.S?.fetchedAt ? kstText(m.S.fetchedAt) : null));

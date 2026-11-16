@@ -20,6 +20,7 @@ import {screenHits, ruinHits} from '../../../site/next/words.js'; // 화면 낱�
 import {essenceData, essenceLines} from '../../../site/next/essence.js'; // 본질 세 줄(첫 화면)
 import {START as SETTLE_START} from './su21_settle.mjs'; // 정산 첫날(주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」)
 import * as S36C from '../../../site/su/su-sonja-36.js'; // 서른여섯 꾀 바탕 글(= su21_s36.py --defs · 시험 su-settle.test.mjs 가 맞댐) — 꾀 칸 자료가 없는 날 쪽이 쓰는 글과 맞댐(주문 1115-2328)
+import * as MEANC from '../../../site/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위 · 글만)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -906,6 +907,43 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       const wantN = hh !== '#/' || okSunD || same;
       check(rm === 'reduce' ? b.an === 0 && b.play === 0 : (!wantN || a.n > 0) && a.noM === 0 && a.tr === 0 && a.st === 0 && a.belowPlay === 0 && b.play === b.all && (a.n === 0 || b.an > 0) && b.long === 0, // 그림이 없는 날(형세 · 꾀 칸 자료가 없는 첫 쪽)은 움직임도 0
         W + hh + (rm === 'reduce' ? ' — 끝까지 내려 봐도 그림 움직임 0(멈춘 그림)' : ' — 그림마다 감싼 묶음 · 제자리 변환 0 · 단계 1 ~ 7 · 화면 밖은 기다림 → 내려 보면 한 번 놂 · 7초 안에 끝'), JSON.stringify({...a, ...b}));
+    }
+    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+    await ctx.close();
+  }
+  // ㉗ 주문 1116-1313(사장님 2026-11-16(마카오) 12:12 「정말 쉽게 뜻을 풀어줘 / 아이큐 85고 이해할수 있게」 · 12:13 「어」 — 그림마다 맨 위에 「이 그림 뜻」을 쉬운 한 줄로 크게)
+  //   쪽마다 그림(표지 · 형세 · 꾀 그림 · 화살 열 · 쪽 머리 그림 · 산세 · 손무 · 붓 막대 · 「왜 사?」 · 매매일지) 하나하나에 「그림 뜻」(그림 안 맨 위 figcaption · 바로 앞 · 말 상자 첫 줄)
+  //   글 = su-sonja-mean.js(꾀 그림은 그 줄 꾀 · 쪽 머리 그림은 data-hero · 「왜 사?」 그림은 svg 이름) · 보이는 것은 그림보다 위 · 큰 글 22px 넘게 · 이름표 17px 넘게
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = [];
+    p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    const W = '㉗ 그림 뜻 [' + width + '] ';
+    for (const hh of ['#/', '#/k', '#/k/' + (ORD36[0] ?? 'g01'), ...(FC ? ['#/c/' + FC.code] : []), '#/r/t', '#/q', '#/j']) {
+      await open(p, hh);
+      if (hh === '#/' && same) await p.waitForFunction(() => document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), null, {timeout: 15000}).catch(() => {});
+      const g = await p.evaluate(() => {
+        const main = document.querySelector('#su main.sj-page'); if (!main) return null;
+        const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
+        const capOf = e => { if (e.matches('figure')) { const f = e.querySelector(':scope > figcaption.sj-pm:first-child'); if (f) return f; }
+          const pv = e.previousElementSibling; if (pv?.matches('.sj-pm')) return pv;
+          if (e.matches('.sj-saysp')) return e.parentElement?.querySelector(':scope > .sj-pm:first-child') ?? null;
+          if (e.matches('img.sj-art')) return e.closest('.sj-cover')?.querySelector(':scope > .sj-pm:first-child') ?? null;
+          return null; };
+        const kind = e => e.matches('img.sj-art') ? 'cover' : e.matches('.sj-saysp') ? 'sonmu' : e.matches('ol.sj-stl') ? 'bars' : e.matches('figure.sj-coline') ? 'ridge' : e.matches('a.sj-tkpic, a.sj-kpic, figure.sj-kfig') ? 'kkoe'
+          : e.querySelector('svg.ik-land') ? 'land' : e.querySelector('svg.ik-arrows') ? 'arrows' : e.querySelector('svg.ik-hero') ? 'hero' : e.querySelector('svg.ik-why, svg.ik-journal, svg.ik-tally, svg.ik-groups') ? 'why' : 'other';
+        const pics = [...main.querySelectorAll('img.sj-art, figure.sj-ink, figure.sj-coline, a.sj-tkpic, a.sj-kpic, .sj-saysp, ol.sj-stl')];
+        return pics.map(e => { const c = capOf(e), sv = e.querySelector('svg'), shown = !e.closest('details:not([open]) > :not(summary)') && e.getBoundingClientRect().height > 0, cb = c?.getBoundingClientRect(), pb = e.getBoundingClientRect();
+          return {kind: kind(e), k: e.closest('[data-k]')?.getAttribute('data-k') ?? null, hero: sv?.getAttribute('data-hero') ?? null, cls: sv?.getAttribute('class') ?? '', cur: sv?.getAttribute('data-cur') ?? '', n: sv?.getAttribute('data-n') ?? '',
+            tag: txt(c?.querySelector('.sj-pmt')), t: txt(c?.querySelector('.sj-pmb')), shown, above: !c || !shown ? null : cb.bottom <= pb.top + 1 || (e.matches('figure') && c.parentElement === e) || e.matches('.sj-saysp, img.sj-art'),
+            big: c && shown ? parseFloat(getComputedStyle(c.querySelector('.sj-pmb')).fontSize) : null, small: c && shown ? parseFloat(getComputedStyle(c.querySelector('.sj-pmt')).fontSize) : null, wide: c && shown ? cb.right <= innerWidth + 0.5 : null}; });
+      });
+      const want = x => x.kind === 'kkoe' ? MEANC.PIC[x.k] : x.kind === 'hero' ? MEANC.PM[x.hero] : x.kind === 'why' ? MEANC.whyMean(x.cls, x.cur, x.n) : MEANC.PM[x.kind] ?? null;
+      const bad = (g ?? []).filter(x => x.kind === 'other' || x.tag !== MEANC.MEAN_TAG || !x.t || x.t !== want(x) || (x.shown && (!x.above || !(x.big >= 21.9) || !(x.small >= 16.95) || !x.wide)));
+      const seen = (g ?? []).filter(x => x.shown).length;
+      check(!!g && g.length > 0 && !bad.length && (hh !== '#/' || !same || (g.filter(x => x.kind === 'kkoe').length === 36 && g.filter(x => x.kind === 'arrows').length === K36.filter(k => RK36[k]?.n).length)),
+        W + hh + ' — 그림 ' + (g?.length ?? 0) + '개(보이는 ' + seen + ')마다 맨 위 「그림 뜻」 한 줄 = su-sonja-mean.js 글 · 그림보다 위 · 큰 글 22px · 이름표 17px · 가로 넘침 0', JSON.stringify(bad.slice(0, 3)).slice(0, 400));
     }
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();

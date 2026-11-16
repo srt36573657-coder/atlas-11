@@ -10,7 +10,8 @@ import {h, s} from '/su/su-fig.js';
 import {NAME, josa} from '/next/brand.js';
 import {kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js';
-import {topBar, stepTag, endSec, dockNav, tabNav} from '/su/su-sonja-top.js';
+import {topBar, stepTag, endSec, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
+import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin} from '/su/su-sonja.js';
 import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날의 바탕 글(su21_s36.py 그대로)
 import {kkoePic, ridgePic, heroPic, brushBar, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 손무의 이야기: 제3장 꾀를 펼치다 · 제4장 성을 살피다 · 장부 · 병서)
@@ -88,7 +89,7 @@ function pageHead({step = null, dd = null, kick, h1, proper = false, seal = null
       seal ? h('span', {class: 'sj-seal sj-seal-big ' + (sealDn ? 'sj-seal-dn' : 'sj-seal-up'), 'aria-hidden': 'true', text: seal}) : null),
     pic,
     quote ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + quote[0] + '」'}), h('cite', {text: quote[1]})) : null,
-    say ? h('div', {class: 'sj-says'}, h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), h('p', {class: 'sj-do', 'data-say': '', text: say})) : null, // 손무가 들려주는 한 줄(이야기의 한 사람)
+    say ? h('div', {class: 'sj-says'}, meanCap(PM.sonmu), h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), h('p', {class: 'sj-do', 'data-say': '', text: say})) : null, // 손무가 들려주는 한 줄(이야기의 한 사람) · 맨 위 그림 뜻
     ...more);
 }
 const goLink = (href, t) => h('a', {class: 'sj-go', href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'}));
@@ -102,7 +103,7 @@ const NEED_DAY = '확인 필요';
 /* ── 꾀 한 줄(꾀 모음 · 회사 쪽) ── */
 function kkoeRow(g, k, r, extra = null) {
   return h('li', {class: 'sj-kr', 'data-k': k, 'data-rank': r ? String(r.i) : null},
-    kkoeTile(k, g.name[k], 'sj-kpic', 120, 90),
+    meanCap(PIC[k]), kkoeTile(k, g.name[k], 'sj-kpic', 120, 90), // 그림 뜻 한 줄 → 꾀 그림(주문 1116-1313)
     h('a', {class: 'sj-ka', href: '#/k/' + k, 'aria-label': '제' + kNo(k) + '계 · ' + g.name[k] + (r ? ' · 오늘 덜 잃은 차례 ' + r.i + '번째' : '')},
       h('span', {class: 'sj-kno', text: '제' + kNo(k) + '계'}),
       h('span', {class: 'sj-kt'}, h('b', {text: g.name[k]}), h('span', {class: 'sj-khan', text: g.han[k]})),
@@ -118,7 +119,7 @@ export async function vKkoeAll(X) {
   const kids = [
     pageHead({kick: '삼십육계 · 여섯 묶음', h1: '병법 서른여섯 가지', seal: '꾀', quote: sun?.rankQ ? [sun.rankQ.quote, '손자병법 ' + sun.rankQ.pian] : null,
       say: '삼십육계는 옛 병법에 전하는 서른여섯 가지 꾀예요. 여섯 묶음에 여섯 꾀씩 있어요.' + (sun ? ' 지금 ' + sun.name + '에서 지난 기록으로 덜 잃은 차례를 함께 적었어요.' : ''),
-      more: [h('figure', {class: 'sj-ink sj-herofig'}, heroPic('book')), h('p', {class: 'sj-lead', text: '꾀 그림이나 이름을 누르면 그 꾀 쪽이 열려요.'})]}),
+      more: [h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.book, 'figcaption'), heroPic('book')), h('p', {class: 'sj-lead', text: '꾀 그림이나 이름을 누르면 그 꾀 쪽이 열려요.'})]}),
     ...sets.map((ks, i) => h('section', {class: 'sj-sec sj-kset', 'data-set': String(i + 1), 'aria-label': g.set[ks[0]]},
       head(SETW[i], '제' + (i + 1) + '묶음', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: g.set[ks[0]]})), i % 2 === 1),
       h('ol', {class: 'sj-kl'}, ...ks.map(k => kkoeRow(g, k, RB[k]))),
@@ -141,7 +142,7 @@ export async function vKkoe(X, k) {
   const kids = [
     pageHead({step: 2, dd: bd, kick: '삼십육계 제' + kNo(k) + '계 · ' + g.set[k], h1: g.name[k], seal: r ? '차례 ' + r.i : '꾀', sealDn: sun?.land === 'fall',
       quote: [g.mean[k], '삼십육계 제' + kNo(k) + '계 ' + g.han[k]],
-      pic: h('figure', {class: 'sj-ink sj-kfig'}, kkoePic(k, {w: 390, h: 292, label: g.name[k] + ' 그림'})),
+      pic: h('figure', {class: 'sj-ink sj-kfig'}, meanCap(PIC[k], 'figcaption'), kkoePic(k, {w: 390, h: 292, label: g.name[k] + ' 그림'})),
       say: sun ? (r?.n ? '지금 ' + sun.name + '에서 서른여섯 꾀 가운데 덜 잃은 차례 ' + r.i + '번째예요. 지난 같은 땅 기록으로 셌어요.' : '지금 ' + sun.name + '이에요. 이 꾀는 지난 기록을 세지 못해 맨 아래에 놓았어요.') : '오늘 형세는 아직 세지 못했어요. 꾀 차례 대신 옛 차례로 놓았어요.'}),
     h('section', {class: 'sj-sec sj-kway', 'aria-label': '주식에서는 이렇게 골라요'},
       head('법', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '주식에서는 이렇게 골라요'}))),
@@ -200,14 +201,14 @@ export async function vCo36(X, code) {
   const kids = [
     pageHead({step: 3, dd: bd, kick, h1: name, proper: true, seal: m ? {dn: '내림', up: '오름', eq: '같음'}[m] : null, sealDn: m === 'dn',
       say: mine.length ? '오늘 서른여섯 꾀 가운데 ' + mine.length + '가지가 이 회사를 골랐어요.' : '오늘은 서른여섯 꾀 어디에도 들지 않았어요.',
-      pic: h('figure', {class: 'sj-ink sj-herofig'}, heroPic('castle')),
-      more: [line, sp ? null : h('p', {class: 'sj-note', text: '한 달 산세는 오늘 꾀가 고른 곳만 그려요.'})]}),
+      pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.castle, 'figcaption'), heroPic('castle')),
+      more: [line ? meanCap(PM.ridge) : null, line, sp ? null : h('p', {class: 'sj-note', text: '한 달 산세는 오늘 꾀가 고른 곳만 그려요.'})]}), // 산세 그림 뜻은 그림 바로 위(그림 아래 글 figcaption 은 값 셋 그대로)
     h('section', {class: 'sj-sec sj-cok', 'aria-label': '이 회사를 고른 꾀', 'data-n': String(mine.length)},
       head('꾀', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 회사를 고른 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + mine.length + '가지'}))),
       mine.length && sun ? h('p', {class: 'sj-rule', text: '꾀마다 지금 ' + sun.name + '에서 지난 기록으로 덜 잃은 차례와 잃은 몫을 적었어요.'}) : null,
       mine.length ? h('ol', {class: 'sj-tricks sj-cotricks'}, ...sorted.map(k => { const r = RB[k] ?? null;
         return h('li', {class: 'sj-tk', 'data-k': k, 'data-rank': r ? String(r.i) : null},
-          kkoeTile(k, G.name[k]),
+          meanCap(PIC[k]), kkoeTile(k, G.name[k]), // 그림 뜻 한 줄 → 꾀 그림(주문 1116-1313)
           h('a', {class: 'sj-tkh', href: '#/k/' + k, 'aria-label': (r ? '차례 ' + r.i + ' · ' : '') + G.name[k] + ' · 이 꾀 자세히'}, r ? h('span', {class: 'sj-rk' + (r.i <= 3 ? ' sj-rk3' : ''), text: String(r.i)}) : null,
             h('p', {class: 'sj-tn'}, h('b', {text: G.name[k]}), h('span', {text: ' ' + G.han[k]})), h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})),
           ...rec36(r), h('p', {class: 'sj-say', text: G.say[k]})); }))
@@ -231,7 +232,7 @@ export async function vSettle36(X) {
   const dn = K.filter(x => x.st === 'dn').sort((a, b) => a.diff - b.diff);
   const bar = x => brushBar(rateOf(x), mx); // 붓 막대 — 늘면 오른쪽 먹 획 · 줄면 왼쪽 남빛 획(주문 1116-0118)
   const kids = [
-    pageHead({kick: '정산 · 10주씩 산 셈 · 가짜 돈', h1: '서른여섯 꾀 정산', seal: '셈', sealDn: TT.st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, heroPic('ledger')),
+    pageHead({kick: '정산 · 10주씩 산 셈 · 가짜 돈', h1: '서른여섯 꾀 정산', seal: '셈', sealDn: TT.st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
       say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 곳을 10주씩 산 셈이에요. 가짜 돈이고, 줄어든 꾀도 숨기지 않아요.',
       more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': TT.st}, h('dt', {text: '산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.n ? won(TT.val) : SAID.none})),
         h('p', {class: 'sj-res sj-res-big', 'data-st': TT.st}, shapeI(TT.st), h('b', {text: resText(TT)})),
@@ -240,6 +241,7 @@ export async function vSettle36(X) {
       head('셈', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '꾀마다 정산'}), h('span', {class: 'sj-h2n', text: ' ' + K.length + '가지'}))),
       h('p', {class: 'sj-rule', text: rated ? '산 돈에 견줘 많이 늘어난 꾀가 맨 위예요. 날마다 다시 줄 세워요. 줄어든 꾀도 숨기지 않아요.' : '아직 하루치라서 꾀 차례로 놓았어요. 하루가 더 지나면 많이 늘어난 꾀가 맨 위로 가요.'}),
       h('p', {class: 'sj-loss', 'data-say': '', text: dn.length ? '줄어든 꾀 ' + dn.length + '가지 · 가장 많이 줄어든 꾀는 ' + nameOf(dn[0].key) + '(' + won(-dn[0].diff) + ' 줄었어요)' : '줄어든 꾀는 아직 없어요.'}),
+      meanCap(PM.bars), // 붓 막대 그림 뜻 — 줄 맨 위 한 번(주문 1116-1313)
       h('ol', {class: 'sj-stl'}, ...K.map((x, i) => h('li', {class: 'sj-str', 'data-k': x.key, 'data-st': x.st},
         h('a', {class: 'sj-sta', href: '#/k/' + x.key, 'aria-label': (i + 1) + '번째 · ' + nameOf(x.key) + ' · ' + resText(x)},
           h('span', {class: 'sj-stn', text: String(i + 1)}), h('b', {class: 'sj-stk', text: nameOf(x.key)}), h('i', {'aria-hidden': 'true', text: '›'})),

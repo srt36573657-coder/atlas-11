@@ -273,7 +273,7 @@ test('무하 그림 부품 — 부품 꼴(load · picture · CSS) · 꾸밈 파�
 // (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(옛 회사 · 「왜?」 · 기록창 한국 시장 · 무하 부품 쪽)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)
 test('새 판 화면(새로 씀) — 다음 단추 네 번 다섯 화면(주문 1115-2328) · 탭 다섯 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
   const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8');
-  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-wrap.js') + src('su-sonja.js') + src('su-sonja-top.js') + src('su-sonja-kkoe.js') + src('su-sonja-ink.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-wrap.js') + src('su-sonja.js') + src('su-sonja-top.js') + src('su-sonja-kkoe.js') + src('su-sonja-ink.js') + src('su-sonja-mean.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
   const arr = (s, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(s); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
   const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
   assert.equal(qs.length, 11);
@@ -724,4 +724,36 @@ test('먹그림 색 판 — 빨강 0 · 연분홍 꽃 · 밤색 도장 · 종이
   const enc = x => x.replace(/"/g, "'").replace(/\n/g, '').replace(/%/g, '%25').replace(/#/g, '%23').replace(/</g, '%3C').replace(/>/g, '%3E');
   assert.ok(html.includes('<img class="sj-art" src="data:image/svg+xml,' + enc(hero) + '"'), '표지 그림 = 첫 쪽 글 속 데이터 주소(su-sonja-hero.svg 를 고치면 index.html 도 같이)');
   for (const k of ['g01', 'g18', 'g36']) assert.ok(new RegExp('^ {2}' + k + ': \\(\\) => ', 'm').test(ink), '꾀 장면 ' + k);
+});
+
+/** 주문 1116-1313(사장님 2026-11-16(마카오) 12:12 「정말 쉽게 뜻을 풀어줘 / 아이큐 85고 이해할수 있게」 · 12:13 「어」 — 그림마다 맨 위에 「이 그림 뜻」을 쉬운 한 줄로 크게)
+    글은 site/su/su-sonja-mean.js 한 곳(가져오는 파일 0) · 만드는 곳 su-sonja-top.js meanCap · 그림을 그리는 자리마다 바로 앞에 그림 뜻 · 첫 칠함 판(index.html) 표지도 같은 글 */
+test('그림 뜻 한 줄 — 그림마다 맨 위 · 꾀 서른여섯 · 쉬운 말 · 크게(주문 1116-1313)', async () => {
+  const M = await import('../../site/su/su-sonja-mean.js'), D = await import('../../site/su/su-sonja-36.js'), W = await import('../../site/su/su-word.js');
+  const {screenHits, ruinHits} = await import('../../site/next/words.js');
+  assert.deepEqual(Object.keys(M.PIC), [...D.K36], '꾀 그림 서른여섯마다 그림 뜻');
+  const all = [...Object.values(M.PIC), ...Object.values(M.PM)];
+  for (const t of all) {
+    assert.ok(t && !t.includes('%') && !/[A-Za-z]/.test(t) && !/[㐀-鿿]/.test(t), '「%」 · 영어 · 한자 0 — ' + t);
+    assert.deepEqual([...screenHits(t), ...ruinHits(t)], [], '쓰지 않을 말 0 — ' + t);
+    assert.deepEqual(W.HARD.filter(w => W.has(t, w)), [], '어려운 낱말 0 — ' + t);
+    for (const sn of t.split(/(?<=[.?!])\s+/)) assert.ok(sn.replace(/\s/g, '').length <= 35, '한 문장 35자 안(띄어쓰기 빼고) — ' + sn);
+    assert.ok(/요\.$/.test(t), '「…요.」로 끝남 — ' + t);
+  }
+  for (const k of D.K36) assert.ok(/ 회사를 골라요\.$/.test(M.PIC[k]) && /(듯|처럼|끈),/.test(M.PIC[k]), k + ' — 그림 속 이야기처럼, 이런 회사를 골라요');
+  assert.equal(M.whyMean('ik-why ik-anim', '0'), M.PM.why); assert.equal(M.whyMean('ik-why', ''), M.PM.whyDone); assert.equal(M.whyMean('ik-journal', '', '3'), M.PM.journal);
+  assert.equal(M.whyMean('ik-journal', '', '0'), M.PM.journal0); assert.equal(M.whyMean('ik-tally'), M.PM.tally); assert.equal(M.whyMean('ik-groups'), M.PM.groups); assert.equal(M.whyMean('ik-arrows'), null);
+  // 그림을 그리는 자리마다 바로 앞에 그림 뜻(꾀 그림 · 형세 · 화살 · 손무 · 쪽 머리 그림 · 산세 · 붓 막대 · 「왜 사?」 그림)
+  const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8'), sj = src('su-sonja.js'), kk = src('su-sonja-kkoe.js'), wy = src('su-sonja-why.js'), top = src('su-sonja-top.js');
+  const calls = (s, re) => [...s.matchAll(re)].length;
+  assert.equal(calls(sj + kk, /kkoeTile\(k,/g), calls(sj + kk, /meanCap\(PIC\[k\]\), kkoeTile\(k,/g), '꾀 그림 단추마다 바로 앞에 그림 뜻');
+  assert.ok(/meanCap\(PIC\[k\], 'figcaption'\), kkoePic\(k, \{w: 390/.test(kk), '꾀 쪽 큰 그림 맨 위');
+  assert.ok(/meanCap\(PM\.land, 'figcaption'\), landPic\(/.test(sj) && /meanCap\(PM\.arrows, 'figcaption'\), arrowsPic\(k\)/.test(sj), '형세 그림 · 화살 열 맨 위');
+  assert.equal(calls(sj + kk + wy, /sonmuPic\(\{w: 84/g), calls(sj + kk + wy, /meanCap\(PM\.sonmu\), h\('span', \{class: 'sj-saysp'/g), '손무 말 상자마다 그림 뜻');
+  for (const w of ['book', 'castle', 'ledger']) assert.ok(new RegExp("meanCap\\(PM\\." + w + ", 'figcaption'\\), heroPic\\('" + w + "'\\)").test(kk), '쪽 머리 그림 ' + w);
+  assert.ok(/line \? meanCap\(PM\.ridge\) : null, line,/.test(kk) && /meanCap\(PM\.bars\),[^\n]*\n\s*h\('ol', \{class: 'sj-stl'\}/.test(kk), '회사 산세 · 정산 붓 막대 바로 위');
+  assert.ok(/capOf\(m\.ink\), m\.ink/.test(wy) && /capOf\(f\), f\)/.test(wy), '「왜 사?」 · 매매일지 그림 맨 위');
+  assert.ok(/meanCap\(PM\.cover\)/.test(top) && src('index.html').includes('<section class="sj-cover" aria-label="손자병법 표지"><p class="sj-pm"><span class="sj-pmt">' + M.MEAN_TAG + '</span><b class="sj-pmb">' + M.PM.cover + '</b></p><div class="sj-artw">'), '표지 그림 뜻 = 첫 칠함 판 글 그대로');
+  const css = src('su-sonja.css'), fz = sel => { const m = new RegExp(sel.replace(/[.]/g, '\\.') + ' \\{[^}]*font-size: ([\\d.]+)rem').exec(css); return m ? +m[1] * 16 : 0; };
+  assert.ok(fz('#su .sj-page .sj-pmb') >= 22 && fz('#su .sj-page .sj-pmt') >= 17, '그림 뜻 글 크게(22px 넘게) · 이름표 17px 넘게');
 });

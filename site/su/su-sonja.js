@@ -12,7 +12,8 @@ import {NEED, ymd} from '/su/su-six.js';
 import {NAME, josa} from '/next/brand.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
-import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav} from '/su/su-sonja-top.js';
+import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
+import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {landPic, kkoePic, arrowsPic, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
 
 export const CSS = '/su/su-sonja.css';
@@ -78,9 +79,9 @@ function sunSec(T) {
     h('div', {class: 'sj-today'},
       h('h1', {class: 'sj-h1'}, h('span', {class: 'sj-h1a', text: '지금은 '}), h('b', {class: 'sj-land', text: x.name}), h('span', {class: 'sj-h1c', text: '이에요.'})),
       h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), 'aria-hidden': 'true', text: x.name})),
-    h('figure', {class: 'sj-ink sj-landfig'}, landPic({land: x.land, name: x.name, up: up10, path: P, sameName: x.name, title: false})), // 손무가 언덕에서 오늘 땅을 내려다봄 · 깃발 열 · 디딤돌 스물
+    h('figure', {class: 'sj-ink sj-landfig'}, meanCap(PM.land, 'figcaption'), landPic({land: x.land, name: x.name, up: up10, path: P, sameName: x.name, title: false})), // 손무가 언덕에서 오늘 땅을 내려다봄 · 깃발 열 · 디딤돌 스물
     h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + x.quote + '」'}), h('cite', {text: '손자병법 ' + (x.pian ?? '')})),
-    h('div', {class: 'sj-says'}, h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), // 손무가 들려주는 한 줄
+    h('div', {class: 'sj-says'}, meanCap(PM.sonmu), h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), // 손무가 들려주는 한 줄
       h('p', {class: 'sj-do', 'data-say': '', text: (x.do ?? '') + ' 그래서 서른여섯 꾀를 덜 잃은 차례로 놓았어요.'})),
     h('details', {class: 'sj-drawer sj-nums'}, h('summary', {}, h('span', {class: 'sj-s1', text: '그림 속 숫자 자세히'}), chev()),
       h('ul', {class: 'sj-m'},
@@ -107,7 +108,7 @@ export function rec36(r, more = false) {
   if (!r) return [];
   if (!r.n) return [h('p', {class: 'sj-tl sj-tnorec', text: '지난 기록을 세지 못했어요. 그날 사고판 양 자료가 있어야 세요.'})];
   const k = r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0;
-  return [h('figure', {class: 'sj-ink sj-arw'}, arrowsPic(k)), // 화살 열 가운데 꺾인 화살 = 잃은 몫(옛 점 열 칸 대신)
+  return [h('figure', {class: 'sj-ink sj-arw'}, meanCap(PM.arrows, 'figcaption'), arrowsPic(k)), // 화살 열 가운데 꺾인 화살 = 잃은 몫(옛 점 열 칸 대신) · 맨 위 그림 뜻(주문 1116-1313)
     h('p', {class: 'sj-tl'}, h('b', {text: lose10(r)}), h('span', {text: ' ' + r.n + '번 가운데 ' + r.lose + '번'})),
     more ? h('details', {class: 'sj-drawer sj-recmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '잃은 주 · 모든 주 자세히'}), chev()),
       r.lose ? h('p', {class: 'sj-tl2', text: '잃은 주는 평균 100원이 ' + w100(r.avgLoss) + '이 됐어요. 가장 크게 잃은 주는 ' + w100(r.worst) + '이었어요.'}) : null,
@@ -128,7 +129,7 @@ function trickSec(g, T) {
   const order = S ? S.rank.map(r => r.k) : g.kinds, RB = S ? Object.fromEntries(S.rank.map((r, i) => [r.k, {...r, i: i + 1}])) : {};
   const one36 = k => { const L = (g.lists[k] ?? []).slice(0, 7), r = RB[k];
     return h('li', {class: 'sj-tk', 'data-k': k, 'data-n': String(L.length), 'data-rank': r ? String(r.i) : null},
-      kkoeTile(k, g.name?.[k] ?? k),
+      meanCap(PIC[k]), kkoeTile(k, g.name?.[k] ?? k), // 그림 뜻 한 줄 → 꾀 그림(주문 1116-1313)
       h('a', {class: 'sj-tkh', href: '#/k/' + k, 'aria-label': (r ? '차례 ' + r.i + ' · ' : '') + (g.name?.[k] ?? k) + ' · 이 꾀 자세히'}, r ? h('span', {class: 'sj-rk', text: String(r.i)}) : null,
         h('p', {class: 'sj-tn'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})), h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})), // 꾀 이름을 누르면 그 꾀 쪽(주문 1115-2328)
       ...rec36(r),

@@ -7,8 +7,11 @@
    보안 규칙: innerHTML 없음 · 글 속 style 없음 · 다른 주소 스크립트 없음 */
 import {h} from '/su/su-fig.js';
 import {NAME, josa} from '/next/brand.js';
+import {MEAN_TAG, PM} from '/su/su-sonja-mean.js';
 
 export const ART = '/su/su-sonja-hero.svg';
+/** 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위 · 작은 이름표 「그림 뜻」 + 큰 쉬운 글) · 그림 안 맨 위면 tag = 'figcaption' */
+export const meanCap = (t, tag = 'p') => (t ? h(tag, {class: 'sj-pm'}, h('span', {class: 'sj-pmt', text: MEAN_TAG}), h('b', {class: 'sj-pmb', text: t})) : null);
 /** 표지 화제(세로 글 두 줄 · 오른쪽 줄부터) — 주문 1115-1843 「병법으로 … 손실을 보지 않을 방법을 병법으로 풀어 내는 곳」 · 옛 「불장 · 꽃이 될 · 돈이 몰리는 곳을 찾아요」는 지움 */
 export const HWA = [['형세를', '읽고'], ['덜', '잃는'], ['꾀를', '찾아요']]; // 세로 세 줄(오른쪽부터) · 낱말 사이 = 좁은 틈(i — 띄어쓰기 글자는 남김)
 export const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
@@ -46,6 +49,7 @@ export function stepTag(n, dd = null) {
 /** 표지 — 큰 붓 글씨 그림 한 장 · 걸음 「기 · 1 / 5 · 오늘」 */
 export function cover(dd = null) {
   return h('section', {class: 'sj-cover', 'aria-label': NAME + ' 표지'},
+    meanCap(PM.cover), // 그림 뜻(주문 1116-1313 · index.html 첫 칠함 판도 같은 글)
     h('div', {class: 'sj-artw'},
       h('img', {class: 'sj-art', src: ART, width: '390', height: '470', alt: '붓 글씨 「' + NAME + '」 · 먼 산과 붓 한 획', decoding: 'async', fetchpriority: 'high'}),
       h('p', {class: 'sj-hwa'}, ...HWA.map(([w1, w2]) => h('span', {}, w1, h('i', {text: ' '}), w2)))),
