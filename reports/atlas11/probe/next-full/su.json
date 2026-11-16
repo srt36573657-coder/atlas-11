@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-16T13:41:44.003Z",
+ "at": "2026-11-16T14:54:37.806Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 491,
@@ -107,9 +107,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 556,
+   "lcp": 524,
    "cls": 0,
-   "pic": 559
+   "pic": 519
   },
   "white": {
    "light #/": {
@@ -386,7 +386,7 @@
     "tc": [
      "#F1E3D3"
     ],
-    "darkMax": 0.014,
+    "darkMax": 0.013,
     "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
