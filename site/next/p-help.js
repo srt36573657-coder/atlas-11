@@ -234,7 +234,22 @@ export function render(arg) {
     root.replaceChildren(title, ans, vt, note, h('div', {class: 'hp-doors'}, ...doors));
   };
   paint();
-  /* #/help/say · ask · guide 로 바로 열면 그 문(이름 · 쓰는 칸 · 보내기)을 화면 맨 위에(총정리 D2) — app.js 가 그린 뒤 맨 위로 올리므로 두 틀 뒤에 */
-  if (want) requestAnimationFrame(() => requestAnimationFrame(() => { const d = root.querySelector('#hp-' + want)?.previousElementSibling; if (d?.isConnected) d.scrollIntoView({block: 'start'}); }));
+  /* #/help/say · ask · guide 로 바로 열면 그 문(이름 · 쓰는 칸 · 보내기)을 화면 맨 위에(총정리 D2) — app.js 가 그린 뒤 맨 위로 올리므로 두 틀 뒤에
+     · 문 아래 칸(많이 묻는 것 · 내 글)은 서버에서 늦게 와서, 그 전에는 쪽이 짧아 내려갈 수 없음 → 쪽 길이가 바뀔 때마다 다시 올림(주문 1116-2020 · 진짜 사이트 검사에서 가끔 {"top":463,"y":0}) */
+  if (want) pinTop(root, () => root.querySelector('#hp-' + want)?.previousElementSibling);
   return {title: '고객센터', nodes: [root]};
+}
+
+/** 바로 연 문을 화면 맨 위에 붙듦 — 두 틀 뒤 · 쪽 길이가 바뀔 때(늦게 오는 칸) · 0.3 · 0.8 · 1.5초에 다시 올림
+    · 손님이 먼저 손대면(밀기 · 누르기 · 자판) 바로 멈춤 · 3초 뒤 멈춤(그 뒤로는 손님이 움직인 자리 그대로) */
+export function pinTop(root, target, ms = 3000) {
+  let stop = false, ro = null;
+  const evs = ['wheel', 'touchstart', 'keydown', 'mousedown'];
+  const end = () => { if (stop) return; stop = true; ro?.disconnect(); for (const e of evs) globalThis.removeEventListener?.(e, end, true); };
+  const go = () => { if (stop) return; const d = target(); if (!d?.isConnected) return; const t = d.getBoundingClientRect().top; if (t < 0 || t > 120) d.scrollIntoView({block: 'start'}); };
+  for (const e of evs) globalThis.addEventListener?.(e, end, {capture: true, passive: true});
+  if (typeof ResizeObserver === 'function') { ro = new ResizeObserver(() => requestAnimationFrame(go)); ro.observe(root); }
+  requestAnimationFrame(() => requestAnimationFrame(go));
+  for (const t of [300, 800, 1500]) setTimeout(go, t);
+  setTimeout(end, ms);
 }
