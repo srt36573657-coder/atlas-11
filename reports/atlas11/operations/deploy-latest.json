@@ -1,19 +1,19 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-11-16T17:10:25.347Z",
-  "state": "failed",
+  "at": "2026-11-16T17:18:47.588Z",
+  "state": "ready",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
-  "url": null,
-  "deployUrl": null,
-  "deployId": null,
+  "url": "https://aaa7377.com",
+  "deployUrl": "https://6afb3b23403b8b0cd5f09b75--mulgil.netlify.app",
+  "deployId": "6afb3b23403b8b0cd5f09b75",
   "noindex": false,
-  "files": 3731,
-  "exitCode": 1,
-  "error": "npm error code ETARGET\nnpm error notarget No matching version found for @typescript-eslint/types@8.73.0.\nnpm error notarget In most cases you or one of your dependencies are requesting\nnpm error notarget a package version that doesn't exist.\nnpm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-11-16T17_10_49_421Z-debug-0.log\n",
+  "files": 3732,
+  "exitCode": 0,
+  "error": null,
   "functions": {
-    "state": "failed",
+    "state": "deployed",
     "names": [
       "auto",
       "gift",
@@ -73,6 +73,6 @@
       "urlpattern-polyfill",
       "when-exit"
     ],
-    "error": "npm error code ETARGET\nnpm error notarget No matching version found for @typescript-eslint/types@8.73.0.\nnpm error notarget In most cases you or one of your dependencies are requesting\nnpm error notarget a package version that doesn't exist.\nnpm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-11-16T17_10_27_566Z-debug-0.log\n"
+    "error": null
   }
 }
