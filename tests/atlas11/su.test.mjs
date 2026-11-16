@@ -674,7 +674,7 @@ test('세 거름 · 큰 갈래 차례 — 흉내 내 보기 · 소거 · 꾀 뜻
 
 /** 주문 1116-2310 → 1117-0102(사장님 2026-11-16(마카오) 22:10 「… 한편에 영화처럼 중국 영화처럼 말이다 11처짜리 말이다」 · 2026-11-17 00:02 「36초짜리로 만들고 이야기를 풍성하개 스토리를 만들아 감정을 담아 영상을 지금보다 10배는 더 풍성하개 해」)
     그림마다 36초짜리 한 편 — 네 막(고요 · 긴장 · 반전 · 여운) · 한 번 놀고 멈춤 · 끝 모습 = 멈춘 그림 · 묶음 여섯마다 날씨 · 움직임 줄인 휴대폰 = 멈춘 그림 · 빨강 0 */
-test('영화 한 편 36초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손무 · 표지 덧칠이 36초 안에 한 번 · 묶음 여섯 날씨 · 움직임 줄이면 멈춘 그림(주문 1116-2310 → 1117-0102)', () => {
+test('영화 한 편 22초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손무 · 표지 덧칠이 22초 안에 한 번 · 묶음 여섯 날씨 · 움직임 줄이면 멈춘 그림(주문 1116-2310 → 1117-0102)', () => {
   const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   const ink = rd('site/su/su-sonja-ink.js'), css = rd('site/su/su-sonja.css'), sj = rd('site/su/su-sonja.js'), kk = rd('site/su/su-sonja-kkoe.js');
   // 그림 코드 — 카메라 묶음 · 막마다 색 셋 · 날씨 두 겹 · 터짐 · 번쩍 · 짙은 가장자리 · (꾀 쪽 큰 그림 · 쪽 머리) 빛 기둥 · 바람 줄기 · 끝 도장 · 물결
@@ -690,21 +690,21 @@ test('영화 한 편 36초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손
   // 꾸밈 — 영화 그림의 움직임은 모두 36.5초 안에 끝(지연 + 길이) · 한 번
   const film = css.split('\n').filter(l => /^#su svg\.(ik-film|ik-hero\.ik-film|ik-land\.ik-film|sj-artfx)/.test(l));
   assert.ok(film.length >= 120, '영화 칸 ' + film.length);
-  const sec = v => parseFloat(v), LIM = 36.5;
+  const sec = v => parseFloat(v), LIM = 22.5; // 주문 1117-0250 「그리고 22초로 만들어라」
   const mdur = Math.max(...film.map(l => /^#su svg\.ik-film\.ik-play \.ik-\w+ \{ animation-duration: ([\d.]+)s; \}$/.exec(l)).filter(Boolean).map(m => sec(m[1])));
   assert.ok(mdur >= 1 && mdur <= 4.8, '그림 속 움직임 길이(보통 그림의 두 배 · 4.8초 안) ' + mdur);
   let nAnim = 0;
   for (const l of film) {
-    const m = /animation: ([\w-]+) ([\d.]+)s [^;]*?([\d.]+)s 1 both/.exec(l); if (m) { nAnim++; assert.ok(sec(m[2]) + sec(m[3]) <= LIM, '36.5초 안 — ' + l.slice(0, 90)); }
+    const m = /animation: ([\w-]+) ([\d.]+)s [^;]*?([\d.]+)s 1 both/.exec(l); if (m) { nAnim++; assert.ok(sec(m[2]) + sec(m[3]) <= LIM, '22.5초 안 — ' + l.slice(0, 90)); }
     const d = /animation-delay: ([\d.]+)s;(?: animation-duration: ([\d.]+)s;)?/.exec(l);
-    if (d && d[2]) assert.ok(sec(d[1]) + sec(d[2]) <= LIM, '36.5초 안 — ' + l.slice(0, 90));
-    if (d && !d[2] && /\.ik-s\d/.test(l)) assert.ok(sec(d[1]) + mdur <= LIM && sec(d[1]) <= 20.6, '막 끝 36.5초 안 · 마지막 막은 반전(20.6초)까지 — ' + l.slice(0, 90));
+    if (d && d[2]) assert.ok(sec(d[1]) + sec(d[2]) <= LIM, '22.5초 안 — ' + l.slice(0, 90));
+    if (d && !d[2] && /\.ik-s\d/.test(l)) assert.ok(sec(d[1]) + mdur <= LIM && sec(d[1]) <= 12.6, '막 끝 22.5초 안 · 마지막 막은 반전(12.6초)까지 — ' + l.slice(0, 90));
     assert.ok(!/infinite/.test(l), '한 번만 — ' + l.slice(0, 80));
   }
   assert.ok(nAnim >= 15, '한 번 노는 움직임 ' + nAnim);
-  for (const n of ['ik-cam', 'ik-bar', 'ik-gw', 'ik-gc', 'ik-gg', 'ik-vig2']) assert.ok(new RegExp('animation: ' + n + ' 36s ').test(css), n + ' — 36초 한 편');
-  for (const n of [6, 5, 4]) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-n' + n + '\\.ik-play \\.ik-s' + n + ' \\{ animation-delay: 20\\.6s; \\}').test(css), 'ik-n' + n + ' 마지막 막 = 반전 20.6초');
-  assert.ok(/#su svg\.ik-film\.ik-play \.ik-s7 \{ animation-delay: 20\.6s; \}/.test(css), '일곱 막 마지막 = 반전 20.6초');
+  for (const n of ['ik-cam', 'ik-bar', 'ik-gw', 'ik-gc', 'ik-gg', 'ik-vig2']) assert.ok(new RegExp('animation: ' + n + ' 22s ').test(css), n + ' — 22초 한 편');
+  for (const n of [6, 5, 4]) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-n' + n + '\\.ik-play \\.ik-s' + n + ' \\{ animation-delay: 12\\.59s; \\}').test(css), 'ik-n' + n + ' 마지막 막 = 반전 12.6초');
+  assert.ok(/#su svg\.ik-film\.ik-play \.ik-s7 \{ animation-delay: 12\.59s; \}/.test(css), '일곱 막 마지막 = 반전 12.6초');
   // 처음부터 안 보이는 덧칠(움직임 줄인 휴대폰 = 멈춘 그림)
   const hid = /^#su svg\.ik-film \.ik-fx \.ik-p, (.*) \{ opacity: 0; \}$/m.exec(css)?.[1] ?? '';
   for (const c of ['ik-sweep', 'ik-ring', 'ik-swash', 'ik-gc', 'ik-gg', 'ik-flash', 'ik-vig2', 'ik-ray', 'ik-q', 'ik-gu']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
@@ -723,7 +723,7 @@ test('영화 한 편 36초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손
 });
 
 /** 주문 1117-0102 — 꾀 쪽 큰 그림 바로 아래 「그림 속 이야기」 네 막(고요 · 긴장 · 반전 · 여운) · 막마다 한 줄 · 감정 · 쉬운 말 · 그림이 그 막에 오면 그 줄이 밝아짐 */
-test('그림 속 이야기 네 막 — 꾀 서른여섯마다 네 줄 · 쉬운 말 · 감정 · 넷째 줄 = 이렇게 찾은 회사 · 36초에 맞춰 밝아짐(주문 1117-0102)', async () => {
+test('그림 속 이야기 네 막 — 꾀 서른여섯마다 네 줄 · 쉬운 말 · 감정 · 넷째 줄 = 이렇게 찾은 회사 · 22초에 맞춰 밝아짐(주문 1117-0102 · 1117-0250)', async () => {
   const S = await import('../../site/su/su-sonja-story.js'), D = await import('../../site/su/su-sonja-36.js'), W = await import('../../site/su/su-word.js');
   const {screenHits, ruinHits} = await import('../../site/next/words.js');
   assert.deepEqual(Object.keys(S.STORY36), [...D.K36], '꾀 서른여섯마다 이야기');
@@ -748,8 +748,8 @@ test('그림 속 이야기 네 막 — 꾀 서른여섯마다 네 줄 · 쉬운 
   const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8'), kk = rd('site/su/su-sonja-kkoe.js'), css = rd('site/su/su-sonja.css'), ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.ok(/import \{STORY36, ACTS, STORY_TAG\} from '\/su\/su-sonja-story\.js';/.test(kk) && /h\('ol', \{class: 'sj-story', 'aria-label': STORY_TAG\}/.test(kk), '꾀 쪽 — ol.sj-story');
   for (let i = 1; i <= 4; i++) assert.ok(new RegExp('@keyframes sj-act' + i + ' \\{[^\\n]*100% \\{ opacity: 1;[^\\n]*\\} \\}').test(css), 'sj-act' + i + ' 끝 = 그대로');
-  assert.ok(/animation: sj-act1 36s linear 0s 1 both;/.test(css) && /@media \(prefers-reduced-motion: reduce\) \{ #su ol\.sj-story > li \{ animation: none !important; \} \}/.test(css), '36초 한 번 · 움직임 줄이면 그대로');
+  assert.ok(/animation: sj-act1 22s linear 0s 1 both;/.test(css) && /@media \(prefers-reduced-motion: reduce\) \{ #su ol\.sj-story > li \{ animation: none !important; \} \}/.test(css), '36초 한 번 · 움직임 줄이면 그대로');
   const fs17 = [...css.matchAll(/#su \.sj-kfig \.sj-act[tb] \{[^}]*font-size: ([\d.]+)rem/g)];
   assert.equal(fs17.length, 2); for (const m of fs17) assert.ok(+m[1] * 16 >= 17, '글씨 17px 넘게 — ' + m[0].slice(0, 60));
-  assert.ok(/story: \(STORYC\.STORY36\[k\] \?\? \[\]\)\.map\(\(t, i\) => \[STORYC\.ACTS\[i\], t\]\)/.test(ck) && /\? 36500 : 7000/.test(ck), 'check_su — 이야기 네 줄 = 글 그대로 · 영화 36.5초 안');
+  assert.ok(/story: \(STORYC\.STORY36\[k\] \?\? \[\]\)\.map\(\(t, i\) => \[STORYC\.ACTS\[i\], t\]\)/.test(ck) && /\? 22500 : 7000/.test(ck), 'check_su — 이야기 네 줄 = 글 그대로 · 영화 22.5초 안');
 });

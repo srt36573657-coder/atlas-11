@@ -960,7 +960,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   }
   // ㉖ 주문 1116-0209(사장님 2026-11-16(마카오) 01:09 「에이전트 100개 동원해서 지금 그린그림들이 상황애 맞게 3단애서 7간으로 자연스럽게 움직이게 …」 · 01:12 「응」) — 먹그림 움직임
   //   가) 쪽마다 그림 = svg.ik-anim · 그림마다 감싼 묶음(g.ik-m) · 감싼 묶음에 transform 속성 0(제자리 변환을 덮지 않음) · 단계 표 1 ~ 7(또는 차례 표)
-  //   나) 화면 밖 그림은 처음에 ik-play 0 → 끝까지 내려 보면 모두 ik-play · 움직임은 모두 한 번 · 7초 안에 끝남(멈춘 그림으로 돌아옴) — 영화 한 편 그림(svg.ik-film · 주문 1116-2310 → 1117-0102 「36초짜리로 만들고」)은 36.5초 안
+  //   나) 화면 밖 그림은 처음에 ik-play 0 → 끝까지 내려 보면 모두 ik-play · 움직임은 모두 한 번 · 7초 안에 끝남(멈춘 그림으로 돌아옴) — 영화 한 편 그림(svg.ik-film · 주문 1116-2310 → 1117-0102 → 1117-0250 「그리고 22초로 만들어라」)은 22.5초 안
   //   다) 움직임을 줄여 둔 휴대폰(reducedMotion: reduce) — 끝까지 내려 봐도 그림 움직임 0
   for (const rm of ['no-preference', 'reduce']) {
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: rm});
@@ -979,10 +979,10 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       const b = await p.evaluate(() => { const an = document.getAnimations().filter(x => x.effect?.target?.closest?.('svg.ik-anim'));
         const shown = [...document.querySelectorAll('#su main svg.ik-anim')].filter(s => !s.closest('details:not([open])'));
         return {all: shown.length, play: shown.filter(s => s.classList.contains('ik-play')).length, an: an.length,
-          long: an.filter(x => { const t = x.effect?.getComputedTiming?.(); return !t || !Number.isFinite(t.endTime) || t.endTime > (x.effect?.target?.closest?.('svg.ik-film') ? 36500 : 7000) || t.iterations !== 1; }).length}; }); // 영화 한 편 그림(svg.ik-film · 주문 1117-0102 「36초짜리로 만들고」)은 36.5초 안 · 다른 그림은 7초 안
+          long: an.filter(x => { const t = x.effect?.getComputedTiming?.(); return !t || !Number.isFinite(t.endTime) || t.endTime > (x.effect?.target?.closest?.('svg.ik-film') ? 22500 : 7000) || t.iterations !== 1; }).length}; }); // 영화 한 편 그림(svg.ik-film · 주문 1117-0250 「그리고 22초로 만들어라」)은 22.5초 안 · 다른 그림은 7초 안
       const wantN = hh !== '#/' || okSunD || same;
       check(rm === 'reduce' ? b.an === 0 && b.play === 0 : (!wantN || a.n > 0) && a.noM === 0 && a.tr === 0 && a.st === 0 && a.belowPlay === 0 && b.play === b.all && (a.n === 0 || b.an > 0) && b.long === 0, // 그림이 없는 날(형세 · 꾀 칸 자료가 없는 첫 쪽)은 움직임도 0
-        W + hh + (rm === 'reduce' ? ' — 끝까지 내려 봐도 그림 움직임 0(멈춘 그림)' : ' — 그림마다 감싼 묶음 · 제자리 변환 0 · 단계 1 ~ 7 · 화면 밖은 기다림 → 내려 보면 한 번 놂 · 7초(영화 그림 36.5초) 안에 끝'), JSON.stringify({...a, ...b}));
+        W + hh + (rm === 'reduce' ? ' — 끝까지 내려 봐도 그림 움직임 0(멈춘 그림)' : ' — 그림마다 감싼 묶음 · 제자리 변환 0 · 단계 1 ~ 7 · 화면 밖은 기다림 → 내려 보면 한 번 놂 · 7초(영화 그림 22.5초) 안에 끝'), JSON.stringify({...a, ...b}));
     }
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();

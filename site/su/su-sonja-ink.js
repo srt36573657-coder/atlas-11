@@ -172,11 +172,11 @@ export function watch(svg) {
 }
 /* ── 영화 한 편(주문 1116-2310 → 1117-0102 · 사장님 2026-11-16(마카오) 22:10 「그림을 더 화려하게 혁신적으로 더 풍성하게 더 많이 움직이게 하라 한편에 영화처럼 중국 영화처럼 말이다 11처짜리 말이다」
    · 2026-11-17 00:02 「36초짜리로 만들고 이야기를 풍성하개 스토리를 만들아 감정을 담아 영상을 지금보다 10배는 더 풍성하개 해」)
-   그림 하나 = 36초짜리 한 편(한 번 놀고 멈춤 · 끝 모습 = 처음 칠한 그림) — 네 막 · 마음 따라 색 · 날씨 · 빛 · 카메라가 바뀜(꾸밈 파일 su-sonja.css 의 ik-film 칸)
-   1막 고요(0 ~ 9초) 검은 띠가 열리고 여는 붓 한 획 · 그 묶음 색 · 옅은 날씨 · 카메라가 물러나며 장면을 보여 줌
-   2막 긴장(9 ~ 20초) 차가운 쪽빛 · 가장자리가 어두워지고 검은 띠가 두꺼워짐 · 바람 줄기 넷 · 날씨가 거세짐 · 카메라가 다가가며 두 번 흔들림
-   3막 반전(20 ~ 30초) 번쩍 · 금빛 · 빛 기둥 셋 · 금빛 반짝임이 사방으로 터짐 · 빛 한 줄기 · 카메라가 한 발 물러남
-   끝 여운(30 ~ 36초) 날씨가 잦아들고 · 번호 도장이 꽝(32초) · 물결 · 멈춘 그림
+   그림 하나 = 22초짜리 한 편(주문 1117-0250 「그리고 22초로 만들어라」 · 한 번 놀고 멈춤 · 끝 모습 = 처음 칠한 그림) — 네 막 · 마음 따라 색 · 날씨 · 빛 · 카메라가 바뀜(꾸밈 파일 su-sonja.css 의 ik-film 칸)
+   1막 고요(0 ~ 5.5초) 검은 띠가 열리고 여는 붓 한 획 · 그 묶음 색 · 옅은 날씨 · 카메라가 물러나며 장면을 보여 줌
+   2막 긴장(5.5 ~ 12.2초) 차가운 쪽빛 · 가장자리가 어두워지고 검은 띠가 두꺼워짐 · 바람 줄기 넷 · 날씨가 거세짐 · 카메라가 다가가며 두 번 흔들림
+   3막 반전(12.2 ~ 18.3초) 번쩍 · 금빛 · 빛 기둥 셋 · 금빛 반짝임이 사방으로 터짐 · 빛 한 줄기 · 카메라가 한 발 물러남
+   끝 여운(18.3 ~ 22초) 날씨가 잦아들고 · 번호 도장이 꽝(19.6초) · 물결 · 멈춘 그림
    이야기 글(막마다 한 줄 · 감정)은 꾀 쪽 그림 아래(su-sonja-story.js) · 그림 속 글 0 · 빨강 0 · 흐림 거르개 0 · 그러데이션 0 · 글 속 style 0
    묶음 여섯마다 날씨(옛 중국 영화처럼 장마다 색이 다름): 이김 금빛 반짝임 · 맞섬 잎 · 공격 불티 · 혼란 비 · 연합 꽃비 · 패배 눈 / 땅 그림은 그 땅 날씨
    첫 쪽 꾀 칸(작은 그림 서른여섯) · 땅 · 손무 · 표지는 가벼운 판(빛 기둥 · 바람 줄기 없음 · 터짐 여섯 · 날씨 수 줄임) — 느린 휴대폰 */
@@ -298,7 +298,7 @@ export function filmLayers(fx, W, H, seed = 1, {bars = true, sweep = true, grade
     bars ? s('rect', {class: 'ik-bar ik-bar-t', x: 0, y: 0, width: W, height: r1(H * 0.034), fill: INK, 'fill-opacity': 0.88}) : null,
     bars ? s('rect', {class: 'ik-bar ik-bar-b', x: 0, y: r1(H - H * 0.034), width: W, height: r1(H * 0.034), fill: INK, 'fill-opacity': 0.88}) : null].filter(Boolean);
 }
-/** 그림 속 마지막 막(1 ~ 7) — 36초 표: 마지막 막이 반전(20.6초)에 오도록 ik-n4 ~ ik-n6(일곱 막 · 막 없는 그림은 바탕 표 · 꾸밈 파일 ik-film 칸) */
+/** 그림 속 마지막 막(1 ~ 7) — 22초 표: 마지막 막이 반전(12.6초)에 오도록 ik-n4 ~ ik-n6(일곱 막 · 막 없는 그림은 바탕 표 · 꾸밈 파일 ik-film 칸) */
 const lastStage = root => { let m = 0; for (const e of root?.querySelectorAll?.('g.ik-m') ?? []) { const x = /\bik-s([1-7])\b/.exec(e.getAttribute('class') ?? ''); if (x && +x[1] > m) m = +x[1]; } return m; };
 export const nCls = m => m >= 1 && m < 7 ? 'ik-n' + Math.max(4, m) : null;
 /** 다 그린 그림(svg)에 영화 덧칠 — cam = 이야기 부품을 카메라 묶음에 넣음(꼴 차례 그대로) · 덧칠은 맨 위(도장 · 이름표보다 아래 두려면 before 에 그 꼴) */
@@ -311,7 +311,7 @@ export function film(svg, fx, W, H, {seed = 1, cam = false, bars = true, sweep =
   return svg;
 }
 /** 표지 덧칠(첫 쪽 큰 붓 글씨 그림 위에 겹침 · 그림 파일은 그대로 — 그림 파일 안의 움직임은 사이트 보안 규칙(꾸밈은 꾸밈 파일만)에 막힘)
- *  안개 띠가 흐르고 · 새 세 마리가 날아들고 · 금빛 반짝임이 오르고 · 빛 한 줄기가 지나감 — 36초 한 번(주문 1117-0102) · 끝 = 처음 표지 그대로(덧칠은 모두 사라짐) */
+ *  안개 띠가 흐르고 · 새 세 마리가 날아들고 · 금빛 반짝임이 오르고 · 빛 한 줄기가 지나감 — 22초 한 번(주문 1117-0250) · 끝 = 처음 표지 그대로(덧칠은 모두 사라짐) */
 export function coverFilm() {
   const bird = (x, y, k = 1) => s('path', {d: `M${x} ${y}q${r1(6 * k)} ${r1(-6 * k)} ${r1(12 * k)} 0q${r1(6 * k)} ${r1(-6 * k)} ${r1(12 * k)} 0`, fill: 'none', stroke: INK, 'stroke-width': 1.6, 'stroke-linecap': 'round', 'stroke-opacity': 0.7});
   const svg = s('svg', {class: 'sj-artfx', viewBox: '0 0 390 470', 'aria-hidden': 'true', focusable: 'false'},
@@ -590,7 +590,7 @@ const ANIM = Object.freeze({
 /** 꾀 그림 한 장 짓기(부품 목록 · 움직임 차례) — kkoePic 과 그림 일꾼의 시험 판이 함께 씀 */
 export function kkoeSvg(k, items, spec, {w = 200, h = 150, seal = true, frame = true, cls = 'ik-kk', label: lab = null, film: fl = true, rich = true} = {}) {
   const n = +String(k).slice(1), fx = fxOfK(k); // 영화 한 편(주문 1116-2310 → 1117-0102 36초 네 막) — 카메라 묶음 · 막마다 색 · 날씨 두 겹 · 바람 · 빛 기둥 · 터짐 · 번쩍 · 빛 줄기 · 검은 띠 · 끝 도장 물결
-  const scene = g(null, wrapItems(items, spec ?? null)), nc = fl ? nCls(lastStage(scene)) : null; // 36초 표(주문 1117-0102 — 마지막 막이 반전에 옴)
+  const scene = g(null, wrapItems(items, spec ?? null)), nc = fl ? nCls(lastStage(scene)) : null; // 22초 표(주문 1117-0102 · 1117-0250 — 마지막 막이 반전에 옴)
   return s('svg', {class: cls + (fl ? ' ik-film' : '') + (nc ? ' ' + nc : ''), viewBox: '0 0 200 150', width: w, height: h, role: 'img', 'aria-label': lab ?? '꾀 그림', 'data-k': k, ...(fl ? {'data-fx': fx} : {}), focusable: 'false'},
     frame ? s('rect', {x: 1.5, y: 1.5, width: 197, height: 147, fill: 'none', stroke: INK, 'stroke-width': 1.2, 'stroke-opacity': 0.35}) : null,
     fl ? s('g', {class: 'ik-cam'}, scene) : scene,
