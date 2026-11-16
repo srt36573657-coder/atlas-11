@@ -1,29 +1,235 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-16T10:03:38.642Z",
- "base": null,
- "page": null,
+ "at": "2026-11-16T10:11:13.272Z",
+ "base": "http://127.0.0.1:8826",
+ "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
- "widths": null,
- "routes": 0,
- "companies": null,
- "allCompanies": null,
- "modules": null,
- "modFiles": null,
- "edge": null,
+ "widths": [
+  320,
+  360,
+  390
+ ],
+ "routes": 13020,
+ "companies": 2557,
+ "allCompanies": true,
+ "modules": true,
+ "modFiles": {
+  "past": true,
+  "rivals": true,
+  "grow": true,
+  "range": true,
+  "cond": true,
+  "up": true,
+  "time": true,
+  "info": true,
+  "x": true,
+  "co": true,
+  "chx": true,
+  "why": true,
+  "gdr": true,
+  "share": true,
+  "hold": true,
+  "theme": true,
+  "sage": true,
+  "roman": true
+ },
+ "edge": true,
  "only": null,
  "appFile": null,
  "shard": "all/12",
  "full": false,
  "units": {
-  "total": 0,
-  "hash": null,
-  "w": null
+  "total": 13016,
+  "hash": "c35d8ab192c32667",
+  "w": {
+   "@tail": 80,
+   "@newwin": 15
+  }
  },
- "seconds": 0,
- "secondsSum": 0,
- "shards": [],
- "counts": {},
+ "seconds": 231,
+ "secondsSum": 2639,
+ "shards": [
+  {
+   "shard": "1/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1093,
+   "screens": 1093,
+   "mine": 1093,
+   "seconds": 226,
+   "secs": {
+    "open": 0.8,
+    "routes": 224.4
+   }
+  },
+  {
+   "shard": "2/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1093,
+   "screens": 1093,
+   "mine": 1093,
+   "seconds": 225,
+   "secs": {
+    "open": 0.9,
+    "routes": 223.4
+   }
+  },
+  {
+   "shard": "3/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1093,
+   "screens": 1093,
+   "mine": 1093,
+   "seconds": 226,
+   "secs": {
+    "open": 0.7,
+    "routes": 224.1
+   }
+  },
+  {
+   "shard": "4/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1092,
+   "screens": 1092,
+   "mine": 1092,
+   "seconds": 227,
+   "secs": {
+    "open": 0.7,
+    "routes": 225.4
+   }
+  },
+  {
+   "shard": "5/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1092,
+   "screens": 1092,
+   "mine": 1092,
+   "seconds": 227,
+   "secs": {
+    "open": 0.8,
+    "routes": 224.8
+   }
+  },
+  {
+   "shard": "6/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1092,
+   "screens": 1135,
+   "mine": 1092,
+   "seconds": 231,
+   "secs": {
+    "open": 0.7,
+    "routes": 228.9
+   }
+  },
+  {
+   "shard": "7/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1092,
+   "screens": 1135,
+   "mine": 1092,
+   "seconds": 209,
+   "secs": {
+    "open": 0.6,
+    "routes": 207.7
+   }
+  },
+  {
+   "shard": "8/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1098,
+   "screens": 1099,
+   "mine": 1092,
+   "seconds": 206,
+   "secs": {
+    "open": 0.6,
+    "routes": 204.3
+   }
+  },
+  {
+   "shard": "9/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1092,
+   "screens": 1093,
+   "mine": 1092,
+   "seconds": 206,
+   "secs": {
+    "open": 0.7,
+    "routes": 204
+   }
+  },
+  {
+   "shard": "10/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1092,
+   "screens": 1092,
+   "mine": 1092,
+   "seconds": 220,
+   "secs": {
+    "open": 0.7,
+    "routes": 218.6
+   }
+  },
+  {
+   "shard": "11/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1078,
+   "screens": 1098,
+   "mine": 1079,
+   "seconds": 218,
+   "secs": {
+    "open": 0.7,
+    "routes": 213.3,
+    "newwin": 3.6
+   }
+  },
+  {
+   "shard": "12/12",
+   "ok": true,
+   "fails": 0,
+   "routes": 1013,
+   "screens": 1133,
+   "mine": 1014,
+   "seconds": 218,
+   "secs": {
+    "open": 0.7,
+    "routes": 200.8,
+    "act": 7,
+    "edge": 8.6,
+    "grammar": 0
+   }
+  }
+ ],
+ "counts": {
+  "화면": 13248,
+  "길 · home": 1,
+  "길 · find": 9,
+  "길 · watch": 2560,
+  "길 · chan": 89,
+  "길 · mod": 10346,
+  "길 · chips": 6,
+  "왜 사? 끝까지": 2,
+  "쇼츠 장": 6,
+  "길 · shorts": 7,
+  "손자병법 칸 잠김": 2,
+  "길 · sub": 1,
+  "길 · me": 1,
+  "새 창": 2,
+  "보내기 글상자": 3,
+  "누르기": 1,
+  "바꿔치기": 1,
+  "오늘 한 줄 문장": 412
+ },
  "missing": 0,
  "avatarLetters": 0,
  "kinds": {},
@@ -41,20 +247,6 @@
  "missingList": [],
  "all": [],
  "truncated": false,
- "problems": [
-  "몫 결과가 하나도 없음",
-  "1/12 몫 결과 없음",
-  "2/12 몫 결과 없음",
-  "3/12 몫 결과 없음",
-  "4/12 몫 결과 없음",
-  "5/12 몫 결과 없음",
-  "6/12 몫 결과 없음",
-  "7/12 몫 결과 없음",
-  "8/12 몫 결과 없음",
-  "9/12 몫 결과 없음",
-  "10/12 몫 결과 없음",
-  "11/12 몫 결과 없음",
-  "12/12 몫 결과 없음"
- ],
- "ok": false
+ "problems": [],
+ "ok": true
 }
