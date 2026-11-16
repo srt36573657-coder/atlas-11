@@ -6,7 +6,7 @@
  "all": true,
  "limit": null,
  "widths": 28,
- "at": "2026-11-16T13:24:50.954Z",
+ "at": "2026-11-16T14:38:50.620Z",
  "shard": "all/3",
  "units": {
   "total": 2566,
@@ -34,14 +34,14 @@
  "seconds": 116,
  "secondsSum": 348,
  "time": {
-  "old": 81.9,
-  "new": 129.4,
-  "wall": 116.4,
-  "wallSum": 348.7,
+  "old": 80,
+  "new": 127.5,
+  "wall": 115.9,
+  "wallSum": 347.3,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 23.5,
-  "oldShare": 38.8
+  "oldPct": 23,
+  "oldShare": 38.6
  },
  "net": {
   "req": 2525,
