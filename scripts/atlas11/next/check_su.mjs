@@ -21,6 +21,7 @@ import {essenceData, essenceLines} from '../../../site/next/essence.js'; // 본�
 import {START as SETTLE_START} from './su21_settle.mjs'; // 정산 첫날(주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」)
 import * as S36C from '../../../site/su/su-sonja-36.js'; // 서른여섯 꾀 바탕 글(= su21_s36.py --defs · 시험 su-settle.test.mjs 가 맞댐) — 꾀 칸 자료가 없는 날 쪽이 쓰는 글과 맞댐(주문 1115-2328)
 import * as MEANC from '../../../site/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위 · 글만)
+import * as STORYC from '../../../site/su/su-sonja-story.js'; // 그림 속 이야기 네 막(주문 1117-0102 — 꾀 쪽 큰 그림 바로 아래 · 글만)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -923,7 +924,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
           way: txt(way?.querySelector('.sj-lead')), vol: [...(way?.querySelectorAll('.sj-note') ?? [])].some(e => /사고판 양/.test(e.textContent)),
           fun: (() => { const f = way?.querySelector('.sj-fun'); return f ? {l: txt(f.querySelector('.sj-funl')), rows: [...f.querySelectorAll('.sj-funs > li')].map(x => [txt(x.querySelector('span')), txt(x.querySelector('b'))]), k: txt(f.querySelector('.sj-funk'))} : null; })(),
           eq: (() => { const q = way?.querySelector('.sj-eq'); return q ? {h: txt(q.querySelector('.sj-eqh')), f: [...q.querySelectorAll('.sj-eqf')].map(txt), rows: [...q.querySelectorAll('ul.sj-eqs')].map(u => [u.getAttribute('data-f'), [...u.querySelectorAll(':scope > li')].map(li => [li.getAttribute('data-e'), li.getAttribute('data-d'), txt(li.querySelector('.sj-eqt')), txt(li.querySelector('.sj-eqw'))])]), k: txt(q.querySelector('.sj-eqk')), end: txt(q.querySelector('.sj-eqend'))} : null; })(),
-          kh: txt(kco?.querySelector('h2 .sj-brush')), rule: txt(rec?.querySelector('.sj-rule')), tl: txt(rec?.querySelector('.sj-tl')), dots: rec ? rec.querySelectorAll('svg.ik-arrows .ik-ar.ik-broken').length : -1, pic: ph?.querySelector('figure.sj-kfig svg.ik-kk')?.getAttribute('data-k') ?? null,
+          kh: txt(kco?.querySelector('h2 .sj-brush')), rule: txt(rec?.querySelector('.sj-rule')), tl: txt(rec?.querySelector('.sj-tl')), dots: rec ? rec.querySelectorAll('svg.ik-arrows .ik-ar.ik-broken').length : -1, pic: ph?.querySelector('figure.sj-kfig svg.ik-kk')?.getAttribute('data-k') ?? null, story: [...(ph?.querySelectorAll('figure.sj-kfig > svg.ik-kk ~ ol.sj-story > li') ?? [])].map(li => [txt(li.querySelector('.sj-actt')), txt(li.querySelector('.sj-actb'))]),
           cs: [...(kco?.querySelectorAll('a.sj-chip') ?? [])].map(a => [a.getAttribute('href'), txt(a.querySelector('b')), txt(a.querySelector('.sj-chipd'))]), none: txt(kco?.querySelector('.sj-tnone')), n: kco?.getAttribute('data-n') ?? null,
           st: kst ? {dd: [...kst.querySelectorAll('dl.sj-money dd')].map(txt), res: txt(kst.querySelector('.sj-res b')), go: kst.querySelector('a.sj-go')?.getAttribute('href') ?? ''} : null,
           pn: [...(main?.querySelectorAll('nav.sj-kpn a') ?? [])].map(a => a.getAttribute('href')), next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null, nextK: txt(document.querySelector('#su .sj-next .sj-nk')), tab: txt(document.querySelector('#su .sj-tabs a[aria-current="page"]'))};`));
@@ -932,7 +933,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
         say: sun25 ? (r?.n ? '지금 ' + sun25.name + '에서 서른여섯 꾀 가운데 덜 잃은 차례 ' + r.i + '번째예요. 지난 같은 땅 기록으로 셌어요.' : '지금 ' + sun25.name + '이에요. 이 꾀는 지난 기록을 세지 못해 맨 아래에 놓았어요.') : '오늘 형세는 아직 세지 못했어요. 꾀 차례 대신 옛 차례로 놓았어요.',
         way: G25.say[k], vol: G25.by?.[k] === 'vol', fun: funWant(k), eq: eqWant(k), kh: '이렇게 해서 찾아낸 곳',
         rule: sun25 && H ? (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + sun25.name + '이었던 ' + H.same + '날을 골라, ') + '이 꾀가 고른 일곱 곳을 닷새 뒤 값과 견줬어요.' + (ymW25(H.from) && ymW25(H.to) ? ' 센 때는 ' + ymW25(H.from) + '부터 ' + ymW25(H.to) + '까지예요.' : '') : '',
-        tl: r ? recW(r) : '오늘 형세를 아직 세지 못해 같은 땅 기록이 없어요.', dots: r?.n && r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0, pic: k,
+        tl: r ? recW(r) : '오늘 형세를 아직 세지 못해 같은 땅 기록이 없어요.', dots: r?.n && r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0, pic: k, story: (STORYC.STORY36[k] ?? []).map((t, i) => [STORYC.ACTS[i], t]),
         cs: L.map(c => ['#/c/' + c.code, c.name, Number.isInteger(c.days) && c.days >= 1 ? c.days + '일째' : '']), none: L.length ? '' : useG25 ? none25(G25.why?.[k]) : '오늘 고른 곳 자료를 아직 받지 못했어요.', n: String(L.length),
         st: S25 ? {dd: S25.dd, res: S25.res, go: '#/r/t'} : null,
         pn: [at > 0 ? '#/k/' + ORD36[at - 1] : null, at < 35 ? '#/k/' + ORD36[at + 1] : null, '#/k'].filter(Boolean), next: L.length ? '#/c/' + L[0].code : '#/q', nextK: L.length ? '3 / 5' : '4 / 5', tab: '꾀'} : null;
@@ -940,7 +941,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       if (diff.length) badK.push(k + ' ' + diff.join(',') + ' ' + JSON.stringify(diff.slice(0, 2).map(x => [gk[x], want?.[x]])).slice(0, 220));
       if (k === KS25[0] || k === KS25[KS25.length - 1]) pageRules(await measure(p), W + '나) 꾀 쪽 #/k/' + k);
     }
-    check(!badK.length, W + '나) 꾀 한 가지 ' + KS25.length + '쪽 — 걸음 2 / 5 · 묶음 · 도장 = 오늘 차례 · 뜻 · 지금 땅에서 몇 위 · 고르는 법(사고판 양 꾀 풀이) · 꾀 점수 풀이(주문 1116-2134 — 수학 식 · 정서 식 · 이렇게 해서 찾아낸 곳) · 같은 땅 기록 · 잃은 몫 점 · 찾아낸 곳(누르면 그 회사) · 정산 · 앞뒤 꾀 · 다음 단추 = 자료에서 따로 셈', badK.slice(0, 3).join(' / '));
+    check(!badK.length, W + '나) 꾀 한 가지 ' + KS25.length + '쪽 — 걸음 2 / 5 · 묶음 · 도장 = 오늘 차례 · 뜻 · 지금 땅에서 몇 위 · 고르는 법(사고판 양 꾀 풀이) · 꾀 점수 풀이(주문 1116-2134 — 수학 식 · 정서 식 · 이렇게 해서 찾아낸 곳) · 같은 땅 기록 · 잃은 몫 점 · 찾아낸 곳(누르면 그 회사) · 정산 · 앞뒤 꾀 · 다음 단추 = 자료에서 따로 셈 · 큰 그림 바로 아래 그림 속 이야기 네 막 = su-sonja-story.js(주문 1117-0102)', badK.slice(0, 3).join(' / '));
     // 다) 회사
     for (const c of [FC?.code ?? null, other25?.code ?? null].filter(Boolean)) {
       await open(p, '#/c/' + c);
@@ -959,7 +960,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   }
   // ㉖ 주문 1116-0209(사장님 2026-11-16(마카오) 01:09 「에이전트 100개 동원해서 지금 그린그림들이 상황애 맞게 3단애서 7간으로 자연스럽게 움직이게 …」 · 01:12 「응」) — 먹그림 움직임
   //   가) 쪽마다 그림 = svg.ik-anim · 그림마다 감싼 묶음(g.ik-m) · 감싼 묶음에 transform 속성 0(제자리 변환을 덮지 않음) · 단계 표 1 ~ 7(또는 차례 표)
-  //   나) 화면 밖 그림은 처음에 ik-play 0 → 끝까지 내려 보면 모두 ik-play · 움직임은 모두 한 번 · 7초 안에 끝남(멈춘 그림으로 돌아옴) — 영화 한 편 그림(svg.ik-film · 주문 1116-2310)은 11.5초 안
+  //   나) 화면 밖 그림은 처음에 ik-play 0 → 끝까지 내려 보면 모두 ik-play · 움직임은 모두 한 번 · 7초 안에 끝남(멈춘 그림으로 돌아옴) — 영화 한 편 그림(svg.ik-film · 주문 1116-2310 → 1117-0102 「36초짜리로 만들고」)은 36.5초 안
   //   다) 움직임을 줄여 둔 휴대폰(reducedMotion: reduce) — 끝까지 내려 봐도 그림 움직임 0
   for (const rm of ['no-preference', 'reduce']) {
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: rm});
@@ -978,10 +979,10 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       const b = await p.evaluate(() => { const an = document.getAnimations().filter(x => x.effect?.target?.closest?.('svg.ik-anim'));
         const shown = [...document.querySelectorAll('#su main svg.ik-anim')].filter(s => !s.closest('details:not([open])'));
         return {all: shown.length, play: shown.filter(s => s.classList.contains('ik-play')).length, an: an.length,
-          long: an.filter(x => { const t = x.effect?.getComputedTiming?.(); return !t || !Number.isFinite(t.endTime) || t.endTime > (x.effect?.target?.closest?.('svg.ik-film') ? 11500 : 7000) || t.iterations !== 1; }).length}; }); // 영화 한 편 그림(svg.ik-film · 주문 1116-2310 「11처짜리」)은 11.5초 안 · 다른 그림은 7초 안
+          long: an.filter(x => { const t = x.effect?.getComputedTiming?.(); return !t || !Number.isFinite(t.endTime) || t.endTime > (x.effect?.target?.closest?.('svg.ik-film') ? 36500 : 7000) || t.iterations !== 1; }).length}; }); // 영화 한 편 그림(svg.ik-film · 주문 1117-0102 「36초짜리로 만들고」)은 36.5초 안 · 다른 그림은 7초 안
       const wantN = hh !== '#/' || okSunD || same;
       check(rm === 'reduce' ? b.an === 0 && b.play === 0 : (!wantN || a.n > 0) && a.noM === 0 && a.tr === 0 && a.st === 0 && a.belowPlay === 0 && b.play === b.all && (a.n === 0 || b.an > 0) && b.long === 0, // 그림이 없는 날(형세 · 꾀 칸 자료가 없는 첫 쪽)은 움직임도 0
-        W + hh + (rm === 'reduce' ? ' — 끝까지 내려 봐도 그림 움직임 0(멈춘 그림)' : ' — 그림마다 감싼 묶음 · 제자리 변환 0 · 단계 1 ~ 7 · 화면 밖은 기다림 → 내려 보면 한 번 놂 · 7초(영화 그림 11.5초) 안에 끝'), JSON.stringify({...a, ...b}));
+        W + hh + (rm === 'reduce' ? ' — 끝까지 내려 봐도 그림 움직임 0(멈춘 그림)' : ' — 그림마다 감싼 묶음 · 제자리 변환 0 · 단계 1 ~ 7 · 화면 밖은 기다림 → 내려 보면 한 번 놂 · 7초(영화 그림 36.5초) 안에 끝'), JSON.stringify({...a, ...b}));
     }
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();

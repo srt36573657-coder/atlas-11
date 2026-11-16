@@ -162,7 +162,7 @@ export function rec36(r, more = false) {
       h('p', {class: 'sj-tl3', text: '모든 주를 고르면 평균 100원이 ' + w100(r.avg) + '이에요.'})) : null];
 }
 /** 꾀 그림 단추(누르면 그 꾀 쪽 · 소리 읽기는 꾀 이름 줄이 맡음 — 그림 단추는 건너뜀) */
-export const kkoeTile = (k, name, cls = 'sj-tkpic', w = 200, hh = 150) => h('a', {class: cls, href: '#/k/' + k, tabindex: '-1', 'aria-hidden': 'true'}, kkoePic(k, {w, h: hh, label: name + ' 그림'}));
+export const kkoeTile = (k, name, cls = 'sj-tkpic', w = 200, hh = 150) => h('a', {class: cls, href: '#/k/' + k, tabindex: '-1', 'aria-hidden': 'true'}, kkoePic(k, {w, h: hh, label: name + ' 그림', rich: false}));
 export function chip(g, c, bd, ov) {
   const code = String(c.code ?? ''), name = String(c.name ?? NEED), dz = Number.isInteger(c.days) && c.days >= 1 ? c.days : null, sp = sp36(g, code), n = ov && Number.isInteger(c.n) ? c.n : null, m = monOf(sp);
   return h('li', {}, h('a', {class: 'sj-chip' + (ov ? ' sj-chip-ov' : ''), href: '#/c/' + encodeURIComponent(code), 'data-code': code, 'data-days': dz ? String(dz) : null, 'data-n': n ? String(n) : null, 'data-mon': m ?? 'na',

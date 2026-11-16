@@ -672,30 +672,79 @@ test('세 거름 · 큰 갈래 차례 — 흉내 내 보기 · 소거 · 꾀 뜻
   assert.ok(/㉘ 꾀 점수 자료/.test(ck) && /eqWant\(k\)/.test(ck), 'check_su — 꾀 점수 따로 셈 · 꾀 쪽 풀이 칸 맞댐');
 });
 
-/** 주문 1116-2310(사장님 2026-11-16(마카오) 22:10 「그림을 더 화려하게 혁신적으로 더 풍성하게 더 많이 움직이게 하라 한편에 영화처럼 중국 영화처럼 말이다 11처짜리 말이다」)
-    그림마다 11초짜리 한 편 — 한 번 놀고 멈춤 · 끝 모습 = 멈춘 그림 · 묶음 여섯마다 날씨 · 움직임 줄인 휴대폰 = 멈춘 그림 · 빨강 0 */
-test('영화 한 편 — 꾀 그림 · 쪽 머리 · 땅 · 손무 · 표지 덧칠이 11초 안에 한 번 · 묶음 여섯 날씨 · 움직임 줄이면 멈춘 그림(주문 1116-2310)', () => {
+/** 주문 1116-2310 → 1117-0102(사장님 2026-11-16(마카오) 22:10 「… 한편에 영화처럼 중국 영화처럼 말이다 11처짜리 말이다」 · 2026-11-17 00:02 「36초짜리로 만들고 이야기를 풍성하개 스토리를 만들아 감정을 담아 영상을 지금보다 10배는 더 풍성하개 해」)
+    그림마다 36초짜리 한 편 — 네 막(고요 · 긴장 · 반전 · 여운) · 한 번 놀고 멈춤 · 끝 모습 = 멈춘 그림 · 묶음 여섯마다 날씨 · 움직임 줄인 휴대폰 = 멈춘 그림 · 빨강 0 */
+test('영화 한 편 36초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손무 · 표지 덧칠이 36초 안에 한 번 · 묶음 여섯 날씨 · 움직임 줄이면 멈춘 그림(주문 1116-2310 → 1117-0102)', () => {
   const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
-  const ink = rd('site/su/su-sonja-ink.js'), css = rd('site/su/su-sonja.css'), sj = rd('site/su/su-sonja.js');
-  // 그림 코드 — 꾀 그림은 카메라 묶음 · 덧칠 · 끝 도장 · 물결 · 묶음 여섯마다 날씨 · 쪽 머리(카메라) · 땅(그 땅 날씨 · 검은 띠 없음) · 손무 · 표지 덧칠
+  const ink = rd('site/su/su-sonja-ink.js'), css = rd('site/su/su-sonja.css'), sj = rd('site/su/su-sonja.js'), kk = rd('site/su/su-sonja-kkoe.js');
+  // 그림 코드 — 카메라 묶음 · 막마다 색 셋 · 날씨 두 겹 · 터짐 · 번쩍 · 짙은 가장자리 · (꾀 쪽 큰 그림 · 쪽 머리) 빛 기둥 · 바람 줄기 · 끝 도장 · 물결
   assert.ok(/export const FX = Object\.freeze\(\['gold', 'leaf', 'ember', 'rain', 'petal', 'snow'\]\);/.test(ink) && /export const fxOfK = k => FX\[Math\.floor\(\(\+String\(k\)\.slice\(1\) - 1\) \/ 6\)\]/.test(ink), '묶음 여섯 = 날씨 여섯(이김 금빛 · 맞섬 잎 · 공격 불티 · 혼란 비 · 연합 꽃비 · 패배 눈)');
   assert.ok(/fl \? s\('g', \{class: 'ik-cam'\}, scene\) : scene/.test(ink) && /class: fl \? 'ik-stamp' : null/.test(ink) && /class: 'ik-ring'/.test(ink), '꾀 그림 — 카메라 · 끝 도장 · 물결');
-  assert.ok(/class:"ik-hero"[^)]*\),FXHERO\[what\]\?\?"gold",390,170,\{seed:3,cam:!0\}\)\)/.test(ink) && /FXLAND\[land\]\?\?"petal",W,H,\{seed:5,bars:!1\}\)\)/.test(ink) && /'petal', 200, 240, \{seed: 7, bars: false, sweep: false\}/.test(ink), '쪽 머리 · 땅 · 손무 그림도 한 편');
+  assert.ok(/export const NA = 12, NB = 16, NC = 12, NG = 4, NR = 3;/.test(ink) && /export const LITE = Object\.freeze\(\{a: 8, b: 10, c: 6\}\);/.test(ink), '날씨 두 겹 · 터짐 · 바람 · 빛 기둥 수(가벼운 판 = 첫 쪽 작은 그림 · 땅 · 손무 · 표지)');
+  assert.ok(/rich \? rays\(W, H\) : null/.test(ink) && /rich \? gusts\(W, H\) : null/.test(ink) && /burst\(W, H, seed, rich \? NC : LITE\.c\)/.test(ink) && ["'ik-flash'", "'ik-gc'", "'ik-gg'", "'ik-vig2'", "'ik-grade ik-gw'"].every(c => ink.includes('class: ' + c)), '막마다 색 셋 · 번쩍 · 짙은 가장자리 · 빛 기둥 · 바람');
+  assert.ok(/class:"ik-hero"[^)]*\),FXHERO\[what\]\?\?"gold",390,170,\{seed:3,cam:!0,rich:!0\}\)\)/.test(ink) && /FXLAND\[land\]\?\?"petal",W,H,\{seed:5,bars:!1\}\)\)/.test(ink) && /'petal', 200, 240, \{seed: 7, bars: false, sweep: false\}/.test(ink), '쪽 머리(풍성한 판) · 땅 · 손무 그림도 한 편');
+  assert.ok(/label: name \+ ' 그림', rich: false\}\)\)/.test(sj) && /kkoePic\(k, \{w: 390, h: 292, label: g\.name\[k\] \+ ' 그림'\}\), storyOl\(k\)\)/.test(kk), '첫 쪽 작은 그림 = 가벼운 판 · 꾀 쪽 큰 그림 = 풍성한 판 + 그림 속 이야기 네 막');
+  assert.ok(/export const nCls = m => m >= 1 && m < 7 \? 'ik-n' \+ Math\.max\(4, m\) : null;/.test(ink) && /nc = fl \? nCls\(lastStage\(scene\)\) : null/.test(ink) && /const nc = nCls\(lastStage\(svg\)\); if \(nc\) svg\.classList\.add\(nc\);/.test(ink), '마지막 막이 반전에 오는 표(ik-n4 ~ ik-n6)');
   assert.ok(/export function coverFilm\(\)/.test(ink) && /aw\.insertBefore\(coverFilm\(\), aw\.querySelector\(':scope > \.sj-hwa'\)\)/.test(sj), '표지 덧칠(그림 파일은 그대로 — 그림 파일 안 꾸밈은 보안 규칙에 막힘)');
   assert.ok(!/style:|\.style\.|innerHTML/.test(ink.slice(ink.indexOf('/* ── 영화 한 편'), ink.indexOf('/** 그림 부품 → 움직임'))), '글 속 style · innerHTML 0');
-  // 꾸밈 — 영화 그림의 움직임은 모두 11.5초 안에 끝(지연 + 길이) · 한 번 · 처음부터 안 보이는 덧칠(티끌 · 빛 줄기 · 물결 · 여는 붓 획)
+  // 꾸밈 — 영화 그림의 움직임은 모두 36.5초 안에 끝(지연 + 길이) · 한 번
   const film = css.split('\n').filter(l => /^#su svg\.(ik-film|ik-hero\.ik-film|ik-land\.ik-film|sj-artfx)/.test(l));
-  assert.ok(film.length >= 30, '영화 칸 ' + film.length);
-  const sec = v => parseFloat(v);
+  assert.ok(film.length >= 120, '영화 칸 ' + film.length);
+  const sec = v => parseFloat(v), LIM = 36.5;
+  const mdur = Math.max(...film.map(l => /^#su svg\.ik-film\.ik-play \.ik-\w+ \{ animation-duration: ([\d.]+)s; \}$/.exec(l)).filter(Boolean).map(m => sec(m[1])));
+  assert.ok(mdur >= 1 && mdur <= 4.8, '그림 속 움직임 길이(보통 그림의 두 배 · 4.8초 안) ' + mdur);
+  let nAnim = 0;
   for (const l of film) {
-    const m = /animation: ([\w-]+) ([\d.]+)s [^;]*?([\d.]+)s 1 both/.exec(l); if (m) assert.ok(sec(m[2]) + sec(m[3]) <= 11.5, '11.5초 안 — ' + l.slice(0, 90));
+    const m = /animation: ([\w-]+) ([\d.]+)s [^;]*?([\d.]+)s 1 both/.exec(l); if (m) { nAnim++; assert.ok(sec(m[2]) + sec(m[3]) <= LIM, '36.5초 안 — ' + l.slice(0, 90)); }
     const d = /animation-delay: ([\d.]+)s;(?: animation-duration: ([\d.]+)s;)?/.exec(l);
-    if (d && d[2]) assert.ok(sec(d[1]) + sec(d[2]) <= 11.5, '11.5초 안 — ' + l.slice(0, 90));
-    if (d && !d[2] && /\.ik-s\d/.test(l)) assert.ok(sec(d[1]) + 1.8 <= 11.5, '막 끝 11.5초 안 — ' + l.slice(0, 90));
+    if (d && d[2]) assert.ok(sec(d[1]) + sec(d[2]) <= LIM, '36.5초 안 — ' + l.slice(0, 90));
+    if (d && !d[2] && /\.ik-s\d/.test(l)) assert.ok(sec(d[1]) + mdur <= LIM && sec(d[1]) <= 20.6, '막 끝 36.5초 안 · 마지막 막은 반전(20.6초)까지 — ' + l.slice(0, 90));
     assert.ok(!/infinite/.test(l), '한 번만 — ' + l.slice(0, 80));
   }
-  assert.ok(/#su svg\.ik-film \.ik-fx \.ik-p, #su svg\.ik-film \.ik-sweep, #su svg\.ik-film \.ik-ring, #su svg\.ik-film \.ik-swash \{ opacity: 0; \}/.test(css), '덧칠은 놀 때만 보임(움직임 줄인 휴대폰 = 멈춘 그림)');
-  assert.ok(/@keyframes ik-cam \{ from \{ transform: scale\(1\.14\) translate\(-3px, 2px\); \} to \{ transform: none; \} \}/.test(css), '카메라 끝 = 제자리(멈춘 그림과 같음)');
-  for (const k of ['ik-up', 'ik-ember', 'ik-leaf', 'ik-petal', 'ik-snow', 'ik-rain']) assert.ok(new RegExp('@keyframes ' + k + ' \\{ 0% \\{ opacity: 0;[^\\n]*100% \\{ opacity: 0;').test(css), k + ' — 처음과 끝은 안 보임');
-  for (let i = 0; i < 18; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-p' + i + ' \\{').test(css), '티끌 칸 ' + i);
+  assert.ok(nAnim >= 15, '한 번 노는 움직임 ' + nAnim);
+  for (const n of ['ik-cam', 'ik-bar', 'ik-gw', 'ik-gc', 'ik-gg', 'ik-vig2']) assert.ok(new RegExp('animation: ' + n + ' 36s ').test(css), n + ' — 36초 한 편');
+  for (const n of [6, 5, 4]) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-n' + n + '\\.ik-play \\.ik-s' + n + ' \\{ animation-delay: 20\\.6s; \\}').test(css), 'ik-n' + n + ' 마지막 막 = 반전 20.6초');
+  assert.ok(/#su svg\.ik-film\.ik-play \.ik-s7 \{ animation-delay: 20\.6s; \}/.test(css), '일곱 막 마지막 = 반전 20.6초');
+  // 처음부터 안 보이는 덧칠(움직임 줄인 휴대폰 = 멈춘 그림)
+  const hid = /^#su svg\.ik-film \.ik-fx \.ik-p, (.*) \{ opacity: 0; \}$/m.exec(css)?.[1] ?? '';
+  for (const c of ['ik-sweep', 'ik-ring', 'ik-swash', 'ik-gc', 'ik-gg', 'ik-flash', 'ik-vig2', 'ik-ray', 'ik-q', 'ik-gu']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
+  // 끝 모습 = 멈춘 그림
+  const kf = n => new RegExp('@keyframes ' + n + ' \\{[^\\n]*\\}').exec(css)?.[0] ?? '';
+  assert.ok(/100% \{ transform: none; \} \}$/.test(kf('ik-cam')) && /100% \{ transform: none; \} \}$/.test(kf('ik-bar')), '카메라 · 검은 띠 끝 = 제자리');
+  assert.ok(/100% \{ opacity: 1; \} \}$/.test(kf('ik-gw')) && ['ik-gc', 'ik-gg', 'ik-vig2', 'ik-flash'].every(n => /100% \{ opacity: 0; \} \}$/.test(kf(n))), '막마다 색 끝 = 처음 그림 색');
+  for (const k of ['ik-up', 'ik-ember', 'ik-leaf', 'ik-petal', 'ik-snow', 'ik-rain', 'ik-upS', 'ik-emberS', 'ik-leafS', 'ik-petalS', 'ik-snowS', 'ik-rainS', 'ik-gust', 'ik-ray', ...Array.from({length: 12}, (_, i) => 'ik-bst' + i)]) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
+  for (let i = 0; i < 12; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-a' + i + ' \\{').test(css) && new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-c' + i + ' \\{').test(css), '날씨 a · 터짐 칸 ' + i);
+  for (let i = 0; i < 16; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-b' + i + ' \\{').test(css), '날씨 b 칸 ' + i);
+});
+
+/** 주문 1117-0102 — 꾀 쪽 큰 그림 바로 아래 「그림 속 이야기」 네 막(고요 · 긴장 · 반전 · 여운) · 막마다 한 줄 · 감정 · 쉬운 말 · 그림이 그 막에 오면 그 줄이 밝아짐 */
+test('그림 속 이야기 네 막 — 꾀 서른여섯마다 네 줄 · 쉬운 말 · 감정 · 넷째 줄 = 이렇게 찾은 회사 · 36초에 맞춰 밝아짐(주문 1117-0102)', async () => {
+  const S = await import('../../site/su/su-sonja-story.js'), D = await import('../../site/su/su-sonja-36.js'), W = await import('../../site/su/su-word.js');
+  const {screenHits, ruinHits} = await import('../../site/next/words.js');
+  assert.deepEqual(Object.keys(S.STORY36), [...D.K36], '꾀 서른여섯마다 이야기');
+  assert.deepEqual([...S.ACTS], ['고요', '긴장', '반전', '여운'], '네 막 이름');
+  for (const t of [S.STORY_TAG, ...S.ACTS, ...Object.values(S.STORY36).flat()]) {
+    assert.ok(t && !/[A-Za-z%]/.test(t) && !/[㐀-鿿]/.test(t), '「%」 · 영어 · 한자 0 — ' + t);
+    assert.deepEqual([...screenHits(t), ...ruinHits(t)].map(x => x.word ?? x), [], '쓰지 않을 말 0 — ' + t);
+    assert.deepEqual(W.HARD.filter(w => W.has(t, w)), [], '어려운 낱말 0 — ' + t);
+    assert.ok(!/(^|[^0-9])위([^가-힣]|$)/.test(t) && !/수익률|추천|매수|매도|가장|급등/.test(t), '「○위」 · 권하는 말 0 — ' + t);
+    for (const sn of t.split(/(?<=[.?!])\s+/)) assert.ok(sn.replace(/\s/g, '').length <= 35, '한 문장 35자 안(띄어쓰기 빼고) — ' + sn);
+  }
+  for (const k of D.K36) {
+    const L = S.STORY36[k];
+    assert.equal(L.length, 4, k + ' — 네 막');
+    for (const t of L) assert.ok(/요[.!]$/.test(t), k + ' — 「…요.」 — ' + t);
+    assert.ok(/회사(를 (이렇게 )?찾아요|예요)\./.test(L[3]), k + ' — 넷째 줄 = 이렇게 찾은 회사 — ' + L[3]);
+    assert.ok(!/오를 거|오를 것|오릅니다|사세요|파세요|팔아요/.test(L.join(' ')), k + ' — 앞날을 맞히지 않고 사고팔기를 권하지 않음');
+  }
+  for (const k of ['g34', 'g36']) assert.ok(S.STORY36[k][3].endsWith('더 내릴 수도 있어요.'), k + ' — 내린 곳을 고르는 꾀는 「더 내릴 수도 있어요」');
+  assert.ok(S.STORY36.g31[3].includes('꺾이기도'), 'g31 — 하루 만에 꺾이는 일');
+  // 쪽 · 꾸밈 — 큰 그림 바로 아래 · 막마다 밝아짐 · 끝 = 네 줄 그대로 · 움직임 줄이면 그대로 · 글씨 17px 넘게 · 검사가 글 그대로 맞댐
+  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8'), kk = rd('site/su/su-sonja-kkoe.js'), css = rd('site/su/su-sonja.css'), ck = rd('scripts/atlas11/next/check_su.mjs');
+  assert.ok(/import \{STORY36, ACTS, STORY_TAG\} from '\/su\/su-sonja-story\.js';/.test(kk) && /h\('ol', \{class: 'sj-story', 'aria-label': STORY_TAG\}/.test(kk), '꾀 쪽 — ol.sj-story');
+  for (let i = 1; i <= 4; i++) assert.ok(new RegExp('@keyframes sj-act' + i + ' \\{[^\\n]*100% \\{ opacity: 1;[^\\n]*\\} \\}').test(css), 'sj-act' + i + ' 끝 = 그대로');
+  assert.ok(/animation: sj-act1 36s linear 0s 1 both;/.test(css) && /@media \(prefers-reduced-motion: reduce\) \{ #su ol\.sj-story > li \{ animation: none !important; \} \}/.test(css), '36초 한 번 · 움직임 줄이면 그대로');
+  const fs17 = [...css.matchAll(/#su \.sj-kfig \.sj-act[tb] \{[^}]*font-size: ([\d.]+)rem/g)];
+  assert.equal(fs17.length, 2); for (const m of fs17) assert.ok(+m[1] * 16 >= 17, '글씨 17px 넘게 — ' + m[0].slice(0, 60));
+  assert.ok(/story: \(STORYC\.STORY36\[k\] \?\? \[\]\)\.map\(\(t, i\) => \[STORYC\.ACTS\[i\], t\]\)/.test(ck) && /\? 36500 : 7000/.test(ck), 'check_su — 이야기 네 줄 = 글 그대로 · 영화 36.5초 안');
 });
