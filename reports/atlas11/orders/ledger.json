@@ -2134,8 +2134,8 @@
    "then": "17:46(마카오) 「어 지워」 → 바로 시작(속도 세 배 — 일꾼 하나가 큰 시험 파일을 나눠 맡음)",
    "did": "화면에 안 쓰는 옛 파일 열둘 지움 — site/su/su-21.js · su-apple.js · su-apple.css · su-art.js · su-art.css · su-book.js · su-book.css · su-kr7.js · su-quiet.js · su-settle.js · su-why36.js · data/ant11.json(첫 화면에서 닿지 않음 · 다른 쪽이 쓰는 su-wrap 넷 · su-atlas-jobs.css · version.json 은 남김) · 시험 다섯 고침(su · su-settle · su-book · su-quiet · slim — 옛 화면 시험만 지움 · 셈 · 검사 줄은 남김) · 일꾼 하나가 큰 시험 파일을 나눠 맡음 · 시험 모두 943 가운데 실패 셋은 앞 커밋에서도 실패하던 것(이 일과 무관)",
    "short": "화면에 안 쓰는 옛 파일 열둘을 지우는 일이에요.",
-   "state": "완성",
-   "proof": "docs/design/sonja-old12-2026-11-16/order-1846.txt · 올리기 전 전체 검사 old12-2026-11-16 2/11 run 43845323840 실패 0(25쪽 모두 0 · 1/11 은 main 을 합치기 전 판이라 멈춤) · 올림 run 43845372475(검사와 겹쳐 올림) · 진짜 사이트 검사 3/11 run 43847252495"
+   "state": "성공",
+   "proof": "docs/design/sonja-old12-2026-11-16/order-1846.txt · 올리기 전 전체 검사 old12-2026-11-16 2/11 run 43845323840 실패 0(25쪽 모두 0 · 1/11 은 main 을 합치기 전 판이라 멈춤) · 올림 run 43845372475(검사와 겹쳐 올림) · 진짜 사이트 검사 3/11 run 43847252495 — 손자병법 쪽 진짜 사이트 검사 통과(실패 0 · 18:24 마카오) · 다른 열 쪽(white · gift · theme · why11 · roman · sage · kakao · jinhwa · help · essence)도 통과 · 남은 쪽(회사 · 영어 · 지난 기록 등)은 도는 중이라 끝나면 덧붙임 · 올리기 전 25쪽 모두 같은 코드로 실패 0"
   }
  ],
  "open": 11,
