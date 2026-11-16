@@ -715,6 +715,11 @@ test('영화 한 편 36초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손
   for (const k of ['ik-up', 'ik-ember', 'ik-leaf', 'ik-petal', 'ik-snow', 'ik-rain', 'ik-upS', 'ik-emberS', 'ik-leafS', 'ik-petalS', 'ik-snowS', 'ik-rainS', 'ik-gust', 'ik-ray', ...Array.from({length: 12}, (_, i) => 'ik-bst' + i)]) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
   for (let i = 0; i < 12; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-a' + i + ' \\{').test(css) && new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-c' + i + ' \\{').test(css), '날씨 a · 터짐 칸 ' + i);
   for (let i = 0; i < 16; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-b' + i + ' \\{').test(css), '날씨 b 칸 ' + i);
+  // 전쟁 영화 · 옛 동양 영화(주문 1117-0243 「더 전쟁 영화처럼 더 고전 동양 영화처럼」) — 옛 필름 빛깔 · 깜빡임 · 긁힘 · 티끌 · 먹 번짐 · 북소리 · 화살 비 · 깃발 · 흙먼지 · 큰 해
+  assert.ok(/oldFilm\(W, H, seed, rich\),/.test(ink) && /inkWash\(W, H\),/.test(ink) && /drums\(W, H\),/.test(ink) && /rich \? volley\(W, H, seed\) : null/.test(ink) && /rich \? banners\(W, H\) : null/.test(ink) && /rich \? warDust\(W, H\) : null/.test(ink) && /rich \? bigSun\(W, H\) : null/.test(ink), '전쟁 · 옛 필름 덧칠(가벼운 판 = 옛 필름 · 먹 번짐 · 북소리)');
+  for (const c of ['ik-sepia', 'ik-flick', 'ik-scr', 'ik-dust', 'ik-ink', 'ik-drum', 'ik-arw', 'ik-ban', 'ik-dst', 'ik-bsun']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
+  for (const k of ['ik-ink', 'ik-drum', 'ik-arrow', 'ik-ban', 'ik-wdust', 'ik-bsun', 'ik-scr0', 'ik-scr1', 'ik-scr2', ...Array.from({length: 8}, (_, i) => 'ik-dust' + i)]) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
+  assert.ok(/100% \{ opacity: 0; \} \}$/.test(kf('ik-sepia')) && /100% \{ opacity: 0; \} \}$/.test(kf('ik-flick')) && /100% \{ transform: none; \} \}$/.test(kf('ik-flag')), '옛 필름 빛 · 깜빡임 · 깃발 끝 = 멈춘 그림');
 });
 
 /** 주문 1117-0102 — 꾀 쪽 큰 그림 바로 아래 「그림 속 이야기」 네 막(고요 · 긴장 · 반전 · 여운) · 막마다 한 줄 · 감정 · 쉬운 말 · 그림이 그 막에 오면 그 줄이 밝아짐 */

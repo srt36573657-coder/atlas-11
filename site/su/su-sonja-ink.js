@@ -230,6 +230,45 @@ function rays(W, H) {
     out.push(s('path', {class: 'ik-ray ik-ray' + i, d: `M${ox} ${oy}L${a} ${H}L${b} ${H}Z`, fill: C.fireCore, 'fill-opacity': 0.16})); }
   return s('g', {class: 'ik-rays', 'aria-hidden': 'true'}, ...out);
 }
+/* ── 전쟁 영화 · 옛 동양 영화(주문 1117-0243 · 사장님 2026-11-17(마카오) 01:43 「더 전쟁 영화처럼 더 고전 동양 영화처럼 만들어라 1시간 이내에」)
+   옛 필름 빛깔(누런 빛 · 빛 깜빡임 · 긁힘 · 티끌 — 여운 끝에 걷힘) · 먹 번짐 장면 바꿈(9초 · 30초) · 북소리 물결 셋(둥 · 둥 · 둥)
+   (꾀 쪽 큰 그림 · 쪽 머리) 화살 비 두 번 · 싸움터 흙먼지 · 깃발 셋 · 3막 큰 해 — 모두 처음부터 안 보임 · 끝에 사라짐(움직임 줄인 휴대폰 = 멈춘 그림) */
+function oldFilm(W, H, seed, rich) {
+  const R = rng(seed + 31), out = [s('rect', {class: 'ik-sepia', x: 0, y: 0, width: W, height: H, fill: C.ochre, 'fill-opacity': 0.2}), s('rect', {class: 'ik-flick', x: 0, y: 0, width: W, height: H, fill: INK, 'fill-opacity': 0.08})];
+  for (let i = 0; i < (rich ? 3 : 1); i++) { const x = r1(W * (0.16 + 0.3 * i + R() * 0.1)); out.push(s('path', {class: 'ik-scr ik-scr' + i, d: `M${x} 0L${r1(x + (R() - 0.5) * 4)} ${H}`, fill: 'none', stroke: INK, 'stroke-width': r1(0.8 * Math.max(1, W / 200)), 'stroke-opacity': 0.4})); }
+  for (let i = 0; i < (rich ? 8 : 4); i++) out.push(s('circle', {class: 'ik-dust ik-dust' + i, cx: r1(W * (0.05 + 0.9 * R())), cy: r1(H * (0.05 + 0.9 * R())), r: r1((0.7 + R() * 1.2) * Math.max(1, W / 260)), fill: INK, 'fill-opacity': 0.5}));
+  return s('g', {class: 'ik-old', 'aria-hidden': 'true'}, ...out);
+}
+function inkWash(W, H) {
+  const blot = (i, cx, cy) => s('g', {class: 'ik-ink ik-ink' + i}, ...[1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4].map(k => [k, 0.19]).map(([k, a]) => s('ellipse', {cx: r1(cx), cy: r1(cy), rx: r1(W * 0.42 * k), ry: r1(H * 0.42 * k), fill: INK, 'fill-opacity': a})));
+  return s('g', {class: 'ik-inks', 'aria-hidden': 'true'}, blot(1, W * 0.62, H * 0.5), blot(2, W * 0.38, H * 0.48));
+}
+function drums(W, H) {
+  const out = [];
+  for (let i = 0; i < 3; i++) out.push(s('circle', {class: 'ik-drum ik-drum' + i, cx: r1(W * 0.5), cy: r1(H * 0.56), r: r1(Math.min(W, H) * 0.22), fill: 'none', stroke: INK, 'stroke-width': r1(2.2 * Math.max(1, W / 200)), 'stroke-opacity': 0.42}));
+  return s('g', {class: 'ik-drums', 'aria-hidden': 'true'}, ...out);
+}
+function volley(W, H, seed) {
+  const R = rng(seed + 57), k = Math.max(1, Math.min(1.6, W / 200)), out = [];
+  for (let v = 0; v < 2; v++) for (let i = 0; i < 7; i++) {
+    const x = r1(W * (0.55 + 0.4 * R())), y = r1(H * (0.02 + 0.22 * R())), L = 16 * k, dx = r1(-L * 0.9), dy = r1(L * 0.42), a = r1(3.2 * k), b = r1(2.6 * k);
+    out.push(s('g', {class: 'ik-arw ik-v' + v + ' ik-w' + i}, s('path', {d: `M${x} ${y}l${dx} ${dy}l${a} ${-b}m${-a} ${b}l${r1(3.8 * k)} ${r1(0.9 * k)}M${x} ${y}l${r1(2.6 * k)} ${r1(-2.4 * k)}M${x} ${y}l${a} ${r1(0.6 * k)}`, fill: 'none', stroke: INK, 'stroke-width': r1(1.1 * k), 'stroke-opacity': 0.78, 'stroke-linecap': 'round'})));
+  }
+  return s('g', {class: 'ik-volley', 'aria-hidden': 'true'}, ...out);
+}
+function warDust(W, H) {
+  return s('g', {class: 'ik-dsts', 'aria-hidden': 'true'}, ...[0.2, 0.5, 0.8].map((fx, i) => s('g', {class: 'ik-dst ik-dst' + i}, ...[[1, 0.16], [0.72, 0.14], [0.46, 0.12]].map(([k, a]) => s('ellipse', {cx: r1(W * fx), cy: r1(H * 0.9), rx: r1(W * 0.2 * k), ry: r1(H * 0.12 * k), fill: C.stone, 'fill-opacity': a})))));
+}
+function banners(W, H) {
+  const k = Math.max(1, Math.min(1.6, W / 200));
+  return s('g', {class: 'ik-bans', 'aria-hidden': 'true'}, ...[0.05, 0.12, 0.93].map((fx, i) => { const x = r1(W * fx), top = r1(H * (0.48 + 0.07 * (i % 2))), fl = r1(16 * k), fh = r1(11 * k), dr = fx > 0.5 ? -1 : 1;
+    return s('g', {class: 'ik-ban ik-ban' + i}, s('path', {d: `M${x} ${H}L${x} ${top}`, fill: 'none', stroke: INK, 'stroke-width': r1(1.6 * k), 'stroke-opacity': 0.82}),
+      s('path', {class: 'ik-flag', d: `M${x} ${r1(top + 1)}l${r1(dr * fl)} ${r1(fh * 0.25)}l${r1(-dr * fl * 0.25)} ${r1(fh * 0.4)}l${r1(dr * fl * 0.25)} ${r1(fh * 0.45)}l${r1(-dr * fl)} ${r1(-fh * 0.1)}z`, fill: C.indigoDeep, 'fill-opacity': 0.82, stroke: INK, 'stroke-opacity': 0.5, 'stroke-width': 0.6})); }));
+}
+function bigSun(W, H) {
+  const cx = r1(W * 0.5), cy = r1(H * 0.62), r = r1(Math.min(W, H) * 0.42);
+  return s('g', {class: 'ik-bsun', 'aria-hidden': 'true'}, s('circle', {cx, cy, r: r1(r * 1.25), fill: C.sun, 'fill-opacity': 0.1}), s('circle', {cx, cy, r, fill: C.sun, 'fill-opacity': 0.2}), s('circle', {cx, cy, r: r1(r * 0.8), fill: C.fireCore, 'fill-opacity': 0.18}));
+}
 /** 영화 덧칠 — 막마다 색 셋(그 묶음 색 · 차가운 쪽빛 · 금빛) · 여는 붓 획 · 날씨 두 겹 · (rich) 터짐 · 바람 · 빛 기둥 · 빛 한 줄기 · 번쩍 · 가장자리 그늘 둘 · 위아래 검은 띠 */
 export function filmLayers(fx, W, H, seed = 1, {bars = true, sweep = true, grade = true, vig = true, swash = true, rich = true} = {}) {
   const v = (i, al) => s('rect', {x: r1(1.5 + i * 3), y: r1(1.5 + i * 3), width: r1(W - 3 - i * 6), height: r1(H - 3 - i * 6), fill: 'none', stroke: INK, 'stroke-width': r1(4 + i * 2), 'stroke-opacity': al});
@@ -239,16 +278,23 @@ export function filmLayers(fx, W, H, seed = 1, {bars = true, sweep = true, grade
   return [grade ? s('rect', {class: 'ik-grade ik-gw', x: 0, y: 0, width: W, height: H, fill: GRADE[fx] ?? C.gold, 'fill-opacity': 0.07}) : null,
     grade ? s('rect', {class: 'ik-gc', x: 0, y: 0, width: W, height: H, fill: C.indigoDeep, 'fill-opacity': 0.16}) : null,
     grade ? s('rect', {class: 'ik-gg', x: 0, y: 0, width: W, height: H, fill: C.gold, 'fill-opacity': 0.15}) : null,
+    rich ? bigSun(W, H) : null,
     swash ? s('path', {class: 'ik-swash', d: sw, fill: INK, 'fill-opacity': 0.24}) : null,
     rich ? rays(W, H) : null,
     motes(fx, W, H, seed, na, 'a'),
     motes(fx, W, H, seed, nb, 'b'),
+    rich ? warDust(W, H) : null,
     rich ? gusts(W, H) : null,
+    rich ? volley(W, H, seed) : null,
     burst(W, H, seed, rich ? NC : LITE.c),
+    drums(W, H),
     sweep ? s('path', {class: 'ik-sweep', d: `M${r1(-W * 0.3)} 0h${r1(W * 0.12)}l${r1(-H * 0.4)} ${H}h${r1(-W * 0.12)}z`, fill: C.fireCore, 'fill-opacity': 0.28}) : null,
     s('rect', {class: 'ik-flash', x: 0, y: 0, width: W, height: H, fill: C.moon, 'fill-opacity': 0.85}),
+    rich ? banners(W, H) : null,
+    inkWash(W, H),
     vig ? s('g', {class: 'ik-vig', 'aria-hidden': 'true'}, v(0, 0.05), v(1, 0.035), v(2, 0.02)) : null,
     vig ? s('g', {class: 'ik-vig2', 'aria-hidden': 'true'}, v2(0, 0.12), v2(1, 0.08), v2(2, 0.05)) : null,
+    oldFilm(W, H, seed, rich),
     bars ? s('rect', {class: 'ik-bar ik-bar-t', x: 0, y: 0, width: W, height: r1(H * 0.034), fill: INK, 'fill-opacity': 0.88}) : null,
     bars ? s('rect', {class: 'ik-bar ik-bar-b', x: 0, y: r1(H - H * 0.034), width: W, height: r1(H * 0.034), fill: INK, 'fill-opacity': 0.88}) : null].filter(Boolean);
 }
