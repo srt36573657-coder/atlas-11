@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-11-16T10:30:36.193Z",
+ "at": "2026-11-16T13:54:14.239Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-16",
  "companies": 2557,
@@ -31,23 +31,21 @@
    }
   }
  },
- "seconds": 519,
+ "seconds": 502,
  "time": {
-  "old": 114.3,
-  "new": 181.3,
-  "wall": 519.5,
+  "old": 113.7,
+  "new": 166.8,
+  "wall": 502,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 22,
-  "oldShare": 38.7
+  "oldPct": 22.6,
+  "oldShare": 40.5
  },
  "net": {
-  "req": 2511,
-  "retry": 2,
-  "waitSec": 2,
-  "why": {
-   "UND_ERR_CONNECT_TIMEOUT": 2
-  },
+  "req": 2509,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
   "cut": 0,
   "page": {
    "retry": 0,
@@ -58,8 +56,8 @@
  },
  "counts": {
   "줄": 109443,
-  "숫자 낱말": 178671,
-  "따로 셈": 41248,
+  "숫자 낱말": 168444,
+  "따로 셈": 38691,
   "머리 셈": 43469,
   "고리": 2557,
   "회사": 2557,
