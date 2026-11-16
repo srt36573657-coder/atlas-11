@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-11-16T22:12:06.771Z",
- "kst": "2026-11-17 07:12",
+ "at": "2026-11-16T22:59:06.983Z",
+ "kst": "2026-11-17 07:59",
  "slot": null,
- "reason": "",
+ "reason": "08:00 회차",
  "ci": true,
  "version": "ml-v1",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-DufjMP/closes/20261116T221206Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-mHEtNu/closes/20261116T225907Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261116",
-  "sec": 106,
+  "sec": 93,
   "firstErrors": []
  },
  "asOf": "2026-11-16",
@@ -125,7 +125,7 @@
   "nEach": 111,
   "fail": 0,
   "ok": true,
-  "ms": 518,
+  "ms": 490,
   "lenses": [
    {
     "key": "apple",
@@ -140,7 +140,7 @@
     "name": "구글",
     "n": 111,
     "fail": 0,
-    "things": 641932,
+    "things": 641847,
     "first": []
    },
    {
@@ -148,7 +148,7 @@
     "name": "클로드",
     "n": 111,
     "fail": 0,
-    "things": 481545,
+    "things": 481494,
     "first": []
    },
    {
@@ -156,14 +156,14 @@
     "name": "CIA",
     "n": 111,
     "fail": 0,
-    "things": 185427,
+    "things": 185410,
     "first": []
    }
   ]
  },
  "home": {
   "ok": true,
-  "kst": "2026-11-17 07:15",
+  "kst": "2026-11-17 08:01",
   "live": false,
   "idx": true,
   "flows": true,
@@ -171,7 +171,7 @@
   "us": true,
   "stale": {},
   "errors": [],
-  "alerts": 1
+  "alerts": 0
  },
  "homeFetch": {
   "ok": 10,
@@ -214,17 +214,17 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 105.7
+   "sec": 92.9
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 3.4
+   "sec": 3.1
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 4.5
+   "sec": 4.1
   },
   {
    "name": "업종 정리",
@@ -234,32 +234,32 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 1.9
+   "sec": 1.7
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 10.5
+   "sec": 9.9
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 3.8
+   "sec": 3.3
   },
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 28.9
+   "sec": 22.3
   },
   {
    "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 30.9
+   "sec": 24.1
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 3.7
+   "sec": 3.3
   },
   {
    "name": "첫 화면 자료",
@@ -269,12 +269,12 @@
   {
    "name": "달력 셈",
    "code": 0,
-   "sec": 5.2
+   "sec": 4.9
   },
   {
    "name": "달력 따로 세기",
    "code": 0,
-   "sec": 3.1
+   "sec": 2.9
   },
   {
    "name": "조건 찾기 셈",
@@ -289,7 +289,7 @@
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 0.6
+   "sec": 0.5
   }
  ],
  "cond": {
