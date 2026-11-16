@@ -511,7 +511,7 @@ html.sj-sub #su > main.sj-pre { display: none; }
    끝 여운(18.3 ~ 22초): 잔잔한 날씨 · 번호 도장 꽝(19.6초) · 물결 · 카메라 숨 한 번 — 모두 22초 안에 끝(검사 ㉖ 22.5초)
    그림 속 움직임(막 1 ~ 7) = 그림마다 마지막 막이 반전(12.6초)에 오는 표(ik-n4 ~ ik-n6 · 일곱 막은 바탕 표)
    움직임을 줄여 둔 휴대폰 = ik-play 가 붙지 않음 → 멈춘 그림(날씨 · 빛 · 번쩍 · 바람 · 물결 · 터짐은 처음부터 안 보임) */
-#su svg.ik-film .ik-fx .ik-p, #su svg.ik-film .ik-sweep, #su svg.ik-film .ik-ring, #su svg.ik-film .ik-swash, #su svg.ik-film .ik-gc, #su svg.ik-film .ik-gg, #su svg.ik-film .ik-flash, #su svg.ik-film .ik-vig2, #su svg.ik-film .ik-ray, #su svg.ik-film .ik-q, #su svg.ik-film .ik-gu, #su svg.ik-film .ik-sepia, #su svg.ik-film .ik-flick, #su svg.ik-film .ik-scr, #su svg.ik-film .ik-dust, #su svg.ik-film .ik-ink, #su svg.ik-film .ik-drum, #su svg.ik-film .ik-arw, #su svg.ik-film .ik-ban, #su svg.ik-film .ik-dst, #su svg.ik-film .ik-bsun { opacity: 0; }
+#su svg.ik-film .ik-fx .ik-p, #su svg.ik-film .ik-sweep, #su svg.ik-film .ik-ring, #su svg.ik-film .ik-swash, #su svg.ik-film .ik-gc, #su svg.ik-film .ik-gg, #su svg.ik-film .ik-flash, #su svg.ik-film .ik-vig2, #su svg.ik-film .ik-ray, #su svg.ik-film .ik-q, #su svg.ik-film .ik-gu, #su svg.ik-film .ik-sepia, #su svg.ik-film .ik-flick, #su svg.ik-film .ik-scr, #su svg.ik-film .ik-dust, #su svg.ik-film .ik-ink, #su svg.ik-film .ik-drum, #su svg.ik-film .ik-arw, #su svg.ik-film .ik-ban, #su svg.ik-film .ik-dst, #su svg.ik-film .ik-bsun, #su svg.ik-film .ik-gd, #su svg.ik-film .ik-smk, #su svg.ik-film .ik-rank, #su svg.ik-film .ik-cav { opacity: 0; }
 #su svg.ik-film.ik-play .ik-swash { transform-box: fill-box; transform-origin: 0% 50%; animation: ik-swash 1.59s cubic-bezier(.3, .6, .3, 1) 0.18s 1 both; } /* 1막 — 여는 붓 한 획 */
 @keyframes ik-swash { 0% { opacity: 0; transform: scaleX(.05); } 25% { opacity: 1; } 55% { transform: none; } 100% { opacity: 0; transform: none; } }
 #su svg.ik-film.ik-play .ik-fade { animation-duration: 1.34s; }
@@ -563,7 +563,7 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-n4.ik-play .ik-s3 { animation-delay: 7.33s; }
 #su svg.ik-film.ik-n4.ik-play .ik-s4 { animation-delay: 12.59s; }
 #su svg.ik-film.ik-play .ik-cam { transform-box: view-box; transform-origin: 50% 50%; animation: ik-cam 22s ease-in-out 0s 1 both; } /* 카메라 — 1막 물러남 · 2막 다가가며 흔들림 둘 · 3막 물러남 · 여운 숨 한 번 */
-@keyframes ik-cam { 0% { transform: scale(1.12) translate(-3px, 2px); } 25% { transform: none; } 40% { transform: scale(1.06) translate(1px, -1px); } 40.6% { transform: scale(1.06) translate(-1.5px, 1px); } 41.2% { transform: scale(1.06) translate(1.5px, -.5px); } 41.8% { transform: scale(1.06) translate(1px, -1px); } 50% { transform: scale(1.12) translate(2px, -1px); } 51.4% { transform: scale(1.12) translate(0, 0); } 52% { transform: scale(1.12) translate(3.5px, -2px); } 52.6% { transform: scale(1.12) translate(2px, -1px); } 56% { transform: scale(1.13) translate(2px, -1px); } 83% { transform: none; } 92% { transform: scale(1.025); } 100% { transform: none; } }
+@keyframes ik-cam { 0% { transform: scale(1.12) translate(-3px, 2px); } 25% { transform: none; } 40% { transform: scale(1.06) translate(1px, -1px); } 40.6% { transform: scale(1.06) translate(-3.5px, 2px); } 41.2% { transform: scale(1.06) translate(3.5px, -1.5px); } 41.8% { transform: scale(1.06) translate(1px, -1px); } 50% { transform: scale(1.12) translate(2px, -1px); } 51.4% { transform: scale(1.12) translate(-2px, 1.5px); } 52% { transform: scale(1.12) translate(6px, -3.5px); } 52.6% { transform: scale(1.12) translate(2px, -1px); } 56% { transform: scale(1.13) translate(2px, -1px); } 83% { transform: none; } 92% { transform: scale(1.025); } 100% { transform: none; } }
 #su svg.ik-film .ik-bar-t { transform-origin: 50% 0%; }
 #su svg.ik-film .ik-bar-b { transform-origin: 50% 100%; }
 #su svg.ik-film.ik-play .ik-bar { transform-box: fill-box; animation: ik-bar 22s ease-in-out 0s 1 both; } /* 검은 띠 — 열림 · 2막 두꺼워짐 · 3막 다시 열림 */
@@ -714,21 +714,6 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-play .ik-drum2 { animation-delay: 6.97s; animation-duration: 0.86s; }
 @keyframes ik-drum { 0% { opacity: 0; transform: scale(.3); } 15% { opacity: 1; } 100% { opacity: 0; transform: scale(2.4); } }
 #su svg.ik-film.ik-play .ik-arw { transform-box: fill-box; transform-origin: 50% 50%; animation-name: ik-arrow; animation-timing-function: cubic-bezier(.35, .05, .75, 1); animation-iteration-count: 1; animation-fill-mode: both; } /* 화살 비 */
-#su svg.ik-film.ik-play .ik-v0.ik-w0 { animation-delay: 6.84s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v0.ik-w1 { animation-delay: 6.92s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v0.ik-w2 { animation-delay: 6.93s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v0.ik-w3 { animation-delay: 7s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v0.ik-w4 { animation-delay: 7.02s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v0.ik-w5 { animation-delay: 7.09s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v0.ik-w6 { animation-delay: 7.1s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v1.ik-w0 { animation-delay: 9.66s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v1.ik-w1 { animation-delay: 9.73s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v1.ik-w2 { animation-delay: 9.74s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v1.ik-w3 { animation-delay: 9.81s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v1.ik-w4 { animation-delay: 9.83s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v1.ik-w5 { animation-delay: 9.9s; animation-duration: 0.92s; }
-#su svg.ik-film.ik-play .ik-v1.ik-w6 { animation-delay: 9.91s; animation-duration: 0.92s; }
-@keyframes ik-arrow { 0% { opacity: 0; transform: translate(0, 0); } 10% { opacity: .95; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-820%, 650%); } }
 #su svg.ik-film.ik-play .ik-ban { transform-box: fill-box; transform-origin: 50% 100%; animation: ik-ban 6.72s ease-in-out 5.74s 1 both; } /* 깃발 셋 — 땅 끝에서 솟음 */
 #su svg.ik-film.ik-play .ik-ban1 { animation-delay: 5.9s; animation-duration: 6.72s; }
 #su svg.ik-film.ik-play .ik-ban2 { animation-delay: 6.05s; animation-duration: 6.72s; }
@@ -741,6 +726,56 @@ html.sj-sub #su > main.sj-pre { display: none; }
 @keyframes ik-wdust { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(-12%, -30%) scale(1.6); } }
 #su svg.ik-film.ik-play .ik-bsun { transform-box: fill-box; transform-origin: 50% 50%; animation: ik-bsun 5.87s ease-out 12.47s 1 both; } /* 3막 — 큰 해가 떠오름 */
 @keyframes ik-bsun { 0% { opacity: 0; transform: translateY(35%); } 25% { opacity: 1; transform: translateY(0); } 75% { opacity: .9; } 100% { opacity: 0; transform: translateY(-4%); } }
+/* ── 옛 싸움터(주문 1117-0320 · 사장님 2026-11-17(마카오) 02:20 「더 전쟁처럼해  고전  전쟁! 리얼하게  1시간이내에 작업 다해」) ──
+   2막 긴장(5.5 ~ 12.2초) — 싸움터 빛이 어두워짐 · 연기 기둥 셋(5.6 ~ 14초) · 창과 방패를 든 군사 열이 왼쪽에서 걸어 들어옴(5.8 ~ 11.8초) · 말 탄 군사 다섯이 오른쪽에서 달려듦(8.4 ~ 11.4초)
+   화살 비 세 번 × 열두 대(6.4 · 8 · 9.6초 · 활처럼 휘어 날아감 · 셋에 하나는 불화살) · 카메라가 더 세게 흔들림 · 모두 22초 안 · 한 번 · 끝에 사라짐 */
+#su svg.ik-film.ik-play .ik-gd { animation: ik-gd 22s linear 0s 1 both; } /* 싸움터 빛 — 어둡게 */
+@keyframes ik-gd { 0% { opacity: 0; } 24% { opacity: 0; } 30% { opacity: 1; } 54% { opacity: 1; } 57% { opacity: 0; } 100% { opacity: 0; } }
+#su svg.ik-film.ik-play .ik-smk { transform-box: fill-box; transform-origin: 50% 100%; animation: ik-smoke 8s ease-out 5.6s 1 both; } /* 연기 기둥 */
+#su svg.ik-film.ik-play .ik-smk1 { animation-delay: 6.4s; animation-duration: 8s; }
+#su svg.ik-film.ik-play .ik-smk2 { animation-delay: 6s; animation-duration: 8s; }
+@keyframes ik-smoke { 0% { opacity: 0; transform: translate(0, 0) scaleY(.2); } 20% { opacity: 1; } 70% { opacity: .9; } 100% { opacity: 0; transform: translate(-18%, -6%) scaleY(1.15); } }
+#su svg.ik-film.ik-play .ik-rank { transform-box: fill-box; animation: ik-rank 6s linear 5.8s 1 both; } /* 창과 방패를 든 군사 열 */
+@keyframes ik-rank { 0% { opacity: 0; transform: translate(0, 0); } 8% { opacity: 1; } 25% { transform: translate(27%, -1.5%); } 50% { transform: translate(54%, 0); } 75% { transform: translate(80%, -1.5%); } 92% { opacity: 1; } 100% { opacity: 0; transform: translate(107%, 0); } }
+#su svg.ik-film.ik-play .ik-cav { transform-box: fill-box; animation: ik-cav 3s cubic-bezier(.35, 0, .65, 1) 8.4s 1 both; } /* 말 탄 군사 다섯 — 달려듦 */
+@keyframes ik-cav { 0% { opacity: 0; transform: translate(0, 0); } 10% { opacity: 1; } 30% { transform: translate(-33%, -2%); } 55% { transform: translate(-60%, 0); } 80% { transform: translate(-88%, -2%); } 90% { opacity: 1; } 100% { opacity: 0; transform: translate(-110%, 0); } }
+#su svg.ik-film.ik-play .ik-v0.ik-w0 { animation-delay: 6.40s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w1 { animation-delay: 6.47s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w2 { animation-delay: 6.48s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w3 { animation-delay: 6.55s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w4 { animation-delay: 6.56s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w5 { animation-delay: 6.63s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w6 { animation-delay: 6.64s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w7 { animation-delay: 6.71s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w8 { animation-delay: 6.72s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w9 { animation-delay: 6.79s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w10 { animation-delay: 6.80s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w11 { animation-delay: 6.87s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w0 { animation-delay: 8.00s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w1 { animation-delay: 8.07s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w2 { animation-delay: 8.08s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w3 { animation-delay: 8.15s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w4 { animation-delay: 8.16s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w5 { animation-delay: 8.23s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w6 { animation-delay: 8.24s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w7 { animation-delay: 8.31s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w8 { animation-delay: 8.32s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w9 { animation-delay: 8.39s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w10 { animation-delay: 8.40s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w11 { animation-delay: 8.47s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w0 { animation-delay: 9.60s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w1 { animation-delay: 9.67s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w2 { animation-delay: 9.68s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w3 { animation-delay: 9.75s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w4 { animation-delay: 9.76s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w5 { animation-delay: 9.83s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w6 { animation-delay: 9.84s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w7 { animation-delay: 9.91s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w8 { animation-delay: 9.92s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w9 { animation-delay: 9.99s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w10 { animation-delay: 10.00s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w11 { animation-delay: 10.07s; animation-duration: 1.2s; }
+@keyframes ik-arrow { 0% { opacity: 0; transform: translate(0, 0) rotate(-10deg); } 10% { opacity: .95; } 50% { transform: translate(-430%, 180%) rotate(0deg); } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-860%, 640%) rotate(14deg); } }
 /* ── 그림 속 이야기 네 막(주문 1117-0102) — 꾀 쪽 큰 그림 바로 아래 · 그림이 그 막에 오면 그 줄이 밝아짐(22초 한 번 · 주문 1117-0250) · 끝 = 네 줄 모두 그대로 · 움직임을 줄인 휴대폰 = 네 줄 그대로 ── */
 #su .sj-kfig ol.sj-story { list-style: none; margin: 12px auto 0; padding: 0; max-width: 440px; display: grid; gap: 8px; }
 #su .sj-kfig ol.sj-story > li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); column-gap: 10px; align-items: baseline; padding: 10px 12px; border-left: 4px solid #D9C9AE; border-radius: 4px 10px 10px 4px; background-color: #FBF6EC; }

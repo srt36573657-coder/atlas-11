@@ -186,7 +186,7 @@ const GRADE = Object.freeze({gold: C.gold, leaf: C.indigo, ember: C.fire, rain: 
 export const fxOfK = k => FX[Math.floor((+String(k).slice(1) - 1) / 6)] ?? 'gold';
 export const FXLAND = Object.freeze({fall: 'snow', shake: 'rain', rise: 'gold', narrow: 'leaf', calm: 'petal'});
 export const FXHERO = Object.freeze({book: 'petal', castle: 'leaf', ledger: 'gold'});
-export const NA = 12, NB = 16, NC = 12, NG = 4, NR = 3; // 고요 · 여운 날씨 / 긴장 날씨 / 반전 금빛 터짐 / 바람 줄기 / 빛 기둥
+export const NA = 12, NB = 16, NC = 12, NG = 4, NR = 3, NV = 3, NW = 12; // 고요 · 여운 날씨 / 긴장 날씨 / 반전 금빛 터짐 / 바람 줄기 / 빛 기둥 / 화살 비 세 번 × 열두 대
 export const LITE = Object.freeze({a: 8, b: 10, c: 6}); // 첫 쪽 작은 그림 · 땅 · 손무 · 표지(빛 기둥 · 바람 줄기 없음 · 터짐 여섯)
 const UP = new Set(['gold', 'ember']);
 const star = (x, y, q, t) => `M${x} ${r1(y - q)}L${r1(x + q * t)} ${r1(y - q * t)}L${r1(x + q)} ${y}L${r1(x + q * t)} ${r1(y + q * t)}L${x} ${r1(y + q)}L${r1(x - q * t)} ${r1(y + q * t)}L${r1(x - q)} ${y}L${r1(x - q * t)} ${r1(y - q * t)}Z`; // 반짝임(네 꼭지 별) · 불티(마름모)
@@ -250,9 +250,10 @@ function drums(W, H) {
 }
 function volley(W, H, seed) {
   const R = rng(seed + 57), k = Math.max(1, Math.min(1.6, W / 200)), out = [];
-  for (let v = 0; v < 2; v++) for (let i = 0; i < 7; i++) {
-    const x = r1(W * (0.55 + 0.4 * R())), y = r1(H * (0.02 + 0.22 * R())), L = 16 * k, dx = r1(-L * 0.9), dy = r1(L * 0.42), a = r1(3.2 * k), b = r1(2.6 * k);
-    out.push(s('g', {class: 'ik-arw ik-v' + v + ' ik-w' + i}, s('path', {d: `M${x} ${y}l${dx} ${dy}l${a} ${-b}m${-a} ${b}l${r1(3.8 * k)} ${r1(0.9 * k)}M${x} ${y}l${r1(2.6 * k)} ${r1(-2.4 * k)}M${x} ${y}l${a} ${r1(0.6 * k)}`, fill: 'none', stroke: INK, 'stroke-width': r1(1.1 * k), 'stroke-opacity': 0.78, 'stroke-linecap': 'round'})));
+  for (let v = 0; v < NV; v++) for (let i = 0; i < NW; i++) { // 화살 비 세 번 × 열두 대(주문 1117-0320 「고전 전쟁! 리얼하게」) · 셋에 하나는 불화살(촉에 불씨)
+    const x = r1(W * (0.5 + 0.48 * R())), y = r1(H * (0.0 + 0.26 * R())), L = (14 + R() * 5) * k, dx = r1(-L * 0.9), dy = r1(L * 0.42), a = r1(3.2 * k), b = r1(2.6 * k);
+    out.push(s('g', {class: 'ik-arw ik-v' + v + ' ik-w' + i}, s('path', {d: `M${x} ${y}l${dx} ${dy}l${a} ${-b}m${-a} ${b}l${r1(3.8 * k)} ${r1(0.9 * k)}M${x} ${y}l${r1(2.6 * k)} ${r1(-2.4 * k)}M${x} ${y}l${a} ${r1(0.6 * k)}`, fill: 'none', stroke: INK, 'stroke-width': r1(1.1 * k), 'stroke-opacity': 0.8, 'stroke-linecap': 'round'}),
+      i % 3 === 1 ? s('circle', {cx: r1(x + dx), cy: r1(y + dy), r: r1(1.9 * k), fill: C.fireCore, 'fill-opacity': 0.95, stroke: C.sun, 'stroke-width': 0.5}) : null));
   }
   return s('g', {class: 'ik-volley', 'aria-hidden': 'true'}, ...out);
 }
@@ -269,6 +270,28 @@ function bigSun(W, H) {
   const cx = r1(W * 0.5), cy = r1(H * 0.62), r = r1(Math.min(W, H) * 0.42);
   return s('g', {class: 'ik-bsun', 'aria-hidden': 'true'}, s('circle', {cx, cy, r: r1(r * 1.25), fill: C.sun, 'fill-opacity': 0.1}), s('circle', {cx, cy, r, fill: C.sun, 'fill-opacity': 0.2}), s('circle', {cx, cy, r: r1(r * 0.8), fill: C.fireCore, 'fill-opacity': 0.18}));
 }
+/** 옛 싸움터(주문 1117-0320 · 사장님 2026-11-17(마카오) 02:20 「더 전쟁처럼해  고전  전쟁! 리얼하게  1시간이내에 작업 다해」)
+ *  2막 긴장 — 싸움터 빛(어둡게) · 연기 기둥(땅에서 피어올라 바람에 기욺) · 창과 방패를 든 군사 열(왼쪽에서 걸어 들어옴) · 말 탄 군사 다섯(오른쪽에서 달려듦)
+ *  사람 · 말은 먹 그림자(얼굴 0) · 모두 처음부터 안 보임 · 끝에 사라짐 */
+function smoke(W, H, n) {
+  return s('g', {class: 'ik-smks', 'aria-hidden': 'true'}, ...[0.13, 0.86, 0.5].slice(0, n).map((fx, i) => s('g', {class: 'ik-smk ik-smk' + i},
+    ...Array.from({length: 7}, (_, j) => { const t = j / 6; return s('ellipse', {cx: r1(W * (fx - 0.05 * t * t)), cy: r1(H * (0.97 - 0.62 * t)), rx: r1(W * (0.035 + 0.075 * t)), ry: r1(H * (0.05 + 0.045 * t)), fill: INK, 'fill-opacity': Math.round((0.24 - 0.12 * t) * 100) / 100}); }))));
+}
+function soldiers(W, H) {
+  const k = Math.max(0.9, Math.min(1.6, W / 200)), b = H * 0.925, F = [], S = []; // 발 = 두꺼워진 아래 검은 띠 바로 위
+  for (let i = 0; i < 10; i++) { const x = -W * 0.72 + i * W * 0.07 + (i % 2) * W * 0.012, p = (dx, dy) => r1(x + dx * k) + ' ' + r1(b + dy * k);
+    F.push(`M${p(-3, -12)}L${p(3, -12)}L${p(4, -3)}L${p(-4, -3)}Z`, `M${p(-2.2, -15)}A${r1(2.2 * k)} ${r1(2.2 * k)} 0 1 0 ${p(2.2, -15)}A${r1(2.2 * k)} ${r1(2.2 * k)} 0 1 0 ${p(-2.2, -15)}Z`, `M${p(3, -23)}L${p(4, -26)}L${p(5, -23)}Z`, `M${p(-6.5, -11)}L${p(-3, -11)}L${p(-3, -4)}L${p(-6.5, -4)}Z`);
+    S.push(`M${p(-2, -3)}L${p(-3, 2)}M${p(2, -3)}L${p(3, 2)}M${p(4, -23)}L${p(4, 2)}`); }
+  return s('g', {class: 'ik-rank', 'aria-hidden': 'true'}, s('path', {d: S.join(''), fill: 'none', stroke: INK, 'stroke-width': r1(1.2 * k), 'stroke-opacity': 0.85, 'stroke-linecap': 'round'}), s('path', {d: F.join(''), fill: INK, 'fill-opacity': 0.85}));
+}
+function cavalry(W, H) {
+  const k = Math.max(0.9, Math.min(1.6, W / 200)), b = H * 0.925, F = [], S = []; // 발 = 두꺼워진 아래 검은 띠 바로 위
+  for (let i = 0; i < 5; i++) { const x = W * 1.08 + i * W * 0.12, p = (dx, dy) => r1(x + dx * k) + ' ' + r1(b + dy * k);
+    F.push(`M${p(-8, -9)}C${p(-8, -12)} ${p(6, -12)} ${p(7, -9)}C${p(8, -6)} ${p(6, -5)} ${p(3, -5)}L${p(-5, -5)}C${p(-7, -5)} ${p(-8, -6)} ${p(-8, -9)}Z`, `M${p(-7, -9)}L${p(-11, -14)}L${p(-14.5, -13)}L${p(-12, -11)}L${p(-9, -7.5)}Z`,
+      `M${p(-2.5, -11)}L${p(0.5, -11)}L${p(0.5, -17)}L${p(-2.5, -17)}Z`, `M${p(-2.9, -19.2)}A${r1(1.9 * k)} ${r1(1.9 * k)} 0 1 0 ${p(0.9, -19.2)}A${r1(1.9 * k)} ${r1(1.9 * k)} 0 1 0 ${p(-2.9, -19.2)}Z`);
+    S.push(`M${p(-6, -5)}L${p(-9, 0)}M${p(-4, -5)}L${p(-2.5, 0)}M${p(3, -5)}L${p(0.5, 0)}M${p(5, -5)}L${p(8, 0)}M${p(7, -9)}C${p(10, -9)} ${p(11, -7)} ${p(12, -5)}M${p(-1, -15)}L${p(-17, -19)}`); }
+  return s('g', {class: 'ik-cav', 'aria-hidden': 'true'}, s('path', {d: S.join(''), fill: 'none', stroke: INK, 'stroke-width': r1(1.2 * k), 'stroke-opacity': 0.85, 'stroke-linecap': 'round'}), s('path', {d: F.join(''), fill: INK, 'fill-opacity': 0.85}));
+}
 /** 영화 덧칠 — 막마다 색 셋(그 묶음 색 · 차가운 쪽빛 · 금빛) · 여는 붓 획 · 날씨 두 겹 · (rich) 터짐 · 바람 · 빛 기둥 · 빛 한 줄기 · 번쩍 · 가장자리 그늘 둘 · 위아래 검은 띠 */
 export function filmLayers(fx, W, H, seed = 1, {bars = true, sweep = true, grade = true, vig = true, swash = true, rich = true} = {}) {
   const v = (i, al) => s('rect', {x: r1(1.5 + i * 3), y: r1(1.5 + i * 3), width: r1(W - 3 - i * 6), height: r1(H - 3 - i * 6), fill: 'none', stroke: INK, 'stroke-width': r1(4 + i * 2), 'stroke-opacity': al});
@@ -283,8 +306,12 @@ export function filmLayers(fx, W, H, seed = 1, {bars = true, sweep = true, grade
     rich ? rays(W, H) : null,
     motes(fx, W, H, seed, na, 'a'),
     motes(fx, W, H, seed, nb, 'b'),
+    grade ? s('rect', {class: 'ik-gd', x: 0, y: 0, width: W, height: H, fill: INK, 'fill-opacity': 0.2}) : null,
+    smoke(W, H, rich ? 3 : 2),
     rich ? warDust(W, H) : null,
     rich ? gusts(W, H) : null,
+    rich ? soldiers(W, H) : null,
+    rich ? cavalry(W, H) : null,
     rich ? volley(W, H, seed) : null,
     burst(W, H, seed, rich ? NC : LITE.c),
     drums(W, H),
