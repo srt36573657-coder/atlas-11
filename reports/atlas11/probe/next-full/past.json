@@ -1,5 +1,5 @@
 {
- "made": "2026-11-15T21:40:43.499Z",
+ "made": "2026-11-16T05:45:14.161Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -37,30 +37,32 @@
   }
  },
  "counts": {
-  "맞댄 칸": 191750,
-  "숫자 낱말": 406888,
-  "맨 위 결 한 줄": 7670,
-  "선 누르기": 7670,
+  "맞댄 칸": 191725,
+  "숫자 낱말": 418870,
+  "맨 위 결 한 줄": 7669,
+  "선 누르기": 7669,
   "화면(기간)": 7671,
   "회사": 2557,
-  "기간 값 없음": 1,
+  "기간 값 없음": 2,
   "없는 번호": 1,
   "폭 화면": 120
  },
  "fails": [],
  "warn": [
   "기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일",
-  "옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
+  "옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "기간 값 없음(옛 쪽 맞대기 건너뜀) 028080 20거래일",
+  "옛 쪽 화면 오류 028080 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
  ],
- "sec": 726,
+ "sec": 685,
  "time": {
-  "old": 186.4,
-  "new": 560,
-  "wall": 726.5,
-  "opensOld": 25569,
-  "opensNew": 33281,
-  "oldPct": 25.7,
-  "oldShare": 25
+  "old": 269.6,
+  "new": 453.5,
+  "wall": 684.9,
+  "opensOld": 25567,
+  "opensNew": 33280,
+  "oldPct": 39.4,
+  "oldShare": 37.3
  },
  "net": {
   "req": 2560,
