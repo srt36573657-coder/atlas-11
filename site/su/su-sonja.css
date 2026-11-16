@@ -503,6 +503,69 @@ html.sj-sub #su > main.sj-pre { display: none; }
 @keyframes ik-shake { 0% { transform: translateX(0); } 20% { transform: translateX(-3px); } 40% { transform: translateX(3px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(1px); } }
 #su svg.ik-wait:not(.ik-play) .ik-m { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { #su svg.ik-play .ik-m { animation: none !important; } #su svg.ik-wait .ik-m { opacity: 1; } }
+/* ── 영화 한 편(주문 1116-2310 · 사장님 2026-11-16(마카오) 22:10 「그림을 더 화려하게 혁신적으로 더 풍성하게 더 많이 움직이게 하라 한편에 영화처럼 중국 영화처럼 말이다 11처짜리 말이다」) ──
+   svg.ik-film = 11초짜리 한 편(한 번 · 끝 모습 = 멈춘 그림) · 막 1 ~ 7 = 0.3 · 1.5 · 2.9 · 4.4 · 5.9 · 7.4 · 8.8초(막마다 1.8초) · 카메라 11초(당겨 있다가 물러남) · 검은 띠 열림 0.1 ~ 1.9초
+   장면 색 0.2 ~ 2.6초 · 빛 한 줄기 5.6 ~ 7.6초 · 끝 도장 9.6 ~ 10.3초 · 물결 9.9 ~ 11.1초 · 티끌 열여덟 0.5 ~ 11.0초 · 여는 붓 한 획 0.2 ~ 2.8초(묶음 여섯마다 날씨) — 모두 11.5초 안에 끝(검사 ㉖)
+   움직임을 줄여 둔 휴대폰 = ik-play 가 붙지 않음 → 멈춘 그림(티끌 · 빛 줄기 · 물결은 처음부터 안 보임) */
+#su svg.ik-film .ik-fx .ik-p, #su svg.ik-film .ik-sweep, #su svg.ik-film .ik-ring, #su svg.ik-film .ik-swash { opacity: 0; }
+#su svg.ik-film.ik-play .ik-swash { transform-box: fill-box; transform-origin: 0% 50%; animation: ik-swash 2.6s cubic-bezier(.3, .6, .3, 1) .2s 1 both; } /* 여는 붓 한 획 */
+@keyframes ik-swash { 0% { opacity: 0; transform: scaleX(.05); } 25% { opacity: 1; } 55% { transform: none; } 100% { opacity: 0; transform: none; } }
+#su svg.ik-film.ik-play .ik-m { animation-duration: 1.8s; }
+#su svg.ik-film.ik-play .ik-s1 { animation-delay: 0.3s; }
+#su svg.ik-film.ik-play .ik-s2 { animation-delay: 1.5s; }
+#su svg.ik-film.ik-play .ik-s3 { animation-delay: 2.9s; }
+#su svg.ik-film.ik-play .ik-s4 { animation-delay: 4.4s; }
+#su svg.ik-film.ik-play .ik-s5 { animation-delay: 5.9s; }
+#su svg.ik-film.ik-play .ik-s6 { animation-delay: 7.4s; }
+#su svg.ik-film.ik-play .ik-s7 { animation-delay: 8.8s; }
+#su svg.ik-film.ik-play .ik-cam { transform-box: view-box; transform-origin: 50% 50%; animation: ik-cam 11s cubic-bezier(.25, .55, .3, 1) 0s 1 both; }
+@keyframes ik-cam { from { transform: scale(1.14) translate(-3px, 2px); } to { transform: none; } }
+#su svg.ik-film .ik-bar-t { transform-origin: 50% 0%; }
+#su svg.ik-film .ik-bar-b { transform-origin: 50% 100%; }
+#su svg.ik-film.ik-play .ik-bar { transform-box: fill-box; animation: ik-bar 1.8s cubic-bezier(.6, 0, .2, 1) .1s 1 both; }
+@keyframes ik-bar { from { transform: scaleY(7); } to { transform: none; } }
+#su svg.ik-film.ik-play .ik-grade { animation: ik-grade 2.4s ease-out .2s 1 both; }
+@keyframes ik-grade { from { opacity: 0; } to { opacity: 1; } }
+#su svg.ik-film.ik-play .ik-sweep { animation: ik-sweep 2s ease-in-out 5.6s 1 both; }
+@keyframes ik-sweep { 0% { opacity: 0; transform: translateX(0); } 25% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; transform: translateX(330px); } }
+#su svg.ik-hero.ik-film.ik-play .ik-sweep, #su svg.ik-land.ik-film.ik-play .ik-sweep, #su svg.sj-artfx.ik-film.ik-play .ik-sweep { animation-name: ik-sweepw; } /* 넓은 그림은 더 멀리 지나감 */
+@keyframes ik-sweepw { 0% { opacity: 0; transform: translateX(0); } 25% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; transform: translateX(640px); } }
+#su svg.ik-film.ik-play .ik-stamp { transform-box: fill-box; transform-origin: 50% 50%; animation: ik-stamp .7s cubic-bezier(.3, 1.5, .5, 1) 9.6s 1 both; }
+@keyframes ik-stamp { from { opacity: 0; transform: scale(2.1); } 65% { opacity: 1; transform: scale(.9); } to { opacity: 1; transform: none; } }
+#su svg.ik-film.ik-play .ik-ring { transform-box: fill-box; transform-origin: 50% 50%; animation: ik-ring 1.2s ease-out 9.9s 1 both; }
+@keyframes ik-ring { from { opacity: 0; transform: scale(.5); } 12% { opacity: .8; } to { opacity: 0; transform: scale(2.3); } }
+#su svg.ik-film.ik-play .ik-fx .ik-p { transform-box: fill-box; transform-origin: 50% 50%; animation-timing-function: linear; animation-iteration-count: 1; animation-fill-mode: both; }
+#su svg.ik-film.ik-play .ik-fx[data-fx="gold"] .ik-p { animation-name: ik-up; }
+#su svg.ik-film.ik-play .ik-fx[data-fx="ember"] .ik-p { animation-name: ik-ember; }
+#su svg.ik-film.ik-play .ik-fx[data-fx="leaf"] .ik-p { animation-name: ik-leaf; }
+#su svg.ik-film.ik-play .ik-fx[data-fx="petal"] .ik-p { animation-name: ik-petal; }
+#su svg.ik-film.ik-play .ik-fx[data-fx="snow"] .ik-p { animation-name: ik-snow; }
+#su svg.ik-film.ik-play .ik-fx[data-fx="rain"] .ik-p { animation-name: ik-rain; }
+#su svg.ik-film.ik-play .ik-p0 { animation-delay: 0.50s; animation-duration: 2.6s; }
+#su svg.ik-film.ik-play .ik-p1 { animation-delay: 0.93s; animation-duration: 2.8s; }
+#su svg.ik-film.ik-play .ik-p2 { animation-delay: 1.36s; animation-duration: 3.0s; }
+#su svg.ik-film.ik-play .ik-p3 { animation-delay: 1.79s; animation-duration: 3.2s; }
+#su svg.ik-film.ik-play .ik-p4 { animation-delay: 2.22s; animation-duration: 2.6s; }
+#su svg.ik-film.ik-play .ik-p5 { animation-delay: 2.65s; animation-duration: 2.8s; }
+#su svg.ik-film.ik-play .ik-p6 { animation-delay: 3.08s; animation-duration: 3.0s; }
+#su svg.ik-film.ik-play .ik-p7 { animation-delay: 3.51s; animation-duration: 3.2s; }
+#su svg.ik-film.ik-play .ik-p8 { animation-delay: 3.94s; animation-duration: 2.6s; }
+#su svg.ik-film.ik-play .ik-p9 { animation-delay: 4.37s; animation-duration: 2.8s; }
+#su svg.ik-film.ik-play .ik-p10 { animation-delay: 4.80s; animation-duration: 3.0s; }
+#su svg.ik-film.ik-play .ik-p11 { animation-delay: 5.23s; animation-duration: 3.2s; }
+#su svg.ik-film.ik-play .ik-p12 { animation-delay: 5.66s; animation-duration: 2.6s; }
+#su svg.ik-film.ik-play .ik-p13 { animation-delay: 6.09s; animation-duration: 2.8s; }
+#su svg.ik-film.ik-play .ik-p14 { animation-delay: 6.52s; animation-duration: 3.0s; }
+#su svg.ik-film.ik-play .ik-p15 { animation-delay: 6.95s; animation-duration: 3.2s; }
+#su svg.ik-film.ik-play .ik-p16 { animation-delay: 7.38s; animation-duration: 2.6s; }
+#su svg.ik-film.ik-play .ik-p17 { animation-delay: 7.81s; animation-duration: 2.8s; }
+#su svg.ik-film.ik-play .ik-fx[data-fx="rain"] .ik-p { animation-duration: 1.3s; }
+@keyframes ik-up { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 1; } 80% { opacity: .9; } 100% { opacity: 0; transform: translate(7px, -66px); } }
+@keyframes ik-ember { 0% { opacity: 0; transform: translate(0, 0) scale(1); } 10% { opacity: 1; } 35% { opacity: .35; } 50% { opacity: 1; } 70% { opacity: .5; } 100% { opacity: 0; transform: translate(-9px, -74px) scale(.4); } }
+@keyframes ik-leaf { 0% { opacity: 0; transform: translate(0, 0) rotate(0deg); } 12% { opacity: 1; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-48px, 96px) rotate(260deg); } }
+@keyframes ik-petal { 0% { opacity: 0; transform: translate(0, 0) rotate(0deg); } 12% { opacity: 1; } 50% { transform: translate(-16px, 50px) rotate(150deg); } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-34px, 104px) rotate(310deg); } }
+@keyframes ik-snow { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 1; } 50% { transform: translate(9px, 52px); } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-6px, 106px); } }
+@keyframes ik-rain { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(-24px, 124px); } }
 
 /* ── 「왜 사?」 · 매매일지 · 찾지 못한 쪽(주문 1116-0300 — 옛 틀 · 옛 꾸밈을 지우고 손자병법 판으로 · 고르개는 #su .sj-page 안에서만) ── */
 #su .sj-page .su-two { display: grid; gap: 6px; }
@@ -591,6 +654,13 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su .sj-thc { flex: 1 1 100%; font-size: 1.0625rem; font-weight: 700; color: #6B4A3E; }
 #su .sj-thbar { display: block; width: 100%; height: 22px; margin-top: 2px; }
 #su svg.ik-anim.sj-thbar { background-image: none; }
+#su .sj-artfx { position: absolute; left: 0; top: 0; display: block; width: 100%; height: auto; aspect-ratio: 390 / 470; pointer-events: none; } /* 표지 영화 덧칠(주문 1116-2310) — 표지 그림 위에 꼭 겹침 */
+#su svg.ik-anim.sj-artfx { background-image: none; }
+#su svg.ik-film.sj-artfx .ik-m { opacity: 0; } /* 안개 · 새는 영화 동안만(끝 = 처음 표지 그대로) */
+#su svg.ik-film.sj-artfx.ik-play .ik-drift { animation: ik-mist 9s ease-in-out .5s 1 both; }
+#su svg.ik-film.sj-artfx.ik-play .ik-fly { animation: ik-birds 6s ease-in-out 4s 1 both; }
+@keyframes ik-mist { 0% { opacity: 0; transform: translateX(-80px); } 30% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; transform: translateX(120px); } }
+@keyframes ik-birds { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; transform: translate(260px, -60px); } }
 #su .sj-thv { margin: 0; font-size: 1.1875rem; line-height: 1.45; font-weight: 800; }
 #su .sj-thud { margin: 0; font-size: 1.0625rem; line-height: 1.45; font-weight: 700; color: #4A2C22; }
 #su .sj-thd > summary { min-height: 52px; }

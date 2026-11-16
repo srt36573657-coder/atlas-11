@@ -671,3 +671,31 @@ test('세 거름 · 큰 갈래 차례 — 흉내 내 보기 · 소거 · 꾀 뜻
   for (const m of css.matchAll(/#su \.sj-eq[^{]*\{[^}]*font-size: ([\d.]+)rem/g)) assert.ok(+m[1] * 16 >= 16, '글씨 16px 넘게 — ' + m[0].slice(0, 60));
   assert.ok(/㉘ 꾀 점수 자료/.test(ck) && /eqWant\(k\)/.test(ck), 'check_su — 꾀 점수 따로 셈 · 꾀 쪽 풀이 칸 맞댐');
 });
+
+/** 주문 1116-2310(사장님 2026-11-16(마카오) 22:10 「그림을 더 화려하게 혁신적으로 더 풍성하게 더 많이 움직이게 하라 한편에 영화처럼 중국 영화처럼 말이다 11처짜리 말이다」)
+    그림마다 11초짜리 한 편 — 한 번 놀고 멈춤 · 끝 모습 = 멈춘 그림 · 묶음 여섯마다 날씨 · 움직임 줄인 휴대폰 = 멈춘 그림 · 빨강 0 */
+test('영화 한 편 — 꾀 그림 · 쪽 머리 · 땅 · 손무 · 표지 덧칠이 11초 안에 한 번 · 묶음 여섯 날씨 · 움직임 줄이면 멈춘 그림(주문 1116-2310)', () => {
+  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const ink = rd('site/su/su-sonja-ink.js'), css = rd('site/su/su-sonja.css'), sj = rd('site/su/su-sonja.js');
+  // 그림 코드 — 꾀 그림은 카메라 묶음 · 덧칠 · 끝 도장 · 물결 · 묶음 여섯마다 날씨 · 쪽 머리(카메라) · 땅(그 땅 날씨 · 검은 띠 없음) · 손무 · 표지 덧칠
+  assert.ok(/export const FX = Object\.freeze\(\['gold', 'leaf', 'ember', 'rain', 'petal', 'snow'\]\);/.test(ink) && /export const fxOfK = k => FX\[Math\.floor\(\(\+String\(k\)\.slice\(1\) - 1\) \/ 6\)\]/.test(ink), '묶음 여섯 = 날씨 여섯(이김 금빛 · 맞섬 잎 · 공격 불티 · 혼란 비 · 연합 꽃비 · 패배 눈)');
+  assert.ok(/fl \? s\('g', \{class: 'ik-cam'\}, scene\) : scene/.test(ink) && /class: fl \? 'ik-stamp' : null/.test(ink) && /class: 'ik-ring'/.test(ink), '꾀 그림 — 카메라 · 끝 도장 · 물결');
+  assert.ok(/class:"ik-hero"[^)]*\),FXHERO\[what\]\?\?"gold",390,170,\{seed:3,cam:!0\}\)\)/.test(ink) && /FXLAND\[land\]\?\?"petal",W,H,\{seed:5,bars:!1\}\)\)/.test(ink) && /'petal', 200, 240, \{seed: 7, bars: false, sweep: false\}/.test(ink), '쪽 머리 · 땅 · 손무 그림도 한 편');
+  assert.ok(/export function coverFilm\(\)/.test(ink) && /aw\.insertBefore\(coverFilm\(\), aw\.querySelector\(':scope > \.sj-hwa'\)\)/.test(sj), '표지 덧칠(그림 파일은 그대로 — 그림 파일 안 꾸밈은 보안 규칙에 막힘)');
+  assert.ok(!/style:|\.style\.|innerHTML/.test(ink.slice(ink.indexOf('/* ── 영화 한 편'), ink.indexOf('/** 그림 부품 → 움직임'))), '글 속 style · innerHTML 0');
+  // 꾸밈 — 영화 그림의 움직임은 모두 11.5초 안에 끝(지연 + 길이) · 한 번 · 처음부터 안 보이는 덧칠(티끌 · 빛 줄기 · 물결 · 여는 붓 획)
+  const film = css.split('\n').filter(l => /^#su svg\.(ik-film|ik-hero\.ik-film|ik-land\.ik-film|sj-artfx)/.test(l));
+  assert.ok(film.length >= 30, '영화 칸 ' + film.length);
+  const sec = v => parseFloat(v);
+  for (const l of film) {
+    const m = /animation: ([\w-]+) ([\d.]+)s [^;]*?([\d.]+)s 1 both/.exec(l); if (m) assert.ok(sec(m[2]) + sec(m[3]) <= 11.5, '11.5초 안 — ' + l.slice(0, 90));
+    const d = /animation-delay: ([\d.]+)s;(?: animation-duration: ([\d.]+)s;)?/.exec(l);
+    if (d && d[2]) assert.ok(sec(d[1]) + sec(d[2]) <= 11.5, '11.5초 안 — ' + l.slice(0, 90));
+    if (d && !d[2] && /\.ik-s\d/.test(l)) assert.ok(sec(d[1]) + 1.8 <= 11.5, '막 끝 11.5초 안 — ' + l.slice(0, 90));
+    assert.ok(!/infinite/.test(l), '한 번만 — ' + l.slice(0, 80));
+  }
+  assert.ok(/#su svg\.ik-film \.ik-fx \.ik-p, #su svg\.ik-film \.ik-sweep, #su svg\.ik-film \.ik-ring, #su svg\.ik-film \.ik-swash \{ opacity: 0; \}/.test(css), '덧칠은 놀 때만 보임(움직임 줄인 휴대폰 = 멈춘 그림)');
+  assert.ok(/@keyframes ik-cam \{ from \{ transform: scale\(1\.14\) translate\(-3px, 2px\); \} to \{ transform: none; \} \}/.test(css), '카메라 끝 = 제자리(멈춘 그림과 같음)');
+  for (const k of ['ik-up', 'ik-ember', 'ik-leaf', 'ik-petal', 'ik-snow', 'ik-rain']) assert.ok(new RegExp('@keyframes ' + k + ' \\{ 0% \\{ opacity: 0;[^\\n]*100% \\{ opacity: 0;').test(css), k + ' — 처음과 끝은 안 보임');
+  for (let i = 0; i < 18; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-p' + i + ' \\{').test(css), '티끌 칸 ' + i);
+});
