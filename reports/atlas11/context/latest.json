@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-16",
- "fetchedAt": "2026-11-16T07:51:30Z",
- "file": "reports/atlas11/context/2026-11-16/2026-11-16T07-51-30Z.json",
+ "fetchedAt": "2026-11-16T10:31:02Z",
+ "file": "reports/atlas11/context/2026-11-16/2026-11-16T10-31-02Z.json",
  "summary": {
   "day": "2026-11-16",
-  "fetchedAt": "2026-11-16T07:51:30Z",
+  "fetchedAt": "2026-11-16T10:31:02Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-16",
@@ -31,17 +31,17 @@
   },
   "news": {
    "stocks": 365,
-   "raw": 7208,
-   "distinct": 7157,
-   "republished": 51,
+   "raw": 7207,
+   "distinct": 7152,
+   "republished": 55,
    "sameArticle": 0,
-   "stocksWithTodayNews": 203,
-   "todayDistinct": 1308
+   "stocksWithTodayNews": 214,
+   "todayDistinct": 1432
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 786
+   "corporateActions": 787
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-16",
-     "value": 1335.2,
-     "changePct": -0.21
+     "value": 1334.6,
+     "changePct": -0.25
     },
     "rows": 10
    },
@@ -151,9 +151,9 @@
     "label": "국고채 3년",
     "factorId": "F03",
     "latest": {
-     "date": "2026-11-13",
-     "value": 3.756,
-     "changePct": 0.62
+     "date": "2026-11-16",
+     "value": 3.739,
+     "changePct": -0.45
     },
     "rows": 10
    },
@@ -162,9 +162,9 @@
     "label": "국고채 10년",
     "factorId": "F03",
     "latest": {
-     "date": "2026-11-13",
-     "value": 3.987,
-     "changePct": 1.63
+     "date": "2026-11-16",
+     "value": 3.982,
+     "changePct": -0.13
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 272,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,14 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-11-16",
-   "corporateActions": 786,
+   "corporateActions": 787,
    "recentActions": [
+    {
+     "code": "085660",
+     "title": "(주)차바이오텍 신주인수권부사채(해외신주인수권부사채포함)발행후만기전사채취득",
+     "publishedAt": "2026-11-16T16:57:34+09:00",
+     "word": "신주인수권"
+    },
     {
      "code": "020560",
      "title": "아시아나항공(주) (정정)회사합병 결정(종속회사의 주요경영사항)",
@@ -305,12 +311,6 @@
      "title": "(주)오뚜기 주식 소각 결정",
      "publishedAt": "2026-11-13T14:54:17+09:00",
      "word": "소각"
-    },
-    {
-     "code": "257720",
-     "title": "주식회사 실리콘투 자기주식취득 신탁계약 해지 결정",
-     "publishedAt": "2026-11-13T13:41:38+09:00",
-     "word": "자기주식"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-16",
-     "value": 1335.2,
+     "value": 1334.6,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -488,22 +488,22 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-11-13",
-   "calendarLagDays": 3,
+   "latestObservation": "2026-11-16",
+   "calendarLagDays": 0,
    "series": [
     {
      "series": "KR3YT=RR",
      "label": "국고채 3년",
-     "latestObservation": "2026-11-13",
-     "value": 3.756,
+     "latestObservation": "2026-11-16",
+     "value": 3.739,
      "unit": "percent",
      "sourceUrl": "https://api.stock.naver.com/marketindex/bond/KR3YT=RR/prices?page=1&pageSize=10"
     },
     {
      "series": "KR10YT=RR",
      "label": "국고채 10년",
-     "latestObservation": "2026-11-13",
-     "value": 3.987,
+     "latestObservation": "2026-11-16",
+     "value": 3.982,
      "unit": "percent",
      "sourceUrl": "https://api.stock.naver.com/marketindex/bond/KR10YT=RR/prices?page=1&pageSize=10"
     }
