@@ -12,7 +12,7 @@ import {kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js';
 import {topBar, stepTag, endSec, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
-import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin, funnel36} from '/su/su-sonja.js';
+import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin, funnel36, eqBox} from '/su/su-sonja.js';
 import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날의 바탕 글(su21_s36.py 그대로)
 import {kkoePic, ridgePic, heroPic, brushBar, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 손무의 이야기: 제3장 꾀를 펼치다 · 제4장 성을 살피다 · 장부 · 병서)
 import {kkoeTile} from '/su/su-sonja.js';
@@ -149,6 +149,7 @@ export async function vKkoe(X, k) {
       h('p', {class: 'sj-lead', 'data-say': '', text: g.say[k]}),
       vol ? h('p', {class: 'sj-note', text: '이 꾀는 그날 사고판 양 자료가 있어야 골라요.'}) : null,
       funnel36(g, k), // 세 거름을 지난 수(주문 1116-1539 — 소거 · 꾀 뜻 · 흉내 내 보기를 모두 지난 곳만)
+      eqBox(k), // 꾀 점수 풀이(주문 1116-2134 — 수학 식 · 정서 식 · 이렇게 해서 찾아낸 회사)
       h('details', {class: 'sj-drawer sj-src'}, h('summary', {}, h('span', {class: 'sj-s1', text: '이름과 고르는 법은 어디서 왔나요'}), chev()),
         h('p', {class: 'sj-note', text: '꾀 이름과 뜻은 옛 병법 그대로예요. 고르는 법은 ' + josa(NAME, '가') + ' 그 뜻을 주식 값에 빗대어 정했어요.'})),
       endSeal('법')),
@@ -161,9 +162,9 @@ export async function vKkoe(X, k) {
         h('p', {class: 'sj-note', text: '화살 열은 지난 같은 땅 싸움 열 번이에요. 꺾인 화살이 잃은 몫이에요.'})) : null,
       h('p', {class: 'sj-safe', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
       endSeal('기록')),
-    h('section', {class: 'sj-sec sj-kco', 'aria-label': '오늘 이 꾀를 닮은 곳', 'data-n': String(L.length)},
-      head('곳', '제3장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '오늘 이 꾀를 닮은 곳'}), h('span', {class: 'sj-h2n', text: ' ' + L.length + '곳'}))),
-      h('p', {class: 'sj-dayl', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 점선은 한 달 전 값이에요. ' : '') + '사도 된다는 뜻이 아니에요.'}),
+    h('section', {class: 'sj-sec sj-kco', 'aria-label': '이렇게 해서 찾아낸 곳', 'data-n': String(L.length)}, // 주문 1116-2134 「이헎개 해서 찾아낸 종목이라고 하라」
+      head('곳', '제3장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이렇게 해서 찾아낸 곳'}), h('span', {class: 'sj-h2n', text: ' ' + L.length + '곳'}))),
+      h('p', {class: 'sj-dayl', text: (L.length ? '제1장의 식으로 점수를 매겨 찾아낸 회사예요. ' : '') + (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 점선은 한 달 전 값이에요. ' : '') + '사도 된다는 뜻이 아니에요.'}),
       L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: g.fallback ? '오늘 고른 곳 자료를 아직 받지 못했어요.' : none36(g.why?.[k])}),
       endSeal('곳')),
     me ? h('section', {class: 'sj-sec sj-kst', 'aria-label': '이 꾀 정산', 'data-st': me.st},

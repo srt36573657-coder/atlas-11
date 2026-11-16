@@ -500,6 +500,9 @@ json.dump({'schema': 'su21-s36-1', 'asOf': {'board': b['asOf'], 'data': _vday}, 
            'funnel': S36R.get('funnel'), 'pick': {'rule': S36.RULE_ID, 'runs': S36.MC_RUNS, 'paths': S36.MC_PATHS, 'p': S36.MC_P, 'sure': S36.MC_SURE, 'hist': S36.MC_HIST,
                     'cut': [n for _, n in S36.CUT], 'angles': [n for _, n in S36.ANGLES], 'src': 'docs/design/sonja-pick-2026-11-16/order-1539.txt'},
            'themes': {'rule': 'themes-v1', 'top': 5, 'rows': THEMES, 'src': 'docs/design/sonja-pick-2026-11-16/order-1601.txt'},
+           # 주문 1116-2134(사장님 2026-11-16(마카오) 20:34 「이 방정식을 36걔 병법에 올려라 각 방에 맞게 … 이헎개 해서 찾아낸 종목이라고 하라」) — 여섯 식 · 꾀마다 섞은 식 · 고른 곳마다 [꾀 점수, 식마다 차례, 식마다 값]
+           'mix': {'rule': S36.MIX_RULE, 'eq': {e: list(v) for e, v in S36.EQ.items()}, 'recipe': {k: [list(x) for x in v] for k, v in S36.MIX.items()},
+                   'val': S36R.get('mix') or {}, 'src': 'docs/design/sonja-eq6-2026-11-16/order-2134.txt'},
            'ind': {c: ind36(c) for c in sorted({c for L in S36R['lists'].values() for c in L}) if c in B}}, # 고른 회사마다 갈래 이름(검사가 큰 갈래를 따로 다시 셈)
           open(A.out.replace('su21.json', 'su21-s36.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음

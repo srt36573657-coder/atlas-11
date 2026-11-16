@@ -637,13 +637,16 @@ test('세 거름 · 큰 갈래 차례 — 흉내 내 보기 · 소거 · 꾀 뜻
   const py = src('scripts/atlas11/next/su21.py'), s36 = src('scripts/atlas11/next/su21_s36.py'), ck = src('scripts/atlas11/next/check_su.mjs');
   // 화면 글 — 영어 · 「%」 · 쓰지 않을 말 · 어려운 낱말 0 · 쪽 코드에 그대로 있음
   const said = ['꾀가 고른 회사, 큰 갈래 차례', '서른여섯 꾀 답에 회사가 많이 나온 갈래부터 ', '가지예요. 같은 일 하는 회사끼리 묶었어요.', '나온 회사 ', '곳 · 꾀 답에 ', '한 달 동안 100원이 평균 ', '한 달 값이 모자라 평균을 못 셌어요.', '오른 곳 ', ' · 내린 곳 ', ' · 그대로 ', '이 갈래 회사 ',
-    '많이 나온 차례예요. 많이 오른 차례가 아니에요.', '오늘은 꾀 뜻에 맞는 곳이 없어요. 다른 곳으로 채우지 않았어요.', '세 가지 거름을 모두 지난 곳 가운데 그 꾀를 가장 닮은 일곱 곳까지예요.', '곳을 세 가지로 걸렀어요.',
-    '열 가지로 빼고 남은 곳', '꾀 뜻에 맞는 곳', '흉내 내 보기를 지난 곳', '셋 다 지난 곳', '셋 다 지난 곳이 없어 오늘은 고르지 않았어요.', '그 가운데 꾀를 가장 닮은 7곳을 골랐어요.', '곳을 모두 골랐어요.',
-    '하나, 빼기 ', ' — 이런 곳만 남겨요.', '둘, 꾀 뜻', ' — 「고르는 법」에 적힌 값 모습과 맞아야 해요.', '셋, 흉내 내 보기', '번 다시 놓아 봐요. 우연으로 보기 어려울 때만 남겨요.', '셋 다 지난 곳이 일곱 곳보다 적으면 적은 대로 둬요. 다른 곳으로 채우지 않아요.'];
+    '많이 나온 차례예요. 많이 오른 차례가 아니에요.', '오늘은 꾀 뜻에 맞는 곳이 없어요. 다른 곳으로 채우지 않았어요.', '세 가지 거름을 모두 지난 곳 가운데, 점수가 높은 일곱 곳까지예요. 점수는 수학 식과 정서 식으로 매겨요.', '곳을 세 가지로 걸렀어요.',
+    '열 가지로 빼고 남은 곳', '꾀 뜻에 맞는 곳', '흉내 내 보기를 지난 곳', '셋 다 지난 곳', '셋 다 지난 곳이 없어 오늘은 고르지 않았어요.', '그 가운데 점수가 높은 7곳을 골랐어요.', '곳을 모두 골랐어요.',
+    '하나, 빼기 ', ' — 이런 곳만 남겨요.', '둘, 꾀 뜻', ' — 「고르는 법」에 적힌 값 모습과 맞아야 해요.', '셋, 흉내 내 보기', '번 다시 놓아 봐요. 우연으로 보기 어려울 때만 남겨요.', '셋 다 지난 곳이 일곱 곳보다 적으면 적은 대로 둬요. 다른 곳으로 채우지 않아요.',
+    '넷, 점수', ' — 꾀마다 수학 식과 정서 식을 골라 같은 무게로 더해요. 점수가 높은 차례로 일곱 곳까지 골라요.', // 꾀 점수(주문 1116-2134)
+    '수학 식 — 값이 움직인 모습', '정서 식 — 사람 마음이 남긴 흔적', '이렇게 점수를 매겨요', ' 식을 같은 무게로 더해 점수를 매겨요. 고르는 법에 맞는 곳 가운데 점수가 높은 차례로 골라요.',
+    '이렇게 해서 찾아낸 회사가 아래 제3장 「이렇게 해서 찾아낸 곳」이에요.', '이렇게 해서 찾아낸 곳', '제1장의 식으로 점수를 매겨 찾아낸 회사예요. '];
   const cutN = [...(/^CUT = \[([^\]]*)\]/m.exec(s36)?.[1] ?? '').matchAll(/\('\w+',\s*'([^']+)'\)/g)].map(m => m[1]); // 빼기 열 가지 이름(센 법 칸에 그대로 보임)
   assert.equal(cutN.length, 10, '빼기 열 가지 이름');
   for (const t of [...said, ...cutN]) {
-    assert.ok(cutN.includes(t) || sj.includes(t), '쪽 코드에 있음 — ' + t);
+    assert.ok(cutN.includes(t) || sj.includes(t) || kk.includes(t), '쪽 코드에 있음 — ' + t); // 꾀 쪽 글(su-sonja-kkoe.js)도
     assert.ok(!/[A-Za-z%]/.test(t) && !/[㐀-鿿]/.test(t), '영어 · 「%」 · 한자 0 — ' + t);
     assert.deepEqual([...screenHits(t), ...ruinHits(t)], [], '쓰지 않을 말 0 — ' + t);
     assert.deepEqual(W.HARD.filter(w => W.has(t, w)), [], '어려운 낱말 0 — ' + t);
@@ -656,9 +659,15 @@ test('세 거름 · 큰 갈래 차례 — 흉내 내 보기 · 소거 · 꾀 뜻
   assert.ok(/#su \.sj-thco \{[^}]*min-height: 52px/.test(css) && /#su svg\.ik-anim\.sj-thbar \{ background-image: none; \}/.test(css), '갈래 회사 단추 누름 48 넘게 · 붓 막대에 종이 결 없음');
   for (const m of css.matchAll(/#su \.sj-(?:th|fun|pick)[^{]*\{[^}]*font-size: ([\d.]+)rem/g)) assert.ok(+m[1] * 16 >= 17, '글씨 17px 넘게 — ' + m[0].slice(0, 60));
   // 자료 — 꾀 칸 자료에 거른 법 · 걸러진 수 · 큰 갈래 · 회사마다 갈래 · 꺾은선 = 꾀를 고른 값
-  assert.ok(/RULE_ID = 's36-v2'/.test(s36) && /^MC_RUNS = 10\b/m.test(s36) && /^MC_PATHS = 200\b/m.test(s36), 'su21_s36.py — s36-v2 · 흉내 내 보기 200번씩 10번');
+  assert.ok(/RULE_ID = 's36-v3'/.test(s36) && /^MC_RUNS = 10\b/m.test(s36) && /^MC_PATHS = 200\b/m.test(s36), 'su21_s36.py — s36-v3 · 흉내 내 보기 200번씩 10번');
   assert.ok(/NONE_MEAN = '꾀 뜻에 맞는 곳이 없어 고르지 않음'/.test(s36) && !/BON|가장 가까운 곳으로 채움/.test(s36.split('\n').filter(l => !l.trim().startsWith('#')).join('\n')), '모자라면 모자란 대로(채우지 않음)');
   assert.ok(/rows\.sort\(key=lambda r: \(-r\['n'\], -r\['hits'\], r\['name'\]\)\)/.test(py) && /'ind': \{c: ind36\(c\) for c in sorted/.test(py) && /'line': \{c: line36\(c\) for c in sorted/.test(py), 'su21.py — 회사 수 차례(같으면 나온 번) · 회사마다 갈래 · 꺾은선 = 꾀를 고른 값');
   const easy = /EASY_IND = (\{[^}]*\})/.exec(py); assert.ok(easy && !/[A-Za-z]/.test(Object.values(JSON.parse(easy[1].replace(/'/g, '"'))).join('')), '영어 든 갈래 이름 = 우리말');
   assert.ok(/㉘ 세 거름 자료/.test(ck) && /㉘ 꾀 뜻 = 고른 회사/.test(ck) && /㉘ 큰 갈래 다섯 자료/.test(ck) && /ol\.sj-stl, ol\.sj-thl'/.test(ck), 'check_su — 세 거름 · 꾀 뜻 · 큰 갈래 따로 셈 · 붓 막대 그림 뜻');
+  // 꾀 점수(주문 1116-2134 · 사장님 2026-11-16(마카오) 20:34 「이 방정식을 36걔 병법에 올려라 각 방에 맞게 … 이헎개 해서 찾아낸 종목이라고 하라」) — 차례 = 수학 식 + 정서 식 · 꾀 쪽마다 쉬운 풀이 · 찾아낸 곳
+  assert.ok(/Sc = \{k: mixscore\(k, T, Q\) for k in KINDS if k not in BY\}/.test(s36) && /Sc\.update\(\{k: mixscore\(k, T, Q\) for k in BY\}\)/.test(s36) && !/^def scores\(/m.test(s36), 'su21_s36.py — 차례 = 꾀 점수(옛 닮은 값 하나 차례 없앰)');
+  assert.ok(/'mix': \{'rule': S36\.MIX_RULE, 'eq':/.test(py), 'su21.py — 꾀 칸 자료에 여섯 식 · 섞은 식 · 고른 곳 점수');
+  assert.ok(/eqBox\(k\), \/\/ 꾀 점수 풀이/.test(kk) && /'aria-label': '이렇게 해서 찾아낸 곳'/.test(kk) && /export function eqBox\(k\)/.test(sj), '꾀 쪽 — 꾀 점수 풀이 칸 · 「이렇게 해서 찾아낸 곳」');
+  for (const m of css.matchAll(/#su \.sj-eq[^{]*\{[^}]*font-size: ([\d.]+)rem/g)) assert.ok(+m[1] * 16 >= 16, '글씨 16px 넘게 — ' + m[0].slice(0, 60));
+  assert.ok(/㉘ 꾀 점수 자료/.test(ck) && /eqWant\(k\)/.test(ck), 'check_su — 꾀 점수 따로 셈 · 꾀 쪽 풀이 칸 맞댐');
 });

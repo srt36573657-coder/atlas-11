@@ -282,6 +282,10 @@ test('서른여섯 꾀 바탕 글(su-sonja-36.js) = su21_s36.py --defs — 쉬�
   assert.deepEqual([...M.K36], defs.kinds, '꾀 차례 g01 ~ g36');
   for (const k of M.K36) { assert.equal(M.NAME[k], defs.name[k], k); assert.equal(M.HAN[k], defs.han[k], k); assert.equal(M.MEAN[k], defs.mean[k], k); assert.equal(M.SAY[k], defs.say[k], k); assert.equal(M.SETOF[k], defs.set[k], k); }
   assert.deepEqual({...M.BY}, defs.by, '사고판 양으로 고르는 다섯');
+  // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134) — 화면 바탕 글 = 셈 그대로(꾀 쪽 「이렇게 점수를 매겨요」 · 검사 ㉘ 가 자료와 맞댐)
+  assert.equal(M.MIXRULE, defs.mixRule); assert.deepEqual(JSON.parse(JSON.stringify(M.EQ36)), defs.eq, '여섯 식 글'); assert.deepEqual(JSON.parse(JSON.stringify(M.MIX36)), defs.mix, '꾀마다 섞은 식');
+  for (const k of M.K36) { const f = M.MIX36[k].map(([e]) => M.EQ36[e][0]); assert.ok(f.includes('수학') && f.includes('정서'), k + ' 수학 하나 이상 + 정서 하나 이상'); assert.equal(M.MIX36[k].some(([e]) => M.EQ36[e][1] === '쏠림'), k in M.BY, k + ' 쏠림 = 사고판 양 꾀만'); }
+  assert.equal(M.RULE, defs.rule, '거른 법 이름');
   const B = M.base36();
   assert.ok(B.fallback === true && B.schema === 'su21-s36-1' && B.kinds.length === 36 && Object.keys(B.lists).length === 0, '바탕 = 오늘 고른 곳 0');
   for (const t of [...Object.values(M.NAME), ...Object.values(M.MEAN), ...Object.values(M.SAY), ...M.SET6]) { assert.ok(!t.includes('%') && !/[A-Za-z]/.test(t), t); assert.deepEqual([...screenHits(t), ...ruinHits(t)], [], t); }

@@ -13,6 +13,7 @@ import {NAME, josa} from '/next/brand.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
 import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
+import {MIX36, EQ36} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {landPic, kkoePic, arrowsPic, sonmuPic, brushBar} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
 
@@ -68,13 +69,13 @@ export const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고
 export const NONE36 = '오늘은 꾀 뜻에 맞는 곳이 없어요. 다른 곳으로 채우지 않았어요.';
 /* ── 세 거름(주문 1116-1539 · 사장님 2026-11-16(마카오) 14:39 「몬테카를로 … 10번 돌리고 코로 10번 돌리고 … 일곱 가지를 필터링 … 말이 같아야 될 거 아니야」) ──
    꾀마다 소거 열 가지 · 꾀 뜻 · 흉내 내 보기(값을 섞어 200번씩 10번)를 모두 지난 곳만 · 걸러진 수 = 자료 funnel(su21_s36.py lists36 full) */
-export const PICK36 = 's36-v2';
+export const PICK36 = 's36-v3'; // 주문 1116-2134 — 세 거름은 그대로 · 차례는 꾀 점수(수학 식 + 정서 식)
 export const fun36 = (g, k) => { const f = g?.funnel?.[k], L = g?.lists?.[k];
   return g?.pick?.rule === PICK36 && f && ['n', 'cut', 'mean', 'mc', 'all', 'k'].every(x => Number.isInteger(f[x]) && f[x] >= 0) && f.all <= Math.min(f.cut, f.mean, f.mc)
     && Math.max(f.cut, f.mean, f.mc) <= f.n && f.k === Math.min(7, f.all) && Array.isArray(L) && L.length === f.k ? f : null; };
-export const LEAD36 = g => '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, ' + (g?.pick?.rule === PICK36 ? '세 가지 거름을 모두 지난 곳 가운데 그 꾀를 가장 닮은 일곱 곳까지예요.' : '그날 그 꾀를 가장 닮은 일곱 곳이에요.');
+export const LEAD36 = g => '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, ' + (g?.pick?.rule === PICK36 ? '세 가지 거름을 모두 지난 곳 가운데, 점수가 높은 일곱 곳까지예요. 점수는 수학 식과 정서 식으로 매겨요.' : '그날 그 꾀를 가장 닮은 일곱 곳이에요.');
 export const funW = f => [['열 가지로 빼고 남은 곳', f.cut], ['꾀 뜻에 맞는 곳', f.mean], ['흉내 내 보기를 지난 곳', f.mc], ['셋 다 지난 곳', f.all]];
-export const funK = f => (!f.all ? '셋 다 지난 곳이 없어 오늘은 고르지 않았어요.' : f.all > 7 ? '그 가운데 꾀를 가장 닮은 7곳을 골랐어요.' : '셋 다 지난 ' + f.all + '곳을 모두 골랐어요.');
+export const funK = f => (!f.all ? '셋 다 지난 곳이 없어 오늘은 고르지 않았어요.' : f.all > 7 ? '그 가운데 점수가 높은 7곳을 골랐어요.' : '셋 다 지난 ' + f.all + '곳을 모두 골랐어요.');
 /** 꾀 하나의 걸러진 수(고르는 법 칸 · 꾀 쪽) — 자료가 맞지 않으면 그리지 않음 */
 export function funnel36(g, k) {
   const f = fun36(g, k); if (!f) return null;
@@ -90,7 +91,25 @@ export function pickHow(g) {
     h('ul', {class: 'sj-pickcut'}, ...P.cut.map(t => h('li', {text: t}))),
     h('p', {class: 'sj-pick'}, h('b', {text: '둘, 꾀 뜻'}), h('span', {text: ' — 「고르는 법」에 적힌 값 모습과 맞아야 해요.'})),
     h('p', {class: 'sj-pick'}, h('b', {text: '셋, 흉내 내 보기'}), h('span', {text: ' — 지난 값을 섞어 ' + P.paths + '번씩 ' + P.runs + '번 다시 놓아 봐요. 우연으로 보기 어려울 때만 남겨요.'})),
+    h('p', {class: 'sj-pick'}, h('b', {text: '넷, 점수'}), h('span', {text: ' — 꾀마다 수학 식과 정서 식을 골라 같은 무게로 더해요. 점수가 높은 차례로 일곱 곳까지 골라요.'})),
     h('p', {class: 'sj-pick sj-picknone', text: '셋 다 지난 곳이 일곱 곳보다 적으면 적은 대로 둬요. 다른 곳으로 채우지 않아요.'})];
+}
+/* ── 꾀 점수 풀이(주문 1116-2134 · 사장님 2026-11-16(마카오) 20:34 「이 방정식을 36걔 병법에 올려라 각 방에 맞게 그리고 앚 쉽게 설명 하라 이헎개 해서 찾아낸 종목이라고 하라」) ──
+   꾀 쪽 「주식에서는 이렇게 골라요」 칸 — 이 꾀가 섞은 식(수학 식 · 정서 식)마다 「큰 곳 / 작은 곳」 쉬운 한 줄 · 같은 무게로 더한 점수 · 「이렇게 해서 찾아낸 회사」
+   식과 글 = su-sonja-36.js MIX36 · EQ36(su21_s36.py 그대로) · 검사 check_su ㉕ 나) · ㉘ 가 따로 셈 */
+export const EQF = Object.freeze({수학: '수학 식 — 값이 움직인 모습', 정서: '정서 식 — 사람 마음이 남긴 흔적'});
+export const eqRows = k => (Array.isArray(MIX36[k]) ? MIX36[k] : []).filter(([e, d]) => Array.isArray(EQ36[e]) && (d === 1 || d === -1)).map(([e, d]) => ({e, d, f: EQ36[e][0], six: EQ36[e][1], t: d > 0 ? EQ36[e][3] : EQ36[e][4]}));
+export const eqSum = n => (KN[n] ?? String(n)) + ' 식을 같은 무게로 더해 점수를 매겨요. 고르는 법에 맞는 곳 가운데 점수가 높은 차례로 골라요.';
+export const EQEND = '이렇게 해서 찾아낸 회사가 아래 제3장 「이렇게 해서 찾아낸 곳」이에요.';
+export function eqBox(k) {
+  const R = eqRows(k); if (!R.length || !R.some(r => r.f === '수학') || !R.some(r => r.f === '정서')) return null;
+  const fam = f => { const rs = R.filter(r => r.f === f);
+    return [h('p', {class: 'sj-eqf', text: EQF[f]}), h('ul', {class: 'sj-eqs', 'data-f': f}, ...rs.map(r => h('li', {'data-e': r.e, 'data-d': String(r.d)}, h('span', {class: 'sj-eqt', text: r.six}), h('span', {class: 'sj-eqw', text: r.t}))))]; };
+  return h('div', {class: 'sj-eq', 'data-k': k},
+    h('p', {class: 'sj-eqh', text: '이렇게 점수를 매겨요'}),
+    ...fam('수학'), ...fam('정서'),
+    h('p', {class: 'sj-eqk', text: eqSum(R.length)}),
+    h('p', {class: 'sj-eqend', text: EQEND}));
 }
 /* ── 1 머리 ── */
 /* ── 2 표지 · 형세 보고 ── */

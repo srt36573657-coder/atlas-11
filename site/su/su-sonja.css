@@ -613,4 +613,15 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su .sj-pickcut > li { position: relative; padding-left: 14px; font-size: 1.0625rem; line-height: 1.5; }
 #su .sj-pickcut > li::before { content: ''; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: #8A5A44; }
 #su .sj-picknone { font-weight: 800; }
+/* 꾀 점수 풀이(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」 · 수학 식 · 정서 식 · 이렇게 해서 찾아낸 회사) — 큰 글 · 모양 + 글(색만으로 뜻 0) */
+#su .sj-eq { margin: 12px 0 2px; padding: 10px 12px 12px; border: 1.5px solid #3B1A14; border-radius: 6px; background: #F7ECDF; }
+#su .sj-eqh { margin: 0; font-size: 1.25rem; line-height: 1.45; font-weight: 900; }
+#su .sj-eqf { margin: 12px 0 6px; font-size: 1.125rem; line-height: 1.5; font-weight: 800; color: #3B1A14; }
+#su .sj-eqs { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+#su .sj-eqs > li { display: flex; align-items: baseline; gap: 10px; font-size: 1.125rem; line-height: 1.5; }
+#su .sj-eqt { flex: none; box-sizing: border-box; width: 4.6em; padding: 1px 4px; border: 1.5px solid #8A5A44; border-radius: 999px; font-size: 1.0625rem; font-weight: 800; line-height: 1.45; text-align: center; color: #3B1A14; background: #F1E3D3; }
+#su .sj-eqs[data-f="정서"] .sj-eqt { border-style: dashed; }
+#su .sj-eqw { min-width: 0; font-weight: 700; }
+#su .sj-eqk { margin: 10px 0 0; font-size: 1.125rem; line-height: 1.55; font-weight: 700; }
+#su .sj-eqend { margin: 8px 0 0; padding-top: 8px; border-top: 1.5px dashed #B8A08E; font-size: 1.1875rem; line-height: 1.5; font-weight: 900; }
 @media (max-width: 345px) { #su .sj-pickcut, #su .sj-thcos { grid-template-columns: minmax(0, 1fr); } }

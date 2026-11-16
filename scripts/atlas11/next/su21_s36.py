@@ -9,48 +9,48 @@
 import hashlib
 import numpy as np
 
-RULE_ID = 's36-v2'   # 주문 1116-1539 — 흉내 내 보기 열 번 · 소거 열 가지 · 거름 일곱 가지를 모두 지난 곳만(옛 s36-v1 = 모자라면 덜 닮은 곳으로 채움)
+RULE_ID = 's36-v3'   # 주문 1116-2134 — 셋을 지난 곳 가운데 꾀 점수(수학 식 + 정서 식 · MIX) 차례 · 옛 s36-v2(주문 1116-1539) = 같은 세 거름 · 꾀를 닮은 값 하나의 차례 · 옛 s36-v1 = 모자라면 덜 닮은 곳으로 채움
 K = 7
 KINDS = ['g%02d' % i for i in range(1, 37)]
 # 꾀 이름(사자성어) · 쉬운 이름(화면 표) · 꾀 뜻 · 고르는 법 · 갈래
 SET = ['이길 때 쓰는 꾀', '맞설 때 쓰는 꾀', '칠 때 쓰는 꾀', '어지러울 때 쓰는 꾀', '함께 싸울 때 쓰는 꾀', '질 때 쓰는 꾀']
 DEF = [
-    ('만천과해', '몰래 바다 건너기', '하늘을 속이고 바다를 건너요.', '하루하루는 잔잔한데 한 달 동안 가장 꾸준히 오른 곳이에요.'),
+    ('만천과해', '몰래 바다 건너기', '하늘을 속이고 바다를 건너요.', '하루하루는 잔잔한데 한 달 동안 꾸준히 오른 곳이에요.'),
     ('위위구조', '딴 데 쳐서 구하기', '다른 곳을 쳐서 내 편을 구해요.', '닷새 동안 업종이 내릴 때 혼자 오른 곳이에요.'),
-    ('차도살인', '남의 칼 빌리기', '남의 칼을 빌려 싸워요.', '업종이 한 달 오르는 동안, 그 흐름을 가장 가깝게 따라 오른 곳이에요.'),
-    ('이일대로', '쉬다가 치기', '쉬면서 지친 적을 기다려요.', '오래 조용하다가 지난 닷새 가장 크게 힘을 낸 곳이에요.'),
+    ('차도살인', '남의 칼 빌리기', '남의 칼을 빌려 싸워요.', '업종이 한 달 오르는 동안, 그 흐름을 가깝게 따라 오른 곳이에요.'),
+    ('이일대로', '쉬다가 치기', '쉬면서 지친 적을 기다려요.', '오래 조용하다가 지난 닷새 힘을 낸 곳이에요.'),
     ('진화타겁', '불난 틈 타기', '불이 난 틈을 타요.', '한 달 안에 시장이 가장 크게 내린 날들에 오히려 오른 곳이에요.'),
     ('성동격서', '동쪽 소리 서쪽 치기', '동쪽에서 소리 내고 서쪽을 쳐요.', '어제는 내리고 오늘은 크게 오른 곳이에요.'),
     ('무중생유', '없는 데서 만들기', '없는 데서 있는 것을 만들어요.', '두 달 동안 좁게 움직이다가 오늘 그 위로 올라선 곳이에요.'),
-    ('암도진창', '몰래 다른 길 가기', '보이는 길을 고치는 척 몰래 다른 길로 가요.', '값은 거의 그대로인데 사고판 양이 가장 크게 늘어난 곳이에요.'),
-    ('격안관화', '강 건너 불 보기', '강 건너에서 불을 구경해요.', '석 달 동안 시장이 흔들려도 가장 덜 따라 움직인 곳이에요.'),
+    ('암도진창', '몰래 다른 길 가기', '보이는 길을 고치는 척 몰래 다른 길로 가요.', '값은 거의 그대로인데 사고판 양이 크게 늘어난 곳이에요.'),
+    ('격안관화', '강 건너 불 보기', '강 건너에서 불을 구경해요.', '석 달 동안 시장이 흔들려도 덜 따라 움직인 곳이에요.'),
     ('소리장도', '웃음 속 칼', '웃음 속에 칼을 숨겨요.', '한 달로는 올랐는데 지난 닷새는 내린 곳이에요.'),
     ('이대도강', '대신 쓰러지기', '복숭아나무 대신 오얏나무가 쓰러져요.', '닷새 동안 업종은 버티는데 혼자 크게 내린 곳이에요.'),
-    ('순수견양', '손에 걸린 양 끌기', '손에 걸린 양을 끌고 가요.', '스무 날 가운데 오른 날이 가장 많은 곳이에요.'),
-    ('타초경사', '풀 쳐서 뱀 놀래기', '풀을 쳐서 뱀을 놀라게 해요.', '오늘 사고판 양이 평소보다 가장 크게 늘어난 곳이에요.'),
-    ('차시환혼', '다시 살아나기', '남의 몸을 빌려 다시 살아나요.', '한 해 높은 값에서 크게 빠졌다가 한 달 사이 가장 크게 살아난 곳이에요.'),
-    ('조호리산', '범을 산에서 끌어내기', '범을 산에서 꾀어내요.', '반년 평균 값보다 가장 멀리 위로 나온 곳이에요.'),
+    ('순수견양', '손에 걸린 양 끌기', '손에 걸린 양을 끌고 가요.', '스무 날 가운데 오른 날이 더 많은 곳이에요.'),
+    ('타초경사', '풀 쳐서 뱀 놀래기', '풀을 쳐서 뱀을 놀라게 해요.', '오늘 사고판 양이 평소보다 크게 늘어난 곳이에요.'),
+    ('차시환혼', '다시 살아나기', '남의 몸을 빌려 다시 살아나요.', '한 해 높은 값에서 크게 빠졌다가 한 달 사이 크게 살아난 곳이에요.'),
+    ('조호리산', '범을 산에서 끌어내기', '범을 산에서 꾀어내요.', '반년 평균 값보다 멀리 위로 나온 곳이에요.'),
     ('욕금고종', '잡으려고 놓아주기', '잡으려면 먼저 놓아줘요.', '반년으로는 올랐는데 한 달은 쉬어 간 곳이에요.'),
     ('포전인옥', '벽돌 던져 옥 얻기', '벽돌을 던져 옥을 얻어요.', '그 앞 닷새 조금 오르고 지난 닷새 더 크게 오른 곳이에요.'),
-    ('금적금왕', '우두머리 잡기', '도적을 잡으려면 우두머리를 잡아요.', '업종마다 몸집 1등인 곳 가운데 업종이 한 달 가장 많이 오른 곳이에요.'),
-    ('부저추신', '솥 밑 장작 빼기', '솥 밑에서 장작을 빼요.', '석 달 동안 많이 올랐는데 요즘 사고판 양이 가장 크게 줄어든 곳이에요.'),
-    ('혼수모어', '흐린 물 고기 잡기', '물을 흐려 고기를 잡아요.', '지난 닷새 오르내림이 가장 거칠었던 곳이에요.'),
-    ('금선탈각', '허물 벗기', '매미가 허물을 벗고 떠나요.', '오늘 한 해 가장 높은 값을 가장 크게 넘어선 곳이에요.'),
-    ('관문착적', '문 닫고 도둑 잡기', '문을 닫고 도둑을 잡아요.', '스무 날 동안 오르내린 폭이 가장 좁은 곳이에요.'),
+    ('금적금왕', '우두머리 잡기', '도적을 잡으려면 우두머리를 잡아요.', '업종마다 몸집 1등인 곳 가운데 업종이 한 달 많이 오른 곳이에요.'),
+    ('부저추신', '솥 밑 장작 빼기', '솥 밑에서 장작을 빼요.', '석 달 동안 많이 올랐는데 요즘 사고판 양이 크게 줄어든 곳이에요.'),
+    ('혼수모어', '흐린 물 고기 잡기', '물을 흐려 고기를 잡아요.', '지난 닷새 오르내림이 거칠었던 곳이에요.'),
+    ('금선탈각', '허물 벗기', '매미가 허물을 벗고 떠나요.', '오늘 한 해 가장 높은 값을 넘어선 곳이에요.'),
+    ('관문착적', '문 닫고 도둑 잡기', '문을 닫고 도둑을 잡아요.', '스무 날 동안 오르내린 폭이 좁은 곳이에요.'),
     ('원교근공', '먼 데 사귀고 가까운 데 치기', '먼 나라와 사귀고 가까운 나라를 쳐요.', '석 달 동안 같은 업종보다 시장 전체와 더 닮게 움직인 곳이에요.'),
     ('가도벌괵', '길 빌려 치기', '길을 빌려 다른 나라를 쳐요.', '한 달 내리던 업종이 닷새 사이 돌아섰을 때 함께 크게 오른 곳이에요.'),
-    ('투량환주', '기둥 바꾸기', '대들보를 훔치고 기둥을 바꿔요.', '요즘 한 달 오르내림이 반년 평소보다 가장 크게 바뀐 곳이에요.'),
+    ('투량환주', '기둥 바꾸기', '대들보를 훔치고 기둥을 바꿔요.', '요즘 한 달 오르내림이 반년 평소보다 크게 바뀐 곳이에요.'),
     ('지상매괴', '빗대어 꾸짖기', '뽕나무를 가리키며 다른 나무를 꾸짖어요.', '한 달 동안 업종은 크게 내렸는데 혼자 버틴 곳이에요.'),
-    ('가치부전', '어리석은 척하기', '어리석은 척하되 흔들리지 않아요.', '한 해 높은 값보다 많이 낮은데 요즘 가장 잔잔한 곳이에요.'),
+    ('가치부전', '어리석은 척하기', '어리석은 척하되 흔들리지 않아요.', '한 해 높은 값보다 많이 낮은데 요즘 잔잔한 곳이에요.'),
     ('상옥추제', '지붕 올리고 사다리 치우기', '지붕에 올려 놓고 사다리를 치워요.', '한 달 크게 오르고 꼭대기에서 거의 안 내려온 곳이에요.'),
     ('수상개화', '나무에 꽃 달기', '나무에 꽃을 달아 크게 보여요.', '사고판 양은 평소보다 적은데 지난 닷새 크게 오른 곳이에요.'),
-    ('반객위주', '손님이 주인 되기', '손님이 주인 자리를 차지해요.', '석 달 동안 업종 몸집 1등보다 가장 많이 더 오른 곳이에요.'),
-    ('미인계', '미인 꾀', '아름다움으로 눈길을 끌어요.', '오늘 하루 가장 크게 오른 곳이에요. 하루 만에 꺾이는 일도 많아요.'),
-    ('공성계', '빈 성 꾀', '빈 성을 열어 두고 태연해요.', '한 달 사고판 양이 가장 적은데 값은 버틴 곳이에요.'),
-    ('반간계', '적 첩자 쓰기', '적의 첩자를 거꾸로 써요.', '석 달 동안 같은 업종과 가장 거꾸로 움직인 곳이에요.'),
-    ('고육계', '제 몸 다치기', '제 몸을 다쳐 적을 속여요.', '오늘 하루 가장 크게 내린 곳이에요. 내린 곳을 일부러 고른 기록이라 더 내릴 수도 있어요.'),
-    ('연환계', '고리 잇기', '꾀를 고리처럼 이어요.', '오른 날이 오늘까지 가장 길게 이어진 곳이에요.'),
-    ('주위상', '달아나기', '어려우면 달아나는 것이 가장 좋아요.', '한 달 동안 가장 많이 내린 곳이에요. 내린 곳을 일부러 고른 기록이라 더 내릴 수도 있어요.'),
+    ('반객위주', '손님이 주인 되기', '손님이 주인 자리를 차지해요.', '석 달 동안 업종 몸집 1등보다 많이 더 오른 곳이에요.'),
+    ('미인계', '미인 꾀', '아름다움으로 눈길을 끌어요.', '오늘 하루 크게 오른 곳이에요. 하루 만에 꺾이는 일도 많아요.'),
+    ('공성계', '빈 성 꾀', '빈 성을 열어 두고 태연해요.', '한 달 사고판 양이 적은데 값은 버틴 곳이에요.'),
+    ('반간계', '적 첩자 쓰기', '적의 첩자를 거꾸로 써요.', '석 달 동안 같은 업종과 거꾸로 움직인 곳이에요.'),
+    ('고육계', '제 몸 다치기', '제 몸을 다쳐 적을 속여요.', '오늘 하루 크게 내린 곳이에요. 내린 곳을 일부러 고른 기록이라 더 내릴 수도 있어요.'),
+    ('연환계', '고리 잇기', '꾀를 고리처럼 이어요.', '오른 날이 오늘까지 길게 이어진 곳이에요.'),
+    ('주위상', '달아나기', '어려우면 달아나는 것이 가장 좋아요.', '한 달 동안 많이 내린 곳이에요. 내린 곳을 일부러 고른 기록이라 더 내릴 수도 있어요.'),
 ]
 HAN = {k: d[0] for k, d in zip(KINDS, DEF)}
 NAME = {k: d[1] for k, d in zip(KINDS, DEF)}
@@ -264,22 +264,105 @@ def means(F, P, t):
     return {k: {a: np.asarray(v, bool) for a, v in d.items()} for k, d in M.items()}
 
 
-def scores(F, P, t):
-    """꾀를 닮은 만큼(큰 차례로 일곱) — 셋을 지난 곳끼리만 견줌"""
-    r1, r1p, r5, r5p, r20, r60, r120 = (F[x] for x in ('r1', 'r1p', 'r5', 'r5p', 'r20', 'r60', 'r120'))
-    i5, i20 = F['ind_r5'], F['ind_r20']
-    pt = P[:, t]
-    lo = F['leadOf']
+# ── 꾀 점수(s36-v3 · 주문 1116-2134 · 사장님 2026-11-16(마카오) 20:34 「이 방정식을 36걔 병법에 올려라 각 방에 맞게 그리고 앚 쉽게 설명 하라 이헎개 해서 찾아낸 종목이라고 하라」
+#    앞 주문 1116-2044(19:44 · 20:04 「… 정서적 계산과 수학적계산 방정식을 … 주식이 여러 기법들 … 그 공식을 … 여섯 까지 나열」) — docs/design/sonja-eq6-2026-11-16/brief.md · order-2134.txt)
+#   여섯 식 — 수학 셋(오름 · 흔들림 · 견줌) · 정서 셋(쏠림 · 들뜸 · 기억) · 꾀마다 그 뜻에 맞는 식을 수학 하나 이상 + 정서 하나 이상 고름(MIX)
+#   식마다 365곳 안 차례(0 = 가장 작음 · 1 = 가장 큼 · 같은 값은 평균 차례)로 바꾸고, 「큰 곳」 식은 차례 그대로 · 「작은 곳」 식은 1 − 차례 · 같은 무게로 더한 평균 = 꾀 점수(0~1)
+#   고르는 길은 그대로(빼기 열 가지 → 꾀 뜻 → 흉내 내 보기 → 일곱까지 · 채우지 않음) — 셋을 지난 곳 가운데 꾀 점수가 높은 차례(옛 「닮은 차례」 대신)
+#   쏠림(사고판 양)은 그날 사고판 양이 있어야 셈 — 사고판 양으로 고르는 다섯 꾀(BY)에만 · 나머지 서른하나의 정서 식은 값으로 세는 들뜸 · 기억
+#   바탕 연구(대부분 미국 주식 — 한국에서 같은지 모름 · brief.md): 오름 Jegadeesh · Titman 1993 · 흔들림 Ang 등 2006 · 견줌 Moskowitz · Grinblatt 1999 · 쏠림 Barber · Odean 2008 · 들뜸 Bali 등 2011 · 기억 George · Hwang 2004
+MIX_RULE = 'mix-v1'
+FAM = ('수학', '정서')
+SIX = ('오름', '흔들림', '견줌', '쏠림', '들뜸', '기억')
+EQ = {   # 식 하나 — 갈래 · 여섯 식 가운데 · 이름 · 큰 곳 글 · 작은 곳 글(꾀 쪽 「이렇게 찾아요」 칸이 그대로 씀 · 쉬운 말 · 「%」 · 영어 0)
+    'r1': ('수학', '오름', '하루 오름', '오늘 많이 오른 곳', '오늘 많이 내린 곳'),
+    'r1p': ('수학', '오름', '어제 오름', '어제 많이 오른 곳', '어제 많이 내린 곳'),
+    'r5': ('수학', '오름', '닷새 오름', '닷새 동안 많이 오른 곳', '닷새 동안 많이 내린 곳'),
+    'r20': ('수학', '오름', '한 달 오름', '한 달 동안 많이 오른 곳', '한 달 동안 많이 내린 곳'),
+    'r60': ('수학', '오름', '석 달 오름', '석 달 동안 많이 오른 곳', '석 달 동안 많이 내린 곳'),
+    'r120': ('수학', '오름', '반년 오름', '반년 동안 많이 오른 곳', '반년 동안 많이 내린 곳'),
+    'reb': ('수학', '오름', '바닥에서 오름', '한 달 가장 낮은 값에서 많이 오른 곳', '한 달 가장 낮은 값에 가까운 곳'),
+    'ma': ('수학', '오름', '반년 평균 위', '반년 평균 값보다 많이 위인 곳', '반년 평균 값보다 많이 아래인 곳'),
+    'up': ('수학', '오름', '오른 날 수', '스무 날 가운데 오른 날이 많은 곳', '스무 날 가운데 오른 날이 적은 곳'),
+    'run': ('수학', '오름', '잇단 오름', '오른 날이 길게 이어진 곳', '오른 날이 짧게 이어진 곳'),
+    'ind': ('수학', '오름', '업종 오름', '같은 일 하는 회사들이 한 달 많이 오른 곳', '같은 일 하는 회사들이 한 달 많이 내린 곳'),
+    'v5': ('수학', '흔들림', '닷새 흔들림', '닷새 동안 많이 흔들린 곳', '닷새 동안 잔잔한 곳'),
+    'v20': ('수학', '흔들림', '한 달 흔들림', '한 달 동안 많이 흔들린 곳', '한 달 동안 잔잔한 곳'),
+    'vq': ('수학', '흔들림', '앞 석 달 흔들림', '지난 닷새 앞 석 달 동안 많이 흔들린 곳', '지난 닷새 앞 석 달 동안 잔잔했던 곳'),
+    'w60': ('수학', '흔들림', '두 달 폭', '두 달 동안 오르내린 폭이 넓은 곳', '두 달 동안 오르내린 폭이 좁은 곳'),
+    'w20': ('수학', '흔들림', '한 달 폭', '한 달 동안 오르내린 폭이 넓은 곳', '한 달 동안 오르내린 폭이 좁은 곳'),
+    'vc': ('수학', '흔들림', '흔들림 바뀜', '한 달 흔들림이 반년 평소와 많이 달라진 곳', '한 달 흔들림이 반년 평소와 비슷한 곳'),
+    'x5': ('수학', '견줌', '업종보다 닷새', '닷새 동안 같은 일 하는 회사들보다 더 오른 곳', '닷새 동안 같은 일 하는 회사들보다 더 내린 곳'),
+    'x20': ('수학', '견줌', '업종보다 한 달', '한 달 동안 같은 일 하는 회사들보다 더 오른 곳', '한 달 동안 같은 일 하는 회사들보다 더 내린 곳'),
+    'xl': ('수학', '견줌', '1등보다 석 달', '석 달 동안 업종 몸집 1등보다 더 오른 곳', '석 달 동안 업종 몸집 1등보다 덜 오른 곳'),
+    'xw': ('수학', '견줌', '시장 내린 날', '시장이 크게 내린 날에 잘 버틴 곳', '시장이 크게 내린 날에 더 내린 곳'),
+    'ci': ('수학', '견줌', '업종 닮음', '같은 일 하는 회사들과 같이 움직인 곳', '같은 일 하는 회사들과 거꾸로 움직인 곳'),
+    'cm': ('수학', '견줌', '시장 닮음', '시장 전체와 같이 움직인 곳', '시장 전체와 덜 같이 움직인 곳'),
+    'q1': ('정서', '쏠림', '오늘 쏠림', '오늘 사고판 양이 평소보다 많은 곳', '오늘 사고판 양이 평소보다 적은 곳'),
+    'q5': ('정서', '쏠림', '닷새 쏠림', '닷새 동안 사고판 양이 평소보다 많은 곳', '닷새 동안 사고판 양이 평소보다 적은 곳'),
+    'q20': ('정서', '쏠림', '한 달 쏠림', '한 달 동안 사고판 양이 많은 곳', '한 달 동안 사고판 양이 적은 곳'),
+    'jump': ('정서', '들뜸', '들뜸', '한 달 안에 크게 뛴 하루가 있는 곳', '한 달 안에 크게 뛴 하루가 없는 곳'),
+    'mem': ('정서', '기억', '기억', '1년 가장 높은 값에 가까운 곳', '1년 가장 높은 값에서 먼 곳'),
+}
+VOLQ = ('q1', 'q5', 'q20')   # 사고판 양이 있어야 세는 식(쏠림)
+MIX = {   # 꾀마다 (식, 1 = 큰 곳 · -1 = 작은 곳) — 꾀 뜻(SAY)에 맞게 · 수학 하나 이상 + 정서 하나 이상
+    'g01': (('r20', 1), ('v20', -1), ('jump', -1)), 'g02': (('x5', 1), ('r5', 1), ('jump', -1)), 'g03': (('ci', 1), ('ind', 1), ('mem', 1)),
+    'g04': (('r5', 1), ('vq', -1), ('jump', 1)), 'g05': (('xw', 1), ('mem', 1)), 'g06': (('r1', 1), ('r1p', -1), ('jump', 1)),
+    'g07': (('w60', -1), ('r1', 1), ('mem', 1)), 'g08': (('v20', -1), ('q5', 1)), 'g09': (('cm', -1), ('jump', -1)),
+    'g10': (('r20', 1), ('r5', -1), ('mem', 1)), 'g11': (('x5', -1), ('mem', -1)), 'g12': (('up', 1), ('jump', -1)),
+    'g13': (('q1', 1), ('v5', 1)), 'g14': (('reb', 1), ('mem', -1)), 'g15': (('ma', 1), ('mem', 1)),
+    'g16': (('r120', 1), ('r20', -1), ('jump', -1)), 'g17': (('r5', 1), ('jump', 1)), 'g18': (('ind', 1), ('mem', 1)),
+    'g19': (('r60', 1), ('q5', -1)), 'g20': (('v5', 1), ('jump', 1)), 'g21': (('mem', 1), ('r1', 1)),
+    'g22': (('w20', -1), ('jump', -1)), 'g23': (('cm', 1), ('ci', -1), ('jump', -1)), 'g24': (('r5', 1), ('ci', 1), ('mem', -1)),
+    'g25': (('vc', 1), ('jump', 1)), 'g26': (('x20', 1), ('mem', 1)), 'g27': (('v20', -1), ('mem', -1), ('jump', -1)),
+    'g28': (('r20', 1), ('mem', 1)), 'g29': (('r5', 1), ('q5', -1)), 'g30': (('xl', 1), ('mem', 1)),
+    'g31': (('r1', 1), ('jump', 1)), 'g32': (('v20', -1), ('q20', -1)), 'g33': (('ci', -1), ('jump', -1)),
+    'g34': (('r1', -1), ('mem', -1)), 'g35': (('run', 1), ('jump', -1)), 'g36': (('r20', -1), ('mem', -1)),
+}
+assert sorted(MIX) == KINDS
+
+
+def _pct(x):
+    """365곳 안 차례 0~1(작은 값 0 · 큰 값 1 · 같은 값은 평균 차례 · 값이 없으면 nan)"""
+    x = np.asarray(x, float); out = np.full(len(x), np.nan); f = np.where(np.isfinite(x))[0]
+    if not len(f): return out
+    if len(f) == 1: out[f] = 0.5; return out
+    o = f[np.argsort(x[f], kind='mergesort')]; v = x[o]; i = 0
+    while i < len(o):
+        j = i
+        while j + 1 < len(o) and v[j + 1] == v[i]: j += 1
+        out[o[i:j + 1]] = (i + j) / 2 / (len(o) - 1); i = j + 1
+    return out
+
+
+def terms(F, P, t):
+    """여섯 식의 값(회사마다 · 값으로 세는 것 — 쏠림 셋은 lists36 의 사고판 양 칸에서 더함)"""
+    r60 = F['r60']; pt = P[:, t]; lo = F['leadOf']
     with np.errstate(invalid='ignore', divide='ignore'):
         r60l = np.where(lo >= 0, r60[np.maximum(lo, 0)], np.nan)
-        return {
-            'g01': r20 / (F['vol20'] * np.sqrt(20)), 'g02': r5 - i5, 'g03': i20 * np.clip(F['cind'], 0, None), 'g04': r5 / (F['volq'] * np.sqrt(5)),
-            'g05': F['onworst'], 'g06': r1 - r1p, 'g07': np.log(pt / F['hi60']) / np.maximum(F['rng60'], 0.02), 'g09': -np.abs(F['beta']),
-            'g10': np.minimum(r20, -r5), 'g11': i5 - r5, 'g12': F['up20'] - F['vol20'], 'g14': np.log(pt / F['lo20']), 'g15': np.log(pt / F['ma120']),
-            'g16': np.minimum(r120, -r20), 'g17': r5 - r5p, 'g18': np.where(F['lead'], F['indall20'], np.nan), 'g20': F['abs5'],
-            'g21': np.log(pt / F['hi250']), 'g22': -F['rng20'], 'g23': F['cmk'] - F['cind'], 'g24': r5, 'g25': np.abs(np.log(F['vol20'] / F['vol120'])),
-            'g26': r20 - i20, 'g27': -F['vol20'], 'g28': r20, 'g30': r60 - r60l, 'g31': r1, 'g33': -F['cind'], 'g34': -r1,
-            'g35': F['streak'] + np.nan_to_num(r5) / 10, 'g36': -r20}
+        return {'r1': F['r1'], 'r1p': F['r1p'], 'r5': F['r5'], 'r20': F['r20'], 'r60': r60, 'r120': F['r120'],
+                'reb': np.log(pt / F['lo20']), 'ma': np.log(pt / F['ma120']), 'up': F['up20'], 'run': F['streak'] + np.nan_to_num(F['r5']) / 10, 'ind': F['indall20'],
+                'v5': F['abs5'], 'v20': F['vol20'], 'vq': F['volq'], 'w60': F['rng60'], 'w20': F['rng20'], 'vc': np.abs(np.log(F['vol20'] / F['vol120'])),
+                'x5': F['r5'] - F['ind_r5'], 'x20': F['r20'] - F['ind_r20'], 'xl': r60 - r60l, 'xw': F['onworst'], 'ci': F['cind'], 'cm': F['cmk'],
+                'jump': F['maxday20'], 'mem': np.log(pt / F['hi250'])}
+
+
+def mixscore(k, T, Q=None):
+    """꾀 k 의 꾀 점수(회사마다 0~1 · 식 하나라도 값이 없으면 nan) · Q = 식마다 차례(나눠 씀)"""
+    Q = {} if Q is None else Q
+    acc = None
+    for e, d in MIX[k]:
+        if e not in Q: Q[e] = _pct(T[e])
+        s = Q[e] if d > 0 else 1.0 - Q[e]
+        acc = s.copy() if acc is None else acc + s
+    return acc / len(MIX[k])
+
+
+def mixrow(k, j, T, Q):
+    """고른 회사 하나의 꾀 점수 · 식마다 차례 · 값(자료 mix.val — 검사가 꺾은선 값으로 다시 셈)"""
+    q = [float(Q[e][j]) for e, _ in MIX[k]]
+    s = sum(x if d > 0 else 1.0 - x for x, (_, d) in zip(q, MIX[k])) / len(MIX[k])
+    return [round(s, 4), [round(x, 4) for x in q], [round(float(T[e][j]), 6) for e, _ in MIX[k]]]
 
 
 # ① 흉내 내 보기 — 꾀마다 (방법, 창, 쓰는 줄, 셈) · 줄: R 회사 · M 시장 · I 같은 업종 다른 회사 평균 · A 업종 평균 · L 업종 몸집 1등 · V 사고판 양(평소의 몇 배) · med 365곳 가운데 흔들림
@@ -425,15 +508,17 @@ def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=(), vmat=None, full
        · vol({번호: [[YYYYMMDD, 종가, 거래량], …]} 또는 None) · full = 판 날(흉내 내 보기를 365곳 모두 세어 걸러진 수를 남김)
        → {lists: {k: [번호 일곱까지]}, why: {k: 까닭}, volDay, volN, funnel(full 일 때 꾀마다 수)}"""
     if P is None or t < NEED_T:
-        return {'lists': {k: [] for k in KINDS}, 'why': {k: '지난 값이 모자라 못 셈' for k in KINDS}, 'volDay': None, 'volN': 0, 'funnel': None}
+        return {'lists': {k: [] for k in KINDS}, 'why': {k: '지난 값이 모자라 못 셈' for k in KINDS}, 'volDay': None, 'volN': 0, 'funnel': None, 'mix': {}}
     N = len(codes)
     F = feats(codes, IX, P, t, cap)
     C = cuts(codes, P, t, cap, late, F)
     cutAll = np.logical_and.reduce([C[x] for x, _ in CUT])
     dataOk = C['today'] & C['m21'] & C['y240']
-    Mn, Sc = means(F, P, t), scores(F, P, t)
+    Mn, T, Q = means(F, P, t), terms(F, P, t), {}
+    Sc = {k: mixscore(k, T, Q) for k in KINDS if k not in BY}   # 꾀 점수(주문 1116-2134)
+    at = {c: j for j, c in enumerate(codes)}
     day = dates[t] if dates is not None and t < len(dates) else 't%d' % t
-    L, why, fun = {}, {}, {}
+    L, why, fun, MV = {}, {}, {}, {}
 
     def one(k, mc, mk):
         cand = np.where(cutAll & mk)[0]
@@ -444,6 +529,7 @@ def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=(), vmat=None, full
         else:
             L[k] = _pick(k, cand, Sc[k], codes, mc)
         if not L[k]: why[k] = NONE_MEAN
+        MV[k] = {c: mixrow(k, at[c], T, Q) for c in L[k]}   # 고른 곳마다 꾀 점수 · 식마다 차례 · 값
 
     mc = _MC(F, t, day)
     for k in KINDS:
@@ -461,7 +547,7 @@ def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=(), vmat=None, full
     if volN < VOL_MIN * N:
         msg = '거래량 자료가 없어 못 셈(올리기 작업만 받음)' if not volN else '그날 거래량을 받은 회사가 모자라 못 셈(%d곳 가운데 %d곳)' % (N, volN)
         for k in BY: L[k], why[k] = [], msg
-        return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN, 'funnel': fun if full else None}
+        return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN, 'funnel': fun if full else None, 'mix': MV}
     vok = np.isfinite(V[:, t])
     with np.errstate(invalid='ignore', divide='ignore'):
         base = np.array([np.nanmedian(V[j, max(0, t - 64):t - 4]) if np.isfinite(V[j, max(0, t - 64):t - 4]).sum() >= 20 else np.nan for j in range(N)])
@@ -472,11 +558,12 @@ def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=(), vmat=None, full
         r5, r20, r60 = F['r5'], F['r20'], F['r60']
         VM = {'g08': {'m1': np.abs(r20) < 0.05, 'qty': v5 > 1}, 'g13': {'qty': v1 > 1.5}, 'g19': {'lv': r60 > 0.1, 'qty': v5 < 1},
               'g29': {'m5': r5 > 0, 'qty': v5 < 1}, 'g32': {'m1': r20 >= 0, 'qty': to20 <= _med(to20)}}
-        Sc.update({'g08': np.log(v5), 'g13': np.log(v1), 'g19': -np.log(v5), 'g29': r5, 'g32': -np.log(to20)})
+        T.update({'q1': np.log(v1), 'q5': np.log(v5), 'q20': np.log(to20)})   # 쏠림 셋(사고판 양 · 평소의 몇 배 · 한 달 사고판 몫)
+    Sc.update({k: mixscore(k, T, Q) for k in BY})
     Mn.update({k: {a: np.asarray(v, bool) & vok for a, v in d.items()} for k, d in VM.items()})
     mcv = _MC(F, t, day, V=V, base=base)
     for k in sorted(BY): one(k, mcv, np.logical_and.reduce(list(Mn[k].values())))
-    return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN, 'funnel': fun if full else None}
+    return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN, 'funnel': fun if full else None, 'mix': MV}
 
 
 # 겹친 곳(주문 1114-0802 · 사장님 2026-11-14 08:02 「36 갠가 40 개인가 42 개인가의 종류가 있잖아 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」
@@ -504,11 +591,22 @@ def overlap(groups, need=OV_NEED, order=None, k=K):
 if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selftest · --defs(이름 · 뜻 JSON)
     import sys, json, time
     if '--defs' in sys.argv:
-        print(json.dumps({'rule': RULE_ID, 'kinds': KINDS, 'han': HAN, 'name': NAME, 'mean': MEAN, 'say': SAY, 'set': SETOF, 'by': BY}, ensure_ascii=False))
+        print(json.dumps({'rule': RULE_ID, 'kinds': KINDS, 'han': HAN, 'name': NAME, 'mean': MEAN, 'say': SAY, 'set': SETOF, 'by': BY,
+                          'mixRule': MIX_RULE, 'eq': {e: list(v) for e, v in EQ.items()}, 'mix': {k: [list(x) for x in v] for k, v in MIX.items()}}, ensure_ascii=False))
     if '--selftest' in sys.argv:
         assert len(KINDS) == 36 == len(DEF) and len(set(HAN.values())) == 36 and len(set(NAME.values())) == 36 and len(set(SAY.values())) == 36
         assert all('%' not in s and not any('A' <= ch <= 'z' for ch in s) for d in DEF for s in d), '「%」 · 영어 0'
         assert len(CUT) == 10 and len({c[0] for c in CUT}) == 10 and len(ANGLES) == 7, '소거 열 가지 · 거름 일곱 가지'
+        # 여섯 식(주문 1116-2134) — 꾀마다 수학 하나 이상 + 정서 하나 이상 · 식은 여섯 가운데 · 쏠림은 사고판 양 꾀(BY)에만 · BY 는 쏠림을 꼭 씀 · 꾀마다 섞은 것이 서로 다름 · 글 「%」 · 영어 0 · 「가장」이 차례를 뜻하지 않음
+        assert set(e[1] for e in EQ.values()) == set(SIX) and all(e[0] in FAM for e in EQ.values()) and set(VOLQ) == {k for k, e in EQ.items() if e[1] == '쏠림'}
+        for k, mx in MIX.items():
+            fam = [EQ[e][0] for e, _ in mx]
+            assert '수학' in fam and '정서' in fam and all(d in (1, -1) for _, d in mx) and len({e for e, _ in mx}) == len(mx), (k, mx)
+            assert (k in BY) == any(e in VOLQ for e, _ in mx), (k, '쏠림은 사고판 양 꾀에만')
+        assert len({tuple(m) for m in MIX.values()}) == 36, '꾀마다 섞은 식이 다름'
+        assert all('%' not in x and not any('A' <= ch <= 'z' for ch in x) for e in EQ.values() for x in e), '식 글 「%」 · 영어 0'
+        assert not any('가장' in SAY[k] and '가장 높은 값' not in SAY[k] and '가장 크게 내린 날' not in SAY[k] for k in KINDS), '고르는 법에 차례를 뜻하는 「가장」 없음(차례 = 꾀 점수)'
+        assert list(_pct([3, 1, 2, np.nan, 2])[:3]) == [1.0, 0.0, 0.5] and np.isnan(_pct([1, np.nan])[1]) and _pct([7])[0] == 0.5
         rng = np.random.default_rng(1)
         N, T = 60, 520
         sd = 0.012 + 0.0003 * np.arange(N)                                    # 회사마다 흔들림이 다름(가장 흔들리는 곳 = 59)
@@ -528,7 +626,8 @@ if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selfte
         assert '000001' not in sum(Lk.values(), []), '값이 늦은 회사는 뺌'
         assert all(Lk[k] == [] for k in BY) and r['volN'] == 0 and '없어' in r['why']['g13']
         # 고른 곳은 모두 소거 열 가지 · 거름 일곱 가지 · 흉내 내 보기 열 번을 지남 · 닮은 차례 · 일곱까지 · 모자라면 모자란 대로(채우지 않음)
-        F = feats(codes, IX, P, T - 1, cap); C = cuts(codes, P, T - 1, cap, {'000001'}, F); Mn = means(F, P, T - 1); Sc = scores(F, P, T - 1)
+        F = feats(codes, IX, P, T - 1, cap); C = cuts(codes, P, T - 1, cap, {'000001'}, F); Mn = means(F, P, T - 1)
+        Tm, Qm = terms(F, P, T - 1), {}; Sc = {k: mixscore(k, Tm, Qm) for k in KINDS if k not in BY}   # 꾀 점수(주문 1116-2134)
         cutAll = np.logical_and.reduce([C[x] for x, _ in CUT]); mc = _MC(F, T - 1, dates[T - 1])
         at = {c: j for j, c in enumerate(codes)}
         for k in KINDS:
@@ -537,7 +636,11 @@ if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selfte
             assert len(js) <= K and all(cutAll[j] for j in js), (k, '소거')
             assert all(all(v[j] for v in Mn[k].values()) for j in js), (k, '거름 — 꾀 뜻')
             assert all(mc.ok(k, [j])[0] for j in js), (k, '흉내 내 보기(하나씩 세어도 같음)')
-            s = [Sc[k][j] for j in js]; assert s == sorted(s, reverse=True), (k, '닮은 차례')
+            s = [Sc[k][j] for j in js]; assert s == sorted(s, reverse=True), (k, '꾀 점수 차례')
+            for c, j in zip(Lk[k], js):   # 자료 mix.val = 꾀 점수 · 식마다 차례 · 값(검사가 다시 셈)
+                sv, qv, vv = r['mix'][k][c]
+                assert abs(sv - Sc[k][j]) < 1e-4 and abs(sv - sum(x if d > 0 else 1 - x for x, (_, d) in zip(qv, MIX[k])) / len(MIX[k])) < 2e-4, (k, c, sv)
+                assert all(abs(v - Tm[e][j]) < 1e-5 for v, (e, _) in zip(vv, MIX[k])), (k, c, '식 값')
             f = r['funnel'][k]
             assert f['n'] == N and f['k'] == len(js) and f['all'] <= min(f['mc'], f['cut'], f['mean']) and f['k'] == min(K, f['all']), (k, f)
             if not js: assert r['why'][k] == NONE_MEAN, (k, r['why'].get(k))
@@ -564,4 +667,5 @@ if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selfte
         ov = overlap(G)
         assert ov == [('B', 3, ['hot', 'bloom', 'money']), ('C', 3, ['hot', 'g01', 'g02']), ('D', 3, ['bloom', 'quiet', 'g01']), ('E', 3, ['quiet', 'g01', 'g02'])], ov
         assert [c for c, n, _ in overlap(G, need=2)] == ['B', 'C', 'D', 'E', 'A'] and overlap({}) == [] and len(OV_ORDER) == 43 == len(set(OV_ORDER))
+        assert set(r3['mix']['g13']) == set(r3['lists']['g13']) and all(len(v[1]) == len(MIX['g13']) for v in r3['mix']['g13'].values())
         print('ok', sum(len(v) for v in Lk.values()), 'of', 7 * 31, '· vol', sum(len(r3['lists'][k]) for k in BY), '· full %.1fs' % took, '· ovl', len(ov))
