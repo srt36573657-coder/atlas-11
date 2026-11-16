@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-16T05:14:12.404Z",
+ "at": "2026-11-16T08:18:00.283Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 416,
+  "pass": 427,
   "fail": 0
  },
  "fails": [],
@@ -89,9 +89,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 724,
+   "lcp": 736,
    "cls": 0,
-   "pic": 731
+   "pic": 730
   },
   "white": {
    "light #/": {
@@ -940,6 +940,15 @@
      null
     ],
     "qFrom": null
+   },
+   "pick": {
+    "rule": null,
+    "empty": null,
+    "mm": {
+     "n": 0,
+     "bad": 0
+    },
+    "themes": []
    }
   }
  },
