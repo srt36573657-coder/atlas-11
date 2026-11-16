@@ -2,6 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {codePrint, dictParity, reportProblems, transWaiver} from '../../scripts/atlas11/art_gate.mjs';
+import {SITE_BOARDS} from '../../lib/atlas11/places.mjs';
 import {rotationOf, capEokOf, ROT_PLACES} from '../../scripts/atlas11/story/build.mjs';
 import {expectOf, compare} from '../../scripts/atlas11/art_expect.mjs';
 
@@ -52,7 +53,11 @@ test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 사이트
   assert.equal(reportProblems({...ok, edge: 0}, 'c').length, 1); // 빈 날 길 없음 — 막힘
   assert.equal(reportProblems({...ok, failed: 1, ok: false}, 'c').length, 1);
   assert.equal(reportProblems(ok, 'd').length, 1); // 화면 코드가 검사 뒤에 바뀜
-  assert.equal(reportProblems({...ok, boards: ['kr']}, 'c').length, 1);
+  // 사이트 판 = SITE_BOARDS(lib/atlas11/places.mjs) — 2026-11-05 미국 판도 내림(주문 0955 「응」) → 한국 하나 · 그 판을 돌지 않은 결과는 막힘(주문 1116-1953 — 옛 「한국 · 미국」 셈에 남은 시험을 맞춤)
+  assert.deepEqual(SITE_BOARDS, ['kr']);
+  assert.deepEqual(reportProblems({...ok, boards: ['kr']}, 'c'), [], '한국 판만 돈 결과는 지나감(미국 판 내림)');
+  assert.equal(reportProblems({...ok, boards: []}, 'c').length, 1); // 사이트 판을 돌지 않음 — 막힘
+  assert.equal(reportProblems({...ok, boards: ['us']}, 'c').length, 1); // 내린 판만 돎 — 막힘
   assert.equal(reportProblems({...ok, transLangs: 1}, 'c').length, 1); // v3 — 73개 말 계산 층 없음
   assert.equal(reportProblems({...ok, layoutLangs: undefined}, 'c').length, 1); // v3 — 가장 긴 글 층 없음
   assert.equal(reportProblems({...ok, flat: undefined}, 'c').length, 1); // 입체 없음 층 없음(2026-10-10 「3d 영구 삭제해」 · 「모두다」) — 막힘
@@ -65,7 +70,7 @@ test('올리기 문 — 두 말(영어 · 한국어) · 빈 날 길 · 사이트
   assert.equal(reportProblems({...ok, easy: {...ok.easy, click3: {pairs: 0}}}, 'c').length, 1); // 쉬운 말 화면 3단 클릭을 안 잼
   assert.equal(reportProblems({...ok, easy: {...ok.easy, numPages: 0}}, 'c').length, 1); // 숫자 맞대기를 안 함
   assert.equal(reportProblems({...ok, tour: undefined}, 'c').length, 1); // 둘러보기 층 없음(규칙 49 ④ · 2026-10-10) — 막힘
-  assert.equal(reportProblems({...ok, tour: {...ok.tour, boards: 1}}, 'c').length, 1); // 한 판만 돎
+  assert.equal(reportProblems({...ok, tour: {...ok.tour, boards: 0}}, 'c').length, 1); // 사이트 판을 하나도 안 돎(사이트 판 = 한국 하나 — 2026-11-05)
   assert.equal(reportProblems({...ok, tour: {...ok.tour, rest: 0}}, 'c').length, 1); // 움직임 줄이기 창에서 둘러보기 칸을 못 봄
 });
 
