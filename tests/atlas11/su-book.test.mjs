@@ -1,6 +1,6 @@
 // 큐피트 1 · 2 · 3등 달력 · 10주씩 산 셈 장부(주문 0938 · 사장님 2026-11-10 09:38 「자 달력을 만들어 1.2.3달력을 그리고 찾아낸 그날부터해서 첫페이지처럼 표현햐서 추적해
 //   그리고 10주씩 무조건 매수해 그리고 나서 수익율률을 추적하기 해봐   잡스라면」)
-//   장부 한 걸음(scripts/atlas11/next/su21_book.mjs) · 화면 셈(site/su/su-book.js — 그리기 도구는 빈 것으로 바꿔 셈만 봄) · 길 · 서랍 · 꾸밈 · 묶기 · 검사가 함께 바뀌었는지
+//   장부 한 걸음(scripts/atlas11/next/su21_book.mjs) · 저장된 장부 · 화면 자료 — 옛 화면 셈(su-book.js · su-book.css)은 화면에서 안 써 지움(주문 1116-1846 「어 지워」)
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -8,7 +8,6 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {SCHEMA, QTY, emptyBook, okBook, stepBook, siteBook} from '../../scripts/atlas11/next/su21_book.mjs';
 import {forwardTo} from '../../site/su/su-data.js';
-import {screenHits, ruinHits} from '../../site/next/words.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -96,75 +95,6 @@ test('저장된 장부 · 화면 자료 — 꼴 · 판 날 차례 · 산 값 = �
   assert.equal(S.schema, SCHEMA); assert.equal(S.qty, 10);
   for (const d of S.days) assert.deepEqual(B.days.find(x => x.board === d.board), d, '화면 자료 ' + d.board + ' = 장부의 그 날');
   for (const [code, rows] of Object.entries(S.px)) for (const [dd, v] of rows) assert.equal(B.px[code]?.[dd], v, '화면 자료 값 ' + code + ' ' + dd + ' = 장부');
-});
-
-test('화면 셈 — 산 값 · 지금 · 늘고 준 것(10주씩 · 산 날부터 맨 끝 값) · 모양 · 세 칸 · 합을 흔든 줄 · 달력 한 줄 · 돈 글 · 「%」 0', async () => {
-  const src = rd('site/su/su-book.js').replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;').replace("import {KIND} from '/su/su-21.js';", 'const KIND = {};');
-  assert.ok(!/^import /m.test(src), '그리기 도구를 빈 것으로 바꿈');
-  const M = await import('data:text/javascript;base64,' + Buffer.from(src).toString('base64'));
-  assert.equal(M.won(4930000), '493만원'); assert.equal(M.won(104500), '10만 4,500원'); assert.equal(M.won(-4500), '4,500원'); assert.equal(M.won(123456789), '1억 2,345만 6,789원'); assert.equal(M.won(0), '0원');
-  assert.equal(M.moved(104500), '10만 4,500원 늘었어요'); assert.equal(M.moved(-5000), '5,000원 줄었어요'); assert.equal(M.moved(0.2), '그대로예요');
-  const C = M.bookCalc({qty: 10, asOf: '2026-11-11', days: [
-    {board: '2026-11-10', seen: '2026-11-10T16:00:00+09:00', picks: [{place: 1, k: 'hot', code: '000001', name: '가나', px: 1000}, {place: 2, k: 'hot', code: '000002', name: '다라', px: 2000}, {place: 3, k: 'hot', code: '000003', name: '마바', px: 3000}]},
-    {board: '2026-11-11', seen: '2026-11-11T16:00:00+09:00', picks: [{place: 1, k: 'hot', code: '000001', name: '가나', px: 1200}, {place: 2, k: 'hot', code: '000004', name: '사아', px: 4000}, {place: 3, k: 'hot', code: '000003', name: '마바', px: 3300}]}],
-  px: {'000001': [['2026-11-10', 1000], ['2026-11-11', 1200]], '000002': [['2026-11-10', 2000], ['2026-11-11', 1800]], '000003': [['2026-11-10', 3000], ['2026-11-11', 3300]], '000004': [['2026-11-11', 4000]]}});
-  assert.equal(C.rows.length, 6, '산 셈 여섯 번(같은 회사를 두 번 사도 두 번)');
-  assert.equal(C.cost, (1000 + 2000 + 3000 + 1200 + 4000 + 3300) * 10);
-  assert.equal(C.val, (1200 + 1800 + 3300 + 1200 + 4000 + 3300) * 10);
-  assert.equal(C.diff, C.val - C.cost); assert.equal(C.diff, 3000);
-  assert.deepEqual(C.days, ['2026-11-10', '2026-11-11']); assert.equal(C.last, '2026-11-11');
-  const r = C.rows.find(x => x.day === '2026-11-11' && x.code === '000001');
-  assert.deepEqual(r.ser, [['2026-11-11', 1200]], '값 줄은 그 산 날부터');
-  // 다시 짬(주문 1111-0938) — 모양 · 같은 회사 몇 번째 · 세 칸 · 합을 흔든 한 줄 · 100원이 ○원(반올림이 손실을 가리지 않음) · 달력 한 줄 · 처음 보인 때
-  assert.deepEqual(C.rows.map(x => x.st), ['up', 'dn', 'up', 'one', 'one', 'one'], '산 뒤 값이 없으면 「아직 하루치」(그대로로 세지 않음)');
-  assert.deepEqual(C.rows.map(x => x.nth), [1, 1, 1, 2, 1, 2], '같은 회사는 산 차례로 몇 번째');
-  assert.deepEqual(C.n, {up: 2, dn: 1, eq: 0, one: 3});
-  assert.deepEqual(M.tiles(C.n).map(x => [x.st, x.label, x.k]), [['up', '늘었어요', 2], ['dn', '줄었어요', 1], ['one', '아직 하루치', 3]], '같은 크기 세 칸');
-  assert.deepEqual(M.tiles({up: 1, dn: 1, eq: 2, one: 3}).map(x => x.label), ['늘었어요', '줄었어요', '그대로 · 하루치']);
-  assert.deepEqual(M.tiles({up: 1, dn: 1, eq: 2, one: 0}).map(x => x.label), ['늘었어요', '줄었어요', '그대로']);
-  const w = M.swing(C);
-  assert.ok(w && w.r.code === '000003' && w.r.day === '2026-11-10' && w.d === 3000 && w.rest === 0, '합(3,000원)의 절반 넘게 움직인 한 줄(11월 10일 마바 +3,000원) · 그 줄을 빼면 0원');
-  assert.equal(M.swing({rows: [{val: 110, cost: 100}, {val: 108, cost: 100}, {val: 109, cost: 100}], diff: 27}), null, '고르게 늘면 없음');
-  assert.equal(M.r100(1200, 1000), '100원이 120원'); assert.equal(M.r100(1219, 1000), '100원이 121.9원'); assert.equal(M.r100(57200, 57300), '100원이 99.8원');
-  assert.equal(M.r100(99990, 100000), '100원이 99.99원', '반올림으로 100원이 되면 둘째 자리'); assert.equal(M.r100(500, 500), '100원이 100원');
-  assert.deepEqual(M.strip('2026-11-10'), ['2026-11-04', '2026-11-05', '2026-11-06', '2026-11-09', '2026-11-10'], '달력 한 줄 — 장이 서는 날 다섯(주말 뺌)');
-  assert.deepEqual(M.seenKo('2026-11-09T16:20+09:00'), {day: '2026-11-09', text: '11월 9일 오후 4시 20분'});
-  assert.deepEqual(M.seenKo('2026-11-10T08:13:33.584Z'), {day: '2026-11-10', text: '11월 10일 오후 5시 13분'}, '받은 때가 세계 표준 시각이어도 한국 시각으로');
-  assert.equal(M.seenKo('2026-11-11T00:05:00+09:00').text, '11월 11일 오전 12시 5분'); assert.equal(M.seenKo('?'), null);
-  assert.equal(M.yRange(C), 20, '가장 멀리 간 값(100원이 120원)으로 눈금 — 아직 하루치는 셈에서 뺌');
-  assert.equal(M.yRange({rows: [{one: false, buy: 100, ser: [['d', 100], ['e', 121.9]]}]}), 25, '5 단위로 올림'); assert.equal(M.yRange({rows: [{one: false, buy: 100, ser: [['d', 100], ['e', 102]]}]}), 10, '눈금은 10 밑으로 안 줄임');
-  // 돈 셈 한눈에(주문 1112-1304 「지금까지 총 매수한 금액이 얼마고 그담에 날짜별로 매수한 금액이 얼마여 가지고 순실이나 수익이 어떻게 됐는지 … 바보도 알 수 있게끔」)
-  //   지금까지(모두 더함) · 날짜마다(그날 셋을 더함 · 날 차례) · 날짜마다를 다 더하면 지금까지 · 늘었나 줄었나 칸 글 · 판 돈 줄 · 줄마다 ○원어치 · 세 회사 이름(붙는 띄어쓰기)
-  const S = M.sumOf(C.rows);
-  assert.deepEqual([S.cost, S.val, S.diff, S.one, S.st], [145000, 148000, 3000, false, 'up'], '지금까지 — 산 돈 · 지금 · 늘고 준 돈 = 화면 셈 모두(C.cost · C.val · C.diff)');
-  assert.equal(S.cost, C.cost); assert.equal(S.val, C.val);
-  const D = M.dayCalc(C);
-  assert.deepEqual(D.map(x => [x.day, x.cost, x.val, x.diff, x.st, x.one, x.rows.map(r => r.place).join('')]), [['2026-11-10', 60000, 63000, 3000, 'up', false, '123'], ['2026-11-11', 85000, 85000, 0, 'one', true, '123']], '날짜마다 — 그날 셋을 더함(늦게 산 같은 회사는 그날 줄로 · 아직 하루치 날은 one)');
-  assert.equal(D.reduce((a, x) => a + x.cost, 0), S.cost, '날짜마다 산 돈을 다 더하면 지금까지 산 돈'); assert.equal(D.reduce((a, x) => a + x.diff, 0), S.diff, '날짜마다 늘고 준 돈을 다 더하면 지금까지');
-  assert.deepEqual(M.sumOf([]), {cost: 0, val: 0, diff: 0, one: false, st: 'eq'}, '빈 줄');
-  assert.equal(M.sumOf([{cost: 100, val: 100.4, one: false}]).st, 'eq', '반올림한 원으로 그대로(moved 와 같은 잣대)');
-  assert.equal(M.resText({st: 'one'}), '아직 하루치'); assert.equal(M.resText({st: 'eq', diff: 0.2}), '그대로'); assert.equal(M.resText({st: 'dn', diff: -375100}), '37만 5,100원'); assert.equal(M.resText({st: 'up', diff: 2000}), '2,000원');
-  assert.deepEqual(M.monText({cost: 2390000, val: 2040000, one: false}, 10), ['10주 239만원어치', '35만원 줄었어요'], '줄마다 산 돈(10주 ○원어치) · 늘고 준 돈 두 줄');
-  assert.deepEqual(M.monText({cost: 79900, val: 79900, one: true}, 10), ['10주 7만 9,900원어치', '아직 하루치예요']);
-  assert.deepEqual(M.boardMoney(D[0]), ['산 돈 6만원 → 지금 6만 3,000원', '3,000원 늘었어요'], '판 돈 줄 — 산 돈 → 지금 · 늘고 준 돈');
-  assert.deepEqual(M.boardMoney(D[1]), ['산 돈 8만 5,000원', '아직 하루치예요'], '아직 하루치 판은 산 돈만');
-  assert.deepEqual(M.nameBits([{name: 'CJ ENM'}, {name: '한진칼'}, {name: '루닛'}]), ['CJ ENM ·', '한진칼 ·', '루닛'], '세 회사 이름 조각 — 점은 앞 이름에 붙음(줄은 조각 사이에서만 · 글은 보통 띄어쓰기라 이름 맞대기 · 영어 글자 셈이 그대로)');
-  assert.equal(M.nameBits([{name: 'CJ ENM'}, {name: '한진칼'}, {name: '루닛'}]).join(' '), 'CJ ENM · 한진칼 · 루닛');
-  // 화면 글에 「%」 · 쓰지 않을 말 0(셈 글 · 꾸밈 글)
-  const said = [...src.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).join(' ');
-  assert.ok(!said.includes('%'), '「%」 없음');
-  assert.deepEqual([...screenHits(said), ...ruinHits(said)].map(x => x.word ?? x), [], '쓰지 않을 말 0');
-});
-
-test('돈 셈 한눈에(주문 1112-1304) — 맨 위 지금까지 → 날짜마다 → 세 칸 → 달력 → 판 · 판마다 돈 줄 · 모양 + 글 · 돈 글은 글 색', () => {
-  const bk = rd('site/su/su-book.js'), css = rd('site/su/su-book.css');
-  const at = k => bk.indexOf(k, bk.indexOf('const hero = h('));
-  assert.ok(at('moneyCard(C)') > 0 && at('moneyCard(C)') < at('ledger(C, go)') && at('ledger(C, go)') < at("'bk-sum'") && at("'bk-sum'") < at('    cal,') && at('    cal,') < at("'bk-list'"), '차례 — 지금까지 → 날짜마다 → 산 셈 하나씩(세 칸) → 달력 → 판');
-  assert.ok(bk.includes("h('b', {text: '지금까지'})") && bk.includes("h('span', {text: '산 돈'})") && bk.includes("h('span', {text: '지금'})") && bk.includes("' 값까지'"), '지금까지 — 산 돈 · 지금 · ○월 ○일 값까지');
-  assert.ok(bk.includes("'고른 날 · 고른 셋'") && bk.includes("'늘었나 줄었나'") && bk.includes("cells('모두', T)") && /recent\.map\(dayRow\), mons/.test(bk), '날짜마다 — 표 머리 · 새 날 다섯 · 달마다 접음 · 맨 아래 모두');
-  assert.ok(/h\('p', \{class: 'bk-bmon'[^\n]*shapeOf\(S\.st\)/.test(bk), '판마다 돈 줄 — 모양 + 글');
-  assert.ok(/\.bk-mres \{[^}]*font-size: 24px/.test(css) && !/\.bk-mres[^{]*\.bk-r(up|dn)/.test(css) && !/\.bk-(dcost|ddiff|ml b|mres) \{[^}]*color: #D97706/.test(css), '늘어도 줄어도 같은 크기 · 같은 굵기 · 돈 글은 글 색(호박색은 모양에만)');
-  assert.ok(!/sort\([^)]*diff/.test(bk) && !/sort\([^)]*\.val/.test(bk), '늘고 준 크기 차례 0(수익 순위 0 — 본질 망치는 길)');
 });
 
 // (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(1 · 2 · 3등 달력 #/r/c)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)

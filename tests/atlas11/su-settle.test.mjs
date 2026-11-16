@@ -1,6 +1,6 @@
 // 큐피트 정산(주문 1112-1728 · 사장님 2026-11-12 17:28 「정산 페이지를 하나 만들어 테이블 하나 더 만들어 그럼 탭이 여섯 개가 되겠지 그래가지고 말이야
 //   거기에 일 이 삼 등 매일 사 그담에 불 장인 것도 사고 모든 여덟 개를 종류별로 업종별로 다 사는거별로 분류 별별로」 · 17:30 「어」)
-//   장부(scripts/atlas11/next/su21_settle.mjs) · 화면 셈(site/su/su-settle.js — 그리기 도구는 빈 것으로 바꿔 셈만 봄) · 탭 · 길 · 묶기 · 검사가 함께 바뀌었는지
+//   장부(scripts/atlas11/next/su21_settle.mjs) · 탭 · 길 · 묶기 — 옛 화면 셈(su-settle.js)은 화면에서 안 써 지움(주문 1116-1846) · 검사가 함께 바뀌었는지
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -179,8 +179,8 @@ test('며칠째(주문 1114-0151 「301 게 이게 며칠째 이렇게 됐는지
   const g2 = {asOf: {board: '2026-11-13'}, lists: {g01: [{code: '000001'}]}};
   assert.deepEqual(markRuns(R, g2, null, '2026-11-16'), {n36: 0, nq: 0, no: 0}, '판 날이 다르면 붙이지 않음'); assert.equal(g2.lists.g01[0].days, undefined);
   assert.ok(/'--cal', path\.join\(dd, 'days\.json'\)/.test(rd('scripts/atlas11/package.mjs')), '묶을 때 장이 열린 날을 넘김');
-  const ap = rd('site/su/su-apple.js');
-  assert.ok(ap.includes("h('span', {class: 's36-cd', text: dz + '일째'})") && ap.includes("it.qd ? T(x + 6, y + 154 + o, it.qd + '일째', 'sa-days sa-qd', {'font-size': 17}) : null") && ap.includes("' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.'"), '처음 쪽 — 꾀 단추 · 조용한 힘 칸마다 며칠째 · 기록 첫날');
+  const sj = rd('site/su/su-sonja.js'); // 옛 첫 쪽(su-apple.js)은 화면에서 안 써 지움(주문 1116-1846) — 지금 첫 쪽(손자병법)
+  assert.ok(sj.includes("h('span', {class: 'sj-chipd', text: dz ? dz + '일째' : ''})") && sj.includes("' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.'"), '첫 쪽 — 꾀 단추마다 며칠째 · 기록 첫날');
 });
 
 test('서른여섯 꾀 셈(su21_s36.py 스스로 시험 · 이름 = 화면 · 검사) · 거래량 받기(su21_vol.mjs — 꾸민 일봉) · 묶기는 올리기 작업만 받음', async () => {
@@ -188,9 +188,7 @@ test('서른여섯 꾀 셈(su21_s36.py 스스로 시험 · 이름 = 화면 · �
   assert.match(py, /^ok 96 of 217 · vol 4 · full [\d.]+s · ovl 4/, py); // 주문 1116-1539 — 세 거름을 모두 지난 곳만(채우지 않음 · 꾸민 값 서른하나 × 일곱 가운데 아흔여섯)
   const defs = JSON.parse(execFileSync('python3', [path.join(ROOT, 'scripts/atlas11/next/su21_s36.py'), '--defs'], {cwd: path.join(ROOT, 'scripts/atlas11/next'), encoding: 'utf8'}));
   assert.deepEqual(defs.kinds, [...S36]); assert.equal(defs.han.g01, '만천과해'); assert.equal(defs.han.g36, '주위상'); assert.deepEqual(Object.keys(defs.by).sort(), ['g08', 'g13', 'g19', 'g29', 'g32']);
-  const {M} = await pageMods();
-  for (const k of S36) { assert.equal(M.KIND_NAME[k], defs.name[k], k + ' 쉬운 이름 = 셈'); assert.equal(M.S36_HAN[k], defs.han[k]); assert.equal(M.S36_MEAN[k], defs.mean[k]); assert.equal(M.S36_SAY[k], defs.say[k]); }
-  assert.deepEqual([...M.BYVOL].sort(), Object.keys(defs.by).sort(), '거래량 다섯 = 셈');
+  // 쉬운 이름 · 꾀 이름 · 뜻 · 고르는 법 = 셈 — 아래 「서른여섯 꾀 바탕 글(su-sonja-36.js)」 시험이 맞댐(옛 정산 모듈 su-settle.js 는 지움 · 주문 1116-1846)
   const ck = rd('scripts/atlas11/next/check_su.mjs');
   for (const k of S36) assert.ok(ck.includes(`${k}: '${defs.name[k]}'`), k + ' 검사 이름 = 셈');
   for (const t of [...Object.values(defs.name), ...Object.values(defs.mean), ...Object.values(defs.say), ...Object.values(defs.han)]) assert.ok(!t.includes('%') && !/[A-Za-z]/.test(t), t);
@@ -208,64 +206,7 @@ test('서른여섯 꾀 셈(su21_s36.py 스스로 시험 · 이름 = 화면 · �
   assert.ok(!/t365\/(roll|site_build|closes_fetch)/.test(rd('scripts/atlas11/next/su21_vol.mjs').split('\n').filter(l => /^import/.test(l)).join('\n')), '예전 화면 t365 파일은 부르지 않음');
 });
 
-/** 화면 셈 모듈 — 그리기 도구를 빈 것으로 바꿔 셈만 봄(달력 셈 모듈도 같은 방법) */
-async function pageMods() {
-  const bk = rd('site/su/su-book.js').replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;').replace("import {KIND} from '/su/su-21.js';", 'const KIND = {};');
-  assert.ok(!/^import /m.test(bk));
-  const bkUrl = 'data:text/javascript;base64,' + Buffer.from(bk).toString('base64');
-  const st = rd('site/su/su-settle.js').replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;').replace("from '/su/su-book.js';", "from '" + bkUrl + "';");
-  assert.ok(!/^import .* from '\/su\//m.test(st), '정산 모듈의 그리기 도구 · 달력 셈을 바꿈');
-  return {B: await import(bkUrl), M: await import('data:text/javascript;base64,' + Buffer.from(st).toString('base64'))};
-}
 
-test('화면 셈 — 산 셈 줄 · 묶음마다 여덟 줄(사장님 말씀 차례 · 빈 묶음도 한 줄) · 큰 값만(주문 1113-1623) · 맨 위 작은 줄 · 「%」 0', async () => {
-  const {M} = await pageMods();
-  assert.deepEqual(Object.keys(M.KIND_NAME).sort(), [...KINDS].sort(), '묶음 이름 여덟 = 장부 묶음');
-  assert.deepEqual(M.SHOW.map(k => M.KIND_NAME[k]), ['1 · 2 · 3등', '불장', '불장이 될 듯', '돈이 몰리는 곳', '돈이 몰릴 듯', '꽃이 될 곳', '꽃이 될 듯', '조용한데 힘이 모이는 곳'],
-    '보이는 차례 = 사장님 말씀 차례(불장 · 불장이 될 듯 · 돈이 몰린 곳 · 돈이 몰릴 듯 · 꽃 · 꽃이 될 듯 · 조용한 힘 · 1 · 2 · 3등은 맨 위)');
-  for (const gone of ['TOP', 'byCost', 'kindSub', 'indSub', 'coSub']) assert.equal(M[gone], undefined, '업종 · 회사 표 셈은 뺌 — ' + gone);
-  const D = {schema: SCHEMA, qty: 10, asOf: '2026-11-09', kinds: [...KINDS],
-    co: {'000001': ['가나', '반도체'], '000002': ['다라', null], '000003': ['마바', '반도체'], '000004': ['사아', '은행']},
-    buys: [['2026-11-05', 1, '000001', 1000], ['2026-11-05', 1, '000002', 2000], ['2026-11-06', 0, '000003', 3000], ['2026-11-06', 7, '000001', 1100], ['2026-11-09', 2, '000004', 4000]],
-    now: {'000001': [1200, '2026-11-09'], '000002': [1900, '2026-11-09'], '000003': [3000, '2026-11-09'], '000004': [4000, '2026-11-09']}, miss: {}};
-  const rows = M.settleRows(D);
-  assert.deepEqual(rows.map(r => [r.day, r.k, r.code, r.cost, r.val, r.one]), [
-    ['2026-11-05', 'hot', '000001', 10000, 12000, false], ['2026-11-05', 'hot', '000002', 20000, 19000, false],
-    ['2026-11-06', 'top3', '000003', 30000, 30000, false], ['2026-11-06', 'moneyNext', '000001', 11000, 12000, false],
-    ['2026-11-09', 'bloom', '000004', 40000, 40000, true]], '10주씩 · 지금 = 가장 늦은 값 · 산 날 뒤 값이 없으면 아직 하루치');
-  const K = M.byKind(D, rows);
-  assert.deepEqual(K.map(g => [g.key, g.n, g.cost, g.val, g.st]), [['top3', 1, 30000, 30000, 'eq'], ['hot', 2, 30000, 31000, 'up'], ['hotNext', 0, 0, 0, 'eq'], ['money', 0, 0, 0, 'eq'],
-    ['moneyNext', 1, 11000, 12000, 'up'], ['bloom', 1, 40000, 40000, 'one'], ['bloomNext', 0, 0, 0, 'eq'], ['quiet', 0, 0, 0, 'eq']], '여덟 줄 · 보이는 차례 그대로(늘고 준 크기 차례 아님)');
-  const T = rows.reduce((a, r) => ({cost: a.cost + r.cost, val: a.val + r.val}), {cost: 0, val: 0});
-  assert.deepEqual([K.reduce((a, g) => a + g.cost, 0), K.reduce((a, g) => a + g.val, 0)], [T.cost, T.val], '묶음 줄을 더하면 맨 위와 같음');
-  assert.deepEqual(M.byKind({...D, kinds: ['hot', 'top3']}, rows).map(g => g.key), ['top3', 'hot'], '자료에 없는 묶음은 줄을 만들지 않음 · 차례는 SHOW');
-  const late = rows.map(r => ({...r, nowDay: r.code === '000002' ? '2026-11-06' : r.nowDay}));
-  assert.deepEqual(late.map(r => M.lateOf(r, D.asOf)), [null, '2026-11-06', null, null, null], '앞 날 값으로 센 회사');
-  assert.equal(M.capText(rows, 0, 0), '11월 5일부터 · 산 셈 5번 · 고른 날 3일');
-  assert.equal(M.capText(rows, 3, 1), '11월 5일부터 · 산 셈 5번 · 고른 날 3일 · 값이 없어 못 센 3번 · 앞 날 값으로 센 회사 1곳', '못 센 수 · 앞 날 값 회사 수를 숨기지 않음');
-  for (const t of [...Object.values(M.KIND_NAME), M.capText(rows, 3, 1)]) assert.ok(!t.includes('%') && !/[A-Za-z]/.test(t), t);
-  // 서른여섯 꾀(주문 1113-2224) — 여덟과 따로 셈 · 수익률 높은 차례(같으면 꾀 차례 · 산 셈이 없는 꾀는 맨 아래)
-  assert.deepEqual([...M.SHOW36], [...S36]); assert.deepEqual([...M.BYVOL], ['g08', 'g13', 'g19', 'g29', 'g32']);
-  assert.ok(!Object.keys(M.KIND_NAME).some(k => k.startsWith('t_')), '특징 열하나 이름 0');
-  const gi = k => KINDS.indexOf(k);
-  const D2 = {...D, kinds: [...KINDS], buys: [...D.buys,
-    ['2026-11-05', gi('g05'), '000001', 1000],                                   // 1,200 → +20
-    ['2026-11-05', gi('g03'), '000002', 2000],                                   // 1,900 → −5
-    ['2026-11-06', gi('g30'), '000001', 1100], ['2026-11-06', gi('g30'), '000003', 2500], // (12,000 + 30,000) ÷ (11,000 + 25,000) → +16.7
-    ['2026-11-09', gi('g01'), '000004', 4000]],                                  // 아직 하루치 → 0
-    miss: {g13: 2, hot: 1}};
-  const all = M.settleRows(D2), P8 = M.part(D2, all, M.SHOW), P36 = M.part(D2, all, M.SHOW36);
-  assert.deepEqual([P8.rows.length, P8.T.cost, P8.miss], [5, rows.reduce((a, r) => a + r.cost, 0), 1], '맨 위 · 묶음마다 = 여덟만(서른여섯 꾀를 섞지 않음)');
-  assert.deepEqual([P36.rows.length, P36.T.cost, P36.miss, P36.K.length], [5, 10000 + 20000 + 11000 + 25000 + 40000, 2, 36], '서른여섯 꾀 = 서른여섯 줄 · 그 줄들만 더함 · 못 센 수도 따로');
-  const R = M.byRate(P36.K);
-  assert.deepEqual(R.slice(0, 4).map(g => g.key), ['g05', 'g30', 'g03', 'g01'], '수익률 높은 차례 — 늘어난 꾀 → 줄어든 꾀 → 아직 하루치(차례를 매기지 않음 · 주문 1114-0922) · 산 셈 없는 꾀(꾀 차례)');
-  assert.equal(M.rateOf({n: 1, cost: 100, val: 100, one: true}), null, '아직 하루치는 차례 없음(주문 1114-0922)');
-  assert.equal(M.rankSay(P36.K, '꾀'), '산 돈에 견줘 많이 늘어난 꾀가 맨 위예요. 날마다 다시 줄 세워요.');
-  assert.equal(M.rankSay([{key: 'hot', n: 1, cost: 100, val: 100, one: true}], '묶음'), '아직 하루치라서 원래 차례로 놓았어요. 하루가 더 지나면 많이 늘어난 묶음이 맨 위로 가요.', '받침이 있으면 「이」');
-  assert.deepEqual(R.slice(4).map(g => g.key), S36.filter(k => !['g05', 'g30', 'g01', 'g03'].includes(k)), '산 셈이 없는 꾀는 맨 아래 꾀 차례');
-  assert.deepEqual(M.byRate([{key: 'g09', n: 1, cost: 100, val: 110}, {key: 'g02', n: 1, cost: 200, val: 220}]).map(g => g.key), ['g02', 'g09'], '수익률이 같으면 꾀 차례');
-  assert.equal(M.rateOf({n: 0, cost: 0, val: 0}), null);
-});
 
 test('탭 · 길 · 묶기 · 검사 — 아래 탭 다섯째 「정산」 #/r/t · 손자병법 판 서른여섯 꾀 표만(주문 1115-2328) · 올리기 작업만 장부를 씀 · 검사 ㉓ · 화면 글', () => {
   const su = rd('site/su/su.js'), kk = rd('site/su/su-sonja-kkoe.js'), top = rd('site/su/su-sonja-top.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
@@ -287,31 +228,18 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 다섯째 「정산」 #/r/t
   assert.deepEqual(bad, [], '화면 글에 쓰지 않을 말 0');
 });
 test('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 값 셈 · su21.py 한 달 값 · 단추 그림 · 검사 ㉔ · 선 모양 = 42칸', async () => {
-  const ap = rd('site/su/su-apple.js'), stub = ap.replace("import {s, h} from '/su/su-fig.js';", 'const s = () => null, h = () => null;').replace("'/su/su-data.js'", JSON.stringify(new URL('../../site/su/su-data.js', import.meta.url).href)); // 값 글(주문 1114-1306 「%」 대신 100원 말)은 그 파일 그대로
-  assert.ok(!stub.includes('/su/su-fig.js') && (stub.match(/^import /gm) ?? []).length === 1, '그리기 도구를 바꿈(남은 부름은 값 글 su-data.js 하나)');
-  const A = await import('data:text/javascript;base64,' + Buffer.from(stub).toString('base64'));
-  const c21 = Array.from({length: 21}, (_, i) => 1000 + i * 10), D = '2026-11-13';
-  const g = {asOf: {board: D}, line: {'000001': {c: c21, close: 1200, date: D}, '000002': {c: c21, close: 1199, date: D}, '000003': {c: c21, close: 1200, date: '2026-11-12'},
-    '000004': {c: c21.slice(1), close: 1200, date: D}, '000005': {c: [...c21.slice(0, 20), 0], close: 0, date: D}, '000006': {c: [...c21.slice(0, 20), NaN], close: 1200, date: D}}};
-  assert.deepEqual(A.sp36(g, '000001'), c21, '21 값 · 끝 = 그날 마지막 값 · 판 날 = 꾀 칸 판 날');
-  for (const k of ['000002', '000003', '000004', '000005', '000006', '000009']) assert.equal(A.sp36(g, k), null, k + ' — 맞지 않으면 그림 없음');
-  assert.equal(A.sp36({...g, asOf: {board: '2026-11-14'}}, '000001'), null, '꾀 칸 판 날과 다르면 그림 없음');
-  assert.equal(A.sp36(null, '000001'), null);
-  assert.ok(ap.includes('sp ? chipSpark(sp) : null') && ap.includes("spark(sp, CSP, CSP, CSW, CSH, 'now')"), '단추 맨 끝 꺾은선 = 42칸과 같은 그리기(spark)');
-  assert.ok(ap.includes("' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[20])"), '소리 이름표에 한 달 전 값 · 마지막 값');
-  assert.ok(ap.includes("(anySp ? '이름 옆 꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요. ' : '')"), '읽는 법 한 마디(42칸 풀이와 같은 말)');
+  const sj = rd('site/su/su-sonja.js'); // 옛 첫 쪽(su-apple.js · su-apple.css)은 화면에서 안 써 지움(주문 1116-1846) — 지금 첫 쪽(손자병법) 셈 · 그리기
+  assert.ok(sj.includes("export const sp36 = (g, code) => { const v = g?.line?.[code]; return v && Array.isArray(v.c) && v.c.length === 21 && v.c.every(x => fin(x) && x > 0) && fin(v.close) && v.close === v.c[20] && typeof v.date === 'string' && v.date === g?.asOf?.board ? v.c : null; };"), '21 값 · 끝 = 그날 마지막 값 · 판 날 = 꾀 칸 판 날일 때만 그림');
+  assert.ok(sj.includes("sp ? spark(sp, 64, 26, 'sj-sps') : null") && sj.includes("' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[20])"), '단추마다 꺾은선 · 소리 이름표에 한 달 전 값 · 마지막 값');
   const py = rd('scripts/atlas11/next/su21.py');
   assert.ok(py.includes("'line': {c: line36(c) for c in sorted({c for L in S36R['lists'].values() for c in L} | {c for c, _, _ in OV}) if c in B}")
     && py.includes("v = PM[j, CTX.T - 20:CTX.T + 1]") && py.includes("return {'c': B[c].get('c'), 'close': B[c].get('close'), 'date': B[c].get('date')}"), 'su21.py 가 꾀 칸 · 겹친 곳 회사마다 한 달 값을 한 번씩 씀(꾀를 고른 값 21개 · 날이 어긋나면 판 값 — 주문 1116-1539)');
   const ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.ok(ck.includes('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325)') && ck.includes('꾀 칸 한 달 꺾은선 자료(주문 1114-0325)') && ck.includes("? 31 : 16)"), '검사 ㉔ · 처음 쪽 길이(주문 1114-0802 겹친 곳까지)');
-  const css = rd('site/su/su-apple.css');
-  for (const [k, v] of [['.sa-sp', '{ fill: none; stroke: #86868B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }'], ['.sa-sp0', '{ fill: none; stroke: #E5E5EA; stroke-width: 1; }'], ['.sa-spA', '{ fill: #D97706; stroke: #FFFFFF; stroke-width: 2; }']])
-    assert.ok(css.includes('.su-news > .su-hero[data-g="su-apple"] .s36-sp ' + k + ' ' + v) && css.includes('.su-apple ' + k + ' ' + v), k + ' 선 모양 = 42칸');
 });
 
 
-test('겹친 곳(주문 1114-0802 「… 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」) — 셈 규칙 · 장부 · 며칠째 · 정산 표 · 첫 화면 칸 · 검사', async () => {
+test('겹친 곳(주문 1114-0802 「… 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」) — 셈 규칙 · 장부 · 며칠째 · 검사', async () => {
   // 셈 규칙(su21_s36.py overlap — 스스로 시험)
   const out = execFileSync('python3', [path.join(ROOT, 'scripts/atlas11/next/su21_s36.py'), '--selftest'], {encoding: 'utf8'});
   assert.match(out, /^ok 96 of 217 · vol 4 · full [\d.]+s · ovl 4/, '세 묶음 이상 · 많이 든 차례 · 같으면 첫 화면 먼저 · 앞 일곱만');
@@ -342,24 +270,9 @@ test('겹친 곳(주문 1114-0802 「… 36개 정도 겹치는 그 종목을 �
   assert.deepEqual(markRuns(R, g2, null, D2), {n36: 0, nq: 0, no: 2}); assert.equal(g2.ovl.list[0].days, 2); assert.equal(g2.ovl.daysFrom, D);
   const g3 = {asOf: {board: D}, lists: {}, ovl: {list: [{code: '000002'}]}};
   assert.deepEqual(markRuns(R, g3, null, D2), {n36: 0, nq: 0, no: 0}, '판 날이 다르면 붙이지 않음');
-  // 정산 쪽 — 표 하나(묶음마다 바로 아래) · 줄 하나 · 따로 셈
-  const {M} = await pageMods();
-  assert.equal(M.KIND_NAME.ovl, '겹친 곳'); assert.deepEqual([...M.SHOWO], ['ovl']);
-  const rows = M.settleRows(S), PO = M.part(S, rows, M.SHOWO), P8 = M.part(S, rows, M.SHOW);
-  assert.deepEqual([PO.rows.length, PO.T.cost, PO.K.length, PO.K[0].key, P8.rows.length], [2, 30000, 1, 'ovl', 0], '겹친 곳 = 그 줄만 · 여덟과 섞지 않음');
-  const st = rd('site/su/su-settle.js');
-  assert.ok(st.indexOf("table('st-kinds'") < st.indexOf("table('st-ovl', '겹친 곳', '묶음'") && st.indexOf("table('st-ovl'") < st.indexOf("table('st-s36'"), '묶음마다 → 겹친 곳 → 서른여섯 꾀 차례');
-  // 첫 화면 — 꾀 칸 머리 바로 아래 한 묶음 · 칸 = 꾀 칸과 같은 꼴 + 든 묶음 수
-  const ap = rd('site/su/su-apple.js'), stub = ap.replace("import {s, h} from '/su/su-fig.js';", 'const s = () => null, h = () => null;').replace("'/su/su-data.js'", JSON.stringify(new URL('../../site/su/su-data.js', import.meta.url).href)); // 값 글은 그 파일 그대로(주문 1114-1306)
-  const A = await import('data:text/javascript;base64,' + Buffer.from(stub).toString('base64'));
-  assert.ok(A.okOv({ovl: {rule: 'ovl-v1', need: 3, list: [{code: '000001', n: 3}]}}) && !A.okOv({ovl: {rule: 'ovl-v1', need: 3, list: [{code: '000001', n: 2}]}}) && !A.okOv({}) && A.okOv({ovl: {rule: 'x', need: 3, list: []}}));
-  assert.ok(ap.includes("h('h3', {class: 's36-oh', text: '겹친 곳'})") && ap.includes("h('b', {text: '세 묶음 이상에 든 곳'})") && ap.includes("...OV.map(c => chip36(g, c, bd, true))") && ap.includes("...L.map(c => chip36(g, c, bd, false))"), '겹친 곳 머리 · 칸 = 꾀 칸과 같은 단추');
-  assert.ok(ap.includes("n ? h('span', {class: 's36-cn', text: n + '묶음'}) : null") && ap.includes("(n ? ' · ' + n + '묶음' : '')"), '칸마다 든 묶음 수(글 · 소리 이름표)');
-  for (const x of ['처음 쪽', '겹친 곳', '세 묶음 이상에 든 곳', '첫 화면 마흔세 묶음 가운데 세 묶음 이상에 같이 든 회사예요. 많이 겹친 곳이 먼저예요. 칸마다 든 묶음 수를 적었어요.']) assert.ok(!x.includes('%') && !/[A-Za-z]/.test(x), x);
+  // 옛 정산 쪽(su-settle.js) · 옛 첫 쪽 칸(su-apple.js · su-apple.css)은 화면에서 안 써 지움(주문 1116-1846 — 처음 쪽 겹친 곳은 주문 1115-1843 에서 이미 뺌)
   const ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.ok(ck.includes('㉔ 겹친 곳 자료(주문 1114-0802)') && ck.includes("W + '겹친 곳 0(네 창 · 될 듯 세 창과 함께 센 묶음 — 병법 서른여섯만 · 주문 1115-1843)'"), '검사 ㉔(처음 쪽 겹친 곳은 지움 — 주문 1115-1843 · 정산 쪽도 서른여섯 꾀 표만 — 주문 1115-2328)');
-  const css = rd('site/su/su-apple.css');
-  assert.ok(css.includes('.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-oc.s36-csp { grid-template-areas: "n n" "c s" "d s"; }'), '칸 = 위 이름 · 아래 왼쪽 ○묶음 · ○일째 · 오른쪽 꺾은선');
 });
 
 /** 주문 1115-2328 — 꾀 칸 자료를 못 받은 날의 바탕 글(site/su/su-sonja-36.js) = su21_s36.py --defs 그대로(꾀 모음 · 꾀 쪽 · 정산이 같은 이름과 뜻) */

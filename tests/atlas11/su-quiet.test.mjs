@@ -1,6 +1,6 @@
 // 큐피트 넷째 창 — 조용한데 힘이 모이는 7곳 · 조용한 힘 달력(주문 1111-1334 · 사장님 2026-11-11 13:34 「조용한데 에너지가 모이는 주식창을 하나더 만들어라 그래서 총 28개로 만들고
 //   몬태카를로 소거법으로을 찾아내라 그러면서 이것을 ㅊ 적하는 별도에 달력을 만들어라 잡스라면」)
-//   고르기(scripts/atlas11/next/su21_quiet.py) · 따로 된 장부(su21_book.mjs --rank quiet) · 화면 글(site/su/su-quiet.js) · 길 · 그림 · 묶기 · 검사가 함께 바뀌었는지
+//   고르기(scripts/atlas11/next/su21_quiet.py) · 따로 된 장부(su21_book.mjs --rank quiet) — 옛 화면 글(su-quiet.js · su-book.css)은 화면에서 안 써 지움(주문 1116-1846 「어 지워」)
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -93,23 +93,6 @@ test('따로 된 장부 — quiet.rank 첫 셋을 그 판 날 마지막 값으�
   assert.deepEqual(s.added?.picks.map(p => [p.place, p.code, p.px]), [[1, '000004', 400], [2, '000005', 500], [3, '000006', 600]], '판 날 = su21.json 날 · 값 = 그 칸 값');
   assert.equal(s.added.board, old); assert.equal(s.book.px['000004'][old], 400);
   assert.equal(stepBook(null, {...Tq, lists: {quiet: Tq.lists.quiet.map(x => ({...x, date: d}))}}, board, '2026-11-11T16:00:00+09:00', 'quiet').added, null, '칸 값이 그 판 날 값이 아니면 적지 않음');
-});
-
-test('화면 글 — 한 달 폭 · 이만큼 조용하기 · 외국인 · 기관(「%」 0 · 쓰지 않을 말 0) · 탭 0 · 쪽 짜임', async () => {
-  const src = rd('site/su/su-quiet.js');
-  const M = await import('data:text/javascript;base64,' + Buffer.from(src.replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;')).toString('base64'));
-  assert.equal(M.spanSay(3.04), '한 달 흔들림: 100원에 3원'); assert.equal(M.spanSay(4.56), '한 달 흔들림: 100원에 4.6원');
-  assert.equal(M.rareSay(0.00001), '이만큼 조용하기: 100번에 0.1번 아래'); assert.equal(M.rareSay(0.0312), '이만큼 조용하기: 100번에 3.1번');
-  assert.equal(M.flowSay({f: 120000, i: 3456, days: 5}), '닷새 동안 외국인 · 기관 합쳐 123,456주 들어왔어요');
-  assert.equal(M.flowSay({f: -10, i: 4, days: 4}), '4거래일 동안 외국인 · 기관 합쳐 6주 나갔어요');
-  const texts = [...src.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).join('\n');
-  assert.deepEqual(clean(texts), []); assert.ok(!texts.includes('%'), '화면 글 「%」 0');
-  assert.ok(!/\bstyle:/.test(src) && !/\.style\b/.test(src) && !/innerHTML/.test(src), '글 속 꾸밈 · innerHTML 0');
-  assert.ok(/return \{title: T, tab: 0, step: null, kick: [^\n]*, h1: T, proper: false, hero, body: \[how\],\n/.test(src), '탭 0(28곳) · hero · body');
-  assert.ok(src.includes("'조용한 뒤에 오를지 내릴지는 몰라요. 지난 기록만 보여 줘요.'"), '앞날을 맞히지 않음을 쪽에 씀');
-  const css = rd('site/su/su-book.css');
-  for (const [k, px] of [...css.matchAll(/font-size:\s*(\d+(?:\.\d+)?)px/g)].map(m => [m[0], +m[1]])) assert.ok(px >= 17, '글 17px 넘게 — ' + k);
-  assert.ok(/\.qt-cal \{[^}]*min-height: 56px/.test(css), '달력 고리 누르는 곳 56');
 });
 
 // (지움 — 주문 1115-2328 「어고쳐」: 이 시험이 보던 쪽(조용한 힘 #/s · #/r/s)을 지움 · 옛 고리는 첫 쪽으로 감을 check_su.mjs ⑨ 가 잼)

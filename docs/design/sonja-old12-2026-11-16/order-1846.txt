@@ -1,0 +1,15 @@
+주문 1116-1846 — 사장님 2026-11-16(서울 18:46 · 마카오 17:46)
+
+물음(마카오 17:4x 끝 보고 마지막 줄): 「다음으로 화면에 안 쓰는 옛 파일 열둘을 지울까요?」
+원문(그대로): 「어 지워」
+
+옛 파일 열둘(주문 1116-0300 「옛 디자인 파일 40개 지움」 때 남긴 일 — 시험이 통째로 읽어 시험을 고친 뒤 지움):
+- site/su/su-21.js · su-apple.js · su-apple.css · su-art.js · su-art.css · su-book.js · su-book.css · su-kr7.js · su-quiet.js · su-settle.js · su-why36.js · data/ant11.json
+- 고른 법: 첫 화면(index.html)에서 「/su/…」로 닿는 파일을 끝까지 따라가 닿지 않는 파일 열일곱 → 다른 쪽(hello · invite · letter · atlas · next)이 쓰는 넷(su-wrap.js · su-wrap-jobs.css · su-wrap-solo.css · su-atlas-jobs.css)과 su-wrap.js 가 붙이는 su-wrap-app.css · 앱이 읽는 version.json 은 남김 → 열하나 + 그 쪽만 읽던 자료 ant11.json
+- 남은 말 자리: 주석뿐(su-sonja.js · su-word.js · su-wrap-jobs.css · su21.py · su21_fomo.mjs · check_su.mjs)
+
+고친 시험:
+- su-book.test.mjs — 옛 화면 셈 · 돈 셈 한눈에(su-book.js · su-book.css) 시험 둘 지움 · 장부 셈(su21_book.mjs) 시험은 그대로
+- su-quiet.test.mjs — 옛 화면 글(su-quiet.js · su-book.css) 시험 하나 지움 · 고르기 · 장부 시험은 그대로
+- su-settle.test.mjs — 옛 정산 셈(su-settle.js) 시험 하나 지움 · 며칠째 · 꺾은선은 지금 첫 쪽(su-sonja.js)으로 맞댐 · 겹친 곳은 셈 · 장부 · 검사만
+- su.test.mjs — 옛 첫 쪽 · 21곳 · 그림 부품 · 기록창 화면 시험을 지우고 섞인 시험은 셈 · 검사 줄만 남김(일꾼 하나가 나눠 맡음)

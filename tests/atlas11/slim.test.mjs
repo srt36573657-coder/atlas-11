@@ -32,5 +32,5 @@ test('site/su 의 js 모두 — 뺀 뒤 뼈대(문법 나무)가 원본과 같�
     assert.deepEqual(P(code), P(src), f + ' — 뼈대가 바뀜');
     n++; saved += src.length - code.length;
   }
-  assert.ok(n >= 20 && saved > 0, `파일 ${n} · 줄어든 글자 ${saved}`);
+  assert.ok(n >= 12 && saved > 0, `파일 ${n} · 줄어든 글자 ${saved}`); // 화면에 안 쓰는 옛 파일 열둘을 지움(주문 1116-1846 「어 지워」) — 남은 js 열다섯
 });
