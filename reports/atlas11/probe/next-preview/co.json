@@ -1,118 +1,21 @@
 {
- "schema": "atlas11-next-co-check-1",
- "base": "http://127.0.0.1:8826",
- "asOf": "2026-11-16",
- "companies": 2557,
- "all": true,
- "limit": null,
- "widths": 28,
- "at": "2026-11-16T08:22:08.458Z",
  "shard": "all/3",
  "units": {
-  "total": 2566,
-  "mine": 2566,
-  "hash": "eed201f3ee87331b",
-  "kinds": {
-   "c": {
-    "total": 2557,
-    "mine": 2557
-   },
-   "e": {
-    "total": 5,
-    "mine": 5
-   },
-   "w": {
-    "total": 3,
-    "mine": 3
-   },
-   "b": {
-    "total": 1,
-    "mine": 1
-   }
-  }
+  "total": 0,
+  "mine": 0,
+  "hash": null,
+  "kinds": {}
  },
- "seconds": 121,
- "secondsSum": 363,
- "time": {
-  "old": 85.3,
-  "new": 136.2,
-  "wall": 121.2,
-  "wallSum": 363.1,
-  "opensOld": 2557,
-  "opensNew": 2648,
-  "oldPct": 23.5,
-  "oldShare": 38.5
- },
- "net": {
-  "req": 2525,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
-  "cut": 0,
-  "page": {
-   "retry": 0,
-   "waitSec": 0,
-   "blocked": 0,
-   "why": {}
-  }
- },
- "counts": {
-  "줄": 109443,
-  "숫자 낱말": 178671,
-  "따로 셈": 41248,
-  "머리 셈": 43469,
-  "고리": 2557,
-  "회사": 2557,
-  "고른 곳 밖": 2501,
-  "그림": 2555,
-  "고른 곳": 56,
-  "빈 날 길": 5,
-  "한 화면 재기": 84,
-  "세 폭 화면": 84,
-  "큰 글씨 화면": 2
- },
+ "seconds": 0,
+ "secondsSum": 0,
+ "counts": {},
  "fails": [],
- "shards": [
-  {
-   "shard": "1/3",
-   "ok": true,
-   "fails": 0,
-   "seconds": 121,
-   "mine": 856,
-   "kinds": {
-    "c": 853,
-    "e": 1,
-    "w": 1,
-    "b": 1
-   }
-  },
-  {
-   "shard": "2/3",
-   "ok": true,
-   "fails": 0,
-   "seconds": 121,
-   "mine": 855,
-   "kinds": {
-    "c": 852,
-    "e": 2,
-    "w": 1,
-    "b": 0
-   }
-  },
-  {
-   "shard": "3/3",
-   "ok": true,
-   "fails": 0,
-   "seconds": 121,
-   "mine": 855,
-   "kinds": {
-    "c": 852,
-    "e": 2,
-    "w": 1,
-    "b": 0
-   }
-  }
+ "shards": [],
+ "problems": [
+  "몫 결과가 하나도 없음",
+  "1/3 몫 결과 없음",
+  "2/3 몫 결과 없음",
+  "3/3 몫 결과 없음"
  ],
- "problems": [],
- "ok": true
+ "ok": false
 }
