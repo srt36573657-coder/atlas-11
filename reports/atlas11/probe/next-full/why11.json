@@ -1,6 +1,6 @@
 {
  "schema": "duri-check-why11-1",
- "at": "2026-11-17T11:36:49.180Z",
+ "at": "2026-11-17T13:52:58.358Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 209,
@@ -26,7 +26,7 @@
      ],
      "lights": "on on off off on on on on on on off",
      "c8": [
-      "0.71 t-1.1 아님",
+      "0.79 t-1.1 아님",
       "-0.108 t-3.15 맞음"
      ],
      "t8": "금리가 3.83%에서 3.73%로 내렸어요.",
@@ -51,9 +51,9 @@
       "외국인이 샀고,",
       "좋은 소식이 있었어요."
      ],
-     "lights": "on off off on on off on off on on off",
+     "lights": "on off off on on off on off on off off",
      "c8": [
-      "0.71 t-2.22 아님",
+      "0.79 t-2.22 아님",
       "-0.108 t-0.19 아님"
      ],
      "t8": "금리가 3.83%에서 3.73%로 내렸어요.",
@@ -76,12 +76,12 @@
      "x": 9.16,
      "i": -2.12,
      "why": [
-      "기관이 샀고,",
+      "외국인과 기관이 샀고,",
       "아시아나IDT가 끌었어요."
      ],
-     "lights": "off on off off on off on off off on off",
+     "lights": "on on off off on off on off off on off",
      "c8": [
-      "0.71 t-0.96 아님",
+      "0.79 t-0.96 아님",
       "-0.108 t-0.71 아님"
      ],
      "t8": "금리가 3.83%에서 3.73%로 내렸어요.",
@@ -144,7 +144,7 @@
    },
    "ko3": {
     "n": "IT 시스템 통합",
-    "first": 2,
+    "first": 1,
     "scene8": "8-rain",
     "scene9": "9-off"
    },
@@ -162,7 +162,7 @@
    },
    "en3": {
     "n": "IT 시스템 통합",
-    "first": 2,
+    "first": 1,
     "scene8": "8-rain",
     "scene9": "9-off"
    }
