@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-17T08:21:32.256Z",
+ "at": "2026-11-17T10:08:36.438Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 129,
    "blocks": {
-    "ess": 5519,
+    "ess": 5748,
     "find": 776,
-    "today": 3572,
-    "gdr": 4838,
-    "all": 5250
+    "today": 3717,
+    "gdr": 5042,
+    "all": 5478
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -87,7 +87,7 @@
     [
      6,
      "- b",
-     "하나금융지주"
+     "우리금융지주"
     ],
     [
      6,
@@ -217,11 +217,11 @@
    "bodyLum": 1,
    "chars": 129,
    "blocks": {
-    "ess": 5396,
+    "ess": 5625,
     "find": 776,
-    "today": 3572,
-    "gdr": 4838,
-    "all": 5250
+    "today": 3717,
+    "gdr": 5042,
+    "all": 5478
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -291,7 +291,7 @@
     [
      6,
      "- b",
-     "하나금융지주"
+     "우리금융지주"
     ],
     [
      6,
@@ -667,7 +667,7 @@
    }
   },
   "speed": {
-   "lcp": 1292,
+   "lcp": 1252,
    "inp": 32,
    "cls": 0.003
   }
