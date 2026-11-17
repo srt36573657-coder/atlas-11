@@ -732,6 +732,8 @@ test('영화 한 편 22초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손
   for (const k of ['ik-emb', 'ik-arrowR', 'ik-rockL', 'ik-rockR', 'ik-imp', 'ik-spk', 'ik-fallL', 'ik-fallR']) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
   for (let v = 0; v < 2; v++) for (let i = 0; i < 10; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-u' + v + '\\.ik-x' + i + ' \\{').test(css), '맞받아 쏘는 화살 칸 ' + v + '-' + i);
   assert.ok(/animation: ik-rank 7\.1s linear 5\.8s 1 both;/.test(css) && /animation: ik-cav 4\.5s linear 8\.4s 1 both;/.test(css) && /75\.4% \{ transform: translate\(66%, -1%\); \}/.test(kf('ik-rank')) && /61% \{ transform: translate\(-66%, 0\); \}/.test(kf('ik-cav')), '군사 열 · 말 탄 군사 — 11.2초에 한가운데서 맞부딪힘');
+  // 꾀 작은 그림에도 두 군대가 맞부딪히는 장면만(주문 1117-2225 「응」) — 가벼운 판 · 땅 · 손무 · 표지 · 쪽 머리는 그대로
+  assert.ok(/!rich && duel \? \[soldiers\(W, H\), cavalry\(W, H\), \.\.\.clash\(W, H\), sparks\(W, H, seed, 4\)\] : null/.test(ink) && /filmLayers\(fx, 200, 150, n, \{rich, duel: true\}\)/.test(ink) && /filmLayers\(fx, W, H, seed, \{bars, sweep, grade, vig, swash, rich\}\)/.test(ink), '꾀 작은 그림만 맞부딪힘(땅 · 손무 · 표지 = 없음)');
 });
 
 /** 주문 1117-0102 — 꾀 쪽 큰 그림 바로 아래 「그림 속 이야기」 네 막(고요 · 긴장 · 반전 · 여운) · 막마다 한 줄 · 감정 · 쉬운 말 · 그림이 그 막에 오면 그 줄이 밝아짐 */
