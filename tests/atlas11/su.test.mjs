@@ -680,7 +680,7 @@ test('영화 한 편 22초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손
   // 그림 코드 — 카메라 묶음 · 막마다 색 셋 · 날씨 두 겹 · 터짐 · 번쩍 · 짙은 가장자리 · (꾀 쪽 큰 그림 · 쪽 머리) 빛 기둥 · 바람 줄기 · 끝 도장 · 물결
   assert.ok(/export const FX = Object\.freeze\(\['gold', 'leaf', 'ember', 'rain', 'petal', 'snow'\]\);/.test(ink) && /export const fxOfK = k => FX\[Math\.floor\(\(\+String\(k\)\.slice\(1\) - 1\) \/ 6\)\]/.test(ink), '묶음 여섯 = 날씨 여섯(이김 금빛 · 맞섬 잎 · 공격 불티 · 혼란 비 · 연합 꽃비 · 패배 눈)');
   assert.ok(/fl \? s\('g', \{class: 'ik-cam'\}, scene\) : scene/.test(ink) && /class: fl \? 'ik-stamp' : null/.test(ink) && /class: 'ik-ring'/.test(ink), '꾀 그림 — 카메라 · 끝 도장 · 물결');
-  assert.ok(/export const NA = 12, NB = 16, NC = 12, NG = 4, NR = 3, NV = 3, NW = 12;/.test(ink) && /export const LITE = Object\.freeze\(\{a: 8, b: 10, c: 6\}\);/.test(ink), '날씨 두 겹 · 터짐 · 바람 · 빛 기둥 수(가벼운 판 = 첫 쪽 작은 그림 · 땅 · 손무 · 표지)');
+  assert.ok(/export const NA = 12, NB = 16, NC = 12, NG = 4, NR = 3, NV = 3, NW = 16;/.test(ink) && /export const LITE = Object\.freeze\(\{a: 8, b: 10, c: 6\}\);/.test(ink), '날씨 두 겹 · 터짐 · 바람 · 빛 기둥 수(가벼운 판 = 첫 쪽 작은 그림 · 땅 · 손무 · 표지)');
   assert.ok(/rich \? rays\(W, H\) : null/.test(ink) && /rich \? gusts\(W, H\) : null/.test(ink) && /burst\(W, H, seed, rich \? NC : LITE\.c\)/.test(ink) && ["'ik-flash'", "'ik-gc'", "'ik-gg'", "'ik-vig2'", "'ik-grade ik-gw'"].every(c => ink.includes('class: ' + c)), '막마다 색 셋 · 번쩍 · 짙은 가장자리 · 빛 기둥 · 바람');
   assert.ok(/class:"ik-hero"[^)]*\),FXHERO\[what\]\?\?"gold",390,170,\{seed:3,cam:!0,rich:!0\}\)\)/.test(ink) && /FXLAND\[land\]\?\?"petal",W,H,\{seed:5,bars:!1\}\)\)/.test(ink) && /'petal', 200, 240, \{seed: 7, bars: false, sweep: false\}/.test(ink), '쪽 머리(풍성한 판) · 땅 · 손무 그림도 한 편');
   assert.ok(/label: name \+ ' 그림', rich: false\}\)\)/.test(sj) && /kkoePic\(k, \{w: 390, h: 292, label: g\.name\[k\] \+ ' 그림'\}\), storyOl\(k\)\)/.test(kk), '첫 쪽 작은 그림 = 가벼운 판 · 꾀 쪽 큰 그림 = 풍성한 판 + 그림 속 이야기 네 막');
@@ -721,10 +721,17 @@ test('영화 한 편 22초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손
   for (const k of ['ik-ink', 'ik-drum', 'ik-arrow', 'ik-ban', 'ik-wdust', 'ik-bsun', 'ik-scr0', 'ik-scr1', 'ik-scr2', ...Array.from({length: 8}, (_, i) => 'ik-dust' + i)]) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
   assert.ok(/100% \{ opacity: 0; \} \}$/.test(kf('ik-sepia')) && /100% \{ opacity: 0; \} \}$/.test(kf('ik-flick')) && /100% \{ transform: none; \} \}$/.test(kf('ik-flag')), '옛 필름 빛 · 깜빡임 · 깃발 끝 = 멈춘 그림');
   // 옛 싸움터(주문 1117-0320 「더 전쟁처럼해  고전  전쟁! 리얼하게」) — 싸움터 빛 · 연기 기둥 · 군사 열 · 말 탄 군사 · 화살 비 세 번 × 열두 대(불화살)
-  assert.ok(/NV = 3, NW = 12;/.test(ink) && /smoke\(W, H, rich \? 3 : 2\),/.test(ink) && /rich \? soldiers\(W, H\) : null/.test(ink) && /rich \? cavalry\(W, H\) : null/.test(ink) && /class: 'ik-gd'/.test(ink), '옛 싸움터 덧칠(가벼운 판 = 싸움터 빛 · 연기 기둥 둘)');
+  assert.ok(/NV = 3, NW = 16;/.test(ink) && /smoke\(W, H, rich \? 3 : 2\),/.test(ink) && /rich \? soldiers\(W, H\) : null/.test(ink) && /rich \? cavalry\(W, H\) : null/.test(ink) && /class: 'ik-gd'/.test(ink), '옛 싸움터 덧칠(가벼운 판 = 싸움터 빛 · 연기 기둥 둘)');
   for (const c of ['ik-gd', 'ik-smk', 'ik-rank', 'ik-cav']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
   for (const k of ['ik-gd', 'ik-smoke', 'ik-rank', 'ik-cav', 'ik-arrow']) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
-  for (let v = 0; v < 3; v++) for (let i = 0; i < 12; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-v' + v + '\\.ik-w' + i + ' \\{').test(css), '화살 칸 ' + v + '-' + i);
+  for (let v = 0; v < 3; v++) for (let i = 0; i < 16; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-v' + v + '\\.ik-w' + i + ' \\{').test(css), '화살 칸 ' + v + '-' + i);
+  // 치열한 싸움(주문 1117-2104 「22초짜리 영상들을 말이야 더 전쟁이 치열하게 만들어봐」) — 싸움터 한 묶음이 땅째 흔들림 · 바위 셋 · 맞받아 쏘는 화살 · 불티 · 칼 불꽃 · 쓰러지는 군사 · 군사 열과 말 탄 군사가 한가운데서 부딪힘
+  assert.ok(/s\('g', \{class: rich \? 'ik-war' : null, 'aria-hidden': 'true'\}/.test(ink) && ['embers(W, H, seed)', 'fallen(W, H)', 'counter(W, H, seed)', 'sparks(W, H, seed)', 'rocks(W, H)'].every(f => ink.includes('rich ? ' + f + ' : null')), '싸움터 묶음 · 새 겹 다섯(가벼운 판 = 없음)');
+  assert.ok(/animation: ik-quake 22s linear 0s 1 both;/.test(css) && /100% \{ transform: none; \} \}$/.test(kf('ik-quake')), '땅 흔들림 — 22초 한 편 · 끝 = 제자리');
+  for (const c of ['ik-emb', 'ik-cv', 'ik-rock', 'ik-imp', 'ik-spk', 'ik-fall']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
+  for (const k of ['ik-emb', 'ik-arrowR', 'ik-rockL', 'ik-rockR', 'ik-imp', 'ik-spk', 'ik-fallL', 'ik-fallR']) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
+  for (let v = 0; v < 2; v++) for (let i = 0; i < 10; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-u' + v + '\\.ik-x' + i + ' \\{').test(css), '맞받아 쏘는 화살 칸 ' + v + '-' + i);
+  assert.ok(/animation: ik-rank 7\.1s linear 5\.8s 1 both;/.test(css) && /animation: ik-cav 4\.5s linear 8\.4s 1 both;/.test(css) && /75\.4% \{ transform: translate\(66%, -1%\); \}/.test(kf('ik-rank')) && /61% \{ transform: translate\(-66%, 0\); \}/.test(kf('ik-cav')), '군사 열 · 말 탄 군사 — 11.2초에 한가운데서 맞부딪힘');
 });
 
 /** 주문 1117-0102 — 꾀 쪽 큰 그림 바로 아래 「그림 속 이야기」 네 막(고요 · 긴장 · 반전 · 여운) · 막마다 한 줄 · 감정 · 쉬운 말 · 그림이 그 막에 오면 그 줄이 밝아짐 */

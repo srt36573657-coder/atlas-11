@@ -511,7 +511,7 @@ html.sj-sub #su > main.sj-pre { display: none; }
    끝 여운(18.3 ~ 22초): 잔잔한 날씨 · 번호 도장 꽝(19.6초) · 물결 · 카메라 숨 한 번 — 모두 22초 안에 끝(검사 ㉖ 22.5초)
    그림 속 움직임(막 1 ~ 7) = 그림마다 마지막 막이 반전(12.6초)에 오는 표(ik-n4 ~ ik-n6 · 일곱 막은 바탕 표)
    움직임을 줄여 둔 휴대폰 = ik-play 가 붙지 않음 → 멈춘 그림(날씨 · 빛 · 번쩍 · 바람 · 물결 · 터짐은 처음부터 안 보임) */
-#su svg.ik-film .ik-fx .ik-p, #su svg.ik-film .ik-sweep, #su svg.ik-film .ik-ring, #su svg.ik-film .ik-swash, #su svg.ik-film .ik-gc, #su svg.ik-film .ik-gg, #su svg.ik-film .ik-flash, #su svg.ik-film .ik-vig2, #su svg.ik-film .ik-ray, #su svg.ik-film .ik-q, #su svg.ik-film .ik-gu, #su svg.ik-film .ik-sepia, #su svg.ik-film .ik-flick, #su svg.ik-film .ik-scr, #su svg.ik-film .ik-dust, #su svg.ik-film .ik-ink, #su svg.ik-film .ik-drum, #su svg.ik-film .ik-arw, #su svg.ik-film .ik-ban, #su svg.ik-film .ik-dst, #su svg.ik-film .ik-bsun, #su svg.ik-film .ik-gd, #su svg.ik-film .ik-smk, #su svg.ik-film .ik-rank, #su svg.ik-film .ik-cav, #su svg.ik-film .ik-host, #su svg.ik-film .ik-fire, #su svg.ik-film .ik-stuck, #su svg.ik-film .ik-clh, #su svg.ik-film .ik-clr { opacity: 0; }
+#su svg.ik-film .ik-fx .ik-p, #su svg.ik-film .ik-sweep, #su svg.ik-film .ik-ring, #su svg.ik-film .ik-swash, #su svg.ik-film .ik-gc, #su svg.ik-film .ik-gg, #su svg.ik-film .ik-flash, #su svg.ik-film .ik-vig2, #su svg.ik-film .ik-ray, #su svg.ik-film .ik-q, #su svg.ik-film .ik-gu, #su svg.ik-film .ik-sepia, #su svg.ik-film .ik-flick, #su svg.ik-film .ik-scr, #su svg.ik-film .ik-dust, #su svg.ik-film .ik-ink, #su svg.ik-film .ik-drum, #su svg.ik-film .ik-arw, #su svg.ik-film .ik-ban, #su svg.ik-film .ik-dst, #su svg.ik-film .ik-bsun, #su svg.ik-film .ik-gd, #su svg.ik-film .ik-smk, #su svg.ik-film .ik-rank, #su svg.ik-film .ik-cav, #su svg.ik-film .ik-host, #su svg.ik-film .ik-fire, #su svg.ik-film .ik-stuck, #su svg.ik-film .ik-clh, #su svg.ik-film .ik-clr, #su svg.ik-film .ik-emb, #su svg.ik-film .ik-cv, #su svg.ik-film .ik-rock, #su svg.ik-film .ik-imp, #su svg.ik-film .ik-spk, #su svg.ik-film .ik-fall { opacity: 0; }
 #su svg.ik-film.ik-play .ik-swash { transform-box: fill-box; transform-origin: 0% 50%; animation: ik-swash 1.59s cubic-bezier(.3, .6, .3, 1) 0.18s 1 both; } /* 1막 — 여는 붓 한 획 */
 @keyframes ik-swash { 0% { opacity: 0; transform: scaleX(.05); } 25% { opacity: 1; } 55% { transform: none; } 100% { opacity: 0; transform: none; } }
 #su svg.ik-film.ik-play .ik-fade { animation-duration: 1.34s; }
@@ -562,8 +562,8 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-n4.ik-play .ik-s2 { animation-delay: 2.44s; }
 #su svg.ik-film.ik-n4.ik-play .ik-s3 { animation-delay: 7.33s; }
 #su svg.ik-film.ik-n4.ik-play .ik-s4 { animation-delay: 12.59s; }
-#su svg.ik-film.ik-play .ik-cam { transform-box: view-box; transform-origin: 50% 50%; animation: ik-cam 22s ease-in-out 0s 1 both; } /* 카메라 — 1막 물러남 · 2막 다가가며 흔들림 둘 · 3막 물러남 · 여운 숨 한 번 */
-@keyframes ik-cam { 0% { transform: scale(1.12) translate(-3px, 2px); } 25% { transform: none; } 40% { transform: scale(1.06) translate(1px, -1px); } 40.6% { transform: scale(1.06) translate(-3.5px, 2px); } 41.2% { transform: scale(1.06) translate(3.5px, -1.5px); } 41.8% { transform: scale(1.06) translate(1px, -1px); } 50% { transform: scale(1.12) translate(2px, -1px); } 51.4% { transform: scale(1.12) translate(-2px, 1.5px); } 52% { transform: scale(1.12) translate(6px, -3.5px); } 52.6% { transform: scale(1.12) translate(2px, -1px); } 54% { transform: scale(1.12) translate(2px, -1px); } 54.5% { transform: scale(1.12) translate(-7px, 4px); } 55% { transform: scale(1.12) translate(6px, -4px); } 55.5% { transform: scale(1.12) translate(-3px, 2px); } 56% { transform: scale(1.13) translate(2px, -1px); } 83% { transform: none; } 92% { transform: scale(1.025); } 100% { transform: none; } }
+#su svg.ik-film.ik-play .ik-cam { transform-box: view-box; transform-origin: 50% 50%; animation: ik-cam 22s ease-in-out 0s 1 both; } /* 카메라 — 1막 물러남 · 2막 다가가며 바위 둘에 흔들림 · 맞부딪힐 때 확 다가가며 크게 흔들림 · 셋째 바위 · 3막 물러남 · 여운 숨 한 번(주문 1117-2104) */
+@keyframes ik-cam { 0% { transform: scale(1.12) translate(-3px, 2px); } 25% { transform: none; } 38% { transform: scale(1.05) translate(1px, -1px); } 40.2% { transform: scale(1.06) translate(1px, -1px); } 40.6% { transform: scale(1.06) translate(-5px, 3px); } 41% { transform: scale(1.06) translate(5px, -2.5px); } 41.4% { transform: scale(1.06) translate(-2.5px, 1.5px); } 41.9% { transform: scale(1.06) translate(1px, -1px); } 47% { transform: scale(1.09) translate(1px, -1px); } 47.3% { transform: scale(1.09) translate(5px, 3px); } 47.7% { transform: scale(1.09) translate(-5px, -2.5px); } 48.1% { transform: scale(1.09) translate(2px, 1px); } 48.6% { transform: scale(1.09) translate(1px, -1px); } 50.6% { transform: scale(1.12) translate(2px, -1px); } 50.9% { transform: scale(1.19) translate(-8px, 4.5px); } 51.3% { transform: scale(1.18) translate(7px, -4px); } 51.7% { transform: scale(1.17) translate(-5px, 3px); } 52.1% { transform: scale(1.16) translate(4px, -2px); } 52.6% { transform: scale(1.15) translate(-2px, 1px); } 53.2% { transform: scale(1.15) translate(1.5px, -1px); } 53.7% { transform: scale(1.15) translate(-1.5px, 1px); } 54.1% { transform: scale(1.15) translate(1px, -1px); } 54.4% { transform: scale(1.15) translate(-8px, 5px); } 54.8% { transform: scale(1.15) translate(7px, -4px); } 55.2% { transform: scale(1.14) translate(-4px, 2px); } 55.6% { transform: scale(1.13) translate(-3px, 2px); } 56% { transform: scale(1.13) translate(2px, -1px); } 83% { transform: none; } 92% { transform: scale(1.025); } 100% { transform: none; } }
 #su svg.ik-film .ik-bar-t { transform-origin: 50% 0%; }
 #su svg.ik-film .ik-bar-b { transform-origin: 50% 100%; }
 #su svg.ik-film.ik-play .ik-bar { transform-box: fill-box; animation: ik-bar 22s ease-in-out 0s 1 both; } /* 검은 띠 — 열림 · 2막 두꺼워짐 · 3막 다시 열림 */
@@ -735,8 +735,8 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-play .ik-smk1 { animation-delay: 6.4s; animation-duration: 8s; }
 #su svg.ik-film.ik-play .ik-smk2 { animation-delay: 6s; animation-duration: 8s; }
 @keyframes ik-smoke { 0% { opacity: 0; transform: translate(0, 0) scaleY(.2); } 20% { opacity: 1; } 70% { opacity: .9; } 100% { opacity: 0; transform: translate(-18%, -6%) scaleY(1.15); } }
-#su svg.ik-film.ik-play .ik-rank { transform-box: fill-box; animation: ik-rank 6s linear 5.8s 1 both; } /* 창과 방패를 든 군사 열 */
-@keyframes ik-rank { 0% { opacity: 0; transform: translate(0, 0); } 8% { opacity: 1; } 25% { transform: translate(27%, -1.5%); } 50% { transform: translate(54%, 0); } 75% { transform: translate(80%, -1.5%); } 92% { opacity: 1; } 100% { opacity: 0; transform: translate(107%, 0); } }
+#su svg.ik-film.ik-play .ik-rank { transform-box: fill-box; animation: ik-rank 7.1s linear 5.8s 1 both; } /* 창과 방패를 든 군사 열 */
+@keyframes ik-rank { 0% { opacity: 0; transform: translate(0, 0); } 6% { opacity: 1; } 20% { transform: translate(8%, -1.2%); } 35% { transform: translate(16%, 0); } 53.5% { transform: translate(26%, -1.2%); } 62% { transform: translate(38%, 0); } 75.4% { transform: translate(66%, -1%); } 79% { transform: translate(63%, 0); } 83% { transform: translate(67%, -1%); } 87% { transform: translate(64%, 0); } 91.5% { opacity: 1; transform: translate(66%, -1%); } 100% { opacity: 0; transform: translate(62%, 0); } } /* 걸어 들어와 9.6초부터 달려 11.2초에 한가운데서 부딪혀 밀고 밀림(주문 1117-2104) */
 /* 리얼 전쟁 영화(주문 1117-1543 「더 리얼한 전쟁 영화처럼」) — 먼 대군이 산등성이에 차오름 · 땅불이 일렁임 · 화살이 땅에 꽂힘 · 두 군대가 부딪히는 흙먼지 폭발(11.2초)과 충격 고리 · 카메라가 크게 흔들림(12초) · 모두 끝에 사라짐 */
 #su svg.ik-film.ik-play .ik-host { transform-box: fill-box; transform-origin: 50% 100%; animation: ik-host 13s ease-in-out 5s 1 both; }
 @keyframes ik-host { 0% { opacity: 0; transform: translate(4%, 8%); } 12% { opacity: 1; transform: translate(2%, 3%); } 48% { opacity: 1; transform: translate(-1%, 0); } 55% { transform: translate(-2%, -2%) scale(1.04); } 88% { opacity: .9; } 100% { opacity: 0; transform: translate(-4%, -2%) scale(1.04); } }
@@ -745,6 +745,8 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-play .ik-fire2 { animation-delay: 8.1s; }
 #su svg.ik-film.ik-play .ik-fire3 { animation-delay: 7.45s; }
 #su svg.ik-film.ik-play .ik-fire4 { animation-delay: 7.9s; }
+#su svg.ik-film.ik-play .ik-fire5 { animation-delay: 8.3s; }
+#su svg.ik-film.ik-play .ik-fire6 { animation-delay: 8.65s; }
 @keyframes ik-fire { 0% { opacity: 0; transform: scaleY(.3); } 6% { opacity: 1; transform: scaleY(1); } 11% { transform: scale(1.05, .88); } 16% { transform: scale(.96, 1.14); } 21% { transform: scale(1.04, .92); } 26% { transform: scale(.97, 1.1); } 31% { transform: scale(1.05, .9); } 36% { transform: scale(.96, 1.16); } 41% { transform: scale(1.03, .93); } 46% { transform: scale(.97, 1.12); } 51% { transform: scale(1.05, .9); } 56% { transform: scale(.96, 1.14); } 61% { transform: scale(1.04, .92); } 66% { transform: scale(.97, 1.1); } 71% { transform: scale(1.05, .9); } 76% { transform: scale(.96, 1.12); } 81% { transform: scale(1.03, .94); } 88% { opacity: 1; transform: scale(.98, 1.06); } 100% { opacity: 0; transform: scaleY(.4); } }
 #su svg.ik-film.ik-play .ik-stuck { transform-box: fill-box; transform-origin: 50% 100%; animation: ik-stuck 10.6s ease-out 7.7s 1 both; }
 @keyframes ik-stuck { 0% { opacity: 0; transform: translateY(-14%); } 4% { opacity: 1; transform: none; } 90% { opacity: 1; } 100% { opacity: 0; transform: none; } }
@@ -752,8 +754,8 @@ html.sj-sub #su > main.sj-pre { display: none; }
 @keyframes ik-clh { 0% { opacity: 0; transform: scale(.3, .2); } 12% { opacity: 1; } 60% { opacity: .85; transform: scale(1.05, 1); } 100% { opacity: 0; transform: scale(1.35, 1.25); } }
 #su svg.ik-film.ik-play .ik-clr { transform-box: fill-box; transform-origin: 50% 50%; animation: ik-clr 1.1s ease-out 11.3s 1 both; }
 @keyframes ik-clr { 0% { opacity: 0; transform: scale(.2); } 15% { opacity: .8; } 100% { opacity: 0; transform: scale(2.4); } }
-#su svg.ik-film.ik-play .ik-cav { transform-box: fill-box; animation: ik-cav 3s cubic-bezier(.35, 0, .65, 1) 8.4s 1 both; } /* 말 탄 군사 다섯 — 달려듦 */
-@keyframes ik-cav { 0% { opacity: 0; transform: translate(0, 0); } 10% { opacity: 1; } 30% { transform: translate(-33%, -2%); } 55% { transform: translate(-60%, 0); } 80% { transform: translate(-88%, -2%); } 90% { opacity: 1; } 100% { opacity: 0; transform: translate(-110%, 0); } }
+#su svg.ik-film.ik-play .ik-cav { transform-box: fill-box; animation: ik-cav 4.5s linear 8.4s 1 both; } /* 말 탄 군사 다섯 — 달려듦 */
+@keyframes ik-cav { 0% { opacity: 0; transform: translate(0, 0); } 8% { opacity: 1; } 30% { transform: translate(-22%, -1.5%); } 61% { transform: translate(-66%, 0); } 66% { transform: translate(-63%, -1%); } 72% { transform: translate(-67%, 0); } 78% { transform: translate(-64%, -1%); } 86.7% { opacity: 1; transform: translate(-66%, 0); } 100% { opacity: 0; transform: translate(-62%, 0); } } /* 달려들어 11.2초에 한가운데서 부딪혀 밀고 밀림(주문 1117-2104) */
 #su svg.ik-film.ik-play .ik-v0.ik-w0 { animation-delay: 6.40s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v0.ik-w1 { animation-delay: 6.47s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v0.ik-w2 { animation-delay: 6.48s; animation-duration: 1.2s; }
@@ -766,6 +768,10 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-play .ik-v0.ik-w9 { animation-delay: 6.79s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v0.ik-w10 { animation-delay: 6.80s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v0.ik-w11 { animation-delay: 6.87s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w12 { animation-delay: 6.88s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w13 { animation-delay: 6.95s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w14 { animation-delay: 6.96s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v0.ik-w15 { animation-delay: 7.03s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v1.ik-w0 { animation-delay: 8.00s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v1.ik-w1 { animation-delay: 8.07s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v1.ik-w2 { animation-delay: 8.08s; animation-duration: 1.2s; }
@@ -778,6 +784,10 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-play .ik-v1.ik-w9 { animation-delay: 8.39s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v1.ik-w10 { animation-delay: 8.40s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v1.ik-w11 { animation-delay: 8.47s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w12 { animation-delay: 8.48s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w13 { animation-delay: 8.55s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w14 { animation-delay: 8.56s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v1.ik-w15 { animation-delay: 8.63s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v2.ik-w0 { animation-delay: 9.60s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v2.ik-w1 { animation-delay: 9.67s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v2.ik-w2 { animation-delay: 9.68s; animation-duration: 1.2s; }
@@ -790,7 +800,77 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-play .ik-v2.ik-w9 { animation-delay: 9.99s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v2.ik-w10 { animation-delay: 10.00s; animation-duration: 1.2s; }
 #su svg.ik-film.ik-play .ik-v2.ik-w11 { animation-delay: 10.07s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w12 { animation-delay: 10.08s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w13 { animation-delay: 10.15s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w14 { animation-delay: 10.16s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-v2.ik-w15 { animation-delay: 10.23s; animation-duration: 1.2s; }
 @keyframes ik-arrow { 0% { opacity: 0; transform: translate(0, 0) rotate(-10deg); } 10% { opacity: .95; } 50% { transform: translate(-430%, 180%) rotate(0deg); } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-860%, 640%) rotate(14deg); } }
+/* ── 치열한 싸움(주문 1117-2104 · 사장님 2026-11-17(마카오) 21:04 「22초짜리 영상들을 말이야 더 전쟁이 치열하게 만들어봐」) — 꾀 쪽 큰 그림 · 쪽 머리에만(첫 쪽 작은 그림은 가벼운 판 그대로)
+   바위 셋(8.9 · 10.4 · 11.9초) · 맞부딪힘(11.2초)에 싸움터 묶음이 땅째 흔들림 · 맞받아 쏘는 화살 비 두 번 · 불티 열넷 · 칼 불꽃 열 · 쓰러지는 군사 셋 — 모두 처음과 끝은 안 보임 · 22초 안에 끝 ── */
+#su svg.ik-film.ik-play .ik-war { transform-box: view-box; transform-origin: 50% 50%; animation: ik-quake 22s linear 0s 1 both; } /* 싸움터 묶음 — 땅이 흔들림 */
+@keyframes ik-quake { 0% { transform: none; } 40.2% { transform: none; } 40.5% { transform: translate(-3px, 2px); } 40.8% { transform: translate(3px, -1.5px); } 41.2% { transform: translate(-1.5px, 1px); } 41.6% { transform: none; } 47% { transform: none; } 47.3% { transform: translate(3px, 2px); } 47.6% { transform: translate(-3px, -1.5px); } 48% { transform: translate(1.5px, 1px); } 48.4% { transform: none; } 50.6% { transform: none; } 50.9% { transform: translate(-4px, 2.5px); } 51.2% { transform: translate(4px, -2px); } 51.6% { transform: translate(-2.5px, 1.5px); } 52% { transform: translate(1.5px, -1px); } 52.5% { transform: none; } 54% { transform: none; } 54.3% { transform: translate(4px, 3px); } 54.6% { transform: translate(-4px, -2px); } 55% { transform: translate(2px, 1px); } 55.5% { transform: none; } 100% { transform: none; } }
+#su svg.ik-film.ik-play .ik-cv { transform-box: fill-box; transform-origin: 50% 50%; animation-name: ik-arrowR; animation-timing-function: cubic-bezier(.35, .05, .75, 1); animation-iteration-count: 1; animation-fill-mode: both; } /* 맞받아 쏘는 화살 비 — 왼쪽에서 오른쪽으로 */
+#su svg.ik-film.ik-play .ik-u0.ik-x0 { animation-delay: 7.20s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x1 { animation-delay: 7.27s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x2 { animation-delay: 7.28s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x3 { animation-delay: 7.35s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x4 { animation-delay: 7.36s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x5 { animation-delay: 7.43s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x6 { animation-delay: 7.44s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x7 { animation-delay: 7.51s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x8 { animation-delay: 7.52s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u0.ik-x9 { animation-delay: 7.59s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x0 { animation-delay: 9.00s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x1 { animation-delay: 9.07s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x2 { animation-delay: 9.08s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x3 { animation-delay: 9.15s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x4 { animation-delay: 9.16s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x5 { animation-delay: 9.23s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x6 { animation-delay: 9.24s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x7 { animation-delay: 9.31s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x8 { animation-delay: 9.32s; animation-duration: 1.2s; }
+#su svg.ik-film.ik-play .ik-u1.ik-x9 { animation-delay: 9.39s; animation-duration: 1.2s; }
+@keyframes ik-arrowR { 0% { opacity: 0; transform: translate(0, 0) rotate(-12deg); } 10% { opacity: .95; } 50% { transform: translate(430%, 180%) rotate(0deg); } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(860%, 640%) rotate(16deg); } }
+#su svg.ik-film.ik-play .ik-emb { transform-box: fill-box; transform-origin: 50% 50%; animation: ik-emb 2.4s ease-out 7.8s 1 both; } /* 땅불에서 솟는 불티 */
+#su svg.ik-film.ik-play .ik-emb1 { animation-delay: 8.43s; }
+#su svg.ik-film.ik-play .ik-emb2 { animation-delay: 9.06s; }
+#su svg.ik-film.ik-play .ik-emb3 { animation-delay: 9.69s; }
+#su svg.ik-film.ik-play .ik-emb4 { animation-delay: 10.32s; }
+#su svg.ik-film.ik-play .ik-emb5 { animation-delay: 10.95s; }
+#su svg.ik-film.ik-play .ik-emb6 { animation-delay: 11.58s; }
+#su svg.ik-film.ik-play .ik-emb7 { animation-delay: 12.21s; }
+#su svg.ik-film.ik-play .ik-emb8 { animation-delay: 12.84s; }
+#su svg.ik-film.ik-play .ik-emb9 { animation-delay: 13.47s; }
+#su svg.ik-film.ik-play .ik-emb10 { animation-delay: 14.10s; }
+#su svg.ik-film.ik-play .ik-emb11 { animation-delay: 14.73s; }
+#su svg.ik-film.ik-play .ik-emb12 { animation-delay: 15.36s; }
+#su svg.ik-film.ik-play .ik-emb13 { animation-delay: 15.99s; }
+@keyframes ik-emb { 0% { opacity: 0; transform: translate(0, 0) scale(1); } 12% { opacity: 1; } 35% { opacity: .45; transform: translate(-60%, -450%) scale(.95); } 50% { opacity: 1; } 75% { opacity: .5; } 100% { opacity: 0; transform: translate(-180%, -1300%) scale(.5); } }
+#su svg.ik-film.ik-play .ik-rock { transform-box: fill-box; transform-origin: 50% 50%; animation: ik-rockL 1.15s linear 8.02s 1 both; } /* 바위 — 72% 에 땅에 닿음(8.9 · 10.4 · 11.9초) */
+#su svg.ik-film.ik-play .ik-rock1 { animation-name: ik-rockR; animation-delay: 9.52s; }
+#su svg.ik-film.ik-play .ik-rock2 { animation-delay: 11.07s; }
+@keyframes ik-rockL { 0% { opacity: 0; transform: translate(-620%, -560%) rotate(-60deg); } 10% { opacity: 1; } 45% { transform: translate(-330%, -360%) rotate(-25deg); } 72% { opacity: 1; transform: translate(0, 0) rotate(0deg); } 100% { opacity: 0; transform: translate(0, 0) rotate(0deg); } }
+@keyframes ik-rockR { 0% { opacity: 0; transform: translate(620%, -560%) rotate(60deg); } 10% { opacity: 1; } 45% { transform: translate(330%, -360%) rotate(25deg); } 72% { opacity: 1; transform: translate(0, 0) rotate(0deg); } 100% { opacity: 0; transform: translate(0, 0) rotate(0deg); } }
+#su svg.ik-film.ik-play .ik-imp { transform-box: fill-box; transform-origin: 50% 100%; animation: ik-imp 1.6s ease-out 8.85s 1 both; } /* 바위가 떨어진 자리 — 흙먼지 · 돌 조각 · 파인 자리 */
+#su svg.ik-film.ik-play .ik-imp1 { animation-delay: 10.35s; }
+#su svg.ik-film.ik-play .ik-imp2 { animation-delay: 11.9s; }
+@keyframes ik-imp { 0% { opacity: 0; transform: scale(.25); } 10% { opacity: 1; } 55% { opacity: .85; transform: scale(1.12); } 100% { opacity: 0; transform: scale(1.5); } }
+#su svg.ik-film.ik-play .ik-spk { transform-box: fill-box; transform-origin: 50% 50%; animation: ik-spk 0.34s ease-out 11.18s 1 both; } /* 칼과 창이 부딪히는 금빛 불꽃 */
+#su svg.ik-film.ik-play .ik-spk1 { animation-delay: 11.30s; }
+#su svg.ik-film.ik-play .ik-spk2 { animation-delay: 11.41s; }
+#su svg.ik-film.ik-play .ik-spk3 { animation-delay: 11.52s; }
+#su svg.ik-film.ik-play .ik-spk4 { animation-delay: 11.63s; }
+#su svg.ik-film.ik-play .ik-spk5 { animation-delay: 11.76s; }
+#su svg.ik-film.ik-play .ik-spk6 { animation-delay: 11.87s; }
+#su svg.ik-film.ik-play .ik-spk7 { animation-delay: 11.98s; }
+#su svg.ik-film.ik-play .ik-spk8 { animation-delay: 12.10s; }
+#su svg.ik-film.ik-play .ik-spk9 { animation-delay: 12.22s; }
+@keyframes ik-spk { 0% { opacity: 0; transform: scale(.2) rotate(0deg); } 25% { opacity: 1; transform: scale(1.35) rotate(20deg); } 100% { opacity: 0; transform: scale(.5) rotate(45deg); } }
+#su svg.ik-film.ik-play .ik-fall { transform-box: fill-box; transform-origin: 50% 100%; animation: ik-fallL 1.6s ease-in 11.3s 1 both; } /* 쓰러지는 군사 셋 */
+#su svg.ik-film.ik-play .ik-fall1 { animation-name: ik-fallR; animation-delay: 11.62s; }
+#su svg.ik-film.ik-play .ik-fall2 { animation-name: ik-fallR; animation-delay: 11.95s; }
+@keyframes ik-fallL { 0% { opacity: 0; transform: none; } 10% { opacity: 1; } 35% { transform: rotate(4deg); } 62% { transform: rotate(-84deg); } 88% { opacity: .9; } 100% { opacity: 0; transform: rotate(-84deg); } }
+@keyframes ik-fallR { 0% { opacity: 0; transform: none; } 10% { opacity: 1; } 35% { transform: rotate(-4deg); } 62% { transform: rotate(84deg); } 88% { opacity: .9; } 100% { opacity: 0; transform: rotate(84deg); } }
 /* ── 그림 속 이야기 네 막(주문 1117-0102) — 꾀 쪽 큰 그림 바로 아래 · 그림이 그 막에 오면 그 줄이 밝아짐(22초 한 번 · 주문 1117-0250) · 끝 = 네 줄 모두 그대로 · 움직임을 줄인 휴대폰 = 네 줄 그대로 ── */
 #su .sj-kfig ol.sj-story { list-style: none; margin: 12px auto 0; padding: 0; max-width: 440px; display: grid; gap: 8px; }
 #su .sj-kfig ol.sj-story > li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); column-gap: 10px; align-items: baseline; padding: 10px 12px; border-left: 4px solid #D9C9AE; border-radius: 4px 10px 10px 4px; background-color: #FBF6EC; }
