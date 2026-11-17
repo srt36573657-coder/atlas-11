@@ -867,21 +867,23 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const SV = okSunD && !sunBad.length ? SUN : null;
     const w3 = await p.evaluate(() => { const t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), sec = document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), c = sec?.querySelector(':scope > .sj-win3');
       if (!c) return {none: true, any: !!document.querySelector('#su .sj-win3')};
-      return {n: c.getAttribute('data-n'), k: t(c.querySelector('.sj-win3k')), l: t(c.querySelector('.sj-win3l')), s: t(c.querySelector('.sj-win3s')), none: t(c.querySelector('.sj-tnone')),
+      return {n: c.getAttribute('data-n'), k: t(c.querySelector('.sj-win3k')), l: t(c.querySelector('.sj-win3l')), f: t(c.querySelector('.sj-win3f')), s: t(c.querySelector('.sj-win3s')), none: t(c.querySelector('.sj-tnone')),
         items: [...c.querySelectorAll('li.sj-w3')].map(li => ({k: li.getAttribute('data-k'), href: li.querySelector('a.sj-w3a')?.getAttribute('href') ?? null, num: t(li.querySelector('.sj-w3n')), name: t(li.querySelector('.sj-w3t')), han: t(li.querySelector('.sj-w3h')),
           m: t(li.querySelector('.sj-w3m')), r: t(li.querySelector('.sj-w3r')), r2: t(li.querySelector('.sj-w3r2'))})),
         prev: c.previousElementSibling?.className ?? '', next: c.nextElementSibling?.className ?? ''}; });
     if (same && SV) {
       const ten3 = x => (Math.round(x * 100) / 10).toFixed(1).replace(/\.0$/, '');
-      const winOkC = r => Number.isInteger(r.n) && r.n >= (Number.isInteger(SV.minN) ? SV.minN : 20) && Number.isInteger(r.lose) && Number.isFinite(r.exp) && Number.isFinite(r.tail) && Number.isFinite(r.tail7) && r.lose < r.exp && r.tail > r.tail7;
+      const winOkC = r => Number.isInteger(r.n) && r.n >= (Number.isInteger(SV.minN) ? SV.minN : 20) && Number.isInteger(r.lose) && Number.isFinite(r.exp) && Number.isFinite(r.tail) && Number.isFinite(r.tail7) && (r.exp - r.lose) / r.n >= 0.02 - 1e-12 && r.tail - r.tail7 >= 0.002 - 1e-12 && SV.win3?.gap === 0.02 && SV.win3?.tailGap === 0.002;
       const W3 = SV.rank.filter(winOkC).map(r => r.k), ks = SV.win3?.rule === 'win3-v1' && Array.isArray(SV.win3.ks) ? SV.win3.ks.slice(0, 3) : null;
       const dataOk3 = !ks || (JSON.stringify(ks) === JSON.stringify(W3.slice(0, 3)) && SV.win3.cand === W3.length);
       const RBv = Object.fromEntries(SV.rank.map(r => [r.k, r]));
-      const want3 = !ks ? null : {n: String(ks.length), k: '지금 ' + SV.name + '의 꾀 셋', l: (SV.hist?.all ? '지난 날들 모두에서' : '지금처럼 ' + SV.name + '이었던 날들에') + ', 아무렇게나 고른 일곱보다 덜 잃고 크게 잃는 폭도 작았던 꾀예요.',
-        s: '지난 같은 땅 기록으로 고른 셋이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.', none: ks.length ? '' : '오늘은 두 가지를 모두 채운 꾀가 없어요. 아래 덜 잃은 차례를 보세요.',
+      const KN3 = ['', '하나', '둘', '셋'], n3 = ks ? ks.length : 0;
+      const want3 = !ks ? null : {n: String(n3), k: '지금 ' + SV.name + '의 꾀' + (n3 ? ' ' + KN3[n3] : ''), l: (SV.hist?.all ? '지난 날들 모두에서' : '지금처럼 ' + SV.name + '이었던 날들에') + ', 아무렇게나 고른 일곱보다 덜 잃고 크게 잃는 폭도 작았던 꾀예요.',
+        f: n3 && n3 < 3 ? '두 가지를 모두 채운 꾀가 ' + KN3[n3] + '뿐이라 ' + KN3[n3] + '만 보여요. 모자라도 채우지 않아요.' : '',
+        s: '지난 같은 땅 기록으로 고른 꾀예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.', none: ks.length ? '' : '오늘은 두 가지를 모두 채운 꾀가 없어요. 아래 덜 잃은 차례를 보세요.',
         items: ks.map((k, i) => { const r = RBv[k]; return {k, href: '#/k/' + k, num: String(i + 1), name: G36.name?.[k] ?? k, han: G36.han?.[k] ?? '', m: G36.mean?.[k] ?? '',
           r: '열 번에 ' + ten3(r.lose / r.n) + '번 잃었어요. 아무렇게나 고르면 ' + ten3(r.exp / r.n) + '번이에요.', r2: '가장 나빴던 열에 한 주는 100원이 ' + w100(r.tail) + '이었어요. 아무렇게나 고르면 ' + w100(r.tail7) + '이에요.'}; })};
-      const got3 = w3?.none ? null : {n: w3.n, k: w3.k, l: w3.l, s: w3.s, none: w3.none, items: w3.items};
+      const got3 = w3?.none ? null : {n: w3.n, k: w3.k, l: w3.l, f: w3.f, s: w3.s, none: w3.none, items: w3.items};
       const place3 = !ks || (!!got3 && /\bsj-q\b|\bsj-sh\b/.test(w3.prev) && /\bsj-loss\b|\bsj-calm\b|\bsj-th\b|\bsj-tricks\b/.test(w3.next));
       check(dataOk3 && JSON.stringify(got3) === JSON.stringify(want3) && place3 && !(w3?.none && w3.any),
         W + '지금 땅의 꾀 셋(주문 1117-1859) — 덜 잃은 차례 안에서 두 조건(아무렇게나 일곱보다 덜 잃음 · 가장 나빴던 열에 한 주가 얕음) · 셋까지 · 차례 그대로 · 꾀 칸 맨 위',

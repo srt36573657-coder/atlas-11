@@ -233,9 +233,11 @@ export const win3Of = S => (S?.win3?.rule === WIN3_RULE && Array.isArray(S.win3.
 export const okWinR = r => !!r && Number.isInteger(r.n) && r.n > 0 && Number.isInteger(r.lose) && r.lose >= 0 && r.lose <= r.n && fin(r.exp) && fin(r.tail) && fin(r.tail7);
 function winBox(g, S, RB) {
   const ks = win3Of(S); if (!ks) return null;
-  return h('div', {class: 'sj-win3', 'data-n': String(ks.length)},
-    h('p', {class: 'sj-win3k', text: '지금 ' + S.name + '의 꾀 셋'}),
+  const n = ks.length, KN3 = ['', '하나', '둘', '셋'];
+  return h('div', {class: 'sj-win3', 'data-n': String(n)},
+    h('p', {class: 'sj-win3k', text: '지금 ' + S.name + '의 꾀' + (n ? ' ' + KN3[n] : '')}),
     h('p', {class: 'sj-win3l', text: (S.hist?.all ? '지난 날들 모두에서' : '지금처럼 ' + S.name + '이었던 날들에') + ', 아무렇게나 고른 일곱보다 덜 잃고 크게 잃는 폭도 작았던 꾀예요.'}),
+    n && n < 3 ? h('p', {class: 'sj-win3f', text: '두 가지를 모두 채운 꾀가 ' + KN3[n] + '뿐이라 ' + KN3[n] + '만 보여요. 모자라도 채우지 않아요.'}) : null,
     ks.length ? h('ol', {class: 'sj-win3o'}, ...ks.map((k, i) => { const r = RB[k], ok = okWinR(r);
       return h('li', {class: 'sj-w3', 'data-k': k},
         h('a', {class: 'sj-w3a', href: '#/k/' + k, 'aria-label': (i + 1) + ' · ' + (g.name?.[k] ?? k) + ' · 이 꾀 자세히'},
@@ -246,7 +248,7 @@ function winBox(g, S, RB) {
         ok ? h('p', {class: 'sj-w3r', text: '열 번에 ' + ten(r.lose / r.n) + '번 잃었어요. 아무렇게나 고르면 ' + ten(r.exp / r.n) + '번이에요.'}) : null,
         ok ? h('p', {class: 'sj-w3r2', text: '가장 나빴던 열에 한 주는 100원이 ' + w100(r.tail) + '이었어요. 아무렇게나 고르면 ' + w100(r.tail7) + '이에요.'}) : null); }))
       : h('p', {class: 'sj-tnone', text: '오늘은 두 가지를 모두 채운 꾀가 없어요. 아래 덜 잃은 차례를 보세요.'}),
-    h('p', {class: 'sj-win3s', text: '지난 같은 땅 기록으로 고른 셋이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+    h('p', {class: 'sj-win3s', text: '지난 같은 땅 기록으로 고른 꾀예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
 }
 function trickSec(g, T) {
   const sun = okSun(T.sun) ? T.sun : null, N = g.kinds.reduce((a, k) => a + Math.min(7, (g.lists[k] ?? []).length), 0), dd = mday(g?.asOf?.data) ?? mday(T.asOf?.board), bd = mday(g?.asOf?.board);

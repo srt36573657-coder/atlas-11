@@ -11,6 +11,7 @@ import su21_s36 as S36
 
 RULE_ID = 'sun-v1'
 WIN3_RULE = 'win3-v1'   # 지금 땅의 꾀 셋(주문 1117-1859)
+WIN3_GAP, WIN3_TAIL = 0.02, 0.002   # 잃은 몫이 아무렇게나 일곱보다 0.02(열 번에 0.2번) 넘게 적고 · 가장 나빴던 열에 한 주가 0.002(100원에 0.2원) 넘게 얕음
 H = 5          # 고른 날 뒤 닷새(한 주) 값으로 셈
 WIN = 500      # 지난 이만큼 거래일까지 봄(2년 남짓 · 꾀마다 날마다 다시 고름)
 MIN_N = 20     # 같은 땅 날이 이만큼 안 되면 모든 날로 셈(적은 날로 줄 세우지 않음)
@@ -128,8 +129,8 @@ def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H):
         stats[k]['exp'] = round(float(sum(cP0[t] for t in tk)), 2)
         stats[k]['tail'] = round(float(np.sort(a)[:k10].mean()), 4)
         stats[k]['tail7'] = round(float(np.sort(S7[np.arange(n)[None, :], rngc.integers(0, S7.shape[1], size=(300, n))], axis=1)[:, :k10].mean()), 4)
-    winOk = lambda st: st.get('n', 0) >= MIN_N and 'exp' in st and st['lose'] < st['exp'] and st['tail'] > st['tail7']
-    win3 = {'rule': WIN3_RULE, 'minN': MIN_N, 'cand': sum(1 for k in rank if winOk(stats[k])), 'ks': [k for k in rank if winOk(stats[k])][:3]}
+    winOk = lambda st: st.get('n', 0) >= MIN_N and 'exp' in st and (st['exp'] - st['lose']) / st['n'] >= WIN3_GAP and st['tail'] - st['tail7'] >= WIN3_TAIL   # 화면 숫자로도 차이가 보이게(열 번에 0.2번 · 100원에 0.2원 넘게)
+    win3 = {'rule': WIN3_RULE, 'minN': MIN_N, 'gap': WIN3_GAP, 'tailGap': WIN3_TAIL, 'cand': sum(1 for k in rank if winOk(stats[k])), 'ks': [k for k in rank if winOk(stats[k])][:3]}
     cnt = {L: sum(1 for t in days if landOf.get(t) == L) for L in ORDER}
     path = [land(market(P, t)) for t in range(max(120, T - PATH + 1), T + 1)]
     D = LANDS[key]
@@ -170,8 +171,9 @@ if __name__ == '__main__':
         assert land(market(P2, Tn - 1)) == 'fall'
         w = S['win3']   # 지금 땅의 꾀 셋(주문 1117-1859) — 덜 잃은 차례 안에서 · 두 조건 · 셋까지 · 차례 그대로
         assert w['rule'] == WIN3_RULE and len(w['ks']) <= 3 and len(w['ks']) <= w['cand'] and [r['k'] for r in S['rank'] if r['k'] in w['ks']] == w['ks'], w
-        assert all((lambda r: r['n'] >= MIN_N and r['lose'] < r['exp'] and r['tail'] > r['tail7'])(next(r for r in S['rank'] if r['k'] == k)) for k in w['ks']), w
-        first = [r['k'] for r in S['rank'] if r.get('n', 0) >= MIN_N and 'exp' in r and r['lose'] < r['exp'] and r['tail'] > r['tail7']][:3]; assert first == w['ks'], (first, w)
+        okw = lambda r: r.get('n', 0) >= MIN_N and 'exp' in r and (r['exp'] - r['lose']) / r['n'] >= WIN3_GAP and r['tail'] - r['tail7'] >= WIN3_TAIL
+        assert all(okw(next(r for r in S['rank'] if r['k'] == k)) for k in w['ks']), w
+        first = [r['k'] for r in S['rank'] if okw(r)][:3]; assert first == w['ks'], (first, w)
         c = S['calm']   # 크게 덜 잃는 일곱(주문 1117-1731) — 꾸민 자료에서는 없을 수도 있음 · 있으면 뜻이 맞아야 함
         assert c is None or (c['rule'] == S36.CALM_RULE and c['n'] >= MIN_N and 0 <= c['lose'] <= c['n'] and 0 <= c['exp'] <= c['n'] and c['tail'] <= c['avg'] and 0 <= c['beat'] <= 1 and c['from'] <= c['to']), c
         print('ok', S['land'], S['hist']['days'], S['hist']['same'], S['rank'][0]['k'], 'calm', c and (c['n'], c['lose'], c['tail'], c['tail7']), 'win3', w['ks'], w['cand'])
