@@ -175,14 +175,15 @@ export function watch(svg) {
    그림 하나 = 22초짜리 한 편(주문 1117-0250 「그리고 22초로 만들어라」 · 한 번 놀고 멈춤 · 끝 모습 = 처음 칠한 그림) — 네 막 · 마음 따라 색 · 날씨 · 빛 · 카메라가 바뀜(꾸밈 파일 su-sonja.css 의 ik-film 칸)
    1막 고요(0 ~ 5.5초) 검은 띠가 열리고 여는 붓 한 획 · 그 묶음 색 · 옅은 날씨 · 카메라가 물러나며 장면을 보여 줌
    2막 긴장(5.5 ~ 12.2초) 차가운 쪽빛 · 가장자리가 어두워지고 검은 띠가 두꺼워짐 · 바람 줄기 넷 · 날씨가 거세짐 · 카메라가 다가가며 두 번 흔들림
-   3막 반전(12.2 ~ 18.3초) 번쩍 · 금빛 · 빛 기둥 셋 · 금빛 반짝임이 사방으로 터짐 · 빛 한 줄기 · 카메라가 한 발 물러남
+   3막 반전(12.2 ~ 18.3초) 번쩍 · 금빛 · 빛 기둥 셋 · 부딪힌 자리에서 돌 조각 · 먹 조각 · 불똥이 사방으로 튐(폭죽 아님 · 주문 1117-1506) · 빛 한 줄기 · 카메라가 한 발 물러남
    끝 여운(18.3 ~ 22초) 날씨가 잦아들고 · 번호 도장이 꽝(19.6초) · 물결 · 멈춘 그림
    이야기 글(막마다 한 줄 · 감정)은 꾀 쪽 그림 아래(su-sonja-story.js) · 그림 속 글 0 · 빨강 0 · 흐림 거르개 0 · 그러데이션 0 · 글 속 style 0
-   묶음 여섯마다 날씨(옛 중국 영화처럼 장마다 색이 다름): 이김 금빛 반짝임 · 맞섬 잎 · 공격 불티 · 혼란 비 · 연합 꽃비 · 패배 눈 / 땅 그림은 그 땅 날씨
+   묶음 여섯마다 날씨(옛 중국 영화처럼 장마다 색이 다름): 이김 금빛 불똥 · 맞섬 화살 비 · 공격 불티 · 혼란 비 · 연합 잿가루 · 패배 눈 / 땅 그림은 그 땅 날씨
+   (주문 1117-1506 · 사장님 2026-11-17(마카오) 15:06 「더 전쟁답게 해 그런데 꽃도 있고 나비도 있고 벌도 있고 그리고 폭죽만 효과내지말고 더 고전 전쟁처럼」 — 꽃잎 · 나비 같던 잎 · 벌 같던 금빛 별 · 폭죽 같던 터짐을 뺌)
    첫 쪽 꾀 칸(작은 그림 서른여섯) · 땅 · 손무 · 표지는 가벼운 판(빛 기둥 · 바람 줄기 없음 · 터짐 여섯 · 날씨 수 줄임) — 느린 휴대폰 */
 export const FX = Object.freeze(['gold', 'leaf', 'ember', 'rain', 'petal', 'snow']);
-const FXC = Object.freeze({gold: [C.gold, C.fireCore], leaf: [C.greenLight, C.ochre], ember: [C.fireCore, C.sun], rain: [C.waterDeep, C.water], petal: [C.pink, C.pinkDeep], snow: [C.moon, C.moon]});
-const GRADE = Object.freeze({gold: C.gold, leaf: C.indigo, ember: C.fire, rain: C.water, petal: C.pink, snow: C.stone});
+const FXC = Object.freeze({gold: [C.gold, C.fireCore], leaf: [INK, C.fireCore], ember: [C.fireCore, C.sun], rain: [C.waterDeep, C.water], petal: [C.stone, C.robe2], snow: [C.moon, C.moon]}); // 맞섬 = 먹 화살(셋에 하나 불화살 촉) · 연합 = 잿가루(잿빛 · 그을린 밤색)
+const GRADE = Object.freeze({gold: C.gold, leaf: C.indigo, ember: C.fire, rain: C.water, petal: C.stone, snow: C.stone});
 export const fxOfK = k => FX[Math.floor((+String(k).slice(1) - 1) / 6)] ?? 'gold';
 export const FXLAND = Object.freeze({fall: 'snow', shake: 'rain', rise: 'gold', narrow: 'leaf', calm: 'petal'});
 export const FXHERO = Object.freeze({book: 'petal', castle: 'leaf', ledger: 'gold'});
@@ -190,12 +191,20 @@ export const NA = 12, NB = 16, NC = 12, NG = 4, NR = 3, NV = 3, NW = 12; // 고�
 export const LITE = Object.freeze({a: 8, b: 10, c: 6}); // 첫 쪽 작은 그림 · 땅 · 손무 · 표지(빛 기둥 · 바람 줄기 없음 · 터짐 여섯)
 const UP = new Set(['gold', 'ember']);
 const star = (x, y, q, t) => `M${x} ${r1(y - q)}L${r1(x + q * t)} ${r1(y - q * t)}L${r1(x + q)} ${y}L${r1(x + q * t)} ${r1(y + q * t)}L${x} ${r1(y + q)}L${r1(x - q * t)} ${r1(y + q * t)}L${r1(x - q)} ${y}L${r1(x - q * t)} ${r1(y - q * t)}Z`; // 반짝임(네 꼭지 별) · 불티(마름모)
-/** 날씨 한 알(자리는 꼴에 · 움직임은 감싼 묶음에) */
+/** 화살 한 대 — (x, y) = 깃 끝 · (ux, uy) = 나는 쪽 · L = 길이 · 촉 두 갈래 · 깃 두 갈래 */
+const arrowD = (x, y, L, ux, uy, k) => { const hx = x + ux * L, hy = y + uy * L, rt = t => [-ux * Math.cos(t) + uy * Math.sin(t), -ux * Math.sin(t) - uy * Math.cos(t)], b = 3.4 * k, f = 3 * k;
+  const [a1, a2] = rt(0.5), [c1, c2] = rt(-0.5), [d1, d2] = rt(0.65), [e1, e2] = rt(-0.65);
+  return `M${r1(x)} ${r1(y)}L${r1(hx)} ${r1(hy)}l${r1(a1 * b)} ${r1(a2 * b)}M${r1(hx)} ${r1(hy)}l${r1(c1 * b)} ${r1(c2 * b)}M${r1(x)} ${r1(y)}l${r1(d1 * f)} ${r1(d2 * f)}M${r1(x)} ${r1(y)}l${r1(e1 * f)} ${r1(e2 * f)}`; };
+/** 날씨 한 알(자리는 꼴에 · 움직임은 감싼 묶음에) — 고전 싸움터(주문 1117-1506): 화살(맞섬 · 오른쪽 위에서 왼쪽 아래로 · 셋에 하나 불화살) · 잿가루(연합 · 모난 조각이 뒤집히며 내림) · 불똥(이김 · 꼬리 달린 금빛 알이 솟음) */
 function mote(fx, x, y, sz, c, a) {
   return fx === 'rain' ? s('path', {d: `M${x} ${y}l-${r1(3.6 * sz)} ${r1(13 * sz)}`, fill: 'none', stroke: c, 'stroke-width': r1(1.1 * Math.min(1.6, sz)), 'stroke-opacity': 0.65, 'stroke-linecap': 'round'})
-    : fx === 'leaf' || fx === 'petal' ? s('ellipse', {cx: x, cy: y, rx: r1((fx === 'leaf' ? 4.2 : 3.9) * sz), ry: r1((fx === 'leaf' ? 1.8 : 2.1) * sz), transform: `rotate(${a} ${x} ${y})`, fill: c, 'fill-opacity': 0.92, stroke: fx === 'leaf' ? INK : C.pinkCore, 'stroke-opacity': 0.3, 'stroke-width': 0.5})
+    : fx === 'leaf' ? s('g', {}, s('path', {d: arrowD(x, y, r1(15 * sz), -0.6, 0.8, sz), fill: 'none', stroke: INK, 'stroke-width': r1(1.15 * Math.min(1.6, sz)), 'stroke-opacity': 0.85, 'stroke-linecap': 'round'}),
+      c === C.fireCore ? s('circle', {cx: r1(x - 9 * sz), cy: r1(y + 12 * sz), r: r1(1.8 * sz), fill: C.fireCore, 'fill-opacity': 0.95, stroke: C.sun, 'stroke-width': 0.5}) : null)
+    : fx === 'petal' ? s('path', {d: 'M' + [[0, 1], [80, 0.6], [165, 0.95], [250, 0.55], [310, 0.8]].map(([t, m]) => { const q = (a + t) * Math.PI / 180, rr = 2.9 * sz * m; return r1(x + Math.cos(q) * rr) + ' ' + r1(y + Math.sin(q) * rr); }).join('L') + 'Z',
+      fill: c, 'fill-opacity': 0.88, stroke: INK, 'stroke-opacity': 0.35, 'stroke-width': 0.5})
     : fx === 'snow' ? s('circle', {cx: x, cy: y, r: r1(2.3 * sz), fill: C.moon, stroke: INK, 'stroke-opacity': 0.22, 'stroke-width': 0.5})
-    : fx === 'gold' ? s('path', {d: star(x, y, r1(3.4 * sz), 0.28), fill: c, 'fill-opacity': 0.95, stroke: C.sun, 'stroke-opacity': 0.7, 'stroke-width': 0.4})
+    : fx === 'gold' ? s('g', {}, s('path', {d: `M${x} ${y}l${r1(-1.4 * sz)} ${r1(6.5 * sz)}`, fill: 'none', stroke: C.sun, 'stroke-width': r1(1.1 * Math.min(1.6, sz)), 'stroke-opacity': 0.55, 'stroke-linecap': 'round'}),
+      s('circle', {cx: x, cy: y, r: r1(1.6 * sz), fill: c, 'fill-opacity': 0.95, stroke: C.sun, 'stroke-opacity': 0.7, 'stroke-width': 0.4}))
     : s('path', {d: star(x, y, r1(2.4 * sz), 0.5), fill: c, 'fill-opacity': 0.95, stroke: C.fire, 'stroke-opacity': 0.6, 'stroke-width': 0.4});
 }
 /** 날씨 한 겹 — layer 'a'(고요 · 여운 — 작고 옅게) · 'b'(긴장 — 크고 거세게 · 칸마다 두세 알 뭉치) · n 칸 */
@@ -210,10 +219,15 @@ function motes(fx, W, H, seed, n, layer) {
   }
   return s('g', {class: 'ik-fx', 'data-fx': fx, 'data-l': layer, 'aria-hidden': 'true'}, ...out);
 }
-/** 반전 — 가운데에서 금빛 반짝임이 사방으로 터짐(감싼 묶음 ik-q · 방향은 꾸밈 파일 ik-bst0 ~ 11 · 가벼운 판은 한 칸 건너 여섯) */
+/** 반전 — 가운데 부딪힌 자리에서 돌 조각 · 먹 조각 · 불똥이 사방으로 튐(옛 싸움터 · 폭죽 아님 · 주문 1117-1506 · 감싼 묶음 ik-q · 방향은 꾸밈 파일 ik-bst0 ~ 11 · 가벼운 판은 한 칸 건너 여섯) */
 function burst(W, H, seed, n = NC) {
   const R = rng(seed + 7), cx = r1(W * 0.5), cy = r1(H * 0.45), k = Math.max(0.9, Math.min(1.6, W / 200)), out = [], st = Math.max(1, Math.round(NC / n));
-  for (let i = 0; i < n; i++) out.push(s('g', {class: 'ik-q ik-c' + i * st}, s('path', {d: star(cx, cy, r1((3 + R() * 2.2) * k), 0.26), fill: i % 2 ? C.gold : C.fireCore, 'fill-opacity': 0.95, stroke: C.sun, 'stroke-opacity': 0.7, 'stroke-width': 0.4})));
+  for (let i = 0; i < n; i++) { const q = (3.2 + R() * 2.4) * k, a0 = R() * 6.28, kind = i % 3; // 0 먹 조각 · 1 돌 조각 · 2 불똥
+    const d = kind === 2 ? `M${cx} ${cy}l${r1(-1.6 * k)} ${r1(6 * k)}` : 'M' + [[0, 1], [1.9, 0.5], [3.3, 0.9], [4.8, 0.45]].map(([t, m]) => r1(cx + Math.cos(a0 + t) * q * m) + ' ' + r1(cy + Math.sin(a0 + t) * q * m)).join('L') + 'Z';
+    out.push(s('g', {class: 'ik-q ik-c' + i * st}, kind === 2
+      ? s('g', {}, s('path', {d, fill: 'none', stroke: C.sun, 'stroke-width': r1(1.2 * k), 'stroke-opacity': 0.6, 'stroke-linecap': 'round'}), s('circle', {cx, cy, r: r1(1.9 * k), fill: C.fireCore, 'fill-opacity': 0.95, stroke: C.sun, 'stroke-width': 0.4}))
+      : s('path', {d, fill: kind ? C.stone : INK, 'fill-opacity': 0.92, stroke: INK, 'stroke-opacity': 0.55, 'stroke-width': 0.5})));
+  }
   return s('g', {class: 'ik-burst', 'aria-hidden': 'true'}, ...out);
 }
 /** 긴장 — 바람 줄기 넷(오른쪽 밖에서 왼쪽으로 휘몰아침 · 비 · 잎 · 꽃잎이 날리는 쪽과 같음 · 감싼 묶음 ik-gu) */

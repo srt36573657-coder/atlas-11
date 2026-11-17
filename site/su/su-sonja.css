@@ -665,13 +665,13 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su svg.ik-film.ik-play .ik-fx[data-l="b"][data-fx="rain"] .ik-p { animation-duration: 1.1s; }
 @keyframes ik-up { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 1; } 80% { opacity: .9; } 100% { opacity: 0; transform: translate(7px, -66px); } }
 @keyframes ik-ember { 0% { opacity: 0; transform: translate(0, 0) scale(1); } 10% { opacity: 1; } 35% { opacity: .35; } 50% { opacity: 1; } 70% { opacity: .5; } 100% { opacity: 0; transform: translate(-9px, -74px) scale(.4); } }
-@keyframes ik-leaf { 0% { opacity: 0; transform: translate(0, 0) rotate(0deg); } 12% { opacity: 1; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-48px, 96px) rotate(260deg); } }
+@keyframes ik-leaf { 0% { opacity: 0; transform: translate(0, 0); } 12% { opacity: 1; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-66px, 88px); } } /* 맞섬 = 화살 — 촉 쪽으로 곧게 날아감(돌지 않음 · 주문 1117-1506) */
 @keyframes ik-petal { 0% { opacity: 0; transform: translate(0, 0) rotate(0deg); } 12% { opacity: 1; } 50% { transform: translate(-16px, 50px) rotate(150deg); } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-34px, 104px) rotate(310deg); } }
 @keyframes ik-snow { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 1; } 50% { transform: translate(9px, 52px); } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-6px, 106px); } }
 @keyframes ik-rain { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(-24px, 124px); } }
-@keyframes ik-upS { 0% { opacity: 0; transform: translate(0, 0) rotate(0deg); } 12% { opacity: 1; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-30px, -96px) rotate(180deg); } }
+@keyframes ik-upS { 0% { opacity: 0; transform: translate(0, 0); } 12% { opacity: 1; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-30px, -96px); } } /* 이김 = 불똥 — 꼬리를 아래로 단 채 솟음 */
 @keyframes ik-emberS { 0% { opacity: 0; transform: translate(0, 0) scale(1); } 10% { opacity: 1; } 40% { opacity: .4; } 55% { opacity: 1; } 100% { opacity: 0; transform: translate(-40px, -104px) scale(.4); } }
-@keyframes ik-leafS { 0% { opacity: 0; transform: translate(0, 0) rotate(0deg); } 10% { opacity: 1; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-110px, 92px) rotate(420deg); } }
+@keyframes ik-leafS { 0% { opacity: 0; transform: translate(0, 0); } 10% { opacity: 1; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-108px, 144px); } }
 @keyframes ik-petalS { 0% { opacity: 0; transform: translate(0, 0) rotate(0deg); } 10% { opacity: 1; } 50% { transform: translate(-50px, 46px) rotate(200deg); } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-104px, 100px) rotate(400deg); } }
 @keyframes ik-snowS { 0% { opacity: 0; transform: translate(0, 0); } 12% { opacity: 1; } 85% { opacity: .9; } 100% { opacity: 0; transform: translate(-70px, 110px); } }
 @keyframes ik-rainS { 0% { opacity: 0; transform: translate(0, 0); } 12% { opacity: 1; } 100% { opacity: 0; transform: translate(-38px, 150px); } }
