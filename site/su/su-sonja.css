@@ -980,3 +980,14 @@ html.sj-on #su .sj-nk { color: #3A332B; }
 html.sj-on #su .sj-seal-big { border: 0; border-radius: 18px; background: #F1EBDF; color: #15120E; font-family: var(--sj-sans); font-weight: 800; }
 html.sj-on #su .sj-seal-big.sj-seal-dn { background: #1E1914; color: #FFFFFF; }
 html.sj-on #su .sj-dock::before { content: ""; position: absolute; left: 0; right: 0; top: -22px; bottom: -96px; z-index: -1; background: linear-gradient(to bottom, rgba(248, 244, 235, 0), #F8F4EB 46%); pointer-events: none; }
+/* 첫 쪽 짧게(주문 1117-1120 · 사장님 2026-11-17(마카오) 10:20 「어 변경해」 — 샘플 다 차례: 형세 → 줄어든 갈래 → 큰 갈래 → 꾀 셋 → 「서른여섯 꾀 모두 보기」) */
+html.sj-on #su .sj-cover .sj-artw { width: 86%; max-width: 330px; }
+html.sj-on #su .sj-loss { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 4px 12px; margin: 4px 0 16px; padding: 14px 16px; border-radius: 22px; background: #F1EBDF; }
+html.sj-on #su .sj-lossk { grid-column: 1 / -1; font-size: 1.0625rem; font-weight: 800; color: #15120E; }
+html.sj-on #su .sj-lossv { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+html.sj-on #su .sj-lossn { font-size: 1.375rem; font-weight: 900; color: #15120E; }
+html.sj-on #su .sj-lossw { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; color: #3A332B; font-weight: 600; }
+html.sj-on #su .sj-lossw b { font-size: 1.875rem; font-weight: 900; color: #15120E; letter-spacing: -.01em; }
+html.sj-on #su .sj-all { margin-top: 14px; background: #1E1914; color: #FFFDF8; font-weight: 800; }
+html.sj-on #su .sj-all i { color: #FFFDF8; }
+html.sj-on #su .sj-tk .sj-tkpic svg { display: block; max-height: 210px; width: auto; max-width: 100%; margin: 0 auto; border-radius: 18px; }

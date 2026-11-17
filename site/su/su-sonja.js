@@ -196,6 +196,16 @@ function themesBox(g) {
           h('b', {text: nameOf(code)}), h('span', {text: '꾀 ' + in7(code) + '가지'}))))))))),
     h('p', {class: 'sj-thnote', text: '많이 나온 차례예요. 많이 오른 차례가 아니에요.'}));
 }
+/** 줄어든 갈래 한 칸(주문 1117-1120 · 샘플 다) — 큰 갈래 다섯 가운데 한 달 평균이 100원 아래로 준 갈래(가장 많이 준 하나) · 없으면 없다고 씀(손실 먼저 · 숨기지 않음) */
+export const lossOf = g => { const R = thRows(g).filter(r => fin(r.avg) && r.avg < 1); return R.length ? R.reduce((a, r) => (r.avg < a.avg ? r : a)) : null; };
+function lossTh(g) {
+  if (!thRows(g).length) return null;
+  const r = lossOf(g);
+  return h('div', {class: 'sj-loss', 'data-g': r ? r.name : ''},
+    h('p', {class: 'sj-lossk', text: '▼ 줄어든 갈래'}),
+    r ? h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: r.name}), h('span', {class: 'sj-lossw'}, h('span', {text: '한 달 전 100원이 '}), h('b', {text: w100(r.avg - 1)})))
+      : h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: '회사가 많이 나온 갈래 다섯은 한 달 동안 줄지 않았어요.'})));
+}
 function trickSec(g, T) {
   const sun = okSun(T.sun) ? T.sun : null, N = g.kinds.reduce((a, k) => a + Math.min(7, (g.lists[k] ?? []).length), 0), dd = mday(g?.asOf?.data) ?? mday(T.asOf?.board), bd = mday(g?.asOf?.board);
   const anySp = g.kinds.some(k => (g.lists[k] ?? []).slice(0, 7).some(c => sp36(g, String(c?.code ?? ''))));
@@ -210,14 +220,14 @@ function trickSec(g, T) {
       L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: none36(g.why?.[k])}), // 회사 단추는 바로 보임(사장님 2026-11-16 01:56 「지금 7곳이라고 클릭해야 나오잖아 바로 종목들이 나오개 해」)
       h('details', {class: 'sj-drawer sj-cos'}, h('summary', {}, h('span', {class: 'sj-s1', text: '고르는 법'}), chev()), // 긴 풀이만 접은 칸(주문 1116-0118)
         h('p', {class: 'sj-say', text: g.say?.[k] ?? ''}), funnel36(g, k))); }; // 세 거름을 지난 수(주문 1116-1539)
-  const H = S ? S.hist : null, TOP = 7;
+  const H = S ? S.hist : null, TOP = 3; // 첫 쪽은 꾀 셋만(주문 1117-1120 샘플 다 「창호지 한 장」 — 서른여섯 모두는 꾀 탭 #/k)
   return h('section', {class: 'sj-sec sj-s36', 'aria-label': (S ? '덜 잃은 꾀 차례 · ' : '') + '서른여섯 꾀 ' + N + '칸', 'data-n': String(N), 'data-order': S ? 'sun' : 'kind'},
     head('꾀', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + N + '칸'})), true),
     S?.rankQ ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + S.rankQ.pian})) : null,
+    lossTh(g), // 줄어든 갈래 한 칸 — 손실 먼저(주문 1117-1120 샘플 다)
     themesBox(g), // 큰 갈래 차례(주문 1116-1601) — 꾀 서른여섯을 하나하나 보기 전에 한눈에
     h('ol', {class: 'sj-tricks'}, ...order.slice(0, TOP).map(one36)),
-    order.length > TOP ? h('details', {class: 'sj-drawer sj-tmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: (S ? (TOP + 1) + '번째부터 ' + order.length + '번째까지 ' : '나머지 ') + '꾀 ' + (order.length - TOP) + '가지 더 보기'}), chev()),
-      h('ol', {class: 'sj-tricks'}, ...order.slice(TOP).map(one36))) : null,
+    h('a', {class: 'sj-go sj-all', href: '#/k'}, h('span', {text: '서른여섯 꾀 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), // 나머지 꾀는 꾀 탭에서(주문 1117-1120)
     h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '꾀 차례는 이렇게 셌어요'}), chev()), // 센 법 · 고른 날(긴 풀이는 접은 칸 — 주문 1116-0118)
       h('p', {class: 'sj-lead', text: LEAD36(g)}),
       ...pickHow(g), // 세 거름 풀이(주문 1116-1539)
