@@ -225,6 +225,29 @@ function calmBox(g) {
     R ? h('p', {class: 'sj-calmr2', text: '대신 열 번에 ' + ten(R.lose / R.n) + '번 잃었어요. 아무렇게나 고르면 ' + ten(R.exp / R.n) + '번이에요.'}) : null,
     R ? h('p', {class: 'sj-calmd', text: '지난 ' + R.n + '거래일 날마다 같은 법으로 골라 닷새 뒤 값과 견줬어요.' + (ym(R.from) && ym(R.to) ? ' 센 때는 ' + ym(R.from) + '부터 ' + ym(R.to) + '까지예요.' : '')}) : null);
 }
+/** 지금 땅의 꾀 셋(주문 1117-1859 · 사장님 2026-11-17(마카오) 18:59 「지금 주식상황에 전략적으로 승리 할수 있는 병법 3가지를 선정해서 첫 페이지애 잘보이게 하라」)
+ *  덜 잃은 차례(본질 8) 안에서, 같은 땅 날들에 ① 잃은 번이 아무렇게나 고른 일곱보다 적고 ② 가장 나빴던 열에 한 주가 아무렇게나 일곱보다 얕은 꾀 · 셋까지(su21_sun win3)
+ *  꾀 칸 맨 위(차례 말씀 바로 아래) · 먹 칸에 크게 · 누르면 그 꾀 쪽 · 앞날을 맞히지 않음 — 지난 같은 땅 기록 */
+export const WIN3_RULE = 'win3-v1';
+export const win3Of = S => (S?.win3?.rule === WIN3_RULE && Array.isArray(S.win3.ks) ? S.win3.ks.filter(k => typeof k === 'string' && /^g\d\d$/.test(k)).slice(0, 3) : null);
+export const okWinR = r => !!r && Number.isInteger(r.n) && r.n > 0 && Number.isInteger(r.lose) && r.lose >= 0 && r.lose <= r.n && fin(r.exp) && fin(r.tail) && fin(r.tail7);
+function winBox(g, S, RB) {
+  const ks = win3Of(S); if (!ks) return null;
+  return h('div', {class: 'sj-win3', 'data-n': String(ks.length)},
+    h('p', {class: 'sj-win3k', text: '지금 ' + S.name + '의 꾀 셋'}),
+    h('p', {class: 'sj-win3l', text: (S.hist?.all ? '지난 날들 모두에서' : '지금처럼 ' + S.name + '이었던 날들에') + ', 아무렇게나 고른 일곱보다 덜 잃고 크게 잃는 폭도 작았던 꾀예요.'}),
+    ks.length ? h('ol', {class: 'sj-win3o'}, ...ks.map((k, i) => { const r = RB[k], ok = okWinR(r);
+      return h('li', {class: 'sj-w3', 'data-k': k},
+        h('a', {class: 'sj-w3a', href: '#/k/' + k, 'aria-label': (i + 1) + ' · ' + (g.name?.[k] ?? k) + ' · 이 꾀 자세히'},
+          h('span', {class: 'sj-w3n', text: String(i + 1)}),
+          h('span', {class: 'sj-w3b'}, h('b', {class: 'sj-w3t', text: g.name?.[k] ?? k}), h('span', {class: 'sj-w3h', text: g.han?.[k] ?? ''})),
+          h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})),
+        h('p', {class: 'sj-w3m', text: g.mean?.[k] ?? ''}),
+        ok ? h('p', {class: 'sj-w3r', text: '열 번에 ' + ten(r.lose / r.n) + '번 잃었어요. 아무렇게나 고르면 ' + ten(r.exp / r.n) + '번이에요.'}) : null,
+        ok ? h('p', {class: 'sj-w3r2', text: '가장 나빴던 열에 한 주는 100원이 ' + w100(r.tail) + '이었어요. 아무렇게나 고르면 ' + w100(r.tail7) + '이에요.'}) : null); }))
+      : h('p', {class: 'sj-tnone', text: '오늘은 두 가지를 모두 채운 꾀가 없어요. 아래 덜 잃은 차례를 보세요.'}),
+    h('p', {class: 'sj-win3s', text: '지난 같은 땅 기록으로 고른 셋이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+}
 function trickSec(g, T) {
   const sun = okSun(T.sun) ? T.sun : null, N = g.kinds.reduce((a, k) => a + Math.min(7, (g.lists[k] ?? []).length), 0), dd = mday(g?.asOf?.data) ?? mday(T.asOf?.board), bd = mday(g?.asOf?.board);
   const anySp = g.kinds.some(k => (g.lists[k] ?? []).slice(0, 7).some(c => sp36(g, String(c?.code ?? ''))));
@@ -243,6 +266,7 @@ function trickSec(g, T) {
   return h('section', {class: 'sj-sec sj-s36', 'aria-label': (S ? '덜 잃은 꾀 차례 · ' : '') + '서른여섯 꾀 ' + N + '칸', 'data-n': String(N), 'data-order': S ? 'sun' : 'kind'},
     head('꾀', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + N + '칸'})), true),
     S?.rankQ ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + S.rankQ.pian})) : null,
+    S ? winBox(g, S, RB) : null, // 지금 땅의 꾀 셋(주문 1117-1859) — 꾀 칸 맨 위에 크게
     lossTh(g), // 줄어든 갈래 한 칸 — 손실 먼저(주문 1117-1120 샘플 다)
     calmBox(g), // 크게 덜 잃는 일곱(주문 1117-1731) — 손실 먼저
     themesBox(g), // 큰 갈래 차례(주문 1116-1601) — 꾀 서른여섯을 하나하나 보기 전에 한눈에

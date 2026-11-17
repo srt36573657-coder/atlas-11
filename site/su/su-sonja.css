@@ -1027,3 +1027,19 @@ html.sj-on #su .sj-calml, html.sj-on #su .sj-calmd { font-size: 1.0625rem; font-
 html.sj-on #su .sj-calmr { font-size: 1.125rem; font-weight: 700; color: #15120E; }
 html.sj-on #su .sj-calmr b { font-size: 1.5rem; font-weight: 900; color: #15120E; }
 html.sj-on #su .sj-calmr2 { font-size: 1.0625rem; font-weight: 700; color: #3A332B; }
+
+/* 지금 땅의 꾀 셋(주문 1117-1859 · 사장님 2026-11-17(마카오) 18:59 「… 병법 3가지를 선정해서 첫 페이지애 잘보이게 하라」) — 꾀 칸 맨 위 먹 칸 · 꾀마다 흰 칸 · 번호 둥근 먹 도장 · 글 17px 넘게 · 누름 48 */
+#su .sj-win3 p { margin: 0; font-size: 1.0625rem; }
+html.sj-on #su .sj-win3 { display: grid; gap: 10px; margin: 4px 0 16px; padding: 16px; border-radius: 22px; background: #15120E; color: #FFFDF8; }
+html.sj-on #su .sj-win3k { font-size: 1.5rem; font-weight: 900; color: #FFFDF8; letter-spacing: -.01em; }
+html.sj-on #su .sj-win3l, html.sj-on #su .sj-win3s { font-size: 1.0625rem; font-weight: 600; color: #E9E2D5; }
+html.sj-on #su .sj-win3 .sj-tnone { color: #FFFDF8; }
+html.sj-on #su ol.sj-win3o { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+html.sj-on #su li.sj-w3 { display: grid; gap: 6px; padding: 12px 14px; border-radius: 18px; background: #FFFDF8; color: #15120E; }
+html.sj-on #su a.sj-w3a { display: flex; align-items: center; gap: 12px; min-height: 48px; color: #15120E; text-decoration: none; }
+html.sj-on #su .sj-w3n { flex: none; width: 48px; height: 48px; border-radius: 50%; background: #15120E; color: #FFFDF8; display: grid; place-items: center; font-size: 1.5rem; font-weight: 900; }
+html.sj-on #su .sj-w3b { display: grid; flex: 1; min-width: 0; }
+html.sj-on #su .sj-w3t { font-size: 1.5rem; font-weight: 900; line-height: 1.25; color: #15120E; }
+html.sj-on #su .sj-w3h { font-size: 1.0625rem; font-weight: 600; color: #4E463D; }
+html.sj-on #su .sj-w3m { font-size: 1.0625rem; font-weight: 700; color: #15120E; }
+html.sj-on #su .sj-w3r, html.sj-on #su .sj-w3r2 { font-size: 1.0625rem; font-weight: 600; color: #3A332B; }
