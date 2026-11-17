@@ -716,24 +716,36 @@ test('영화 한 편 22초 — 네 막 · 꾀 그림 · 쪽 머리 · 땅 · 손
   for (let i = 0; i < 12; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-a' + i + ' \\{').test(css) && new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-c' + i + ' \\{').test(css), '날씨 a · 터짐 칸 ' + i);
   for (let i = 0; i < 16; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-b' + i + ' \\{').test(css), '날씨 b 칸 ' + i);
   // 전쟁 영화 · 옛 동양 영화(주문 1117-0243 「더 전쟁 영화처럼 더 고전 동양 영화처럼」) — 옛 필름 빛깔 · 깜빡임 · 긁힘 · 티끌 · 먹 번짐 · 북소리 · 화살 비 · 깃발 · 흙먼지 · 큰 해
-  assert.ok(/oldFilm\(W, H, seed, rich\),/.test(ink) && /inkWash\(W, H\),/.test(ink) && /drums\(W, H\),/.test(ink) && /rich \? volley\(W, H, seed\) : null/.test(ink) && /rich \? banners\(W, H\) : null/.test(ink) && /rich \? warDust\(W, H\) : null/.test(ink) && /rich \? bigSun\(W, H\) : null/.test(ink), '전쟁 · 옛 필름 덧칠(가벼운 판 = 옛 필름 · 먹 번짐 · 북소리)');
+  assert.ok(/oldFilm\(W, H, seed, rich\),/.test(ink) && /inkWash\(W, H\),/.test(ink) && /drums\(W, H\),/.test(ink) && /F\?\.vol \? volley\(W, H, seed, !!F\.hot\) : null/.test(ink) && /rich \? banners\(W, H\) : null/.test(ink) && /rich \? warDust\(W, H\) : null/.test(ink) && /rich \? bigSun\(W, H\) : null/.test(ink), '전쟁 · 옛 필름 덧칠(가벼운 판 = 옛 필름 · 먹 번짐 · 북소리)');
   for (const c of ['ik-sepia', 'ik-flick', 'ik-scr', 'ik-dust', 'ik-ink', 'ik-drum', 'ik-arw', 'ik-ban', 'ik-dst', 'ik-bsun']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
   for (const k of ['ik-ink', 'ik-drum', 'ik-arrow', 'ik-ban', 'ik-wdust', 'ik-bsun', 'ik-scr0', 'ik-scr1', 'ik-scr2', ...Array.from({length: 8}, (_, i) => 'ik-dust' + i)]) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
   assert.ok(/100% \{ opacity: 0; \} \}$/.test(kf('ik-sepia')) && /100% \{ opacity: 0; \} \}$/.test(kf('ik-flick')) && /100% \{ transform: none; \} \}$/.test(kf('ik-flag')), '옛 필름 빛 · 깜빡임 · 깃발 끝 = 멈춘 그림');
   // 옛 싸움터(주문 1117-0320 「더 전쟁처럼해  고전  전쟁! 리얼하게」) — 싸움터 빛 · 연기 기둥 · 군사 열 · 말 탄 군사 · 화살 비 세 번 × 열두 대(불화살)
-  assert.ok(/NV = 3, NW = 16;/.test(ink) && /smoke\(W, H, rich \? 3 : 2\),/.test(ink) && /rich \? soldiers\(W, H\) : null/.test(ink) && /rich \? cavalry\(W, H\) : null/.test(ink) && /class: 'ik-gd'/.test(ink), '옛 싸움터 덧칠(가벼운 판 = 싸움터 빛 · 연기 기둥 둘)');
+  assert.ok(/NV = 3, NW = 16;/.test(ink) && /smoke\(W, H, rich \? 3 : 2\),/.test(ink) && /Z\.rank \? soldiers\(W, H\) : null/.test(ink) && /Z\.cav \? cavalry\(W, H\) : null/.test(ink) && /class: 'ik-gd'/.test(ink), '옛 싸움터 덧칠(가벼운 판 = 싸움터 빛 · 연기 기둥 둘)');
   for (const c of ['ik-gd', 'ik-smk', 'ik-rank', 'ik-cav']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
   for (const k of ['ik-gd', 'ik-smoke', 'ik-rank', 'ik-cav', 'ik-arrow']) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
   for (let v = 0; v < 3; v++) for (let i = 0; i < 16; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-v' + v + '\\.ik-w' + i + ' \\{').test(css), '화살 칸 ' + v + '-' + i);
   // 치열한 싸움(주문 1117-2104 「22초짜리 영상들을 말이야 더 전쟁이 치열하게 만들어봐」) — 싸움터 한 묶음이 땅째 흔들림 · 바위 셋 · 맞받아 쏘는 화살 · 불티 · 칼 불꽃 · 쓰러지는 군사 · 군사 열과 말 탄 군사가 한가운데서 부딪힘
-  assert.ok(/s\('g', \{class: rich \? 'ik-war' : null, 'aria-hidden': 'true'\}/.test(ink) && ['embers(W, H, seed)', 'fallen(W, H)', 'counter(W, H, seed)', 'sparks(W, H, seed)', 'rocks(W, H)'].every(f => ink.includes('rich ? ' + f + ' : null')), '싸움터 묶음 · 새 겹 다섯(가벼운 판 = 없음)');
+  assert.ok(/s\('g', \{class: rich \? 'ik-war' : null, 'aria-hidden': 'true'\}/.test(ink) && ['F?.emb ? embers(W, H, seed, !!F.far) : null', 'F?.fall ? fallen(W, H) : null', 'F?.cv ? counter(W, H, seed, !!F.hot) : null', 'F?.spk ? sparks(W, H, seed) : L?.spk ? sparks(W, H, seed, 4) : null', 'F?.rocks ? rocks(W, H, !!F.pots) : null'].every(f => ink.includes(f)), '싸움터 묶음 · 새 겹 다섯(가벼운 판 = 없음)');
   assert.ok(/animation: ik-quake 22s linear 0s 1 both;/.test(css) && /100% \{ transform: none; \} \}$/.test(kf('ik-quake')), '땅 흔들림 — 22초 한 편 · 끝 = 제자리');
   for (const c of ['ik-emb', 'ik-cv', 'ik-rock', 'ik-imp', 'ik-spk', 'ik-fall']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
   for (const k of ['ik-emb', 'ik-arrowR', 'ik-rockL', 'ik-rockR', 'ik-imp', 'ik-spk', 'ik-fallL', 'ik-fallR']) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
   for (let v = 0; v < 2; v++) for (let i = 0; i < 10; i++) assert.ok(new RegExp('#su svg\\.ik-film\\.ik-play \\.ik-u' + v + '\\.ik-x' + i + ' \\{').test(css), '맞받아 쏘는 화살 칸 ' + v + '-' + i);
   assert.ok(/animation: ik-rank 7\.1s linear 5\.8s 1 both;/.test(css) && /animation: ik-cav 4\.5s linear 8\.4s 1 both;/.test(css) && /75\.4% \{ transform: translate\(66%, -1%\); \}/.test(kf('ik-rank')) && /61% \{ transform: translate\(-66%, 0\); \}/.test(kf('ik-cav')), '군사 열 · 말 탄 군사 — 11.2초에 한가운데서 맞부딪힘');
   // 꾀 작은 그림에도 두 군대가 맞부딪히는 장면만(주문 1117-2225 「응」) — 가벼운 판 · 땅 · 손무 · 표지 · 쪽 머리는 그대로
-  assert.ok(/!rich && duel \? \[soldiers\(W, H\), cavalry\(W, H\), \.\.\.clash\(W, H\), sparks\(W, H, seed, 4\)\] : null/.test(ink) && /filmLayers\(fx, 200, 150, n, \{rich, duel: true\}\)/.test(ink) && /filmLayers\(fx, W, H, seed, \{bars, sweep, grade, vig, swash, rich\}\)/.test(ink), '꾀 작은 그림만 맞부딪힘(땅 · 손무 · 표지 = 없음)');
+  assert.ok(/const F = rich \? WARS\[war\] \?\? WARS\.clash : null, L = !rich && duel \? WARS\[war\] \?\? WARS\.clash : null, Z = F \?\? L \?\? \{\};/.test(ink) && /Z\.clh \? clash\(W, H, !!Z\.wet\) : null/.test(ink) && /filmLayers\(fx, 200, 150, n, \{rich, duel: true, war: WAR36\[k\] \?\? 'clash'\}\)/.test(ink) && /filmLayers\(fx, W, H, seed, \{bars, sweep, grade, vig, swash, rich\}\)/.test(ink), '꾀 작은 그림만 맞부딪힘(땅 · 손무 · 표지 = 없음)');
+  // 꾀마다 이야기에 맞는 싸움(주문 1117-2339 「응」) — 서른여섯 꾀마다 열한 가지 싸움 하나 · 큰 그림 · 작은 그림 같은 싸움 · 처음과 끝은 안 보임
+  const war36 = /export const WAR36 = Object\.freeze\((\{[^)]*\})\);/.exec(ink)?.[1] ?? '', W36 = Object.fromEntries([...war36.matchAll(/(g\d\d): '(\w+)'/g)].map(m => [m[1], m[2]]));
+  const kinds = ['clash', 'allies', 'leader', 'revive', 'fire', 'watch', 'water', 'ambush', 'feint', 'retreat', 'halt'];
+  assert.equal(Object.keys(W36).length, 36, '꾀 서른여섯마다 싸움 하나');
+  for (let n = 1; n <= 36; n++) { const k = 'g' + String(n).padStart(2, '0'); assert.ok(kinds.includes(W36[k]), k + ' — 열한 가지 싸움 가운데 하나 — ' + W36[k]); }
+  assert.deepEqual([...new Set(Object.values(W36))].sort(), [...kinds].sort(), '열한 가지 모두 쓰임');
+  for (const w of kinds.slice(4)) assert.ok(new RegExp(w + ': Object\\.freeze\\(\\{').test(ink), '싸움 짜임 — ' + w);
+  assert.ok(/'data-war': WAR36\[k\] \?\? 'clash'/.test(ink), '그림에 싸움 이름(data-war)');
+  for (const [w, c] of [['allies', 'ik-host'], ['leader', 'ik-ban2'], ['revive', 'ik-fall'], ['ambush', 'ik-rank'], ['retreat', 'ik-rank'], ['halt', 'ik-cav']]) assert.ok(css.includes('#su svg.ik-film.ik-play[data-war="' + w + '"] .' + c + ' {'), '싸움마다 움직임 — ' + w);
+  for (const c of ['ik-wv', 'ik-drm', 'ik-drmb']) assert.ok(hid.includes('#su svg.ik-film .' + c), '놀 때만 보임 — ' + c);
+  for (const k of ['ik-hostJoin', 'ik-banFall', 'ik-reviveL', 'ik-reviveR', 'ik-rankAmb', 'ik-rankBack', 'ik-cavHalt', 'ik-wv', 'ik-drmb']) assert.ok(/^@keyframes [\w-]+ \{ 0% \{ opacity: 0;.*100% \{ opacity: 0;[^}]*\} \}$/.test(kf(k)), k + ' — 처음과 끝은 안 보임');
+
 });
 
 /** 주문 1117-0102 — 꾀 쪽 큰 그림 바로 아래 「그림 속 이야기」 네 막(고요 · 긴장 · 반전 · 여운) · 막마다 한 줄 · 감정 · 쉬운 말 · 그림이 그 막에 오면 그 줄이 밝아짐 */
