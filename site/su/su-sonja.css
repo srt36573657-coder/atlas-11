@@ -997,3 +997,9 @@ html.sj-on #su .sj-lossf { flex-basis: 100%; font-size: 1.0625rem; font-weight: 
 html.sj-on #su ol.sj-kl > li.sj-kr { background: #F8F4EB; border-radius: 20px; padding: 12px 14px; margin-top: 10px; border-top: 0; }
 html.sj-on #su .sj-kfig ol.sj-story { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
 html.sj-on #su .sj-kfig ol.sj-story > li { grid-template-columns: minmax(0, 1fr); row-gap: 4px; border: 0; border-radius: 18px; background: #F8F4EB; }
+/* 정산 줄 — 둥근 낮은 칸(차례는 그대로 · 많이 늘어난 꾀가 위 · 줄어든 꾀도 숨기지 않음 — 본질 8) */
+html.sj-on #su ol.sj-stl > li.sj-str { background: #F8F4EB; border-radius: 18px; padding: 10px 14px; margin-top: 8px; border-top: 0; }
+html.sj-on #su .sj-sttot { background: #1E1914; color: #FFFDF8; border-radius: 18px; padding: 12px 14px; border-top: 0; }
+html.sj-on #su .sj-sttot .sj-res, html.sj-on #su .sj-sttot b, html.sj-on #su .sj-sttot span { color: #FFFDF8; }
+html.sj-on #su .sj-stn { border: 0; border-radius: 999px; background: #E9E2D5; color: #15120E; font-family: var(--sj-sans); font-weight: 800; }
+html.sj-on #su ol.sj-stl > li.sj-str { padding: 8px 12px; margin-top: 6px; row-gap: 2px; }
