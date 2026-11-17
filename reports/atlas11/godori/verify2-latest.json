@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-17T19:59:22Z",
+ "at": "2026-11-17T21:24:35Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -62,12 +62,12 @@
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "0d2112b5053e2960c2d050205922f3c4dcb4bcac39591ff8c19c30de842b36b2"
+   "sha256": "a1686bf551089062699b220eadbf79686859003d77f7325183a430bed5cf4cf0"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "21a345ddaa46ca4aa3cdb5ed7310f6834c13b5d4b3e3f80316fc947ca0d5b258"
+   "sha256": "5a394a7fb74f710d15c86b6e7b4b93ccec3d23473f8b7ea132383ede753983bd"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
@@ -91,23 +91,23 @@
    "outThin": 1752,
    "outThinQ": 33,
    "outHalt": 3,
-   "outList": 5,
-   "listQ": 797,
-   "afterOut": 797,
+   "outList": 0,
+   "listQ": 802,
+   "afterOut": 802,
    "g1": 249,
-   "g2": 633,
+   "g2": 634,
    "g3": 31,
-   "g4": 680,
+   "g4": 684,
    "g5": 6,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 787,
+   "loss3": 792,
    "why": "lists"
   },
-  "loss3Years": 787,
+  "loss3Years": 792,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -402,8 +402,8 @@
    "detail": [
     1752,
     3,
-    5,
-    797,
+    0,
+    802,
     2557
    ]
   },
@@ -420,20 +420,20 @@
   "outThin": 1752,
   "outThinQ": 33,
   "outHalt": 3,
-  "outList": 5,
-  "listQ": 797,
-  "afterOut": 797,
+  "outList": 0,
+  "listQ": 802,
+  "afterOut": 802,
   "g1": 249,
-  "g2": 633,
+  "g2": 634,
   "g3": 31,
-  "g4": 680,
+  "g4": 684,
   "g5": 6,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 787,
+  "loss3": 792,
   "why": "lists"
  },
  "compared": 2700,
@@ -443,9 +443,9 @@
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 3.1,
-  "build": 2.3,
-  "recount": 1.0,
-  "total": 6.4
+  "readBundle": 2.4,
+  "build": 1.4,
+  "recount": 0.6,
+  "total": 4.4
  }
 }
