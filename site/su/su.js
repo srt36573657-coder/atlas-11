@@ -36,7 +36,7 @@ const whyX = W => ({base, get, cur, setCur, STEPS, page: m => W.sjPage(m, lastCo
 /** 손자병법 판 쪽(첫 쪽 · 꾀 · 회사 · 정산)에 건네는 것 — 받은 때(home-summary)만 · 마지막에 본 회사(멈춤 탭) */
 const XS = {base: async () => ({S: await get(D.S)}), get, cur, setCur};
 /** 손자병법 판 켜기 — html.sj-on(한지 바탕 · su-sonja.css) · 휴대폰 맨 위 띠 한지 색 */
-const SJ_TC = '#F1E3D3';
+const SJ_TC = '#F8F4EB';
 function sonjaOn() {
   document.documentElement.classList.add('sj-on'); document.documentElement.classList.remove('sj-sub'); // 표지 숨김(sj-sub)은 첫 칠함에만(su-boot.js)
   for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.setAttribute('content', SJ_TC);

@@ -5,7 +5,7 @@
    주문 1115-2328(사장님 2026-11-15(마카오) 22:28 「어고쳐」 — 「다른 쪽들도 병법 서른여섯 가지에 맞게 고칠까요?」의 답) — 모든 쪽이 같은 판
    · 길 다섯 화면: 오늘 → 꾀 → 회사 → 「왜 사?」 → 내 매매일지 · 탭 다섯: 오늘 · 꾀 · 멈춤 · 일지 · 정산(옛 지도 · 기록 · 달력은 지움)
    보안 규칙: innerHTML 없음 · 글 속 style 없음 · 다른 주소 스크립트 없음 */
-import {h} from '/su/su-fig.js';
+import {h, s} from '/su/su-fig.js';
 import {NAME, josa} from '/next/brand.js';
 import {MEAN_TAG, PM} from '/su/su-sonja-mean.js';
 
@@ -101,8 +101,16 @@ export function dockNav(step, nx) {
     h('div', {class: 'sj-dk' + (nx ? '' : ' sj-dk1')}, sayBtn(),
       nx ? h('a', {class: 'sj-next', href: nx.href}, nx.k ? h('span', {class: 'sj-nk', text: nx.k}) : null, h('b', {text: nx.label}), h('i', {'aria-hidden': 'true', text: '›'})) : null));
 }
+/** 탭 그림(주문 1117-1049 · 샘플 다) — 붓선 기호 다섯: 오늘 = 해 · 꾀 = 붓 · 멈춤 = 손바닥 · 일지 = 책 · 정산 = 엽전(글자는 그대로 · 그림은 읽지 않음) */
+const TABP = Object.freeze([
+  ['M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4', 'c'],
+  ['M5 19c2-1 3-3 4-5l7-9c1-1 3 0 2 2l-7 9c-2 2-4 3-6 3z', ''],
+  ['M8 12V6.5a1.5 1.5 0 0 1 3 0V11M11 10V5a1.5 1.5 0 0 1 3 0v5M14 10V6.5a1.5 1.5 0 0 1 3 0V14c0 3.5-2.5 6-6 6s-5-2-6-4l-1.5-3a1.5 1.5 0 0 1 2.6-1.5L8 13', ''],
+  ['M4 6c3-1 5-1 8 1v12c-3-2-5-2-8-1zM20 6c-3-1-5-1-8 1v12c3-2 5-2 8-1z', ''],
+  ['M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM10 10h4v4h-4z', '']]);
+const tabIco = i => { const [d, c] = TABP[i] ?? TABP[0]; return s('svg', {viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, c ? s('circle', {cx: 12, cy: 12, r: 3.6}) : null, s('path', {d})); };
 /** 탭 다섯 — cur = 켜진 탭 차례(0 오늘 · 1 꾀 · 2 멈춤 · 3 일지 · 4 정산 · 탭 밖 쪽은 -1) · lc = 마지막에 본 회사 번호(멈춤 탭이 그 회사로) */
 export function tabNav(cur = 0, lc = null) {
   return h('nav', {class: 'sj-tabs', 'aria-label': '탭 — ' + TAB5.map(x => x[0]).join(' · ')}, TAB5.map(([t, href], i) =>
-    h('a', {class: 'sj-tab' + (i === cur ? ' sj-cur' : ''), href: i === 2 && lc ? '#/q/' + lc : href, 'aria-current': i === cur ? 'page' : null, 'aria-label': (i + 1) + '번째 · ' + t, text: t})));
+    h('a', {class: 'sj-tab' + (i === cur ? ' sj-cur' : ''), href: i === 2 && lc ? '#/q/' + lc : href, 'aria-current': i === cur ? 'page' : null, 'aria-label': (i + 1) + '번째 · ' + t}, tabIco(i), h('span', {text: t}))));
 }
