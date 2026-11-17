@@ -306,6 +306,36 @@ function cavalry(W, H) {
     S.push(`M${p(-6, -5)}L${p(-9, 0)}M${p(-4, -5)}L${p(-2.5, 0)}M${p(3, -5)}L${p(0.5, 0)}M${p(5, -5)}L${p(8, 0)}M${p(7, -9)}C${p(10, -9)} ${p(11, -7)} ${p(12, -5)}M${p(-1, -15)}L${p(-17, -19)}`); }
   return s('g', {class: 'ik-cav', 'aria-hidden': 'true'}, s('path', {d: S.join(''), fill: 'none', stroke: INK, 'stroke-width': r1(1.2 * k), 'stroke-opacity': 0.85, 'stroke-linecap': 'round'}), s('path', {d: F.join(''), fill: INK, 'fill-opacity': 0.85}));
 }
+/** 리얼 전쟁 영화(주문 1117-1543 · 사장님 2026-11-17(마카오) 15:43 「더 리얼한 전쟁 영화처럼 만들어 1시간 이내에」)
+ *  먼 산등성이를 덮은 대군(작은 군사 마흔넷 · 창 숲 · 깃발 여섯) · 땅을 태우는 불 다섯(황토 금빛 · 빨강 0) · 땅에 꽂힌 화살 열여섯 · 한가운데서 두 군대가 부딪히는 흙먼지 폭발과 충격 고리
+ *  사람은 먹 그림자(얼굴 0) · 모두 처음부터 안 보임 · 끝에 사라짐(끝 = 처음 그림) */
+function host(W, H) {
+  const k = Math.max(0.8, Math.min(1.4, W / 240)), b = H * 0.66, F = [], S = [], B = [];
+  for (let i = 0; i < 44; i++) { const x = W * (0.02 + 0.96 * i / 43) + (i % 3) * 1.3 * k, y = b + Math.sin(i * 0.7) * 2.2 * k + (i % 2) * 1.6 * k, p = (dx, dy) => r1(x + dx * k) + ' ' + r1(y + dy * k);
+    F.push(`M${p(-1.6, -6)}L${p(1.6, -6)}L${p(2, 0)}L${p(-2, 0)}Z`, `M${p(-1.2, -7.6)}A${r1(1.2 * k)} ${r1(1.2 * k)} 0 1 0 ${p(1.2, -7.6)}A${r1(1.2 * k)} ${r1(1.2 * k)} 0 1 0 ${p(-1.2, -7.6)}Z`);
+    S.push(`M${p(1.8, -3)}L${p(2.6, -14)}`);
+    if (i % 7 === 3) { S.push(`M${p(2.6, -14)}L${p(2.6, -20)}`); B.push(`M${p(2.6, -20)}l${r1(5 * k)} ${r1(1.2 * k)}l${r1(-5 * k)} ${r1(2.4 * k)}Z`); } }
+  return s('g', {class: 'ik-host', 'aria-hidden': 'true'}, s('path', {d: S.join(''), fill: 'none', stroke: INK, 'stroke-width': r1(0.8 * k), 'stroke-opacity': 0.4, 'stroke-linecap': 'round'}),
+    s('path', {d: F.join(''), fill: INK, 'fill-opacity': 0.34}), s('path', {d: B.join(''), fill: C.indigoDeep, 'fill-opacity': 0.6, stroke: INK, 'stroke-opacity': 0.4, 'stroke-width': 0.5}));
+}
+function fires(W, H) {
+  const k = Math.max(0.9, Math.min(1.6, W / 200)), b = H * 0.95;
+  const flame = (x, h, w) => `M${r1(x - w)} ${r1(b)}C${r1(x - w)} ${r1(b - h * 0.5)} ${r1(x - w * 0.2)} ${r1(b - h * 0.7)} ${r1(x)} ${r1(b - h)}C${r1(x + w * 0.3)} ${r1(b - h * 0.65)} ${r1(x + w)} ${r1(b - h * 0.45)} ${r1(x + w)} ${r1(b)}Z`;
+  return s('g', {class: 'ik-fires', 'aria-hidden': 'true'}, ...[0.07, 0.29, 0.6, 0.78, 0.94].map((fx, i) => { const x = W * fx, h = (18 + (i % 3) * 6) * k, w = (6 + (i % 2) * 2) * k;
+    return s('g', {class: 'ik-fire ik-fire' + i}, s('path', {d: flame(x, h, w), fill: C.fire, 'fill-opacity': 0.85}), s('path', {d: flame(x + w * 0.1, h * 0.72, w * 0.66), fill: C.sun, 'fill-opacity': 0.9}), s('path', {d: flame(x + w * 0.15, h * 0.42, w * 0.36), fill: C.fireCore, 'fill-opacity': 0.95})); }));
+}
+function stuck(W, H, seed) {
+  const R = rng(seed + 91), k = Math.max(1, Math.min(1.6, W / 200)), b = H * 0.95, P = [];
+  for (let i = 0; i < 16; i++) { const x = W * (0.04 + 0.92 * (i + R() * 0.7) / 16), y = b - R() * H * 0.025, L = (9 + R() * 4) * k, t = 0.45 + R() * 0.5, tx = x + Math.sin(t) * L, ty = y - Math.cos(t) * L; // 오른쪽 위에서 날아와 기울어 꽂힘(깃이 오른쪽 위)
+    P.push(`M${r1(x)} ${r1(y)}L${r1(tx)} ${r1(ty)}l${r1(-2.2 * k)} ${r1(-1.4 * k)}M${r1(tx)} ${r1(ty)}l${r1(1.4 * k)} ${r1(-2.2 * k)}`); }
+  return s('g', {class: 'ik-stuck', 'aria-hidden': 'true'}, s('path', {d: P.join(''), fill: 'none', stroke: INK, 'stroke-width': r1(1.1 * k), 'stroke-opacity': 0.8, 'stroke-linecap': 'round'}));
+}
+function clash(W, H) {
+  const cx = r1(W * 0.52), cy = r1(H * 0.9);
+  return [s('g', {class: 'ik-clh', 'aria-hidden': 'true'}, ...[[0, 1, 0.3], [-0.16, 0.7, 0.28], [0.17, 0.75, 0.28], [-0.06, 0.5, 0.34], [0.08, 0.45, 0.34]].map(([dx, q, a]) => s('ellipse', {cx: r1(cx + W * dx), cy: r1(cy - H * 0.06 * q), rx: r1(W * 0.22 * q), ry: r1(H * 0.13 * q), fill: C.stone, 'fill-opacity': a})),
+      s('ellipse', {cx, cy: r1(cy - H * 0.05), rx: r1(W * 0.1), ry: r1(H * 0.06), fill: INK, 'fill-opacity': 0.3})),
+    s('ellipse', {class: 'ik-clr', cx, cy: r1(cy - H * 0.04), rx: r1(W * 0.16), ry: r1(H * 0.05), fill: 'none', stroke: INK, 'stroke-width': r1(2 * Math.max(1, W / 200)), 'stroke-opacity': 0.5, 'aria-hidden': 'true'})];
+}
 /** 영화 덧칠 — 막마다 색 셋(그 묶음 색 · 차가운 쪽빛 · 금빛) · 여는 붓 획 · 날씨 두 겹 · (rich) 터짐 · 바람 · 빛 기둥 · 빛 한 줄기 · 번쩍 · 가장자리 그늘 둘 · 위아래 검은 띠 */
 export function filmLayers(fx, W, H, seed = 1, {bars = true, sweep = true, grade = true, vig = true, swash = true, rich = true} = {}) {
   const v = (i, al) => s('rect', {x: r1(1.5 + i * 3), y: r1(1.5 + i * 3), width: r1(W - 3 - i * 6), height: r1(H - 3 - i * 6), fill: 'none', stroke: INK, 'stroke-width': r1(4 + i * 2), 'stroke-opacity': al});
@@ -321,12 +351,16 @@ export function filmLayers(fx, W, H, seed = 1, {bars = true, sweep = true, grade
     motes(fx, W, H, seed, na, 'a'),
     motes(fx, W, H, seed, nb, 'b'),
     grade ? s('rect', {class: 'ik-gd', x: 0, y: 0, width: W, height: H, fill: INK, 'fill-opacity': 0.2}) : null,
+    rich ? host(W, H) : null,
     smoke(W, H, rich ? 3 : 2),
     rich ? warDust(W, H) : null,
+    rich ? fires(W, H) : null,
     rich ? gusts(W, H) : null,
     rich ? soldiers(W, H) : null,
     rich ? cavalry(W, H) : null,
     rich ? volley(W, H, seed) : null,
+    rich ? stuck(W, H, seed) : null,
+    ...(rich ? clash(W, H) : []),
     burst(W, H, seed, rich ? NC : LITE.c),
     drums(W, H),
     sweep ? s('path', {class: 'ik-sweep', d: `M${r1(-W * 0.3)} 0h${r1(W * 0.12)}l${r1(-H * 0.4)} ${H}h${r1(-W * 0.12)}z`, fill: C.fireCore, 'fill-opacity': 0.28}) : null,
