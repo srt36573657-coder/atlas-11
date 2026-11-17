@@ -416,10 +416,20 @@ for (const w of [320, 360, 390]) {
   await p.context().route('**/api/price*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify({schema: 'su-price-1', day: '0000-00-00', status: 'closed', items: {}})}));
   const badRes = []; p.on('response', r => { if (r.status() >= 400) badRes.push(r.status() + ' ' + r.url().replace(base, '')); }); // 실패한 받기는 주소까지 적음(까닭 찾기)
   const drawn = q => q.waitForFunction(() => !!document.querySelector('#su') && !document.querySelector('#su .su-boot') && document.querySelectorAll('#su *').length > 20, null, {timeout: 20000}).then(() => true, () => false);
+  // 열기마다 망 탈(진짜 사이트가 세게 두드린 실행기를 잠깐 막는 403 · 429 · 5xx · 끊김)이 섞이면 그 열기는 믿지 않고 기다렸다 다시 엶(net.mjs settle — 다른 쪽 열기와 같은 잣대)
+  //   2026-11-16 · 17 진짜 사이트 검사에서 이 칸만 settle 밖이라 「Failed to load resource 403 · 403 /next/ · /su/」가 화면 오류로 남았음(05:54 · 10:53 · 17:55 · 19:40 · 11-17 02:45 · 03:50)
+  //   열기를 새로 할 때 앞 열기의 화면 오류 · 실패한 받기는 지움 — 마지막 깨끗한 열기의 화면 오류만 셈(망 탈 없는 열기의 오류는 그대로 실패)
   for (const u of CASES) {
-    await p.goto(base + u, {waitUntil: 'load'}).catch(e => fail('닫은 쪽 열기', u + ' ' + e.message));
-    if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) { fail('닫은 쪽 → 손자병법 첫 쪽 /su/#/(주문 1114-1306)', u + ' → ' + p.url().replace(base, '')); continue; }
-    if (!await drawn(p)) fail('닫은 쪽 → 손자병법 첫 쪽이 그려지지 않음(빈 쪽)', u);
+    let st = 'go';
+    const ok = await settle(p, async () => {
+      p._errs.length = 0; badRes.length = 0; st = 'go';
+      await p.goto(base + u, {waitUntil: 'load'});
+      if (!await p.waitForURL(atSu, {timeout: 15000}).then(() => true, () => false)) { st = 'url'; return false; }
+      st = 'draw'; return drawn(p);
+    }, {what: '닫은 쪽 ' + u, fail}).catch(e => { fail('닫은 쪽 열기', u + ' ' + e.message); return undefined; });
+    if (ok === undefined || ok === null) { p._errs.length = 0; badRes.length = 0; continue; } // 열기 오류 · 망 막힘 — 이미 실패로 적음
+    if (!ok && st !== 'draw') { fail('닫은 쪽 → 손자병법 첫 쪽 /su/#/(주문 1114-1306)', u + ' → ' + p.url().replace(base, '')); p._errs.length = 0; badRes.length = 0; continue; }
+    if (!ok) fail('닫은 쪽 → 손자병법 첫 쪽이 그려지지 않음(빈 쪽)', u);
     if (p._errs.length) { fail('화면 오류', '닫은 쪽 ' + u + ' ' + p._errs.join(' | ').slice(0, 200) + (badRes.length ? ' · ' + badRes.join(' · ').slice(0, 160) : '')); p._errs.length = 0; }
     badRes.length = 0;
     bump('닫은 쪽 → 손자병법 첫 쪽');
