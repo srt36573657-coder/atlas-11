@@ -189,6 +189,17 @@ export async function vKkoe(X, k) {
 }
 
 /* ── 회사(#/c/<번호>) ── */
+/** 한 달 사이 가장 깊이 빠진 때(주문 1117-1120 · 샘플 다 「손실 먼저」) — 그날 마지막 값 21개에서 그때까지 가장 높았던 값 → 그 뒤 가장 낮은 값(셈만 · 앞날 아님) */
+export const ddOf = sp => { if (!Array.isArray(sp) || sp.length < 2) return null; let pk = sp[0], best = null;
+  for (const v of sp) { if (v > pk) pk = v; const r = v / pk; if (r < 1 && (!best || r < best.r)) best = {r, hi: pk, lo: v}; } return best; };
+function ddCard(sp) {
+  if (!sp) return null;
+  const d = ddOf(sp);
+  return h('div', {class: 'sj-loss sj-codd', 'data-dd': d ? String(Math.round(d.r * 1000) / 10) : '100'},
+    h('p', {class: 'sj-lossk', text: '▼ 한 달 사이 가장 깊이 빠진 때'}),
+    d ? h('p', {class: 'sj-lossv'}, h('span', {class: 'sj-lossw'}, h('span', {text: '100원이 '}), h('b', {text: w100(d.r - 1)})), h('span', {class: 'sj-lossf', text: won(d.hi) + '에서 ' + won(d.lo) + '까지 내렸어요.'}))
+      : h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: '한 달 동안 그 전보다 내린 날이 없어요.'})));
+}
 export async function vCo36(X, code) {
   const [T, co, {S}] = await Promise.all([load21(X.get), X.get(coUrl(code)), X.base()]), g = await g36Of(X, T);
   const G = g, mine = G ? K36.filter(k => (G.lists[k] ?? []).slice(0, 7).some(c => String(c?.code) === code)) : [];
@@ -207,7 +218,7 @@ export async function vCo36(X, code) {
     pageHead({step: 3, dd: bd, kick, h1: name, proper: true, seal: m ? {dn: '내림', up: '오름', eq: '같음'}[m] : null, sealDn: m === 'dn',
       say: mine.length ? '오늘 서른여섯 꾀 가운데 ' + mine.length + '가지가 이 회사를 골랐어요.' : '오늘은 서른여섯 꾀 어디에도 들지 않았어요.',
       pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.castle, 'figcaption'), heroPic('castle')),
-      more: [line ? meanCap(PM.ridge) : null, line, sp ? null : h('p', {class: 'sj-note', text: '한 달 산세는 오늘 꾀가 고른 곳만 그려요.'})]}), // 산세 그림 뜻은 그림 바로 위(그림 아래 글 figcaption 은 값 셋 그대로)
+      more: [ddCard(sp), line ? meanCap(PM.ridge) : null, line, sp ? null : h('p', {class: 'sj-note', text: '한 달 산세는 오늘 꾀가 고른 곳만 그려요.'})]}), // 손실 먼저 — 한 달 사이 가장 깊이 빠진 때(주문 1117-1120) // 산세 그림 뜻은 그림 바로 위(그림 아래 글 figcaption 은 값 셋 그대로)
     h('section', {class: 'sj-sec sj-cok', 'aria-label': '이 회사를 고른 꾀', 'data-n': String(mine.length)},
       head('꾀', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 회사를 고른 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + mine.length + '가지'}))),
       mine.length && sun ? h('p', {class: 'sj-rule', text: '꾀마다 지금 ' + sun.name + '에서 지난 기록으로 덜 잃은 차례와 잃은 몫을 적었어요.'}) : null,

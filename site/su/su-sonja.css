@@ -991,3 +991,9 @@ html.sj-on #su .sj-lossw b { font-size: 1.875rem; font-weight: 900; color: #1512
 html.sj-on #su .sj-all { margin-top: 14px; background: #1E1914; color: #FFFDF8; font-weight: 800; }
 html.sj-on #su .sj-all i { color: #FFFDF8; }
 html.sj-on #su .sj-tk .sj-tkpic svg { display: block; max-height: 210px; width: auto; max-width: 100%; margin: 0 auto; border-radius: 18px; }
+/* 회사 쪽 손실 먼저 · 꾀 모음 줄 · 네 막 · 정산 줄(주문 1117-1120 — 샘플 다 차례와 결) */
+html.sj-on #su .sj-codd { margin-top: 12px; }
+html.sj-on #su .sj-lossf { flex-basis: 100%; font-size: 1.0625rem; font-weight: 600; color: #3A332B; }
+html.sj-on #su ol.sj-kl > li.sj-kr { background: #F8F4EB; border-radius: 20px; padding: 12px 14px; margin-top: 10px; border-top: 0; }
+html.sj-on #su .sj-kfig ol.sj-story { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
+html.sj-on #su .sj-kfig ol.sj-story > li { grid-template-columns: minmax(0, 1fr); row-gap: 4px; border: 0; border-radius: 18px; background: #F8F4EB; }
