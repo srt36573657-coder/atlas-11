@@ -1018,3 +1018,12 @@ html.sj-on #su .sj-sttot { background: #1E1914; color: #FFFDF8; border-radius: 1
 html.sj-on #su .sj-sttot .sj-res, html.sj-on #su .sj-sttot b, html.sj-on #su .sj-sttot span { color: #FFFDF8; }
 html.sj-on #su .sj-stn { border: 0; border-radius: 999px; background: #E9E2D5; color: #15120E; font-family: var(--sj-sans); font-weight: 800; }
 html.sj-on #su ol.sj-stl > li.sj-str { padding: 8px 12px; margin-top: 6px; row-gap: 2px; }
+
+/* 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」) — 꾀 칸 안 줄어든 갈래 바로 아래 · 옅은 칸 · 글 17px 넘게 */
+#su .sj-calm p { margin: 0; font-size: 1.0625rem; }
+html.sj-on #su .sj-calm { display: grid; gap: 8px; margin: 0 0 16px; padding: 14px 16px; border-radius: 22px; background: #F1EBDF; }
+html.sj-on #su .sj-calmk { font-size: 1.25rem; font-weight: 900; color: #15120E; }
+html.sj-on #su .sj-calml, html.sj-on #su .sj-calmd { font-size: 1.0625rem; font-weight: 600; color: #3A332B; }
+html.sj-on #su .sj-calmr { font-size: 1.125rem; font-weight: 700; color: #15120E; }
+html.sj-on #su .sj-calmr b { font-size: 1.5rem; font-weight: 900; color: #15120E; }
+html.sj-on #su .sj-calmr2 { font-size: 1.0625rem; font-weight: 700; color: #3A332B; }

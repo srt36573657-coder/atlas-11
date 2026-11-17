@@ -206,6 +206,25 @@ function lossTh(g) {
     r ? h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: r.name}), h('span', {class: 'sj-lossw'}, h('span', {text: '한 달 전 100원이 '}), h('b', {text: w100(r.avg - 1)})))
       : h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: '회사가 많이 나온 갈래 다섯은 한 달 동안 줄지 않았어요.'})));
 }
+/** 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」 — 주문 1117-1720 에서 결과를 보기 전에 적은 법으로 앞 1년에 고르고 뒤 1년에서 확인한 법)
+ *  두 꾀 넘게 함께 고른 곳 가운데 요즘 60날 덜 흔들린 차례 · 한 업종 둘까지 · 일곱까지(모자라면 채우지 않음) — 꾀 칸 자료 calm(su21.py · su21_s36.calm7)
+ *  지난 기록(올릴 때마다 다시 셈 · rec): 가장 나빴던 열에 한 주 100원이 ○원 · 아무렇게나 고른 일곱 ○원 · 잃은 번 열 번에 ○번(아무렇게나 ○번) — 두 줄 모두 보임(손실 숨기지 않음) */
+export const CALM_RULE = 'calm7-v1';
+export const okCalmRec = r => !!r && r.rule === CALM_RULE && Number.isInteger(r.n) && r.n > 0 && Number.isInteger(r.lose) && r.lose >= 0 && r.lose <= r.n && fin(r.exp) && r.exp >= 0 && r.exp <= r.n && fin(r.tail) && fin(r.tail7);
+export const calmOf = g => (g?.calm?.rule === CALM_RULE && Array.isArray(g.calm.list) ? g.calm.list.filter(c => c && typeof c.code === 'string' && c.code !== '').slice(0, 7) : null);
+export const ten = x => (Math.round(x * 100) / 10).toFixed(1).replace(/\.0$/, '');
+function calmBox(g) {
+  const L = calmOf(g); if (!L) return null;
+  const R = okCalmRec(g.calm.rec) ? g.calm.rec : null, bd = mday(g?.asOf?.board);
+  return h('div', {class: 'sj-calm', 'data-n': String(L.length)},
+    h('p', {class: 'sj-calmk', text: '크게 덜 잃는 일곱'}),
+    h('p', {class: 'sj-calml', text: '두 꾀 넘게 함께 고른 곳 가운데 요즘 덜 흔들린 곳이에요. 한 업종에서는 둘까지만 골랐어요.'}),
+    L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: '오늘은 두 꾀 넘게 함께 고른 곳이 없어요.'}),
+    R ? h('p', {class: 'sj-calmr'}, h('span', {text: '가장 나빴던 열에 한 주는 100원이 '}), h('b', {text: w100(R.tail)}), h('span', {text: '이 됐어요. 아무렇게나 고른 일곱은 ' + w100(R.tail7) + '이었어요.'}))
+      : h('p', {class: 'sj-calmr', text: '지난 기록을 세지 못했어요.'}),
+    R ? h('p', {class: 'sj-calmr2', text: '대신 열 번에 ' + ten(R.lose / R.n) + '번 잃었어요. 아무렇게나 고르면 ' + ten(R.exp / R.n) + '번이에요.'}) : null,
+    R ? h('p', {class: 'sj-calmd', text: '지난 ' + R.n + '거래일 날마다 같은 법으로 골라 닷새 뒤 값과 견줬어요.' + (ym(R.from) && ym(R.to) ? ' 센 때는 ' + ym(R.from) + '부터 ' + ym(R.to) + '까지예요.' : '')}) : null);
+}
 function trickSec(g, T) {
   const sun = okSun(T.sun) ? T.sun : null, N = g.kinds.reduce((a, k) => a + Math.min(7, (g.lists[k] ?? []).length), 0), dd = mday(g?.asOf?.data) ?? mday(T.asOf?.board), bd = mday(g?.asOf?.board);
   const anySp = g.kinds.some(k => (g.lists[k] ?? []).slice(0, 7).some(c => sp36(g, String(c?.code ?? ''))));
@@ -225,6 +244,7 @@ function trickSec(g, T) {
     head('꾀', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + N + '칸'})), true),
     S?.rankQ ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + S.rankQ.pian})) : null,
     lossTh(g), // 줄어든 갈래 한 칸 — 손실 먼저(주문 1117-1120 샘플 다)
+    calmBox(g), // 크게 덜 잃는 일곱(주문 1117-1731) — 손실 먼저
     themesBox(g), // 큰 갈래 차례(주문 1116-1601) — 꾀 서른여섯을 하나하나 보기 전에 한눈에
     h('ol', {class: 'sj-tricks'}, ...order.slice(0, TOP).map(one36)),
     h('a', {class: 'sj-go sj-all', href: '#/k'}, h('span', {text: '서른여섯 꾀 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), // 나머지 꾀는 꾀 탭에서(주문 1117-1120)

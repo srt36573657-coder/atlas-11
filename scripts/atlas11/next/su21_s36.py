@@ -6,7 +6,7 @@
     종가로 재는 서른하나 + 그날 사고판 양으로 재는 다섯(올리기 작업만 네이버 일봉 거래량을 받음 — su21_vol.mjs)
     거래량을 받은 회사가 열에 아홉이 안 되면 그 다섯은 빈 목록(까닭을 적음) — 지어낸 값 없음 · 한 번 적으면 고치지 않으므로 일부 회사만으로 고르지 않음
   앞날을 맞히지 않음 — 지금 모습을 셀 뿐 · 사고팔기를 권하지 않음"""
-import hashlib
+import hashlib, collections
 import numpy as np
 
 RULE_ID = 's36-v3'   # 주문 1116-2134 — 셋을 지난 곳 가운데 꾀 점수(수학 식 + 정서 식 · MIX) 차례 · 옛 s36-v2(주문 1116-1539) = 같은 세 거름 · 꾀를 닮은 값 하나의 차례 · 옛 s36-v1 = 모자라면 덜 닮은 곳으로 채움
@@ -588,6 +588,41 @@ def overlap(groups, need=OV_NEED, order=None, k=K):
     return out
 
 
+
+# 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」 — 주문 1117-1720 에서 결과를 보기 전에 적은 법으로 앞 1년에 고르고 뒤 1년에서 확인한 법
+#   — docs/design/sonja-wise2-2026-11-17/order-1720.txt)
+#   서른여섯 꾀가 그날 고른 곳 가운데 두 꾀 넘게 함께 고른 곳(거래량 다섯 꾀는 뺌 — 확인한 법 그대로) · 지난 60날 하루 흔들림(로그 하루 값의 표준편차)이 작은 차례
+#   · 한 업종(판 업종 묶음)에서는 둘까지 · 일곱까지(모자라면 모자란 대로 — 채우지 않음) · 앞날을 맞히지 않음 — 지난 기록을 셀 뿐 · 사고팔기를 권하지 않음
+CALM_RULE = 'calm7-v1'
+CALM_NEED = 2     # 두 꾀 넘게 함께 고른 곳
+CALM_CAP = 2      # 한 업종 둘까지
+CALM_WIN = 60     # 하루 흔들림을 재는 지난 날 수
+
+
+def calm7(codes, IX, P, t, lists, k=K, need=CALM_NEED, cap=CALM_CAP, win=CALM_WIN):
+    """codes · IX(업종 번호) · P(회사 × 날 종가) · t(판 날) · lists({꾀: [번호…]}) → [(번호, 함께 고른 꾀 수, 하루 흔들림)] 일곱까지"""
+    if P is None or t < win: return []
+    at = {c: j for j, c in enumerate(codes)}
+    cnt = {}
+    for kk, L in (lists or {}).items():
+        if kk in BY: continue
+        for c in dict.fromkeys(L or []):
+            if c in at: cnt[c] = cnt.get(c, 0) + 1
+    with np.errstate(invalid='ignore', divide='ignore'):
+        lr = np.diff(np.log(P[:, t - win:t + 1]), axis=1)
+    out, per = [], {}
+    cand = []
+    for c, n in cnt.items():
+        if n < need: continue
+        v = float(np.nanstd(lr[at[c]])) if np.isfinite(lr[at[c]]).any() else float('nan')   # 확인한 법 그대로(run3 L2)
+        if np.isfinite(v): cand.append((v, c, n))
+    for v, c, n in sorted(cand):
+        g = int(IX[at[c]])
+        if per.get(g, 0) >= cap: continue
+        per[g] = per.get(g, 0) + 1; out.append((c, n, round(v, 6)))
+        if len(out) >= k: break
+    return out
+
 if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selftest · --defs(이름 · 뜻 JSON)
     import sys, json, time
     if '--defs' in sys.argv:
@@ -668,4 +703,16 @@ if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selfte
         assert ov == [('B', 3, ['hot', 'bloom', 'money']), ('C', 3, ['hot', 'g01', 'g02']), ('D', 3, ['bloom', 'quiet', 'g01']), ('E', 3, ['quiet', 'g01', 'g02'])], ov
         assert [c for c, n, _ in overlap(G, need=2)] == ['B', 'C', 'D', 'E', 'A'] and overlap({}) == [] and len(OV_ORDER) == 43 == len(set(OV_ORDER))
         assert set(r3['mix']['g13']) == set(r3['lists']['g13']) and all(len(v[1]) == len(MIX['g13']) for v in r3['mix']['g13'].values())
+        # 크게 덜 잃는 일곱(주문 1117-1731) — 두 꾀 넘게 · 거래량 꾀 뺌 · 흔들림 작은 차례 · 업종 둘까지 · 일곱까지 · 채우지 않음
+        LL = {'g01': codes[:12], 'g02': codes[:12], 'g03': codes[20:30], 'g13': codes[20:30] + codes[40:41], 'g04': codes[40:41]}
+        cm = calm7(codes, IX, P, T - 1, LL)
+        vv = {c: float(np.nanstd(np.diff(np.log(P[at[c], T - 1 - CALM_WIN:T])))) for c in codes}
+        assert all(n >= 2 for _, n, _ in cm) and all(c in codes[:12] for c, _, _ in cm), ('두 꾀 넘게 · 거래량 꾀(g13)로만 겹친 곳은 뺌', cm)
+        assert len(cm) <= 7 and max(collections.Counter(int(IX[at[c]]) for c, _, _ in cm).values()) <= 2, ('일곱까지 · 업종 둘까지', cm)
+        exp = []; per = {}
+        for c in sorted(codes[:12], key=lambda c: (round(vv[c], 6), c)):
+            if per.get(int(IX[at[c]]), 0) >= 2: continue
+            per[int(IX[at[c]])] = per.get(int(IX[at[c]]), 0) + 1; exp.append(c)
+        assert [c for c, _, _ in cm] == exp[:7], ('흔들림 작은 차례', cm, exp[:7])
+        assert calm7(codes, IX, P, T - 1, {'g01': codes[:3]}) == [] and calm7(codes, IX, None, 0, LL) == [], '두 꾀 넘게가 없으면 빈 목록(채우지 않음)'
         print('ok', sum(len(v) for v in Lk.values()), 'of', 7 * 31, '· vol', sum(len(r3['lists'][k]) for k in BY), '· full %.1fs' % took, '· ovl', len(ov))

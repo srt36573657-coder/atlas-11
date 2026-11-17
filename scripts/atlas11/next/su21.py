@@ -479,6 +479,10 @@ OV = S36.overlap({**lists, **S36R['lists']})
 #   판 날 장을 다섯 땅 가운데 하나로 읽고 · 지난 같은 땅 날들에서 서른여섯 꾀가 고른 일곱 곳의 닷새 뒤 값으로 덜 잃은 차례를 세움 — 첫 화면 맨 위(가벼워 su21.json 에)
 import su21_sun as SUN
 out['sun'] = SUN.sun(CODES, IXc, PM, CTX.T, capv, DATES, vrows=(VOL or {}).get('rows')) if PM is not None and not A.no_sun else None
+# 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」 — docs/design/sonja-wise2-2026-11-17/order-1720.txt) — 오늘 꾀들이 고른 곳 가운데 두 꾀 넘게 · 덜 흔들린 차례 · 업종 둘까지
+#   지난 기록 = 형세 셈(su21_sun)이 지난 날마다 같은 법으로 다시 골라 센 값(첫 화면 자료를 가볍게 — 꾀 칸 자료 su21-s36.json 에 둠)
+CALM = S36.calm7(CODES, IXc, PM, CTX.T, S36R['lists']) if PM is not None else []
+CALMREC = out['sun'].pop('calm', None) if out.get('sun') else None
 out['s36n'] = {k: len(L) for k, L in S36R['lists'].items()} # 주문 1114-0004 — 처음 쪽 「모두 ○곳」 · 구슬 아래 두 줄은 이 수로(꾀 칸 자료 su21-s36.json 은 첫 칠함 뒤에 받음 — 느린 휴대폰 첫 화면 2.5초)
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
 # 주문 1114-1306 ⑤ — 오늘 이름이 오른 회사 수(지금 · 넷째 창 · 될 듯 · 서른여섯 꾀 칸마다 앞 일곱 · 같은 회사는 한 번 — 화면 su-21.js coN · su-apple.js coCount 와 같은 셈)
@@ -503,6 +507,8 @@ json.dump({'schema': 'su21-s36-1', 'asOf': {'board': b['asOf'], 'data': _vday}, 
            # 주문 1116-2134(사장님 2026-11-16(마카오) 20:34 「이 방정식을 36걔 병법에 올려라 각 방에 맞게 … 이헎개 해서 찾아낸 종목이라고 하라」) — 여섯 식 · 꾀마다 섞은 식 · 고른 곳마다 [꾀 점수, 식마다 차례, 식마다 값]
            'mix': {'rule': S36.MIX_RULE, 'eq': {e: list(v) for e, v in S36.EQ.items()}, 'recipe': {k: [list(x) for x in v] for k, v in S36.MIX.items()},
                    'val': S36R.get('mix') or {}, 'src': 'docs/design/sonja-eq6-2026-11-16/order-2134.txt'},
+           'calm': {'rule': S36.CALM_RULE, 'k': S36.K, 'need': S36.CALM_NEED, 'cap': S36.CALM_CAP, 'win': S36.CALM_WIN, 'list': [{'code': c, 'name': nm(c), 'n': n, 'ind': ind36(c)} for c, n, _ in CALM],
+                    'rec': CALMREC, 'src': 'docs/design/sonja-wise2-2026-11-17/order-1720.txt'}, # 크게 덜 잃는 일곱(주문 1117-1731)
            'ind': {c: ind36(c) for c in sorted({c for L in S36R['lists'].values() for c in L}) if c in B}}, # 고른 회사마다 갈래 이름(검사가 큰 갈래를 따로 다시 셈)
           open(A.out.replace('su21.json', 'su21-s36.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음

@@ -862,6 +862,31 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const ruleW = HS ? (HS.all ? '지난 ' + HS.days + '거래일을 모두 보고, ' : '지난 ' + HS.days + '거래일 가운데 오늘처럼 ' + SUN.name + '이었던 ' + HS.same + '날을 골라, ') + '꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요.' + (ymW(HS.from) && ymW(HS.to) ? ' 센 때는 ' + ymW(HS.from) + '부터 ' + ymW(HS.to) + '까지예요.' : '') : '';
     check(!same || (g.h === (HS ? '덜 잃은 꾀 차례 ' : '서른여섯 꾀 ') + N36 + '칸' && g.lead === '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, ' + (G36?.pick?.rule === PICK28 ? '세 가지 거름을 모두 지난 곳 가운데, 점수가 높은 일곱 곳까지예요. 점수는 수학 식과 정서 식으로 매겨요.' : '그날 그 꾀를 가장 닮은 일곱 곳이에요.') && g.rule === ruleW && g.day.endsWith(dayW) && g.go === '#/r/t' && g.small === 0),
       W + '꾀 칸 머리 · 한 줄 풀이(삼십육계 — 손자병법과 따로 · 주문 1114-0922) · 차례 까닭(같은 땅 날 · 닷새 뒤 · 덜 잃은 차례) · 고른 날 · 같은 회사 여러 꾀 · 정산 고리 · 누름 48', JSON.stringify({h: g.h, lead: g.lead, rule: [g.rule, ruleW], day: g.day, go: g.go, small: g.small}).slice(0, 500));
+    // 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」 — docs/design/sonja-wise2-2026-11-17/order-1720.txt) — 꾀 칸 안 줄어든 갈래 바로 아래(없으면 큰 갈래 바로 위)
+    //   자료 calm 그대로 · 고른 곳마다 거래량 꾀를 뺀 꾀 둘 넘게가 함께 고름(검사가 자료 lists 로 다시 셈) · 업종 둘까지 · 일곱까지 · 지난 기록 두 줄(크게 잃은 꼬리 · 잃은 번 — 하나만 보이면 실패)
+    const CM = G36?.calm?.rule === 'calm7-v1' && Array.isArray(G36.calm.list) ? G36.calm : null;
+    const cm = await p.evaluate(() => { const t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), sec = document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), c = sec?.querySelector(':scope > .sj-calm');
+      if (!c) return {none: true, any: !!document.querySelector('#su .sj-calm')};
+      return {n: c.getAttribute('data-n'), k: t(c.querySelector('.sj-calmk')), l: t(c.querySelector('.sj-calml')), cs: [...c.querySelectorAll('a.sj-chip')].map(a => [a.getAttribute('href'), t(a.querySelector('b'))]),
+        r: t(c.querySelector('.sj-calmr')), r2: t(c.querySelector('.sj-calmr2')), d: t(c.querySelector('.sj-calmd')), none: t(c.querySelector('.sj-tnone')), prev: c.previousElementSibling?.className ?? '', next: c.nextElementSibling?.className ?? ''}; });
+    if (same) {
+      const ten = x => (Math.round(x * 100) / 10).toFixed(1).replace(/\.0$/, '');
+      const nonVol = G36.kinds.filter(k => G36.by?.[k] !== 'vol'), hitsOf = code => nonVol.filter(k => (G36.lists[k] ?? []).some(c => c?.code === code)).length;
+      const L = CM ? CM.list.slice(0, 7) : [], perInd = {};
+      for (const c of L) perInd[c.ind] = (perInd[c.ind] ?? 0) + 1;
+      const R = CM?.rec, okR = !!R && R.rule === 'calm7-v1' && Number.isInteger(R.n) && R.n > 0 && Number.isInteger(R.lose) && R.lose >= 0 && R.lose <= R.n && Number.isFinite(R.exp) && Number.isFinite(R.tail) && Number.isFinite(R.tail7);
+      const dataOk = !CM || (CM.list.length <= 7 && L.every(c => /^\d{6}$/.test(c.code) && hitsOf(c.code) >= 2 && c.n === hitsOf(c.code) && c.ind === G36.ind?.[c.code]) && Object.values(perInd).every(v => v <= 2) && new Set(L.map(c => c.code)).size === L.length);
+      const want = !CM ? null : {n: String(L.length), k: '크게 덜 잃는 일곱', l: '두 꾀 넘게 함께 고른 곳 가운데 요즘 덜 흔들린 곳이에요. 한 업종에서는 둘까지만 골랐어요.',
+        cs: L.map(c => ['#/c/' + encodeURIComponent(c.code), c.name]), none: L.length ? '' : '오늘은 두 꾀 넘게 함께 고른 곳이 없어요.',
+        r: okR ? '가장 나빴던 열에 한 주는 100원이 ' + w100(R.tail) + '이 됐어요. 아무렇게나 고른 일곱은 ' + w100(R.tail7) + '이었어요.' : '지난 기록을 세지 못했어요.',
+        r2: okR ? '대신 열 번에 ' + ten(R.lose / R.n) + '번 잃었어요. 아무렇게나 고르면 ' + ten(R.exp / R.n) + '번이에요.' : '',
+        d: okR ? '지난 ' + R.n + '거래일 날마다 같은 법으로 골라 닷새 뒤 값과 견줬어요.' + (ymW(R.from) && ymW(R.to) ? ' 센 때는 ' + ymW(R.from) + '부터 ' + ymW(R.to) + '까지예요.' : '') : ''};
+      const got = cm?.none ? null : {n: cm.n, k: cm.k, l: cm.l, cs: cm.cs, none: cm.none, r: cm.r, r2: cm.r2, d: cm.d};
+      const place = !CM || cm?.none || ((/\bsj-loss\b/.test(cm.prev) || /\bsj-q\b|\bsj-sh\b/.test(cm.prev)) && (/\bsj-th\b|\bsj-tricks\b/.test(cm.next)));
+      check(dataOk && JSON.stringify(got) === JSON.stringify(want) && place && !(cm?.none && cm.any),
+        W + '크게 덜 잃는 일곱(주문 1117-1731) — 자료 그대로 · 두 꾀 넘게(거래량 꾀 뺌) · 업종 둘까지 · 일곱까지 · 지난 기록 두 줄(꼬리 · 잃은 번) · 줄어든 갈래 바로 아래',
+        JSON.stringify({dataOk, place, prev: cm?.prev, next: cm?.next, diff: want && got ? Object.keys(want).filter(k => JSON.stringify(want[k]) !== JSON.stringify(got[k])).map(k => [k, got[k], want[k]]) : [!!want, !!got]}).slice(0, 600));
+    }
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
   }

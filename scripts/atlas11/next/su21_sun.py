@@ -90,6 +90,8 @@ def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H):
     days = list(range(t0, T - h + 1))          # 닷새 뒤 값이 판 날 안에 있는 날만(앞날 값을 쓰지 않음)
     landOf, ret = {}, {k: {} for k in S36.KINDS}
     idx = {c: j for j, c in enumerate(codes)}
+    cR, cP0, cS = {}, {}, {}   # 크게 덜 잃는 일곱(주문 1117-1731) — 날마다 같은 법으로 다시 골라 닷새 뒤 평균 · 그날 아무렇게나 일곱이 잃을 몫 · 아무렇게나 일곱 예순 판
+    rngc = np.random.default_rng(1117)
     for t in days:
         landOf[t] = land(market(P, t))
         R = S36.lists36(codes, IX, P, t, cap, dates=dates, vmat=vmat)
@@ -100,6 +102,14 @@ def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H):
                 r = P[j, t + h] / P[j, t] - 1
                 r = r[np.isfinite(r)]
                 if len(r): ret[k][t] = float(r.mean())
+            cm = S36.calm7(codes, IX, P, t, R['lists'])
+            rr = P[:, t + h] / P[:, t] - 1
+        ok = np.isfinite(rr)
+        if cm and ok.sum() >= 7:
+            x = rr[[idx[c] for c, _, _ in cm]]; x = x[np.isfinite(x)]
+            if len(x):
+                rv = rr[ok]; m7 = rv[np.argpartition(rngc.random((400, len(rv))), 7, axis=1)[:, :7]].mean(1)
+                cR[t], cP0[t], cS[t] = float(x.mean()), float((m7 < 0).mean()), m7[:60]
     same = [t for t in days if landOf.get(t) == key]
     useAll = len(same) < MIN_N
     use = set(days if useAll else same)
@@ -108,7 +118,16 @@ def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H):
     cnt = {L: sum(1 for t in days if landOf.get(t) == L) for L in ORDER}
     path = [land(market(P, t)) for t in range(max(120, T - PATH + 1), T + 1)]
     D = LANDS[key]
-    return {'rule': RULE_ID, 'h': h, 'win': win, 'minN': MIN_N, 'day': dates[T] if dates and T < len(dates) else None,
+    calm = None
+    tc = sorted(cR)
+    if len(tc) >= MIN_N:   # 모든 날(확인한 법 그대로 — 땅으로 나누지 않음)
+        a = np.array([cR[t] for t in tc]); p0 = np.array([cP0[t] for t in tc]); S7 = np.array([cS[t] for t in tc]); n = len(a); k10 = max(1, n // 10)
+        tails = np.sort(S7[np.arange(n)[None, :], rngc.integers(0, S7.shape[1], size=(300, n))], axis=1)[:, :k10].mean(1)
+        tail = float(np.sort(a)[:k10].mean())
+        calm = {'rule': S36.CALM_RULE, 'h': h, 'n': n, 'lose': int((a < 0).sum()), 'exp': round(float(p0.sum()), 2), 'tail': round(tail, 4), 'tail7': round(float(tails.mean()), 4),
+                'beat': round(float((tails < tail).mean()), 3), 'avg': round(float(a.mean()), 4),   # beat = 아무렇게나 일곱 300판 가운데 가장 나쁜 열에 한 주가 이보다 깊었던 몫
+                'from': dates[tc[0]] if dates and tc[0] < len(dates) else None, 'to': dates[tc[-1]] if dates and tc[-1] < len(dates) else None}
+    return {'rule': RULE_ID, 'calm': calm, 'h': h, 'win': win, 'minN': MIN_N, 'day': dates[T] if dates and T < len(dates) else None,
             'land': key, 'name': D['name'], 'pian': D['pian'], 'quote': D['quote'], 'do': D['do'], 'rankQ': RANK_Q,
             'm': {'n': m['n'], 'up': m['up'], 'mid': round(m['mid'], 4), 'mean': round(m['mean'], 4), 'shake': round(m['shake'], 2) if np.isfinite(m['shake']) else None},
             'hist': {'days': len(days), 'same': len(same), 'all': useAll, 'from': dates[days[0]] if days else None, 'to': dates[days[-1]] if days else None, 'cnt': cnt},
@@ -134,4 +153,6 @@ if __name__ == '__main__':
         ks = [_key(r['k'], r) for r in S['rank']]; assert ks == sorted(ks)
         P2 = P.copy(); P2[:, -25:] = P2[:, -26:-25] * np.linspace(1, 0.8, 25)    # 모두 내림 → 무너지는 땅
         assert land(market(P2, Tn - 1)) == 'fall'
-        print('ok', S['land'], S['hist']['days'], S['hist']['same'], S['rank'][0]['k'])
+        c = S['calm']   # 크게 덜 잃는 일곱(주문 1117-1731) — 꾸민 자료에서는 없을 수도 있음 · 있으면 뜻이 맞아야 함
+        assert c is None or (c['rule'] == S36.CALM_RULE and c['n'] >= MIN_N and 0 <= c['lose'] <= c['n'] and 0 <= c['exp'] <= c['n'] and c['tail'] <= c['avg'] and 0 <= c['beat'] <= 1 and c['from'] <= c['to']), c
+        print('ok', S['land'], S['hist']['days'], S['hist']['same'], S['rank'][0]['k'], 'calm', c and (c['n'], c['lose'], c['tail'], c['tail7']))
