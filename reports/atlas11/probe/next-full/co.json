@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-11-17T02:36:37.992Z",
+ "at": "2026-11-17T03:40:42.144Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-17",
  "companies": 2557,
@@ -11,7 +11,7 @@
  "units": {
   "total": 2566,
   "mine": 2566,
-  "hash": "dac9bf8659789758",
+  "hash": "504362d02023b54c",
   "kinds": {
    "c": {
     "total": 2557,
@@ -31,15 +31,15 @@
    }
   }
  },
- "seconds": 683,
+ "seconds": 818,
  "time": {
-  "old": 162.4,
-  "new": 227.2,
-  "wall": 682.6,
+  "old": 121.4,
+  "new": 321.6,
+  "wall": 818.2,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 23.8,
-  "oldShare": 41.7
+  "oldPct": 14.8,
+  "oldShare": 27.4
  },
  "net": {
   "req": 2509,
@@ -48,10 +48,12 @@
   "why": {},
   "cut": 0,
   "page": {
-   "retry": 0,
-   "waitSec": 0,
+   "retry": 1,
+   "waitSec": 2,
    "blocked": 0,
-   "why": {}
+   "why": {
+    "답 없는 요청": 1
+   }
   }
  },
  "counts": {
