@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-11-17T02:42:25.850Z",
+ "at": "2026-11-17T03:47:31.223Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-17",
  "ready": [
@@ -23,11 +23,11 @@
  "full": true,
  "oldNameScreens": 2690,
  "oldNameAllow": [],
- "seconds": 348,
+ "seconds": 409,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 347.6,
+  "wall": 408.8,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
@@ -40,14 +40,16 @@
   "why": {},
   "cut": 0,
   "page": {
-   "retry": 0,
-   "waitSec": 0,
+   "retry": 1,
+   "waitSec": 2,
    "blocked": 0,
-   "why": {}
+   "why": {
+    "HTTP 403": 1
+   }
   }
  },
  "counts": {
-  "고리": 2235,
+  "고리": 2234,
   "화면": 126,
   "옛 이름 본 화면": 2692,
   "큰 글씨 화면": 42,
@@ -72,7 +74,7 @@
  "fails": [
   [
    "화면 오류",
-   "닫은 쪽 /next/#/cal/005930 Failed to load resource: the server responded with a status of 403 () · 403 /next/"
+   "닫은 쪽 /next/#/cal Failed to load resource: the server responded with a status of 403 () · 403 /su/"
   ]
  ],
  "ok": false
