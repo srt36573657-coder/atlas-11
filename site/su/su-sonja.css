@@ -356,7 +356,7 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su .sj-stm[data-m="eq"] { color: #6A6156; }
 #su .sj-dr .sj-drt { margin-top: 10px; font-size: 1.1875rem; line-height: 1.55; }
 #su .sj-drds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-#su .sj-drd { min-height: 44px; padding: 0 14px; border: 1.5px solid #1E1914; border-radius: 999px; background: transparent; color: #1E1914; font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; }
+#su .sj-drd { min-height: 48px; padding: 0 14px; border: 1.5px solid #1E1914; border-radius: 999px; background: transparent; color: #1E1914; font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; }
 #su .sj-drd[aria-pressed="true"] { background: #1E1914; color: #F8F4EB; }
 #su .sj-drp { display: inline-flex; align-items: center; min-height: 48px; margin-top: 12px; padding: 0 18px; border: 0; border-radius: 999px; background: #E9E2D5; color: #15120E; font: inherit; font-size: 1.125rem; font-weight: 800; cursor: pointer; }
 #su .sj-drl { display: grid; gap: 6px; margin-top: 12px; padding: 0; list-style: none; }
