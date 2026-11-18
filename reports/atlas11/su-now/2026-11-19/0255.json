@@ -1,0 +1,66 @@
+{
+ "schema": "atlas11-su-now-1",
+ "at": "2026-11-18T17:55:30.331Z",
+ "day": "2026-11-19",
+ "hm": "02:55",
+ "open": false,
+ "idxToday": false,
+ "index": {
+  "KOSPI": {
+   "date": "2026-11-18",
+   "price": 5067.44,
+   "change": 98.96,
+   "ratio": 1.99,
+   "today": false
+  },
+  "KOSDAQ": {
+   "date": "2026-11-18",
+   "price": 662.81,
+   "change": 12.75,
+   "ratio": 1.96,
+   "today": false
+  }
+ },
+ "flows": {
+  "KOSPI": {
+   "date": "2026-11-18",
+   "today": false,
+   "foreign": -3405,
+   "inst": 4926,
+   "indiv": -6169,
+   "unit": "억원",
+   "keys": [
+    "foreignValue",
+    "institutionalValue",
+    "personalValue"
+   ]
+  },
+  "KOSDAQ": {
+   "date": "2026-11-18",
+   "today": false,
+   "foreign": -497,
+   "inst": 1794,
+   "indiv": -1215,
+   "unit": "억원",
+   "keys": [
+    "foreignValue",
+    "institutionalValue",
+    "personalValue"
+   ]
+  }
+ },
+ "prices": {
+  "day": "2026-11-19",
+  "board": "2026-11-18",
+  "n": 0,
+  "of": 365,
+  "p": {}
+ },
+ "errors": [],
+ "src": {
+  "index": "https://m.stock.naver.com/api/index/{KOSPI|KOSDAQ}/price?pageSize=2&page=1",
+  "flows": "https://m.stock.naver.com/api/index/{KOSPI|KOSDAQ}/integration",
+  "stock": "https://m.stock.naver.com/api/stock/{번호}/price?pageSize=1&page=1",
+  "unit": "사고판 돈은 억 원 · 시장 전체 · 그날 값은 잠정"
+ }
+}
