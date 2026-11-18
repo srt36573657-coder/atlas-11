@@ -2458,8 +2458,8 @@
    "then": "02:18(마카오) — 1119-0153 끝 보고 9번 물음 「늦게 도는 깃허브 자체 예약은 지울까요? 맞으면 「응」이라고 해 주세요.」의 답 · 시작 글에 「새벽 3시쯤 알려 드릴게요」",
    "did": "「지금 시장 받기」 깃허브 일(atlas11-su-now.yml)에서 깃허브 자체 예약(cron) 세 줄을 지우고 손으로 누르기(workflow_dispatch)만 남김 — 누르는 것은 Claude 예약 작업 하나뿐 · 머리 주석에 까닭 · 명령문 docs/design/su-now-2026-11-18/order-0218.txt · 틀림 장부 239(cron 을 「돌면 30분 창이 막는다」며 남겨 둔 것)",
    "short": "늦게 도는 깃허브 자체 예약을 지우는 일이에요.",
-   "state": "미완성",
-   "proof": ""
+   "state": "성공",
+   "proof": "커밋 7010c6efdb 를 main 에 넣음 · main 의 .github/workflows/atlas11-su-now.yml 에 schedule · cron 줄 0(깃허브 내용 읽기로 확인) · on 은 workflow_dispatch 하나 · 깃허브가 읽은 일 상태 active · YAML 읽힘(jobs now · 단계 5) · 바뀐 쪽 검사 짝 0 · 틀림 장부 시험 5 통과 · 깃허브 자체 예약은 기본 가지(main) 파일에 schedule 이 있어야만 돎 — 이제 누르는 것은 Claude 예약 작업 하나뿐 · 10:25 확인 때 schedule 실행이 새로 없는지 함께 봄"
   }
  ],
  "open": 17,
