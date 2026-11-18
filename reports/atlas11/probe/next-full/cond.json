@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-11-18T07:32:05.233Z",
+ "at": "2026-11-18T11:49:10.761Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-18",
  "combos": 100,
@@ -12,15 +12,15 @@
   "widths"
  ],
  "full": true,
- "seconds": 45,
+ "seconds": 35,
  "time": {
-  "old": 13.7,
-  "new": 15.8,
-  "wall": 45.5,
+  "old": 11.7,
+  "new": 14.2,
+  "wall": 35.1,
   "opensOld": 654,
   "opensNew": 681,
-  "oldPct": 30.2,
-  "oldShare": 46.5
+  "oldPct": 33.5,
+  "oldShare": 45.2
  },
  "net": {
   "req": 3,
@@ -36,8 +36,8 @@
   }
  },
  "counts": {
-  "결과 줄": 29212,
-  "? 줄": 239,
+  "결과 줄": 29277,
+  "? 줄": 254,
   "조건": 100,
   "고르기": 3,
   "닫기": 2,
