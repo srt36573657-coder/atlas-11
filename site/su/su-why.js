@@ -56,7 +56,7 @@ const WHY_BIG = [2, WHY_A[2].findIndex(a => a[1] === '클 일이 있다')];
    마지막 옛 이름은 이미 남은 기록을 읽을 때만(기록 열쇠 · 꼴은 그대로 — 화면에는 shownV 로 새 이름) */
 export const WHY_V = Object.freeze({'준비됐어, 정해 둔 대로만': 'go', '반만 준비됐어': 'wait', '오늘은 쉬어 가자': 'rest', '좋아, 정해 둔 대로만': 'go'});
 /** 판정 문턱 풀이 — judgeWhy 셈 그대로(「이상」 · 쉬어 가는 답 셋 — 질문 차례대로) · 판정 짧은 이름은 쉬어 · 반만 · 준비됨(손실 먼저 차례) */
-const JUDGE_HOW = '「얼마 넣어?」에 거의 다·빌린 돈, 「떨어지면?」에 안 정함, 「언제 쓸 돈?」에 곧이라고 답하면 점수와 상관없이 쉬어 · 답 점수가 12 이상이거나 빨간 답이 넷 이상이면 쉬어 · 6 이상이면 반만 · 그보다 낮으면 준비됨';
+const JUDGE_HOW = '이렇게 답하면 점수와 상관없이 쉬어요. 「얼마 넣어?」에 거의 다·빌린 돈. 「떨어지면?」에 안 정함. 「언제 쓸 돈?」에 곧. 답 점수가 12 이상이거나 빨간 답이 넷 이상이어도 쉬어요. 6 이상이면 반만, 그보다 낮으면 준비됨이에요.';
 const VSHORT = {rest: '쉬어', wait: '반만', go: '준비됨'};
 /** 판정 — 점수 · 빨간 답 수 · 묶음 · 판정 글(p-why.js judge 와 같은 셈) · money = 돈 답으로 쉬어 · sell = 팔 곳을 안 정함 */
 export function judgeWhy(ans) {
@@ -165,7 +165,7 @@ export async function vQuiz(code0, X) {
       {mean: '지금 ' + (i + 1) + '번째 질문이에요. ' + (nDone ? '답한 질문은 ' + nDone + '개예요.' : '답은 아직 0개예요.')});
     return {title: '왜 사?', tab: 2, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · ' + WHY_GROUPS[gi][0] + ' 묶음', h1: WHY_QS[i], big,
       pro: [{k: '질문 수', v: WHY_QS.length + '개', how: '네 묶음 · ' + WHY_GROUPS.map(([n, q]) => n + ' ' + q.length).join(' · ')}, {k: '지금 질문', v: (i + 1) + ' / ' + WHY_QS.length, how: WHY_GROUPS[gi][0] + ' 묶음'},
-        {k: '답 셋의 점수', v: '● 0 · ▲ 1 · ■ 2', how: '■ 은 빨간 답 · 답 점수는 답마다 이 점수를 더한 값이라 낮을수록 준비됨 · 준비 점수는 ' + WHY_MAX + '에서 답 점수를 뺀 값이라 높을수록 준비됨'},
+        {k: '답 셋의 점수', v: '● 0 · ▲ 1 · ■ 2', how: '■ 은 빨간 답이에요. 답 점수는 답마다 이 점수를 더한 값이에요. 낮을수록 준비가 잘 된 거예요. 준비 점수는 ' + WHY_MAX + '에서 답 점수를 뺀 값이에요. 높을수록 준비가 잘 된 거예요.'},
         {k: '판정 문턱', v: '쉬어 · 반만 · 준비됨', how: JUDGE_HOW},
         {k: '답한 질문', v: Q.ans.filter(x => x != null).length + ' / ' + WHY_QS.length, how: '이 휴대폰에서 지금 답한 수'}],
       seal: '멈춤', ink: whyPic(tonesNow(), i), say: '사기 전에 한 번 멈춰요. ' + (i + 1) + '번째 질문이에요. 맞히는 시험이 아니니 내 마음 그대로 답해요.',
@@ -255,11 +255,11 @@ export async function vJournal(X) {
         h('ol', {class: 'su-jl'}, shown.map((m, i) => recCard(m.r, m.W, laters[i]))),
         h('p', {class: 'su-note', text: '한 달 뒤 값은 맞고 틀림을 가르는 표가 아니에요. 그날 정한 대로 했는지만 봐요.'}),
         full.length > 30 ? h('p', {class: 'su-note', text: '새 기록 서른 줄만 보여요. 나머지 ' + (full.length - 30) + '줄도 지우지 않고 그대로 있어요.'}) : null) : null,
-      full.length ? h('a', {class: 'su-ask', href: '#/r/t'}, h('b', {text: '서른여섯 꾀 정산과 함께 보기'}), h('span', {text: '한 달 뒤 값을 꾀마다 10주씩 산 셈과 견줘 봐요.'})) : null, // 옛 꽃 기록 단추(주문 1115-2328 — 꽃 쪽은 지움)
+      full.length ? h('a', {class: 'su-ask', href: '#/r/t'}, h('b', {text: '서른여섯 꾀 정산과 함께 보기'}), h('span', {text: '한 달 뒤 값을, 꾀마다 10주씩 샀다고 친 결과와 비교해 봐요.'})) : null, // 옛 꽃 기록 단추(주문 1115-2328 — 꽃 쪽은 지움)
       can ? null : h('p', {class: 'su-note', text: '이 기기는 기록을 남길 수 없어요.'})],
-    pro: [{k: '쌓인 기록', v: full.length + '번', how: '이 휴대폰에만 · 틀린 것도 지우지 않음 · 최근 200줄까지 남고 저장 공간을 비우면 사라짐'}, {k: '판정 · 쉬어 · 반만 · 준비됨', v: vc.rest + ' · ' + vc.wait + ' · ' + vc.go, how: '「왜 사?」 결과 판정을 센 값 · 쉬어 간 날은 싸우지 않고 지킨 날이에요'},
-      {k: '한 달 뒤 물은 기록 · 못 한 기록 · 한 기록', v: asked + ' · ' + (asked - kept) + ' · ' + kept, how: '한 달 = 장이 열린 날 스무 번(달력으로 서른 날이 먼저 지나면 그날) · 한 달이 지난 기록에만 물어요 · 지금 물을 기록 ' + dues.length + '번'},
+    pro: [{k: '쌓인 기록', v: full.length + '번', how: '이 휴대폰에만 남아요. 틀린 것도 지우지 않아요. 최근 200줄까지 남고, 저장 공간을 비우면 사라져요.'}, {k: '판정 · 쉬어 · 반만 · 준비됨', v: vc.rest + ' · ' + vc.wait + ' · ' + vc.go, how: '「왜 사?」 결과 판정을 센 값 · 쉬어 간 날은 싸우지 않고 지킨 날이에요'},
+      {k: '한 달 뒤 물은 기록 · 못 한 기록 · 한 기록', v: asked + ' · ' + (asked - kept) + ' · ' + kept, how: '한 달은 장이 열린 날 스무 번이에요. 달력으로 서른 날이 먼저 지나면 그날까지예요. 한 달이 지난 기록에만 물어요. 지금 물을 기록은 ' + dues.length + '번이에요.'},
       ...WHY_GROUPS.map(([n]) => ({k: n + ' 묶음 평균', v: Number.isFinite(avg[n]) ? String(Math.round(avg[n] * 10) / 10) : NEED, how: '기록마다 묶음 점수의 평균 · 준비된 만큼'})),
       ...full.slice(0, 30).map(r => ({k: (dayOf(r) ?? NEED) + (r.name ? ' · ' + r.name : ''), v: (readyOfRec(r) ?? NEED) + ' / ' + WHY_MAX + ' · ' + (shownV(r.verdict) ?? NEED), how: '그날 값 ' + (r.price > 0 ? won(r.price) : NEED) + ' · 빨간 답 ' + (Number.isFinite(r.reds) ? r.reds : NEED) + ' · 한 달 뒤 ' + (r.kept ? (r.kept.a === 'yes' ? '정한 대로 함' : '못 함') : '아직')}))],
-    next: {href: '#/', label: '처음으로 · 오늘 형세는?', k: '1 / 5'}, asOf, S, note: '기록은 이 휴대폰에만 있어요. 이름도 열쇠도 받지 않아요.'}; // 길 다섯 화면의 끝(주문 1115-2328 — 옛 「친구에게」 쪽은 지움)
+    next: {href: '#/', label: '처음으로 · 오늘 시장은?', k: '1 / 5'}, asOf, S, note: '기록은 이 휴대폰에만 있어요. 이름도 열쇠도 받지 않아요.'}; // 길 다섯 화면의 끝(주문 1115-2328 — 옛 「친구에게」 쪽은 지움)
 }

@@ -62,45 +62,45 @@ export const ok36 = (g, T) => !!g && g.schema === 'su21-s36-1' && Array.isArray(
 export const okSun = x => !!x && x.rule === 'sun-v1' && LANDK.includes(x.land) && Number.isInteger(x.m?.n) && x.m.n > 0 && Number.isInteger(x.m?.up) && x.m.up >= 0 && x.m.up <= x.m.n
   && typeof x.name === 'string' && typeof x.quote === 'string' && Array.isArray(x.rank) && x.rank.length === 36 && x.rank.every(r => typeof r?.k === 'string' && Number.isInteger(r.n));
 export const sp36 = (g, code) => { const v = g?.line?.[code]; return v && Array.isArray(v.c) && v.c.length === 21 && v.c.every(x => fin(x) && x > 0) && fin(v.close) && v.close === v.c[20] && typeof v.date === 'string' && v.date === g?.asOf?.board ? v.c : null; };
-const shakeSay = v => (!fin(v) ? null : v < 0.6 ? '평소의 절반쯤으로 잔잔해요' : v < 0.85 ? '평소보다 작아요' : v < 1.15 ? '평소와 비슷해요' : v < 1.5 ? '평소보다 커요' : '평소보다 훨씬 커요');
-export const lose10 = r => { if (!r?.n) return null; if (!r.lose) return '한 번도 잃지 않았어요.'; const k = Math.round(r.lose / r.n * 10); return k ? '열 번에 ' + KN[k] + ' 번 잃었어요.' : '열 번에 한 번이 안 되게 잃었어요.'; };
-export const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : /꾀 뜻/.test(w ?? '') ? NONE36 : '지난 값이 모자라 고르지 못했어요.');
+const shakeSay = v => (!fin(v) ? null : v < 0.6 ? '평소의 절반쯤으로 작아요' : v < 0.85 ? '평소보다 작아요' : v < 1.15 ? '평소와 비슷해요' : v < 1.5 ? '평소보다 커요' : '평소보다 훨씬 커요');
+export const lose10 = r => { if (!r?.n) return null; if (!r.lose) return '한 번도 잃지 않았어요.'; const k = Math.round(r.lose / r.n * 10); return k ? '열 번 가운데 ' + KN[k] + ' 번 잃었어요.' : '잃은 때가 열 번에 한 번도 안 돼요.'; };
+export const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양 자료가 없어서 고르지 못했어요.' : /꾀 뜻/.test(w ?? '') ? NONE36 : '지난 값 자료가 모자라서 고르지 못했어요.');
 /** 세 거름을 다 지난 곳이 없는 꾀(주문 1116-1539 — 모자라면 모자란 대로 · 다른 곳으로 채우지 않음) */
-export const NONE36 = '오늘은 꾀 뜻에 맞는 곳이 없어요. 다른 곳으로 채우지 않았어요.';
+export const NONE36 = '오늘은 이 꾀에 맞는 회사가 없어요. 억지로 다른 회사를 채우지 않았어요.';
 /* ── 세 거름(주문 1116-1539 · 사장님 2026-11-16(마카오) 14:39 「몬테카를로 … 10번 돌리고 코로 10번 돌리고 … 일곱 가지를 필터링 … 말이 같아야 될 거 아니야」) ──
    꾀마다 소거 열 가지 · 꾀 뜻 · 흉내 내 보기(값을 섞어 200번씩 10번)를 모두 지난 곳만 · 걸러진 수 = 자료 funnel(su21_s36.py lists36 full) */
 export const PICK36 = 's36-v3'; // 주문 1116-2134 — 세 거름은 그대로 · 차례는 꾀 점수(수학 식 + 정서 식)
 export const fun36 = (g, k) => { const f = g?.funnel?.[k], L = g?.lists?.[k];
   return g?.pick?.rule === PICK36 && f && ['n', 'cut', 'mean', 'mc', 'all', 'k'].every(x => Number.isInteger(f[x]) && f[x] >= 0) && f.all <= Math.min(f.cut, f.mean, f.mc)
     && Math.max(f.cut, f.mean, f.mc) <= f.n && f.k === Math.min(7, f.all) && Array.isArray(L) && L.length === f.k ? f : null; };
-export const LEAD36 = g => '삼십육계(옛 병법에 전하는 서른여섯 가지 꾀)마다, ' + (g?.pick?.rule === PICK36 ? '세 가지 거름을 모두 지난 곳 가운데, 점수가 높은 일곱 곳까지예요. 점수는 수학 식과 정서 식으로 매겨요.' : '그날 그 꾀를 가장 닮은 일곱 곳이에요.');
-export const funW = f => [['열 가지로 빼고 남은 곳', f.cut], ['꾀 뜻에 맞는 곳', f.mean], ['흉내 내 보기를 지난 곳', f.mc], ['셋 다 지난 곳', f.all]];
-export const funK = f => (!f.all ? '셋 다 지난 곳이 없어 오늘은 고르지 않았어요.' : f.all > 7 ? '그 가운데 점수가 높은 7곳을 골랐어요.' : '셋 다 지난 ' + f.all + '곳을 모두 골랐어요.');
+export const LEAD36 = g => '삼십육계는 옛날부터 전해 오는 꾀 서른여섯 가지예요. ' + (g?.pick?.rule === PICK36 ? '꾀마다 회사를 세 번 거른 뒤, 점수가 높은 회사를 일곱 곳까지 골랐어요.' : '꾀마다 그날 그 꾀를 가장 닮은 회사를 일곱 곳 골랐어요.');
+export const funW = f => [['열 가지 기준을 통과한 회사', f.cut], ['꾀의 뜻에 맞는 회사', f.mean], ['우연으로 보기 어려운 회사', f.mc], ['세 가지를 모두 통과한 회사', f.all]];
+export const funK = f => (!f.all ? '세 가지를 모두 통과한 회사가 없어서, 오늘은 고르지 않았어요.' : f.all > 7 ? '그 가운데 점수가 높은 7곳을 골랐어요.' : '통과한 ' + f.all + '곳을 모두 골랐어요.');
 /** 꾀 하나의 걸러진 수(고르는 법 칸 · 꾀 쪽) — 자료가 맞지 않으면 그리지 않음 */
 export function funnel36(g, k) {
   const f = fun36(g, k); if (!f) return null;
   return h('div', {class: 'sj-fun', 'data-k': k},
-    h('p', {class: 'sj-funl', text: '우량주 ' + f.n + '곳을 세 가지로 걸렀어요.'}),
+    h('p', {class: 'sj-funl', text: '큰 회사 ' + f.n + '곳을 세 번 걸렀어요.'}),
     h('ol', {class: 'sj-funs'}, ...funW(f).map(([t, n], i) => h('li', {class: i === 3 ? 'sj-funall' : null}, h('span', {text: t}), h('b', {text: n + '곳'})))),
     h('p', {class: 'sj-funk', text: funK(f)}));
 }
 /** 세 거름 풀이(꾀 차례 센 법 칸) — 소거 열 가지 이름 · 꾀 뜻 · 흉내 내 보기 · 채우지 않음 */
 export function pickHow(g) {
   const P = g?.pick; if (P?.rule !== PICK36 || !Array.isArray(P.cut) || !P.cut.length || !Number.isInteger(P.runs) || !Number.isInteger(P.paths)) return [];
-  return [h('p', {class: 'sj-pick'}, h('b', {text: '하나, 빼기 ' + (KN[P.cut.length] ? KN[P.cut.length] + ' 가지' : P.cut.length + '가지')}), h('span', {text: ' — 이런 곳만 남겨요.'})),
+  return [h('p', {class: 'sj-pick'}, h('b', {text: '첫째, ' + (KN[P.cut.length] ? KN[P.cut.length] + ' 가지' : P.cut.length + '가지') + ' 기준'}), h('span', {text: ' — 이런 회사만 남겨요.'})),
     h('ul', {class: 'sj-pickcut'}, ...P.cut.map(t => h('li', {text: t}))),
-    h('p', {class: 'sj-pick'}, h('b', {text: '둘, 꾀 뜻'}), h('span', {text: ' — 「고르는 법」에 적힌 값 모습과 맞아야 해요.'})),
-    h('p', {class: 'sj-pick'}, h('b', {text: '셋, 흉내 내 보기'}), h('span', {text: ' — 지난 값을 섞어 ' + P.paths + '번씩 ' + P.runs + '번 다시 놓아 봐요. 우연으로 보기 어려울 때만 남겨요.'})),
-    h('p', {class: 'sj-pick'}, h('b', {text: '넷, 점수'}), h('span', {text: ' — 꾀마다 수학 식과 정서 식을 골라 같은 무게로 더해요. 점수가 높은 차례로 일곱 곳까지 골라요.'})),
-    h('p', {class: 'sj-pick sj-picknone', text: '셋 다 지난 곳이 일곱 곳보다 적으면 적은 대로 둬요. 다른 곳으로 채우지 않아요.'})];
+    h('p', {class: 'sj-pick'}, h('b', {text: '둘째, 꾀의 뜻'}), h('span', {text: ' — 「고르는 법」에 적힌 모습과 맞아야 해요.'})),
+    h('p', {class: 'sj-pick'}, h('b', {text: '셋째, 우연인지 따져 보기'}), h('span', {text: ' — 지난 값을 뒤섞어 ' + P.paths + '번씩 ' + P.runs + '번 다시 해 봐요. 우연으로 보기 어려운 회사만 남겨요.'})),
+    h('p', {class: 'sj-pick'}, h('b', {text: '넷째, 점수'}), h('span', {text: ' — 꾀마다 수학 식과 정서 식을 똑같이 중요하게 더해요. 점수가 높은 회사부터 일곱 곳까지 골라요.'})),
+    h('p', {class: 'sj-pick sj-picknone', text: '세 가지를 모두 통과한 회사가 일곱 곳보다 적으면, 적은 대로 둬요. 다른 회사로 채우지 않아요.'})];
 }
 /* ── 꾀 점수 풀이(주문 1116-2134 · 사장님 2026-11-16(마카오) 20:34 「이 방정식을 36걔 병법에 올려라 각 방에 맞게 그리고 앚 쉽게 설명 하라 이헎개 해서 찾아낸 종목이라고 하라」) ──
    꾀 쪽 「주식에서는 이렇게 골라요」 칸 — 이 꾀가 섞은 식(수학 식 · 정서 식)마다 「큰 곳 / 작은 곳」 쉬운 한 줄 · 같은 무게로 더한 점수 · 「이렇게 해서 찾아낸 회사」
    식과 글 = su-sonja-36.js MIX36 · EQ36(su21_s36.py 그대로) · 검사 check_su ㉕ 나) · ㉘ 가 따로 셈 */
 export const EQF = Object.freeze({수학: '수학 식 — 값이 움직인 모습', 정서: '정서 식 — 사람 마음이 남긴 흔적'});
 export const eqRows = k => (Array.isArray(MIX36[k]) ? MIX36[k] : []).filter(([e, d]) => Array.isArray(EQ36[e]) && (d === 1 || d === -1)).map(([e, d]) => ({e, d, f: EQ36[e][0], six: EQ36[e][1], t: d > 0 ? EQ36[e][3] : EQ36[e][4]}));
-export const eqSum = n => (KN[n] ?? String(n)) + ' 식을 같은 무게로 더해 점수를 매겨요. 고르는 법에 맞는 곳 가운데 점수가 높은 차례로 골라요.';
-export const EQEND = '이렇게 해서 찾아낸 회사가 아래 제3장 「이렇게 해서 찾아낸 곳」이에요.';
+export const eqSum = n => '이 ' + (KN[n] ?? String(n)) + ' 식을 똑같이 중요하게 더해 점수를 내요. 걸러서 남은 회사 가운데 점수가 높은 회사부터 골라요.';
+export const EQEND = '이렇게 찾아낸 회사는 아래 제3장에 있어요.';
 export function eqBox(k) {
   const R = eqRows(k); if (!R.length || !R.some(r => r.f === '수학') || !R.some(r => r.f === '정서')) return null;
   const fam = f => { const rs = R.filter(r => r.f === f);
@@ -129,8 +129,8 @@ export function nowBox(T, x) {
   const pk = nowPick(x), F = n.flows ?? {}, ks = Object.keys(NOWIX).filter(s => fin(n.index[s]?.price) && n.index[s].price > 0), fs = Object.keys(NOWIX).filter(s => fin(F[s]?.foreign));
   const when = mday(n.day) + ' ' + hmWords(n.hm);
   return h('div', {class: 'sj-now', 'data-open': n.open ? '1' : '0', 'data-prov': n.prov ? '1' : '0', 'data-k': pk?.k ?? null},
-    h('p', {class: 'sj-nowk', text: '지금 시장 · 한국 시각 ' + when}),
-    n.open ? h('p', {class: 'sj-nowo', text: '장이 열려 있을 때 받은 값이라 아직 굳지 않았어요.'}) : null,
+    h('p', {class: 'sj-nowk', text: '지금 시장 · 한국 시간 ' + when}),
+    n.open ? h('p', {class: 'sj-nowo', text: '장이 열려 있을 때 받은 값이에요. 아직 바뀔 수 있어요.'}) : null,
     h('ul', {class: 'sj-nowi'}, ...ks.map(s => { const v = n.index[s]; return h('li', {'data-ix': s},
       h('b', {class: 'sj-nowx', text: NOWIX[s]}), h('span', {class: 'sj-nowv', text: IXF.format(v.price)}),
       h('span', {class: 'sj-nowc', 'data-dir': fin(v.change) ? (v.change > 0 ? 'up' : v.change < 0 ? 'dn' : 'eq') : 'na', text: v.today === false ? mday(v.date) + ' 마지막 값이에요.' : ixMove(v)})); })),
@@ -138,23 +138,23 @@ export function nowBox(T, x) {
     fs.some(s => fin(F[s].inst) || fin(F[s].indiv)) ? h('details', {class: 'sj-drawer sj-nowd'}, h('summary', {}, h('span', {class: 'sj-s1', text: '기관과 개인도 보기'}), chev()),
       h('ul', {class: 'sj-nowd2'}, ...fs.flatMap(s => [flowSay('기관', s, F[s].inst), flowSay('개인', s, F[s].indiv)].filter(Boolean).map(t2 => h('li', {}, h('p', {text: t2})))))) : null,
     pk ? h('a', {class: 'sj-nowp', href: '#/k/' + pk.k, 'data-win': pk.win ? '1' : '0'},
-      h('span', {class: 'sj-nowp1', text: '그래서 지금은 이 꾀로 시장을 볼 때예요'}),
+      h('span', {class: 'sj-nowp1', text: '지금은 이 꾀로 시장을 살펴봐요'}),
       h('b', {class: 'sj-nowp2', text: KNAME[pk.k]}),
       typeof KMEAN[pk.k] === 'string' ? h('span', {class: 'sj-nowp3', text: KMEAN[pk.k]}) : null,
-      h('span', {class: 'sj-nowp4', text: pk.win ? '지금 ' + x.name + '에서 덜 잃은 차례 안에, 아무렇게나 고른 일곱보다 덜 잃은 꾀예요.' : '지금 ' + x.name + '에서 덜 잃은 차례 맨 위 꾀예요.'})) : null,
-    h('p', {class: 'sj-nows', text: '하루 세 번 새로 봐요. 한국 시각 오전 10시, 오후 2시, 장이 끝난 뒤 오후 6시예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+      h('span', {class: 'sj-nowp4', text: pk.win ? '예전에 지금처럼 ' + x.name + '이었을 때, 아무 회사나 고른 것보다 덜 잃은 꾀예요.' : '예전에 지금처럼 ' + x.name + '이었을 때, 돈을 가장 덜 잃은 꾀예요.'})) : null,
+    h('p', {class: 'sj-nows', text: '하루에 세 번 새로 봐요. 한국 시간으로 오전 10시, 오후 2시, 장이 끝난 뒤 오후 6시예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
 }
 /* ── 2 표지 · 형세 보고 ── */
 function sunSec(T) {
   const x = okSun(T.sun) ? T.sun : null;
   if (!x) return h('section', {class: 'sj-sec sj-sun sj-nosun', 'aria-label': '서른여섯 꾀'},
     h('h1', {class: 'sj-h1'}, h('span', {class: 'sj-h1a', text: '서른여섯 꾀'})),
-    h('p', {class: 'sj-lead', text: day(T.asOf?.board) + ' 자료예요. 오늘 형세는 아직 세지 못해 꾀를 정한 차례로 놓았어요.'}));
+    h('p', {class: 'sj-lead', text: day(T.asOf?.board) + ' 자료예요. 오늘 시장 모습은 아직 세지 못했어요. 그래서 꾀를 원래 차례대로 놓았어요.'}));
   const m = x.m, P = (x.path ?? []).filter(k => LANDK.includes(k)).slice(-20), same = P.filter(k => k === x.land).length, upPart = m.up / m.n;
   const sh = shakeSay(m.shake), dd = mday(x.day);
   const up10 = Math.round(10 * upPart); // 깃발 열 가운데 선 깃발 = 오른 몫(열에 몇)
-  return h('section', {class: 'sj-sec sj-sun', 'data-land': x.land, 'aria-label': '오늘의 형세 · ' + x.name},
-    h('p', {class: 'sj-k', text: '제1장 땅을 살피다' + (x.prov && okNow(T.now) && T.now.day === x.day ? ' · ' + mday(T.now.day) + ' ' + hmWords(T.now.hm) + ' 값' : dd ? ' · ' + dd + ' 마지막 값' : '')}), // 장중이면 그때 값(주문 1118-1239)
+  return h('section', {class: 'sj-sec sj-sun', 'data-land': x.land, 'aria-label': '오늘 시장 · ' + x.name},
+    h('p', {class: 'sj-k', text: '제1장 시장을 살피다' + (x.prov && okNow(T.now) && T.now.day === x.day ? ' · ' + mday(T.now.day) + ' ' + hmWords(T.now.hm) + ' 값' : dd ? ' · ' + dd + ' 마지막 값' : '')}), // 장중이면 그때 값(주문 1118-1239)
     h('div', {class: 'sj-today'},
       h('h1', {class: 'sj-h1'}, h('span', {class: 'sj-h1a', text: '지금은 '}), h('b', {class: 'sj-land', text: x.name}), h('span', {class: 'sj-h1c', text: '이에요.'})),
       h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), 'aria-hidden': 'true', text: x.name})),
@@ -162,21 +162,21 @@ function sunSec(T) {
     h('figure', {class: 'sj-ink sj-landfig'}, meanCap(PM.land, 'figcaption'), landPic({land: x.land, name: x.name, up: up10, path: P, sameName: x.name, title: false})), // 손무가 언덕에서 오늘 땅을 내려다봄 · 깃발 열 · 디딤돌 스물
     h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + x.quote + '」'}), h('cite', {text: '손자병법 ' + (x.pian ?? '')})),
     h('div', {class: 'sj-says'}, meanCap(PM.sonmu), h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), // 손무가 들려주는 한 줄
-      h('p', {class: 'sj-do', 'data-say': '', text: (x.do ?? '') + ' 그래서 서른여섯 꾀를 덜 잃은 차례로 놓았어요.'})),
+      h('p', {class: 'sj-do', 'data-say': '', text: (x.do ?? '') + ' 아래 꾀는 예전에 이런 시장에서 돈을 덜 잃은 것부터 놓았어요.'})),
     h('details', {class: 'sj-drawer sj-nums'}, h('summary', {}, h('span', {class: 'sj-s1', text: '그림 속 숫자 자세히'}), chev()),
       h('ul', {class: 'sj-m'},
-        h('li', {}, h('p', {class: 'sj-m1', text: m.n + '곳 가운데 ' + m.up + '곳이 한 달 전보다 올랐어요.'})),
-        h('li', {}, h('p', {class: 'sj-m2', text: '한가운데 회사는 한 달 동안 100원이 ' + w100(m.mid) + '이 됐어요.'})),
-        sh ? h('li', {}, h('p', {class: 'sj-m3', text: '요즘 스무 날 하루 오르내림은 ' + sh + '.'})) : null),
-      P.length ? h('p', {class: 'sj-pc', text: '지난 ' + P.length + '거래일 가운데 ' + same + '날이 ' + x.name + '이었어요. 오른쪽 끝이 오늘이에요.'}) : null),
+        h('li', {}, h('p', {class: 'sj-m1', text: '큰 회사 ' + m.n + '곳 가운데 ' + m.up + '곳이 한 달 전보다 올랐어요.'})),
+        h('li', {}, h('p', {class: 'sj-m2', text: '회사들을 한 달 동안 오른 만큼 줄 세웠어요. 한가운데 회사는 100원이 ' + w100(m.mid) + '이 됐어요.'})),
+        sh ? h('li', {}, h('p', {class: 'sj-m3', text: '요즘 스무 날 동안 하루하루 오르내린 폭은 ' + sh + '.'})) : null),
+      P.length ? h('p', {class: 'sj-pc', text: '장이 열린 지난 ' + P.length + '일 가운데 ' + same + '일이 ' + x.name + '이었어요. 그림 오른쪽 끝 돌이 오늘이에요.'}) : null),
     x.lands && LANDK.every(k => typeof x.lands[k]?.rule === 'string') ? h('details', {class: 'sj-drawer sj-lands'},
-      h('summary', {}, h('span', {class: 'sj-s1', text: '다섯 땅은 이렇게 나눠요'}), chev()),
+      h('summary', {}, h('span', {class: 'sj-s1', text: '시장 모습은 이렇게 다섯 가지로 나눠요'}), chev()),
       h('ol', {class: 'sj-ldl'}, ...LANDK.map(k => { const L = x.lands[k]; return h('li', {'data-land': k, class: 'sj-ld' + (k === x.land ? ' sj-ldnow' : '')},
-        h('b', {text: L.name + (k === x.land ? ' · 지금' : '')}), h('p', {text: L.rule + (Number.isInteger(L.n) && x.hist?.days ? ' 지난 ' + x.hist.days + '거래일 가운데 ' + L.n + '날이었어요.' : '')}),
+        h('b', {text: L.name + (k === x.land ? ' · 지금' : '')}), h('p', {text: L.rule + (Number.isInteger(L.n) && x.hist?.days ? ' 장이 열린 지난 ' + x.hist.days + '일 가운데 ' + L.n + '일이 그랬어요.' : '')}),
         h('p', {class: 'sj-ldq', text: '「' + L.quote + '」 손자병법 ' + L.pian})); })),
-      h('p', {class: 'sj-ldp', text: x.prov ? '장이 열려 있을 때는 그때 값으로 가리고, 장이 끝나면 마지막 값으로 다시 가려요. 내일 땅을 맞히는 셈이 아니에요.' : '땅은 그날 마지막 값으로 가려요. 내일 땅을 맞히는 셈이 아니에요.'})) : null,
+      h('p', {class: 'sj-ldp', text: x.prov ? '장이 열려 있을 때는 그때 값으로 나눠요. 장이 끝나면 마지막 값으로 다시 나눠요. 내일 시장을 맞히는 것이 아니에요.' : '시장 모습은 그날 마지막 값으로 나눠요. 내일 시장을 맞히는 것이 아니에요.'})) : null,
     h('p', {class: 'sj-safe', text: '지난 기록으로 본 모습이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
-    endSeal('형세'));
+    endSeal('시장'));
 }
 export const chev = () => s('svg', {class: 'sj-chev', viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, s('path', {d: 'M5 9l7 7 7-7'}));
 
@@ -186,13 +186,13 @@ function trickWait(T) {
 }
 export function rec36(r, more = false) {
   if (!r) return [];
-  if (!r.n) return [h('p', {class: 'sj-tl sj-tnorec', text: '지난 기록을 세지 못했어요. 그날 사고판 양 자료가 있어야 세요.'})];
+  if (!r.n) return [h('p', {class: 'sj-tl sj-tnorec', text: '사고판 양 자료가 없어서, 지난 기록을 세지 못했어요.'})];
   const k = r.lose ? Math.max(1, Math.round(r.lose / r.n * 10)) : 0;
   return [h('figure', {class: 'sj-ink sj-arw'}, meanCap(PM.arrows, 'figcaption'), arrowsPic(k)), // 화살 열 가운데 꺾인 화살 = 잃은 몫(옛 점 열 칸 대신) · 맨 위 그림 뜻(주문 1116-1313)
-    h('p', {class: 'sj-tl'}, h('b', {text: lose10(r)}), h('span', {text: ' ' + r.n + '번 가운데 ' + r.lose + '번'})),
-    more ? h('details', {class: 'sj-drawer sj-recmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '잃은 주 · 모든 주 자세히'}), chev()),
-      r.lose ? h('p', {class: 'sj-tl2', text: '잃은 주는 평균 100원이 ' + w100(r.avgLoss) + '이 됐어요. 가장 크게 잃은 주는 ' + w100(r.worst) + '이었어요.'}) : null,
-      h('p', {class: 'sj-tl3', text: '모든 주를 고르면 평균 100원이 ' + w100(r.avg) + '이에요.'})) : null];
+    h('p', {class: 'sj-tl'}, h('b', {text: lose10(r)}), h('span', {text: ' ' + r.n + '번 가운데 ' + r.lose + '번이에요.'})),
+    more ? h('details', {class: 'sj-drawer sj-recmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '잃은 때 자세히'}), chev()),
+      r.lose ? h('p', {class: 'sj-tl2', text: '잃은 때는 평균 100원이 ' + w100(r.avgLoss) + '이 됐어요. 가장 크게 잃은 때는 ' + w100(r.worst) + '이 됐어요.'}) : null,
+      h('p', {class: 'sj-tl3', text: '모두 합치면 100원이 평균 ' + w100(r.avg) + '이 됐어요.'})) : null];
 }
 /** 꾀 그림 단추(누르면 그 꾀 쪽 · 소리 읽기는 꾀 이름 줄이 맡음 — 그림 단추는 건너뜀) */
 export const kkoeTile = (k, name, cls = 'sj-tkpic', w = 200, hh = 150) => h('a', {class: cls, href: '#/k/' + k, tabindex: '-1', 'aria-hidden': 'true'}, kkoePic(k, {w, h: hh, label: name + ' 그림', rich: false}));
@@ -208,26 +208,26 @@ export const okTheme = r => !!r && typeof r.name === 'string' && r.name !== '' &
   && [r.up, r.dn, r.m].every(v => Number.isInteger(v) && v >= 0) && r.up + r.dn <= r.m && r.m <= r.n && (r.avg === null || (fin(r.avg) && r.avg > 0));
 export const thRows = g => (g?.themes?.rule === 'themes-v1' && Array.isArray(g.themes.rows) ? g.themes.rows.filter(okTheme).slice(0, 5) : []);
 export const thSt = r => (!fin(r.avg) ? 'na' : r.avg > 1 ? 'up' : r.avg < 1 ? 'dn' : 'eq');
-export const thUd = r => '오른 곳 ' + r.up + ' · 내린 곳 ' + r.dn + (r.m - r.up - r.dn ? ' · 그대로 ' + (r.m - r.up - r.dn) : '');
-export const thV = r => (fin(r.avg) ? '한 달 동안 100원이 평균 ' + w100(r.avg - 1) + '이 됐어요.' : '한 달 값이 모자라 평균을 못 셌어요.');
+export const thUd = r => '오른 회사 ' + r.up + '곳 · 내린 회사 ' + r.dn + '곳' + (r.m - r.up - r.dn ? ' · 그대로인 회사 ' + (r.m - r.up - r.dn) + '곳' : '');
+export const thV = r => (fin(r.avg) ? '한 달 동안 100원이 평균 ' + w100(r.avg - 1) + '이 됐어요.' : '한 달 값이 모자라서 평균을 세지 못했어요.');
 function themesBox(g) {
   const R = thRows(g); if (!R.length) return null;
   const in7 = code => g.kinds.filter(k => (g.lists[k] ?? []).slice(0, 7).some(c => c?.code === code)).length;
   const nameOf = code => { for (const k of g.kinds) { const c = (g.lists[k] ?? []).find(x => x?.code === code); if (c?.name) return String(c.name); } return NEED; };
   const mx = Math.max(0, ...R.filter(r => fin(r.avg)).map(r => Math.abs(r.avg - 1)));
   return h('div', {class: 'sj-th', 'data-n': String(R.length)},
-    h('h3', {class: 'sj-h3 sj-thh3', text: '꾀가 고른 회사, 큰 갈래 차례'}),
-    h('p', {class: 'sj-thlead', text: '서른여섯 꾀 답에 회사가 많이 나온 갈래부터 ' + R.length + '가지예요. 같은 일 하는 회사끼리 묶었어요.'}),
+    h('h3', {class: 'sj-h3 sj-thh3', text: '꾀가 많이 고른 분야'}),
+    h('p', {class: 'sj-thlead', text: '꾀가 고른 회사를 하는 일이 같은 회사끼리 묶었어요. 회사가 많이 나온 분야부터 ' + R.length + '개예요.'}),
     meanCap(PM.themes), // 붓 막대 그림 뜻 — 줄 맨 위 한 번(주문 1116-1313)
     h('ol', {class: 'sj-thl'}, ...R.map((r, i) => h('li', {class: 'sj-thr', 'data-g': r.name, 'data-hits': String(r.hits), 'data-n': String(r.n), 'data-st': thSt(r)},
-      h('p', {class: 'sj-thh'}, h('span', {class: 'sj-thn', text: String(i + 1)}), h('b', {class: 'sj-thg', text: r.name}), h('span', {class: 'sj-thc', text: '나온 회사 ' + r.n + '곳 · 꾀 답에 ' + r.hits + '번'})), // 「회사」로 시작하면 「의료기기」 뒤에 붙어 「기회」로 읽힘(쓰지 않을 말)
+      h('p', {class: 'sj-thh'}, h('span', {class: 'sj-thn', text: String(i + 1)}), h('b', {class: 'sj-thg', text: r.name}), h('span', {class: 'sj-thc', text: '나온 회사 ' + r.n + '곳 · 꾀가 고른 횟수 ' + r.hits + '번'})), // 「회사」로 시작하면 「의료기기」 뒤에 붙어 「기회」로 읽힘(쓰지 않을 말)
       brushBar(fin(r.avg) && r.avg !== 1 ? r.avg - 1 : null, mx, {cls: 'sj-thbar'}), // 그대로(100원 → 100원)면 획 없음
       h('p', {class: 'sj-thv', text: thV(r)}),
       h('p', {class: 'sj-thud', text: thUd(r)}),
-      h('details', {class: 'sj-drawer sj-thd'}, h('summary', {}, h('span', {class: 'sj-s1', text: '이 갈래 회사 ' + r.n + '곳'}), chev()),
+      h('details', {class: 'sj-drawer sj-thd'}, h('summary', {}, h('span', {class: 'sj-s1', text: '이 분야 회사 ' + r.n + '곳 보기'}), chev()),
         h('ul', {class: 'sj-thcos'}, ...r.codes.map(code => h('li', {}, h('a', {class: 'sj-thco', href: '#/c/' + encodeURIComponent(String(code)), 'data-code': String(code)},
           h('b', {text: nameOf(code)}), h('span', {text: '꾀 ' + in7(code) + '가지'}))))))))),
-    h('p', {class: 'sj-thnote', text: '많이 나온 차례예요. 많이 오른 차례가 아니에요.'}));
+    h('p', {class: 'sj-thnote', text: '회사가 많이 나온 차례예요. 많이 오른 차례가 아니에요.'}));
 }
 /** 줄어든 갈래 한 칸(주문 1117-1120 · 샘플 다) — 큰 갈래 다섯 가운데 한 달 평균이 100원 아래로 준 갈래(가장 많이 준 하나) · 없으면 없다고 씀(손실 먼저 · 숨기지 않음) */
 export const lossOf = g => { const R = thRows(g).filter(r => fin(r.avg) && r.avg < 1); return R.length ? R.reduce((a, r) => (r.avg < a.avg ? r : a)) : null; };
@@ -235,9 +235,9 @@ function lossTh(g) {
   if (!thRows(g).length) return null;
   const r = lossOf(g);
   return h('div', {class: 'sj-loss', 'data-g': r ? r.name : ''},
-    h('p', {class: 'sj-lossk', text: '▼ 줄어든 갈래'}),
+    h('p', {class: 'sj-lossk', text: '▼ 값이 줄어든 분야'}),
     r ? h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: r.name}), h('span', {class: 'sj-lossw'}, h('span', {text: '한 달 전 100원이 '}), h('b', {text: w100(r.avg - 1)})))
-      : h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: '회사가 많이 나온 갈래 다섯은 한 달 동안 줄지 않았어요.'})));
+      : h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: '꾀가 많이 고른 분야 다섯은 한 달 동안 값이 줄지 않았어요.'})));
 }
 /** 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」 — 주문 1117-1720 에서 결과를 보기 전에 적은 법으로 앞 1년에 고르고 뒤 1년에서 확인한 법)
  *  두 꾀 넘게 함께 고른 곳 가운데 요즘 60날 덜 흔들린 차례 · 한 업종 둘까지 · 일곱까지(모자라면 채우지 않음) — 꾀 칸 자료 calm(su21.py · su21_s36.calm7)
@@ -246,17 +246,18 @@ export const CALM_RULE = 'calm7-v1';
 export const okCalmRec = r => !!r && r.rule === CALM_RULE && Number.isInteger(r.n) && r.n > 0 && Number.isInteger(r.lose) && r.lose >= 0 && r.lose <= r.n && fin(r.exp) && r.exp >= 0 && r.exp <= r.n && fin(r.tail) && fin(r.tail7);
 export const calmOf = g => (g?.calm?.rule === CALM_RULE && Array.isArray(g.calm.list) ? g.calm.list.filter(c => c && typeof c.code === 'string' && c.code !== '').slice(0, 7) : null);
 export const ten = x => (Math.round(x * 100) / 10).toFixed(1).replace(/\.0$/, '');
+export const p100 = x => String(Math.round(x * 100)); // 100번 가운데 몇 번(주문 1118-1700 — 「열 번에 3.9번」 대신)
 function calmBox(g) {
   const L = calmOf(g); if (!L) return null;
   const R = okCalmRec(g.calm.rec) ? g.calm.rec : null, bd = mday(g?.asOf?.board);
   return h('div', {class: 'sj-calm', 'data-n': String(L.length)},
-    h('p', {class: 'sj-calmk', text: '크게 덜 잃는 일곱'}),
-    h('p', {class: 'sj-calml', text: '두 꾀 넘게 함께 고른 곳 가운데 요즘 덜 흔들린 곳이에요. 한 업종에서는 둘까지만 골랐어요.'}),
-    L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: '오늘은 두 꾀 넘게 함께 고른 곳이 없어요.'}),
-    R ? h('p', {class: 'sj-calmr'}, h('span', {text: '가장 나빴던 열에 한 주는 100원이 '}), h('b', {text: w100(R.tail)}), h('span', {text: '이 됐어요. 아무렇게나 고른 일곱은 ' + w100(R.tail7) + '이었어요.'}))
+    h('p', {class: 'sj-calmk', text: '덜 흔들린 회사 일곱 곳'}),
+    h('p', {class: 'sj-calml', text: '꾀 두 가지 이상이 함께 고른 회사 가운데, 요즘 덜 흔들린 회사예요. 하는 일이 같은 회사는 두 곳까지만 골랐어요.'}),
+    L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: '오늘은 꾀 두 가지 이상이 함께 고른 회사가 없어요.'}),
+    R ? h('p', {class: 'sj-calmr'}, h('span', {text: '가장 나빴던 때는 100원이 '}), h('b', {text: w100(R.tail)}), h('span', {text: '이 됐어요. 아무 회사나 일곱 곳을 고르면 ' + w100(R.tail7) + '이 됐어요.'}))
       : h('p', {class: 'sj-calmr', text: '지난 기록을 세지 못했어요.'}),
-    R ? h('p', {class: 'sj-calmr2', text: '대신 열 번에 ' + ten(R.lose / R.n) + '번 잃었어요. 아무렇게나 고르면 ' + ten(R.exp / R.n) + '번이에요.'}) : null,
-    R ? h('p', {class: 'sj-calmd', text: '지난 ' + R.n + '거래일 날마다 같은 법으로 골라 닷새 뒤 값과 견줬어요.' + (ym(R.from) && ym(R.to) ? ' 센 때는 ' + ym(R.from) + '부터 ' + ym(R.to) + '까지예요.' : '')}) : null);
+    R ? h('p', {class: 'sj-calmr2', text: '잃은 때는 100번 가운데 ' + p100(R.lose / R.n) + '번이에요. 아무 회사나 고르면 ' + p100(R.exp / R.n) + '번이에요.'}) : null,
+    R ? h('p', {class: 'sj-calmd', text: '장이 열린 지난 ' + R.n + '일 동안, 날마다 같은 방법으로 골라 닷새 뒤 값과 비교했어요.' + (ym(R.from) && ym(R.to) ? ' 센 기간은 ' + ym(R.from) + '부터 ' + ym(R.to) + '까지예요.' : '')}) : null);
 }
 /** 지금 땅의 꾀 셋(주문 1117-1859 · 사장님 2026-11-17(마카오) 18:59 「지금 주식상황에 전략적으로 승리 할수 있는 병법 3가지를 선정해서 첫 페이지애 잘보이게 하라」)
  *  덜 잃은 차례(본질 8) 안에서, 같은 땅 날들에 ① 잃은 번이 아무렇게나 고른 일곱보다 적고 ② 가장 나빴던 열에 한 주가 아무렇게나 일곱보다 얕은 꾀 · 셋까지(su21_sun win3)
@@ -268,9 +269,9 @@ function winBox(g, S, RB) {
   const ks = win3Of(S); if (!ks) return null;
   const n = ks.length, KN3 = ['', '하나', '둘', '셋'];
   return h('div', {class: 'sj-win3', 'data-n': String(n)},
-    h('p', {class: 'sj-win3k', text: '지금 ' + S.name + '의 꾀' + (n ? ' ' + KN3[n] : '')}),
-    h('p', {class: 'sj-win3l', text: (S.hist?.all ? '지난 날들 모두에서' : '지금처럼 ' + S.name + '이었던 날들에') + ', 아무렇게나 고른 일곱보다 덜 잃고 크게 잃는 폭도 작았던 꾀예요.'}),
-    n && n < 3 ? h('p', {class: 'sj-win3f', text: '두 가지를 모두 채운 꾀가 ' + KN3[n] + '뿐이라 ' + KN3[n] + '만 보여요. 모자라도 채우지 않아요.'}) : null,
+    h('p', {class: 'sj-win3k', text: S.name + '에서 덜 잃은 꾀' + (n ? ' ' + KN3[n] : '')}),
+    h('p', {class: 'sj-win3l', text: (S.hist?.all ? '지난 기록을 모두 봤어요.' : '예전에 지금처럼 ' + S.name + '이었던 날들을 봤어요.') + ' 아무 회사나 고른 것보다 덜 자주 잃고, 크게 잃을 때도 덜 잃은 꾀예요.'}),
+    n && n < 3 ? h('p', {class: 'sj-win3f', text: '두 가지를 모두 갖춘 꾀는 ' + KN3[n] + '뿐이에요. 억지로 채우지 않았어요.'}) : null,
     ks.length ? h('ol', {class: 'sj-win3o'}, ...ks.map((k, i) => { const r = RB[k], ok = okWinR(r);
       return h('li', {class: 'sj-w3', 'data-k': k},
         h('a', {class: 'sj-w3a', href: '#/k/' + k, 'aria-label': (i + 1) + ' · ' + (g.name?.[k] ?? k) + ' · 이 꾀 자세히'},
@@ -278,10 +279,10 @@ function winBox(g, S, RB) {
           h('span', {class: 'sj-w3b'}, h('b', {class: 'sj-w3t', text: g.name?.[k] ?? k}), h('span', {class: 'sj-w3h', text: g.han?.[k] ?? ''})),
           h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})),
         h('p', {class: 'sj-w3m', text: g.mean?.[k] ?? ''}),
-        ok ? h('p', {class: 'sj-w3r', text: '열 번에 ' + ten(r.lose / r.n) + '번 잃었어요. 아무렇게나 고르면 ' + ten(r.exp / r.n) + '번이에요.'}) : null,
-        ok ? h('p', {class: 'sj-w3r2', text: '가장 나빴던 열에 한 주는 100원이 ' + w100(r.tail) + '이었어요. 아무렇게나 고르면 ' + w100(r.tail7) + '이에요.'}) : null); }))
-      : h('p', {class: 'sj-tnone', text: '오늘은 두 가지를 모두 채운 꾀가 없어요. 아래 덜 잃은 차례를 보세요.'}),
-    h('p', {class: 'sj-win3s', text: '지난 같은 땅 기록으로 고른 꾀예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+        ok ? h('p', {class: 'sj-w3r', text: '100번 가운데 ' + p100(r.lose / r.n) + '번 잃었어요. 아무 회사나 고르면 ' + p100(r.exp / r.n) + '번 잃었어요.'}) : null,
+        ok ? h('p', {class: 'sj-w3r2', text: '가장 나빴던 때는 100원이 ' + w100(r.tail) + '이 됐어요. 아무 회사나 고르면 ' + w100(r.tail7) + '이 됐어요.'}) : null); }))
+      : h('p', {class: 'sj-tnone', text: '오늘은 두 가지를 모두 갖춘 꾀가 없어요. 아래 꾀 차례를 보세요.'}),
+    h('p', {class: 'sj-win3s', text: '지금 같은 시장이었던 지난 기록으로 고른 꾀예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
 }
 function trickSec(g, T) {
   const sun = okSun(T.sun) ? T.sun : null, N = g.kinds.reduce((a, k) => a + Math.min(7, (g.lists[k] ?? []).length), 0), dd = mday(g?.asOf?.data) ?? mday(T.asOf?.board), bd = mday(g?.asOf?.board);
@@ -298,8 +299,8 @@ function trickSec(g, T) {
       h('details', {class: 'sj-drawer sj-cos'}, h('summary', {}, h('span', {class: 'sj-s1', text: '고르는 법'}), chev()), // 긴 풀이만 접은 칸(주문 1116-0118)
         h('p', {class: 'sj-say', text: g.say?.[k] ?? ''}), funnel36(g, k))); }; // 세 거름을 지난 수(주문 1116-1539)
   const H = S ? S.hist : null, TOP = 3; // 첫 쪽은 꾀 셋만(주문 1117-1120 샘플 다 「창호지 한 장」 — 서른여섯 모두는 꾀 탭 #/k)
-  return h('section', {class: 'sj-sec sj-s36', 'aria-label': (S ? '덜 잃은 꾀 차례 · ' : '') + '서른여섯 꾀 ' + N + '칸', 'data-n': String(N), 'data-order': S ? 'sun' : 'kind'},
-    head('꾀', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + N + '칸'})), true),
+  return h('section', {class: 'sj-sec sj-s36', 'aria-label': S ? '덜 잃은 꾀 차례' : '서른여섯 꾀', 'data-n': String(N), 'data-order': S ? 'sun' : 'kind'},
+    head('꾀', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'})), true),
     S?.rankQ ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + S.rankQ.pian})) : null,
     S ? winBox(g, S, RB) : null, // 지금 땅의 꾀 셋(주문 1117-1859) — 꾀 칸 맨 위에 크게
     lossTh(g), // 줄어든 갈래 한 칸 — 손실 먼저(주문 1117-1120 샘플 다)
@@ -310,11 +311,11 @@ function trickSec(g, T) {
     h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '꾀 차례는 이렇게 셌어요'}), chev()), // 센 법 · 고른 날(긴 풀이는 접은 칸 — 주문 1116-0118)
       h('p', {class: 'sj-lead', text: LEAD36(g)}),
       ...pickHow(g), // 세 거름 풀이(주문 1116-1539)
-      S && H ? h('p', {class: 'sj-rule', text: (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + S.name + '이었던 ' + H.same + '날을 골라, ')
-        + '꾀마다 고른 일곱 곳을 닷새 뒤 값과 견줬어요. 잃은 번이 적은 꾀가 위예요.' + (ym(H.from) && ym(H.to) ? ' 센 때는 ' + ym(H.from) + '부터 ' + ym(H.to) + '까지예요.' : '')}) : null,
-      h('p', {class: 'sj-dayl', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 점선은 한 달 전 값이에요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')}),
-      h('p', {class: 'sj-note', text: '화살 열은 지난 같은 땅 싸움 열 번이에요. 꺾인 화살이 잃은 몫이에요.'})),
-    h('p', {class: 'sj-safe', text: '지난 기록을 센 차례예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
+      S && H ? h('p', {class: 'sj-rule', text: (H.all ? '장이 열린 날로 지난 ' + H.days + '일을 모두 봤어요. ' : '장이 열린 날로 지난 ' + H.days + '일을 봤어요. 그 가운데 오늘처럼 ' + S.name + '이었던 ' + H.same + '일을 골랐어요. ')
+        + '그날마다 꾀가 고른 회사 일곱 곳의 닷새 뒤 값을 봤어요. 잃은 때가 적은 꾀를 위에 놓았어요.' + (ym(H.from) && ym(H.to) ? ' 센 기간은 ' + ym(H.from) + '부터 ' + ym(H.to) + '까지예요.' : '')}) : null,
+      h('p', {class: 'sj-dayl', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '회사 이름 옆 꺾은선은 한 달 동안의 값이에요. 점선은 한 달 전 값이에요. ' : '') + '한 회사가 여러 꾀에 함께 들 수 있어요.' + (mday(g.daysFrom) ? ' 「며칠째」는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')}),
+      h('p', {class: 'sj-note', text: '화살 열 개는 지난 기록을 열 번으로 줄여 그린 거예요. 꺾인 화살이 잃은 때예요.'})),
+    h('p', {class: 'sj-safe', text: '지난 기록으로 정한 차례예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     h('a', {class: 'sj-go', href: '#/r/t'}, h('span', {text: '서른여섯 꾀 정산 보기'}), h('i', {'aria-hidden': 'true', text: '›'})),
     endSeal('꾀'));
 }
@@ -335,7 +336,7 @@ function endSec(T, S) { return endLine(day(T.asOf?.board), S?.fetchedAt ? kstTex
 /* ── 12 이야기 막대 · 13 탭(모든 쪽이 같은 판 — su-sonja-top.js · 주문 1115-2328) ── */
 /** 첫 쪽 다음 단추 — 덜 잃은 차례 맨 위 꾀(형세가 없으면 꾀 모음) */
 const firstKkoe = T => (okSun(T?.sun) ? T.sun.rank[0]?.k ?? null : null);
-const nextOf = T => { const k = firstKkoe(T); return {href: '#/k/' + (k ?? 'g01'), k: '2 / 5', label: k ? '맨 위 꾀는 어떤 꾀인가?' : '첫째 꾀는 어떤 꾀인가?'}; }; // 형세가 없으면 삼십육계 첫째 꾀(길 다섯 화면은 늘 그대로)
+const nextOf = T => { const k = firstKkoe(T); return {href: '#/k/' + (k ?? 'g01'), k: '2 / 5', label: k ? '맨 위 꾀는 어떤 꾀일까?' : '첫째 꾀는 어떤 꾀일까?'}; }; // 형세가 없으면 삼십육계 첫째 꾀(길 다섯 화면은 늘 그대로)
 
 /* ── 쪽 ── */
 /** 첫 쪽 — {title, dom: [머리, 본문, 이야기 막대, 탭], after()} · su.js route 가 이것만 붙임(옛 page() · afterPaint() 를 거치지 않음) */

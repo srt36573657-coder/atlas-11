@@ -46,4 +46,4 @@ export function sjPage(m, lc = null) {
   return {title: m.title ?? NAME, dom: [topBar(), main, nx ? dockNav(m.step ?? null, nx) : null, tabNav(m.tab ?? -1, lc)].filter(Boolean)};
 }
 /** 찾지 못한 쪽 — 손자병법 판 · 처음으로 */
-export const missModel = t => ({title: '찾지 못했어요', h1: '찾지 못했어요', page: 'miss', tab: -1, say: t, body: [h('a', {class: 'sj-go', href: '#/'}, h('span', {text: '처음으로 · 오늘 형세 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))]});
+export const missModel = t => ({title: '찾지 못했어요', h1: '찾지 못했어요', page: 'miss', tab: -1, say: t, body: [h('a', {class: 'sj-go', href: '#/'}, h('span', {text: '처음으로 · 오늘 시장 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))]});

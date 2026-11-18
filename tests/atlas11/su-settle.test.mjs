@@ -180,7 +180,7 @@ test('며칠째(주문 1114-0151 「301 게 이게 며칠째 이렇게 됐는지
   assert.deepEqual(markRuns(R, g2, null, '2026-11-16'), {n36: 0, nq: 0, no: 0}, '판 날이 다르면 붙이지 않음'); assert.equal(g2.lists.g01[0].days, undefined);
   assert.ok(/'--cal', path\.join\(dd, 'days\.json'\)/.test(rd('scripts/atlas11/package.mjs')), '묶을 때 장이 열린 날을 넘김');
   const sj = rd('site/su/su-sonja.js'); // 옛 첫 쪽(su-apple.js)은 화면에서 안 써 지움(주문 1116-1846) — 지금 첫 쪽(손자병법)
-  assert.ok(sj.includes("h('span', {class: 'sj-chipd', text: dz ? dz + '일째' : ''})") && sj.includes("' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.'"), '첫 쪽 — 꾀 단추마다 며칠째 · 기록 첫날');
+  assert.ok(sj.includes("h('span', {class: 'sj-chipd', text: dz ? dz + '일째' : ''})") && sj.includes("' 「며칠째」는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.'"), '첫 쪽 — 꾀 단추마다 며칠째 · 기록 첫날');
 });
 
 test('서른여섯 꾀 셈(su21_s36.py 스스로 시험 · 이름 = 화면 · 검사) · 거래량 받기(su21_vol.mjs — 꾸민 일봉) · 묶기는 올리기 작업만 받음', async () => {

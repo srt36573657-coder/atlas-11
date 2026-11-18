@@ -45,7 +45,7 @@ export const won = v => {
 /** 늘고 준 말 — 「11만 4,000원 늘었어요」 · 「그대로예요」 */
 export const moved = d => (!fin(d) ? '?' : Math.round(d) > 0 ? won(d) + ' 늘었어요' : Math.round(d) < 0 ? won(d) + ' 줄었어요' : '그대로예요');
 const SHAPE = Object.freeze({up: '▲', dn: '▼', eq: '―', one: '○', none: '·'});
-const SAID = Object.freeze({one: '아직 하루치예요', none: '아직 산 셈이 없어요'});
+const SAID = Object.freeze({one: '아직 하루밖에 안 지났어요', none: '아직 산 적이 없어요'});
 
 /** 정산 장부(su21-settle.json) → 산 셈 줄 — {day, k, code, name, buy, now, nowDay, cost, val, one}(지금 = 그 회사 가장 늦은 값 · 산 날 뒤 값이 없으면 아직 하루치) */
 export function settleRows(D) {
@@ -99,7 +99,7 @@ const goLink = (href, t) => h('a', {class: 'sj-go', href}, h('span', {text: t}),
 const gotOf = S => (S?.fetchedAt ? kstText(S.fetchedAt) : null);
 /** 자료를 못 받은 쪽 · 없는 쪽 — 같은 판 · 처음으로 */
 function missPage(X, title, say) {
-  return frame({title, page: 'miss', tab: -1, lc: X.cur?.()?.code ?? null, kids: [pageHead({kick: NAME, h1: '찾지 못했어요', say}), h('section', {class: 'sj-sec'}, goLink('#/', '처음으로 · 오늘 형세 보기')), endSec(NEED_DAY)]});
+  return frame({title, page: 'miss', tab: -1, lc: X.cur?.()?.code ?? null, kids: [pageHead({kick: NAME, h1: '찾지 못했어요', say}), h('section', {class: 'sj-sec'}, goLink('#/', '처음으로 · 오늘 시장 보기')), endSec(NEED_DAY)]});
 }
 const NEED_DAY = '확인 필요';
 
@@ -121,16 +121,16 @@ export async function vKkoeAll(X) {
   const sets = []; for (let i = 0; i < 6; i++) sets.push(K36.slice(i * 6, i * 6 + 6));
   const kids = [
     pageHead({kick: '삼십육계 · 여섯 묶음', h1: '병법 서른여섯 가지', seal: '꾀', quote: sun?.rankQ ? [sun.rankQ.quote, '손자병법 ' + sun.rankQ.pian] : null,
-      say: '삼십육계는 옛 병법에 전하는 서른여섯 가지 꾀예요. 여섯 묶음에 여섯 꾀씩 있어요.' + (sun ? ' 지금 ' + sun.name + '에서 지난 기록으로 덜 잃은 차례를 함께 적었어요.' : ''),
-      more: [h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.book, 'figcaption'), heroPic('book')), h('p', {class: 'sj-lead', text: '꾀 그림이나 이름을 누르면 그 꾀 쪽이 열려요.'})]}),
+      say: '삼십육계는 옛날부터 전해 오는 꾀 서른여섯 가지예요. 여섯 묶음에 꾀가 여섯 가지씩 있어요.' + (sun ? ' 지금 같은 ' + sun.name + '에서 덜 잃은 차례도 함께 적었어요.' : ''),
+      more: [h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.book, 'figcaption'), heroPic('book')), h('p', {class: 'sj-lead', text: '꾀 그림이나 이름을 누르면, 그 꾀를 자세히 볼 수 있어요.'})]}),
     ...sets.map((ks, i) => h('section', {class: 'sj-sec sj-kset', 'data-set': String(i + 1), 'aria-label': g.set[ks[0]]},
       head(SETW[i], '제' + (i + 1) + '묶음', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: g.set[ks[0]]})), i % 2 === 1),
       h('ol', {class: 'sj-kl'}, ...ks.map(k => kkoeRow(g, k, RB[k]))),
       endSeal(SETW[i]))),
-    h('p', {class: 'sj-safe sj-sec', text: '옛 꾀 이름과 뜻이에요. 차례는 지난 기록을 센 것이고, 앞날을 맞히지 않고 사고팔기를 권하지 않아요.'}),
+    h('p', {class: 'sj-safe sj-sec', text: '꾀 이름과 뜻은 옛 병법 그대로예요. 차례는 지난 기록으로 정했어요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(day(T?.asOf?.board), gotOf(S))];
   return frame({title: '서른여섯 꾀', page: 'kkoes', kids, tab: 1, lc: X.cur?.()?.code ?? null,
-    next: first ? {href: '#/k/' + first, label: '맨 위 꾀는 어떤 꾀인가?'} : {href: '#/k/g01', label: '첫째 꾀는 어떤 꾀인가?'}});
+    next: first ? {href: '#/k/' + first, label: '맨 위 꾀는 어떤 꾀일까?'} : {href: '#/k/g01', label: '첫째 꾀는 어떤 꾀일까?'}});
 }
 
 /* ── 꾀 한 가지(#/k/g01 ~ g36) ── */
@@ -146,36 +146,36 @@ export async function vKkoe(X, k) {
     pageHead({step: 2, dd: bd, kick: '삼십육계 제' + kNo(k) + '계 · ' + g.set[k], h1: g.name[k], seal: r ? '차례 ' + r.i : '꾀', sealDn: sun?.land === 'fall',
       quote: [g.mean[k], '삼십육계 제' + kNo(k) + '계 ' + g.han[k]],
       pic: h('figure', {class: 'sj-ink sj-kfig'}, meanCap(PIC[k], 'figcaption'), kkoePic(k, {w: 390, h: 292, label: g.name[k] + ' 그림'}), storyOl(k)),
-      say: sun ? (r?.n ? '지금 ' + sun.name + '에서 서른여섯 꾀 가운데 덜 잃은 차례 ' + r.i + '번째예요. 지난 같은 땅 기록으로 셌어요.' : '지금 ' + sun.name + '이에요. 이 꾀는 지난 기록을 세지 못해 맨 아래에 놓았어요.') : '오늘 형세는 아직 세지 못했어요. 꾀 차례 대신 옛 차례로 놓았어요.'}),
+      say: sun ? (r?.n ? '지금은 ' + sun.name + '이에요. 예전에 이런 시장이었을 때, 이 꾀는 서른여섯 꾀 가운데 ' + r.i + '번째로 덜 잃었어요.' : '지금은 ' + sun.name + '이에요. 이 꾀는 지난 기록을 세지 못해서 맨 아래에 놓았어요.') : '오늘 시장 모습은 아직 세지 못했어요. 그래서 꾀를 원래 차례대로 놓았어요.'}),
     h('section', {class: 'sj-sec sj-kway', 'aria-label': '주식에서는 이렇게 골라요'},
       head('법', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '주식에서는 이렇게 골라요'}))),
       h('p', {class: 'sj-lead', 'data-say': '', text: g.say[k]}),
-      vol ? h('p', {class: 'sj-note', text: '이 꾀는 그날 사고판 양 자료가 있어야 골라요.'}) : null,
+      vol ? h('p', {class: 'sj-note', text: '이 꾀는 그날 사고판 양 자료가 있어야 고를 수 있어요.'}) : null,
       funnel36(g, k), // 세 거름을 지난 수(주문 1116-1539 — 소거 · 꾀 뜻 · 흉내 내 보기를 모두 지난 곳만)
       eqBox(k), // 꾀 점수 풀이(주문 1116-2134 — 수학 식 · 정서 식 · 이렇게 해서 찾아낸 회사)
       h('details', {class: 'sj-drawer sj-src'}, h('summary', {}, h('span', {class: 'sj-s1', text: '이름과 고르는 법은 어디서 왔나요'}), chev()),
         h('p', {class: 'sj-note', text: '꾀 이름과 뜻은 옛 병법 그대로예요. 고르는 법은 ' + josa(NAME, '가') + ' 그 뜻을 주식 값에 빗대어 정했어요.'})),
       endSeal('법')),
-    h('section', {class: 'sj-sec sj-krec', 'aria-label': '지난 같은 땅 기록'},
-      head('기록', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '지난 같은 땅 기록'})), true),
-      ...(r ? rec36(r, true) : [h('p', {class: 'sj-tl sj-tnorec', text: '오늘 형세를 아직 세지 못해 같은 땅 기록이 없어요.'})]),
+    h('section', {class: 'sj-sec sj-krec', 'aria-label': '이 꾀의 지난 기록'},
+      head('기록', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 꾀의 지난 기록'})), true),
+      ...(r ? rec36(r, true) : [h('p', {class: 'sj-tl sj-tnorec', text: '오늘 시장 모습을 아직 세지 못해서, 지난 기록이 없어요.'})]),
       sun && H ? h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '이렇게 셌어요'}), chev()),
-        h('p', {class: 'sj-rule', text: (H.all ? '지난 ' + H.days + '거래일을 모두 보고, ' : '지난 ' + H.days + '거래일 가운데 오늘처럼 ' + sun.name + '이었던 ' + H.same + '날을 골라, ')
-          + '이 꾀가 고른 일곱 곳을 닷새 뒤 값과 견줬어요.' + (ym(H.from) && ym(H.to) ? ' 센 때는 ' + ym(H.from) + '부터 ' + ym(H.to) + '까지예요.' : '')}),
-        h('p', {class: 'sj-note', text: '화살 열은 지난 같은 땅 싸움 열 번이에요. 꺾인 화살이 잃은 몫이에요.'})) : null,
+        h('p', {class: 'sj-rule', text: (H.all ? '장이 열린 날로 지난 ' + H.days + '일을 모두 봤어요. ' : '장이 열린 날로 지난 ' + H.days + '일을 봤어요. 그 가운데 오늘처럼 ' + sun.name + '이었던 ' + H.same + '일을 골랐어요. ')
+          + '그날마다 이 꾀가 고른 회사 일곱 곳의 닷새 뒤 값을 봤어요.' + (ym(H.from) && ym(H.to) ? ' 센 기간은 ' + ym(H.from) + '부터 ' + ym(H.to) + '까지예요.' : '')}),
+        h('p', {class: 'sj-note', text: '화살 열 개는 지난 기록을 열 번으로 줄여 그린 거예요. 꺾인 화살이 잃은 때예요.'})) : null,
       h('p', {class: 'sj-safe', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
       endSeal('기록')),
-    h('section', {class: 'sj-sec sj-kco', 'aria-label': '이렇게 해서 찾아낸 곳', 'data-n': String(L.length)}, // 주문 1116-2134 「이헎개 해서 찾아낸 종목이라고 하라」
-      head('곳', '제3장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이렇게 해서 찾아낸 곳'}), h('span', {class: 'sj-h2n', text: ' ' + L.length + '곳'}))),
-      h('p', {class: 'sj-dayl', text: (L.length ? '제1장의 식으로 점수를 매겨 찾아낸 회사예요. ' : '') + (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 점선은 한 달 전 값이에요. ' : '') + '사도 된다는 뜻이 아니에요.'}),
-      L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: g.fallback ? '오늘 고른 곳 자료를 아직 받지 못했어요.' : none36(g.why?.[k])}),
+    h('section', {class: 'sj-sec sj-kco', 'aria-label': '이렇게 해서 찾아낸 회사', 'data-n': String(L.length)}, // 주문 1116-2134 「이헎개 해서 찾아낸 종목이라고 하라」
+      head('곳', '제3장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이렇게 해서 찾아낸 회사'}), h('span', {class: 'sj-h2n', text: ' ' + L.length + '곳'}))),
+      h('p', {class: 'sj-dayl', text: (L.length ? '제1장의 식으로 점수를 매겨 찾아낸 회사예요. ' : '') + (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '회사 이름 옆 꺾은선은 한 달 동안의 값이에요. 점선은 한 달 전 값이에요. ' : '') + '사도 된다는 뜻이 아니에요.'}),
+      L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: g.fallback ? '오늘 고른 회사 자료를 아직 받지 못했어요.' : none36(g.why?.[k])}),
       endSeal('곳')),
     me ? h('section', {class: 'sj-sec sj-kst', 'aria-label': '이 꾀 정산', 'data-st': me.st},
       head('셈', '제4장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 꾀 정산'})), true),
-      h('p', {class: 'sj-lead', text: (mday(ST.rows.map(x => x.day).sort()[0]) ? mday(ST.rows.map(x => x.day).sort()[0]) + '부터 ' : '') + '날마다 이 꾀가 고른 곳을 10주씩 산 셈이에요. 가짜 돈이에요.'}),
+      h('p', {class: 'sj-lead', text: (mday(ST.rows.map(x => x.day).sort()[0]) ? mday(ST.rows.map(x => x.day).sort()[0]) + '부터 ' : '') + '날마다 이 꾀가 고른 회사를 10주씩 샀다고 치고 셌어요. 진짜 돈이 아니에요.'}),
       h('dl', {class: 'sj-money'}, h('dt', {text: '산 돈'}), h('dd', {text: won(me.cost)}), h('dt', {text: '지금'}), h('dd', {text: me.n ? won(me.val) : SAID.none})),
       h('p', {class: 'sj-res', 'data-st': me.st}, shapeI(me.st), h('b', {text: resText(me)})),
-      meAt && rateOf(me) !== null ? h('p', {class: 'sj-note', text: '정산 표에서 서른여섯 꾀 가운데 ' + meAt + '번째예요. 많이 늘어난 꾀가 위예요.'}) : null,
+      meAt && rateOf(me) !== null ? h('p', {class: 'sj-note', text: '정산 표에서 서른여섯 꾀 가운데 ' + meAt + '번째예요. 돈이 많이 늘어난 꾀가 위에 있어요.'}) : null,
       goLink('#/r/t', '서른여섯 꾀 정산 보기'),
       endSeal('셈')) : null,
     h('nav', {class: 'sj-sec sj-kpn', 'aria-label': '앞뒤 꾀'},
@@ -185,7 +185,7 @@ export async function vKkoe(X, k) {
     endSec(day(g.asOf?.board ?? T?.asOf?.board), gotOf(S))];
   const c0 = L[0] ?? null;
   return frame({title: g.name[k], page: 'kkoe', attrs: {'data-k': k}, kids, step: 2, tab: 1, lc: X.cur?.()?.code ?? null,
-    next: c0 ? {href: '#/c/' + c0.code, k: '3 / 5', label: '이 꾀가 고른 ' + josa(String(c0.name ?? '첫 곳'), '는') + ' 어떤 곳인가?'} : {href: '#/q', k: '4 / 5', label: '사기 전에 한 번 멈출까?'}});
+    next: c0 ? {href: '#/c/' + c0.code, k: '3 / 5', label: '이 꾀가 고른 ' + josa(String(c0.name ?? '첫 회사'), '는') + ' 어떤 회사일까?'} : {href: '#/q', k: '4 / 5', label: '사기 전에 한 번 멈출까?'}});
 }
 
 /* ── 회사(#/c/<번호>) ── */
@@ -216,24 +216,24 @@ export async function vCo36(X, code) {
       h('b', {text: '한 달 동안 100원이 ' + w100(sp[20] / sp[0] - 1) + '이 됐어요.'}))) : null;
   const kids = [
     pageHead({step: 3, dd: bd, kick, h1: name, proper: true, seal: m ? {dn: '내림', up: '오름', eq: '같음'}[m] : null, sealDn: m === 'dn',
-      say: mine.length ? '오늘 서른여섯 꾀 가운데 ' + mine.length + '가지가 이 회사를 골랐어요.' : '오늘은 서른여섯 꾀 어디에도 들지 않았어요.',
+      say: mine.length ? '오늘 서른여섯 꾀 가운데 ' + mine.length + '가지가 이 회사를 골랐어요.' : '오늘은 서른여섯 꾀 가운데 어느 꾀도 이 회사를 고르지 않았어요.',
       pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.castle, 'figcaption'), heroPic('castle')),
-      more: [ddCard(sp), line ? meanCap(PM.ridge) : null, line, sp ? null : h('p', {class: 'sj-note', text: '한 달 산세는 오늘 꾀가 고른 곳만 그려요.'})]}), // 손실 먼저 — 한 달 사이 가장 깊이 빠진 때(주문 1117-1120) // 산세 그림 뜻은 그림 바로 위(그림 아래 글 figcaption 은 값 셋 그대로)
+      more: [ddCard(sp), line ? meanCap(PM.ridge) : null, line, sp ? null : h('p', {class: 'sj-note', text: '한 달 값 그림은 오늘 꾀가 고른 회사만 그려요.'})]}), // 손실 먼저 — 한 달 사이 가장 깊이 빠진 때(주문 1117-1120) // 산세 그림 뜻은 그림 바로 위(그림 아래 글 figcaption 은 값 셋 그대로)
     h('section', {class: 'sj-sec sj-cok', 'aria-label': '이 회사를 고른 꾀', 'data-n': String(mine.length)},
       head('꾀', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 회사를 고른 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + mine.length + '가지'}))),
-      mine.length && sun ? h('p', {class: 'sj-rule', text: '꾀마다 지금 ' + sun.name + '에서 지난 기록으로 덜 잃은 차례와 잃은 몫을 적었어요.'}) : null,
+      mine.length && sun ? h('p', {class: 'sj-rule', text: '꾀마다 지난 기록을 적었어요. 지금 같은 ' + sun.name + '에서 덜 잃은 꾀가 위에 있어요.'}) : null,
       mine.length ? h('ol', {class: 'sj-tricks sj-cotricks'}, ...sorted.map(k => { const r = RB[k] ?? null;
         return h('li', {class: 'sj-tk', 'data-k': k, 'data-rank': r ? String(r.i) : null},
           meanCap(PIC[k]), kkoeTile(k, G.name[k]), // 그림 뜻 한 줄 → 꾀 그림(주문 1116-1313)
           h('a', {class: 'sj-tkh', href: '#/k/' + k, 'aria-label': (r ? '차례 ' + r.i + ' · ' : '') + G.name[k] + ' · 이 꾀 자세히'}, r ? h('span', {class: 'sj-rk' + (r.i <= 3 ? ' sj-rk3' : ''), text: String(r.i)}) : null,
             h('p', {class: 'sj-tn'}, h('b', {text: G.name[k]}), h('span', {text: ' ' + G.han[k]})), h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})),
           ...rec36(r), h('p', {class: 'sj-say', text: G.say[k]})); }))
-        : h('p', {class: 'sj-lead', text: '꾀가 고른 곳만 이 쪽에 꾀 이름이 올라요. 꾀 모음에서 서른여섯 꾀를 볼 수 있어요.'}),
+        : h('p', {class: 'sj-lead', text: '꾀가 고른 회사만 여기에 꾀 이름이 나와요. 서른여섯 꾀는 꾀 모음에서 볼 수 있어요.'}),
       mine.length ? null : goLink('#/k', '서른여섯 꾀 모두 보기'),
       h('p', {class: 'sj-safe', text: '꾀가 골랐다고 사도 된다는 뜻이 아니에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
       endSeal('꾀')),
     h('section', {class: 'sj-sec sj-costop', 'aria-label': '사기 전에 한 번 멈춰요'},
-      h('a', {class: 'sj-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 까닭부터 적어요.'}))),
+      h('a', {class: 'sj-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 질문 열한 개에 답하며, 내 이유부터 적어 봐요.'}))),
     endSec(day(G?.asOf?.board ?? T?.asOf?.board), gotOf(S))];
   return frame({title: name, page: 'co', attrs: {'data-code': code}, kids, step: 3, tab: -1, lc: code,
     next: {href: '#/q/' + code, k: '4 / 5', label: '사기 전에 한 번 멈출까?'}});
@@ -248,15 +248,15 @@ export async function vSettle36(X) {
   const dn = K.filter(x => x.st === 'dn').sort((a, b) => a.diff - b.diff);
   const bar = x => brushBar(rateOf(x), mx); // 붓 막대 — 늘면 오른쪽 먹 획 · 줄면 왼쪽 남빛 획(주문 1116-0118)
   const kids = [
-    pageHead({kick: '정산 · 10주씩 산 셈 · 가짜 돈', h1: '서른여섯 꾀 정산', seal: '셈', sealDn: TT.st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
-      say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 곳을 10주씩 산 셈이에요. 가짜 돈이고, 줄어든 꾀도 숨기지 않아요.',
+    pageHead({kick: '정산 · 가짜 돈으로 해 본 셈', h1: '서른여섯 꾀 정산', seal: '셈', sealDn: TT.st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
+      say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 회사를 10주씩 샀다고 치고 셌어요. 진짜 돈이 아니에요. 돈이 줄어든 꾀도 숨기지 않아요.',
       more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': TT.st}, h('dt', {text: '산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.n ? won(TT.val) : SAID.none})),
         h('p', {class: 'sj-res sj-res-big', 'data-st': TT.st}, shapeI(TT.st), h('b', {text: resText(TT)})),
-        h('p', {class: 'sj-note', text: (first ? mday(first) + '부터 · ' : '') + '산 셈 ' + NF.format(rows.length) + '번 · 고른 날 ' + NF.format(TT.days) + '일' + (ST.miss ? ' · 값이 없어 못 센 ' + NF.format(ST.miss) + '번' : '') + (ST.asOf ? ' · ' + mday(ST.asOf) + ' 값까지' : '')})]}),
+        h('p', {class: 'sj-note', text: (first ? mday(first) + '부터 · ' : '') + '산 횟수 ' + NF.format(rows.length) + '번 · 고른 날 ' + NF.format(TT.days) + '일' + (ST.miss ? ' · 값이 없어 못 센 ' + NF.format(ST.miss) + '번' : '') + (ST.asOf ? ' · ' + mday(ST.asOf) + ' 값까지' : '')})]}),
     h('section', {class: 'sj-sec sj-st36', 'aria-label': '꾀마다 정산', 'data-n': String(K.length)},
       head('셈', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '꾀마다 정산'}), h('span', {class: 'sj-h2n', text: ' ' + K.length + '가지'}))),
-      h('p', {class: 'sj-rule', text: rated ? '산 돈에 견줘 많이 늘어난 꾀가 맨 위예요. 날마다 다시 줄 세워요. 줄어든 꾀도 숨기지 않아요.' : '아직 하루치라서 꾀 차례로 놓았어요. 하루가 더 지나면 많이 늘어난 꾀가 맨 위로 가요.'}),
-      h('p', {class: 'sj-loss', 'data-say': '', text: dn.length ? '줄어든 꾀 ' + dn.length + '가지 · 가장 많이 줄어든 꾀는 ' + nameOf(dn[0].key) + '(' + won(-dn[0].diff) + ' 줄었어요)' : '줄어든 꾀는 아직 없어요.'}),
+      h('p', {class: 'sj-rule', text: rated ? '산 돈에 비해 많이 늘어난 꾀가 맨 위예요. 날마다 다시 줄을 세워요. 줄어든 꾀도 숨기지 않아요.' : '아직 하루밖에 안 지나서 꾀 차례대로 놓았어요. 하루가 더 지나면 많이 늘어난 꾀가 맨 위로 가요.'}),
+      h('p', {class: 'sj-loss', 'data-say': '', text: dn.length ? '돈이 줄어든 꾀는 ' + dn.length + '가지예요. 가장 많이 줄어든 꾀는 「' + nameOf(dn[0].key) + '」로, ' + won(-dn[0].diff) + ' 줄었어요.' : '돈이 줄어든 꾀는 아직 없어요.'}),
       meanCap(PM.bars), // 붓 막대 그림 뜻 — 줄 맨 위 한 번(주문 1116-1313)
       h('ol', {class: 'sj-stl'}, ...K.map((x, i) => h('li', {class: 'sj-str', 'data-k': x.key, 'data-st': x.st},
         h('a', {class: 'sj-sta', href: '#/k/' + x.key, 'aria-label': (i + 1) + '번째 · ' + nameOf(x.key) + ' · ' + resText(x)},
@@ -266,7 +266,7 @@ export async function vSettle36(X) {
       h('div', {class: 'sj-sttot', 'data-st': TT.st}, h('b', {text: '모두'}), h('span', {text: '산 돈 ' + won(TT.cost)}), h('span', {class: 'sj-res', 'data-st': TT.st}, shapeI(TT.st), h('span', {text: resText(TT)}))),
       h('p', {class: 'sj-safe', text: '가짜 돈으로 지난 기록을 센 표예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
       endSeal('셈')),
-    endSec(ST.asOf ? day(ST.asOf) : day(T?.asOf?.board), gotOf(S), '지금 값은 그 회사의 가장 늦은 마지막 값이에요. 산 날 뒤 값이 아직 없으면 하루치로 셈해요.')];
-  return frame({title: '정산', page: 'settle', kids, tab: 4, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀인가?'}});
+    endSec(ST.asOf ? day(ST.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 셈해요.')];
+  return frame({title: '정산', page: 'settle', kids, tab: 4, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
 }
 export {chev};
