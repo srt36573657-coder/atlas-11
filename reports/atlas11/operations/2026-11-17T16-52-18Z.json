@@ -1,0 +1,117 @@
+{
+  "schema": "atlas11-operation-3",
+  "at": "2026-11-17T16:52:18Z",
+  "dayKST": "2026-11-18",
+  "status": "complete",
+  "exitCode": 0,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-11-17T16:52:18.749Z",
+      "status": "ok",
+      "durationMs": 11,
+      "session": true,
+      "afterClose": false,
+      "day": "2026-11-18",
+      "cutoff": "2026-11-17"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-11-17T16:52:18.760Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true,
+      "reason": "정규장 마감(15:30) 전 · 장중값은 받지 않음"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-11-17T16:52:18.760Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true
+    },
+    {
+      "step": "5_record_view",
+      "startedAt": "2026-11-17T16:52:18.815Z",
+      "view": {
+        "boardId": "board-2026-11-17-31e12617",
+        "asOf": "2026-11-17",
+        "companies": 365,
+        "files": 368,
+        "dir": "public/data/atlas11/view",
+        "universeNext": null,
+        "bytes": 3031435,
+        "similar": [
+          "삼성에스디에스",
+          "SK",
+          "케이엠더블유",
+          "광주신세계",
+          "아스플로",
+          "하나금융지주",
+          "솔본"
+        ],
+        "moves": "2026-11-16 → 2026-11-17",
+        "evening": null,
+        "lead6": {
+          "groups": 15,
+          "companies": 74,
+          "both": 41,
+          "index": "코스피 2026-11-17 -45.5%"
+        },
+        "market": {
+          "file": "public/data/atlas11/market/KOSPI.json",
+          "added": [],
+          "mismatch": []
+        },
+        "changelog": {
+          "file": "reports/atlas11/changelog/data-kr/kr-20261118T015218.json",
+          "wrote": true,
+          "title": "수급 · 기사 · 공시를 새로 모음"
+        },
+        "issue": {
+          "wrote": false,
+          "reason": "2026-11-17 이슈가 이미 있음"
+        }
+      },
+      "status": "ok",
+      "durationMs": 1148
+    }
+  ],
+  "runtime": {
+    "host": "github-actions",
+    "runner": "Linux ubuntu26",
+    "event": "schedule",
+    "workflow": "atlas11-daily",
+    "repository": "srt36573657-coder/atlas-11",
+    "runId": "44130214794",
+    "runAttempt": "1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/44130214794",
+    "commit": "44051461906c0d1bfef793ffc1cbb4b71e41be69",
+    "serverInstalled": true,
+    "scheduledRun": true
+  },
+  "serverInstalled": true,
+  "scheduledRunInstalled": true,
+  "prediction": "off",
+  "warnings": [],
+  "universeId": "u2-n365-v1-2026-10-05",
+  "day": "2026-11-18",
+  "session": true,
+  "afterClose": false,
+  "calendarGate": {
+    "day": "2026-11-18",
+    "status": "before_regular_close",
+    "regularClose": "15:30",
+    "mayCollectFinalClose": false,
+    "providerFinalRequired": true,
+    "targetDeadline": "16:00",
+    "beforeTargetDeadline": true
+  },
+  "cutoff": "2026-11-17",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-10-01",
+  "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
+  "inputSnapshotSHA256": "f87982d22bf17a72e6e37769a425eec6cf34ab7b80c1fc4ea96bfc91d499b6a5",
+  "expectedStocks": 365,
+  "finishedAt": "2026-11-17T16:52:19.963Z"
+}
