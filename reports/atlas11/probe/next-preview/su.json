@@ -1,0 +1,981 @@
+{
+ "schema": "su-check-1",
+ "at": "2026-11-18T19:04:37.883Z",
+ "base": "http://127.0.0.1:8826",
+ "counts": {
+  "pass": 425,
+  "fail": 5
+ },
+ "fails": [
+  [
+   "[390] 손자병법 판 #/r/t 누르는 것 48 × 48",
+   "11월 16일 99×44 / 11월 17일 98×44 / 11월 18일 99×44"
+  ],
+  [
+   "[360] 손자병법 판 #/r/t 누르는 것 48 × 48",
+   "11월 16일 99×44 / 11월 17일 98×44 / 11월 18일 99×44"
+  ],
+  [
+   "[320] 손자병법 판 #/r/t 누르는 것 48 × 48",
+   "11월 16일 99×44 / 11월 17일 98×44 / 11월 18일 99×44"
+  ],
+  [
+   "㉓ 정산 [390]  누르는 것 48 × 48",
+   "11월 16일 99×44 / 11월 17일 98×44 / 11월 18일 99×44"
+  ],
+  [
+   "㉓ 정산 [320]  누르는 것 48 × 48",
+   "11월 16일 99×44 / 11월 17일 98×44 / 11월 18일 99×44"
+  ]
+ ],
+ "m": {
+  "data": {
+   "fk": "g01",
+   "fc": null,
+   "sun": false
+  },
+  "home": {
+   "screens": 1.94,
+   "links": 14
+  },
+  "t21": {
+   "listed": 2557,
+   "board": "2026-11-06"
+  },
+  "path": [
+   {
+    "h1": "서른여섯 꾀",
+    "page": "sonja",
+    "kids": [
+     "sj-cover",
+     "sj-sun",
+     "sj-more",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 2,
+    "hardWords": "코스피,코스닥"
+   },
+   {
+    "h1": "몰래 바다 건너기",
+    "page": "kkoe",
+    "kids": [
+     "sj-ph",
+     "sj-kway",
+     "sj-krec",
+     "sj-kco",
+     "sj-kst",
+     "sj-kpn",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 1,
+    "hardWords": "주식"
+   },
+   {
+    "h1": "왜 사?",
+    "page": "why",
+    "kids": [
+     "sj-ph",
+     "sj-two",
+     "sj-act",
+     "sj-body",
+     "sj-whymore",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 1,
+    "hardWords": "주식"
+   },
+   {
+    "h1": "내 매매일지",
+    "page": "journal",
+    "kids": [
+     "sj-ph",
+     "sj-two",
+     "sj-body",
+     "sj-figs",
+     "sj-whymore",
+     "sj-end"
+    ],
+    "seals": 0,
+    "hard": 1,
+    "hardWords": "코스피"
+   }
+  ],
+  "hard": 5,
+  "hardWords": [
+   "코스피",
+   "코스닥",
+   "주식"
+  ],
+  "speed": {
+   "lcp": 2040,
+   "cls": 0.066,
+   "pic": 2038
+  },
+  "white": {
+   "light #/": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "light #/k": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "light #/k/g01": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "light #/r/t": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "light #/q": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "light #/j": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "dark #/": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "dark #/k": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "dark #/k/g01": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "dark #/r/t": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "dark #/q": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   },
+   "dark #/j": {
+    "sj": true,
+    "body": "rgb(248, 244, 235)",
+    "top": "rgb(248, 244, 235)",
+    "dock": "rgba(0, 0, 0, 0)",
+    "tabs": "rgb(21, 18, 14)",
+    "h1": "rgb(30, 25, 20)",
+    "frame": "none",
+    "orn": 0,
+    "old": 0,
+    "cover": 0,
+    "tc": [
+     "#F8F4EB"
+    ]
+   }
+  },
+  "fresh": {
+   "same": 1,
+   "after": 2,
+   "lost": 2,
+   "at": "#/"
+  },
+  "live": {
+   "asked": 0,
+   "first": "none",
+   "sub": 0
+  },
+  "old": {
+   "light /next/?su=guide#/find": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=guide#/gift": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=guest#/share": {
+    "cls": "m4 white space su-jobs su-wrapped home",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=stop#/me": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.014,
+    "darkSel": "b.hpi-b.b1",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=guide#/": {
+    "cls": "m4 white home space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=back#/jinhwa": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=back#/help": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "button.hp-vb",
+    "low": [],
+    "lowN": 0
+   },
+   "light /hello.html?su=guest": {
+    "cls": "su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.026,
+    "darkSel": "a.hp-go",
+    "low": [],
+    "lowN": 0
+   },
+   "light /su/privacy.html": {
+    "cls": "su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=guide#/find": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=guide#/gift": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=guest#/share": {
+    "cls": "m4 white space su-jobs su-wrapped home",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=stop#/me": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.014,
+    "darkSel": "b.hpi-b.b1",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=guide#/": {
+    "cls": "m4 white home space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=back#/jinhwa": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=back#/help": {
+    "cls": "m4 white space su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": "rgb(241, 227, 211)",
+    "top": "rgb(241, 227, 211)",
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "button.hp-vb",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /hello.html?su=guest": {
+    "cls": "su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0.026,
+    "darkSel": "a.hp-go",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /su/privacy.html": {
+    "cls": "su-jobs su-wrapped",
+    "body": "rgb(241, 227, 211)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(241, 227, 211)",
+    "frame": "normal",
+    "tc": [
+     "#F1E3D3"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "direct light /next/#/sage": {
+    "cls": "m4 white space su-jobs pg-sage",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.047,
+    "darkSel": "button.sg-allb",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/roman": {
+    "cls": "m4 white space su-jobs pg-roman",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.041,
+    "darkSel": "button.rm-allb",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/why": {
+    "cls": "m4 white space su-jobs pg-why",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.05,
+    "darkSel": "button.wy-go",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/": {
+    "cls": "m4 white space su-jobs home",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/jinhwa": {
+    "cls": "m4 white space su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /hello.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.026,
+    "darkSel": "a.hp-go",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /letter.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /invite.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": null
+   },
+   "direct light /privacy.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/sage": {
+    "cls": "m4 white space su-jobs pg-sage",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.047,
+    "darkSel": "button.sg-allb",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/roman": {
+    "cls": "m4 white space su-jobs pg-roman",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.041,
+    "darkSel": "button.rm-allb",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/why": {
+    "cls": "m4 white space su-jobs pg-why",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.05,
+    "darkSel": "button.wy-go",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/": {
+    "cls": "m4 white space su-jobs home",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.012,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/jinhwa": {
+    "cls": "m4 white space su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /hello.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.026,
+    "darkSel": "a.hp-go",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /letter.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /invite.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": null
+   },
+   "direct dark /privacy.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   }
+  },
+  "settle": {
+   "buys": 1291,
+   "kinds": [
+    15,
+    35,
+    35,
+    35,
+    35,
+    35,
+    35,
+    35
+   ],
+   "s36": [
+    17,
+    28,
+    28,
+    23,
+    28,
+    28,
+    22,
+    28,
+    28,
+    28,
+    28,
+    25,
+    28,
+    28,
+    28,
+    28,
+    18,
+    17,
+    22,
+    28,
+    16,
+    28,
+    28,
+    26,
+    28,
+    28,
+    28,
+    26,
+    16,
+    28,
+    23,
+    28,
+    16,
+    28,
+    26,
+    28
+   ],
+   "up36": [
+    "g18",
+    "g23",
+    "g25"
+   ],
+   "inds": 55,
+   "cos": 104,
+   "miss": 0,
+   "miss36": 0,
+   "late": 0,
+   "ovl": 122,
+   "missO": 0
+  },
+  "s36": {
+   "all": 49,
+   "now": 28,
+   "next": 21,
+   "s36": 0,
+   "sn": false,
+   "same": false,
+   "empty": null,
+   "data": null,
+   "sp": {
+    "want": 0,
+    "chips": 0,
+    "got": 0
+   },
+   "ovl": {
+    "n": 0,
+    "sp": 0,
+    "top": [],
+    "days": [],
+    "from": null
+   },
+   "days": {
+    "from": null,
+    "max": 0,
+    "n2": 0,
+    "q": [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "qFrom": null
+   },
+   "pick": {
+    "rule": null,
+    "empty": null,
+    "mm": {
+     "n": 0,
+     "bad": 0
+    },
+    "mix": {
+     "n": 0,
+     "bad": 0
+    },
+    "themes": []
+   }
+  }
+ },
+ "ok": false
+}

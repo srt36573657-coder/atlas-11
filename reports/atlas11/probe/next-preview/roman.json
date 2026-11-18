@@ -1,0 +1,31 @@
+{
+ "schema": "duri-check-roman-1",
+ "at": "2026-11-18T19:05:49.687Z",
+ "base": "http://127.0.0.1:8826",
+ "counts": {
+  "pass": 721,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "rooms": 33,
+  "art": {
+   "n": 72,
+   "bytes": 245728
+  },
+  "seats": 72,
+  "zones": [
+   10,
+   11,
+   11,
+   11,
+   6,
+   7,
+   5,
+   11
+  ],
+  "links": 33,
+  "linkPages": 33
+ },
+ "brand": "손자병법"
+}

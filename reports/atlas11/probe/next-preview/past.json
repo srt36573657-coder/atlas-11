@@ -1,21 +1,122 @@
 {
+ "base": "http://127.0.0.1:8826",
+ "path": "/next/?dev=1",
+ "mode": "all",
+ "companies": 2557,
+ "wide": [
+  "005930",
+  "950260",
+  "003060",
+  "0010S0",
+  "0001A0",
+  "0007C0",
+  "002350",
+  "000370",
+  "323280",
+  "000040"
+ ],
+ "made": "2026-11-18T19:10:05.429Z",
  "shard": "all/3",
  "units": {
-  "total": 0,
-  "mine": 0,
-  "hash": null,
-  "kinds": {}
+  "total": 2562,
+  "mine": 2562,
+  "hash": "1876294baef63f85",
+  "kinds": {
+   "c": {
+    "total": 2557,
+    "mine": 2557
+   },
+   "x": {
+    "total": 1,
+    "mine": 1
+   },
+   "w": {
+    "total": 4,
+    "mine": 4
+   }
+  }
  },
- "seconds": 0,
- "secondsSum": 0,
- "counts": {},
+ "sec": 191,
+ "secondsSum": 566,
+ "time": {
+  "old": 208.1,
+  "new": 424.8,
+  "wall": 190.8,
+  "wallSum": 566,
+  "opensOld": 25569,
+  "opensNew": 33282,
+  "oldPct": 36.8,
+  "oldShare": 32.9
+ },
+ "net": {
+  "req": 2566,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "cut": 0,
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
+ "counts": {
+  "맞댄 칸": 191725,
+  "숫자 낱말": 412676,
+  "맨 위 결 한 줄": 7669,
+  "선 누르기": 7669,
+  "화면(기간)": 7671,
+  "회사": 2557,
+  "기간 값 없음": 2,
+  "폭 화면": 120,
+  "없는 번호": 1
+ },
  "fails": [],
- "shards": [],
- "problems": [
-  "몫 결과가 하나도 없음",
-  "1/3 몫 결과 없음",
-  "2/3 몫 결과 없음",
-  "3/3 몫 결과 없음"
+ "warn": [
+  "기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일",
+  "옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "기간 값 없음(옛 쪽 맞대기 건너뜀) 028080 20거래일",
+  "옛 쪽 화면 오류 028080 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
  ],
- "ok": false
+ "shards": [
+  {
+   "shard": "1/3",
+   "ok": true,
+   "fails": 0,
+   "seconds": 187,
+   "mine": 854,
+   "kinds": {
+    "c": 853,
+    "x": 0,
+    "w": 1
+   }
+  },
+  {
+   "shard": "2/3",
+   "ok": true,
+   "fails": 0,
+   "seconds": 188,
+   "mine": 854,
+   "kinds": {
+    "c": 852,
+    "x": 1,
+    "w": 1
+   }
+  },
+  {
+   "shard": "3/3",
+   "ok": true,
+   "fails": 0,
+   "seconds": 191,
+   "mine": 854,
+   "kinds": {
+    "c": 852,
+    "x": 0,
+    "w": 2
+   }
+  }
+ ],
+ "problems": [],
+ "ok": true
 }
