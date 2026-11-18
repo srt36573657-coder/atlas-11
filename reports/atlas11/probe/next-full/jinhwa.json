@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-check-jinhwa-1",
- "at": "2026-11-18T13:12:15.904Z",
+ "at": "2026-11-18T16:50:19.090Z",
  "base": "https://aaa7377.com",
  "mode": "live",
  "all": true,
@@ -136,13 +136,11 @@
  },
  "en": "? 진짜 사이트 — 사장님 열쇠가 없어 열쇠 길은 못 봄",
  "counts": {
-  "pass": 78,
-  "fail": 1
+  "pass": 81,
+  "fail": 0
  },
- "fails": [
-  "위 막대 판 멈춤 — 320 false: page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://aaa7377.com/next/?dev=1#/"
- ],
+ "fails": [],
  "warn": [],
- "seconds": 31.9,
- "ok": false
+ "seconds": 44.1,
+ "ok": true
 }
