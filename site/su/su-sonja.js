@@ -13,7 +13,7 @@ import {NAME, josa} from '/next/brand.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
 import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
-import {MIX36, EQ36} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
+import {MIX36, EQ36, NAME as KNAME, MEAN as KMEAN} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {landPic, kkoePic, arrowsPic, sonmuPic, brushBar, coverFilm} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
 
@@ -112,6 +112,38 @@ export function eqBox(k) {
     h('p', {class: 'sj-eqend', text: EQEND}));
 }
 /* ── 1 머리 ── */
+/* ── 지금 시장(주문 1118-1239 · 사장님 2026-11-18(마카오) 12:39 「코스닥 지수 · 코스피 지수 · 외국인 수급 … 첫 화면에 보이게 … 하루에 세 번 … 아침 10시 · 오후 두시 · 장이 끝나고 6시 …
+   그때 상황에 맞게끔 우리 손자병법이 어떤 지략으로 이 시장을 상대해야 되는 것인가 … 반응형」 · 12:48 「응」 — docs/design/su-now-2026-11-18/order-1239.txt)
+   지수 둘 · 외국인이 사고판 돈(시장 전체 · 억 원) · 받은 때(한국 시각) · 장이 열려 있으면 굳지 않은 값 · 그때 땅에서 지난 기록으로 덜 잃은 꾀 하나(꾀 셋의 맨 앞 · 없으면 덜 잃은 차례 맨 위)
+   앞날을 맞히지 않고 사고팔기를 권하지 않음 ── */
+export const NOWIX = Object.freeze({KOSPI: '코스피', KOSDAQ: '코스닥'});
+export const okNow = n => !!n && typeof n.day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(n.day) && typeof n.hm === 'string' && /^\d{2}:\d{2}$/.test(n.hm) && !!n.index && Object.keys(NOWIX).some(s => fin(n.index[s]?.price) && n.index[s].price > 0);
+export const hmWords = hm => { const H = +hm.slice(0, 2), M = +hm.slice(3, 5); return (H < 12 ? '오전 ' : '오후 ') + (H % 12 === 0 ? 12 : H % 12) + '시' + (M ? ' ' + M + '분' : ''); };
+const IXF = new Intl.NumberFormat('ko-KR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+export const ixMove = v => !fin(v.change) ? '' : v.change > 0 ? '어제보다 ' + IXF.format(v.change) + ' 올랐어요.' : v.change < 0 ? '어제보다 ' + IXF.format(-v.change) + ' 내렸어요.' : '어제와 같아요.';
+export const flowSay = (who, s, v) => !fin(v) ? null : who + '은 ' + NOWIX[s] + '에서 ' + (v === 0 ? '산 돈과 판 돈이 같았어요.' : NF.format(Math.abs(Math.round(v))) + '억 원어치를 더 ' + (v > 0 ? '샀어요.' : '팔았어요.'));
+export const nowPick = x => { const w = (x?.win3?.ks ?? []).filter(k => typeof KNAME[k] === 'string'), r = (x?.rank ?? []).map(q => q.k).filter(k => typeof KNAME[k] === 'string');
+  return w.length ? {k: w[0], win: true} : r.length ? {k: r[0], win: false} : null; };
+export function nowBox(T, x) {
+  const n = T?.now; if (!okNow(n)) return null;
+  const pk = nowPick(x), F = n.flows ?? {}, ks = Object.keys(NOWIX).filter(s => fin(n.index[s]?.price) && n.index[s].price > 0), fs = Object.keys(NOWIX).filter(s => fin(F[s]?.foreign));
+  const when = mday(n.day) + ' ' + hmWords(n.hm);
+  return h('div', {class: 'sj-now', 'data-open': n.open ? '1' : '0', 'data-prov': n.prov ? '1' : '0', 'data-k': pk?.k ?? null},
+    h('p', {class: 'sj-nowk', text: '지금 시장 · 한국 시각 ' + when}),
+    n.open ? h('p', {class: 'sj-nowo', text: '장이 열려 있을 때 받은 값이라 아직 굳지 않았어요.'}) : null,
+    h('ul', {class: 'sj-nowi'}, ...ks.map(s => { const v = n.index[s]; return h('li', {'data-ix': s},
+      h('b', {class: 'sj-nowx', text: NOWIX[s]}), h('span', {class: 'sj-nowv', text: IXF.format(v.price)}),
+      h('span', {class: 'sj-nowc', 'data-dir': fin(v.change) ? (v.change > 0 ? 'up' : v.change < 0 ? 'dn' : 'eq') : 'na', text: v.today === false ? mday(v.date) + ' 마지막 값이에요.' : ixMove(v)})); })),
+    fs.length ? h('ul', {class: 'sj-nowf'}, ...fs.map(s => h('li', {'data-ix': s}, h('p', {text: (F[s].today === false ? mday(F[s].date) + ' 하루 동안 ' : '') + flowSay('외국인', s, F[s].foreign)})))) : h('p', {class: 'sj-nowf0', text: '외국인이 사고판 돈은 아직 받지 못했어요.'}),
+    fs.some(s => fin(F[s].inst) || fin(F[s].indiv)) ? h('details', {class: 'sj-drawer sj-nowd'}, h('summary', {}, h('span', {class: 'sj-s1', text: '기관과 개인도 보기'}), chev()),
+      h('ul', {class: 'sj-nowd2'}, ...fs.flatMap(s => [flowSay('기관', s, F[s].inst), flowSay('개인', s, F[s].indiv)].filter(Boolean).map(t2 => h('li', {}, h('p', {text: t2})))))) : null,
+    pk ? h('a', {class: 'sj-nowp', href: '#/k/' + pk.k, 'data-win': pk.win ? '1' : '0'},
+      h('span', {class: 'sj-nowp1', text: '그래서 지금은 이 꾀로 시장을 볼 때예요'}),
+      h('b', {class: 'sj-nowp2', text: KNAME[pk.k]}),
+      typeof KMEAN[pk.k] === 'string' ? h('span', {class: 'sj-nowp3', text: KMEAN[pk.k]}) : null,
+      h('span', {class: 'sj-nowp4', text: pk.win ? '지금 ' + x.name + '에서 덜 잃은 차례 안에, 아무렇게나 고른 일곱보다 덜 잃은 꾀예요.' : '지금 ' + x.name + '에서 덜 잃은 차례 맨 위 꾀예요.'})) : null,
+    h('p', {class: 'sj-nows', text: '하루 세 번 새로 봐요. 한국 시각 오전 10시, 오후 2시, 장이 끝난 뒤 오후 6시예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+}
 /* ── 2 표지 · 형세 보고 ── */
 function sunSec(T) {
   const x = okSun(T.sun) ? T.sun : null;
@@ -122,10 +154,11 @@ function sunSec(T) {
   const sh = shakeSay(m.shake), dd = mday(x.day);
   const up10 = Math.round(10 * upPart); // 깃발 열 가운데 선 깃발 = 오른 몫(열에 몇)
   return h('section', {class: 'sj-sec sj-sun', 'data-land': x.land, 'aria-label': '오늘의 형세 · ' + x.name},
-    h('p', {class: 'sj-k', text: '제1장 땅을 살피다' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
+    h('p', {class: 'sj-k', text: '제1장 땅을 살피다' + (x.prov && okNow(T.now) && T.now.day === x.day ? ' · ' + mday(T.now.day) + ' ' + hmWords(T.now.hm) + ' 값' : dd ? ' · ' + dd + ' 마지막 값' : '')}), // 장중이면 그때 값(주문 1118-1239)
     h('div', {class: 'sj-today'},
       h('h1', {class: 'sj-h1'}, h('span', {class: 'sj-h1a', text: '지금은 '}), h('b', {class: 'sj-land', text: x.name}), h('span', {class: 'sj-h1c', text: '이에요.'})),
       h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), 'aria-hidden': 'true', text: x.name})),
+    nowBox(T, x), // 지금 시장(주문 1118-1239) — 지수 둘 · 외국인 · 지금 볼 꾀 하나
     h('figure', {class: 'sj-ink sj-landfig'}, meanCap(PM.land, 'figcaption'), landPic({land: x.land, name: x.name, up: up10, path: P, sameName: x.name, title: false})), // 손무가 언덕에서 오늘 땅을 내려다봄 · 깃발 열 · 디딤돌 스물
     h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + x.quote + '」'}), h('cite', {text: '손자병법 ' + (x.pian ?? '')})),
     h('div', {class: 'sj-says'}, meanCap(PM.sonmu), h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), // 손무가 들려주는 한 줄
@@ -141,7 +174,7 @@ function sunSec(T) {
       h('ol', {class: 'sj-ldl'}, ...LANDK.map(k => { const L = x.lands[k]; return h('li', {'data-land': k, class: 'sj-ld' + (k === x.land ? ' sj-ldnow' : '')},
         h('b', {text: L.name + (k === x.land ? ' · 지금' : '')}), h('p', {text: L.rule + (Number.isInteger(L.n) && x.hist?.days ? ' 지난 ' + x.hist.days + '거래일 가운데 ' + L.n + '날이었어요.' : '')}),
         h('p', {class: 'sj-ldq', text: '「' + L.quote + '」 손자병법 ' + L.pian})); })),
-      h('p', {class: 'sj-ldp', text: '땅은 그날 마지막 값으로 가려요. 내일 땅을 맞히는 셈이 아니에요.'})) : null,
+      h('p', {class: 'sj-ldp', text: x.prov ? '장이 열려 있을 때는 그때 값으로 가리고, 장이 끝나면 마지막 값으로 다시 가려요. 내일 땅을 맞히는 셈이 아니에요.' : '땅은 그날 마지막 값으로 가려요. 내일 땅을 맞히는 셈이 아니에요.'})) : null,
     h('p', {class: 'sj-safe', text: '지난 기록으로 본 모습이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSeal('형세'));
 }

@@ -1149,3 +1149,26 @@ html.sj-on #su .sj-w3t { font-size: 1.5rem; font-weight: 900; line-height: 1.25;
 html.sj-on #su .sj-w3h { font-size: 1.0625rem; font-weight: 600; color: #4E463D; }
 html.sj-on #su .sj-w3m { font-size: 1.0625rem; font-weight: 700; color: #15120E; }
 html.sj-on #su .sj-w3r, html.sj-on #su .sj-w3r2 { font-size: 1.0625rem; font-weight: 600; color: #3A332B; }
+/* ── 지금 시장(주문 1118-1239 · 사장님 2026-11-18(마카오) 12:39 · 12:48 「응」) — 첫 화면 땅 이름 바로 아래 · 지수 둘 · 외국인이 사고판 돈 · 지금 볼 꾀 하나 · 글씨 17px 넘게 · 누르는 곳 48px 넘게 · 빨강 0 ── */
+#su .sj-now p, #su .sj-now li { margin: 0; font-size: 1.0625rem; }
+html.sj-on #su .sj-now { display: grid; gap: 10px; margin: 14px 0 6px; padding: 16px; border-radius: 22px; background: #FFFDF8; border: 2px solid #15120E; color: #15120E; }
+html.sj-on #su .sj-nowk { font-size: 1.125rem; font-weight: 900; letter-spacing: .02em; color: #15120E; }
+html.sj-on #su .sj-nowo { font-size: 1.0625rem; font-weight: 700; color: #5B4F43; }
+html.sj-on #su ul.sj-nowi { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+html.sj-on #su ul.sj-nowi > li { display: grid; gap: 2px; padding: 10px 12px; border-radius: 16px; background: #F1EBDF; min-width: 0; }
+html.sj-on #su .sj-nowx { font-size: 1.0625rem; font-weight: 800; color: #4E463D; }
+html.sj-on #su .sj-nowv { font-size: 1.5rem; font-weight: 900; line-height: 1.2; color: #15120E; font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: -.02em; }
+html.sj-on #su .sj-nowc { font-size: 1.0625rem; font-weight: 700; color: #3A332B; }
+html.sj-on #su .sj-nowc[data-dir="up"] { color: #7A4B00; }
+html.sj-on #su .sj-nowc[data-dir="dn"] { color: #1F3B5C; }
+html.sj-on #su ul.sj-nowf, html.sj-on #su ul.sj-nowd2 { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+html.sj-on #su ul.sj-nowf p { font-size: 1.125rem; font-weight: 800; color: #15120E; }
+html.sj-on #su .sj-nowf0 { font-weight: 700; color: #5B4F43; }
+html.sj-on #su ul.sj-nowd2 p { font-weight: 600; color: #3A332B; }
+html.sj-on #su a.sj-nowp { display: grid; gap: 4px; min-height: 48px; padding: 14px 16px; border-radius: 18px; background: #15120E; color: #FFFDF8; text-decoration: none; }
+html.sj-on #su .sj-nowp1 { font-size: 1.0625rem; font-weight: 700; color: #E9E2D5; }
+html.sj-on #su .sj-nowp2 { font-size: 1.625rem; font-weight: 900; line-height: 1.25; color: #FFFDF8; }
+html.sj-on #su .sj-nowp3 { font-size: 1.0625rem; font-weight: 700; color: #FFFDF8; }
+html.sj-on #su .sj-nowp4 { font-size: 1.0625rem; font-weight: 600; color: #E9E2D5; }
+html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #5B4F43; }
+@media (max-width: 380px) { html.sj-on #su ul.sj-nowi { grid-template-columns: 1fr; } }

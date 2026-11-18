@@ -1,0 +1,54 @@
+name: atlas11-su-now
+run-name: 지금 시장 받기 · ${{ github.event_name == 'schedule' && '예약' || github.actor }}
+# 주문 1118-1239 · 사장님 2026-11-18(마카오) 12:39 「코스닥 지수 · 코스피 지수 · 외국인 수급 … 첫 화면에 보이게 … 하루에 세 번 … 아침 10시 · 오후 두시 · 장이 끝나고 6시 …
+#   그때 상황에 맞게끔 우리 손자병법이 어떤 지략으로 이 시장을 상대해야 되는 것인가 … 반응형」 · 12:48 「응」 — docs/design/su-now-2026-11-18/order-1239.txt
+# 한국 시각 10:01 · 14:01 · 18:01(평일) — 코스피 · 코스닥 지수 · 시장 전체에서 외국인 · 기관 · 개인이 사고판 돈 · 판 회사 그때 값을 받아 reports/atlas11/su-now/ 에 적고
+#   곧바로 aaa7377.com 올리기(atlas11-site.yml · 검사 기다림 없이 — 코드는 그대로 · 자료만 새로)를 눌러 첫 화면 「지금 시장」 칸 · 지금 땅 · 지금 볼 꾀를 새로 셈
+# 다른 예약(16:01 · 16:07 · 16:37 매일 · 19:00 저녁 · 20:23 · 21:47 고르기 · 매시 58분 올리기)과 시각이 겹치지 않음 · 매일 · 저녁 예약 파일은 고치지 않음(규칙 7)
+on:
+  schedule:
+    - cron: '1 1 * * 1-5'   # 10:01 KST
+    - cron: '1 5 * * 1-5'   # 14:01 KST
+    - cron: '1 9 * * 1-5'   # 18:01 KST
+  workflow_dispatch: {}
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: atlas11-su-now
+  cancel-in-progress: false
+jobs:
+  now:
+    name: 지금 시장 받기
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - name: 저장소 받기
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: 노드 준비
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 지금 시장 받기(지수 · 사고판 돈 · 판 회사 그때 값)
+        run: node scripts/atlas11/next/su_now.mjs
+      - name: 적은 것 넣기
+        shell: bash
+        run: |
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add reports/atlas11/su-now/
+          if git diff --cached --quiet; then echo "적을 것 없음"; exit 0; fi
+          git commit -q -m "atlas11 지금 시장 $(date +%Y-%m-%d) $(date +%H:%M) [skip ci]"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase -q && git push -q; then exit 0; fi
+            sleep $((i * 7))
+          done
+          echo "::error::넣기 실패"; exit 1
+      - name: aaa7377.com 올리기 누르기(첫 화면 지금 시장 · 지금 땅 · 지금 볼 꾀)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run atlas11-site.yml --ref main -f reason="지금 시장 $(date +%H:%M)"

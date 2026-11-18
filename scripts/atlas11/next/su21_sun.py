@@ -78,8 +78,10 @@ def _key(k, s):
     return (0, round(s['lose'] / s['n'], 3), -s['avgLoss'], -s['worst'], -s['avg'], k)
 
 
-def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H):
+def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H, t_conf=None):
     """codes · IX · P(회사 × 날 종가) · T(판 날 번호) · cap(몸집) · dates · vrows(거래량 줄 · 없으면 거래량 다섯 꾀는 셀 수 없음)
+       t_conf(주문 1118-1239 · 지금 시장) — 마지막으로 굳은 날 번호. T 가 장중 값(굳지 않은 값) 날이면 땅만 그 값으로 가리고,
+       지난 기록 셈(닷새 뒤 값)은 굳은 날까지만 쓴다(굳지 않은 값을 지난 기록에 섞지 않음)
        → 첫 화면 형세 자료(su21.json 의 sun) · 셀 수 없으면 None"""
     if P is None or T < S36.NEED_T + h + MIN_N: return None
     m = market(P, T)
@@ -88,8 +90,9 @@ def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H):
     vmat = None
     if vrows:
         vmat, _ = S36.vol_mats(codes, vrows, dates, len(dates) - 1)
-    t0 = max(S36.NEED_T, T - h - win + 1)
-    days = list(range(t0, T - h + 1))          # 닷새 뒤 값이 판 날 안에 있는 날만(앞날 값을 쓰지 않음)
+    tcf = T if t_conf is None else min(T, t_conf)
+    t0 = max(S36.NEED_T, tcf - h - win + 1)
+    days = list(range(t0, tcf - h + 1))          # 닷새 뒤 값이 굳은 날 안에 있는 날만(앞날 값 · 굳지 않은 값을 쓰지 않음)
     landOf, ret = {}, {k: {} for k in S36.KINDS}
     idx = {c: j for j, c in enumerate(codes)}
     cR, cP0, cS = {}, {}, {}   # 크게 덜 잃는 일곱(주문 1117-1731) — 날마다 같은 법으로 다시 골라 닷새 뒤 평균 · 그날 아무렇게나 일곱이 잃을 몫 · 아무렇게나 일곱 예순 판
@@ -144,6 +147,7 @@ def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H):
                 'beat': round(float((tails < tail).mean()), 3), 'avg': round(float(a.mean()), 4),   # beat = 아무렇게나 일곱 300판 가운데 가장 나쁜 열에 한 주가 이보다 깊었던 몫
                 'from': dates[tc[0]] if dates and tc[0] < len(dates) else None, 'to': dates[tc[-1]] if dates and tc[-1] < len(dates) else None}
     return {'rule': RULE_ID, 'calm': calm, 'win3': win3, 'h': h, 'win': win, 'minN': MIN_N, 'day': dates[T] if dates and T < len(dates) else None,
+            'conf': dates[tcf] if dates and tcf < len(dates) else None, 'prov': tcf < T,   # 지금 시장(주문 1118-1239) — 땅은 장중 값 · 지난 기록은 굳은 날까지
             'land': key, 'name': D['name'], 'pian': D['pian'], 'quote': D['quote'], 'do': D['do'], 'rankQ': RANK_Q,
             'm': {'n': m['n'], 'up': m['up'], 'mid': round(m['mid'], 4), 'mean': round(m['mean'], 4), 'shake': round(m['shake'], 2) if np.isfinite(m['shake']) else None},
             'hist': {'days': len(days), 'same': len(same), 'all': useAll, 'from': dates[days[0]] if days else None, 'to': dates[days[-1]] if days else None, 'cnt': cnt},
@@ -176,4 +180,10 @@ if __name__ == '__main__':
         first = [r['k'] for r in S['rank'] if okw(r)][:3]; assert first == w['ks'], (first, w)
         c = S['calm']   # 크게 덜 잃는 일곱(주문 1117-1731) — 꾸민 자료에서는 없을 수도 있음 · 있으면 뜻이 맞아야 함
         assert c is None or (c['rule'] == S36.CALM_RULE and c['n'] >= MIN_N and 0 <= c['lose'] <= c['n'] and 0 <= c['exp'] <= c['n'] and c['tail'] <= c['avg'] and 0 <= c['beat'] <= 1 and c['from'] <= c['to']), c
+        # 지금 시장(주문 1118-1239) — 장중 값 한 날을 붙여도 지난 기록 셈은 굳은 날까지 그대로 · 땅이 같으면 차례 · 꾀 셋도 같음
+        Pn = np.hstack([P, P[:, -1:] * 1.0005]); Sn = sun(codes, IX, Pn, Tn, cap, dates + ['d%03d' % Tn], win=120, t_conf=Tn - 1)
+        assert Sn and Sn['prov'] is True and Sn['day'] == 'd%03d' % Tn and Sn['conf'] == dates[-1] and S['prov'] is False and S['conf'] == S['day'], (Sn and (Sn['prov'], Sn['day'], Sn['conf']))
+        assert {k: Sn['hist'][k] for k in ('days', 'from', 'to')} == {k: S['hist'][k] for k in ('days', 'from', 'to')}, (Sn['hist'], S['hist'])
+        assert Sn['land'] != S['land'] or ([r['k'] for r in Sn['rank']] == [r['k'] for r in S['rank']] and Sn['win3']['ks'] == S['win3']['ks']), (Sn['land'], S['land'])
+        assert len(Sn['path']) == len(S['path']) and Sn['path'][:-1] == S['path'][1:], (Sn['path'], S['path'])
         print('ok', S['land'], S['hist']['days'], S['hist']['same'], S['rank'][0]['k'], 'calm', c and (c['n'], c['lose'], c['tail'], c['tail7']), 'win3', w['ks'], w['cand'])

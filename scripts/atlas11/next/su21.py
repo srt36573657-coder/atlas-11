@@ -17,6 +17,7 @@ ap.add_argument('--live', required=True); ap.add_argument('--repo', required=Tru
 ap.add_argument('--mc365', action='store_true') # 몬테카를로를 365곳 모두에(올릴 때 · 주문 0854 · 1422) — 셈 값은 같고 「365곳 모두 셌다」 수만 더함
 ap.add_argument('--top3', action='store_true') # 42칸 1등 · 2등 · 3등 — 몬테카를로 1억 번 · 소거 1억 번(올릴 때 · 주문 1422 · 지난 판 다시 세기는 빼고)
 ap.add_argument('--no-sun', action='store_true') # 주문 1114-0922 — 손자병법 형세(지난 날 꾀 다시 세기 · 20초 남짓)를 건너뜀(지난 판 다시 세기 su21_replay 만)
+ap.add_argument('--now', default=None) # 주문 1118-1239 — 지금 시장(reports/atlas11/su-now/latest.json · su_now.mjs) · 장중이면 땅을 그때 값으로 다시 가리고 첫 화면에 지수 · 사고판 돈
 ap.add_argument('--vol', default=None) # 주문 1113-2033 · 1113-2224 — 네이버 일봉 [날, 종가, 거래량](su21_vol.mjs · 올리기 작업만) → 서른여섯 꾀 가운데 거래량 다섯
 A = ap.parse_args()
 J = lambda p: json.load(open(p, encoding='utf-8'))
@@ -478,7 +479,35 @@ OV = S36.overlap({**lists, **S36R['lists']})
 #   손실을 보지 않게 최우선에 두며 그다음이 수익이다」 — docs/design/sun-2026-11-14/order-0922.txt · su21_sun.py)
 #   판 날 장을 다섯 땅 가운데 하나로 읽고 · 지난 같은 땅 날들에서 서른여섯 꾀가 고른 일곱 곳의 닷새 뒤 값으로 덜 잃은 차례를 세움 — 첫 화면 맨 위(가벼워 su21.json 에)
 import su21_sun as SUN
-out['sun'] = SUN.sun(CODES, IXc, PM, CTX.T, capv, DATES, vrows=(VOL or {}).get('rows')) if PM is not None and not A.no_sun else None
+# 지금 시장(주문 1118-1239 · 사장님 2026-11-18(마카오) 12:39 「… 하루에 세 번 … 그때 상황에 맞게끔 우리 손자병법이 어떤 지략으로 이 시장을 상대해야 되는 것인가 … 반응형」 · 12:48 「응」
+#   — docs/design/su-now-2026-11-18/order-1239.txt) — 한국 시각 10 · 14 · 18시에 받은 묶음(su_now.mjs). 판 날 뒤 그날 장중 값이 판 회사 열에 여덟 넘게 있으면
+#   그 값을 굳지 않은 한 날로 붙여 「지금 땅」을 다시 가리고 그 땅의 덜 잃은 차례 · 꾀 셋을 다시 셈(지난 기록은 굳은 날까지만 — su21_sun t_conf) · 모자라면 예전 그대로(0 으로 채우지 않음)
+NOWJ = None
+if A.now:
+    try: NOWJ = J(A.now)
+    except Exception: NOWJ = None
+def _now_col():
+    if not NOWJ or NOWJ.get('schema') != 'atlas11-su-now-1' or PM is None or not DATES or not (0 <= CTX.T < len(DATES)): return None
+    d, pr = NOWJ.get('day'), NOWJ.get('prices') or {}
+    if not isinstance(d, str) or d <= DATES[CTX.T] or pr.get('day') != d or not NOWJ.get('idxToday'): return None
+    pp = pr.get('p') or {}
+    col = _np.array([float(pp[c]) if isinstance(pp.get(c), (int, float)) and pp[c] > 0 else _np.nan for c in CODES])
+    return col if _np.isfinite(col).sum() >= 0.8 * len(CODES) else None
+NCOL = _now_col()
+if PM is None or A.no_sun: out['sun'] = None
+elif NCOL is not None: out['sun'] = SUN.sun(CODES, IXc, _np.hstack([PM[:, :CTX.T + 1], NCOL[:, None]]), CTX.T + 1, capv, DATES[:CTX.T + 1] + [NOWJ['day']], vrows=(VOL or {}).get('rows'), t_conf=CTX.T)
+else: out['sun'] = SUN.sun(CODES, IXc, PM, CTX.T, capv, DATES, vrows=(VOL or {}).get('rows'))
+def _now_out():
+    # 첫 화면 「지금 시장」 칸 — 지수 둘 · 외국인 · 기관 · 개인이 사고판 돈(시장 전체 · 억 원) · 받은 때 · 장중이었나 · 판보다 옛 묶음이면 보이지 않음
+    if not NOWJ or NOWJ.get('schema') != 'atlas11-su-now-1' or not isinstance(NOWJ.get('day'), str) or NOWJ['day'] < (b['asOf'] or ''): return None
+    num = lambda v: isinstance(v, (int, float)) and not isinstance(v, bool)
+    ix = {s: {k: v.get(k) for k in ('date', 'price', 'change', 'ratio', 'today')} for s, v in (NOWJ.get('index') or {}).items() if s in ('KOSPI', 'KOSDAQ') and isinstance(v, dict) and num(v.get('price')) and v['price'] > 0}
+    if not ix: return None
+    fl = {s: {k: v.get(k) for k in ('date', 'today', 'foreign', 'inst', 'indiv')} for s, v in (NOWJ.get('flows') or {}).items() if s in ('KOSPI', 'KOSDAQ') and isinstance(v, dict) and num(v.get('foreign'))}
+    pr = NOWJ.get('prices') or {}
+    return {'at': NOWJ.get('at'), 'day': NOWJ['day'], 'hm': NOWJ.get('hm'), 'open': bool(NOWJ.get('open')), 'prov': NCOL is not None, 'board': b['asOf'],
+            'index': ix, 'flows': fl, 'unit': '억원', 'n': pr.get('n'), 'of': pr.get('of'), 'src': '네이버 증권 · 한국 시각 오전 10시 · 오후 2시 · 저녁 6시에 받음'}
+out['now'] = _now_out()
 # 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」 — docs/design/sonja-wise2-2026-11-17/order-1720.txt) — 오늘 꾀들이 고른 곳 가운데 두 꾀 넘게 · 덜 흔들린 차례 · 업종 둘까지
 #   지난 기록 = 형세 셈(su21_sun)이 지난 날마다 같은 법으로 다시 골라 센 값(첫 화면 자료를 가볍게 — 꾀 칸 자료 su21-s36.json 에 둠)
 CALM = S36.calm7(CODES, IXc, PM, CTX.T, S36R['lists']) if PM is not None else []

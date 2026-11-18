@@ -65,8 +65,9 @@ export async function buildDist() {
       volF = f; console.log('거래량 받기 — ' + String(stdout).trim().slice(0, 200));
     } catch (e) { console.warn('거래량 받기 못 함 — 서른여섯 꾀 가운데 거래량 다섯은 빈 목록: ' + String(e.stderr || e.stdout || e.message).slice(0, 200)); }
   }
+  const nowF = path.join(root, 'reports/atlas11/su-now/latest.json'); // 지금 시장(su_now.mjs · .github/workflows/atlas11-su-now.yml) — 없으면 예전 그대로
   try {
-    const {stdout} = await run('python3', [path.join(root, 'scripts/atlas11/next/su21.py'), '--live', dist, '--repo', root, '--out', path.join(dist, 'su/data/su21.json'), '--mc365', '--top3', ...(volF ? ['--vol', volF] : [])], {maxBuffer: 1e7}); // --mc365 = 몬테카를로를 365곳 모두에 · --top3 = 42칸 1억 번 셈 1등 · 2등 · 3등(주문 1422 · 지난 판 다시 세기는 빼고)
+    const {stdout} = await run('python3', [path.join(root, 'scripts/atlas11/next/su21.py'), '--live', dist, '--repo', root, '--out', path.join(dist, 'su/data/su21.json'), '--mc365', '--top3', ...(volF ? ['--vol', volF] : []), ...(fsSync.existsSync(nowF) ? ['--now', nowF] : [])], {maxBuffer: 1e7}); // --mc365 = 몬테카를로를 365곳 모두에 · --top3 = 42칸 1억 번 셈 1등 · --now = 지금 시장(주문 1118-1239 · 한국 시각 10 · 14 · 18시에 받은 지수 · 사고판 돈 · 장중 값) · 2등 · 3등(주문 1422 · 지난 판 다시 세기는 빼고)
     // 뒷걸음 막기 — 이번 묶음 자료(mkt 날짜)가 저장된 판보다 옛것이면(종가를 못 받아 굴리지 못한 날) 저장된 판을 그대로 둠
     //   su21-strict.json = 엄격 셈 자세히(주문 0854) — 저장된 판에 없으면 건너뜀
     const day = f => JSON.parse(fsSync.readFileSync(f, 'utf8')).asOf?.mkt ?? '';
