@@ -47,7 +47,7 @@ import {BRAND, NAME} from '../../../site/next/brand.js';
 const SELF = fileURLToPath(import.meta.url);
 export const ROOT = path.resolve(path.dirname(SELF), '../../..');
 /** 본질 파일 = docs/<이름>_본질.md(이름은 brand.js 한 곳 — 이름이 바뀌고 파일 · 잠금이 안 따라오면 ① 이 막음) */
-export const ESSENCE_FILE = `docs/${NAME}_본질.md`, LOCK_FILE = 'config/atlas11/essence.lock.json', ORDER_FILE = 'docs/design/sonja-ink-2026-11-15/essence-1843.txt'; // 2026-11-15(마카오) 17:43 · 17:46 「응」 — 첫째 줄 = 병법 서른여섯(주문 1115-1843 · 옛 틀 docs/design/su-jobs-2026-11-05/essence-0054.txt) // 세 줄 틀 — 2026-11-04 18:54(+03) 「잡스 판」 [8] 2 로 새로 찍음(옛 틀 order-1639.txt 는 잠금에 그대로)
+export const ESSENCE_FILE = `docs/${NAME}_본질.md`, LOCK_FILE = 'config/atlas11/essence.lock.json', ORDER_FILE = 'docs/design/sonja-easy-2026-11-18/essence-0008.txt'; // 2026-11-19(마카오) 00:08 「응」 — 첫째 줄을 쉬운 말로(주문 1119-0008 · 옛 판 docs/design/sonja-ink-2026-11-15/essence-1843.txt · 2026-11-15 17:43 · 17:46 「응」) — 첫째 줄 = 병법 서른여섯(주문 1115-1843 · 옛 틀 docs/design/su-jobs-2026-11-05/essence-0054.txt) // 세 줄 틀 — 2026-11-04 18:54(+03) 「잡스 판」 [8] 2 로 새로 찍음(옛 틀 order-1639.txt 는 잠금에 그대로)
 /** 옛 이름의 본질 파일 길(brand.js was · 17:15 「꼴동이」 — 세 분 동안 쓴 이름이라 was 에 없음) — 진화 가지가 옛 길로 본질 파일을 되살리지 못하게 지킴 목록에 */
 export const ESSENCE_OLD = Object.freeze([...new Set([...BRAND.was.map(w => `docs/${w.ko}_본질.md`), 'docs/꼴동이_본질.md'])].filter(f => f !== ESSENCE_FILE));
 export const LOCK_SCHEMA = 'kkolttori-essence-lock-1';

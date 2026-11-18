@@ -447,7 +447,7 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
   assert.ok(/new URLSearchParams\(search\)\.get\('su'\)/.test(W) && /hasOwnProperty\.call\(GROUPS, g\)/.test(W), '수르 틀은 ?su=<묶음> 일 때만(모르는 값은 씌우지 않음)');
   for (const f of ['site/next/index.html', 'site/atlas/index.html']) assert.ok(fs.readFileSync(path.join(ROOT, f), 'utf8').includes('/su/su-wrap.js'), '옛 쪽에 수르 틀 — ' + f);
   const {ESSENCE} = await import('../../site/next/essence.js');
-  assert.ok(ESSENCE[0].includes('병법') && ESSENCE[0].includes('서른여섯') && ESSENCE[0].includes('손실을 덜 보는지') && !/불장|꽃이 될|돈이 몰리는/.test(ESSENCE[0]), '첫 화면 본질 첫 줄 = 병법 서른여섯 · 손실을 덜 봄(주문 1115-1843 — 불장 · 꽃 · 돈은 지움)');
+  assert.ok(ESSENCE[0].includes('병법') && ESSENCE[0].includes('서른여섯') && ESSENCE[0].includes('덜 잃는지') && !/불장|꽃이 될|돈이 몰리는/.test(ESSENCE[0]), '첫 화면 본질 첫 줄 = 병법 서른여섯 · 손실을 덜 봄(주문 1115-1843 — 불장 · 꽃 · 돈은 지움)');
   const doc = fs.readFileSync(path.join(ROOT, 'docs/손자병법_본질.md'), 'utf8');
   assert.ok(/^1\. 손자병법의 본질: 병법으로 주식해서 손실을 보지 않도록 돕는 곳이다\./m.test(doc) && /병법 서른여섯 가지로 풀어 낸다/.test(doc), '본질 문서 1번 = 사장님 2026-11-15 17:43 말씀');
   assert.ok(/^2\. 꾀를 돕는 일/m.test(doc) && /^7\. \(지움/m.test(doc), '셋을 돕는 일 → 꾀를 돕는 일 · 7번(될 듯 일곱) 지움');
