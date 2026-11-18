@@ -1,50 +1,58 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-11-18T07:31:35.304Z",
+ "at": "2026-11-18T10:36:07.600Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-18",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 158,
+ "seconds": 488,
  "time": {
-  "old": 134.8,
-  "new": 113.9,
-  "wall": 157.5,
+  "old": 241.8,
+  "new": 225,
+  "wall": 487.7,
   "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 85.6,
-  "oldShare": 54.2
+  "oldPct": 49.6,
+  "oldShare": 51.8
  },
  "net": {
-  "req": 5133,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
+  "req": 5163,
+  "retry": 30,
+  "waitSec": 530,
+  "why": {
+   "HTTP 429": 6,
+   "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR": 26
+  },
   "cut": 0,
   "page": {
-   "retry": 0,
-   "waitSec": 0,
+   "retry": 12,
+   "waitSec": 194,
    "blocked": 0,
-   "why": {}
+   "why": {
+    "net::ERR_SSL_PROTOCOL_ERROR": 2,
+    "다시 열기 망 탈": 2,
+    "오류 쪽": 8
+   }
   }
  },
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 153
+   "compare": 482
   },
   "글 마디": 54126,
   "숫자 낱말": 53932,
-  "막대 줄": 14892,
-  "회사": 2557,
+  "막대 줄": 14885,
+  "회사": 2555,
+  "fail": 2,
   "경쟁 회사": 163,
   "없는 번호": 7,
   "옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)": 7,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 2194개(/atlas/data/core.json · /atlas/data/home.json · /atlas/data/comp.json)",
+   "why": "바뀐 파일 2089개(/atlas/data/core.json · /atlas/data/home.json · /atlas/data/comp.json)",
    "made": null,
    "inputs": 2572,
    "reads": 2564,
@@ -53,6 +61,15 @@
   "세 폭 화면": 30,
   "못 받은 파일 길": 6
  },
- "fails": [],
- "ok": true
+ "fails": [
+  [
+   "자료 없음",
+   "0007C0"
+  ],
+  [
+   "자료 없음",
+   "0007J0"
+  ]
+ ],
+ "ok": false
 }
