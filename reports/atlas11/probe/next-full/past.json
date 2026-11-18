@@ -1,5 +1,5 @@
 {
- "made": "2026-11-17T16:30:32.457Z",
+ "made": "2026-11-18T06:29:46.412Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -37,13 +37,15 @@
   }
  },
  "counts": {
-  "맞댄 칸": 191725,
-  "숫자 낱말": 407450,
-  "맨 위 결 한 줄": 7669,
-  "선 누르기": 7669,
-  "화면(기간)": 7671,
+  "맞댄 칸": 191800,
+  "숫자 낱말": 418950,
+  "맨 위 결 한 줄": 7672,
+  "선 누르기": 7672,
+  "화면(기간)": 7674,
   "회사": 2557,
   "기간 값 없음": 2,
+  "옛 쪽 다시 열림": 1,
+  "값이 바뀌어 다시 맞댐": 1,
   "없는 번호": 1,
   "폭 화면": 120
  },
@@ -52,17 +54,18 @@
   "기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일",
   "옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
   "기간 값 없음(옛 쪽 맞대기 건너뜀) 028080 20거래일",
-  "옛 쪽 화면 오류 028080 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
+  "옛 쪽 화면 오류 028080 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "값이 바뀌어 다시 맞댐 200470 6건 · 첫 줄 몸값 200470 20거래일 옛 [\"·시가총액 2,792억 원\",\"·1년 순이익의 26.0배(56곳 가운데값 6.4배)\",\"·장부 값의 3.3배\",\"·2025년 빚 · 이익률 부채비율 159.1% · 자기자본 이익률 8.3%\"] · 새 [\"·시가총액 2,792억 원\",\"·1년 순이익의 26."
  ],
- "sec": 1020,
+ "sec": 855,
  "time": {
-  "old": 332.7,
-  "new": 633.6,
-  "wall": 1020.4,
-  "opensOld": 25567,
-  "opensNew": 33280,
-  "oldPct": 32.6,
-  "oldShare": 34.4
+  "old": 355.5,
+  "new": 547,
+  "wall": 855.2,
+  "opensOld": 25581,
+  "opensNew": 33294,
+  "oldPct": 41.6,
+  "oldShare": 39.4
  },
  "net": {
   "req": 2560,
