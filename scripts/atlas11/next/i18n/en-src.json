@@ -10652,6 +10652,9 @@
   "카톡으로 {e}을 보내요. 친구가 열면 여기서 저절로 세요.": "Send {e} on KakaoTalk. When friends open it, we count them here automatically.",
   "{e}과 {e} 회사, 업종의 지난 기록을 숫자로 보여 드립니다.": "We show the past records of {e1} and {e2} companies and industries in numbers.",
   "한 달 뒤 {e}이 그날 정한 대로 했는지 물어요.": "In a month, {e} asks if you did what you planned that day.",
-  "그날 정한 대로 했는지 {e}이 물어봐요.": "{e} asks whether you did what you planned that day."
+  "그날 정한 대로 했는지 {e}이 물어봐요.": "{e} asks whether you did what you planned that day.",
+  "급한 마음으로 사면 비싸게 사기 쉬워요. 그래서 지금 마음부터 살펴봐요.": "Buying in a hurry often means paying too much. So check how you feel first.",
+  "여러 회사에 나눠 넣으면 덜 위험해요. 하나가 넘어져도 다른 곳이 버텨 줘요.": "Spreading money across several companies is less risky. If one falls, the others hold up.",
+  "틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 물어요. 그다음 한 달 뒤 값을 보여 줘요. 같은 때 코스피와 모든 회사 가운데 값도 함께 보여 줘요.": "Wrong calls are never erased. After a month, we first ask if you kept your plan. Then we show the price a month later, with the KOSPI and the median of all companies over the same time."
  }
 }

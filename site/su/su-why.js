@@ -40,8 +40,8 @@ export const WHY_WHY = Object.freeze([
   '사기 전에 팔 곳을 정해 두면 흔들릴 때 덜 무서워요.',
   '오를 때 욕심이 커져요. 미리 정한 숫자가 마음을 잡아 줘요.',
   '곧 쓸 돈은 값이 내려도 기다릴 수 없어요.',
-  '급한 마음이 가장 비싼 값을 치르게 해요. 지금 마음은 충동 매매를 알아보는 데 중요한 요소예요.',
-  '분산 투자는 위험을 줄이는 중요한 방법이에요. 하나가 넘어져도 다른 곳이 버텨 줘요.',
+  '급한 마음으로 사면 비싸게 사기 쉬워요. 그래서 지금 마음부터 살펴봐요.',
+  '여러 회사에 나눠 넣으면 덜 위험해요. 하나가 넘어져도 다른 곳이 버텨 줘요.',
 ]);
 export const WHY_TYPE = Object.freeze({go: ['신중한 준비형 투자자', '내 이유로 따져 보고, 정해 둔 대로 움직이는 편이에요.'], wait: ['반쯤 준비된 투자자', '이유는 있지만, 가끔 마음이 앞설 때가 있어요.'], rest: ['오늘은 쉬어 갈 투자자', '준비가 덜 된 곳이 많아요. 오늘은 하루 쉬어 가요.', '빌린 돈이나 곧 쓸 돈이라면, 오늘은 쉬어 가는 게 좋아요.', '팔 곳을 아직 정하지 않았어요. 오늘은 하루 쉬어 가요.']});
 const WHY_PT = {g: 0, y: 1, r: 2}, WHY_MAX = WHY_QS.length * 2, WHY_KEY = 'atlas:godori-why';
@@ -251,7 +251,7 @@ export async function vJournal(X) {
     act: dues.length ? [dueBox(dues, X)] : null, // 한 달 전 약속 — 답할 것이 있을 때만 그림 바로 아래(누르는 곳 · 주문 1023 [2] 3)
     body: [
       full.length ? h('section', {class: 'su-why', 'aria-label': '쌓인 기록'}, h('h2', {class: 'su-ft', text: '쌓인 기록 ' + full.length + '번'}),
-        h('p', {class: 'su-note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.'}),
+        h('p', {class: 'su-note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 물어요. 그다음 한 달 뒤 값을 보여 줘요. 같은 때 코스피와 모든 회사 가운데 값도 함께 보여 줘요.'}),
         h('ol', {class: 'su-jl'}, shown.map((m, i) => recCard(m.r, m.W, laters[i]))),
         h('p', {class: 'su-note', text: '한 달 뒤 값은 맞고 틀림을 가르는 표가 아니에요. 그날 정한 대로 했는지만 봐요.'}),
         full.length > 30 ? h('p', {class: 'su-note', text: '새 기록 서른 줄만 보여요. 나머지 ' + (full.length - 30) + '줄도 지우지 않고 그대로 있어요.'}) : null) : null,
