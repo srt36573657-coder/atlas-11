@@ -29,7 +29,7 @@ export async function collectNow({now = new Date().toISOString(), rootDir = proc
     const r = await get(NOW_URLS.index(s));
     try { index[s] = r.ok ? parseIndexNow(r.text, k.day) : null; if (!index[s]) errors.push({kind: 'index', key: s, error: r.ok ? 'INDEX_SHAPE' : r.error}); } catch (e) { index[s] = null; errors.push({kind: 'index', key: s, error: 'INDEX_PARSE ' + String(e.message).slice(0, 80)}); }
     const f = await get(NOW_URLS.flows(s));
-    try { const v = f.ok ? parseIndexFlows(f.text, k.day) : {error: f.error}; if (v?.error) { flows[s] = null; errors.push({kind: 'flows', key: s, error: v.error, keys: v.keys ?? null}); } else flows[s] = v; } catch (e) { flows[s] = null; errors.push({kind: 'flows', key: s, error: 'FLOWS_PARSE ' + String(e.message).slice(0, 80)}); }
+    try { const v = f.ok ? parseIndexFlows(f.text, k.day, !!index[s]?.today) : {error: f.error}; if (v?.error) { flows[s] = null; errors.push({kind: 'flows', key: s, error: v.error, keys: v.keys ?? null, sample: v.sample ?? null}); } else flows[s] = v; } catch (e) { flows[s] = null; errors.push({kind: 'flows', key: s, error: 'FLOWS_PARSE ' + String(e.message).slice(0, 80)}); }
   }
   const idxToday = NOW_IDX.some(s => index[s]?.today);
   const p = {};

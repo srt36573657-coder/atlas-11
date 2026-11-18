@@ -27,6 +27,13 @@ test('지수 · 사고판 돈 · 회사 값 읽기', () => {
   assert.deepEqual([f.date, f.today, f.foreign, f.inst, f.indiv, f.unit], ['2026-11-18', true, -3210, 1020, 2190, '억원']);
   assert.equal(parseIndexFlows(JSON.stringify({dealTrendInfos: [{bizdate: '20261118', foreignerPureBuyValue: '-77'}]}), '2026-11-18').foreign, -77); // 이름이 바뀌어도 앞글자로
   assert.equal(parseIndexFlows(JSON.stringify({totalInfos: []}), '2026-11-18').error, 'NO_DEAL_TREND');
+  // 진짜 응답(2026-11-18 14:21 · 지수 요약) — dealTrendInfo 한 줄(여러 날 아님) · 날이 없으면 지수가 그날일 때만 그날 · 한 겹 안쪽 값도 읽음
+  const one = parseIndexFlows(JSON.stringify({stockEndType: 'index', dealTrendInfo: {personalValue: '-1,520', foreignValue: '+2,345', institutionalValue: '-810'}}), '2026-11-18', true);
+  assert.deepEqual([one.date, one.today, one.foreign, one.inst, one.indiv], ['2026-11-18', true, 2345, -810, -1520]);
+  assert.equal(parseIndexFlows(JSON.stringify({dealTrendInfo: {foreignValue: '+2,345'}}), '2026-11-18', false).error, 'FLOWS_SHAPE'); // 날도 없고 지수도 그날이 아니면 쓰지 않음
+  const nest = parseIndexFlows(JSON.stringify({dealTrendInfo: {bizdate: '20261118', foreigner: {value: '-99'}, personal: {value: '+50'}, institutional: {value: '+49'}}}), '2026-11-18');
+  assert.deepEqual([nest.foreign, nest.indiv, nest.inst], [-99, 50, 49]);
+  assert.ok(parseIndexFlows(JSON.stringify({dealTrendInfo: {bizdate: '20261118', other: '1'}}), '2026-11-18').sample.includes('other'));
   assert.equal(parseIndexFlows(JSON.stringify({dealTrendInfos: [{bizdate: '20261118', foo: '1'}]}), '2026-11-18').error, 'FLOWS_SHAPE');
   assert.equal(parseIndexFlows(FLOW('2026-11-18', '-3,210,000', '0', '0'), '2026-11-18').error, 'FLOWS_UNIT'); // 단위가 다른 듯하면 쓰지 않음
   assert.equal(parseStockNow(STK('2026-11-18', '275,500'), '2026-11-18'), 275500); assert.equal(parseStockNow(STK('2026-11-17', '275,500'), '2026-11-18'), null);
