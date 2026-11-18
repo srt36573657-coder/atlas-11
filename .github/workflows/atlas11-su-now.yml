@@ -20,7 +20,7 @@ jobs:
   now:
     name: 지금 시장 받기
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 90   # 장이 늦게 여는 날 아침 회차는 장이 연 지 한 시간 뒤까지 기다림(주문 1119-0226) · 평소는 1~2분
     env:
       TZ: Asia/Seoul
     steps:
@@ -32,6 +32,41 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      # 주문 1119-0226 · 사장님 2026-11-19(마카오) 02:26 「응」(물음 「수능 날처럼 장이 늦게 여는 날은, 받는 때를 스스로 늦추게 할까요?」의 답)
+      #   늦게 여는 날 = docs/design/su-now-2026-11-18/late-open.json 의 days(수능 날 등) + 새해 첫 거래일(스스로 셈 · 오전 10시 개장)
+      #   그날 한국 09:00 부터 「연 때 + 61분」 전에 누르면 그때까지 기다렸다가 받음(10:00 에 열면 11:01) · 밤에 손으로 누른 것 · 목록을 못 읽은 때는 기다리지 않음
+      - name: 장이 늦게 여는 날이면 장이 연 지 한 시간 뒤까지 기다리기
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import datetime as D, json, os, time
+          K = D.timezone(D.timedelta(hours=9))
+          now = D.datetime.fromisoformat(os.environ['NOW_ISO']).astimezone(K) if os.environ.get('NOW_ISO') else D.datetime.now(K)
+          try:
+              cal = json.load(open('docs/design/su-now-2026-11-18/late-open.json', encoding='utf-8'))
+          except Exception as e:
+              print('늦게 여는 날 목록을 못 읽음 — 기다리지 않음:', e); raise SystemExit(0)
+          day = now.date().isoformat()
+          e = next((x for x in cal.get('days', []) if x.get('day') == day), None)
+          if e is None:
+              hol = set(cal.get('janHolidays', {}).get(str(now.year), []))
+              d = D.date(now.year, 1, 2)
+              while d.weekday() >= 5 or d.isoformat() in hol:
+                  d += D.timedelta(days=1)
+              if d.isoformat() == day:
+                  e = {'day': day, 'open': '10:00', 'why': '새해 첫 거래일(스스로 셈)'}
+          if e is None:
+              print(day, '늦게 여는 날 목록에 없음 — 기다리지 않음'); raise SystemExit(0)
+          h, m = map(int, e['open'].split(':'))
+          target = now.replace(hour=h, minute=m, second=0, microsecond=0) + D.timedelta(minutes=61)
+          morning = now.replace(hour=9, minute=0, second=0, microsecond=0)
+          if not (morning <= now < target):
+              print(day, e.get('why', ''), '— 늦게 여는 날이지만 아침 회차가 아님 · 기다리지 않음'); raise SystemExit(0)
+          wait = (target - now).total_seconds()
+          print(f"{day} {e.get('why', '')} — {e['open']} 에 엶 · 한국 {target:%H:%M} 까지 {int(wait // 60)}분 {int(wait % 60)}초 기다림")
+          if not os.environ.get('DRY'):
+              time.sleep(wait)
+          PY
       - name: 지금 시장 받기(지수 · 사고판 돈 · 판 회사 그때 값)
         run: node scripts/atlas11/next/su_now.mjs
       - name: 적은 것 넣기
