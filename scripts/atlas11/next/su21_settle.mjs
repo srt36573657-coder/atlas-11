@@ -141,6 +141,34 @@ export function siteSettle(B, L, asOf, days, start = START) {
     co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss};
 }
 
+/** 날마다 바뀐 차례(주문 1119-0243 · 사장님 2026-11-19(마카오) 02:43 「정산에서 순위가 … 그 순위가 매일 매일 어떻게 변화하는지 잡스라면 어떻개 표현할까」 · 02:46 「응」
+ *    — docs/design/settle-rank-2026-11-19/order-0243.txt)
+ *  서른여섯 꾀를 장부 값이 있는 날마다 그날까지 산 셈 · 그날까지 가장 늦은 값으로 다시 셈 — 화면 settle36(su-sonja-kkoe.js)과 같은 차례
+ *  (산 돈에 견줘 늘어난 몫 · 백만에 하나까지 높은 차례 · 같으면 꾀 차례 · 하루치 · 산 셈 없음은 맨 아래) → {days: [날…], order: [[꾀 차례 번호 0 ~ 35 서른여섯]…]}
+ *  · 차례를 셀 꾀가 하나도 없는 날(모두 하루치)은 뺌 · 화면은 오늘 차례를 스스로 세고 이 기록은 그 앞날들에 씀 */
+export function rank36(B, S) {
+  const kk = (S?.kinds ?? []).map((k, i) => [k, i]).filter(([k]) => /^g(0[1-9]|[12]\d|3[0-6])$/.test(k)), at = new Map(kk.map(([, i], j) => [i, j]));
+  const q = Number.isFinite(S?.qty) ? S.qty : QTY, buys = (S?.buys ?? []).filter(b => Array.isArray(b) && at.has(b[1]) && fin(b[3]) && b[3] > 0);
+  const out = {days: [], order: []};
+  if (kk.length !== 36 || !buys.length) return out;
+  const asOf = S?.asOf ?? null, first = buys.reduce((m, b) => (b[0] < m ? b[0] : m), buys[0][0]);
+  const days = [...new Set(Object.values(B?.px ?? {}).flatMap(p => Object.keys(p ?? {})))].filter(d => DAY.test(d) && d >= first && (!asOf || d <= asOf)).sort();
+  const last = (code, d) => { let v = null, vd = null; for (const [x, y] of Object.entries(B?.px?.[code] ?? {})) if (x <= d && fin(y) && (vd === null || x > vd)) { vd = x; v = y; } return [v, vd]; };
+  for (const d of days) {
+    const g = kk.map(() => ({cost: 0, val: 0, n: 0, one: true}));
+    for (const [bd, ki, code, buy] of buys) {
+      if (bd > d) continue;
+      const [v, vd] = last(code, d), x = g[at.get(ki)], now = v ?? buy, nd = v == null ? bd : vd; // 화면 settleRows 와 같음 — 그날까지 값이 없으면 산 값 · 하루치
+      x.cost += buy * q; x.val += now * q; x.n++; x.one = x.one && !(nd > bd);
+    }
+    const R = g.map((x, j) => ({j, r: x.n && x.cost > 0 && !x.one ? Math.round((x.val - x.cost) / x.cost * 1e6) : null}));
+    if (!R.some(x => x.r !== null)) continue;
+    R.sort((a, b) => (a.r === null) - (b.r === null) || (b.r ?? 0) - (a.r ?? 0) || a.j - b.j);
+    out.days.push(d); out.order.push(R.map(x => x.j));
+  }
+  return out;
+}
+
 /** 며칠째(주문 1114-0151 · 사장님 2026-11-14 01:51 「지금 이렇게 301 게 이게 며칠째 이렇게 됐는지도 좀 기록 하게 해 봐」)
  *  장부의 서른여섯 꾀 · 조용한 힘 기록(그날 판마다 한 번 적은 목록)으로 오늘 목록 회사마다 {days, found, since} — 42칸(su21_days.mjs)과 같은 셈
  *  · 며칠째 = 오늘부터 거꾸로 장이 열린 날마다 그 묶음에 들어 있던 날 수(오늘 포함) · 판이 빠진 날은 앞뒤 기록에 모두 들어 있으면 이어진 것 · 첫 발견 = 이어진 날 맨 앞 · since = 기록 첫날까지 이어짐
@@ -191,6 +219,7 @@ function main() {
   const stored = storedBoards(boardsDir);
   const {book, added, added36, addedO, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36});
   const site = siteSettle(book, lists, board.asOf, days);
+  site.rk = rank36(book, site); // 날마다 바뀐 차례(주문 1119-0243) — 정산 쪽 「날마다 바뀐 차례」 · 줄마다 오르내린 칸
   if (out) fs.writeFileSync(out, JSON.stringify(site) + '\n');
   if (keep) { const tmp = bookF + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(book, null, 1) + '\n'); fs.renameSync(tmp, bookF); }
   // 며칠째(주문 1114-0151) — 서른여섯 꾀(su21-s36.json) · 조용한 힘(su21.json)에 회사마다 days · found · since

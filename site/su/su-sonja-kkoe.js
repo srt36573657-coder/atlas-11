@@ -75,6 +75,54 @@ export function settle36(D) {
 const resText = g => (g.st === 'none' ? SAID.none : g.st === 'one' ? SAID.one : moved(g.diff));
 const shapeI = st => h('i', {class: 'sj-shp sj-shp-' + st, 'aria-hidden': 'true', text: SHAPE[st] ?? ''});
 
+/* ── 날마다 바뀐 차례(주문 1119-0243 · 사장님 2026-11-19(마카오) 02:43 「그 순위가 매일 매일 어떻게 변화하는지 잡스라면 어떻개 표현할까」 · 02:46 「응」
+   — docs/design/settle-rank-2026-11-19/order-0243.txt) — 한 가지만 크게: 맨 위 한 줄(지금 맨 위 · 며칠째) · 줄마다 앞 장날보다 오르내린 칸 · 날짜를 누르면 자리를 바꾸는 위 열 ── */
+/** 지난 날 차례(장부가 셈 · D.rk) + 지금 차례(settle36 · 이 쪽과 같은 셈) → {days, order, move(꾀 → 오른 칸 · 앞 날이 없으면 null), top(맨 위 며칠째), prevDay} · 앞 장날이 없으면 null */
+export function rankMoves(D, K) {
+  const R = D?.rk, today = typeof D?.asOf === 'string' ? D.asOf : null;
+  if (!today || !R || !Array.isArray(R.days) || !Array.isArray(R.order) || R.days.length !== R.order.length || !K.some(x => rateOf(x) !== null)) return null;
+  const days = [], order = [], ok = o => Array.isArray(o) && o.length === 36 && new Set(o).size === 36 && o.every(j => Number.isInteger(j) && j >= 0 && j < 36);
+  R.days.forEach((d, i) => { if (typeof d === 'string' && d < today && ok(R.order[i])) { days.push(d); order.push(R.order[i]); } });
+  if (!days.length) return null;
+  const cur = K.map(x => K36.indexOf(x.key)), prev = order[order.length - 1];
+  days.push(today); order.push(cur);
+  let top = 1; for (let i = order.length - 2; i >= 0 && order[i][0] === cur[0]; i--) top++;
+  return {days, order, top, prevDay: days[days.length - 2], move: new Map(K.map((x, i) => [x.key, prev.indexOf(K36.indexOf(x.key)) - i]))};
+}
+/** 오르내린 칸 표 — ▲3 · ▼2 · ―(그대로) */
+const mvMark = mv => h('span', {class: 'sj-stm', 'data-m': mv > 0 ? 'up' : mv < 0 ? 'dn' : 'eq', 'aria-hidden': 'true', text: mv > 0 ? '▲' + mv : mv < 0 ? '▼' + -mv : '―'});
+const mvSay = mv => (mv > 0 ? '앞 장날보다 ' + mv + '칸 올랐어요' : mv < 0 ? '앞 장날보다 ' + -mv + '칸 내렸어요' : '앞 장날과 같은 자리예요');
+/** 맨 위 한 줄 — 지금 맨 위 꾀 · 며칠째(이틀 넘게) 또는 앞 장날 몇 번째였는지 */
+export const topSay = (M, nameOf) => {
+  const k = K36[M.order[M.order.length - 1][0]], p = M.order[M.order.length - 2].indexOf(K36.indexOf(k));
+  return '지금 맨 위는 「' + nameOf(k) + '」예요. ' + (M.top > 1 ? M.top + '일째 맨 위예요.' : mday(M.prevDay) + '에는 ' + (p + 1) + '번째였어요.');
+};
+/** 날마다 바뀐 차례 — 날짜 단추 · 처음부터 보기 · 위 열(날을 바꾸면 자리를 옮겨 감 · 움직임 줄이기면 바로) */
+function rankRace(M, nameOf) {
+  const N = 10, last = M.days.length - 1, ol = h('ol', {class: 'sj-rkl'});
+  const chips = M.days.map((d, i) => h('button', {type: 'button', class: 'sj-rkd', 'aria-pressed': i === last ? 'true' : 'false', text: mday(d)}));
+  const play = h('button', {type: 'button', class: 'sj-rkp', text: '▶ 처음부터 보기'});
+  const calm = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const draw = (i, anim) => {
+    const was = new Map([...ol.children].map(li => [li.getAttribute('data-k'), li.getBoundingClientRect().top])), pv = i > 0 ? M.order[i - 1] : null;
+    const rows = M.order[i].slice(0, N).map((j, r) => { const mv = pv ? pv.indexOf(j) - r : null;
+      return h('li', {class: 'sj-rkr', 'data-k': K36[j], 'aria-label': (r + 1) + '번째 · ' + nameOf(K36[j]) + (pv ? ' · ' + mvSay(mv) : '')},
+        h('span', {class: 'sj-rkn', 'aria-hidden': 'true', text: String(r + 1)}), h('b', {class: 'sj-rkk', text: nameOf(K36[j])}), pv ? mvMark(mv) : null); });
+    ol.replaceChildren(...rows);
+    chips.forEach((c, x) => c.setAttribute('aria-pressed', x === i ? 'true' : 'false'));
+    if (anim && !calm()) for (const li of rows) { const b = was.get(li.getAttribute('data-k')), a = li.getBoundingClientRect().top;
+      li.animate(b == null ? [{opacity: 0, transform: 'translateY(28px)'}, {opacity: 1, transform: 'none'}] : [{transform: 'translateY(' + (b - a) + 'px)'}, {transform: 'none'}], {duration: 560, easing: 'cubic-bezier(.2,.7,.2,1)'}); }
+  };
+  let tm = null; const stop = () => { if (tm) { clearTimeout(tm); tm = null; } };
+  chips.forEach((c, i) => c.addEventListener('click', () => { stop(); draw(i, true); }));
+  play.addEventListener('click', () => { stop(); let i = 0; draw(0, true); const go = () => { i++; if (i > last) { tm = null; return; } draw(i, true); tm = setTimeout(go, 1400); }; tm = setTimeout(go, 1400); });
+  draw(last, false);
+  return h('section', {class: 'sj-sec sj-rk', 'aria-label': '날마다 바뀐 차례', 'data-days': String(M.days.length)},
+    head('셈', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '날마다 바뀐 차례'}))),
+    h('p', {class: 'sj-rkt', text: '날짜를 누르면 그날 차례로 바뀌어요. 위 열 가지만 보여요.'}),
+    h('div', {class: 'sj-rkds'}, ...chips), play, ol);
+}
+
 /* ── 쪽 틀 ── */
 /** 쪽 하나 — 머리 줄 · main(쪽 이름 data-page) · 이야기 막대 · 탭 · 풀이 없이 남은 어려운 낱말 셈(main data-hard) */
 function frame({title, page, kids, step = null, next = null, tab = -1, lc = null, attrs = {}}) {
@@ -243,7 +291,7 @@ export async function vCo36(X, code) {
 export async function vSettle36(X) {
   const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
   if (!D || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return missPage(X, '정산', '정산 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
-  const ST = settle36(D), {K, T: TT, rows} = ST, first = rows.map(r => r.day).sort()[0] ?? null, rated = K.some(x => rateOf(x) !== null);
+  const ST = settle36(D), {K, T: TT, rows} = ST, first = rows.map(r => r.day).sort()[0] ?? null, rated = K.some(x => rateOf(x) !== null), M = rankMoves(D, K); // M = 날마다 바뀐 차례(주문 1119-0243)
   const mx = Math.max(0, ...K.map(rateOf).filter(v => v !== null).map(Math.abs));
   const dn = K.filter(x => x.st === 'dn').sort((a, b) => a.diff - b.diff);
   const bar = x => brushBar(rateOf(x), mx); // 붓 막대 — 늘면 오른쪽 먹 획 · 줄면 왼쪽 남빛 획(주문 1116-0118)
@@ -257,15 +305,18 @@ export async function vSettle36(X) {
       head('셈', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '꾀마다 정산'}), h('span', {class: 'sj-h2n', text: ' ' + K.length + '가지'}))),
       h('p', {class: 'sj-rule', text: rated ? '산 돈에 비해 많이 늘어난 꾀가 맨 위예요. 날마다 다시 줄을 세워요. 줄어든 꾀도 숨기지 않아요.' : '아직 하루밖에 안 지나서 꾀 차례대로 놓았어요. 하루가 더 지나면 많이 늘어난 꾀가 맨 위로 가요.'}),
       h('p', {class: 'sj-loss', 'data-say': '', text: dn.length ? '돈이 줄어든 꾀는 ' + dn.length + '가지예요. 가장 많이 줄어든 꾀는 「' + nameOf(dn[0].key) + '」로, ' + won(-dn[0].diff) + ' 줄었어요.' : '돈이 줄어든 꾀는 아직 없어요.'}),
+      M ? h('p', {class: 'sj-st1', text: topSay(M, nameOf)}) : null, // 맨 위 한 줄(주문 1119-0243)
+      M ? h('p', {class: 'sj-stmk', text: '▲는 앞 장날보다 오른 칸, ▼는 내린 칸이에요.'}) : null,
       meanCap(PM.bars), // 붓 막대 그림 뜻 — 줄 맨 위 한 번(주문 1116-1313)
       h('ol', {class: 'sj-stl'}, ...K.map((x, i) => h('li', {class: 'sj-str', 'data-k': x.key, 'data-st': x.st},
-        h('a', {class: 'sj-sta', href: '#/k/' + x.key, 'aria-label': (i + 1) + '번째 · ' + nameOf(x.key) + ' · ' + resText(x)},
-          h('span', {class: 'sj-stn', text: String(i + 1)}), h('b', {class: 'sj-stk', text: nameOf(x.key)}), h('i', {'aria-hidden': 'true', text: '›'})),
+        h('a', {class: 'sj-sta', href: '#/k/' + x.key, 'aria-label': (i + 1) + '번째 · ' + nameOf(x.key) + ' · ' + resText(x) + (M ? ' · ' + mvSay(M.move.get(x.key)) : '')},
+          h('span', {class: 'sj-stn', text: String(i + 1)}), h('b', {class: 'sj-stk', text: nameOf(x.key)}), M ? mvMark(M.move.get(x.key)) : null, h('i', {'aria-hidden': 'true', text: '›'})),
         h('p', {class: 'sj-stv'}, h('span', {text: '산 돈 ' + won(x.cost)}), h('span', {class: 'sj-res', 'data-st': x.st}, shapeI(x.st), h('span', {text: resText(x)}))),
         bar(x)))),
       h('div', {class: 'sj-sttot', 'data-st': TT.st}, h('b', {text: '모두'}), h('span', {text: '산 돈 ' + won(TT.cost)}), h('span', {class: 'sj-res', 'data-st': TT.st}, shapeI(TT.st), h('span', {text: resText(TT)}))),
       h('p', {class: 'sj-safe', text: '가짜 돈으로 지난 기록을 센 표예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
       endSeal('셈')),
+    M ? rankRace(M, nameOf) : null, // 날마다 바뀐 차례(주문 1119-0243)
     endSec(ST.asOf ? day(ST.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 셈해요.')];
   return frame({title: '정산', page: 'settle', kids, tab: 4, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
 }

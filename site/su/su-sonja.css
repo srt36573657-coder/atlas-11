@@ -348,6 +348,21 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su .sj-stk { flex: 1 1 auto; min-width: 0; font-size: 1.25rem; line-height: 1.35; }
 #su .sj-sta i { flex: none; font-style: normal; font-size: 1.5rem; }
 #su .sj-stv { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; column-gap: 10px; row-gap: 2px; font-size: 1.125rem; line-height: 1.45; font-weight: 600; }
+/* 날마다 바뀐 차례(주문 1119-0243) — 맨 위 한 줄 · 줄마다 오르내린 칸(▲ 먹 · ▼ 남빛 · ― 옅은 먹) · 날짜 단추 · 위 열 */
+#su .sj-st1 { margin-top: 12px; font-size: 1.3125rem; line-height: 1.5; font-weight: 800; }
+#su .sj-stmk { margin-top: 6px; font-size: 1.0625rem; line-height: 1.5; }
+#su .sj-stm { flex: none; min-width: 2.4em; text-align: right; font-size: 1.0625rem; font-weight: 800; color: #1E1914; white-space: nowrap; }
+#su .sj-stm[data-m="dn"] { color: #23406B; }
+#su .sj-stm[data-m="eq"] { color: #6A6156; }
+#su .sj-rk .sj-rkt { margin-top: 10px; font-size: 1.1875rem; line-height: 1.55; }
+#su .sj-rkds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+#su .sj-rkd { min-height: 44px; padding: 0 14px; border: 1.5px solid #1E1914; border-radius: 999px; background: transparent; color: #1E1914; font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; }
+#su .sj-rkd[aria-pressed="true"] { background: #1E1914; color: #F8F4EB; }
+#su .sj-rkp { display: inline-flex; align-items: center; min-height: 48px; margin-top: 12px; padding: 0 18px; border: 0; border-radius: 999px; background: #E9E2D5; color: #15120E; font: inherit; font-size: 1.125rem; font-weight: 800; cursor: pointer; }
+#su .sj-rkl { display: grid; gap: 6px; margin-top: 12px; padding: 0; list-style: none; }
+#su .sj-rkr { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 12px; border-radius: 14px; background: #F8F4EB; }
+#su .sj-rkn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 32px; border-radius: 999px; background: #E9E2D5; color: #15120E; font-size: 1.0625rem; font-weight: 800; }
+#su .sj-rkk { flex: 1 1 auto; min-width: 0; font-size: 1.1875rem; line-height: 1.35; }
 #su .sj-stbar { display: block; width: 100%; height: 10px; margin-top: 4px; }
 #su .sj-stb0 { stroke: #8C8173; stroke-width: 2; }
 #su .sj-stbu { fill: #5B4F43; }

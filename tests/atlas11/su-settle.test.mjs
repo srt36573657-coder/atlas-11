@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36} from '../../scripts/atlas11/next/su21_settle.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import {forwardTo} from '../../site/su/su-data.js';
@@ -289,4 +289,20 @@ test('서른여섯 꾀 바탕 글(su-sonja-36.js) = su21_s36.py --defs — 쉬�
   const B = M.base36();
   assert.ok(B.fallback === true && B.schema === 'su21-s36-1' && B.kinds.length === 36 && Object.keys(B.lists).length === 0, '바탕 = 오늘 고른 곳 0');
   for (const t of [...Object.values(M.NAME), ...Object.values(M.MEAN), ...Object.values(M.SAY), ...M.SET6]) { assert.ok(!t.includes('%') && !/[A-Za-z]/.test(t), t); assert.deepEqual([...screenHits(t), ...ruinHits(t)], [], t); }
+});
+
+test('날마다 바뀐 차례(주문 1119-0243 「그 순위가 매일 매일 어떻게 변화하는지 잡스라면 어떻개 표현할까」) — 장부 값이 있는 날마다 화면과 같은 차례 · 하루치뿐인 날은 뺌 · 묶을 때 rk · 쪽은 앞 장날과 견줌', () => {
+  const D1 = '2026-11-13', D2 = '2026-11-16', D3 = '2026-11-17', ki = k => KINDS.indexOf(k);
+  const B = {px: {'000001': {[D1]: 1000, [D2]: 1100, [D3]: 1000}, '000002': {[D1]: 2000, [D2]: 2000, [D3]: 2600}, '000003': {[D2]: 500, [D3]: 450}}};
+  const S = {kinds: [...KINDS], qty: 10, asOf: D3, buys: [[D1, ki('g01'), '000001', 1000], [D1, ki('g02'), '000002', 2000], [D2, ki('g03'), '000003', 500]]};
+  const R = rank36(B, S), rest = Array.from({length: 33}, (_, i) => i + 3);
+  assert.deepEqual(R.days, [D2, D3], '모두 하루치인 첫날은 뺌 · 판 날까지');
+  assert.deepEqual(R.order[0], [0, 1, 2, ...rest], 'D2 — 늘어난 몫 높은 차례(g01 > g02 = 0) · 하루치(g03) · 산 셈 없음은 맨 아래 꾀 차례');
+  assert.deepEqual(R.order[1], [1, 0, 2, ...rest], 'D3 — g02 > g01(0) > g03(줄어듦)');
+  assert.deepEqual(rank36(B, {...S, asOf: D2}).days, [D2], '판 날 뒤 값은 쓰지 않음');
+  assert.deepEqual(rank36(B, {...S, buys: []}), {days: [], order: []});
+  const sm = rd('scripts/atlas11/next/su21_settle.mjs'), kk = rd('site/su/su-sonja-kkoe.js');
+  assert.ok(sm.includes('site.rk = rank36(book, site);'), '묶을 때 화면 자료에 날마다 바뀐 차례');
+  assert.ok(kk.includes('export function rankMoves(D, K)') && kk.includes("M = rankMoves(D, K);") && kk.includes('M ? rankRace(M, nameOf) : null') && kk.includes('M ? mvMark(M.move.get(x.key)) : null'), '쪽 — 맨 위 한 줄 · 줄마다 오르내린 칸 · 날마다 바뀐 차례(위 열)');
+  assert.ok(kk.includes("cur = K.map(x => K36.indexOf(x.key))") && kk.includes("d < today"), '오늘 차례는 쪽이 스스로 센 것 · 장부 기록은 그 앞날만');
 });
