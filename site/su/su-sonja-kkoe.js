@@ -99,15 +99,15 @@ export const topSay = (M, nameOf) => {
 };
 /** 날마다 바뀐 차례 — 날짜 단추 · 처음부터 보기 · 위 열(날을 바꾸면 자리를 옮겨 감 · 움직임 줄이기면 바로) */
 function rankRace(M, nameOf) {
-  const N = 10, last = M.days.length - 1, ol = h('ol', {class: 'sj-rkl'});
-  const chips = M.days.map((d, i) => h('button', {type: 'button', class: 'sj-rkd', 'aria-pressed': i === last ? 'true' : 'false', text: mday(d)}));
-  const play = h('button', {type: 'button', class: 'sj-rkp', text: '▶ 처음부터 보기'});
+  const N = 10, last = M.days.length - 1, ol = h('ol', {class: 'sj-drl'});
+  const chips = M.days.map((d, i) => h('button', {type: 'button', class: 'sj-drd', 'aria-pressed': i === last ? 'true' : 'false', text: mday(d)}));
+  const play = h('button', {type: 'button', class: 'sj-drp', text: '▶ 처음부터 보기'});
   const calm = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const draw = (i, anim) => {
     const was = new Map([...ol.children].map(li => [li.getAttribute('data-k'), li.getBoundingClientRect().top])), pv = i > 0 ? M.order[i - 1] : null;
     const rows = M.order[i].slice(0, N).map((j, r) => { const mv = pv ? pv.indexOf(j) - r : null;
-      return h('li', {class: 'sj-rkr', 'data-k': K36[j], 'aria-label': (r + 1) + '번째 · ' + nameOf(K36[j]) + (pv ? ' · ' + mvSay(mv) : '')},
-        h('span', {class: 'sj-rkn', 'aria-hidden': 'true', text: String(r + 1)}), h('b', {class: 'sj-rkk', text: nameOf(K36[j])}), pv ? mvMark(mv) : null); });
+      return h('li', {class: 'sj-drr', 'data-k': K36[j], 'aria-label': (r + 1) + '번째 · ' + nameOf(K36[j]) + (pv ? ' · ' + mvSay(mv) : '')},
+        h('span', {class: 'sj-drn', 'aria-hidden': 'true', text: String(r + 1)}), h('b', {class: 'sj-drk', text: nameOf(K36[j])}), pv ? mvMark(mv) : null); });
     ol.replaceChildren(...rows);
     chips.forEach((c, x) => c.setAttribute('aria-pressed', x === i ? 'true' : 'false'));
     if (anim && !calm()) for (const li of rows) { const b = was.get(li.getAttribute('data-k')), a = li.getBoundingClientRect().top;
@@ -117,10 +117,10 @@ function rankRace(M, nameOf) {
   chips.forEach((c, i) => c.addEventListener('click', () => { stop(); draw(i, true); }));
   play.addEventListener('click', () => { stop(); let i = 0; draw(0, true); const go = () => { i++; if (i > last) { tm = null; return; } draw(i, true); tm = setTimeout(go, 1400); }; tm = setTimeout(go, 1400); });
   draw(last, false);
-  return h('section', {class: 'sj-sec sj-rk', 'aria-label': '날마다 바뀐 차례', 'data-days': String(M.days.length)},
+  return h('section', {class: 'sj-sec sj-dr', 'aria-label': '날마다 바뀐 차례', 'data-days': String(M.days.length)},
     head('셈', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '날마다 바뀐 차례'}))),
-    h('p', {class: 'sj-rkt', text: '날짜를 누르면 그날 차례로 바뀌어요. 위 열 가지만 보여요.'}),
-    h('div', {class: 'sj-rkds'}, ...chips), play, ol);
+    h('p', {class: 'sj-drt', text: '날짜를 누르면 그날 차례로 바뀌어요. 위 열 가지만 보여요.'}),
+    h('div', {class: 'sj-drds'}, ...chips), play, ol);
 }
 
 /* ── 쪽 틀 ── */
