@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-18T12:07:35.954Z",
+ "at": "2026-11-18T16:21:55.383Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 145,
+ "seconds": 120,
  "counts": {
   "routes": 241,
-  "rows": 5181,
-  "btns": 5181,
-  "links": 6044,
+  "rows": 5182,
+  "btns": 5182,
+  "links": 6045,
   "clicks": 461,
   "fail": 0,
   "places": {
@@ -53,9 +53,9 @@
     "routes": 1
    },
    "hold.news": {
-    "rows": 113,
-    "btns": 113,
-    "surge": 111,
+    "rows": 116,
+    "btns": 116,
+    "surge": 114,
     "share": 2,
     "routes": 1
    },
@@ -74,10 +74,10 @@
     "routes": 1
    },
    "me.hist": {
-    "rows": 5,
-    "btns": 5,
+    "rows": 3,
+    "btns": 3,
     "surge": 0,
-    "share": 5,
+    "share": 3,
     "routes": 1
    },
    "why.rec": {
@@ -155,17 +155,17 @@
    },
    {
     "route": "#/sub",
-    "rows": 115,
-    "btns": 115,
-    "links": 115,
+    "rows": 118,
+    "btns": 118,
+    "links": 118,
     "clicked": "hold.news",
     "fail": 0
    },
    {
     "route": "#/me",
-    "rows": 6,
-    "btns": 6,
-    "links": 6,
+    "rows": 4,
+    "btns": 4,
+    "links": 4,
     "clicked": "hold.card",
     "fail": 0
    },
