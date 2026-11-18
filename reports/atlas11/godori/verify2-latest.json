@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-17T21:24:35Z",
+ "at": "2026-11-18T19:30:19Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "1a042bdcd0d9f5c72435c3dbd40f1f88623c33b6f3363f657163fc0451475230",
-   "last": "2026-11-17"
+   "sha256": "ddae7acc560355ac011e2cb057c7ebf941e8387c9c60540f448100208fd02d16",
+   "last": "2026-11-18"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 864,
+   "n": 865,
    "first": "2023-04-28",
-   "last": "2026-11-17",
+   "last": "2026-11-18",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "a1686bf551089062699b220eadbf79686859003d77f7325183a430bed5cf4cf0"
+   "sha256": "084bd15488031f58644f2e1c7fd6df173d132a45e8ba9096a85e35cde1edd8b0"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "5a394a7fb74f710d15c86b6e7b4b93ccec3d23473f8b7ea132383ede753983bd"
+   "sha256": "e0a6c93a427f4bb480aee3af842eaf3ee6f81e7a2c254bb3b9cb7e155a11459b"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "8b5b5ded1ec447eb7c372390489412b8940a7aec2d52cf0cfbc59e6c3187bc89"
+   "sha256": "7c0ab4a1bcd5328730f67baa3dd02d86d3a2d79cc692b6938a8bd39d7c2d5ce9"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 863,
-  "day": "2026-11-17",
+  "k": 864,
+  "day": "2026-11-18",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1752,
+   "outThin": 1754,
    "outThinQ": 33,
    "outHalt": 3,
-   "outList": 0,
-   "listQ": 802,
-   "afterOut": 802,
-   "g1": 249,
+   "outList": 5,
+   "listQ": 795,
+   "afterOut": 795,
+   "g1": 248,
    "g2": 634,
-   "g3": 31,
-   "g4": 684,
-   "g5": 6,
+   "g3": 35,
+   "g4": 665,
+   "g5": 10,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 792,
+   "loss3": 786,
    "why": "lists"
   },
-  "loss3Years": 792,
+  "loss3Years": 786,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -321,8 +321,8 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-10-20",
-   "to": "2026-11-17",
+   "from": "2026-10-21",
+   "to": "2026-11-18",
    "n": 1,
    "counted": 1,
    "up": 1,
@@ -334,14 +334,14 @@
      "name": "한국알콜",
      "lo": 5,
      "hi": 7,
-     "from": 14220,
-     "to": 14570,
+     "from": 14580,
+     "to": 14650,
      "up": 1,
      "mcCounts": [
-      1226,
-      1010,
-      1153,
-      1036
+      1205,
+      1001,
+      1250,
+      1033
      ],
      "mcEdges": [
       0,
@@ -400,10 +400,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1752,
+    1754,
     3,
-    0,
-    802,
+    5,
+    795,
     2557
    ]
   },
@@ -417,23 +417,23 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1752,
+  "outThin": 1754,
   "outThinQ": 33,
   "outHalt": 3,
-  "outList": 0,
-  "listQ": 802,
-  "afterOut": 802,
-  "g1": 249,
+  "outList": 5,
+  "listQ": 795,
+  "afterOut": 795,
+  "g1": 248,
   "g2": 634,
-  "g3": 31,
-  "g4": 684,
-  "g5": 6,
+  "g3": 35,
+  "g4": 665,
+  "g5": 10,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 792,
+  "loss3": 786,
   "why": "lists"
  },
  "compared": 2700,
@@ -443,9 +443,9 @@
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 2.4,
-  "build": 1.4,
-  "recount": 0.6,
-  "total": 4.4
+  "readBundle": 3.2,
+  "build": 2.3,
+  "recount": 1.1,
+  "total": 6.6
  }
 }
