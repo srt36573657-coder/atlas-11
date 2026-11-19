@@ -1354,3 +1354,6 @@ html.sj-on.su-lg #su .sj-sta { flex-wrap: wrap; }
 html.sj-on.su-lg #su .sj-stk { flex: 1 1 8em; }
 /* 꾀 모음 줄의 「○번째」 — 누르는 단추처럼 보이던 네모 테를 걷고 보통 글로(참모 m02 · m10 「차례 칸이 단추 · 상장처럼 보임」 · 줄 전체가 이미 누르는 곳) */
 html.sj-on #su .sj-krk { border: 0; min-width: 0; height: auto; padding: 0; background: none; color: #2E444C; font-family: var(--sj-sans); font-weight: 700; }
+/* 꾀 쪽 「그림 속 이야기 네 막」 — 큰 글씨 · 아주 좁은 폭에서는 두 칸 대신 한 칸(두 칸이면 한 줄에 세 글자씩 일곱 줄로 무너짐) */
+html.sj-on.su-lg #su .sj-kfig ol.sj-story { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 340px) { html.sj-on #su .sj-kfig ol.sj-story { grid-template-columns: minmax(0, 1fr); } }
