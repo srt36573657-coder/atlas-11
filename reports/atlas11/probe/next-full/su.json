@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-19T13:59:51.672Z",
+ "at": "2026-11-19T17:10:06.148Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 497,
+  "pass": 500,
   "fail": 0
  },
  "fails": [],
@@ -14,8 +14,8 @@
    "sun": true
   },
   "home": {
-   "screens": 15.59,
-   "links": 48
+   "screens": 16.24,
+   "links": 51
   },
   "t21": {
    "listed": 2557,
@@ -73,6 +73,7 @@
      "sj-two",
      "sj-act",
      "sj-body",
+     "sj-figs",
      "sj-whymore",
      "sj-end"
     ],
@@ -107,9 +108,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 844,
-   "cls": 0.006,
-   "pic": 836
+   "lcp": 872,
+   "cls": 0.033,
+   "pic": 867
   },
   "white": {
    "light #/": {
