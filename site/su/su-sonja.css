@@ -1333,3 +1333,24 @@ html.sj-on #su main[data-page="kkoe"] .sj-seal-big.sj-seal-up { box-shadow: inse
 html.sj-on #su .sj-step { font-size: 1.0625rem; color: #2E444C; }
 html.sj-on #su .sj-tc a.sj-tcgo, html.sj-on #su .sj-tc a.sj-tcgo b, html.sj-on #su .sj-tc a.sj-tcgo i { color: #FCFEFD; }
 html.sj-on #su .sj-tc a.sj-tcgo span { color: #DCEBE8; }
+/* ── 주문 1120-0358(사장님 2026-11-20(마카오) 03:58 「이거 문제다 ㅙ결해라 디자인이 문제다 전체 다 수정하라」 — 휴대폰 사진: 꾀 모음 줄의 「정산에서 100원이 ○원이 됐어요」가 한 글자씩 세로로 무너짐)
+   까닭: 꾀 줄(.sj-kr)은 두 칸 판(그림 108 · 글)인데, 뒤에 붙인 쌓인 값 줄(.sj-ktr · 주문 1119-1317)에 자리를 정하지 않아 그림 칸(108)으로 들어감 → 꺾은선 88 + 글 10
+   고침: 모든 쪽 · 네 폭(320 · 360 · 390 · 430) · 큰 글씨를 재서 글이 세로로 무너지는 곳을 모두 고침(검사 check_su ㉙ 이 다시 막음) ── */
+#su .sj-kr > .sj-ktr { grid-column: 1 / -1; }
+#su .sj-page .sj-ktr { flex-wrap: wrap; row-gap: 4px; }
+#su .sj-page .sj-ktrv { flex: 1 1 9em; }
+/* 큰 글씨 — 그림 옆 좁은 칸에 긴 이름이 세 글자씩 무너지지 않게: 그림은 위 · 글은 온 폭 */
+html.sj-on.su-lg #su .sj-kr { grid-template-columns: minmax(0, 1fr); }
+html.sj-on.su-lg #su .sj-kr > .sj-kpic, html.sj-on.su-lg #su .sj-kr > .sj-ka { grid-row: auto; grid-column: 1 / -1; }
+html.sj-on.su-lg #su .sj-kr > .sj-kpic svg { width: 148px; }
+html.sj-on.su-lg #su .sj-today { flex-wrap: wrap; }
+html.sj-on.su-lg #su .sj-today > .sj-h1 { flex: 1 1 100%; }
+html.sj-on.su-lg #su .sj-w3a { gap: 8px; padding: 10px; }
+html.sj-on.su-lg #su .sj-w3a > .sj-tkgo { display: none; }
+html.sj-on.su-lg #su .sj-w3t { font-size: 1.375rem; }
+html.sj-on.su-lg #su .sj-page .su-myans li { flex-wrap: wrap; }
+html.sj-on.su-lg #su .sj-page .su-myans li > .su-ma { margin-left: auto; }
+html.sj-on.su-lg #su .sj-sta { flex-wrap: wrap; }
+html.sj-on.su-lg #su .sj-stk { flex: 1 1 8em; }
+/* 꾀 모음 줄의 「○번째」 — 누르는 단추처럼 보이던 네모 테를 걷고 보통 글로(참모 m02 · m10 「차례 칸이 단추 · 상장처럼 보임」 · 줄 전체가 이미 누르는 곳) */
+html.sj-on #su .sj-krk { border: 0; min-width: 0; height: auto; padding: 0; background: none; color: #2E444C; font-family: var(--sj-sans); font-weight: 700; }

@@ -1157,6 +1157,43 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await ctx.close();
   }
 }
+{ // ㉙ 주문 1120-0358(사장님 2026-11-20(마카오) 03:58 「이거 문제다 ㅙ결해라 디자인이 문제다 전체 다 수정하라」 — 휴대폰 사진: 꾀 모음 줄의 「정산에서 100원이 ○원이 됐어요」가 한 글자씩 세로로 무너짐)
+  //   쪽마다 · 두 폭(390 · 320) · 큰 글씨(320) — 글이 세로로 무너진 곳(두 줄 넘게 한 줄에 두세 글자) 0 · 화면 옆으로 넘친 글 0 · 잘린 글 0
+  //   일부러 세로로 쓴 표지 글(.sj-hwa) · 그림 속 글(svg) · 닫힌 서랍 · 크기가 정해진 도장(.sj-seal)은 뺌
+  const FIND29 = () => {
+    const W = innerWidth, out = [], txtOf = e => [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').replace(/\s+/g, ' ').trim();
+    for (const e of document.querySelectorAll('#su main *, #su .sj-top *, #su .sj-tabs *')) {
+      const t = txtOf(e), chars = t.replace(/\s/g, '').length; if (chars < 3 || e.closest('svg, .sj-hwa, .sj-seal, details:not([open]) > :not(summary)')) continue;
+      const cs = getComputedStyle(e); if (cs.display === 'none' || cs.visibility === 'hidden' || /^vertical/.test(cs.writingMode)) continue;
+      const r = e.getBoundingClientRect(); if (!r.width || !r.height) continue;
+      const fs = parseFloat(cs.fontSize), lh = parseFloat(cs.lineHeight) || fs * 1.45, ch = r.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth), lines = Math.max(1, Math.round(ch / lh));
+      const at = (e.parentElement?.className && typeof e.parentElement.className === 'string' ? e.parentElement.className.trim().split(/\s+/)[0] + ' > ' : '') + ((typeof e.className === 'string' && e.className.trim()) || e.tagName.toLowerCase());
+      if (chars >= 4 && ((lines >= 3 && chars / lines < 3) || (lines >= 2 && chars / lines < 2.2))) out.push(['세로', at, Math.round(r.width), lines, t.slice(0, 20)]);
+      if (r.right > W + 1 || r.left < -1) out.push(['넘침', at, Math.round(r.left), Math.round(r.right), t.slice(0, 20)]);
+      if (/hidden|clip/.test(cs.overflowX + ' ' + cs.overflow) && e.scrollWidth > e.clientWidth + 2 && cs.textOverflow !== 'ellipsis') out.push(['잘림', at, e.scrollWidth, e.clientWidth, t.slice(0, 20)]);
+    }
+    if (document.documentElement.scrollWidth > W + 1) out.push(['쪽 넘침', document.documentElement.scrollWidth]);
+    return out;
+  };
+  const G29 = await J('/su/data/su21-s36.json').catch(() => null), K29 = Array.isArray(G29?.kinds) ? G29.kinds : [], C29 = K29.map(k => G29?.lists?.[k]?.[0]?.code).find(c => /^[0-9A-Z]{6}$/.test(String(c ?? ''))) ?? null;
+  const PAGES29 = ['#/', '#/k', '#/k/' + (K29[0] ?? 'g01'), ...(C29 ? ['#/c/' + C29] : []), '#/r/t', '#/q', '#/j'];
+  for (const [width, big] of [[390, false], [320, false], [320, true]]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'});
+    await QUIET(ctx);
+    await ctx.addInitScript(b => { try { localStorage.setItem('su-big-text', b ? '1' : '0'); } catch { /* 저장소 없음 */ } }, big);
+    const p = await ctx.newPage(), errs = [];
+    p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    const W = '㉙ 글 무너짐 [' + width + (big ? ' · 큰 글씨' : '') + '] ';
+    for (const hh of PAGES29) {
+      await open(p, hh);
+      if (hh === '#/') await p.waitForFunction(() => !document.querySelector('#su main.sj-page > section.sj-s36.sj-wait'), null, {timeout: 15000}).catch(() => {});
+      const bad = await p.evaluate(FIND29);
+      check(!bad.length, W + hh + ' — 글이 세로로 무너진 곳 · 옆으로 넘친 글 · 잘린 글 0(주문 1120-0358)', JSON.stringify(bad.slice(0, 4)));
+    }
+    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+    await ctx.close();
+  }
+}
 await browser.close();
 R.ok = R.counts.fail === 0;
 console.log(`손자병법 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);
