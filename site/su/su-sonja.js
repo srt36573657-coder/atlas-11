@@ -332,7 +332,7 @@ function trickSec(g, T) {
   const H = S ? S.hist : null, TOP = 3; // 첫 쪽은 꾀 셋만(주문 1117-1120 샘플 다 「창호지 한 장」 — 서른여섯 모두는 꾀 탭 #/k)
   return h('section', {class: 'sj-sec sj-s36', 'aria-label': S ? '덜 잃은 꾀 차례' : '서른여섯 꾀', 'data-n': String(N), 'data-order': S ? 'sun' : 'kind'},
     head('꾀', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: S ? '덜 잃은 꾀 차례' : '서른여섯 꾀'})), true),
-    S?.rankQ ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + S.rankQ.pian})) : null,
+    S?.rankQ?.quote ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + (S.rankQ.pian ?? '')})) : null,
     S ? winBox(g, S, RB) : null, // 지금 땅의 꾀 셋(주문 1117-1859) — 꾀 칸 맨 위에 크게
     lossTh(g), // 줄어든 갈래 한 칸 — 손실 먼저(주문 1117-1120 샘플 다)
     calmBox(g), // 크게 덜 잃는 일곱(주문 1117-1731) — 손실 먼저
@@ -381,7 +381,8 @@ export async function vSonja(X, shell = null) {
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
   const aw = main.querySelector(':scope > .sj-cover .sj-artw'); if (aw && !aw.querySelector(':scope > svg.sj-artfx')) aw.insertBefore(coverFilm(), aw.querySelector(':scope > .sj-hwa')); // 표지 영화 덧칠(주문 1116-2310 — 안개 · 새 · 금빛 반짝임 · 빛 한 줄기 11초)
-  const cv = main.querySelector(':scope > .sj-cover'); if (cv && !cv.querySelector(':scope > figure.sj-scroll')) cv.append(scrollFig()); // 손자병법 한 폭(주문 1119-1648 — 표지 걸음 줄 아래 · 본문과 함께 붙여 먼저 보인 표지를 밀지 않음)
+  const sunS = body.find(e => e?.classList?.contains('sj-sun')), cv = main.querySelector(':scope > .sj-cover'), at = sunS ?? cv; // 손자병법 한 폭(주문 1119-1648) — 표지 아래에서 오늘 시장 칸 끝으로(주문 1119-2026 — 열면 오늘 시장이 먼저)
+  if (at && !main.querySelector('figure.sj-scroll') && !at.querySelector(':scope > figure.sj-scroll')) at.append(scrollFig());
   main.append(...body);
   const hardOf = () => { const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove(); const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = ''; };
   hardOf();

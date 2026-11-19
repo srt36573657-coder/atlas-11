@@ -19,17 +19,17 @@ const SRC = ['su-wrap-jobs.css', 'su-wrap-app.css', 'su-wrap-solo.css', 'su-priv
 const OUT = path.join(ROOT, 'site/su/su-wrap-sj.css');
 const A = '/* 손자병법 종이 판(주문 1116-0300) — scripts/atlas11/next/wrap_sj.mjs 가 옛 쪽 색 파일에서 지음(손으로 고치지 않음 · 손자병법에서 넘어온 때만 받음) */';
 
-/** 흰 판 색 → 종이 판 색(바탕 #F1E3D3 · 먹 #3B1A14 · 밤색 강조 · 글은 종이 위 대비 4.5 넘게) */
+/** 흰 판 색 → 종이 판 색(바탕 #E8F1EE · 먹 #2F4A55 · 밤색 강조 · 글은 종이 위 대비 4.5 넘게) */
 export const MAP = Object.freeze({
-  '#FFFFFF': '#F1E3D3', '#FAFAFA': '#F1E3D3', '#FDF9F5': '#F1E3D3',
+  '#FFFFFF': '#E8F1EE', '#FAFAFA': '#E8F1EE', '#FDF9F5': '#E8F1EE',
   '#F5F5F7': '#E9D8C5', '#ECEFEE': '#E9D8C5', '#F2F2F7': '#EBDCCB', '#E8E8ED': '#E3CFBA',
   '#E5E5EA': '#D8C2AA', '#D2D2D7': '#CDB49C', '#C7C7CC': '#C2A88F', '#AEAEB2': '#A88B76',
   '#8E8E93': '#8E7466', '#86868B': '#8E7466', '#6E6E73': '#6B4A3C',
-  '#48484A': '#4A2C22', '#3A3A3C': '#4A2C22', '#1D1D1F': '#3B1A14',
+  '#48484A': '#2F4A55', '#3A3A3C': '#2F4A55', '#1D1D1F': '#2F4A55',
   '#8A5A00': '#7A4E3A', '#6B4500': '#5E4034', '#B4570A': '#7A4E3A', '#B0550A': '#7A4E3A',
-  '#D97706': '#8A5A44', '#FFF4E5': '#EBD9C4', '#F3D9B8': '#D9BFA3',
+  '#D97706': '#5F8580', '#FFF4E5': '#D9EAE5', '#F3D9B8': '#C7DCD7',
 });
-const RGBA = [[/rgba\(\s*217\s*,\s*119\s*,\s*6\s*,/gi, 'rgba(138, 90, 68,'], [/rgba\(\s*142\s*,\s*142\s*,\s*147\s*,/gi, 'rgba(142, 116, 102,'], [/rgba\(\s*255\s*,\s*255\s*,\s*255\s*,/gi, 'rgba(241, 227, 211,']];
+const RGBA = [[/rgba\(\s*217\s*,\s*119\s*,\s*6\s*,/gi, 'rgba(138, 90, 68,'], [/rgba\(\s*142\s*,\s*142\s*,\s*147\s*,/gi, 'rgba(142, 116, 102,'], [/rgba\(\s*255\s*,\s*255\s*,\s*255\s*,/gi, 'rgba(232, 241, 238,']];
 const HEX = /#[0-9a-f]{6}\b/gi;
 const has = v => { let hit = false; v.replace(HEX, m => { if (MAP[m.toUpperCase()]) hit = true; return m; }); return hit || RGBA.some(([re]) => { re.lastIndex = 0; return re.test(v); }); };
 const swap = v => { let o = v.replace(HEX, m => MAP[m.toUpperCase()] ?? m); for (const [re, to] of RGBA) { re.lastIndex = 0; o = o.replace(re, to); } return o; };

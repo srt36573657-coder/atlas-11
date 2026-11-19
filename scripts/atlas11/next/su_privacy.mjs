@@ -31,7 +31,7 @@ export function build(src) {
   let s = src;
   s = once(s, '<!doctype html>\n', '<!doctype html>\n<!-- 지은 파일 — scripts/atlas11/next/su_privacy.mjs 가 site/privacy.html 에서 지음(손으로 고치지 않음 · 원본을 고친 뒤 다시 지음) · 손자병법 틀을 미리 입힌 짝 쪽(주문 2011) -->\n');
   s = once(s, '<html lang="ko" class="su-jobs">', '<html lang="ko" class="su-jobs su-wrapped">'); // 원본은 이미 첫 페이지 색(su-jobs · su-privacy.css · 주문 2250) — 짝 쪽은 수르 틀(아래 수르 막대)만 더함
-  s = s.replace(/<meta name="theme-color" content="#[0-9A-Fa-f]{6}">/, '<meta name="theme-color" content="#F1E3D3">'); // 창 위 띠 = 손자병법 종이색(주문 1116-0300 · 짝 쪽은 늘 손자병법에서 넘어온 쪽)
+  s = s.replace(/<meta name="theme-color" content="#[0-9A-Fa-f]{6}">/, '<meta name="theme-color" content="#E8F1EE">'); // 창 위 띠 = 손자병법 종이색(주문 1116-0300 · 짝 쪽은 늘 손자병법에서 넘어온 쪽)
   s = once(s, '<link rel="stylesheet" href="/su/su-privacy.css">', '<link rel="stylesheet" href="/su/su-privacy.css">\n<link rel="stylesheet" href="/su/su-wrap.css">\n<link rel="stylesheet" href="/su/su-wrap-sj.css">'); // 손자병법 종이 판 색(주문 1116-0300)
   s = once(s, '</body>', bar() + '\n</body>');
   return s;

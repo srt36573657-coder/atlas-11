@@ -11,6 +11,6 @@
   d.classList.add('sj-on');
   if (sub) d.classList.add('sj-sub');
   var t = document.querySelectorAll('meta[name="theme-color"]');
-  for (i = 0; i < t.length; i++) t[i].setAttribute('content', '#F8F4EB');
+  for (i = 0; i < t.length; i++) t[i].setAttribute('content', '#F3F8F6');
   try { if (localStorage.getItem('su-big-text') === '1') d.classList.add('su-lg'); } catch (e) { /* 저장소 없음 */ }
 })();

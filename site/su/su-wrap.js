@@ -13,7 +13,7 @@ const NS = 'http://www.w3.org/2000/svg';
 export const JOBS_CSS = '/su/su-wrap-jobs.css'; // 색 이름 · 위 막대 · 아래 단추 · 밤 판 자리 지킴 — 쪽 머리가 처음부터 받음
 export const APP_CSS = '/su/su-wrap-app.css'; // 옛 앱(/next/) 쪽마다 남은 색 — 첫 그림을 늦추지 않게 여기서 뒤에 붙임
 export const SJ_CSS = '/su/su-wrap-sj.css'; // 손자병법 종이 판 색(주문 1116-0300 · wrap_sj.mjs 가 지음) — 손자병법에서 넘어온 때만 붙임(바로 온 손님 첫 그림은 그대로)
-const WHITE = '#FFFFFF', PAPER = '#F1E3D3'; // 창 위 띠 — 옛 주소로 바로 온 손님 = 흰색 · 손자병법에서 넘어온 때(html.su-wrapped) = 손자병법 종이색(주문 1116-0300)
+const WHITE = '#FFFFFF', PAPER = '#E8F1EE'; // 창 위 띠 — 옛 주소로 바로 온 손님 = 흰색 · 손자병법에서 넘어온 때(html.su-wrapped) = 손자병법 종이색(주문 1116-0300)
 export const FIND_D = 'M10.5 4a6.5 6.5 0 1 0 4 11.6l4.4 4.4 1.4-1.4-4.4-4.4A6.5 6.5 0 0 0 10.5 4zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9z';
 /** 개인정보 처리방침 — 그 쪽은 보안 규칙이 스크립트를 막아(default-src 'none') 틀을 씌울 수 없어, 수르 틀을 미리 입힌 쪽(/su/privacy.html · scripts/atlas11/next/su_privacy.mjs 가 원본에서 지음)으로 감 */
 export const SOLO = Object.freeze({'/privacy.html': '/su/privacy.html'});

@@ -222,7 +222,7 @@ export async function vKkoeAll(X) {
   const RB = rankOf(T), sun = okSun(T?.sun) ? T.sun : null, first = sun?.rank[0]?.k ?? null;
   const sets = []; for (let i = 0; i < 6; i++) sets.push(K36.slice(i * 6, i * 6 + 6));
   const kids = [
-    pageHead({kick: '삼십육계 · 여섯 묶음', h1: '병법 서른여섯 가지', seal: '꾀', quote: sun?.rankQ ? [sun.rankQ.quote, '손자병법 ' + sun.rankQ.pian] : null,
+    pageHead({kick: '삼십육계 · 여섯 묶음', h1: '병법 서른여섯 가지', seal: '꾀', quote: sun?.rankQ?.quote ? [sun.rankQ.quote, '손자병법 ' + (sun.rankQ.pian ?? '')] : null,
       say: '삼십육계는 옛날부터 전해 오는 꾀 서른여섯 가지예요. 여섯 묶음에 꾀가 여섯 가지씩 있어요.' + (sun ? ' 지금 같은 ' + sun.name + '에서 덜 잃은 차례도 함께 적었어요.' : ''),
       more: [h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.book, 'figcaption'), heroPic('book')), h('p', {class: 'sj-lead', text: '꾀 그림이나 이름을 누르면, 그 꾀를 자세히 볼 수 있어요.'})]}),
     ...sets.map((ks, i) => h('section', {class: 'sj-sec sj-kset', 'data-set': String(i + 1), 'aria-label': g.set[ks[0]]},

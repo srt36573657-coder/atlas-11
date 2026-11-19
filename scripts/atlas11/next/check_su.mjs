@@ -249,7 +249,7 @@ for (const width of [390, 360, 320]) {
         tabs: [...document.querySelectorAll('#su .sj-tabs a')].map(a => ({t: a.innerText.trim(), cur: a.getAttribute('aria-current') === 'page'})), tabsL: document.querySelector('#su .sj-tabs')?.getAttribute('aria-label') ?? '',
         moreShut: !!more && !more.open, ess: more ? more.querySelectorAll('[data-ess]').length : 0,
         art: !!art && art.complete && art.naturalWidth > 0, old: document.querySelectorAll('#su main > .su-hero, #su .su-orn, #su .su-top, #su .su-tabs, #su .su-dock').length,
-        seals, sealsOk: seals.every(x => x.m === x.row && x.t === ({dn: '내림', up: '오름', eq: '같음', na: ''})[x.m]) && (!sunSeal || !sunSeal.dn || (sunSeal.bg === 'rgb(30, 25, 20)' && sunSeal.c === 'rgb(255, 255, 255)')), sunSeal,
+        seals, sealsOk: seals.every(x => x.m === x.row && x.t === ({dn: '내림', up: '오름', eq: '같음', na: ''})[x.m]) && (!sunSeal || !sunSeal.dn || (sunSeal.bg === 'rgb(32, 50, 58)' && sunSeal.c === 'rgb(255, 255, 255)')), sunSeal,
         red: [...main.querySelectorAll('*')].filter(e => { const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length,
         hard: Number(main.dataset.hard ?? NaN), hardWords: main.dataset.hardWords ?? ''};
     });
@@ -393,7 +393,7 @@ for (const width of [390, 360, 320]) {
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', colorScheme: scheme});
     const p = await ctx.newPage();
     { // 손자병법 첫 쪽(주문 1115-1706 → 1117-1049 샘플 다 「창호지 한 장」) — 밝은 한지 #F8F4EB 바탕 · 떠 있는 먹 탭 막대 #15120E · 큰 제목 먹 글 대비 7 넘게 · 둘레 겹테 · 무하 꾸밈 0 · 휴대폰 맨 위 띠 한지 색 · 밝은 · 어두운 휴대폰 같은 판
-      const PAPER = 'rgb(248, 244, 235)', INKBAR = 'rgb(21, 18, 14)';
+      const PAPER = 'rgb(243, 248, 246)', INKBAR = 'rgb(252, 254, 253)'; // 주문 1119-2026 — 수채화 종이 #F3F8F6 · 아래 탭 흰 판 #FCFEFD(샘플 첫째 · 둘째 합친 판)
       await open(p, '#/'); await p.waitForTimeout(2200);
       const w = await p.evaluate(() => { const bg = e => (e ? getComputedStyle(e).backgroundColor : 'none'), h1 = document.querySelector('#su h1');
         return {sj: !!document.querySelector('#su main.sj-page'), body: bg(document.body), top: bg(document.querySelector('#su .sj-top')), dock: bg(document.querySelector('#su .sj-dock')), tabs: bg(document.querySelector('#su .sj-tabs')),
@@ -404,10 +404,10 @@ for (const width of [390, 360, 320]) {
       check(w.sj && w.body === PAPER && w.top === PAPER && w.dock === 'rgba(0, 0, 0, 0)' && w.tabs === INKBAR, W1 + '— 바탕 · 맨 위 단추 줄 밝은 한지 · 듣기와 다음은 떠 있는 알약(막대 바탕 없음) · 아래 탭 떠 있는 먹 막대(주문 1117-1049 샘플 다)', JSON.stringify(w).slice(0, 300));
       check(con(w.h1, PAPER) >= 7, W1 + '— 큰 제목 먹 글 대비 7 넘게', w.h1);
       check((w.frame === 'none' || w.frame === 'normal') && w.orn === 0, W1 + '— 둘레 겹테 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, orn: w.orn}));
-      check(w.tc.length >= 1 && w.tc.every(c => c === '#F8F4EB'), W1 + '— 휴대폰 맨 위 띠 밝은 한지 색', w.tc.join(' '));
+      check(w.tc.length >= 1 && w.tc.every(c => c === '#F3F8F6'), W1 + '— 휴대폰 맨 위 띠 밝은 한지 색', w.tc.join(' '));
     }
     for (const hh of ['#/k', '#/k/' + FK, ...(FC ? ['#/c/' + FC.code] : []), '#/r/t', '#/q', '#/j']) { // 주문 1115-2328 — 꾀 모음 · 꾀 · 회사 · 정산도 첫 쪽과 같은 한지 판(샘플 사) · 주문 1116-0300 — 「왜 사?」 · 매매일지도(옛 흰 판 · 옛 틀 지움)
-      const PAPER = 'rgb(248, 244, 235)', INKBAR = 'rgb(21, 18, 14)';
+      const PAPER = 'rgb(243, 248, 246)', INKBAR = 'rgb(252, 254, 253)'; // 주문 1119-2026 — 수채화 종이 #F3F8F6 · 아래 탭 흰 판 #FCFEFD(샘플 첫째 · 둘째 합친 판)
       await open(p, hh); await p.waitForTimeout(600);
       const w = await p.evaluate(() => { const bg = e => (e ? getComputedStyle(e).backgroundColor : 'none'), h1 = document.querySelector('#su h1');
         return {sj: !!document.querySelector('#su main.sj-page'), body: bg(document.body), top: bg(document.querySelector('#su .sj-top')), dock: bg(document.querySelector('#su .sj-dock')), tabs: bg(document.querySelector('#su .sj-tabs')),
@@ -418,7 +418,7 @@ for (const width of [390, 360, 320]) {
       check(w.sj && w.body === PAPER && w.top === PAPER && w.dock === 'rgba(0, 0, 0, 0)' && w.tabs === INKBAR && w.old === 0 && w.cover === 0, W1 + '— 바탕 · 맨 위 단추 줄 밝은 한지 · 떠 있는 알약 · 떠 있는 먹 탭 막대(주문 1117-1049) · 옛 머리 · 탭 · 막대 0 · 표지는 첫 쪽에만', JSON.stringify(w).slice(0, 300));
       check(con(w.h1, PAPER) >= 7, W1 + '— 큰 제목 먹 글 대비 7 넘게', w.h1);
       check((w.frame === 'none' || w.frame === 'normal') && w.orn === 0, W1 + '— 둘레 겹테 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, orn: w.orn}));
-      check(w.tc.length >= 1 && w.tc.every(c => c === '#F8F4EB'), W1 + '— 휴대폰 맨 위 띠 밝은 한지 색', w.tc.join(' '));
+      check(w.tc.length >= 1 && w.tc.every(c => c === '#F3F8F6'), W1 + '— 휴대폰 맨 위 띠 밝은 한지 색', w.tc.join(' '));
     }
     await ctx.close();
   }
@@ -472,7 +472,7 @@ for (const width of [390, 360, 320]) {
   //   옛 기능 쪽 #/g 에서만 가던 쪽(서른아홉 스승 · 로마 신 · 「왜 사?」 옛 판 · 편지 · 초대장)과 닫히는 급등 쪽은 뺌(옛 주소로 바로 온 손님 판은 아래 DIRECT 가 그대로 봄)
   // 주문 1116-0300(사장님 2026-11-16(마카오) 02:00 「예전 디자인은 모두 삭제 하고 손자병법에 맞게 처음부터 끝까지 깔끔하개」) — 손자병법에서 넘어간 옛 쪽은 손자병법 종이 판(바탕 · 위 · 아래 막대 #F1E3D3 · 창 위 띠 종이색) · 맨 위 「선물」도 손자병법 틀 안
   const ROUTES = ['/next/?su=guide#/find', '/next/?su=guide#/gift', '/next/?su=guest#/share', '/next/?su=stop#/me', '/next/?su=guide#/', '/next/?su=back#/jinhwa', '/next/?su=back#/help', '/hello.html?su=guest', '/su/privacy.html'];
-  const WHITE = 'rgb(255, 255, 255)', PAPER = 'rgb(241, 227, 211)';
+  const WHITE = 'rgb(255, 255, 255)', PAPER = 'rgb(232, 241, 238)'; // 주문 1119-2026 — 넘어간 옛 쪽 종이도 수채화 #E8F1EE
   const lookOld = p => p.evaluate(() => {
     const cs = e => getComputedStyle(e), de = document.documentElement, vw = innerWidth, vh = innerHeight;
     const L = c => { const m = /rgba?\(([^)]+)\)/.exec(c); if (!m) return null; const v = m[1].split(',').map(x => parseFloat(x)); if (v.length > 3 && v[3] < 0.5) return null; const q = v.slice(0, 3).map(x => x / 255).map(x => (x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)); return 0.2126 * q[0] + 0.7152 * q[1] + 0.0722 * q[2]; };
