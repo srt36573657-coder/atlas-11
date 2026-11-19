@@ -1058,7 +1058,7 @@ html.sj-sub #su > main.sj-pre { display: none; }
 
 /* ── 샘플 다 「창호지 한 장」 판(주문 1117-1049 · 사장님 2026-11-17(마카오) 09:49 「이걸로 선택했다 처음 부터 끝까지 다 작업한다」 · 09:51 「싸이트 만드는 속도를 3배 빠르게 해서 한시간 이내에 모두 만들어라」)
    밝은 한지 바닥(옅은 섬유 결) · 떠 있는 창호지 칸 · 강조는 먹 한 색 · 글은 프리텐다드(/app/fonts.css) · 제목 붓 글씨는 모든 글자가 든 동해 독도 · 떠 있는 먹 아래 탭 · 먹 그림은 그대로 ── */
-html.sj-on { --sj-sans: 'Pretendard Variable', 'Noto Sans KR', 'Noto Sans CJK KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; --nw-sheet: #FCFEFD; --nw-floor: #F3F8F6;
+html.sj-on { --sj-sans: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard Variable', 'Noto Sans KR', 'Noto Sans CJK KR', 'Malgun Gothic', sans-serif; /* 주문 1120-0226 — 애플 기기는 기기 글꼴이 먼저(글꼴 파일을 받지 않음) · 그 밖은 프리텐다드(사장님 2026-10-22 「구글과 잡스라면 어떤 폰트」 · 「최고를 선택해서」 — 옛 판 app.css 와 같은 차례) */ --nw-sheet: #FCFEFD; --nw-floor: #F3F8F6;
   --nw-lift: inset 0 1px 0 #FFFFFF, 0 12px 30px -18px rgba(27, 58, 68, .30), 0 2px 8px -4px rgba(27, 58, 68, .09); }
 html.sj-on:has(#su) body { background-color: #F3F8F6; background-image: repeating-linear-gradient(103deg, rgba(80, 110, 115, .035) 0 1px, transparent 1px 7px), repeating-linear-gradient(17deg, rgba(80, 110, 115, .025) 0 1px, transparent 1px 11px); color: #1B3A44; }
 html.sj-on #su { font-family: var(--sj-sans); font-weight: 500; color: #1B3A44; }

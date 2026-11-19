@@ -92,8 +92,12 @@ async function route() {
   }
 }
 try { if (localStorage.getItem('su-big-text') === '1') document.documentElement.classList.add('su-lg'); } catch { /* 저장소 없음 */ }
+/** 글꼴 표(프리텐다드 · 압축해도 4만 바이트)는 첫 화면을 그린 뒤에 붙임(주문 1120-0226 「첫 화면을 더 가볍게 해서 더 빨리 뜨게」 — 그 전에는 기기 글꼴 · 받으면 바뀜 font-display: swap)
+ *  애플 기기(아이폰 · 아이패드 · 맥)는 글꼴 차례 맨 앞이 기기 글꼴이라 프리텐다드를 쓰지 않음 → 글꼴 표도 받지 않음(사장님 2026-10-22 「애플 기기 = 애플 글꼴 · 그 밖 = 프리텐다드」) */
+const APPLE = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent ?? '');
+const fontsLater = () => { if (APPLE || document.querySelector('link[href="/app/fonts.css"]')) return; requestAnimationFrame(() => setTimeout(() => { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/app/fonts.css'; document.head.append(l); }, 0)); };
 window.addEventListener('hashchange', route);
-route();
+route().finally(fontsLater);
 /* 새 판이 올라가면 스스로 새로 고침(주문 1708 · 사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어!」 — 휴대폰이 전에 열어 둔 화면을 새로 받지 않고 그대로 보여 줌)
    판 표 /su/version.json = 올릴 때마다 새 표(scripts/atlas11/package.mjs 가 씀 · 저장소에는 「dev」) · 처음 연 때의 표를 기억
    화면이 다시 보일 때(다른 앱에서 돌아옴 · 뒤로 가기로 저장된 화면이 다시 뜸) 표를 새로 받아 바뀌었으면 한 번 새로 고침 · 같거나 못 받으면 그대로(읽는 중에는 바꾸지 않음) */
