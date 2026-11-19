@@ -1,32 +1,32 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-11-19T16:55:03.365Z",
+ "at": "2026-11-19T18:43:57.374Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "ref": "musk-1023b",
- "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
- "run": 44569006176,
- "wallSeconds": 782,
+ "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+ "run": 44588876845,
+ "wallSeconds": 681,
  "data": {
   "from": "live",
   "asOf": "2026-11-19",
-  "built": "2026-11-19T16:40:58.873Z",
+  "built": "2026-11-19T18:05:34.088Z",
   "seconds": 32
  },
  "pages": [
   {
    "name": "chx",
    "code": 0,
-   "seconds": 190,
+   "seconds": 192,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 33,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 35,
    "data": "live 2026-11-19"
   },
   {
    "name": "co",
    "code": 0,
-   "seconds": 137,
+   "seconds": 105,
    "shards": 3,
    "codes": [
     0,
@@ -34,28 +34,28 @@
     0
    ],
    "shardSeconds": [
-    136,
-    137,
-    137
+    105,
+    105,
+    105
    ],
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
    "data": "live 2026-11-19",
-   "build": 36
+   "build": 30
   },
   {
    "name": "cond",
    "code": 0,
-   "seconds": 55,
+   "seconds": 43,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 34,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 43,
    "data": "live 2026-11-19"
   },
   {
    "name": "en",
    "code": 0,
-   "seconds": 226,
+   "seconds": 231,
    "shards": 12,
    "codes": [
     0,
@@ -72,55 +72,55 @@
     0
    ],
    "shardSeconds": [
-    226,
-    224,
-    224,
     201,
-    201,
-    205,
-    215,
-    213,
-    212,
-    205,
+    199,
+    200,
+    200,
+    200,
+    204,
+    207,
+    204,
     203,
-    204
+    229,
+    231,
+    230
    ],
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
    "data": "live 2026-11-19",
-   "build": 36
+   "build": 40
   },
   {
    "name": "essence",
    "code": 0,
-   "seconds": 7,
+   "seconds": 8,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 33,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 35,
    "data": "live 2026-11-19"
   },
   {
    "name": "gdr",
    "code": 0,
-   "seconds": 217,
+   "seconds": 167,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 34,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 43,
    "data": "live 2026-11-19"
   },
   {
    "name": "gift",
    "code": 0,
-   "seconds": 177,
+   "seconds": 176,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 33,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 35,
    "data": "live 2026-11-19"
   },
   {
    "name": "grow",
    "code": 0,
-   "seconds": 61,
+   "seconds": 68,
    "shards": 3,
    "codes": [
     0,
@@ -128,12 +128,12 @@
     0
    ],
    "shardSeconds": [
-    61,
-    61,
-    61
+    68,
+    68,
+    68
    ],
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
    "data": "live 2026-11-19",
    "build": 36
   },
@@ -142,59 +142,59 @@
    "code": 0,
    "seconds": 17,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 33,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 35,
    "data": "live 2026-11-19"
   },
   {
    "name": "hold",
    "code": 0,
-   "seconds": 97,
+   "seconds": 85,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 34,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 43,
    "data": "live 2026-11-19"
   },
   {
    "name": "jinhwa",
    "code": 0,
-   "seconds": 47,
+   "seconds": 45,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 32,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 36,
    "data": "live 2026-11-19"
   },
   {
    "name": "kakao",
    "code": 0,
-   "seconds": 138,
+   "seconds": 127,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 34,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 43,
    "data": "live 2026-11-19"
   },
   {
    "name": "misc",
    "code": 0,
-   "seconds": 41,
+   "seconds": 40,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 32,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 36,
    "data": "live 2026-11-19"
   },
   {
    "name": "next",
    "code": 0,
-   "seconds": 192,
+   "seconds": 170,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 34,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 43,
    "data": "live 2026-11-19"
   },
   {
    "name": "past",
    "code": 0,
-   "seconds": 173,
+   "seconds": 216,
    "shards": 3,
    "codes": [
     0,
@@ -202,19 +202,19 @@
     0
    ],
    "shardSeconds": [
-    170,
-    170,
-    173
+    214,
+    213,
+    216
    ],
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
    "data": "live 2026-11-19",
-   "build": 33
+   "build": 34
   },
   {
    "name": "range",
    "code": 0,
-   "seconds": 82,
+   "seconds": 90,
    "shards": 3,
    "codes": [
     0,
@@ -222,40 +222,40 @@
     0
    ],
    "shardSeconds": [
-    81,
-    82,
-    82
+    88,
+    90,
+    89
    ],
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
    "data": "live 2026-11-19",
-   "build": 30
+   "build": 33
   },
   {
    "name": "rivals",
    "code": 0,
    "seconds": 65,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 32,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 36,
    "data": "live 2026-11-19"
   },
   {
    "name": "roman",
    "code": 0,
-   "seconds": 241,
+   "seconds": 243,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 35,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 32,
    "data": "live 2026-11-19"
   },
   {
    "name": "sage",
    "code": 0,
-   "seconds": 112,
+   "seconds": 113,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 32,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 36,
    "data": "live 2026-11-19"
   },
   {
@@ -263,44 +263,44 @@
    "code": 0,
    "seconds": 111,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 32,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 36,
    "data": "live 2026-11-19"
   },
   {
    "name": "su",
    "code": 0,
-   "seconds": 261,
+   "seconds": 264,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 35,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 30,
    "data": "live 2026-11-19"
   },
   {
    "name": "theme",
    "code": 0,
-   "seconds": 145,
+   "seconds": 146,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 33,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 35,
    "data": "live 2026-11-19"
   },
   {
    "name": "white",
    "code": 0,
-   "seconds": 59,
+   "seconds": 60,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 35,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 30,
    "data": "live 2026-11-19"
   },
   {
    "name": "why",
    "code": 0,
-   "seconds": 53,
+   "seconds": 54,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 33,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 35,
    "data": "live 2026-11-19"
   },
   {
@@ -308,8 +308,8 @@
    "code": 0,
    "seconds": 61,
    "mode": "local",
-   "sha": "cce9b1cb08665b275c8deb6a80213de0c1e1c7cd",
-   "build": 32,
+   "sha": "940aed85fd140111d071d13ae80f90d4e28a1d32",
+   "build": 36,
    "data": "live 2026-11-19"
   }
  ],
