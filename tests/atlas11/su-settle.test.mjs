@@ -342,3 +342,11 @@ test('쌓인 값 · 날마다 기록(주문 1119-0829 「누적값을 알수가 
   assert.ok(sm.includes("if (keep && T0 !== null && broken === 0)") && sm.includes('fs.appendFileSync(trackF'), '올리기 작업만 · 지문이 끊기면 덧붙이지 않음 · 덧붙이기만');
   assert.ok(kk.includes('TK ? trackChart(TK, K, nameOf) : null') && kk.includes('trackSpark(TK, x.key)') && kk.includes("'처음 넣은 100원이 날마다 얼마가 됐는지 이었어요.'"), '쪽 — 쌓인 값 꺾은선(기본 그림) · 줄마다 작은 꺾은선');
 });
+
+test('이 꾀의 쌓인 값 꺾은선(주문 1119-1005 「꾀 쪽에도 그 꾀의 쌓인 값 꺾은선」) — 꾀 쪽 제4장 · 정산 쪽과 같은 그림(trackSvg) · 먹 선 = 이 꾀 · 산 셈이 없으면 그리지 않음', () => {
+  const kk = rd('site/su/su-sonja-kkoe.js');
+  assert.ok(kk.includes('function trackSvg(TK, hi)') && kk.includes("trackSvg(TK, [[k, 'sj-trkt']])") && kk.includes("trackSvg(TK, [...(low ? [[low, 'sj-trkl']] : []), ...top.map(k => [k, 'sj-trkt'])])"), '두 쪽이 같은 그림 함수');
+  assert.ok(kk.includes('const TK = ST ? trackOf(D, ST.K) : null;') && kk.includes('TK ? kkoeTrack(TK, k) : null'), '꾀 쪽 — 정산과 같은 셈(settle36 · trackOf)');
+  assert.ok(kk.includes("'이 꾀의 100원이 날마다 얼마가 됐는지 이었어요.'") && kk.includes("'처음 넣은 100원이 지금 ' + w100(v / 100 - 1) + '이에요.'"), '꾀 쪽 글');
+  assert.ok(/if \(n < 2 \|\| v == null \|\| TK\.w\.filter/.test(kk), '산 셈이 없거나 하루치뿐이면 그리지 않음');
+});

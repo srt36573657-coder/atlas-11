@@ -103,29 +103,42 @@ export function trackOf(D, K) {
   days.push(today); w.push(K36.map(k => { const x = by.get(k); return x && x.n && x.cost > 0 ? 100 * x.val / x.cost : null; }));
   return {days, w};
 }
-/** 쌓인 값 꺾은선 — 먹 진한 선 = 지금 위 세 꾀 · 남빛 선 = 지금 맨 아래 꾀 · 옅은 선 = 나머지 · 점선 = 처음 넣은 100원 · 글은 그림 밖(크게) */
-function trackChart(TK, K, nameOf) {
-  const W = 340, H = 200, PX = 10, PT = 12, PB = 12, n = TK.days.length, all = TK.w.flat().filter(v => v != null);
-  const lo = Math.min(100, ...all), hi = Math.max(100, ...all), pad = Math.max(0.15, (hi - lo) * 0.1), y0 = lo - pad, y1 = hi + pad;
+/** 쌓인 값 꺾은선 그림 — hi = [[꾀, 'sj-trkt'(먹 진한 선) | 'sj-trkl'(남빛 선)]…] · 나머지 옅은 선 · 점선 = 처음 넣은 100원 · 강조 선 끝 점 */
+function trackSvg(TK, hi) {
+  const W = 340, H = 200, PX = 10, PT = 12, PB = 12, n = TK.days.length, all = TK.w.flat().filter(v => v != null), on = hi.map(([k]) => k);
+  const lo = Math.min(100, ...all), up = Math.max(100, ...all), pad = Math.max(0.15, (up - lo) * 0.1), y0 = lo - pad, y1 = up + pad;
   const x = i => PX + (W - 2 * PX) * i / (n - 1), y = v => PT + (H - PT - PB) * (1 - (v - y0) / (y1 - y0)), f = v => Math.round(v * 10) / 10;
-  const rated = K.filter(g => rateOf(g) !== null), top = rated.slice(0, 3).map(g => g.key), low = rated.length > 3 ? rated[rated.length - 1].key : null;
   const pts = j => TK.w.map((r, i) => (r[j] == null ? null : [f(x(i)), f(y(r[j]))])).filter(Boolean);
   const line = (j, cls) => { const p = pts(j); return p.length > 1 ? s('polyline', {points: p.map(q => q.join(',')).join(' '), class: cls}) : null; };
   const g = s('svg', {class: 'sj-trk', viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true', focusable: 'false'});
   g.append(s('path', {d: `M${PX} ${f(y(100))}H${W - PX}`, class: 'sj-trk0'}));
-  K36.forEach((k, j) => { if (!top.includes(k) && k !== low) { const p = line(j, 'sj-trkf'); if (p) g.append(p); } });
-  for (const [k, cls] of [...(low ? [[low, 'sj-trkl']] : []), ...top.map(k => [k, 'sj-trkt'])]) {
-    const j = K36.indexOf(k), p = line(j, cls), e = pts(j).at(-1);
-    if (p) g.append(p, s('circle', {cx: e[0], cy: e[1], r: 4.2, class: cls + 'e'}));
-  }
+  K36.forEach((k, j) => { if (!on.includes(k)) { const p = line(j, 'sj-trkf'); if (p) g.append(p); } });
+  for (const [k, cls] of hi) { const j = K36.indexOf(k), p = line(j, cls), e = pts(j).at(-1); if (p) g.append(p, s('circle', {cx: e[0], cy: e[1], r: 4.2, class: cls + 'e'})); }
+  return g;
+}
+const trackDays2 = TK => h('p', {class: 'sj-trkd', 'aria-hidden': 'true'}, h('span', {text: mday(TK.days[0])}), h('span', {text: mday(TK.days[TK.days.length - 1])}));
+/** 쌓인 값 꺾은선(정산 쪽) — 먹 진한 선 = 지금 위 세 꾀 · 남빛 선 = 지금 맨 아래 꾀 · 옅은 선 = 나머지 · 점선 = 처음 넣은 100원 · 글은 그림 밖(크게) */
+function trackChart(TK, K, nameOf) {
+  const n = TK.days.length, rated = K.filter(g => rateOf(g) !== null), top = rated.slice(0, 3).map(g => g.key), low = rated.length > 3 ? rated[rated.length - 1].key : null;
   const now = k => TK.w[n - 1][K36.indexOf(k)], say = k => '「' + nameOf(k) + '」 100원이 ' + w100(now(k) / 100 - 1);
   return h('figure', {class: 'sj-trkf-box', 'data-days': String(n), 'aria-label': '쌓인 값 꺾은선 · ' + mday(TK.days[0]) + '부터 ' + mday(TK.days[n - 1]) + '까지 · ' + [...top, low].filter(Boolean).map(say).join(' · ')},
     h('p', {class: 'sj-trkh', text: '처음 넣은 100원이 날마다 얼마가 됐는지 이었어요.'}),
-    g, h('p', {class: 'sj-trkd', 'aria-hidden': 'true'}, h('span', {text: mday(TK.days[0])}), h('span', {text: mday(TK.days[n - 1])})),
+    trackSvg(TK, [...(low ? [[low, 'sj-trkl']] : []), ...top.map(k => [k, 'sj-trkt'])]), trackDays2(TK),
     h('ul', {class: 'sj-trkg'}, ...top.map(k => h('li', {'data-m': 'top'}, h('i', {class: 'sj-trks sj-trks-t', 'aria-hidden': 'true'}), h('span', {text: say(k)}))),
       low ? h('li', {'data-m': 'low'}, h('i', {class: 'sj-trks sj-trks-l', 'aria-hidden': 'true'}), h('span', {text: say(low)})) : null),
     h('p', {class: 'sj-trkn', text: '진한 먹 선은 지금 위 세 꾀예요. 남빛 선은 지금 맨 아래 꾀예요.'}),
     h('p', {class: 'sj-trkn', text: '옅은 선은 나머지 꾀예요. 점선은 처음 넣은 100원이에요.'}));
+}
+/** 이 꾀의 쌓인 값 꺾은선(꾀 쪽 제4장 · 주문 1119-1005 · 사장님 2026-11-19(마카오) 10:05 「응」 — 물음 「꾀 쪽에도 그 꾀의 쌓인 값 꺾은선을 보여 줄까요?」)
+ *  먹 진한 선 = 이 꾀 · 옅은 선 = 다른 꾀 서른다섯 · 점선 = 처음 넣은 100원 · 이 꾀에 산 셈이 없으면 그리지 않음 */
+export function kkoeTrack(TK, k) {
+  const n = TK?.days?.length ?? 0, v = n ? TK.w[n - 1][K36.indexOf(k)] : null;
+  if (n < 2 || v == null || TK.w.filter(r => r[K36.indexOf(k)] != null).length < 2) return null;
+  return h('figure', {class: 'sj-trkf-box sj-ktrk', 'data-days': String(n), 'aria-label': '이 꾀의 쌓인 값 꺾은선 · ' + mday(TK.days[0]) + '부터 ' + mday(TK.days[n - 1]) + '까지 · 처음 넣은 100원이 지금 ' + w100(v / 100 - 1)},
+    h('p', {class: 'sj-trkh', text: '이 꾀의 100원이 날마다 얼마가 됐는지 이었어요.'}),
+    trackSvg(TK, [[k, 'sj-trkt']]), trackDays2(TK),
+    h('p', {class: 'sj-trkv', text: '처음 넣은 100원이 지금 ' + w100(v / 100 - 1) + '이에요.'}),
+    h('p', {class: 'sj-trkn', text: '먹 선이 이 꾀예요. 옅은 선은 다른 꾀예요. 점선은 처음 넣은 100원이에요.'}));
 }
 /** 꾀 줄마다 쌓인 값 작은 꺾은선(이미 있는 「한 달 꺾은선」 모양 그대로 — 처음 100원 점선 · 끝 점 늘면 먹 · 줄면 남빛) */
 const trackSpark = (TK, k) => { const sp = TK ? TK.w.map(r => r[K36.indexOf(k)]).filter(v => v != null) : []; return sp.length > 1 ? spark(sp, 72, 26, 'sj-stsp') : null; };
@@ -228,7 +241,8 @@ export async function vKkoe(X, k) {
   const RB = rankOf(T), r = RB[k] ?? null, sun = okSun(T?.sun) ? T.sun : null, H = sun?.hist ?? null;
   const L = (Array.isArray(g.lists[k]) ? g.lists[k] : []).filter(c => CODE.test(String(c?.code ?? ''))).slice(0, 7), bd = mday(g.asOf?.board), dd = mday(g.asOf?.data) ?? bd;
   const anySp = L.some(c => sp36(g, c.code)), vol = g.by?.[k] === 'vol';
-  const ST = D && Array.isArray(D.buys) ? settle36(D) : null, me = ST?.K.find(x => x.key === k) ?? null, meAt = me ? ST.K.indexOf(me) + 1 : null;
+  const ST = D && Array.isArray(D.buys) ? settle36(D) : null, me = ST?.K.find(x => x.key === k) ?? null, meAt = me ? ST.K.indexOf(me) + 1 : null
+  const TK = ST ? trackOf(D, ST.K) : null; // 이 꾀의 쌓인 값(주문 1119-1005)
   const order = sun ? sun.rank.map(x => x.k) : K36, at = order.indexOf(k), prev = at > 0 ? order[at - 1] : null, nxt = at >= 0 && at < order.length - 1 ? order[at + 1] : null;
   const kids = [
     pageHead({step: 2, dd: bd, kick: '삼십육계 제' + kNo(k) + '계 · ' + g.set[k], h1: g.name[k], seal: r ? '차례 ' + r.i : '꾀', sealDn: sun?.land === 'fall',
@@ -263,6 +277,7 @@ export async function vKkoe(X, k) {
       h('p', {class: 'sj-lead', text: (mday(ST.rows.map(x => x.day).sort()[0]) ? mday(ST.rows.map(x => x.day).sort()[0]) + '부터 ' : '') + '날마다 이 꾀가 고른 회사를 10주씩 샀다고 치고 셌어요. 진짜 돈이 아니에요.'}),
       h('dl', {class: 'sj-money'}, h('dt', {text: '산 돈'}), h('dd', {text: won(me.cost)}), h('dt', {text: '지금'}), h('dd', {text: me.n ? won(me.val) : SAID.none})),
       h('p', {class: 'sj-res', 'data-st': me.st}, shapeI(me.st), h('b', {text: resText(me)})),
+      TK ? kkoeTrack(TK, k) : null, // 이 꾀의 쌓인 값 꺾은선(주문 1119-1005)
       meAt && rateOf(me) !== null ? h('p', {class: 'sj-note', text: '정산 표에서 서른여섯 꾀 가운데 ' + meAt + '번째예요. 돈이 많이 늘어난 꾀가 위에 있어요.'}) : null,
       goLink('#/r/t', '서른여섯 꾀 정산 보기'),
       endSeal('셈')) : null,

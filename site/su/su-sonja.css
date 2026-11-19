@@ -1203,3 +1203,5 @@ html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #5B4F43
 #su .sj-page .sj-trks-l { background: #23406B; }
 #su .sj-page .sj-trkn { margin-top: 6px; font-size: 1.0625rem; line-height: 1.5; }
 #su .sj-page .sj-stsp { flex: none; }
+/* 이 꾀의 쌓인 값 꺾은선(주문 1119-1005) — 꾀 쪽 제4장 · 먹 선 = 이 꾀 · 옅은 선 = 다른 꾀 */
+#su .sj-page .sj-trkv { margin-top: 8px; font-size: 1.1875rem; line-height: 1.5; font-weight: 800; }
