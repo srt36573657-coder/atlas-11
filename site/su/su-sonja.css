@@ -1219,3 +1219,7 @@ html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #5B4F43
 #su .sj-page .sj-ydt { margin-top: 10px; font-size: 1.1875rem; line-height: 1.55; font-weight: 800; }
 #su .sj-page .sj-ydt2 { margin-top: 4px; font-size: 1.1875rem; line-height: 1.55; font-weight: 700; }
 #su .sj-page .sj-ydn { margin-top: 6px; font-size: 1.0625rem; line-height: 1.5; }
+/* 꾀 칸 쌓인 값 작은 꺾은선(주문 1119-1317) — 누르지 않아도 보임 · 이미 있는 「한 달 꺾은선」 모양 */
+#su .sj-page .sj-ktr { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 1.0625rem; line-height: 1.45; font-weight: 700; }
+#su .sj-page .sj-ktr .sj-ktrsp { flex: none; }
+#su .sj-page .sj-ktrv { min-width: 0; }

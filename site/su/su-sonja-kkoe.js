@@ -13,7 +13,7 @@ import {hardLeft} from '/su/su-word.js';
 import {topBar, stepTag, endSec, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {STORY36, ACTS, STORY_TAG} from '/su/su-sonja-story.js'; // 그림 속 이야기 네 막(주문 1117-0102 — 36초짜리 한 편 · 막마다 한 줄 · 감정)
-import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin, funnel36, eqBox} from '/su/su-sonja.js';
+import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin, funnel36, eqBox, trSpark} from '/su/su-sonja.js';
 import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날의 바탕 글(su21_s36.py 그대로)
 import {kkoePic, ridgePic, heroPic, brushBar, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 손무의 이야기: 제3장 꾀를 펼치다 · 제4장 성을 살피다 · 장부 · 병서)
 import {kkoeTile} from '/su/su-sonja.js';
@@ -97,7 +97,7 @@ export function trackOf(D, K) {
   const T = D?.tr, today = typeof D?.asOf === 'string' ? D.asOf : null;
   if (!today || !T || !Array.isArray(T.days) || !Array.isArray(T.w) || T.days.length !== T.w.length) return null;
   const days = [], w = [];
-  T.days.forEach((d, i) => { const x = T.w[i]; if (typeof d === 'string' && d < today && Array.isArray(x) && x.length === 36) { days.push(d); w.push(x.map(v => (Number.isFinite(v) && v > 0 ? v / 100 : null))); } });
+  T.days.forEach((d, i) => { const x = T.w[i]; if (typeof d === 'string' && d < today && Array.isArray(x) && x.length === 36) { days.push(d); w.push(x.map(v => (Number.isFinite(v) && v > 0 ? v / 1e4 : null))); } }); // w = 100원이 ○원 × 10000(주문 1119-1317)
   if (!days.length) return null;
   const by = new Map(K.map(x => [x.key, x]));
   days.push(today); w.push(K36.map(k => { const x = by.get(k); return x && x.n && x.cost > 0 ? 100 * x.val / x.cost : null; }));
@@ -212,6 +212,7 @@ function kkoeRow(g, k, r, extra = null) {
       h('span', {class: 'sj-kno', text: '제' + kNo(k) + '계'}),
       h('span', {class: 'sj-kt'}, h('b', {text: g.name[k]}), h('span', {class: 'sj-khan', text: g.han[k]})),
       r ? h('span', {class: 'sj-krk', text: r.i + '번째'}) : null, h('i', {'aria-hidden': 'true', text: '›'})), // 「○위」 대신 「○번째」(쓰지 않을 말 「1위」 — 수익 순위로 읽히지 않게)
+    trSpark(g, k), // 쌓인 값 작은 꺾은선 — 누르지 않아도(주문 1119-1317)
     h('p', {class: 'sj-kmean', text: g.mean[k]}), extra);
 }
 

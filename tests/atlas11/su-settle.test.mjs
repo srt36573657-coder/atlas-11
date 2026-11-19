@@ -332,7 +332,7 @@ test('쌓인 값 · 날마다 기록(주문 1119-0829 「누적값을 알수가 
   const st = trackSite(s1.lines, TD2);
   assert.deepEqual(st.days, [D1, D2, D3, D4], '적은 줄 + 아직 안 적은 날');
   assert.equal(st.sealed, D3);
-  assert.deepEqual([st.w[0][0], st.w[1][0], st.w[3][1]], [10000, 11000, 12000], '100원이 ○원 × 100(적은 줄 값 그대로 · 둘째 날 110원)');
+  assert.deepEqual([st.w[0][0], st.w[1][0], st.w[3][1]], [1000000, 1100000, 1200000], '100원이 ○원 × 10000(적은 줄 값 그대로 · 둘째 날 110원)');
   assert.deepEqual(trackAll(s1.lines, TD2).map(d => d.day), [D1, D2, D3, D4]);
   assert.deepEqual(readTrack('/없는/파일.jsonl'), []);
   // 저장소 기록이 있으면 지문이 이어져 있어야 함(누가 고치면 이 시험이 막음)
@@ -368,4 +368,13 @@ test('어제와 오늘 · 첫 쪽 기록(주문 1119-1151 「어제의 주식상
   assert.ok(sj.includes('ydBox(T, x), // 어제와 오늘') && sj.includes('export function ydOf(T, x)') && sj.includes("'어제와 ' + now"), '첫 쪽 — 시장을 살피다 칸 안 · 지금 시장 바로 아래');
   assert.ok(sj.includes("q.day < x.day") && sj.includes("pv.pick"), '어제 꾀 = 기록(오늘보다 앞선 마지막 날) · 없으면 같은 법으로 다시 센 것');
   assert.ok(sp.includes("'prev': prev") && sp.includes('rng2 = np.random.default_rng(1119)'), '형세 자료 prev — 따로 굴린 수(오늘 값을 바꾸지 않음)');
+});
+
+test('꾀 칸 쌓인 값 작은 꺾은선(주문 1119-1317 「꾀 칸을 보면 눌러야 꺽기 그래프가 나와 바로 보이게 해」) — 꾀 칸 자료 tr · 첫 쪽 꾀 셋 · 꾀 칸 · 꾀 모음 · 누르지 않아도', () => {
+  const sm = rd('scripts/atlas11/next/su21_settle.mjs'), sj = rd('site/su/su-sonja.js'), kk = rd('site/su/su-sonja-kkoe.js'), cs = rd('scripts/atlas11/next/check_su.mjs');
+  assert.ok(sm.includes("const trK = {days: site.tr.days, w: site.tr.w};") && sm.includes('s36.tr = trK; M.n36 = M.n36 || 1;'), '꾀 칸 자료에 정산 쪽과 같은 값');
+  assert.ok(sj.includes('export const trSpark = (g, k)') && (sj.match(/trSpark\(g, k\), \/\/ 쌓인 값 작은 꺾은선/g) ?? []).length === 2, '첫 쪽 — 꾀 셋 · 꾀 칸 카드 둘 다');
+  assert.ok(kk.includes('trSpark(g, k), // 쌓인 값 작은 꺾은선') && kk.includes('funnel36, eqBox, trSpark}'), '꾀 모음 · 회사 쪽 꾀 한 줄');
+  assert.ok(/!\(j >= 0 && j < 36\)/.test(sj) && sj.includes('return sp.length > 1 ? sp : null;'), '이틀 넘게 있어야 그림 · 꾀 번호 밖은 그리지 않음');
+  assert.ok(cs.includes("p.on('response', r => { const st = r.status(); if (st >= 400) bad4.push(") && cs.includes("' · 막힌 응답 ' + bad4.slice(0, 3).join(' / ')"), '㉕ 막힌 응답 주소를 글에(걸림 판정은 그대로)');
 });

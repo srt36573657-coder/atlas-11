@@ -287,6 +287,13 @@ function calmBox(g) {
 export const WIN3_RULE = 'win3-v1';
 export const win3Of = S => (S?.win3?.rule === WIN3_RULE && Array.isArray(S.win3.ks) ? S.win3.ks.filter(k => typeof k === 'string' && /^g\d\d$/.test(k)).slice(0, 3) : null);
 export const okWinR = r => !!r && Number.isInteger(r.n) && r.n > 0 && Number.isInteger(r.lose) && r.lose >= 0 && r.lose <= r.n && fin(r.exp) && fin(r.tail) && fin(r.tail7);
+/** 꾀마다 쌓인 값 작은 꺾은선(주문 1119-1317 · 사장님 2026-11-19(마카오) 13:17 「꾀 칸을 보면 눌러야 꺽기 그래프가 나와 바로 보이게 해」)
+ *  꾀 칸 자료 g.tr(정산 쪽과 같은 값 — 날마다 기록 · 처음 넣은 100원) · 이미 있는 「한 달 꺾은선」 모양 · 이틀 넘게 있어야 그림 · 누르지 않아도 보임 */
+export const trOf = (g, k) => { const T = g?.tr, j = Number(String(k).slice(1)) - 1;
+  if (!T || !Array.isArray(T.days) || !Array.isArray(T.w) || T.days.length !== T.w.length || !(j >= 0 && j < 36)) return null;
+  const sp = T.w.map(r => (Array.isArray(r) && Number.isFinite(r[j]) && r[j] > 0 ? r[j] / 1e4 : null)).filter(v => v != null); return sp.length > 1 ? sp : null; };
+export const trSpark = (g, k) => { const sp = trOf(g, k); if (!sp) return null; const v = sp[sp.length - 1];
+  return h('p', {class: 'sj-ktr', 'data-dir': v > sp[0] ? 'up' : v < sp[0] ? 'dn' : 'eq'}, spark(sp, 88, 28, 'sj-ktrsp'), h('span', {class: 'sj-ktrv', text: '정산에서 100원이 ' + w100(v / 100 - 1) + '이 됐어요'})); };
 function winBox(g, S, RB) {
   const ks = win3Of(S); if (!ks) return null;
   const n = ks.length, KN3 = ['', '하나', '둘', '셋'];
@@ -300,6 +307,7 @@ function winBox(g, S, RB) {
           h('span', {class: 'sj-w3n', text: String(i + 1)}),
           h('span', {class: 'sj-w3b'}, h('b', {class: 'sj-w3t', text: g.name?.[k] ?? k}), h('span', {class: 'sj-w3h', text: g.han?.[k] ?? ''})),
           h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})),
+        trSpark(g, k), // 쌓인 값 작은 꺾은선 — 누르지 않아도(주문 1119-1317)
         h('p', {class: 'sj-w3m', text: g.mean?.[k] ?? ''}),
         ok ? h('p', {class: 'sj-w3r', text: '100번 가운데 ' + p100(r.lose / r.n) + '번 잃었어요. 아무 회사나 고르면 ' + p100(r.exp / r.n) + '번 잃었어요.'}) : null,
         ok ? h('p', {class: 'sj-w3r2', text: '가장 나빴던 때는 100원이 ' + w100(r.tail) + '이 됐어요. 아무 회사나 고르면 ' + w100(r.tail7) + '이 됐어요.'}) : null); }))
@@ -316,6 +324,7 @@ function trickSec(g, T) {
       meanCap(PIC[k]), kkoeTile(k, g.name?.[k] ?? k), // 그림 뜻 한 줄 → 꾀 그림(주문 1116-1313)
       h('a', {class: 'sj-tkh', href: '#/k/' + k, 'aria-label': (r ? '차례 ' + r.i + ' · ' : '') + (g.name?.[k] ?? k) + ' · 이 꾀 자세히'}, r ? h('span', {class: 'sj-rk', text: String(r.i)}) : null,
         h('p', {class: 'sj-tn'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})), h('i', {class: 'sj-tkgo', 'aria-hidden': 'true', text: '›'})), // 꾀 이름을 누르면 그 꾀 쪽(주문 1115-2328)
+      trSpark(g, k), // 쌓인 값 작은 꺾은선 — 누르지 않아도(주문 1119-1317)
       ...rec36(r),
       L.length ? h('ul', {class: 'sj-chips'}, ...L.map(c => chip(g, c, bd, false))) : h('p', {class: 'sj-tnone', text: none36(g.why?.[k])}), // 회사 단추는 바로 보임(사장님 2026-11-16 01:56 「지금 7곳이라고 클릭해야 나오잖아 바로 종목들이 나오개 해」)
       h('details', {class: 'sj-drawer sj-cos'}, h('summary', {}, h('span', {class: 'sj-s1', text: '고르는 법'}), chev()), // 긴 풀이만 접은 칸(주문 1116-0118)

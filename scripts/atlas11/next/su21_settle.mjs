@@ -195,9 +195,9 @@ export const trackDiff = (lines, days) => { const m = new Map(days.map(d => [d.d
 export const readTrack = f => { try { return fs.readFileSync(f, 'utf8').split('\n').filter(x => x.trim()).map(x => JSON.parse(x)); } catch (e) { return e?.code === 'ENOENT' ? [] : null; } };
 /** 적은 줄 + 그 뒤 날은 지금 센 값(아직 안 적은 날 · 올리기 작업이 아닐 때) */
 export const trackAll = (lines, days) => { const end = lines.length ? lines[lines.length - 1].day : ''; return [...lines, ...days.filter(d => d.day > end)]; };
-/** 화면 자료 tr — days · w(100원이 ○원 × 100 · 정수 · 산 셈 없으면 null) · sealed(마지막 적은 날) */
+/** 화면 자료 tr — days · w(100원이 ○원 × 10000 · 정수 · 산 셈 없으면 null — 쪽이 센 오늘 값과 소수 첫째 자리까지 같게(주문 1119-1317)) · sealed(마지막 적은 날) */
 export const trackSite = (lines, days) => { const A = trackAll(lines, days);
-  return {days: A.map(d => d.day), w: A.map(d => d.c.map((c, j) => (c && d.v[j] != null ? Math.round(d.v[j] / c * 1e4) : null))), sealed: lines.length ? lines[lines.length - 1].day : null}; };
+  return {days: A.map(d => d.day), w: A.map(d => d.c.map((c, j) => (c && d.v[j] != null ? Math.round(d.v[j] / c * 1e6) : null))), sealed: lines.length ? lines[lines.length - 1].day : null}; };
 const kstMin = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 16) + '+09:00';
 
 /** 첫 쪽 기록(주문 1119-1151 · 사장님 2026-11-19(마카오) 11:51 「어제의 주식상황은 이랬고 오늘의 주식상황은 이렇게 변화가 있다 … 기록을 해주어야 하고 … 어제는 이런 병법으로 대처를 했고
@@ -276,6 +276,9 @@ function main() {
   // 며칠째(주문 1114-0151) — 서른여섯 꾀(su21-s36.json) · 조용한 힘(su21.json)에 회사마다 days · found · since
   const trade = calF ? readJson(calF)?.dates ?? [] : [], R = runsOf(book, trade, board.asOf), w = (f, o) => { const tmp = f + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(o)); fs.renameSync(tmp, f); };
   const M = markRuns(R, s36, S, board.asOf);
+  // 꾀 칸 쌓인 값(주문 1119-1317 · 13:17 「꾀 칸을 보면 눌러야 꺽기 그래프가 나와 바로 보이게 해」) — 첫 쪽 · 꾀 모음 꾀 칸이 누르지 않아도 그리게 꾀 칸 자료에 tr(정산 쪽과 같은 값)
+  const trK = {days: site.tr.days, w: site.tr.w};
+  if (s36 && typeof s36 === 'object' && JSON.stringify(s36.tr ?? null) !== JSON.stringify(trK)) { s36.tr = trK; M.n36 = M.n36 || 1; }
   if (M.n36 || M.no) w(path.join(su, 'su21-s36.json'), s36);
   // 첫 쪽 기록(주문 1119-1151) — 올리기 작업만 · 장이 끝난 날만 · 지문이 끊기면 덧붙이지 않음 · 첫 쪽은 su21.json sunLog(마지막 일곱 줄)로 어제 꾀를 씀
   const sunF = path.join(path.dirname(bookF), 'sun-track.jsonl'), U0 = readTrack(sunF), sunBroken = U0 === null ? -1 : checkSun(U0).length;

@@ -977,6 +977,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const p = await ctx.newPage(), errs = [];
     p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    const bad4 = []; p.on('response', r => { const st = r.status(); if (st >= 400) bad4.push(st + ' ' + r.url().slice(0, 160)); }); // 막힌 응답 주소(주문 1119-1319 — 「Failed to load resource: 403」 까닭 찾기 · 걸림 판정은 그대로)
     const W = '㉕ 손자병법 다른 쪽 [' + width + '] ';
     const txtJS = 'const txt = e => (e?.textContent ?? \'\').replace(/\\s+/g, \' \').trim();';
     // 가) 첫 쪽 꾀 이름 줄 → 그 꾀 쪽 · 꾀 모음
@@ -1031,7 +1032,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
         JSON.stringify(diff.map(x => [x, gc[x], want?.[x]])).slice(0, 400));
       pageRules(await measure(p), W + '다) 회사 쪽 #/c/' + c);
     }
-    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / ') + (bad4.length ? ' · 막힌 응답 ' + bad4.slice(0, 3).join(' / ') : ''));
     await ctx.close();
   }
   // ㉖ 주문 1116-0209(사장님 2026-11-16(마카오) 01:09 「에이전트 100개 동원해서 지금 그린그림들이 상황애 맞게 3단애서 7간으로 자연스럽게 움직이게 …」 · 01:12 「응」) — 먹그림 움직임
