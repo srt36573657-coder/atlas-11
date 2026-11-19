@@ -1,0 +1,28 @@
+/* 샘플 3 · 산 하나 말 하나 */
+html.sc3 body, html.sc3 #su { background: #F4F8F7 !important; }
+html.sc3 #su .sj-tabs { left: 0 !important; right: 0 !important; bottom: 0 !important; border-radius: 0 !important; background: #F4F8F7 !important; box-shadow: 0 -1.5px 0 #BFDCDC !important; padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)) !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 6px !important; }
+html.sc3 #su .sj-tab { color: #1F2B2C !important; border-radius: 16px !important; min-height: 60px !important; }
+html.sc3 #su .sj-tab.sj-cur { background: #BFDCDC !important; color: #1F2B2C !important; box-shadow: inset 0 0 0 2px #4E676C !important; }
+html.sc3 #su .sj-sec { background: #FBFDFC !important; box-shadow: 0 0 0 1.5px #D6E8E6 !important; border-radius: 22px !important; }
+html.sc3 #su .sc-hero { padding: 4px 0 2px; }
+html.sc3 #su .sc-mtn svg { display: block; width: 100%; height: auto; }
+html.sc3 #su .sc-big { margin: -8px 0 2px; font-size: 2.5rem; font-weight: 900; line-height: 1.15; color: #1F2B2C; }
+html.sc3 #su .sc-date { margin: 0; font-size: 1.125rem; font-weight: 700; color: #4E676C; }
+html.sc3 #su .sc-promise { margin: 2px 0 0; font-size: 1.0625rem; color: #1F2B2C; }
+html.sc3 #su .sc-top, html.sc3 #su .sc-ord, html.sc3 #su .sc-stop { margin-top: 18px; padding: 16px; border-radius: 22px; background: #FBFDFC; box-shadow: 0 0 0 1.5px #D6E8E6, 0 10px 26px -14px rgba(78, 103, 108, .45); }
+html.sc3 #su .sc-toppic svg { display: block; width: 100%; height: auto; max-height: 200px; }
+html.sc3 #su .sc-k { margin: 0 0 6px; font-size: 1.0625rem; font-weight: 800; color: #4E676C; }
+html.sc3 #su .sj-win3 { background: transparent !important; padding: 0 !important; margin: 0 !important; }
+html.sc3 #su .sj-win3 *:not(svg):not(svg *) { color: #1F2B2C !important; }
+html.sc3 #su .sj-win3 .sj-win3k, html.sc3 #su .sj-win3 .sj-win3l, html.sc3 #su .sj-win3 .sj-win3f, html.sc3 #su .sj-win3 .sj-win3s { display: none !important; }
+html.sc3 #su .sj-w3a { background: transparent !important; border: 0 !important; padding: 0 !important; }
+html.sc3 #su .sc-h { margin: 0 0 10px; font-size: 1.375rem; font-weight: 900; color: #1F2B2C; }
+html.sc3 #su .sc-rowl { gap: 0; }
+html.sc3 #su .sc-row { padding: 8px 4px; min-height: 60px; border-radius: 0; border-bottom: 1.5px solid #D6E8E6; color: #1F2B2C; }
+html.sc3 #su .sc-rk { background: #1F2B2C; color: #F4F8F7; }
+html.sc3 #su .sc-rv, html.sc3 #su .sc-go { color: #4E676C; }
+html.sc3 #su .sc-more { color: #1F2B2C; }
+html.sc3 #su .sc-stopb { display: flex; align-items: center; min-height: 64px; padding: 0 18px; border-radius: 18px; background: #1F2B2C; color: #F4F8F7; font-size: 1.25rem; font-weight: 900; text-decoration: none; }
+html.sc3 #su .sc-p { margin: 10px 0 0; font-size: 1.0625rem; color: #1F2B2C; }
+html.sc3 #su .sc-next { background: #BFDCDC; color: #1F2B2C; box-shadow: inset 0 0 0 2px #4E676C; }
+html.sc3 #su .sc-drawer { margin-top: 18px; }

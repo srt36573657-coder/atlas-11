@@ -1,0 +1,24 @@
+/* 샘플 2 · 흰 종이 남기기 */
+html.sc2 body, html.sc2 #su { background: #F7FBFD !important; }
+html.sc2 #su main.sj-page { background-image: url(/su/su-paper.svg) !important; background-size: 180px 180px !important; background-repeat: repeat !important; background-position: 0 0 !important; }
+html.sc2 #su header.sj-top { background: #F7FBFD !important; }
+html.sc2 #su .sj-sec, html.sc2 #su .sj-win3, html.sc2 #su .sj-loss, html.sc2 #su .sj-drawer, html.sc2 #su figure, html.sc2 #su .sj-says, html.sc2 #su .sj-today, html.sc2 #su footer.sj-end { background: transparent !important; box-shadow: none !important; border-radius: 0 !important; }
+html.sc2 #su .sj-sec { padding: 8px 0 24px !important; margin: 0 !important; }
+html.sc2 #su .sj-tabs { left: 0 !important; right: 0 !important; bottom: 0 !important; border-radius: 0 !important; background: linear-gradient(rgba(247, 251, 253, 0), #F7FBFD 30%) !important; box-shadow: none !important; padding: 16px 8px calc(8px + env(safe-area-inset-bottom, 0px)) !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; }
+html.sc2 #su .sj-tab { color: #091F2B !important; border-radius: 14px !important; min-height: 58px !important; border: 2px solid transparent !important; }
+html.sc2 #su .sj-tab.sj-cur { background: rgba(226, 186, 140, .45) !important; color: #091F2B !important; border-color: #091F2B !important; }
+html.sc2 #su .sc-layer { position: relative; padding: 0 0 26px; }
+html.sc2 #su .sc-win { height: 132px; margin: 8px -6px 6px; background-image: url(/su/su-sonja-scroll.svg); background-size: 100% auto; background-repeat: no-repeat; -webkit-mask-image: radial-gradient(ellipse 72% 70% at 50% 50%, #000 52%, transparent 100%); mask-image: radial-gradient(ellipse 72% 70% at 50% 50%, #000 52%, transparent 100%); }
+html.sc2 #su .sc-lk { margin: 0; font-size: 1.0625rem; font-weight: 700; color: #4E6A70; }
+html.sc2 #su .sc-big { margin: 2px 0 6px; font-size: 2rem; font-weight: 900; line-height: 1.2; color: #091F2B; }
+html.sc2 #su .sc-h { margin: 2px 0 6px; font-size: 1.5rem; font-weight: 900; color: #091F2B; }
+html.sc2 #su .sc-promise, html.sc2 #su .sc-p { margin: 0 0 10px; font-size: 1.125rem; color: #1E333B; }
+html.sc2 #su .sc-ink { display: flex; align-items: center; justify-content: space-between; min-height: 60px; margin: 10px 0 0; padding: 0 18px; border: 2px solid #091F2B; border-radius: 16px; color: #091F2B; font-weight: 800; font-size: 1.1875rem; text-decoration: none; }
+html.sc2 #su .sj-win3 { padding: 0 !important; margin: 6px 0 0 !important; color: #091F2B !important; }
+html.sc2 #su .sj-win3 *:not(svg):not(svg *) { color: #091F2B !important; }
+html.sc2 #su .sj-win3 .sj-win3l, html.sc2 #su .sj-win3 .sj-win3f, html.sc2 #su .sj-win3 .sj-win3s, html.sc2 #su .sj-win3 .sj-w3m { display: none !important; }
+html.sc2 #su .sj-w3a { border: 2px solid #091F2B !important; border-radius: 16px !important; background: transparent !important; }
+html.sc2 #su .sc-next { border: 2px solid #091F2B; color: #091F2B; background: rgba(226, 186, 140, .35); }
+html.sc2 #su .sc-drawer { margin-top: 12px; border-top: 1.5px solid #B1D2CF; }
+html.sc2 #su .sj-loss { padding: 0 !important; }
+html.sc2 #su li.sj-w3, html.sc2 #su .sj-win3o { background: transparent !important; box-shadow: none !important; padding: 0 !important; }

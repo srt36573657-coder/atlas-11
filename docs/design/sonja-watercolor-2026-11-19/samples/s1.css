@@ -1,0 +1,26 @@
+/* 샘플 1 · 문지기 수채화 */
+html.sc1 body, html.sc1 #su { background: #F3F7F6 !important; }
+html.sc1 #su header.sj-top { position: relative !important; top: auto !important; background: transparent !important; }
+html.sc1 #su .sj-tabs { left: 0 !important; right: 0 !important; bottom: 0 !important; border-radius: 0 !important; background: #FCFDFC !important; box-shadow: 0 -12px 26px -16px rgba(62, 90, 99, .5) !important; border-top: 2px solid #A6D0CD !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)) !important; gap: 6px !important; }
+html.sc1 #su .sj-tab { color: #1B2428 !important; border-radius: 12px !important; min-height: 60px !important; }
+html.sc1 #su .sj-tab.sj-cur { background: #1B2428 !important; color: #FCFDFC !important; box-shadow: inset 0 4px 0 #A6D0CD !important; }
+html.sc1 #su .sc-panel, html.sc1 #su .sj-sec { background: #FCFDFC !important; color: #1B2428 !important; border-radius: 20px !important; box-shadow: 0 0 0 1.5px #CFE3E0, 0 12px 30px -10px rgba(110, 170, 165, .6), 0 0 44px 4px rgba(166, 208, 205, .32) !important; }
+html.sc1 #su .sc-panel { padding: 18px !important; margin: 18px 0 0 !important; }
+html.sc1 #su .sc-land { padding: 0 0 18px !important; overflow: hidden; }
+html.sc1 #su .sc-strip { height: 150px; background: url(/su/su-sonja-scroll.svg) center 15% / 100% auto no-repeat, #EAF4F2; -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
+html.sc1 #su .sc-strip-k { height: 140px; margin: 10px 0 0; border-radius: 20px; background-position: center 31%; }
+html.sc1 #su .sc-card { padding: 0 18px; }
+html.sc1 #su .sc-kicker { margin: 0; font-size: 1.0625rem; font-weight: 700; color: #3E5A63; }
+html.sc1 #su .sc-big { margin: 4px 0 6px; font-size: 2rem; font-weight: 900; line-height: 1.2; color: #1B2428; }
+html.sc1 #su .sc-promise { margin: 0; font-size: 1.0625rem; color: #1B2428; }
+html.sc1 #su .sj-win3 { background: #FCFDFC !important; }
+html.sc1 #su .sj-win3 *:not(svg):not(svg *) { color: #1B2428 !important; }
+html.sc1 #su .sj-win3 .sj-win3l, html.sc1 #su .sj-win3 .sj-win3f, html.sc1 #su .sj-win3 .sj-w3m { display: none !important; }
+html.sc1 #su .sj-w3a { border: 2px solid #3E5A63 !important; border-radius: 14px !important; min-height: 72px; background: #FCFDFC !important; }
+html.sc1 #su .sc-h { margin: 0 0 12px; font-size: 1.375rem; font-weight: 900; color: #1B2428; }
+html.sc1 #su .sc-row { border: 2px solid #3E5A63; background: #FCFDFC; color: #1B2428; }
+html.sc1 #su .sc-rk { background: #DCEBE8; color: #1B2428; }
+html.sc1 #su .sc-rv, html.sc1 #su .sc-go { color: #3E5A63; }
+html.sc1 #su .sc-more { color: #1B2428; }
+html.sc1 #su .sc-next { background: #1B2428; color: #FCFDFC; box-shadow: 0 0 0 4px #DCEBE8; }
+html.sc1 #su .sc-drawer { margin-top: 18px; padding: 4px 18px; border-radius: 18px; background: #FCFDFC; box-shadow: 0 0 0 1.5px #CFE3E0; }
