@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-4",
- "when": "2026-11-19T01:01:27.330Z",
+ "when": "2026-11-19T01:21:10.747Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -17,12 +17,12 @@
  },
  "laterDays": {
   "in": [
-   "2026-10-21",
-   "2026-11-18"
+   "2026-10-22",
+   "2026-11-19"
   ],
   "out": [
-   "2026-08-14",
-   "2026-09-14"
+   "2026-08-18",
+   "2026-09-15"
   ]
  },
  "accept": {
@@ -34,7 +34,7 @@
    "coFiles": 2557,
    "coMissing": 0,
    "rowsChecked": 9,
-   "fileRows": 845
+   "fileRows": 846
   },
   "taps": {
    "모두 초록": 23,
@@ -73,7 +73,7 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 858,
+  "flowMs": 850,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
