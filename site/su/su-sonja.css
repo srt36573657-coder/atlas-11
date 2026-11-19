@@ -1211,7 +1211,8 @@ html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #5B4F43
 #su .sj-page .sj-ydg { display: flex; align-items: stretch; gap: 8px; margin-top: 10px; }
 #su .sj-page .sj-ydc { flex: 1 1 0; min-width: 0; display: grid; align-content: start; gap: 4px; padding: 10px; border-radius: 12px; background: #F3EDE2; }
 #su .sj-page .sj-ydt0 { background: #1E1914; color: #F8F4EB; }
-#su .sj-page .sj-ydd { font-size: 1.0625rem; line-height: 1.4; font-weight: 700; }
+#su .sj-page .sj-ydd { display: grid; font-size: 1.0625rem; line-height: 1.4; }
+#su .sj-page .sj-ydd b { font-size: 1.125rem; font-weight: 800; }
 #su .sj-page .sj-ydl { font-size: 1.3125rem; line-height: 1.35; font-weight: 800; }
 #su .sj-page .sj-ydk { font-size: 1.0625rem; line-height: 1.45; }
 #su .sj-page .sj-yda { flex: none; align-self: center; font-style: normal; font-size: 1.5rem; font-weight: 800; }

@@ -156,7 +156,7 @@ export function ydOf(T, x) {
 function ydBox(T, x) {
   const Y = ydOf(T, x); if (!Y) return null;
   const nm = L => x.lands?.[L]?.name ?? (L === x.land ? x.name : '그 시장'), same = Y.y.land === Y.t.land, keep = Y.y.k === Y.t.k, now = x.prov ? '지금' : '오늘';
-  const col = (who, d, cls) => h('div', {class: 'sj-ydc ' + cls, 'data-land': d.land}, h('p', {class: 'sj-ydd', text: who + ' · ' + mday(d.day)}),
+  const col = (who, d, cls) => h('div', {class: 'sj-ydc ' + cls, 'data-land': d.land}, h('p', {class: 'sj-ydd'}, h('b', {text: who}), h('span', {text: mday(d.day)})),
     h('b', {class: 'sj-ydl', text: nm(d.land)}), h('p', {class: 'sj-ydk'}, h('span', {text: '꾀 '}), h('b', {text: '「' + KNAME[d.k] + '」'})));
   return h('div', {class: 'sj-yd', 'data-same': same ? '1' : '0', 'data-keep': keep ? '1' : '0', 'data-rec': Y.y.rec ? '1' : '0', 'data-y': Y.y.day},
     h('p', {class: 'sj-ydh', text: '어제와 ' + now}),
