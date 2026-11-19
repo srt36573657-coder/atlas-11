@@ -1,7 +1,7 @@
 {
  "schema": "godori-kind-1",
- "asOf": "2026-11-19",
- "fetchedAt": "2026-11-18T19:30:03.310Z",
+ "asOf": "2026-11-20",
+ "fetchedAt": "2026-11-19T19:34:36.686Z",
  "lists": {
   "managed": [
    "000040",
@@ -61,6 +61,7 @@
    "036420",
    "036690",
    "037330",
+   "038530",
    "041590",
    "043100",
    "043220",
@@ -76,6 +77,7 @@
    "052770",
    "054180",
    "054410",
+   "056730",
    "057540",
    "058450",
    "058820",
@@ -174,6 +176,7 @@
    "340930",
    "348950",
    "352770",
+   "353190",
    "354200",
    "373790",
    "376930",
@@ -182,7 +185,6 @@
    "377460",
    "378800",
    "380540",
-   "389680",
    "393970",
    "412540",
    "418250",
@@ -212,7 +214,7 @@
   "halted": "NO_TABLE · naver NO_TABLE"
  },
  "n": {
-  "managed": 190,
+  "managed": 192,
   "warning": null,
   "danger": null,
   "halted": null
@@ -229,14 +231,14 @@
    "via": "kind",
    "url": "https://kind.krx.co.kr/investwarn/adminissue.do?method=searchAdminIssueSub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=1&forward=adminissue_down",
    "status": 200,
-   "bytes": 46810,
-   "sha": "8db29ea21ed531ef414a554330f17c3da97519da9f7fbe57a5420f13b8898673",
+   "bytes": 47293,
+   "sha": "be4bfa7d2a42152677f8602fbd745b96e37ba3cf799d329b08ac347535b15b14",
    "why": null
   },
   {
    "name": "warning",
    "via": "kind",
-   "url": "https://kind.krx.co.kr/investwarn/investattentwarnrisky.do?method=investattentwarnriskySub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=3&menuIndex=2&forward=invstattentwarnrisky_down&searchFromDate=2024-11-19&searchToDate=2026-11-19&etcVar=",
+   "url": "https://kind.krx.co.kr/investwarn/investattentwarnrisky.do?method=investattentwarnriskySub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=3&menuIndex=2&forward=invstattentwarnrisky_down&searchFromDate=2024-11-20&searchToDate=2026-11-20&etcVar=",
    "status": 200,
    "bytes": 1650,
    "sha": "42c2976acb7df0c9718b465c8c50d6c453875b6d2b82c0edc5f4388985caab33",
@@ -248,13 +250,13 @@
    "url": "https://finance.naver.com/sise/investment_alert.naver?type=warning",
    "status": 200,
    "bytes": 98597,
-   "sha": "d2655086dec53781ed656501603cb7d5055d744cedc0c9c5741b32dc6ca1f253",
+   "sha": "44aa285a6cf286bc75a05bb8753fc906e26b7822f228d9e1f0534c7f5f519cc1",
    "why": null
   },
   {
    "name": "danger",
    "via": "kind",
-   "url": "https://kind.krx.co.kr/investwarn/investattentwarnrisky.do?method=investattentwarnriskySub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=3&menuIndex=3&forward=invstattentwarnrisky_down&searchFromDate=2024-11-19&searchToDate=2026-11-19&etcVar=",
+   "url": "https://kind.krx.co.kr/investwarn/investattentwarnrisky.do?method=investattentwarnriskySub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=3&menuIndex=3&forward=invstattentwarnrisky_down&searchFromDate=2024-11-20&searchToDate=2026-11-20&etcVar=",
    "status": 200,
    "bytes": 1650,
    "sha": "42c2976acb7df0c9718b465c8c50d6c453875b6d2b82c0edc5f4388985caab33",
@@ -266,7 +268,7 @@
    "url": "https://finance.naver.com/sise/investment_alert.naver?type=risk",
    "status": 200,
    "bytes": 98597,
-   "sha": "d2655086dec53781ed656501603cb7d5055d744cedc0c9c5741b32dc6ca1f253",
+   "sha": "44aa285a6cf286bc75a05bb8753fc906e26b7822f228d9e1f0534c7f5f519cc1",
    "why": null
   },
   {
@@ -284,7 +286,7 @@
    "url": "https://finance.naver.com/sise/trading_halt.naver",
    "status": 200,
    "bytes": 98585,
-   "sha": "0b537dd16e248c1cd67e3f95d46fc7ca498c730c9b746d0f2107a1d3c32a37fa",
+   "sha": "528a0dfa8847ffd5f00bf0bc8794df5752dcd207b6b2d0deddd056f1259833a7",
    "why": null
   }
  ]
