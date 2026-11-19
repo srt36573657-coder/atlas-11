@@ -508,7 +508,7 @@ for (const width of [390, 360, 320]) {
       await p.waitForTimeout(1500);
       const o = await lookOld(p); R.m.old[scheme + ' ' + u] = o;
       const cl = o.cls.split(/\s+/);
-      check(cl.includes('su-wrapped') && cl.includes('su-jobs') && !cl.includes('clock') && o.body === PAPER && okPaper(o.view) && okPaper(o.top) && o.bar === PAPER && (o.frame === 'none' || o.frame === 'normal') && o.tc.length > 0 && o.tc.every(c => c === '#F1E3D3') && o.darkMax <= 0.12 && o.lowN === 0,
+      check(cl.includes('su-wrapped') && cl.includes('su-jobs') && !cl.includes('clock') && o.body === PAPER && okPaper(o.view) && okPaper(o.top) && o.bar === PAPER && (o.frame === 'none' || o.frame === 'normal') && o.tc.length > 0 && o.tc.every(c => c === '#E8F1EE') && o.darkMax <= 0.12 && o.lowN === 0,
         '⑯ 손자병법에서 넘어간 옛 쪽도 손자병법 종이 판(' + scheme + ' · ' + u + ') — 밤 판 뗌 · 바탕 · 위 · 아래 막대 종이색 · 창 위 띠 종이색 · 금빛 테두리 0 · 어두운 판 0 · 흐린 글 0', JSON.stringify(o).slice(0, 400));
     }
     await ctx.close();
