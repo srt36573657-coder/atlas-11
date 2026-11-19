@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="640" viewBox="0 0 400 640">
+<defs>
+<filter id="w" filterUnits="userSpaceOnUse" x="-60" y="-60" width="520" height="760"><feTurbulence type="fractalNoise" baseFrequency="0.011 0.019" numOctaves="3" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="44" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="10"/></filter>
+<linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="1"/><stop offset="0.7" stop-color="#FFFFFF" stop-opacity="1"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+<mask id="m"><rect width="400" height="640" fill="url(#f)"/></mask>
+</defs>
+<g mask="url(#m)"><g filter="url(#w)">
+<ellipse cx="60" cy="50" rx="150" ry="70" fill="#CFE6E3" opacity="0.8"/>
+<ellipse cx="350" cy="100" rx="160" ry="62" fill="#D3E5EC" opacity="0.75"/>
+<ellipse cx="210" cy="250" rx="230" ry="42" fill="#E1EFEC" opacity="0.85"/>
+<ellipse cx="370" cy="400" rx="95" ry="52" fill="#F2D8D2" opacity="0.5"/>
+<ellipse cx="30" cy="500" rx="130" ry="62" fill="#D4E8E1" opacity="0.65"/>
+</g></g>
+</svg>

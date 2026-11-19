@@ -1237,3 +1237,10 @@ html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #5B4F43
 #su .sj-page ol.sj-scrollk > li > div { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 #su .sj-page ol.sj-scrollk b { font-size: 1.1875rem; line-height: 1.4; }
 #su .sj-page .sj-scrollt { font-size: 1.0625rem; line-height: 1.55; }
+
+/* 수채화 느낌(주문 1119-1749 — 사장님 2026-11-19(마카오) 17:46 「너가 만든 지금 수채화 느낌을 손자병법 전체로」 · 17:49 「응 30분안에 다 만들어」) — 첫 단계
+   바탕 한지 색(#F8F4EB · 검사가 재는 색)은 그대로 두고 그 위에 옅은 물빛 번짐(쪽 맨 위) · 종이 결(쪽 전체) · 먹그림과 움직이는 그림 가장자리를 물감 번진 모양으로 */
+html.sj-on #su main.sj-page { background-image: url(/su/su-wash.svg), url(/su/su-paper.svg); background-repeat: no-repeat, repeat; background-size: 100% auto, 180px 180px; background-position: center top, 0 0; }
+#su figure.sj-ink > svg, #su a.sj-tkpic > svg, #su a.sj-kpic > svg, #su .sj-page .sj-scrollimg { -webkit-mask-image: url(/su/su-blot.svg); mask-image: url(/su/su-blot.svg); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+/* 흰 칸(제1장 · 꾀 · 쪽 머리)에도 맨 위에 옅은 물빛 번짐 · 종이 결 — 칸 바탕색은 그대로(글 대비 그대로) · 표지 칸은 첫 칠함 빠르기 때문에 이번엔 뺌 */
+html.sj-on #su .sj-sec, html.sj-on #su .sj-ph { background-image: url(/su/su-wash.svg), url(/su/su-paper.svg); background-repeat: no-repeat, repeat; background-size: 100% auto, 180px 180px; background-position: center top, 0 0; }

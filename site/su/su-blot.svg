@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" preserveAspectRatio="none">
+<filter id="b" filterUnits="userSpaceOnUse" x="-40" y="-40" width="480" height="380"><feTurbulence type="fractalNoise" baseFrequency="0.022 0.034" numOctaves="3" seed="12" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="2.6"/></filter>
+<rect x="9" y="9" width="382" height="282" rx="16" fill="#FFFFFF" filter="url(#b)"/>
+</svg>
