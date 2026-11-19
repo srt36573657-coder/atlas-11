@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-19T11:55:55.899Z",
+ "at": "2026-11-19T12:59:48.073Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 430,
@@ -14,8 +14,8 @@
    "sun": false
   },
   "home": {
-   "screens": 3.76,
-   "links": 14
+   "screens": 3.59,
+   "links": 13
   },
   "t21": {
    "listed": 2557,
@@ -90,185 +90,185 @@
    "주식"
   ],
   "speed": {
-   "lcp": 2084,
-   "cls": 0.072,
-   "pic": 2079
+   "lcp": 2056,
+   "cls": 0.004,
+   "pic": 2054
   },
   "white": {
    "light #/": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "light #/k": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "light #/k/g01": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "light #/r/t": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "light #/q": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "light #/j": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "dark #/": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "dark #/k": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "dark #/k/g01": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "dark #/r/t": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "dark #/q": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    },
    "dark #/j": {
     "sj": true,
-    "body": "rgb(248, 244, 235)",
-    "top": "rgb(248, 244, 235)",
+    "body": "rgb(243, 248, 246)",
+    "top": "rgb(243, 248, 246)",
     "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(21, 18, 14)",
-    "h1": "rgb(30, 25, 20)",
+    "tabs": "rgb(252, 254, 253)",
+    "h1": "rgb(32, 50, 58)",
     "frame": "none",
     "orn": 0,
     "old": 0,
     "cover": 0,
     "tc": [
-     "#F8F4EB"
+     "#F3F8F6"
     ]
    }
   },
@@ -286,13 +286,13 @@
   "old": {
    "light /next/?su=guide#/find": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -301,13 +301,13 @@
    },
    "light /next/?su=guide#/gift": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -316,13 +316,13 @@
    },
    "light /next/?su=guest#/share": {
     "cls": "m4 white space su-jobs su-wrapped home",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.012,
     "darkSel": "a.nh-mans",
@@ -331,13 +331,13 @@
    },
    "light /next/?su=stop#/me": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
@@ -346,13 +346,13 @@
    },
    "light /next/?su=guide#/": {
     "cls": "m4 white home space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.012,
     "darkSel": "a.nh-mans",
@@ -361,13 +361,13 @@
    },
    "light /next/?su=back#/jinhwa": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -376,13 +376,13 @@
    },
    "light /next/?su=back#/help": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.012,
     "darkSel": "button.hp-vb",
@@ -391,13 +391,13 @@
    },
    "light /hello.html?su=guest": {
     "cls": "su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
     "view": null,
     "top": null,
-    "bar": "rgb(241, 227, 211)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.026,
     "darkSel": "a.hp-go",
@@ -406,13 +406,13 @@
    },
    "light /su/privacy.html": {
     "cls": "su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
     "view": null,
     "top": null,
-    "bar": "rgb(241, 227, 211)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -421,13 +421,13 @@
    },
    "dark /next/?su=guide#/find": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -436,13 +436,13 @@
    },
    "dark /next/?su=guide#/gift": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -451,13 +451,13 @@
    },
    "dark /next/?su=guest#/share": {
     "cls": "m4 white space su-jobs su-wrapped home",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.012,
     "darkSel": "a.nh-mans",
@@ -466,13 +466,13 @@
    },
    "dark /next/?su=stop#/me": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.014,
     "darkSel": "b.hpi-b.b1",
@@ -481,13 +481,13 @@
    },
    "dark /next/?su=guide#/": {
     "cls": "m4 white home space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.012,
     "darkSel": "a.nh-mans",
@@ -496,13 +496,13 @@
    },
    "dark /next/?su=back#/jinhwa": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0,
     "darkSel": "",
@@ -511,13 +511,13 @@
    },
    "dark /next/?su=back#/help": {
     "cls": "m4 white space su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
-    "view": "rgb(241, 227, 211)",
-    "top": "rgb(241, 227, 211)",
-    "bar": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
+    "view": "rgb(232, 241, 238)",
+    "top": "rgb(232, 241, 238)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.012,
     "darkSel": "button.hp-vb",
@@ -526,13 +526,13 @@
    },
    "dark /hello.html?su=guest": {
     "cls": "su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
     "view": null,
     "top": null,
-    "bar": "rgb(241, 227, 211)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0.026,
     "darkSel": "a.hp-go",
@@ -541,13 +541,13 @@
    },
    "dark /su/privacy.html": {
     "cls": "su-jobs su-wrapped",
-    "body": "rgb(241, 227, 211)",
+    "body": "rgb(232, 241, 238)",
     "view": null,
     "top": null,
-    "bar": "rgb(241, 227, 211)",
+    "bar": "rgb(232, 241, 238)",
     "frame": "normal",
     "tc": [
-     "#F1E3D3"
+     "#E8F1EE"
     ],
     "darkMax": 0,
     "darkSel": "",

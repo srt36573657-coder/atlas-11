@@ -7,7 +7,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-19T12:01:23.735Z",
+ "at": "2026-11-19T13:04:24.185Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,20 +32,20 @@
    }
   }
  },
- "seconds": 56,
- "secondsSum": 167,
+ "seconds": 52,
+ "secondsSum": 156,
  "time": {
-  "old": 135.7,
-  "new": 138.6,
-  "wall": 55.9,
-  "wallSum": 166.8,
-  "opensOld": 7684,
+  "old": 5,
+  "new": 131.7,
+  "wall": 51.7,
+  "wallSum": 154.9,
+  "opensOld": 13,
   "opensNew": 10286,
-  "oldPct": 81.4,
-  "oldShare": 49.5
+  "oldPct": 3.2,
+  "oldShare": 3.7
  },
  "net": {
-  "req": 3549,
+  "req": 5280,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -59,18 +59,18 @@
  },
  "counts": {
   "새 화면 옛 고리 0": 3,
-  "맞댄 글 낱낱": 45948,
-  "맞댄 숫자 낱말": 90312,
+  "맞댄 글 낱낱": 43387,
+  "맞댄 숫자 낱말": 80068,
   "이야기 있는 회사": 61,
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": false,
-   "why": "검사 · 브라우저 · 목록이 바뀜 | 바뀐 파일 607개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
-   "made": null,
+   "use": true,
+   "why": "",
+   "made": "2026-11-19T12:42:33.196Z | 2026-11-19T12:42:33.143Z | 2026-11-19T12:42:33.277Z",
    "inputs": 2596,
    "reads": 2557,
-   "note": "기준값 새로 씀(파일 866개 · 값 853개) | 기준값 새로 씀(파일 865개 · 값 852개)"
+   "note": "기준값 다시 씀"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
@@ -82,7 +82,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 55,
+   "seconds": 52,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -95,7 +95,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 56,
+   "seconds": 52,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -108,7 +108,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 56,
+   "seconds": 52,
    "mine": 856,
    "kinds": {
     "c": 852,
