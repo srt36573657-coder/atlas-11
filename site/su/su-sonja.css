@@ -1223,3 +1223,17 @@ html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #5B4F43
 #su .sj-page .sj-ktr { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 1.0625rem; line-height: 1.45; font-weight: 700; }
 #su .sj-page .sj-ktr .sj-ktrsp { flex: none; }
 #su .sj-page .sj-ktrv { min-width: 0; }
+
+/* 손자병법 한 폭(주문 1119-1648) — 표지 걸음 줄 아래 · 걸개 두루마리(위아래 나무 축) · 그림 속 번호 = 아래 풀이 번호 · 글씨 17 이상 · 먹빛 번호(빨강 아님) */
+#su .sj-page .sj-scroll { margin: 28px 0 8px; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+#su .sj-page .sj-scrollw { position: relative; margin: 6px; padding: 8px 6px 10px; background: #DDE6E3; box-shadow: 0 8px 20px rgba(30, 50, 50, 0.12); }
+#su .sj-page .sj-scrollw::before, #su .sj-page .sj-scrollw::after { content: ""; position: absolute; left: -6px; right: -6px; height: 10px; border-radius: 5px; background: linear-gradient(180deg, #7A6250, #4C392D); }
+#su .sj-page .sj-scrollw::before { top: -5px; }
+#su .sj-page .sj-scrollw::after { bottom: -5px; }
+#su .sj-page .sj-scrollimg { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 360 / 980; background: #FBFCFA; }
+#su .sj-page ol.sj-scrollk { list-style: none; margin: 0; padding: 0 4px; display: flex; flex-direction: column; gap: 12px; }
+#su .sj-page ol.sj-scrollk > li { display: flex; gap: 12px; align-items: flex-start; }
+#su .sj-page .sj-scrolln { flex: none; width: 32px; height: 32px; border-radius: 50%; background: #1E1914; color: #FFFFFF; font-size: 1.0625rem; font-weight: 700; line-height: 32px; text-align: center; }
+#su .sj-page ol.sj-scrollk > li > div { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+#su .sj-page ol.sj-scrollk b { font-size: 1.1875rem; line-height: 1.4; }
+#su .sj-page .sj-scrollt { font-size: 1.0625rem; line-height: 1.55; }
