@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-11-19T07:52:27Z",
+  "at": "2026-11-19T10:11:59Z",
   "dayKST": "2026-11-19",
   "status": "complete",
   "exitCode": 0,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-11-19T07:52:27.587Z",
+      "startedAt": "2026-11-19T10:12:00.224Z",
       "status": "ok",
-      "durationMs": 28,
+      "durationMs": 33,
       "session": true,
       "afterClose": false,
       "day": "2026-11-19",
@@ -17,7 +17,7 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-11-19T07:52:27.615Z",
+      "startedAt": "2026-11-19T10:12:00.257Z",
       "status": "ok",
       "durationMs": 0,
       "skipped": true,
@@ -25,22 +25,22 @@
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-11-19T07:52:27.615Z",
+      "startedAt": "2026-11-19T10:12:00.257Z",
       "status": "ok",
       "durationMs": 0,
       "skipped": true
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-11-19T07:52:27.671Z",
+      "startedAt": "2026-11-19T10:12:00.343Z",
       "view": {
-        "boardId": "board-2026-11-18-6d813a79",
+        "boardId": "board-2026-11-18-16872f07",
         "asOf": "2026-11-18",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 3039945,
+        "bytes": 3039511,
         "similar": [
           "원익홀딩스",
           "IPARK현대산업개발",
@@ -73,7 +73,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1149
+      "durationMs": 1858
     }
   ],
   "runtime": {
@@ -82,10 +82,10 @@
     "event": "workflow_dispatch",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "44482606997",
+    "runId": "44502926003",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/44482606997",
-    "commit": "910f5910ea3458ae7fa2b899dc05d33d07526ea9",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/44502926003",
+    "commit": "d952fc99f04d6412c1a65b605f2b55af94d1e83c",
     "serverInstalled": true,
     "scheduledRun": false
   },
@@ -109,5 +109,5 @@
   "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
   "inputSnapshotSHA256": "a1120a19488cead25935098f3f18df1951f33f4246284f9107146328e9ac1174",
   "expectedStocks": 365,
-  "finishedAt": "2026-11-19T07:52:28.820Z"
+  "finishedAt": "2026-11-19T10:12:02.201Z"
 }

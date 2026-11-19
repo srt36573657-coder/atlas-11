@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-19",
- "fetchedAt": "2026-11-19T07:51:23Z",
- "file": "reports/atlas11/context/2026-11-19/2026-11-19T07-51-23Z.json",
+ "fetchedAt": "2026-11-19T10:10:32Z",
+ "file": "reports/atlas11/context/2026-11-19/2026-11-19T10-10-32Z.json",
  "summary": {
   "day": "2026-11-19",
-  "fetchedAt": "2026-11-19T07:51:23Z",
+  "fetchedAt": "2026-11-19T10:10:32Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-19",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7211,
-   "distinct": 7152,
-   "republished": 59,
+   "distinct": 7157,
+   "republished": 54,
    "sameArticle": 0,
-   "stocksWithTodayNews": 196,
-   "todayDistinct": 1327
+   "stocksWithTodayNews": 208,
+   "todayDistinct": 1564
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 795
+   "corporateActions": 799
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-19",
-     "value": 1331.3,
-     "changePct": -0.2
+     "value": 1330,
+     "changePct": -0.3
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 298,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,38 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-11-19",
-   "corporateActions": 795,
+   "corporateActions": 799,
    "recentActions": [
+    {
+     "code": "053210",
+     "title": "(주)케이티스카이라이프 회사합병 결정(종속회사의 주요경영사항)",
+     "publishedAt": "2026-11-19T17:47:03+09:00",
+     "word": "합병"
+    },
+    {
+     "code": "028300",
+     "title": "에이치엘비(주) 회사합병 결정",
+     "publishedAt": "2026-11-19T17:39:13+09:00",
+     "word": "합병"
+    },
+    {
+     "code": "067630",
+     "title": "에이치엘비생명과학(주) 회사합병 결정",
+     "publishedAt": "2026-11-19T17:35:25+09:00",
+     "word": "합병"
+    },
+    {
+     "code": "067630",
+     "title": "에이치엘비생명과학(주) 주권매매거래정지(합병)",
+     "publishedAt": "2026-11-19T17:35:15+09:00",
+     "word": "매매거래정지"
+    },
+    {
+     "code": "035250",
+     "title": "(주)강원랜드 자기주식 취득 결정",
+     "publishedAt": "2026-11-19T17:28:48+09:00",
+     "word": "자기주식"
+    },
     {
      "code": "053210",
      "title": "(주)케이티스카이라이프 회사합병 결정",
@@ -281,36 +311,6 @@
      "title": "주식회사 DB하이텍 자기주식취득 신탁계약 체결 결정",
      "publishedAt": "2026-11-18T17:55:55+09:00",
      "word": "자기주식"
-    },
-    {
-     "code": "050890",
-     "title": "(주)쏠리드 주식소각 결정",
-     "publishedAt": "2026-11-18T17:23:38+09:00",
-     "word": "소각"
-    },
-    {
-     "code": "267270",
-     "title": "에이치디건설기계(주) 변경상장(주식소각)",
-     "publishedAt": "2026-11-18T17:21:19+09:00",
-     "word": "소각"
-    },
-    {
-     "code": "050890",
-     "title": "(주)쏠리드 자기주식취득 신탁계약 해지 결정",
-     "publishedAt": "2026-11-18T17:01:57+09:00",
-     "word": "자기주식"
-    },
-    {
-     "code": "071050",
-     "title": "한국투자금융지주(주) 유상증자결정(자회사의 주요경영사항)",
-     "publishedAt": "2026-11-18T16:20:53+09:00",
-     "word": "유상증자"
-    },
-    {
-     "code": "014620",
-     "title": "(주)성광벤드 주식소각 결정",
-     "publishedAt": "2026-11-18T10:59:35+09:00",
-     "word": "소각"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-19",
-     "value": 1331.3,
+     "value": 1330,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
