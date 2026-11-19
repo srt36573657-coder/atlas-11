@@ -1251,7 +1251,7 @@ html.sj-on #su .sj-sec, html.sj-on #su .sj-ph { background-image: url(/su/su-was
 html.sj-on #su { padding-bottom: 0; }
 html.sj-on #su .sj-page { padding-bottom: 12px; }
 html.sj-on #su .sj-top { position: relative; top: auto; }
-html.sj-on #su .sj-tools .sj-angel, html.sj-on #su .sj-tools .sj-find, html.sj-on #su .sj-tools .sj-gift { display: none; }
+html.sj-on #su .sj-tools .sj-angel, html.sj-on #su .sj-tools .sj-find { display: none; } /* 선물은 머리 줄에 그대로(모든 쪽 위 막대 선물 단추 · 검사 check_gift ①) */
 html.sj-on #su .sj-sec, html.sj-on #su .sj-ph { background-color: #FCFEFD; background-image: none; border-radius: 22px; box-shadow: 0 0 0 1.5px #CFE3E0, 0 14px 30px -16px rgba(96, 160, 156, .6), 0 0 42px 2px rgba(166, 208, 205, .3); }
 html.sj-on #su main[data-page="sonja"] > section.sj-s36::before, html.sj-on #su main.sj-page > section.sj-ph::before { content: ""; display: block; height: 128px; margin: -22px -18px 16px; border-radius: 22px 22px 0 0; background: url(/su/su-sonja-scroll.svg) center 31% / 100% auto no-repeat, #EEF6F4; -webkit-mask-image: linear-gradient(#000 62%, transparent); mask-image: linear-gradient(#000 62%, transparent); }
 html.sj-on #su main[data-page="co"] > section.sj-ph::before { background-position: center 55%, 0 0; }

@@ -35,7 +35,7 @@ export function sayTop() {
   b.addEventListener('click', () => document.querySelector('#su .sj-dock .sj-listen')?.click());
   return b;
 }
-/** 머리 줄 — 띄어 쓴 명조 이름 · 듣기 · 글씨(천사 · 찾기 · 선물은 끝 줄로 · 주문 1119-2026) */
+/** 머리 줄 — 띄어 쓴 명조 이름 · 선물 · 듣기 · 글씨(천사 · 찾기는 끝 줄로 · 주문 1119-2026) */
 export function topBar() {
   const big = bigText(h('button', {class: 'sj-btn sj-bigtext', type: 'button', 'aria-label': '글씨 크게', text: '글씨'}));
   return h('header', {class: 'sj-top'},
@@ -108,9 +108,8 @@ export function endSec(day, got = null, more = null) {
     h('p', {}, h('b', {text: '조사 날짜 '}), '자료 ' + day + (got ? ' · 받은 때 ' + got : '')),
     more ? h('p', {text: more}) : null,
     h('p', {class: 'sj-links'}, ...FOOT.map(([href, t]) => h('a', {href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'})))),
-    h('p', {class: 'sj-flinks', 'aria-label': '다른 길'}, // 천사 · 선물 · 찾기 — 머리 줄에서 끝 줄로(주문 1119-2026)
+    h('p', {class: 'sj-flinks', 'aria-label': '다른 길'}, // 천사 · 찾기 — 머리 줄에서 끝 줄로(주문 1119-2026 · 선물은 머리 줄에 그대로)
       h('a', {class: 'sj-fl', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창', text: '천사 ↗'}),
-      h('a', {class: 'sj-fl', href: '/next/?su=guide#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}),
       h('a', {class: 'sj-fl', href: '/next/?su=guide#/find', 'aria-label': '종목 찾기', text: '찾기'})),
     h('p', {class: 'sj-safe sj-safe-end', text: SAFE}));
 }
