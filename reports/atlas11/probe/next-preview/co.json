@@ -6,7 +6,7 @@
  "all": true,
  "limit": null,
  "widths": 28,
- "at": "2026-11-19T09:08:58.874Z",
+ "at": "2026-11-19T10:11:40.301Z",
  "shard": "all/3",
  "units": {
   "total": 2566,
@@ -31,17 +31,17 @@
    }
   }
  },
- "seconds": 112,
- "secondsSum": 336,
+ "seconds": 110,
+ "secondsSum": 330,
  "time": {
-  "old": 76.4,
-  "new": 117.8,
-  "wall": 112.2,
-  "wallSum": 336.2,
+  "old": 72.7,
+  "new": 114,
+  "wall": 110.5,
+  "wallSum": 331,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 22.7,
-  "oldShare": 39.3
+  "oldPct": 22,
+  "oldShare": 38.9
  },
  "net": {
   "req": 2525,
@@ -58,7 +58,7 @@
  },
  "counts": {
   "줄": 109443,
-  "숫자 낱말": 178638,
+  "숫자 낱말": 178637,
   "따로 셈": 41248,
   "머리 셈": 43469,
   "고리": 2557,
@@ -77,7 +77,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 112,
+   "seconds": 110,
    "mine": 856,
    "kinds": {
     "c": 853,
@@ -90,7 +90,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 112,
+   "seconds": 110,
    "mine": 855,
    "kinds": {
     "c": 852,
@@ -103,7 +103,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 112,
+   "seconds": 110,
    "mine": 855,
    "kinds": {
     "c": 852,
