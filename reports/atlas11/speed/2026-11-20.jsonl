@@ -1,0 +1,2 @@
+{"job":"check_changed","start":"2026-11-19T16:34:53.033Z","end":"2026-11-19T16:35:08.778Z","seconds":15.7,"files":11,"checks":[{"k":"su-tests","ok":true,"sec":1},{"k":"check_su","ok":false,"sec":14.8}],"fails":1}
+{"job":"check_changed","start":"2026-11-19T16:35:10.665Z","end":"2026-11-19T16:35:26.668Z","seconds":16,"files":12,"checks":[{"k":"su-tests","ok":true,"sec":1},{"k":"check_su","ok":false,"sec":15}],"fails":1}
