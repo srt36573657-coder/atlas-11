@@ -1,20 +1,22 @@
 {
- "sec": 47,
+ "sec": 50,
  "xCodes": 1750,
  "time": {
-  "old": 13.9,
-  "new": 30,
-  "wall": 47.2,
+  "old": 14.5,
+  "new": 30.9,
+  "wall": 49.6,
   "opensOld": 1765,
   "opensNew": 1824,
-  "oldPct": 29.5,
-  "oldShare": 31.7
+  "oldPct": 29.2,
+  "oldShare": 31.9
  },
  "net": {
-  "req": 6,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
+  "req": 7,
+  "retry": 1,
+  "waitSec": 1,
+  "why": {
+   "ECONNRESET": 1
+  },
   "cut": 0,
   "page": {
    "retry": 0,
@@ -25,7 +27,7 @@
  },
  "counts": {
   "맞댄 화면": 1765,
-  "맞댄 줄": 47664,
+  "맞댄 줄": 47668,
   "맞댄 숫자 낱말": 38668,
   "맞댄 고리": 17,
   "업데이트 회차": 60,
