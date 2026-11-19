@@ -146,13 +146,30 @@ def sun(codes, IX, P, T, cap, dates, vrows=None, win=WIN, h=H, t_conf=None):
         calm = {'rule': S36.CALM_RULE, 'h': h, 'n': n, 'lose': int((a < 0).sum()), 'exp': round(float(p0.sum()), 2), 'tail': round(tail, 4), 'tail7': round(float(tails.mean()), 4),
                 'beat': round(float((tails < tail).mean()), 3), 'avg': round(float(a.mean()), 4),   # beat = 아무렇게나 일곱 300판 가운데 가장 나쁜 열에 한 주가 이보다 깊었던 몫
                 'from': dates[tc[0]] if dates and tc[0] < len(dates) else None, 'to': dates[tc[-1]] if dates and tc[-1] < len(dates) else None}
+    # 어제 시장과 꾀(주문 1119-1151 · 사장님 2026-11-19(마카오) 11:51 「어제의 주식상황은 이랬고 오늘의 주식상황은 이렇게 변화가 있다 … 어제는 이런 병법으로 대처를 했고
+    #   오늘은 이런 병법이어야 한다는 식의 구조를 첫페이지에 표현」 — docs/design/sonja-yday-2026-11-19/order-1151.txt)
+    #   어제(판 날 바로 앞 장날) 땅 = path[-2] · 그 땅의 꾀 = 오늘과 같은 법(같은 날들 · 덜 잃은 차례 · 꾀 셋 두 조건)으로 다시 셈 · 따로 굴린 수(오늘 값을 바꾸지 않음)
+    #   첫 쪽은 날마다 적은 기록(sun-track — 그날 첫 쪽에 실었던 꾀)이 있으면 그것을 먼저 씀 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음
+    prev = None
+    if len(path) >= 2 and path[-2] in LANDS and dates and T - 1 < len(dates):
+        pl = path[-2]; sp = [t for t in days if landOf.get(t) == pl]; ap = len(sp) < MIN_N; up = set(days if ap else sp)
+        st = {k: _stat([v for t, v in ret[k].items() if t in up]) for k in S36.KINDS}
+        rk = sorted(S36.KINDS, key=lambda k: _key(k, st[k])); rng2 = np.random.default_rng(1119)
+        for k in S36.KINDS:
+            tk = [t for t in sorted(ret[k]) if t in up and t in cP0]
+            if not tk or not st[k].get('n'): continue
+            a = np.array([ret[k][t] for t in tk]); n = len(a); k10 = max(1, n // 10); S7 = np.array([cS[t] for t in tk])
+            st[k]['exp'] = round(float(sum(cP0[t] for t in tk)), 2); st[k]['tail'] = round(float(np.sort(a)[:k10].mean()), 4)
+            st[k]['tail7'] = round(float(np.sort(S7[np.arange(n)[None, :], rng2.integers(0, S7.shape[1], size=(300, n))], axis=1)[:, :k10].mean()), 4)
+        wk = [k for k in rk if winOk(st[k])][:3]
+        prev = {'day': dates[T - 1], 'land': pl, 'name': LANDS[pl]['name'], 'pick': wk[0] if wk else rk[0], 'win': bool(wk), 'same': len(sp), 'all': ap, 'how': 'again'}
     return {'rule': RULE_ID, 'calm': calm, 'win3': win3, 'h': h, 'win': win, 'minN': MIN_N, 'day': dates[T] if dates and T < len(dates) else None,
             'conf': dates[tcf] if dates and tcf < len(dates) else None, 'prov': tcf < T,   # 지금 시장(주문 1118-1239) — 땅은 장중 값 · 지난 기록은 굳은 날까지
             'land': key, 'name': D['name'], 'pian': D['pian'], 'quote': D['quote'], 'do': D['do'], 'rankQ': RANK_Q,
             'm': {'n': m['n'], 'up': m['up'], 'mid': round(m['mid'], 4), 'mean': round(m['mean'], 4), 'shake': round(m['shake'], 2) if np.isfinite(m['shake']) else None},
             'hist': {'days': len(days), 'same': len(same), 'all': useAll, 'from': dates[days[0]] if days else None, 'to': dates[days[-1]] if days else None, 'cnt': cnt},
             'path': path, 'lands': {L: {'name': LANDS[L]['name'], 'pian': LANDS[L]['pian'], 'quote': LANDS[L]['quote'], 'rule': RULE[L], 'n': cnt[L]} for L in ORDER},
-            'rank': [dict(k=k, **stats[k]) for k in rank]}
+            'rank': [dict(k=k, **stats[k]) for k in rank], 'prev': prev}
 
 
 if __name__ == '__main__':
@@ -186,4 +203,8 @@ if __name__ == '__main__':
         assert {k: Sn['hist'][k] for k in ('days', 'from', 'to')} == {k: S['hist'][k] for k in ('days', 'from', 'to')}, (Sn['hist'], S['hist'])
         assert Sn['land'] != S['land'] or ([r['k'] for r in Sn['rank']] == [r['k'] for r in S['rank']] and Sn['win3']['ks'] == S['win3']['ks']), (Sn['land'], S['land'])
         assert len(Sn['path']) == len(S['path']) and Sn['path'][:-1] == S['path'][1:], (Sn['path'], S['path'])
+        # 어제 시장과 꾀(주문 1119-1151) — 어제 땅 = path[-2] · 어제 날 = 판 날 바로 앞 · 꾀 = 그 땅으로 같은 법 · 땅이 같으면 오늘 꾀와 같음 · 오늘 값은 그대로(따로 굴린 수)
+        pv = S['prev']; assert pv and pv['day'] == dates[Tn - 2] and pv['land'] == S['path'][-2] and pv['name'] == LANDS[pv['land']]['name'] and pv['pick'] in S36.KINDS and pv['how'] == 'again', pv
+        assert pv['land'] != S['land'] or pv['pick'] == (w['ks'][0] if w['ks'] else S['rank'][0]['k']), (pv, w['ks'], S['rank'][0]['k'])
+        assert Sn['prev'] and Sn['prev']['day'] == dates[-1] and Sn['prev']['land'] == S['land'], Sn['prev']
         print('ok', S['land'], S['hist']['days'], S['hist']['same'], S['rank'][0]['k'], 'calm', c and (c['n'], c['lose'], c['tail'], c['tail7']), 'win3', w['ks'], w['cand'])

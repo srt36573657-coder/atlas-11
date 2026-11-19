@@ -144,6 +144,27 @@ export function nowBox(T, x) {
       h('span', {class: 'sj-nowp4', text: pk.win ? '예전에 지금처럼 ' + x.name + '이었을 때, 아무 회사나 고른 것보다 덜 잃은 꾀예요.' : '예전에 지금처럼 ' + x.name + '이었을 때, 돈을 가장 덜 잃은 꾀예요.'})) : null,
     h('p', {class: 'sj-nows', text: '하루에 세 번 새로 봐요. 한국 시간으로 오전 10시, 오후 2시, 장이 끝난 뒤 오후 6시예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
 }
+/* ── 어제와 오늘(주문 1119-1151 · 사장님 2026-11-19(마카오) 11:51 「어제의 주식상황은 이랬고 오늘의 주식상황은 이렇게 변화가 있다 … 어제는 이런 병법으로 대처를 했고
+   오늘은 이런 병법이어야 한다는 식의 구조를 첫페이지에 … 잡스라면」 — docs/design/sonja-yday-2026-11-19/order-1151.txt)
+   한 가지만 크게 — 어제 시장 모습과 그때 꾀 → 오늘 시장 모습과 지금 꾀 · 어제 꾀는 날마다 적은 기록(그날 첫 쪽 그대로)이 있으면 그것 · 없으면 같은 법으로 다시 센 것 ── */
+export function ydOf(T, x) {
+  const now = nowPick(x), rows = Array.isArray(T?.sunLog?.rows) ? T.sunLog.rows : [], ok = (l, k) => LANDK.includes(l) && typeof KNAME[k] === 'string';
+  const r = rows.filter(q => typeof q?.day === 'string' && typeof x?.day === 'string' && q.day < x.day && ok(q.land, q.k)).at(-1), pv = x?.prev;
+  const y = r ? {day: r.day, land: r.land, k: r.k, rec: true} : pv && typeof pv.day === 'string' && ok(pv.land, pv.pick) ? {day: pv.day, land: pv.land, k: pv.pick, rec: false} : null;
+  return now && y ? {y, t: {day: x.day, land: x.land, k: now.k}} : null;
+}
+function ydBox(T, x) {
+  const Y = ydOf(T, x); if (!Y) return null;
+  const nm = L => x.lands?.[L]?.name ?? (L === x.land ? x.name : '그 시장'), same = Y.y.land === Y.t.land, keep = Y.y.k === Y.t.k, now = x.prov ? '지금' : '오늘';
+  const col = (who, d, cls) => h('div', {class: 'sj-ydc ' + cls, 'data-land': d.land}, h('p', {class: 'sj-ydd', text: who + ' · ' + mday(d.day)}),
+    h('b', {class: 'sj-ydl', text: nm(d.land)}), h('p', {class: 'sj-ydk'}, h('span', {text: '꾀 '}), h('b', {text: '「' + KNAME[d.k] + '」'})));
+  return h('div', {class: 'sj-yd', 'data-same': same ? '1' : '0', 'data-keep': keep ? '1' : '0', 'data-rec': Y.y.rec ? '1' : '0', 'data-y': Y.y.day},
+    h('p', {class: 'sj-ydh', text: '어제와 ' + now}),
+    h('div', {class: 'sj-ydg'}, col('어제', Y.y, 'sj-ydy'), h('i', {class: 'sj-yda', 'aria-hidden': 'true', text: '→'}), col(now, Y.t, 'sj-ydt0')),
+    h('p', {class: 'sj-ydt', 'data-say': '', text: same ? '어제와 같은 ' + nm(Y.t.land) + '이에요.' : '어제는 ' + nm(Y.y.land) + '이었어요. ' + now + '은 ' + nm(Y.t.land) + '이에요.'}),
+    h('p', {class: 'sj-ydt2', 'data-say': '', text: keep ? '그래서 ' + now + '도 「' + KNAME[Y.t.k] + '」 꾀로 살펴봐요.' : '어제는 「' + KNAME[Y.y.k] + '」 꾀로 살펴봤어요. ' + now + '은 「' + KNAME[Y.t.k] + '」 꾀로 살펴봐요.'}),
+    h('p', {class: 'sj-ydn', text: (Y.y.rec ? '어제 꾀는 어제 첫 쪽 기록 그대로예요. ' : '어제 꾀는 같은 법으로 다시 센 것이에요. ') + '꾀는 예전에 그런 시장에서 돈을 덜 잃은 것부터 골랐어요.'}));
+}
 /* ── 2 표지 · 형세 보고 ── */
 function sunSec(T) {
   const x = okSun(T.sun) ? T.sun : null;
@@ -159,6 +180,7 @@ function sunSec(T) {
       h('h1', {class: 'sj-h1'}, h('span', {class: 'sj-h1a', text: '지금은 '}), h('b', {class: 'sj-land', text: x.name}), h('span', {class: 'sj-h1c', text: '이에요.'})),
       h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), 'aria-hidden': 'true', text: x.name})),
     nowBox(T, x), // 지금 시장(주문 1118-1239) — 지수 둘 · 외국인 · 지금 볼 꾀 하나
+    ydBox(T, x), // 어제와 오늘(주문 1119-1151) — 어제 시장 · 꾀 → 오늘 시장 · 꾀
     h('figure', {class: 'sj-ink sj-landfig'}, meanCap(PM.land, 'figcaption'), landPic({land: x.land, name: x.name, up: up10, path: P, sameName: x.name, title: false})), // 손무가 언덕에서 오늘 땅을 내려다봄 · 깃발 열 · 디딤돌 스물
     h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + x.quote + '」'}), h('cite', {text: '손자병법 ' + (x.pian ?? '')})),
     h('div', {class: 'sj-says'}, meanCap(PM.sonmu), h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), // 손무가 들려주는 한 줄

@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK, SUN_TRACK, sealSun, checkSun, sunPick} from '../../scripts/atlas11/next/su21_settle.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import {forwardTo} from '../../site/su/su-data.js';
@@ -349,4 +349,23 @@ test('이 꾀의 쌓인 값 꺾은선(주문 1119-1005 「꾀 쪽에도 그 꾀�
   assert.ok(kk.includes('const TK = ST ? trackOf(D, ST.K) : null;') && kk.includes('TK ? kkoeTrack(TK, k) : null'), '꾀 쪽 — 정산과 같은 셈(settle36 · trackOf)');
   assert.ok(kk.includes("'이 꾀의 100원이 날마다 얼마가 됐는지 이었어요.'") && kk.includes("'처음 넣은 100원이 지금 ' + w100(v / 100 - 1) + '이에요.'"), '꾀 쪽 글');
   assert.ok(/if \(n < 2 \|\| v == null \|\| TK\.w\.filter/.test(kk), '산 셈이 없거나 하루치뿐이면 그리지 않음');
+});
+
+test('어제와 오늘 · 첫 쪽 기록(주문 1119-1151 「어제의 주식상황은 이랬고 오늘의 주식상황은 … 어제는 이런 병법 … 오늘은 이런 병법」) — 장이 끝난 날만 적음 · 첫 쪽과 같은 꾀 법 · 지문 이음 · 첫 쪽 어제 칸', () => {
+  const rank = S36.map(k => ({k})), x = d => ({day: d, prov: false, land: 'shake', win3: {ks: ['g18', 'g02']}, rank});
+  assert.deepEqual(sunPick(x('2026-11-18')), {k: 'g18', win: true}, '꾀 셋 첫째');
+  assert.deepEqual(sunPick({rank: [{k: 'g05'}, {k: 'g01'}]}), {k: 'g05', win: false}, '꾀 셋이 없으면 덜 잃은 차례 첫째');
+  const a = sealSun([], x('2026-11-18'), '2026-11-18T17:06+09:00');
+  assert.equal(a.added, '2026-11-18'); assert.equal(a.lines[0].p, ZERO); assert.equal(a.lines[0].rule, SUN_TRACK); assert.deepEqual([a.lines[0].land, a.lines[0].k, a.lines[0].win], ['shake', 'g18', true]);
+  assert.equal(sealSun(a.lines, {...x('2026-11-19'), prov: true}, 'x').added, null, '장중 값(굳지 않은 날)은 적지 않음');
+  assert.equal(sealSun(a.lines, x('2026-11-18'), 'x').added, null, '같은 날은 다시 적지 않음');
+  const b = sealSun(a.lines, {...x('2026-11-19'), land: 'fall', win3: {ks: []}, rank: [{k: 'g07'}, ...rank]}, '2026-11-19T17:06+09:00');
+  assert.equal(b.added, '2026-11-19'); assert.equal(b.lines[1].p, b.lines[0].h); assert.deepEqual([b.lines[1].land, b.lines[1].k, b.lines[1].win], ['fall', 'g07', false]);
+  assert.deepEqual(checkSun(b.lines), []);
+  const bad = JSON.parse(JSON.stringify(b.lines)); bad[0].k = 'g01'; assert.deepEqual(checkSun(bad), [0], '고치면 드러남');
+  const sm = rd('scripts/atlas11/next/su21_settle.mjs'), sj = rd('site/su/su-sonja.js'), sp = rd('scripts/atlas11/next/su21_sun.py');
+  assert.ok(sm.includes("if (keep && U0 !== null && sunBroken === 0)") && sm.includes("S.sunLog = sunLog"), '올리기 작업만 덧붙임 · 첫 쪽에 마지막 일곱 줄');
+  assert.ok(sj.includes('ydBox(T, x), // 어제와 오늘') && sj.includes('export function ydOf(T, x)') && sj.includes("'어제와 ' + now"), '첫 쪽 — 시장을 살피다 칸 안 · 지금 시장 바로 아래');
+  assert.ok(sj.includes("q.day < x.day") && sj.includes("pv.pick"), '어제 꾀 = 기록(오늘보다 앞선 마지막 날) · 없으면 같은 법으로 다시 센 것');
+  assert.ok(sp.includes("'prev': prev") && sp.includes('rng2 = np.random.default_rng(1119)'), '형세 자료 prev — 따로 굴린 수(오늘 값을 바꾸지 않음)');
 });

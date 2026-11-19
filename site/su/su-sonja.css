@@ -1205,3 +1205,16 @@ html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #5B4F43
 #su .sj-page .sj-stsp { flex: none; }
 /* 이 꾀의 쌓인 값 꺾은선(주문 1119-1005) — 꾀 쪽 제4장 · 먹 선 = 이 꾀 · 옅은 선 = 다른 꾀 */
 #su .sj-page .sj-trkv { margin-top: 8px; font-size: 1.1875rem; line-height: 1.5; font-weight: 800; }
+/* 어제와 오늘(주문 1119-1151) — 두 칸 · 가운데 화살표 · 땅 이름 크게 · 꾀 이름 · 바뀐 말 */
+#su .sj-page .sj-yd { margin-top: 14px; padding: 14px 12px 12px; border: 1.5px solid #E0D6C4; border-radius: 16px; background: #FCFAF5; }
+#su .sj-page .sj-ydh { font-size: 1.25rem; line-height: 1.5; font-weight: 800; }
+#su .sj-page .sj-ydg { display: flex; align-items: stretch; gap: 8px; margin-top: 10px; }
+#su .sj-page .sj-ydc { flex: 1 1 0; min-width: 0; display: grid; align-content: start; gap: 4px; padding: 10px; border-radius: 12px; background: #F3EDE2; }
+#su .sj-page .sj-ydt0 { background: #1E1914; color: #F8F4EB; }
+#su .sj-page .sj-ydd { font-size: 1.0625rem; line-height: 1.4; font-weight: 700; }
+#su .sj-page .sj-ydl { font-size: 1.3125rem; line-height: 1.35; font-weight: 800; }
+#su .sj-page .sj-ydk { font-size: 1.0625rem; line-height: 1.45; }
+#su .sj-page .sj-yda { flex: none; align-self: center; font-style: normal; font-size: 1.5rem; font-weight: 800; }
+#su .sj-page .sj-ydt { margin-top: 10px; font-size: 1.1875rem; line-height: 1.55; font-weight: 800; }
+#su .sj-page .sj-ydt2 { margin-top: 4px; font-size: 1.1875rem; line-height: 1.55; font-weight: 700; }
+#su .sj-page .sj-ydn { margin-top: 6px; font-size: 1.0625rem; line-height: 1.5; }

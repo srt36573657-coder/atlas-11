@@ -200,6 +200,20 @@ export const trackSite = (lines, days) => { const A = trackAll(lines, days);
   return {days: A.map(d => d.day), w: A.map(d => d.c.map((c, j) => (c && d.v[j] != null ? Math.round(d.v[j] / c * 1e4) : null))), sealed: lines.length ? lines[lines.length - 1].day : null}; };
 const kstMin = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 16) + '+09:00';
 
+/** 첫 쪽 기록(주문 1119-1151 · 사장님 2026-11-19(마카오) 11:51 「어제의 주식상황은 이랬고 오늘의 주식상황은 이렇게 변화가 있다 … 기록을 해주어야 하고 … 어제는 이런 병법으로 대처를 했고
+ *    오늘은 이런 병법」 — docs/design/sonja-yday-2026-11-19/order-1151.txt) — reports/atlas11/su21/sun-track.jsonl · 한 줄 = 장이 끝난 하루(장중 값 · 굳지 않은 날은 적지 않음)
+ *  그날 시장 모습(땅) · 그날 첫 쪽에 실은 꾀(첫 쪽 nowPick 과 같은 법 — 꾀 셋 첫째 · 없으면 덜 잃은 차례 첫째) · 앞 줄 지문 p · 제 지문 h · 한 번 적은 줄은 고치지 않음 */
+export const SUN_TRACK = 'sun-track-1', LANDS5 = Object.freeze(['fall', 'shake', 'rise', 'narrow', 'calm']);
+export const sunHash = L => crypto.createHash('sha256').update(JSON.stringify([L.day, L.at, L.rule, L.land, L.k, L.win, L.p])).digest('hex');
+export const sunPick = x => { const w = (x?.win3?.ks ?? []).filter(k => S36.includes(k)), r = (x?.rank ?? []).map(q => q?.k).filter(k => S36.includes(k)); return w.length ? {k: w[0], win: true} : r.length ? {k: r[0], win: false} : null; };
+export function sealSun(lines, x, at) {
+  const last = lines.length ? lines[lines.length - 1] : null, pk = sunPick(x);
+  if (!x || x.prov !== false || !DAY.test(x.day ?? '') || !LANDS5.includes(x.land) || !pk || (last && !(x.day > last.day))) return {lines, added: null};
+  const L = {day: x.day, at, rule: SUN_TRACK, land: x.land, k: pk.k, win: pk.win, p: last ? last.h : ZERO}; L.h = sunHash(L);
+  return {lines: [...lines, L], added: x.day};
+}
+export const checkSun = lines => lines.flatMap((L, i) => (L?.h === sunHash(L) && L.p === (i ? lines[i - 1].h : ZERO) && (!i || L.day > lines[i - 1].day) ? [] : [i]));
+
 /** 며칠째(주문 1114-0151 · 사장님 2026-11-14 01:51 「지금 이렇게 301 게 이게 며칠째 이렇게 됐는지도 좀 기록 하게 해 봐」)
  *  장부의 서른여섯 꾀 · 조용한 힘 기록(그날 판마다 한 번 적은 목록)으로 오늘 목록 회사마다 {days, found, since} — 42칸(su21_days.mjs)과 같은 셈
  *  · 며칠째 = 오늘부터 거꾸로 장이 열린 날마다 그 묶음에 들어 있던 날 수(오늘 포함) · 판이 빠진 날은 앞뒤 기록에 모두 들어 있으면 이어진 것 · 첫 발견 = 이어진 날 맨 앞 · since = 기록 첫날까지 이어짐
@@ -263,12 +277,18 @@ function main() {
   const trade = calF ? readJson(calF)?.dates ?? [] : [], R = runsOf(book, trade, board.asOf), w = (f, o) => { const tmp = f + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(o)); fs.renameSync(tmp, f); };
   const M = markRuns(R, s36, S, board.asOf);
   if (M.n36 || M.no) w(path.join(su, 'su21-s36.json'), s36);
+  // 첫 쪽 기록(주문 1119-1151) — 올리기 작업만 · 장이 끝난 날만 · 지문이 끊기면 덧붙이지 않음 · 첫 쪽은 su21.json sunLog(마지막 일곱 줄)로 어제 꾀를 씀
+  const sunF = path.join(path.dirname(bookF), 'sun-track.jsonl'), U0 = readTrack(sunF), sunBroken = U0 === null ? -1 : checkSun(U0).length;
+  let U = U0 ?? [], sunAdded = null;
+  if (keep && U0 !== null && sunBroken === 0) { const s = sealSun(U0, S?.sun, kstMin()); U = s.lines; sunAdded = s.added; if (sunAdded) fs.appendFileSync(sunF, JSON.stringify(U[U.length - 1]) + '\n'); }
+  const sunLog = {broken: sunBroken, rows: U.slice(-7).map(L => ({day: L.day, land: L.land, k: L.k, win: L.win}))};
+  if (S && typeof S === 'object' && JSON.stringify(S.sunLog ?? null) !== JSON.stringify(sunLog)) { S.sunLog = sunLog; M.nq = M.nq || 1; }
   if (M.nq) w(path.join(su, 'su21.json'), S);
   const nk = Object.fromEntries(KINDS.map(k => [k, site.buys.filter(b => KINDS[b[1]] === k).length]));
   console.log(`정산 장부 — 날 ${Object.keys(lists).length} · 산 셈 ${site.buys.length}번(${KINDS.map(k => k + ' ' + nk[k]).join(' · ')}) · 값 없음 ${Object.values(site.miss).reduce((x, y) => x + y, 0)} · 저장된 판 ${Object.keys(stored).length} · 판 ${board.asOf}`
     + ' · 첫날 ' + START + (cut.quiet || cut.px || cut.co ? ` · 첫날 전 기록 지움(조용한 힘 ${cut.quiet}날 · 값 ${cut.px}개 · 이름 ${cut.co ?? 0}곳)` : '') + (cut.t11 ? ` · 특징 열하나 기록 지움(${cut.t11}날)` : '')
     + (added ? ' · 조용한 힘 새로 적음 ' + added : '') + (added36.length ? ' · 서른여섯 꾀 새로 적음 ' + board.asOf + '(' + added36.length + '꾀)' : ' · 서른여섯 꾀 새로 적은 꾀 0(판 ' + (s36?.asOf?.board ?? '없음') + ' · 자료 ' + (s36?.asOf?.data ?? '없음') + ')')
     + (addedO ? ' · 겹친 곳 새로 적음 ' + addedO + '(' + book.ovl[addedO].length + '곳)' : '')
-    + ' · 날마다 기록 ' + T.length + '줄' + (sealed.length ? '(새로 ' + sealed.join(' · ') + ')' : '') + (broken ? ' · 지문 끊김 ' + broken : '') + (diff.length ? ' · 다시 센 값 다름 ' + diff.join(' · ') : '') + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)') + ' · 며칠째 꾀 ' + M.n36 + '곳 · 조용한 힘 ' + M.nq + '곳 · 겹친 곳 ' + M.no + '곳');
+    + ' · 첫 쪽 기록 ' + U.length + '줄' + (sunAdded ? '(새로 ' + sunAdded + ')' : '') + (sunBroken ? ' · 첫 쪽 기록 지문 끊김 ' + sunBroken : '') + ' · 날마다 기록 ' + T.length + '줄' + (sealed.length ? '(새로 ' + sealed.join(' · ') + ')' : '') + (broken ? ' · 지문 끊김 ' + broken : '') + (diff.length ? ' · 다시 센 값 다름 ' + diff.join(' · ') : '') + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)') + ' · 며칠째 꾀 ' + M.n36 + '곳 · 조용한 힘 ' + M.nq + '곳 · 겹친 곳 ' + M.no + '곳');
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
