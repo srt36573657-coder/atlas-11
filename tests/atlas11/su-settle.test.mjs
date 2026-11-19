@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK} from '../../scripts/atlas11/next/su21_settle.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import {forwardTo} from '../../site/su/su-data.js';
@@ -302,7 +302,43 @@ test('날마다 바뀐 차례(주문 1119-0243 「그 순위가 매일 매일 �
   assert.deepEqual(rank36(B, {...S, asOf: D2}).days, [D2], '판 날 뒤 값은 쓰지 않음');
   assert.deepEqual(rank36(B, {...S, buys: []}), {days: [], order: []});
   const sm = rd('scripts/atlas11/next/su21_settle.mjs'), kk = rd('site/su/su-sonja-kkoe.js');
-  assert.ok(sm.includes('site.rk = rank36(book, site);'), '묶을 때 화면 자료에 날마다 바뀐 차례');
-  assert.ok(kk.includes('export function rankMoves(D, K)') && kk.includes("M = rankMoves(D, K);") && kk.includes('M ? rankRace(M, nameOf) : null') && kk.includes('M ? mvMark(M.move.get(x.key)) : null'), '쪽 — 맨 위 한 줄 · 줄마다 오르내린 칸 · 날마다 바뀐 차례(위 열)');
+  assert.ok(sm.includes('site.rk = rankOf(A);') && sm.includes('A = trackAll(T, TD)'), '묶을 때 화면 자료에 날마다 바뀐 차례(적은 줄 + 아직 안 적은 날)');
+  assert.ok(kk.includes('export function rankMoves(D, K)') && kk.includes('M = rankMoves(D, K)') && kk.includes('M ? rankRace(M, nameOf) : null') && kk.includes('M ? mvMark(M.move.get(x.key)) : null'), '쪽 — 맨 위 한 줄 · 줄마다 오르내린 칸 · 날마다 바뀐 차례(위 열)');
   assert.ok(kk.includes("cur = K.map(x => K36.indexOf(x.key))") && kk.includes("d < today"), '오늘 차례는 쪽이 스스로 센 것 · 장부 기록은 그 앞날만');
+});
+
+test('쌓인 값 · 날마다 기록(주문 1119-0829 「누적값을 알수가 없다 … 추적 시스템은 정말 소중한 데이타」) — 첫 산 날부터 · 한 번 적은 줄은 고치지 않음 · 지문 이음 · 고치면 드러남 · 화면 100원이 ○원', () => {
+  const D1 = '2026-11-13', D2 = '2026-11-16', D3 = '2026-11-17', D4 = '2026-11-18', ki = k => KINDS.indexOf(k);
+  const B = {px: {'000001': {[D1]: 1000, [D2]: 1100, [D3]: 1000, [D4]: 1200}, '000002': {[D1]: 2000, [D2]: 2000, [D3]: 2600, [D4]: 2400}}};
+  const S = {kinds: [...KINDS], qty: 10, asOf: D3, buys: [[D1, ki('g01'), '000001', 1000], [D1, ki('g02'), '000002', 2000]]};
+  const TD = trackDays(B, S);
+  assert.deepEqual(TD.map(d => d.day), [D1, D2, D3], '첫 산 날(모두 하루치)부터 판 날까지');
+  assert.deepEqual([TD[0].c[0], TD[0].v[0], TD[0].r[0]], [10000, 10000, null], '첫날 — 산 돈 = 센 돈 · 하루치는 늘어난 몫 없음');
+  assert.deepEqual([TD[1].v[0], TD[1].r[0], TD[1].c[2]], [11000, 100000, null], '둘째 날 — 1100 × 10 · 늘어난 몫 백만에 십만 · 산 셈 없는 꾀는 null');
+  assert.deepEqual(rank36(B, S).days, [D2, D3], '차례는 셀 꾀가 있는 날만(전과 같음)');
+  const s1 = sealTrack([], TD, '2026-11-17T17:10+09:00');
+  assert.deepEqual(s1.added, [D1, D2, D3]); assert.equal(s1.lines[0].p, ZERO); assert.equal(s1.lines[1].p, s1.lines[0].h); assert.equal(s1.lines[0].rule, TRACK);
+  assert.deepEqual(checkTrack(s1.lines), [], '지문이 이어짐');
+  // 다음 날 — 앞 줄은 그대로 두고 새 날만 덧붙임 · 앞날 값이 달라져도 고치지 않음
+  const TD2 = trackDays({px: {...B.px, '000001': {...B.px['000001'], [D2]: 1150}}}, {...S, asOf: D4});
+  const s2 = sealTrack(s1.lines, TD2, '2026-11-18T17:10+09:00');
+  assert.deepEqual(s2.added, [D4], '마지막 적은 날 뒤만');
+  assert.deepEqual(s2.lines.slice(0, 3), s1.lines, '한 번 적은 줄은 그대로');
+  assert.deepEqual(trackDiff(s2.lines, TD2), [D2], '다시 센 값이 다르면 알리기만');
+  const bad = JSON.parse(JSON.stringify(s2.lines)); bad[1].v[0] += 10;
+  assert.deepEqual(checkTrack(bad), [1], '한 줄을 고치면 그 줄 지문이 맞지 않음');
+  const cut = s2.lines.filter((_, i) => i !== 1);
+  assert.deepEqual(checkTrack(cut), [1], '한 줄을 빼면 다음 줄 앞 지문이 끊김');
+  const st = trackSite(s1.lines, TD2);
+  assert.deepEqual(st.days, [D1, D2, D3, D4], '적은 줄 + 아직 안 적은 날');
+  assert.equal(st.sealed, D3);
+  assert.deepEqual([st.w[0][0], st.w[1][0], st.w[3][1]], [10000, 11000, 12000], '100원이 ○원 × 100(적은 줄 값 그대로 · 둘째 날 110원)');
+  assert.deepEqual(trackAll(s1.lines, TD2).map(d => d.day), [D1, D2, D3, D4]);
+  assert.deepEqual(readTrack('/없는/파일.jsonl'), []);
+  // 저장소 기록이 있으면 지문이 이어져 있어야 함(누가 고치면 이 시험이 막음)
+  const f = 'reports/atlas11/su21/settle-track.jsonl';
+  if (fs.existsSync(f)) { const L = readTrack(f); assert.ok(Array.isArray(L) && L.length > 0); assert.deepEqual(checkTrack(L), [], '저장소 날마다 기록 지문 — 끊긴 줄 없음'); }
+  const sm = rd('scripts/atlas11/next/su21_settle.mjs'), kk = rd('site/su/su-sonja-kkoe.js');
+  assert.ok(sm.includes("if (keep && T0 !== null && broken === 0)") && sm.includes('fs.appendFileSync(trackF'), '올리기 작업만 · 지문이 끊기면 덧붙이지 않음 · 덧붙이기만');
+  assert.ok(kk.includes('TK ? trackChart(TK, K, nameOf) : null') && kk.includes('trackSpark(TK, x.key)') && kk.includes("'처음 넣은 100원이 날마다 얼마가 됐는지 이었어요.'"), '쪽 — 쌓인 값 꺾은선(기본 그림) · 줄마다 작은 꺾은선');
 });

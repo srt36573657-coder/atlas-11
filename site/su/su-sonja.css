@@ -349,20 +349,20 @@ html.sj-sub #su > main.sj-pre { display: none; }
 #su .sj-sta i { flex: none; font-style: normal; font-size: 1.5rem; }
 #su .sj-stv { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; column-gap: 10px; row-gap: 2px; font-size: 1.125rem; line-height: 1.45; font-weight: 600; }
 /* 날마다 바뀐 차례(주문 1119-0243) — 맨 위 한 줄 · 줄마다 오르내린 칸(▲ 먹 · ▼ 남빛 · ― 옅은 먹) · 날짜 단추 · 위 열 */
-#su .sj-st1 { margin-top: 12px; font-size: 1.3125rem; line-height: 1.5; font-weight: 800; }
-#su .sj-stmk { margin-top: 6px; font-size: 1.0625rem; line-height: 1.5; }
-#su .sj-stm { flex: none; min-width: 2.4em; text-align: right; font-size: 1.0625rem; font-weight: 800; color: #1E1914; white-space: nowrap; }
-#su .sj-stm[data-m="dn"] { color: #23406B; }
-#su .sj-stm[data-m="eq"] { color: #6A6156; }
-#su .sj-dr .sj-drt { margin-top: 10px; font-size: 1.1875rem; line-height: 1.55; }
-#su .sj-drds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-#su .sj-drd { min-height: 48px; padding: 0 14px; border: 1.5px solid #1E1914; border-radius: 999px; background: transparent; color: #1E1914; font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; }
-#su .sj-drd[aria-pressed="true"] { background: #1E1914; color: #F8F4EB; }
-#su .sj-drp { display: inline-flex; align-items: center; min-height: 48px; margin-top: 12px; padding: 0 18px; border: 0; border-radius: 999px; background: #E9E2D5; color: #15120E; font: inherit; font-size: 1.125rem; font-weight: 800; cursor: pointer; }
-#su .sj-drl { display: grid; gap: 6px; margin-top: 12px; padding: 0; list-style: none; }
-#su .sj-drr { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 12px; border-radius: 14px; background: #F8F4EB; }
-#su .sj-drn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 32px; border-radius: 999px; background: #E9E2D5; color: #15120E; font-size: 1.0625rem; font-weight: 800; }
-#su .sj-drk { flex: 1 1 auto; min-width: 0; font-size: 1.1875rem; line-height: 1.35; }
+#su .sj-page .sj-st1 { margin-top: 12px; font-size: 1.3125rem; line-height: 1.5; font-weight: 800; }
+#su .sj-page .sj-stmk { margin-top: 6px; font-size: 1.0625rem; line-height: 1.5; }
+#su .sj-page .sj-stm { flex: none; min-width: 2.4em; text-align: right; font-size: 1.0625rem; font-weight: 800; color: #1E1914; white-space: nowrap; }
+#su .sj-page .sj-stm[data-m="dn"] { color: #23406B; }
+#su .sj-page .sj-stm[data-m="eq"] { color: #6A6156; }
+#su .sj-page .sj-dr .sj-drt { margin-top: 10px; font-size: 1.1875rem; line-height: 1.55; }
+#su .sj-page .sj-drds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+#su .sj-page .sj-drd { min-height: 48px; padding: 0 14px; border: 1.5px solid #1E1914; border-radius: 999px; background: transparent; color: #1E1914; font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; }
+#su .sj-page .sj-drd[aria-pressed="true"] { background: #1E1914; color: #F8F4EB; }
+#su .sj-page .sj-drp { display: inline-flex; align-items: center; min-height: 48px; margin-top: 12px; padding: 0 18px; border: 0; border-radius: 999px; background: #E9E2D5; color: #15120E; font: inherit; font-size: 1.125rem; font-weight: 800; cursor: pointer; }
+#su .sj-page .sj-drl { display: grid; gap: 6px; margin-top: 12px; padding: 0; list-style: none; }
+#su .sj-page .sj-drr { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 12px; border-radius: 14px; background: #F8F4EB; }
+#su .sj-page .sj-drn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 32px; border-radius: 999px; background: #E9E2D5; color: #15120E; font-size: 1.0625rem; font-weight: 800; }
+#su .sj-page .sj-drk { flex: 1 1 auto; min-width: 0; font-size: 1.1875rem; line-height: 1.35; }
 #su .sj-stbar { display: block; width: 100%; height: 10px; margin-top: 4px; }
 #su .sj-stb0 { stroke: #8C8173; stroke-width: 2; }
 #su .sj-stbu { fill: #5B4F43; }
@@ -1187,3 +1187,19 @@ html.sj-on #su .sj-nowp3 { font-size: 1.0625rem; font-weight: 700; color: #FFFDF
 html.sj-on #su .sj-nowp4 { font-size: 1.0625rem; font-weight: 600; color: #E9E2D5; }
 html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #5B4F43; }
 @media (max-width: 380px) { html.sj-on #su ul.sj-nowi { grid-template-columns: 1fr; } }
+/* 쌓인 값 꺾은선(주문 1119-0829) — 기본 그림 · 먹 진한 선(위 세 꾀) · 남빛(맨 아래) · 옅은 선(나머지) · 점선(처음 넣은 100원) · 글은 그림 밖 */
+#su .sj-page .sj-trkf-box { margin: 14px 0 0; padding: 14px 12px 12px; border: 1.5px solid #E0D6C4; border-radius: 16px; background: #FCFAF5; }
+#su .sj-page .sj-trkh { font-size: 1.25rem; line-height: 1.5; font-weight: 800; }
+#su .sj-page .sj-trk { display: block; width: 100%; height: auto; margin-top: 8px; overflow: visible; }
+#su .sj-page .sj-trk0 { fill: none; stroke: #8A8174; stroke-width: 1.4; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
+#su .sj-page .sj-trkf { fill: none; stroke: #CFC6B8; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+#su .sj-page .sj-trkt { fill: none; stroke: #1E1914; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+#su .sj-page .sj-trkl { fill: none; stroke: #23406B; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+#su .sj-page .sj-trkte { fill: #1E1914; } #su .sj-page .sj-trkle { fill: #23406B; }
+#su .sj-page .sj-trkd { display: flex; justify-content: space-between; margin-top: 4px; font-size: 1.0625rem; color: #4A433A; }
+#su .sj-page .sj-trkg { display: grid; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
+#su .sj-page .sj-trkg li { display: flex; align-items: center; gap: 10px; font-size: 1.125rem; line-height: 1.45; font-weight: 700; }
+#su .sj-page .sj-trks { flex: none; width: 26px; height: 4px; border-radius: 2px; background: #1E1914; }
+#su .sj-page .sj-trks-l { background: #23406B; }
+#su .sj-page .sj-trkn { margin-top: 6px; font-size: 1.0625rem; line-height: 1.5; }
+#su .sj-page .sj-stsp { flex: none; }

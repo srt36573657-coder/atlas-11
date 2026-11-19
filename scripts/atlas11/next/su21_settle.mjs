@@ -24,6 +24,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
+import crypto from 'node:crypto'; // 날마다 기록 지문(주문 1119-0829)
 import {fileURLToPath} from 'node:url';
 import {calendarOf, runOf} from './su21_days.mjs'; // 며칠째 셈(주문 1114-0151 — 42칸과 같은 셈)
 
@@ -141,33 +142,63 @@ export function siteSettle(B, L, asOf, days, start = START) {
     co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss};
 }
 
-/** 날마다 바뀐 차례(주문 1119-0243 · 사장님 2026-11-19(마카오) 02:43 「정산에서 순위가 … 그 순위가 매일 매일 어떻게 변화하는지 잡스라면 어떻개 표현할까」 · 02:46 「응」
- *    — docs/design/settle-rank-2026-11-19/order-0243.txt)
- *  서른여섯 꾀를 장부 값이 있는 날마다 그날까지 산 셈 · 그날까지 가장 늦은 값으로 다시 셈 — 화면 settle36(su-sonja-kkoe.js)과 같은 차례
- *  (산 돈에 견줘 늘어난 몫 · 백만에 하나까지 높은 차례 · 같으면 꾀 차례 · 하루치 · 산 셈 없음은 맨 아래) → {days: [날…], order: [[꾀 차례 번호 0 ~ 35 서른여섯]…]}
- *  · 차례를 셀 꾀가 하나도 없는 날(모두 하루치)은 뺌 · 화면은 오늘 차례를 스스로 세고 이 기록은 그 앞날들에 씀 */
-export function rank36(B, S) {
+/** 날마다 쌓인 값(주문 1119-0829 · 사장님 2026-11-19(마카오) 08:29 「하루치는 알수 있으나 누적값을 알수가 없다 … 꺽기 그래프는 기존이 되어야 하고 이 지금 만드는
+ *    추적 시스템은 정말 소중한 데이타가 된다 … 탈무드에 지혜를 학습해」 · 08:43 「응」 — docs/design/settle-track-2026-11-19/order-0829.txt)
+ *  서른여섯 꾀를 첫 산 날부터 장부 값이 있는 날마다(판 날까지) 그날까지 산 셈 · 그날까지 가장 늦은 값으로 셈 — 화면 settle36(su-sonja-kkoe.js)과 같은 셈
+ *  → [{day, c(산 돈 · 원), v(그날 센 돈 · 원), r(늘어난 몫 · 백만에 하나 · 하루치 · 산 셈 없음은 null), o(차례 — 꾀 차례 번호 0 ~ 35)}…] · 산 셈 없는 꾀는 c · v 도 null */
+export function trackDays(B, S) {
   const kk = (S?.kinds ?? []).map((k, i) => [k, i]).filter(([k]) => /^g(0[1-9]|[12]\d|3[0-6])$/.test(k)), at = new Map(kk.map(([, i], j) => [i, j]));
   const q = Number.isFinite(S?.qty) ? S.qty : QTY, buys = (S?.buys ?? []).filter(b => Array.isArray(b) && at.has(b[1]) && fin(b[3]) && b[3] > 0);
-  const out = {days: [], order: []};
-  if (kk.length !== 36 || !buys.length) return out;
+  if (kk.length !== 36 || !buys.length) return [];
   const asOf = S?.asOf ?? null, first = buys.reduce((m, b) => (b[0] < m ? b[0] : m), buys[0][0]);
   const days = [...new Set(Object.values(B?.px ?? {}).flatMap(p => Object.keys(p ?? {})))].filter(d => DAY.test(d) && d >= first && (!asOf || d <= asOf)).sort();
   const last = (code, d) => { let v = null, vd = null; for (const [x, y] of Object.entries(B?.px?.[code] ?? {})) if (x <= d && fin(y) && (vd === null || x > vd)) { vd = x; v = y; } return [v, vd]; };
-  for (const d of days) {
+  return days.map(d => {
     const g = kk.map(() => ({cost: 0, val: 0, n: 0, one: true}));
     for (const [bd, ki, code, buy] of buys) {
       if (bd > d) continue;
       const [v, vd] = last(code, d), x = g[at.get(ki)], now = v ?? buy, nd = v == null ? bd : vd; // 화면 settleRows 와 같음 — 그날까지 값이 없으면 산 값 · 하루치
       x.cost += buy * q; x.val += now * q; x.n++; x.one = x.one && !(nd > bd);
     }
-    const R = g.map((x, j) => ({j, r: x.n && x.cost > 0 && !x.one ? Math.round((x.val - x.cost) / x.cost * 1e6) : null}));
-    if (!R.some(x => x.r !== null)) continue;
-    R.sort((a, b) => (a.r === null) - (b.r === null) || (b.r ?? 0) - (a.r ?? 0) || a.j - b.j);
-    out.days.push(d); out.order.push(R.map(x => x.j));
-  }
-  return out;
+    const r = g.map(x => (x.n && x.cost > 0 && !x.one ? Math.round((x.val - x.cost) / x.cost * 1e6) : null));
+    const o = g.map((x, j) => j).sort((a, b) => (r[a] === null) - (r[b] === null) || (r[b] ?? 0) - (r[a] ?? 0) || a - b);
+    return {day: d, c: g.map(x => (x.n ? Math.round(x.cost) : null)), v: g.map(x => (x.n ? Math.round(x.val) : null)), r, o};
+  });
 }
+/** 날마다 바뀐 차례(주문 1119-0243 · 02:43 「그 순위가 매일 매일 어떻게 변화하는지」 · 02:46 「응」 — docs/design/settle-rank-2026-11-19/order-0243.txt)
+ *  쌓인 값(trackDays) 가운데 차례를 셀 꾀가 하나라도 있는 날(모두 하루치인 날은 뺌) → {days, order} */
+export const rankOf = T => { const R = T.filter(d => d.r.some(x => x !== null)); return {days: R.map(d => d.day), order: R.map(d => d.o)}; };
+export const rank36 = (B, S) => rankOf(trackDays(B, S));
+
+/** 날마다 기록(주문 1119-0829) — reports/atlas11/su21/settle-track.jsonl · 한 줄 = 하루 · 올리기 작업만 덧붙임
+ *  탈무드에서 배운 셋: 랍비 아키바의 물방울(아보트 데랍비 나탄 6 — 하루 한 방울보다 쌓인 값) · 「정직하게 거래했나 · 때를 정해 배웠나」(샤바트 31a — 같은 때에 적고 고치지 않음)
+ *  · 「복은 달고 재고 센 것에 있지 않다」(바바 메찌아 42a — 하루 오르내림은 작게)
+ *  지킬 것: 한 번 적은 줄은 고치지 않음(마지막 적은 날 뒤의 날만 덧붙임) · 줄마다 앞 줄 지문 p 와 제 지문 h(sha256) — 한 줄이라도 고치면 지문이 끊겨 드러남
+ *  · 지문이 끊긴 기록에는 덧붙이지 않음(화면에 broken) · 지금 다시 센 값이 적은 줄과 다르면 고치지 않고 diff 로 알림 */
+export const TRACK = 'settle-track-1', ZERO = '0'.repeat(64);
+export const trackHash = L => crypto.createHash('sha256').update(JSON.stringify([L.day, L.at, L.rule, L.c, L.v, L.r, L.o, L.p])).digest('hex');
+export function sealTrack(lines, days, at) {
+  const out = [...lines], added = [];
+  for (const d of days) {
+    const prev = out.length ? out[out.length - 1] : null;
+    if (prev && !(d.day > prev.day)) continue;
+    const L = {day: d.day, at, rule: TRACK, c: d.c, v: d.v, r: d.r, o: d.o, p: prev ? prev.h : ZERO};
+    L.h = trackHash(L); out.push(L); added.push(d.day);
+  }
+  return {lines: out, added};
+}
+/** 지문 확인 → 끊긴 줄 번호(0부터) — 제 지문 · 앞 줄 지문 · 날 차례 */
+export const checkTrack = lines => lines.flatMap((L, i) => (L?.h === trackHash(L) && L.p === (i ? lines[i - 1].h : ZERO) && (!i || L.day > lines[i - 1].day) ? [] : [i]));
+/** 적은 줄과 지금 다시 센 값이 다른 날(고치지 않고 알리기만) */
+export const trackDiff = (lines, days) => { const m = new Map(days.map(d => [d.day, d])), J = JSON.stringify; return lines.filter(L => m.has(L.day) && (J(m.get(L.day).c) !== J(L.c) || J(m.get(L.day).v) !== J(L.v) || J(m.get(L.day).r) !== J(L.r))).map(L => L.day); };
+/** 기록 읽기 — 없으면 [] · 못 읽으면 null */
+export const readTrack = f => { try { return fs.readFileSync(f, 'utf8').split('\n').filter(x => x.trim()).map(x => JSON.parse(x)); } catch (e) { return e?.code === 'ENOENT' ? [] : null; } };
+/** 적은 줄 + 그 뒤 날은 지금 센 값(아직 안 적은 날 · 올리기 작업이 아닐 때) */
+export const trackAll = (lines, days) => { const end = lines.length ? lines[lines.length - 1].day : ''; return [...lines, ...days.filter(d => d.day > end)]; };
+/** 화면 자료 tr — days · w(100원이 ○원 × 100 · 정수 · 산 셈 없으면 null) · sealed(마지막 적은 날) */
+export const trackSite = (lines, days) => { const A = trackAll(lines, days);
+  return {days: A.map(d => d.day), w: A.map(d => d.c.map((c, j) => (c && d.v[j] != null ? Math.round(d.v[j] / c * 1e4) : null))), sealed: lines.length ? lines[lines.length - 1].day : null}; };
+const kstMin = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 16) + '+09:00';
 
 /** 며칠째(주문 1114-0151 · 사장님 2026-11-14 01:51 「지금 이렇게 301 게 이게 며칠째 이렇게 됐는지도 좀 기록 하게 해 봐」)
  *  장부의 서른여섯 꾀 · 조용한 힘 기록(그날 판마다 한 번 적은 목록)으로 오늘 목록 회사마다 {days, found, since} — 42칸(su21_days.mjs)과 같은 셈
@@ -219,7 +250,13 @@ function main() {
   const stored = storedBoards(boardsDir);
   const {book, added, added36, addedO, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36});
   const site = siteSettle(book, lists, board.asOf, days);
-  site.rk = rank36(book, site); // 날마다 바뀐 차례(주문 1119-0243) — 정산 쪽 「날마다 바뀐 차례」 · 줄마다 오르내린 칸
+  // 날마다 기록(주문 1119-0829) — 올리기 작업(--keep)만 덧붙임 · 지문이 끊겼으면 덧붙이지 않음 · 화면은 적은 줄 + 아직 안 적은 날(지금 센 값)
+  const trackF = path.join(path.dirname(bookF), 'settle-track.jsonl'), T0 = readTrack(trackF), TD = trackDays(book, site), broken = T0 === null ? -1 : checkTrack(T0).length;
+  let T = T0 ?? [], sealed = [];
+  if (keep && T0 !== null && broken === 0) { const s = sealTrack(T0, TD, kstMin()); T = s.lines; sealed = s.added; if (sealed.length) fs.appendFileSync(trackF, T.slice(T0.length).map(L => JSON.stringify(L)).join('\n') + '\n'); }
+  const A = trackAll(T, TD), diff = trackDiff(T, TD);
+  site.rk = rankOf(A); // 날마다 바뀐 차례(주문 1119-0243) — 적은 줄 차례 그대로
+  site.tr = {...trackSite(T, TD), broken, diff}; // 쌓인 값 꺾은선(주문 1119-0829)
   if (out) fs.writeFileSync(out, JSON.stringify(site) + '\n');
   if (keep) { const tmp = bookF + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(book, null, 1) + '\n'); fs.renameSync(tmp, bookF); }
   // 며칠째(주문 1114-0151) — 서른여섯 꾀(su21-s36.json) · 조용한 힘(su21.json)에 회사마다 days · found · since
@@ -232,6 +269,6 @@ function main() {
     + ' · 첫날 ' + START + (cut.quiet || cut.px || cut.co ? ` · 첫날 전 기록 지움(조용한 힘 ${cut.quiet}날 · 값 ${cut.px}개 · 이름 ${cut.co ?? 0}곳)` : '') + (cut.t11 ? ` · 특징 열하나 기록 지움(${cut.t11}날)` : '')
     + (added ? ' · 조용한 힘 새로 적음 ' + added : '') + (added36.length ? ' · 서른여섯 꾀 새로 적음 ' + board.asOf + '(' + added36.length + '꾀)' : ' · 서른여섯 꾀 새로 적은 꾀 0(판 ' + (s36?.asOf?.board ?? '없음') + ' · 자료 ' + (s36?.asOf?.data ?? '없음') + ')')
     + (addedO ? ' · 겹친 곳 새로 적음 ' + addedO + '(' + book.ovl[addedO].length + '곳)' : '')
-    + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)') + ' · 며칠째 꾀 ' + M.n36 + '곳 · 조용한 힘 ' + M.nq + '곳 · 겹친 곳 ' + M.no + '곳');
+    + ' · 날마다 기록 ' + T.length + '줄' + (sealed.length ? '(새로 ' + sealed.join(' · ') + ')' : '') + (broken ? ' · 지문 끊김 ' + broken : '') + (diff.length ? ' · 다시 센 값 다름 ' + diff.join(' · ') : '') + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)') + ' · 며칠째 꾀 ' + M.n36 + '곳 · 조용한 힘 ' + M.nq + '곳 · 겹친 곳 ' + M.no + '곳');
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
