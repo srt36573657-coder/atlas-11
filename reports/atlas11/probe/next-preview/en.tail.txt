@@ -1,25 +1,25 @@
-합침: {"ok":false,"shards":12,"got":0,"routes":0,"screens":0,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":0,"secondsSum":0,"problems":["몫 결과가 하나도 없음","1/12 몫 결과 없음","2/12 몫 결과 없음","3/12 몫 결과 없음","4/12 몫 결과 없음","5/12 몫 결과 없음","6/12 몫 결과 없음","7/12 몫 결과 없음","8/12 몫 결과 없음","9/12 몫 결과 없음","10/12 몫 결과 없음","11/12 몫 결과 없음","12/12 몫 결과 없음"]}
+합침: {"ok":true,"shards":12,"got":12,"routes":13020,"screens":13248,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":242,"secondsSum":2651,"problems":[]}
 ── en1/12 ──
-결과 없음
+{"ok":true,"shard":"1/12","routes":1093,"screens":1093,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":200,"secs":{"open":0.5,"routes":196.7},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en2/12 ──
-결과 없음
+{"ok":true,"shard":"2/12","routes":1093,"screens":1093,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":199,"secs":{"open":0.5,"routes":195.5},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en3/12 ──
-결과 없음
+{"ok":true,"shard":"3/12","routes":1093,"screens":1093,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":199,"secs":{"open":0.5,"routes":196.1},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en4/12 ──
-결과 없음
+{"ok":true,"shard":"4/12","routes":1092,"screens":1092,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":229,"secs":{"open":0.8,"routes":226.8},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en5/12 ──
-결과 없음
+{"ok":true,"shard":"5/12","routes":1092,"screens":1092,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":228,"secs":{"open":0.8,"routes":226.4},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en6/12 ──
-결과 없음
+{"ok":true,"shard":"6/12","routes":1092,"screens":1135,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":233,"secs":{"open":0.9,"routes":231},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en7/12 ──
-결과 없음
+{"ok":true,"shard":"7/12","routes":1092,"screens":1135,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":215,"secs":{"open":0.7,"routes":213.7},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en8/12 ──
-결과 없음
+{"ok":true,"shard":"8/12","routes":1098,"screens":1099,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":213,"secs":{"open":0.6,"routes":211.1},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en9/12 ──
-결과 없음
+{"ok":true,"shard":"9/12","routes":1092,"screens":1093,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":212,"secs":{"open":0.6,"routes":210.7},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en10/12 ──
-결과 없음
+{"ok":true,"shard":"10/12","routes":1092,"screens":1092,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":242,"secs":{"open":0.9,"routes":239.5},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en11/12 ──
-결과 없음
+{"ok":true,"shard":"11/12","routes":1078,"screens":1098,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":241,"secs":{"open":0.8,"routes":233.5,"newwin":4.9},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en12/12 ──
-결과 없음
+{"ok":true,"shard":"12/12","routes":1013,"screens":1133,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":240,"secs":{"open":0.8,"routes":219.5,"act":8.2,"edge":10.6,"grammar":0},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
