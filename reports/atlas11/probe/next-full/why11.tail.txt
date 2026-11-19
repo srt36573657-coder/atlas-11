@@ -1,10 +1,1 @@
-실패 ④ 영어 390 1번 Airlines 불빛 열하나 = 자료 — y11-on,y11-on,y11-off,y11-off,y11-on,y11-on,y11-on,y11-off,y11-on,y11-off,y11-off
-실패 ④ 영어 390 1번 Airlines 불빛 읽는 글(aria-label) — Of 11 reasons: 6 yes, 5 no, 0 unknown
-실패 ④ 영어 390 3번 Broadcasting 불빛 열하나 = 자료 — y11-on,y11-off,y11-off,y11-off,y11-on,y11-off,y11-on,y11-off,y11-on,y11-off,y11-on
-실패 ④ 영어 390 3번 Broadcasting 불빛 읽는 글(aria-label) — Of 11 reasons: 5 yes, 6 no, 0 unknown
-실패 ④ 영어 390 1번 펼침 불빛 열하나 = 자료(켜짐 · 꺼짐 · 「?」 · 읽는 글) — 10 불빛 off/y11-c y11-c-off ≠ on | 10 읽는 글 「10 Government policy: No」 | 11 불빛 off/y11-c y11-c-off ≠ on | 11 읽는 글 「11 Between countries: No」
-실패 ④ 영어 390 1번 펼침 불빛마다 말풍선 = 자료(이름 · 답 · 물음 · 글 · 출처 · 쉬운 말 · 8 · 9 그림 · 꼬리) — 5 글 「Hanjin Kal led, up 80.9% in a month.」 ≠ 「Hanjin Kal led, up 79.6% in a month.」 | 7 글 「The market fell 7.3%; this rose 38.5%.」 ≠ 「The market fell 7.7%; this rose 38.5%.」 | 8 출처 「₩1,327 → ₩1,331 per dollar; 3-year bond yield 3.84% → 3.75%」 ≠ 「₩1,327 → ₩1,329 per dollar; 3-year bond yield 3.84% → 
-실패 ④ 영어 390 2번 펼침 불빛마다 말풍선 = 자료(이름 · 답 · 물음 · 글 · 출처 · 쉬운 말 · 8 · 9 그림 · 꼬리) — 5 글 「JYP Ent. led, up 26.0% in a month.」 ≠ 「JYP Ent. led, up 25.9% in a month.」 | 7 글 「The market fell 7.3%; this rose 11.0%.」 ≠ 「The market fell 7.7%; this rose 10.7%.」 | 8 출처 「₩1,327 → ₩1,331 per dollar; 3-year bond yield 3.84% → 3.75%」 ≠ 「₩1,327 → ₩1,329 per dollar; 3-year bond yield 3.84% → 3.75
-실패 ④ 영어 390 3번 펼침 불빛 열하나 = 자료(켜짐 · 꺼짐 · 「?」 · 읽는 글) — 10 불빛 off/y11-c y11-c-off ≠ on | 10 읽는 글 「10 Government policy: No」
-실패 ④ 영어 390 3번 펼침 불빛마다 말풍선 = 자료(이름 · 답 · 물음 · 글 · 출처 · 쉬운 말 · 8 · 9 그림 · 꼬리) — 5 글 「CJ ENM led, up 33.5% in a month.」 ≠ 「CJ ENM led, up 34.0% in a month.」 | 7 글 「The market fell 7.3%; this rose 3.5%.」 ≠ 「The market fell 7.7%; this rose 3.0%.」 | 8 출처 「₩1,327 → ₩1,331 per dollar; 3-year bond yield 3.84% → 3.75%」 ≠ 「₩1,327 → ₩1,329 per dollar; 3-year bond yield 3.84% → 3.75%」 | 1
-까닭 열한 가지 검사 — 통과 199 · 실패 9
+까닭 열한 가지 검사 — 통과 208 · 실패 0
