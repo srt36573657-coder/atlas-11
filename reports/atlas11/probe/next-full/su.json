@@ -1,12 +1,17 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-19T01:41:31.908Z",
+ "at": "2026-11-19T02:34:56.301Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 497,
-  "fail": 0
+  "pass": 496,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  [
+   "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 403 ()"
+  ]
+ ],
  "m": {
   "data": {
    "fk": "g08",
@@ -106,9 +111,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 852,
+   "lcp": 840,
    "cls": 0.066,
-   "pic": 847
+   "pic": 837
   },
   "white": {
    "light #/": {
@@ -967,8 +972,8 @@
     "got": 16
    },
    "ovl": {
-    "n": 32,
-    "sp": 32,
+    "n": 33,
+    "sp": 33,
     "top": [
      10,
      10,
@@ -1017,5 +1022,5 @@
    }
   }
  },
- "ok": true
+ "ok": false
 }
