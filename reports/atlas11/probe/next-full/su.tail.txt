@@ -1,3 +1,2 @@
-느린 4G 첫 화면 — 가장 큰 칠함 832ms · 무하 큰 그림 830ms
-실패 ㉕ 손자병법 다른 쪽 [390] 화면 오류 0 — Failed to load resource: the server responded with a status of 403 ()
-손자병법 두 길 검사 — 통과 496 · 실패 1
+느린 4G 첫 화면 — 가장 큰 칠함 1684ms · 무하 큰 그림 1676ms
+손자병법 두 길 검사 — 통과 497 · 실패 0
