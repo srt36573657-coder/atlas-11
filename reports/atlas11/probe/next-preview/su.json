@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-19T05:37:58.939Z",
+ "at": "2026-11-19T09:04:13.062Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 430,
@@ -14,7 +14,7 @@
    "sun": false
   },
   "home": {
-   "screens": 1.94,
+   "screens": 3.76,
    "links": 14
   },
   "t21": {
@@ -32,8 +32,8 @@
      "sj-end"
     ],
     "seals": 0,
-    "hard": 2,
-    "hardWords": "코스피,코스닥"
+    "hard": 3,
+    "hardWords": "코스피,코스닥,꽃"
    },
    {
     "h1": "몰래 바다 건너기",
@@ -82,16 +82,17 @@
     "hardWords": "코스피"
    }
   ],
-  "hard": 5,
+  "hard": 6,
   "hardWords": [
    "코스피",
    "코스닥",
+   "꽃",
    "주식"
   ],
   "speed": {
-   "lcp": 2080,
-   "cls": 0.066,
-   "pic": 2073
+   "lcp": 2064,
+   "cls": 0.072,
+   "pic": 2059
   },
   "white": {
    "light #/": {
