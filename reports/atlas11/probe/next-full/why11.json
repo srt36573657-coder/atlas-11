@@ -1,66 +1,29 @@
 {
  "schema": "duri-check-why11-1",
- "at": "2026-11-19T08:00:34.020Z",
+ "at": "2026-11-19T09:38:59.843Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 199,
-  "fail": 9
+  "pass": 208,
+  "fail": 0
  },
- "fails": [
-  [
-   "④ 영어 390 1번 Airlines 불빛 열하나 = 자료",
-   "y11-on,y11-on,y11-off,y11-off,y11-on,y11-on,y11-on,y11-off,y11-on,y11-off,y11-off"
-  ],
-  [
-   "④ 영어 390 1번 Airlines 불빛 읽는 글(aria-label)",
-   "Of 11 reasons: 6 yes, 5 no, 0 unknown"
-  ],
-  [
-   "④ 영어 390 3번 Broadcasting 불빛 열하나 = 자료",
-   "y11-on,y11-off,y11-off,y11-off,y11-on,y11-off,y11-on,y11-off,y11-on,y11-off,y11-on"
-  ],
-  [
-   "④ 영어 390 3번 Broadcasting 불빛 읽는 글(aria-label)",
-   "Of 11 reasons: 5 yes, 6 no, 0 unknown"
-  ],
-  [
-   "④ 영어 390 1번 펼침 불빛 열하나 = 자료(켜짐 · 꺼짐 · 「?」 · 읽는 글)",
-   "10 불빛 off/y11-c y11-c-off ≠ on | 10 읽는 글 「10 Government policy: No」 | 11 불빛 off/y11-c y11-c-off ≠ on | 11 읽는 글 「11 Between countries: No」"
-  ],
-  [
-   "④ 영어 390 1번 펼침 불빛마다 말풍선 = 자료(이름 · 답 · 물음 · 글 · 출처 · 쉬운 말 · 8 · 9 그림 · 꼬리)",
-   "5 글 「Hanjin Kal led, up 80.9% in a month.」 ≠ 「Hanjin Kal led, up 79.6% in a month.」 | 7 글 「The market fell 7.3%; this rose 38.5%.」 ≠ 「The market fell 7.7%; this rose 38.5%.」 | 8 출처 「₩1,327 → ₩1,331 per dollar; 3-year bond yield 3.84% → 3.75%」 ≠ 「₩1,327 → ₩1,329 per dollar; 3-year bond yield 3.84% → "
-  ],
-  [
-   "④ 영어 390 2번 펼침 불빛마다 말풍선 = 자료(이름 · 답 · 물음 · 글 · 출처 · 쉬운 말 · 8 · 9 그림 · 꼬리)",
-   "5 글 「JYP Ent. led, up 26.0% in a month.」 ≠ 「JYP Ent. led, up 25.9% in a month.」 | 7 글 「The market fell 7.3%; this rose 11.0%.」 ≠ 「The market fell 7.7%; this rose 10.7%.」 | 8 출처 「₩1,327 → ₩1,331 per dollar; 3-year bond yield 3.84% → 3.75%」 ≠ 「₩1,327 → ₩1,329 per dollar; 3-year bond yield 3.84% → 3.75"
-  ],
-  [
-   "④ 영어 390 3번 펼침 불빛 열하나 = 자료(켜짐 · 꺼짐 · 「?」 · 읽는 글)",
-   "10 불빛 off/y11-c y11-c-off ≠ on | 10 읽는 글 「10 Government policy: No」"
-  ],
-  [
-   "④ 영어 390 3번 펼침 불빛마다 말풍선 = 자료(이름 · 답 · 물음 · 글 · 출처 · 쉬운 말 · 8 · 9 그림 · 꼬리)",
-   "5 글 「CJ ENM led, up 33.5% in a month.」 ≠ 「CJ ENM led, up 34.0% in a month.」 | 7 글 「The market fell 7.3%; this rose 3.5%.」 ≠ 「The market fell 7.7%; this rose 3.0%.」 | 8 출처 「₩1,327 → ₩1,331 per dollar; 3-year bond yield 3.84% → 3.75%」 ≠ 「₩1,327 → ₩1,329 per dollar; 3-year bond yield 3.84% → 3.75%」 | 1"
-  ]
- ],
+ "fails": [],
  "m": {
   "data": {
    "asOf": "2026-11-19",
-   "m": -7.66,
+   "m": -7.11,
    "head": null,
    "inds": [
     {
      "n": "항공",
-     "x": 49.95,
-     "i": 38.46,
+     "x": 49.96,
+     "i": 39.3,
      "why": [
       "외국인과 기관이 샀고,",
       "한진칼이 끌었어요."
      ],
-     "lights": "on on off off on on on off on on on",
+     "lights": "on on off off on on on off on off off",
      "c8": [
-      "0.19 t-1.13 아님",
+      "0.3 t-1.13 아님",
       "-0.094 t-3.14 아님"
      ],
      "t8": "달러 값과 금리가 거의 그대로였어요.",
@@ -79,15 +42,15 @@
     },
     {
      "n": "연예 기획사",
-     "x": 19.84,
-     "i": 10.66,
+     "x": 18.97,
+     "i": 10.52,
      "why": [
       "기관이 샀고,",
       "JYP Ent.가 끌었어요."
      ],
      "lights": "off on off off on on on off on off off",
      "c8": [
-      "0.19 t-0.09 아님",
+      "0.3 t-0.09 아님",
       "-0.094 t0.34 아님"
      ],
      "t8": "달러 값과 금리가 거의 그대로였어요.",
@@ -106,15 +69,15 @@
     },
     {
      "n": "방송",
-     "x": 11.53,
-     "i": 2.99,
+     "x": 12.85,
+     "i": 4.83,
      "why": [
       "외국인이 샀고,",
       "CJ ENM이 끌었어요."
      ],
-     "lights": "on off off off on off on off on on on",
+     "lights": "on off off off on off on off on off on",
      "c8": [
-      "0.19 t-2.38 아님",
+      "0.3 t-2.38 아님",
       "-0.094 t3.46 아님"
      ],
      "t8": "달러 값과 금리가 거의 그대로였어요.",
