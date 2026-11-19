@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-11-19T10:11:59Z",
+  "at": "2026-11-19T14:11:22Z",
   "dayKST": "2026-11-19",
   "status": "complete",
   "exitCode": 0,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-11-19T10:12:00.224Z",
+      "startedAt": "2026-11-19T14:11:22.845Z",
       "status": "ok",
-      "durationMs": 33,
+      "durationMs": 25,
       "session": true,
       "afterClose": false,
       "day": "2026-11-19",
@@ -17,7 +17,7 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-11-19T10:12:00.257Z",
+      "startedAt": "2026-11-19T14:11:22.870Z",
       "status": "ok",
       "durationMs": 0,
       "skipped": true,
@@ -25,30 +25,30 @@
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-11-19T10:12:00.257Z",
+      "startedAt": "2026-11-19T14:11:22.871Z",
       "status": "ok",
       "durationMs": 0,
       "skipped": true
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-11-19T10:12:00.343Z",
+      "startedAt": "2026-11-19T14:11:22.947Z",
       "view": {
-        "boardId": "board-2026-11-18-16872f07",
+        "boardId": "board-2026-11-18-0f8ad4a2",
         "asOf": "2026-11-18",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 3039511,
+        "bytes": 3049352,
         "similar": [
-          "원익홀딩스",
           "IPARK현대산업개발",
-          "삼성에스디에스",
+          "DB",
+          "티엘비",
           "광주신세계",
-          "하나금융지주",
+          "삼양식품",
           "경동나비엔",
-          "케이티알파"
+          "CJ CGV"
         ],
         "moves": "2026-11-17 → 2026-11-18",
         "evening": null,
@@ -73,7 +73,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1858
+      "durationMs": 1548
     }
   ],
   "runtime": {
@@ -82,10 +82,10 @@
     "event": "workflow_dispatch",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "44502926003",
+    "runId": "44540560828",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/44502926003",
-    "commit": "d952fc99f04d6412c1a65b605f2b55af94d1e83c",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/44540560828",
+    "commit": "87ce6b4dde0936c40112c20500916cc51f48ff61",
     "serverInstalled": true,
     "scheduledRun": false
   },
@@ -109,5 +109,5 @@
   "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
   "inputSnapshotSHA256": "a1120a19488cead25935098f3f18df1951f33f4246284f9107146328e9ac1174",
   "expectedStocks": 365,
-  "finishedAt": "2026-11-19T10:12:02.201Z"
+  "finishedAt": "2026-11-19T14:11:24.495Z"
 }
