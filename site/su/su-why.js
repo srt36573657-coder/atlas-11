@@ -95,6 +95,16 @@ function keepWhy(r, yes) {
     all[k] = {...all[k], kept: v}; localStorage.setItem(WHY_KEY, JSON.stringify(all)); return true;
   } catch { return false; }
 }
+/* 첫 쪽 「한 달 전 약속」 띠(주문 1120-0001 · 참모 서른여섯 2차 표 m04 「네 번째 비행」 18표 — 일지 깊이 묻힌 약속을 첫 쪽으로 · 누름 하나로 답함)
+   물을 기록 = 한 달 지남 · 아직 안 물음 · 오래된 것부터(매매일지 dueBox 와 같은 셈) · 기록이 없으면 받지도 않음 */
+export async function duesNow() {
+  const full = (readWhy() ?? []).filter(fullWhy); if (!full.length) return [];
+  const metas = await Promise.all(full.map(async r => ({r, ...(await dueOfRec(r))})));
+  return metas.filter(m => m.due && !(m.r.kept?.a === 'yes' || m.r.kept?.a === 'no')).map(m => m.r).sort((a, b) => (Date.parse(a.at) || 0) - (Date.parse(b.at) || 0));
+}
+/** 약속 답 — 그 기록에만 남김 · 합계 칸 신호(매매일지 dueBox 와 같음) · 남겼나 */
+export function answerDue(r, yes) { const ok = keepWhy(r, yes); tally(yes ? 'promise_yes' : 'promise'); return ok; }
+export const recDay = r => dayOf(r);
 const LATER = 20; // 한 달 = 장 스무 번(p-why.js 와 같음)
 /** 기록의 한 달 칸 — 시작 날(그날 값 날짜 · 자료 날 · 기록한 서울 날짜 · 그날이나 그 앞 마지막 장 날) → 스무 번째 장 날(아직이면 null) */
 async function windowOfRec(r) {
@@ -135,6 +145,15 @@ const PETAL = 'M0 0 C 10 -14, 10 -40, 0 -58 C -10 -40, -10 -14, 0 0 Z';
 const groupFig = rows => groupInk(rows.map(r => ({n: r.n, ready: r.ready, max: r.max})));
 const groupRowsOf = groups => WHY_GROUPS.map(([n, qs]) => { const max = qs.length * 2, v = groups?.[n]; const val = Number.isFinite(v) ? v : null; return {n, max, ready: val == null ? null : Math.round((max - val) * 10) / 10, tone: val == null ? 'y' : val === 0 ? 'g' : val * 2 >= max ? 'r' : 'y'}; });
 
+/** 잃을 수 있는 돈 먼저(주문 1120-0001 · m01) — 4번 「얼마 넣어?」(넣는 몫) × 7번 「떨어지면?」(팔 곳) 내 답 그대로 · 값을 맞히지 않음 */
+export const LOSS_IN = Object.freeze(['넣는 돈은 내 돈의 열에 하나까지예요.', '넣는 돈은 내 돈의 반쯤이에요.', '넣는 돈이 내 돈 거의 다예요. 빌린 돈이면 내 돈보다 더 잃을 수 있어요.']);
+export const LOSS_OUT = Object.freeze(['팔 곳을 정했어요. 정한 대로 팔면 그 값 언저리에서 멈춰요.', '팔 곳을 숫자로 적지 않았어요. 생각보다 더 잃을 수 있어요.', '팔 곳을 안 정했어요. 넣은 돈을 모두 잃을 수도 있어요.']);
+export function lossFirst(ans) {
+  const a = ans?.[3], b = ans?.[6]; if (!LOSS_IN[a] || !LOSS_OUT[b]) return null;
+  return h('section', {class: 'su-why su-lossf', 'aria-label': '잃을 수 있는 돈'}, h('h2', {class: 'su-ft', text: '먼저, 잃을 수 있는 돈'}),
+    h('p', {class: 'su-lf1', 'data-say': '', text: LOSS_IN[a]}), h('p', {class: 'su-lf2', 'data-say': '', text: LOSS_OUT[b]}),
+    h('p', {class: 'su-note', text: '내가 고른 답으로만 셌어요. 값이 어떻게 될지는 맞히지 않아요.'}));
+}
 /** 7 「왜 사?」 — 질문 하나씩 · 다 답하면 결과(같은 쪽에서 다시 그림) */
 export async function vQuiz(code0, X) {
   const {asOf, S} = await X.base();
@@ -150,6 +169,9 @@ export async function vQuiz(code0, X) {
     X.afterPaint?.(root);
     if (keep) { window.scrollTo(0, y); root.querySelector('.su-qnext')?.scrollIntoView?.({block: 'nearest'}); } else window.scrollTo(0, 0);
   };
+  /* 답 = 다음(주문 1120-0001 · 참모 서른여섯 2차 표 d09 「한 돌 한 판」 13표 — 누름 22번 → 11번 · 앞 답의 한마디는 다음 질문 맨 위 · 11번째 답이면 바로 결과) */
+  const choose = (i, k) => { Q.ans[i] = k; if (i === WHY_QS.length - 1) finish(); else { Q.i = i + 1; redraw(); } };
+  const SEEN = '앞 답 한마디';
   const finish = () => {
     const J = judgeWhy(Q.ans), v = WHY_V[J.verdict], ok = Number.isFinite(c?.price) && c.price > 0;
     Q.J = J;
@@ -159,7 +181,7 @@ export async function vQuiz(code0, X) {
     Q.i = 'res'; redraw();
   };
   const ask = () => {
-    const i = Q.i, a = Q.ans[i], gi = WHY_GROUPS.findIndex(([, qs]) => qs.includes(i + 1)), last = i === WHY_QS.length - 1, ch = a != null ? WHY_A[i][a] : null;
+    const i = Q.i, a = Q.ans[i], gi = WHY_GROUPS.findIndex(([, qs]) => qs.includes(i + 1)), pa = i > 0 ? Q.ans[i - 1] : null, ch = pa != null ? WHY_A[i - 1][pa] : null; // ch = 앞 질문에 고른 답(한마디를 이 질문 맨 위에)
     const nDone = Q.ans.filter(x => x != null).length;
     const big = val((i + 1) + ' / ' + WHY_QS.length, '', '질문 · ' + WHY_GROUPS[gi][0] + ' 묶음', {누가: '내가 고른 답', 언제: '오늘', 어디서: '이 휴대폰', 무엇을: (name ? name + ' · ' : '') + WHY_QS[i], 어떻게: '답 셋 가운데 하나를 골라요', 왜: WHY_WHY[i]},
       {mean: '지금 ' + (i + 1) + '번째 질문이에요. ' + (nDone ? '답한 질문은 ' + nDone + '개예요.' : '답은 아직 0개예요.')});
@@ -169,12 +191,11 @@ export async function vQuiz(code0, X) {
         {k: '판정 문턱', v: '쉬어 · 반만 · 준비됨', how: JUDGE_HOW},
         {k: '답한 질문', v: Q.ans.filter(x => x != null).length + ' / ' + WHY_QS.length, how: '이 휴대폰에서 지금 답한 수'}],
       seal: '멈춤', ink: whyPic(tonesNow(), i), say: '사기 전에 한 번 멈춰요. ' + (i + 1) + '번째 질문이에요. 맞히는 시험이 아니니 내 마음 그대로 답해요.',
-      act: [h('ul', {class: 'su-ans', 'aria-label': '답 셋'}, WHY_A[i].map(([tone, label], k) => h('li', {}, // 누르는 곳은 그림 바로 아래(신문 짜임에서도 기능은 그대로 — 주문 1023 [2] 3)
-          btn('su-a' + (a === k ? ' on' : ''), [h('i', {class: 'su-shape ' + tone, 'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label})], () => { Q.ans[i] = k; redraw(true); })))),
-        ch ? btn('su-big-btn su-qnext', [h('span', {class: 'su-nk', text: last ? '끝 · 결과' : (i + 2) + ' / ' + WHY_QS.length}), h('b', {text: last ? '결과 보기' : '다음 질문'}), h('i', {'aria-hidden': 'true', text: '›'})], () => { if (last) finish(); else { Q.i = i + 1; redraw(); } }) : null,
+      act: [ch ? h('div', {class: 'su-reply su-prev ' + ch[0], role: 'status'}, h('p', {class: 'su-rk'}, h('i', {'aria-hidden': 'true', text: SHAPE[ch[0]]}), h('b', {text: SEEN + ' · ' + TONE_W[ch[0]]})), h('p', {class: 'su-rt2', text: ch[2]})) : null,
+        h('ul', {class: 'su-ans', 'aria-label': '답 셋 · 누르면 바로 다음 질문'}, WHY_A[i].map(([tone, label], k) => h('li', {}, // 누르는 곳은 질문 바로 아래 · 첫 화면 안(주문 1120-0001)
+          btn('su-a' + (a === k ? ' on' : ''), [h('i', {class: 'su-shape ' + tone, 'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label})], () => choose(i, k))))),
         i > 0 ? btn('su-qback', [h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: '앞 질문'})], () => { Q.i = i - 1; redraw(); }) : null],
-      body: [h('p', {class: 'su-qwhy', text: WHY_WHY[i]}),
-        ch ? h('div', {class: 'su-reply ' + ch[0], role: 'status'}, h('p', {class: 'su-rk'}, h('i', {'aria-hidden': 'true', text: SHAPE[ch[0]]}), h('b', {text: TONE_W[ch[0]]})), h('p', {class: 'su-rt2', text: ch[2]})) : h('p', {class: 'su-note', text: '답 하나를 눌러요.'})],
+      body: [h('p', {class: 'su-qwhy', text: WHY_WHY[i]}), h('p', {class: 'su-note', text: '답을 누르면 바로 다음 질문으로 가요. 고친 답은 「앞 질문」에서 다시 골라요.'})],
       next: {href: '#/j', label: '내 기록은 몇 번?', step: 5}, asOf, S, note: '답은 이 휴대폰에만 남아요.'};
   };
   const result = () => {
@@ -191,7 +212,8 @@ export async function vQuiz(code0, X) {
       pro: [{k: '준비 점수', v: J.ready + ' / ' + WHY_MAX, how: '답마다 ● 0 · ▲ 1 · ■ 2 를 더한 값을 ' + WHY_MAX + '에서 뺌'}, {k: '빨간 답', v: J.reds + '개', how: '■ 멈춰요 쪽 답'},
         ...WHY_GROUPS.map(([g, qs]) => ({k: g + ' 묶음 점수', v: (J.groups[g] ?? 0) + ' / ' + qs.length * 2, how: '질문 ' + qs.join(' · ') + '번 · 낮을수록 준비됨'})),
         {k: '판정 문턱', v: '쉬어 · 반만 · 준비됨', how: JUDGE_HOW}],
-      body: [h('p', {class: 'su-quote', text: '“' + (v === 'rest' && J.money ? T[2] : v === 'rest' && J.sell ? T[3] : T[1]) + '”'}), // 쉬어 가는 까닭 — 돈 답 · 팔 곳 안 정함 · 그 밖(점수 · 빨간 답)
+      body: [lossFirst(Q.ans), // 잃을 수 있는 돈 먼저(주문 1120-0001 · 참모 서른여섯 2차 표 m01 「잃을 돈 먼저」 — 4번 「얼마 넣어?」 · 7번 「떨어지면?」 내 답으로만 · 앞날이 아니라 내 계획의 셈)
+        h('p', {class: 'su-quote', text: '“' + (v === 'rest' && J.money ? T[2] : v === 'rest' && J.sell ? T[3] : T[1]) + '”'}), // 쉬어 가는 까닭 — 돈 답 · 팔 곳 안 정함 · 그 밖(점수 · 빨간 답)
         h('p', {class: 'su-note', text: '이 판정은 사도 된다는 뜻이 아니에요. 내 마음이 준비됐는지만 봐요.'}),
         h('section', {class: 'su-why', 'aria-label': '내 답'}, h('h2', {class: 'su-ft', text: '내 답 열한 개'}), h('ol', {class: 'su-myans'}, WHY_QS.map((q, k) => { const [tone, label] = WHY_A[k][Q.ans[k]];
           return h('li', {}, h('span', {class: 'su-mq', text: (k + 1) + ' · ' + q}), h('b', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label}))); }))),

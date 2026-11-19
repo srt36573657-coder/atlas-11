@@ -107,7 +107,12 @@ export const KEEP_Q = Object.freeze(['lang', 'sw', 'kakao', 'dev']);
 export function forwardTo(search, hash) {
   const q = String(search ?? ''), hh = String(hash ?? '');
   const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh) || /^#\/[bkrpq](\/[0-9A-Z]{6})?$/.test(hh) || /^#\/r\/[mwdynkicst]$/.test(hh) || hh === '#/j' || hh === '#/n' || hh === '#/s' || /^#\/m(\/[\w-]+)?$/.test(hh) || hh === '#/f' || /^#\/g(\/[a-z]+)?$/.test(hh) || /^#\/k\/g(0[1-9]|[12]\d|3[0-6])$/.test(hh); // 주문 1115-2328 — 꾀 한 가지 쪽(#/k/g01 ~ g36)도 손자병법 길 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/f 친구에게 // 새 판 길(주문 1238 · 1506 · 1519 · 주문 1616 기록 서랍 #/r/m 달마다 · #/r/w 못 된 까닭 · #/r/d 날마다 · #/r/y 해마다 · #/r/n 가까운 회사 · 회사 번호를 붙여도 됨 · 주문 2235 #/r/i 한국 투자자 특징 열하나)
+  // 주문 1120-0001(참모 서른여섯 m02 · m08 — 없는 번호 주소(#/q/1 · #/k/99 · 아무 글자)를 열면 옛 수르 화면이 떠 「꽃이 될 종목」 · 「%」가 보였음)
+  // → 옛 수르 쪽 이름(OLDR · 보낸 것 #/w · #/t · #/s · #/why · 선물 · 고객센터 …)과 옛 회사 · 사람 길(#/c/ · #/p/<글>)만 넘기고, 그 밖의 모르는 주소는 손자병법 첫 쪽(su.js 가 주소도 #/ 로)
+  const mine = !OLDR.test(hh) && !/^#\/(c|p)(\/|$)/.test(hh) || /^#\/[qkjr]\/./.test(hh);
   let keep = false;
   try { const sp = new URLSearchParams(q); keep = KEEP_Q.some(k => sp.has(k)); } catch { keep = false; }
-  return su && !keep ? null : '/next/' + q + hh;
+  return (su || mine) && !keep ? null : '/next/' + q + hh;
 }
+/** 옛 수르(/next/) 쪽 이름 — 이 이름으로 온 고리만 그쪽으로(주문 1120-0001) */
+export const OLDR = /^#\/(t|why|w|ch|x|sage|s|gdr|find|shorts|gift|up|today|sub|me|jinhwa|help|roman|time|info|game|cond|surge|cal|admin|talk|dori|share|hello|invite|letter)(\/.*)?$/;

@@ -76,12 +76,13 @@ async function route() {
     }
     // 손자병법 첫 쪽(주문 1115-1706) — 머리 · 본문 · 이야기 막대 · 탭을 새 판이 모두 그림 · 알 수 없는 고리도 첫 쪽
     // 주문 1115-1836 — 머리 줄 · 표지를 자료 · 본문 코드보다 먼저(처음 열 때는 index.html 이 든 것을 그대로 · 다른 쪽에서 오면 새로 그림) → 본문은 받은 뒤 같은 main 에 이어 붙임
+    if (!/^#\/?$/.test(hh)) { history.replaceState(null, '', location.pathname + location.search + '#/'); hh = '#/'; } // 모르는 주소는 첫 쪽 · 주소도 #/ 로(주문 1120-0001)
     const sh = sonjaShell(root); sonjaOn();
     if (sh.pre) { for (const c of [...root.children]) if (c !== sh.top && c !== sh.main) c.remove(); } else { root.replaceChildren(sh.top, sh.main); window.scrollTo(0, 0); }
     const sj = await (await import('/su/su-sonja.js')).vSonja(XS, sh);
     if (hh !== (location.hash || '#/')) return;
     if (sj) { document.title = sj.title + ' · ' + NAME; if (sj.keep) root.append(...sj.rest); else root.replaceChildren(...sj.dom); sj.after().catch(e => console.error(e)); return; }
-    sh.main.removeAttribute('data-wait'); sh.main.append(h('section', {class: 'sj-sec'}, h('p', {class: 'sj-lead', text: '오늘 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}), h('p', {class: 'sj-safe', text: SAFE})));
+    sh.main.removeAttribute('data-wait'); sh.main.querySelector('.sj-tc0')?.remove(); sh.main.append(h('section', {class: 'sj-sec'}, h('p', {class: 'sj-lead', text: '오늘 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}), h('p', {class: 'sj-safe', text: SAFE})));
   } catch (e) {
     console.error(e);
     if (hh !== (location.hash || '#/')) return;

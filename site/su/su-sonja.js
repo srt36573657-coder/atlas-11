@@ -351,6 +351,43 @@ function trickSec(g, T) {
     endSeal('꾀'));
 }
 
+/* ── 0 오늘 한 장(주문 1120-0001 · 사장님 2026-11-20(마카오) 00:01 「손자병법을 대 개선 한다 / 머스크가 손자병버을 만들었다면 … 매우 매우 직관적이면서 매루매우 활용적이면서 매우매우 아름닥게」 · 00:05 「어 맞아」)
+   참모 서른여섯 2차 표 — 뼈대 m08 「깃털 한 장」(첫째로 8표) + m04 「네 번째 비행」(18표 · 한 달 전 약속을 첫 쪽으로) + d07 「멈춤 문」(15표 · 가장 큰 단추는 사기가 아니라 멈춤)
+   첫 화면 한 장 = 오늘 시장 한 마디 · 이런 시장에서 덜 잃은 꾀 셋 · 「사기 전에 멈춰요」 큰 단추 · (한 달 지난 약속이 있는 날만) 그날 정한 대로 했어? · 앞날을 맞히지 않음 ── */
+export function todayCard(T, lc = null) {
+  const x = okSun(T.sun) ? T.sun : null, dd = mday(x?.day ?? T.asOf?.board), w3 = x ? win3Of(x) : null;
+  const ks = (x ? (w3?.length ? w3 : x.rank.slice(0, 3).map(r => r.k)) : []).filter(k => typeof KNAME[k] === 'string');
+  const band = h('div', {class: 'sj-tcp', hidden: ''}); // 한 달 전 약속(있는 날만 · 첫 칠함 뒤에 셈)
+  const card = h('div', {class: 'sj-tc', 'data-land': x?.land ?? null},
+    h('p', {class: 'sj-tck', text: '오늘 시장' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
+    x ? h('p', {class: 'sj-tcl'}, h('span', {class: 'sj-tcl1', text: '지금은'}), h('b', {class: 'sj-tcn', text: x.name}), h('span', {class: 'sj-tcl2', text: '이에요.'}))
+      : h('p', {class: 'sj-tcl', text: '오늘 시장 모습은 아직 세지 못했어요.'}),
+    ks.length ? h('p', {class: 'sj-tch', text: '이런 시장에서 덜 잃은 꾀'}) : null,
+    ks.length ? h('ol', {class: 'sj-tcks'}, ...ks.map((k, i) => h('li', {}, h('a', {class: 'sj-tckk', href: '#/k/' + k, 'aria-label': (i + 1) + ' · ' + KNAME[k] + ' · 이 꾀 보기'},
+      h('span', {class: 'sj-tcki', 'aria-hidden': 'true', text: String(i + 1)}), h('b', {text: KNAME[k]}), h('i', {'aria-hidden': 'true', text: '›'}))))) : null,
+    h('a', {class: 'sj-tcgo', href: lc ? '#/q/' + lc : '#/q'}, h('b', {text: '사기 전에 멈춰요'}), h('span', {text: '열한 가지를 하나씩 물어요'}), h('i', {'aria-hidden': 'true', text: '›'})),
+    band,
+    h('p', {class: 'sj-tcs', text: '지난 기록이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+  promiseBand(band).catch(e => console.error(e));
+  return card;
+}
+/** 한 달 전 약속 띠(m04) — 한 달 지난 기록이 있을 때만 · 누름 하나로 답함(매매일지와 같은 기록 · 같은 신호) · 기록이 없으면 아무것도 받지 않음 */
+async function promiseBand(box) {
+  let raw = null; try { raw = localStorage.getItem('atlas:godori-why'); } catch { return; }
+  if (!raw || raw === '[]') return;
+  const Y = await import('/su/su-why.js'), dues = await Y.duesNow();
+  if (!dues.length || !box.isConnected) return;
+  const r = dues[0], b1 = h('button', {class: 'sj-tcpb', type: 'button', text: '했어'}), b2 = h('button', {class: 'sj-tcpb', type: 'button', text: '안 했어'}), d = mday(Y.recDay(r)), nm = r.name || r.code || null;
+  const say = yes => () => { if (b1.disabled) return; b1.disabled = b2.disabled = true; Y.answerDue(r, yes);
+    box.replaceChildren(h('p', {class: 'sj-tcpk', text: '한 달 전 약속'}), h('p', {class: 'sj-tcpq', text: yes ? '적었어요. 정한 대로 했어요.' : '적었어요. 이 날 흔들린 마음을 다음에 먼저 떠올려요.'}),
+      h('a', {class: 'sj-tcpj', href: '#/j'}, h('span', {text: '내 매매일지에서 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))); };
+  b1.addEventListener('click', say(true)); b2.addEventListener('click', say(false));
+  box.replaceChildren(h('p', {class: 'sj-tcpk', text: '한 달 전 약속' + (d ? ' · ' + d : '')}), nm ? h('p', {class: 'sj-tcpn'}, h('span', {'data-proper': '', text: String(nm)}), h('span', {text: ' 앞에서 멈췄어요.'})) : '',
+    h('p', {class: 'sj-tcpq', text: '그날 정한 대로 했어?'}), h('div', {class: 'sj-tcpbs', role: 'group', 'aria-label': '그날 정한 대로 했어?'}, b1, b2),
+    dues.length > 1 ? h('p', {class: 'sj-tcpm', text: '물어볼 약속이 ' + (dues.length - 1) + '개 더 있어요. 내 매매일지에서 이어서 답해요.'}) : '');
+  box.hidden = false;
+}
+
 /* ── 4 자세히(눌러야 열림 — 이 쪽이 어떤 곳인지 · 본질 세 줄) ── */
 function moreBox(S) {
   const lines = essenceLines(essenceData({summary: S}));
@@ -381,6 +418,7 @@ export async function vSonja(X, shell = null) {
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
   const aw = main.querySelector(':scope > .sj-cover .sj-artw'); if (aw && !aw.querySelector(':scope > svg.sj-artfx')) aw.insertBefore(coverFilm(), aw.querySelector(':scope > .sj-hwa')); // 표지 영화 덧칠(주문 1116-2310 — 안개 · 새 · 금빛 반짝임 · 빛 한 줄기 11초)
+  { const cv0 = main.querySelector(':scope > .sj-cover'), tw = cv0?.querySelector(':scope > .sj-tc'), tc = todayCard(T, X.cur?.()?.code ?? null); if (tw) tw.replaceWith(tc); else cv0?.append(tc); } // 오늘 한 장(주문 1120-0001) — 자리(sj-tc0)를 채움
   const sunS = body.find(e => e?.classList?.contains('sj-sun')), cv = main.querySelector(':scope > .sj-cover'), at = sunS ?? cv; // 손자병법 한 폭(주문 1119-1648) — 표지 아래에서 오늘 시장 칸 끝으로(주문 1119-2026 — 열면 오늘 시장이 먼저)
   if (at && !main.querySelector('figure.sj-scroll') && !at.querySelector(':scope > figure.sj-scroll')) at.append(scrollFig());
   main.append(...body);

@@ -193,7 +193,7 @@ function pageHead({step = null, dd = null, kick, h1, proper = false, seal = null
       seal ? h('span', {class: 'sj-seal sj-seal-big ' + (sealDn ? 'sj-seal-dn' : 'sj-seal-up'), 'aria-hidden': 'true', text: seal}) : null),
     pic,
     quote ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + quote[0] + '」'}), h('cite', {text: quote[1]})) : null,
-    say ? h('div', {class: 'sj-says'}, meanCap(PM.sonmu), h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), h('p', {class: 'sj-do', 'data-say': '', text: say})) : null, // 손무가 들려주는 한 줄(이야기의 한 사람) · 맨 위 그림 뜻
+    say ? h('div', {class: 'sj-says'}, h('p', {class: 'sj-do', 'data-say': '', text: say})) : null, // 손무 얼굴 칸은 첫 쪽에만(주문 1120-0001 · 참모 m02 「되풀이 칸」 — 쪽마다 같은 얼굴 · 그림 뜻을 지우고 말 글만) // 손무가 들려주는 한 줄(이야기의 한 사람) · 맨 위 그림 뜻
     ...more);
 }
 const goLink = (href, t) => h('a', {class: 'sj-go', href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'}));

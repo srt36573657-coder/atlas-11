@@ -47,19 +47,23 @@ export function topBar() {
       sayTop(), big));
 }
 
-/** 걸음 표시 「기 · 1 / 5 · 오늘」(n = 1 ~ 5 · dd = 「11월 13일」 같은 자료 날 · 없으면 뒤에 붙임) */
+/** 걸음 표시 「1 / 5 · 오늘」(n = 1 ~ 5 · dd = 「11월 13일」 같은 자료 날 · 없으면 뒤에 붙임)
+ *  주문 1120-0001(참모 서른여섯 m02 「묻고 지운 판」 — 다섯 걸음에 기 · 승 · 전 · 결 넷이라 「결」이 두 번 보임 → 동그라미 글자를 지움 · 숫자와 이름만) */
 export function stepTag(n, dd = null) {
-  const [name, ph] = STEP5[n - 1] ?? STEP5[0], t = n + ' / ' + STEP5.length + ' · ' + name;
-  return h('p', {class: 'sj-step', 'aria-label': t}, h('b', {text: ph}), h('span', {text: t}), dd ? stepDay(dd) : null);
+  const [name] = STEP5[n - 1] ?? STEP5[0], t = n + ' / ' + STEP5.length + ' · ' + name;
+  return h('p', {class: 'sj-step', 'aria-label': t}, h('span', {text: t}), dd ? stepDay(dd) : null);
 }
-/** 표지 — 큰 붓 글씨 그림 한 장 · 걸음 「기 · 1 / 5 · 오늘」 */
+/** 오늘 한 장 자리(주문 1120-0001 · 참모 서른여섯 2차 표 m08 「깃털 한 장」 — 첫 화면 맨 위에 오늘 시장 · 덜 잃은 꾀 · 사기 전 멈춤)
+ *  자료가 오기 전에는 자리만(높이를 미리 잡아 그림이 밀리지 않게) · su-sonja.js todayCard 가 채움 · 표지 안 맨 뒤에 두고 꾸밈이 맨 위로 올림(그림 뜻 줄이 그림 바로 위 그대로) */
+export const todayWait = () => h('div', {class: 'sj-tc sj-tc0', 'aria-busy': 'true'}, h('p', {class: 'sj-tck', text: '오늘 시장'}), h('p', {class: 'sj-tcw', text: '오늘 자료를 읽고 있어요.'}));
+/** 표지 — 큰 붓 글씨 그림 한 장 · 걸음 「1 / 5 · 오늘」 · 오늘 한 장(맨 위로 보임) */
 export function cover(dd = null) {
   return h('section', {class: 'sj-cover', 'aria-label': NAME + ' 표지'},
     meanCap(PM.cover), // 그림 뜻(주문 1116-1313 · index.html 첫 칠함 판도 같은 글)
     h('div', {class: 'sj-artw'},
       h('img', {class: 'sj-art', src: ART, width: '390', height: '470', alt: '붓 글씨 「' + NAME + '」 · 먼 산과 붓 한 획', decoding: 'async', fetchpriority: 'high'}),
       h('p', {class: 'sj-hwa'}, ...HWA.map(([w1, w2]) => h('span', {}, w1, h('i', {text: ' '}), w2)))),
-    stepTag(1, dd));
+    stepTag(1, dd), todayWait());
 }
 /** 걸음 줄 끝의 자료 날 */
 export const stepDay = dd => h('span', {class: 'sj-stepd', text: dd + ' 자료'});
@@ -108,9 +112,8 @@ export function endSec(day, got = null, more = null) {
     h('p', {}, h('b', {text: '조사 날짜 '}), '자료 ' + day + (got ? ' · 받은 때 ' + got : '')),
     more ? h('p', {text: more}) : null,
     h('p', {class: 'sj-links'}, ...FOOT.map(([href, t]) => h('a', {href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'})))),
-    h('p', {class: 'sj-flinks', 'aria-label': '다른 길'}, // 천사 · 찾기 — 머리 줄에서 끝 줄로(주문 1119-2026 · 선물은 머리 줄에 그대로)
-      h('a', {class: 'sj-fl', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창', text: '천사 ↗'}),
-      h('a', {class: 'sj-fl', href: '/next/?su=guide#/find', 'aria-label': '종목 찾기', text: '찾기'})),
+    h('p', {class: 'sj-flinks', 'aria-label': '다른 길'}, // 천사 — 머리 줄에서 끝 줄로(주문 1119-2026 · 선물은 머리 줄에 그대로) · 찾기는 지움(주문 1120-0001 — 옛 화면으로 나가 「%」 붙은 결과가 보였음 · 참모 m02)
+      h('a', {class: 'sj-fl', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창', text: '천사 ↗'})),
     h('p', {class: 'sj-safe sj-safe-end', text: SAFE}));
 }
 /** 듣기 — 쪽의 큰 제목과 [data-say] 줄을 차례로 읽음(다시 누르면 멈춤) */

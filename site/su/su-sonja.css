@@ -1273,3 +1273,63 @@ html.sj-on #su .sj-w3a { border: 2px solid #20323A; border-radius: 16px; backgro
 html.sj-on #su .sj-w3n { background: #20323A; color: #FCFEFD; }
 html.sj-on #su .sj-flinks { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 10px; }
 html.sj-on #su .sj-fl { display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border: 2px solid #20323A; border-radius: 24px; color: #20323A; font-weight: 800; font-size: 1.0625rem; text-decoration: none; }
+/* ── 주문 1120-0001 「머스크가 만든 손자병법」(사장님 2026-11-20(마카오) 00:01 「손자병법을 대 개선 한다 … 매우 매우 직관적이면서 매우매우 활용적이면서 매우매우 아름답게」 · 00:05 「어 맞아」 · 00:29 「1시간 안에」)
+   참모 서른여섯 2차 표: 뼈대 m08 「깃털 한 장」 + m04 「네 번째 비행」 + d07 「멈춤 문」 + d09 「한 돌 한 판」 + m01 「잃을 돈 먼저」 + m02 「묻고 지운 판」(docs/design/sonja-musk-2026-11-20/TALLY2.md)
+   첫 화면 한 장(오늘 시장 · 덜 잃은 꾀 셋 · 가장 큰 단추 「사기 전에 멈춰요」 · 한 달 전 약속) · 「왜 사?」 답이 첫 화면 안 · 답 = 다음 · 손무 얼굴 칸은 첫 쪽에만 · 빨강 0 ── */
+html.sj-on #su .sj-cover > .sj-tc { order: -1; }
+#su .sj-tc { display: grid; gap: 10px; align-content: start; min-height: 452px; padding: 6px 2px 18px; border-bottom: 1.5px dashed #CFE3E0; }
+#su .sj-tc > * { margin: 0; }
+#su .sj-tck { font-size: 1.0625rem; font-weight: 700; color: #2E444C; letter-spacing: .02em; }
+#su .sj-tcw { font-size: 1.25rem; font-weight: 700; color: #4A6168; }
+#su .sj-tcl { color: #20323A; font-size: 1.375rem; font-weight: 700; line-height: 1.3; }
+#su .sj-tcl1 { display: block; }
+#su .sj-tcn { font-family: var(--sj-brush); font-weight: 400; font-size: clamp(2.375rem, 11vw, 3rem); line-height: 1.12; color: #1B3A44; margin-right: 4px; }
+#su .sj-tch { margin-top: 6px; font-size: 1.0625rem; font-weight: 800; color: #1B3A44; }
+#su .sj-tcks { list-style: none; padding: 0; display: grid; gap: 8px; }
+#su .sj-tckk { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 6px 14px; border: 2px solid #20323A; border-radius: 16px; background: #FCFEFD; color: #20323A; text-decoration: none; }
+#su .sj-tcki { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #E3F0EE; color: #1B3A44; font-weight: 800; font-size: 1.0625rem; }
+#su .sj-tckk b { flex: 1 1 auto; min-width: 0; font-size: 1.25rem; font-weight: 800; }
+#su .sj-tckk i { font-style: normal; font-size: 1.5rem; color: #4A6168; }
+#su .sj-tcgo { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; min-height: 84px; margin-top: 6px; padding: 14px 20px; border-radius: 20px; background: #20323A; color: #FCFEFD; text-decoration: none; box-shadow: 0 0 0 4px #DCEBE8, 0 16px 28px -16px rgba(27, 58, 68, .6); }
+#su .sj-tcgo b { font-size: 1.5rem; font-weight: 800; }
+#su .sj-tcgo span { grid-column: 1; font-size: 1.0625rem; font-weight: 600; color: #DCEBE8; }
+#su .sj-tcgo i { grid-column: 2; grid-row: 1 / span 2; font-style: normal; font-size: 2.25rem; line-height: 1; }
+#su .sj-tcp { display: grid; gap: 8px; padding: 14px 16px; border-radius: 18px; background: #EEF6F4; box-shadow: inset 0 0 0 1.5px #A6D0CD; }
+#su .sj-tcp[hidden] { display: none; }
+#su .sj-tcp > * { margin: 0; }
+#su .sj-tcpk { font-size: 1.0625rem; font-weight: 800; color: #1B3A44; }
+#su .sj-tcpn, #su .sj-tcpm { font-size: 1.0625rem; color: #2E444C; }
+#su .sj-tcpq { font-size: 1.375rem; font-weight: 800; color: #20323A; }
+#su .sj-tcpbs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#su .sj-tcpb { min-height: 56px; border-radius: 14px; border: 2px solid #20323A; background: #FCFEFD; color: #20323A; font: inherit; font-size: 1.25rem; font-weight: 800; }
+#su .sj-tcpj { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; color: #1B3A44; font-size: 1.0625rem; font-weight: 800; }
+#su .sj-tcs { font-size: 1.0625rem; color: #2E444C; line-height: 1.5; }
+/* 「왜 사?」 — 질문 · 답 셋이 첫 화면 안(d09) · 큰 값과 그림은 답 아래 · 쪽 머리 그림 창은 낮게 */
+html.sj-on #su main.sj-page[data-page="why"] { display: flex; flex-direction: column; }
+html.sj-on #su main.sj-page[data-page="why"] > .sj-act { order: 1; }
+html.sj-on #su main.sj-page[data-page="why"] > .sj-two { order: 2; }
+html.sj-on #su main.sj-page[data-page="why"] > .sj-body { order: 3; }
+html.sj-on #su main.sj-page[data-page="why"] > .sj-figs { order: 4; }
+html.sj-on #su main.sj-page[data-page="why"] > .sj-whymore { order: 5; }
+html.sj-on #su main.sj-page[data-page="why"] > .sj-end { order: 6; }
+html.sj-on #su main.sj-page[data-page="why"][data-q] > section.sj-ph::before { height: 76px; margin-bottom: 10px; }
+html.sj-on #su main.sj-page[data-page="why"][data-q] .sj-says { display: none; }
+html.sj-on #su main.sj-page[data-page="why"][data-q] .sj-ph { padding-bottom: 16px; }
+html.sj-on #su main.sj-page[data-page="why"][data-q] .sj-act { padding-top: 16px; }
+#su .sj-page .su-a { min-height: 64px; border-radius: 14px; font-size: 1.25rem; font-weight: 700; }
+#su .sj-page .su-reply.su-prev { margin: 0 0 12px; border-radius: 0 14px 14px 0; }
+#su .sj-page .su-reply.su-prev .su-rk b { font-size: 1.0625rem; }
+#su .sj-page .su-lossf { padding: 14px 16px; border-radius: 18px; background: #EEF6F4; box-shadow: inset 0 0 0 1.5px #A6D0CD; margin-bottom: 14px; }
+#su .sj-page .su-lossf p { margin: 6px 0 0; font-size: 1.1875rem; font-weight: 700; color: #20323A; line-height: 1.5; }
+#su .sj-page .su-lossf .su-note { font-size: 1.0625rem; font-weight: 500; color: #2E444C; }
+/* 손무 얼굴 칸 — 첫 쪽에만(m02 「되풀이 칸」 · 꾀 · 회사 · 「왜 사?」 · 매매일지 쪽은 손무 말 글만 남김) */
+html.sj-on #su main.sj-sub .sj-says { display: block; }
+html.sj-on #su main.sj-sub .sj-says > .sj-pm, html.sj-on #su main.sj-sub .sj-says > .sj-saysp { display: none; }
+html.sj-on #su main.sj-sub .sj-says > .sj-do { padding: 12px 14px; border-left: 4px solid #A6D0CD; background: #F3F8F6; border-radius: 0 14px 14px 0; }
+/* 꾀 쪽 「차례 ○」 — 누르는 단추처럼 보이지 않게 손도장 꼴(m10 · m02 — 색은 한눈 판별 그대로) */
+html.sj-on #su main[data-page="kkoe"] .sj-seal-big { width: 84px; height: 84px; min-width: 84px; border-radius: 50%; transform: rotate(-6deg); box-shadow: inset 0 0 0 3px rgba(252, 254, 253, .8), 0 0 0 2px #20323A; font-size: 1.25rem; }
+html.sj-on #su main[data-page="kkoe"] .sj-seal-big.sj-seal-up { box-shadow: inset 0 0 0 3px #FCFEFD, 0 0 0 2px #2E444C; }
+/* 걸음 줄 — 숫자와 이름만(기 · 승 · 전 · 결 동그라미를 지움 · 「결」 두 번 없음) */
+html.sj-on #su .sj-step { font-size: 1.0625rem; color: #2E444C; }
+html.sj-on #su .sj-tc a.sj-tcgo, html.sj-on #su .sj-tc a.sj-tcgo b, html.sj-on #su .sj-tc a.sj-tcgo i { color: #FCFEFD; }
+html.sj-on #su .sj-tc a.sj-tcgo span { color: #DCEBE8; }

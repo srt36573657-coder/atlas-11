@@ -26,20 +26,23 @@ const proList = pro => (pro?.length ? h('dl', {class: 'sj-pro'}, ...pro.flatMap(
 /** 쪽 하나 — {title, dom} · lc = 마지막에 본 회사 번호(탭 「멈춤」) */
 export function sjPage(m, lc = null) {
   const page = m.page ?? (m.tab === 2 ? 'why' : m.tab === 3 ? 'journal' : 'miss');
+  const inkDown = page === 'why' && !!m.ink; // 「왜 사?」는 질문과 답이 먼저 · 디딤돌 그림은 답 아래로(주문 1120-0001 · d09 「한 돌 한 판」 — 답 단추가 첫 화면 안)
+  const quiz = page === 'why' && (m.act ?? []).some(e => e?.classList?.contains('su-ans'));
   const head = h('section', {class: 'sj-sec sj-ph', 'aria-label': m.h1 ?? m.title},
     m.step ? stepTag(m.step) : null,
     m.kick ? h('p', {class: 'sj-k', text: m.kick}) : null,
     h('div', {class: 'sj-today'}, h('h1', {class: 'sj-h1', ...(m.proper ? {'data-proper': ''} : {})}, h('b', {class: 'sj-land', text: m.h1 ?? m.title})),
       m.seal ? h('span', {class: 'sj-seal sj-seal-big sj-seal-up', 'aria-hidden': 'true', text: m.seal}) : null),
-    m.ink ? h('figure', {class: 'sj-ink su-fig sj-whyfig'}, capOf(m.ink), m.ink) : null,
-    m.say ? h('div', {class: 'sj-says'}, meanCap(PM.sonmu), h('span', {class: 'sj-saysp', 'aria-hidden': 'true'}, sonmuPic({w: 84, h: 100})), h('p', {class: 'sj-do', 'data-say': '', text: m.say})) : null);
+    m.ink && !inkDown ? h('figure', {class: 'sj-ink su-fig sj-whyfig'}, capOf(m.ink), m.ink) : null,
+    m.say ? h('div', {class: 'sj-says'}, h('p', {class: 'sj-do', 'data-say': '', text: m.say})) : null); // 손무 얼굴 칸은 첫 쪽에만(주문 1120-0001 · m02) — 말 글만
   const two = m.big ? h('section', {class: 'sj-sec sj-two su-two', 'aria-label': '큰 값과 그래서'}, h('div', {class: 'su-big'}, h('p', {class: 'su-bv'}, ...valText(m.big))), m.big.label ? h('p', {class: 'su-bl', text: m.big.label}) : null, meanLine(m.big)) : null;
   const act = m.act?.filter(Boolean).length ? h('section', {class: 'sj-sec sj-act', 'aria-label': '누르는 곳'}, ...m.act.filter(Boolean)) : null;
   const body = m.body?.filter(Boolean).length ? h('section', {class: 'sj-sec sj-body'}, ...m.body.filter(Boolean)) : null;
-  const figs = m.figs?.filter(Boolean).length ? h('section', {class: 'sj-sec sj-figs', 'aria-label': '그림'}, ...m.figs.filter(Boolean).map(f => (f.tagName === 'FIGURE' ? f : h('figure', {class: 'sj-ink su-fig'}, capOf(f), f)))) : null;
+  const F = [inkDown ? h('figure', {class: 'sj-ink su-fig sj-whyfig'}, capOf(m.ink), m.ink) : null, ...(m.figs ?? [])].filter(Boolean);
+  const figs = F.length ? h('section', {class: 'sj-sec sj-figs', 'aria-label': '그림'}, ...F.map(f => (f.tagName === 'FIGURE' ? f : h('figure', {class: 'sj-ink su-fig'}, capOf(f), f)))) : null;
   const more = m.pro?.length || m.note ? h('details', {class: 'sj-drawer sj-whymore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '자세히'}), h('span', {class: 'sj-s2', text: '점수를 센 법'}), chev()),
     proList(m.pro), m.note ? h('p', {class: 'sj-note', text: m.note}) : null) : null;
-  const main = h('main', {class: 'sj-page sj-sub', 'data-page': page}, head, two, act, body, figs, more, endSec(day(m.asOf ?? null), m.S?.fetchedAt ? kstText(m.S.fetchedAt) : null));
+  const main = h('main', {class: 'sj-page sj-sub', 'data-page': page, 'data-q': quiz ? '' : null}, head, two, act, body, figs, more, endSec(day(m.asOf ?? null), m.S?.fetchedAt ? kstText(m.S.fetchedAt) : null));
   const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove();
   const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = '';
   const nx = m.next ? {href: m.next.href, k: m.next.k ?? (m.next.step ? m.next.step + ' / 5' : null), label: m.next.label} : null;

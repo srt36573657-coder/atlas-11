@@ -190,9 +190,10 @@ for (const width of [390, 360, 320]) {
       for (let i = 0; i < 11 && flow; i++) {
         const b = (await p.$$('#su .su-a'))[pick(i)]; if (!b) { flow = false; break; }
         got.push(await b.evaluate(e => ({shape: (e.querySelector('.su-shape')?.textContent ?? '').trim(), label: (e.querySelector('span')?.textContent ?? '').trim()})));
-        await b.click(); await p.waitForTimeout(120);
-        const nx = await p.$('#su .su-qnext'); if (!nx) { flow = false; break; }
-        await nx.click(); await p.waitForTimeout(150);
+        await b.click(); await p.waitForTimeout(220); // 답 = 다음(주문 1120-0001 · 참모 d09 「한 돌 한 판」 — 누름 22번 → 11번) · 옛 「다음 질문」 단추가 있으면 그것도 누름
+        const nx = await p.$('#su .su-qnext'); if (nx) { await nx.click(); await p.waitForTimeout(150); }
+        if (i < 10) { const at = await p.evaluate(() => { const a = [...document.querySelectorAll('#su .su-a')].at(-1)?.getBoundingClientRect(), t = document.querySelector('#su .sj-tabs')?.getBoundingClientRect(); return {n: (document.querySelector('#su .sj-step')?.getAttribute('aria-label') ?? '') && (document.querySelector('#su .su-big .su-bv b')?.textContent ?? ''), low: a ? Math.round(a.bottom + scrollY) : null, tabs: t ? Math.round(t.top) : null, prev: !!document.querySelector('#su .su-reply.su-prev')}; });
+          if (i === 0) check(at.low != null && at.tabs != null && at.low <= at.tabs && at.prev, W + '「왜 사?」 답 = 다음 · 둘째 질문 답 셋이 첫 화면 안(아래 탭 위) · 앞 답 한마디가 맨 위(주문 1120-0001 · d09)', JSON.stringify(at)); }
       }
       check(flow && got.length === 11, W + '「왜 사?」 열한 질문을 끝까지 답함 — ' + tag, String(got.length));
       await p.waitForTimeout(400);
@@ -310,7 +311,10 @@ for (const width of [390, 360, 320]) {
         check(sj.lastIsSrc && JSON.stringify(sj.foot) === FOOTW, W + '⑨ 맨 아래 출처 · 조사 날짜 · 꼭 있어야 할 길 둘 — ' + sj.h1, JSON.stringify(sj.foot));
         check(sj.tabs.length === 5 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
           W + '⑨ 탭 다섯 오늘 · 꾀 · 멈춤 · 일지 · 정산(주문 1115-2328 — 옛 지도 · 기록 · 달력 지움) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
-        if (k === 0) { check(sj.moreShut && sj.ess === 3, W + '⑩ 「자세히」는 눌러야 열림 · 그 안 본질 세 줄 — ' + sj.h1, JSON.stringify({shut: sj.moreShut, ess: sj.ess})); check(sj.art, W + '⑪ 표지 붓 글씨 그림이 열림', ''); }
+        if (k === 0) { check(sj.moreShut && sj.ess === 3, W + '⑩ 「자세히」는 눌러야 열림 · 그 안 본질 세 줄 — ' + sj.h1, JSON.stringify({shut: sj.moreShut, ess: sj.ess})); check(sj.art, W + '⑪ 표지 붓 글씨 그림이 열림', '');
+          const tc = await p.evaluate(() => { const c = document.querySelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)'), go = c?.querySelector('a.sj-tcgo'), r = go?.getBoundingClientRect(), t = document.querySelector('#su .sj-tabs')?.getBoundingClientRect(), pm = c?.parentElement?.querySelector(':scope > .sj-pm')?.getBoundingClientRect();
+            return {has: !!c, go: go?.getAttribute('href') ?? null, low: r ? Math.round(r.bottom + scrollY) : null, tabs: t ? Math.round(t.top) : null, top: c && pm ? c.getBoundingClientRect().bottom <= pm.top + 1 : false, safe: (c?.querySelector('.sj-tcs')?.textContent ?? '').includes('앞날을 맞히지 않고'), red: c ? [...c.querySelectorAll('*')].filter(e => { const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length : -1}; });
+          check(tc.has && /^#\/q(\/[0-9A-Z]{6})?$/.test(tc.go ?? '') && tc.low != null && tc.tabs != null && tc.low <= tc.tabs && tc.top && tc.safe && tc.red === 0, W + '⑫ 오늘 한 장(주문 1120-0001 · m08 깃털 한 장 · d07 멈춤 문) — 첫 화면 맨 위 · 「사기 전에 멈춰요」 큰 단추가 아래 탭 위 · 앞날 아님 한 줄 · 빨강 0', JSON.stringify(tc)); }
         check(sj.old === 0, W + '⑪ 옛 꾸밈(그림 칸 · 무하 장식 · 옛 머리 · 탭 · 막대) 0 — 주문 1115-1706 「기존에 있던것 단 한나도 디자임 사용하지말고」 — ' + sj.h1, String(sj.old));
         check(sj.sealsOk, W + '⑪ 한눈 판별 — 회사 단추의 한 달 표(내림 · 오름 · 같음) = 그 회사 한 달 방향 · 내림 도장 = 짙은 남빛 찬 도장 + 흰 글(샘플 사) — ' + sj.h1, sj.seals.length + ' · ' + JSON.stringify(sj.sunSeal));
         check(sj.red === 0, W + '⑪ 빨강 글 0(한국에서 빨강은 오름 — 내림을 빨강으로 읽지 않게) — ' + sj.h1, String(sj.red));
