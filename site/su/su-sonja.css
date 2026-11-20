@@ -287,7 +287,7 @@ html.sj-on #su :focus-visible { outline: 3px solid #20323A; outline-offset: 2px;
 #su .sj-nk { flex: none; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 700; color: #DCEBE7; }
 #su .sj-next b { flex: 1 1 auto; min-width: 0; font-size: 1.125rem; font-weight: 800; line-height: 1.25; }
 #su .sj-next i { flex: none; font-style: normal; font-size: 1.5rem; }
-#su .sj-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; padding: 5px max(6px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); background: #F3F8F6; border-top: 1.5px solid #20323A; }
+#su .sj-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; padding: 5px max(6px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); background: #F3F8F6; border-top: 1.5px solid #20323A; }
 #su .sj-tab { display: flex; align-items: center; justify-content: center; min-height: 50px; min-width: 0; padding: 0 2px; border-radius: 3px; color: #20323A; font-family: var(--sj-sans); font-size: 1.0625rem; font-weight: 700; line-height: 1.15; text-align: center; text-decoration: none; white-space: nowrap; }
 #su .sj-tab.sj-cur { background: #20323A; color: #F3F8F6; font-weight: 800; }
 html.sj-on.su-lg #su .sj-tab { white-space: normal; font-size: 1rem; }
@@ -1253,7 +1253,7 @@ html.sj-on #su .sj-sec, html.sj-on #su .sj-ph { background-image: url(/su/su-was
 html.sj-on #su { padding-bottom: 0; }
 html.sj-on #su .sj-page { padding-bottom: 12px; }
 html.sj-on #su .sj-top { position: relative; top: auto; }
-html.sj-on #su .sj-tools .sj-angel, html.sj-on #su .sj-tools .sj-find { display: none; } /* 선물은 머리 줄에 그대로(모든 쪽 위 막대 선물 단추 · 검사 check_gift ①) */
+html.sj-on #su .sj-tools .sj-angel, html.sj-on #su .sj-tools .sj-find:not(.sj-findtop) { display: none; } /* 선물은 머리 줄에 그대로(모든 쪽 위 막대 선물 단추 · 검사 check_gift ①) */
 html.sj-on #su .sj-sec, html.sj-on #su .sj-ph { background-color: #FCFEFD; background-image: none; border-radius: 22px; box-shadow: 0 0 0 1.5px #CFE3E0, 0 14px 30px -16px rgba(96, 160, 156, .6), 0 0 42px 2px rgba(166, 208, 205, .3); }
 html.sj-on #su main[data-page="sonja"] > section.sj-s36::before, html.sj-on #su main.sj-page > section.sj-ph::before { content: ""; display: block; height: 128px; margin: -22px -18px 16px; border-radius: 22px 22px 0 0; background: url(/su/su-sonja-scroll.svg) center 31% / 100% auto no-repeat, #EEF6F4; -webkit-mask-image: linear-gradient(#000 62%, transparent); mask-image: linear-gradient(#000 62%, transparent); }
 html.sj-on #su main[data-page="co"] > section.sj-ph::before { background-position: center 55%, 0 0; }
@@ -1265,7 +1265,7 @@ html.sj-on #su .sj-dock .sj-listen { display: none; }
 html.sj-on #su .sj-dock .sj-dk { display: block; }
 html.sj-on #su .sj-next { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 76px; padding: 12px 20px; border-radius: 18px; background: #20323A; color: #FCFEFD; border: 0; box-shadow: 0 0 0 4px #DCEBE8; font-size: 1.25rem; }
 html.sj-on #su .sj-next .sj-nk { color: #DCEBE8; }
-html.sj-on #su .sj-tabs { left: 0; right: 0; bottom: 0; border-radius: 0; background: #FCFEFD; border-top: 1.5px solid #A6D0CD; box-shadow: 0 -12px 26px -18px rgba(62, 90, 99, .45); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); gap: 6px; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+html.sj-on #su .sj-tabs { left: 0; right: 0; bottom: 0; border-radius: 0; background: #FCFEFD; border-top: 1.5px solid #A6D0CD; box-shadow: 0 -12px 26px -18px rgba(62, 90, 99, .45); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); gap: 6px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
 html.sj-on #su .sj-tab { color: #20323A; border-radius: 14px; min-height: 60px; }
 html.sj-on #su .sj-tab.sj-cur, html.sj-on #su .sj-tabs:has(> a.sj-tab:nth-child(5).sj-cur) > a.sj-tab:nth-child(4) { background: #20323A; color: #FCFEFD; box-shadow: inset 0 4px 0 #A6D0CD; }
 html.sj-on #su .sj-tabs > a.sj-tab:nth-child(5) { display: none; } /* 일지 탭은 숨김(멈춤 탭이 켜짐을 함께 받음) · 주문 1120-1220 회사 탭이 셋째로 들어와 다섯째 */
@@ -1504,3 +1504,39 @@ html.sj-on #su .sj-find { display: grid; gap: 10px; }
 #su .sj-colout > b { grid-column: 1; }
 #su .sj-colout > span { grid-column: 1; font-size: 1.0625rem; color: #4A6168; }
 #su .sj-colout > i { grid-column: 2; grid-row: 1 / span 2; }
+
+/* ── 주문 1120-1705(사장님 2026-11-20(마카오) 17:05 「종목 찾기를 선물 옆에 … 날짜별로 어떤종목을 … 얼마나 … 어떻게 됐는지 그래프와 데이타로 … 탭」) — 맨 위 「찾기」 · 장부 쪽(#/l)
+   점선 = 쌓인 산 돈(옅은 먹) · 실선 = 그 지금 값(진한 먹) · 줄어든 끝 점 = 짙은 남빛(빨강 0) · 글 17px 넘게 · 누르는 것 48 넘게 ── */
+html.sj-on #su .sj-tools .sj-findtop { display: inline-flex; }
+@media (max-width: 370px) { html.sj-on #su .sj-btn { padding: 0 8px; } }
+#su .sj-ldfig { margin: 14px 0 0; }
+#su .sj-ldc, #su .sj-ldb { display: block; width: 100%; height: auto; }
+#su .sj-ld0 { fill: none; stroke: #C9DAD6; stroke-width: 1.5; }
+#su .sj-ldcost { fill: none; stroke: #7D969B; stroke-width: 2.5; stroke-dasharray: 6 5; stroke-linecap: round; }
+#su .sj-ldval { fill: none; stroke: #20323A; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+#su .sj-ldce { fill: #FCFEFD; stroke: #7D969B; stroke-width: 2; }
+#su .sj-ldve, #su .sj-lddot { fill: #20323A; stroke: #FCFEFD; stroke-width: 2; }
+#su .sj-ldve.sj-lddn, #su .sj-lddot.sj-lddn { fill: #1F2A44; stroke: #A6D0CD; stroke-width: 2.5; }
+#su .sj-ldbar { fill: #DCEBE7; stroke: #7D969B; stroke-width: 1.2; }
+#su .sj-ldfig > figcaption { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; font-size: 1.0625rem; color: #4A6168; }
+#su .sj-ldkv { color: #20323A; font-weight: 800; }
+#su .sj-ldds0 { display: grid; gap: 10px; margin-top: 12px; }
+#su .sj-ldd { border-radius: 16px; background: #F3F8F6; }
+#su .sj-ldd > summary { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 10px; row-gap: 4px; min-height: 60px; padding: 10px 14px; list-style: none; cursor: pointer; }
+#su .sj-ldd > summary::-webkit-details-marker { display: none; }
+#su .sj-ldd > summary > .sj-ldds { grid-column: 1; display: grid; gap: 2px; }
+#su .sj-ldd > summary > .sj-ldds > b { font-size: 1.25rem; font-weight: 900; }
+#su .sj-ldd > summary > .sj-ldds > span { font-size: 1.0625rem; color: #4A6168; }
+#su .sj-ldd > summary > .sj-res { grid-column: 1; font-size: 1.125rem; font-weight: 800; }
+#su .sj-ldd > summary > .sj-chev { grid-column: 2; grid-row: 1 / span 2; }
+#su .sj-ldd[open] > summary .sj-chev { transform: rotate(180deg); }
+#su .sj-ldl { display: grid; gap: 8px; padding: 0 10px 12px; }
+#su .sj-ldco .sj-ldl { padding: 0; margin-top: 10px; }
+#su .sj-ldr { display: grid; gap: 4px; padding: 10px 12px; border-radius: 14px; background: #FCFEFD; }
+#su .sj-ldco .sj-ldr { background: #F3F8F6; }
+#su .sj-lda { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; color: #20323A; text-decoration: none; }
+#su .sj-lda > b { font-size: 1.25rem; font-weight: 900; }
+#su .sj-lda > i { font-style: normal; font-size: 1.375rem; }
+#su .sj-ldv { display: grid; gap: 2px; font-size: 1.0625rem; color: #33484F; }
+#su .sj-ldv > .sj-res { font-size: 1.125rem; font-weight: 800; color: #20323A; }
+#su .sj-ldmore { margin-top: 12px; }

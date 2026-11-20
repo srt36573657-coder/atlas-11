@@ -20,7 +20,8 @@ import {kkoeTile} from '/su/su-sonja.js';
 import {stance3, STANCES} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 · 꾀 쪽 맨 위 표지 — 주문 1120-0950)
 import {picksOf, monthLow, dayCounts} from '/su/su-picks.js';
 import {findBox} from '/su/su-find.js'; // 회사 찾기(주문 1120-1447 — 회사 탭 맨 위)
-import {coValSec, coLinkSec} from '/su/su-coval.js'; // 회사 쪽 값과 실적 · 더 알아보기(주문 1120-1447) // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
+import {coValSec, coLinkSec} from '/su/su-coval.js';
+import {ledgerOf} from '/su/su-ledger-core.js'; // 장부(주문 1120-1705) // 회사 쪽 값과 실적 · 더 알아보기(주문 1120-1447) // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
 /** 그림 속 이야기 네 막(주문 1117-0102) — 큰 그림 바로 아래 · 그림이 그 막에 오면 그 줄이 밝아짐(꾸밈 sj-story) */
 const storyOl = k => STORY36[k] ? h('ol', {class: 'sj-story', 'aria-label': STORY_TAG}, ...STORY36[k].map((t, i) => h('li', {'data-act': String(i + 1)}, h('b', {class: 'sj-actt', text: ACTS[i]}), h('span', {class: 'sj-actb', text: t})))) : null;
 
@@ -404,6 +405,75 @@ export async function vSettle36(X) {
     M ? rankRace(M, nameOf) : null, // 날마다 바뀐 차례(주문 1119-0243)
     endSec(ST.asOf ? day(ST.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 셈해요.')];
   return frame({title: '정산', page: 'settle', kids, tab: 5, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
+}
+/* ── 장부(#/l · 탭 「장부」 · 주문 1120-1705 · 사장님 2026-11-20(마카오) 17:05 「그동안 날짜별로 어떤종목을 … 얼마나 … 그래서 어떻게 됐는지 그래프와 데이타로 … 하단에 … 탭을 만들어서 한눈에 …
+   이름이 너무 길어 … 적당한 이름 … 그동안 약 8억 정도를 … 모든 거래내역 추적하고 기록하는 것이다」) — 정산 장부(su21-settle.json)의 모든 산 셈을 날마다 · 회사마다
+   한 가지만 크게: 쌓인 산 돈(점선)과 그 지금 값(실선) 꺾은선 → 날마다 산 돈 막대(점 = 그날 산 것의 지금 값) → 날마다 산 회사(손실 먼저) → 회사마다 모은 장부(산 돈 차례 · 수익 차례 아님)
+   가짜 돈 · 진짜 돈 아님 · 「%」 0 · 줄어든 것을 숨기지 않음 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 ── */
+const LDW = 320, LDH = 150, LDP = 12;
+function ledCum(L) {
+  const D = L.days, hi = Math.max(1, ...D.map(d => Math.max(d.cumCost, d.cumVal))) * 1.05, f = v => Math.round(v * 10) / 10;
+  const x = i => (D.length < 2 ? LDW / 2 : LDP + (LDW - 2 * LDP) * i / (D.length - 1)), y = v => LDH - LDP - (LDH - 2 * LDP) * v / hi;
+  const g = s('svg', {class: 'sj-ldc', viewBox: `0 0 ${LDW} ${LDH}`, 'aria-hidden': 'true', focusable: 'false'});
+  g.append(s('path', {class: 'sj-ld0', d: `M${LDP} ${f(y(0))}H${LDW - LDP}`}));
+  if (D.length > 1) { g.append(s('polyline', {class: 'sj-ldval', points: D.map((d, i) => f(x(i)) + ',' + f(y(d.cumVal))).join(' ')})); g.append(s('polyline', {class: 'sj-ldcost', points: D.map((d, i) => f(x(i)) + ',' + f(y(d.cumCost))).join(' ')})); } // 점선을 위에(두 선이 거의 겹쳐도 둘 다 보이게)
+  const e = D[D.length - 1]; g.append(s('circle', {class: 'sj-ldce', cx: f(x(D.length - 1)), cy: f(y(e.cumCost)), r: 4})); g.append(s('circle', {class: 'sj-ldve' + (e.cumVal < e.cumCost ? ' sj-lddn' : ''), cx: f(x(D.length - 1)), cy: f(y(e.cumVal)), r: 5}));
+  return g;
+}
+function ledBars(L) {
+  const D = L.days, hi = Math.max(1, ...D.map(d => Math.max(d.cost, d.val))) * 1.08, f = v => Math.round(v * 10) / 10, n = D.length, slot = (LDW - 2 * LDP) / Math.max(1, n), bw = Math.min(34, slot * 0.6);
+  const y = v => LDH - LDP - (LDH - 2 * LDP) * v / hi, g = s('svg', {class: 'sj-ldb', viewBox: `0 0 ${LDW} ${LDH}`, 'aria-hidden': 'true', focusable: 'false'});
+  g.append(s('path', {class: 'sj-ld0', d: `M${LDP} ${f(y(0))}H${LDW - LDP}`}));
+  D.forEach((d, i) => { const cx = LDP + slot * (i + 0.5);
+    g.append(s('rect', {class: 'sj-ldbar', x: f(cx - bw / 2), y: f(y(d.cost)), width: f(bw), height: f(Math.max(1, y(0) - y(d.cost))), rx: 3}));
+    g.append(s('circle', {class: 'sj-lddot' + (d.val < d.cost ? ' sj-lddn' : ''), cx: f(cx), cy: f(y(d.val)), r: 5})); });
+  return g;
+}
+const ledSt = (cost, val, one) => (one ? 'one' : Math.round(val - cost) > 0 ? 'up' : Math.round(val - cost) < 0 ? 'dn' : 'eq');
+const ledRes = (cost, val, one) => (one ? SAID.one : moved(val - cost));
+export async function vLedger(X) {
+  const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
+  if (!D || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return missPage(X, '장부', '정산 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
+  const q = Number.isFinite(D.qty) ? D.qty : 10, L = ledgerOf(settleRows(D), q), TT = L.T, st = TT.days ? ledSt(TT.cost, TT.val, TT.one) : 'none', first = L.days[0]?.day ?? null;
+  const dn = L.cos.filter(c => !c.one && Math.round(c.val - c.cost) < 0).sort((a, b) => (a.val - a.cost) - (b.val - b.cost)), last = L.days[L.days.length - 1] ?? null;
+  const dayRow = (d, open) => h('details', {class: 'sj-ldd', 'data-day': d.day, 'data-n': String(d.n), 'data-st': ledSt(d.cost, d.val, d.one), open: open || null},
+    h('summary', {}, h('span', {class: 'sj-ldds'}, h('b', {text: mday(d.day) ?? d.day}), h('span', {text: '회사 ' + d.n + '곳 · ' + d.buys + '번 · 산 돈 ' + won(d.cost)})),
+      h('span', {class: 'sj-res', 'data-st': ledSt(d.cost, d.val, d.one)}, shapeI(ledSt(d.cost, d.val, d.one)), h('span', {text: ledRes(d.cost, d.val, d.one)})), chev()),
+    h('ol', {class: 'sj-ldl'}, ...d.cos.map(c => h('li', {class: 'sj-ldr', 'data-code': c.code, 'data-st': ledSt(c.cost, c.val, c.one)},
+      h('a', {class: 'sj-lda', href: '#/c/' + c.code}, h('b', {'data-proper': '', text: c.name}), h('i', {'aria-hidden': 'true', text: '›'})),
+      h('p', {class: 'sj-ldv'}, h('span', {text: c.qty + '주 · 꾀 ' + c.ks.length + '가지 · 산 값 ' + won(c.buy) + ' → 지금 ' + won(c.now)}),
+        h('span', {class: 'sj-res', 'data-st': ledSt(c.cost, c.val, c.one)}, shapeI(ledSt(c.cost, c.val, c.one)), h('span', {text: ledRes(c.cost, c.val, c.one)})))))));
+  const coRow = c => h('li', {class: 'sj-ldr', 'data-code': c.code, 'data-st': ledSt(c.cost, c.val, c.one)},
+    h('a', {class: 'sj-lda', href: '#/c/' + c.code}, h('b', {'data-proper': '', text: c.name}), h('i', {'aria-hidden': 'true', text: '›'})),
+    h('p', {class: 'sj-ldv'}, h('span', {text: c.days + '날 · ' + c.times + '번 · ' + c.qty + '주 · 산 돈 ' + won(c.cost) + ' → 지금 ' + won(c.val)}),
+      h('span', {class: 'sj-res', 'data-st': ledSt(c.cost, c.val, c.one)}, shapeI(ledSt(c.cost, c.val, c.one)), h('span', {text: ledRes(c.cost, c.val, c.one)}))));
+  const TOPC = 20, newest = [...L.days].reverse();
+  const kids = [
+    pageHead({kick: '가짜 돈 장부 · 꾀가 산 모든 회사', h1: '장부', seal: '장', sealDn: st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
+      say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 회사를 ' + q + '주씩 샀다고 치고 한 번도 빠짐없이 적었어요. 진짜 돈이 아니에요. 줄어든 것도 숨기지 않아요.',
+      more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': st}, h('dt', {text: '모두 산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.days ? won(TT.val) : SAID.none})),
+        h('p', {class: 'sj-res sj-res-big', 'data-st': st}, shapeI(st), h('b', {text: TT.days ? ledRes(TT.cost, TT.val, TT.one) : SAID.none})),
+        h('p', {class: 'sj-loss', 'data-say': '', text: dn.length ? '돈이 줄어든 회사는 ' + dn.length + '곳이에요. 가장 많이 줄어든 회사는 「' + dn[0].name + '」로, ' + won(dn[0].cost - dn[0].val) + ' 줄었어요.' : '아직 돈이 줄어든 회사는 없어요.'}),
+        h('p', {class: 'sj-note', text: (first ? mday(first) + '부터 · ' : '') + '산 날 ' + TT.days + '일 · 산 횟수 ' + NF.format(TT.buys) + '번 · 회사 ' + NF.format(TT.cos) + '곳'})]}),
+    h('section', {class: 'sj-sec sj-ldg', 'aria-label': '날마다 산 돈', 'data-rule': L.rule, 'data-days': String(TT.days), 'data-cost': String(Math.round(TT.cost)), 'data-val': String(Math.round(TT.val))},
+      head('돈', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '날마다 산 돈'}))),
+      TT.days ? h('figure', {class: 'sj-ldfig', 'aria-label': '쌓인 산 돈과 그 지금 값 꺾은선 · 산 돈 ' + won(TT.cost) + ' · 지금 ' + won(TT.val)}, ledCum(L),
+        h('figcaption', {}, h('span', {class: 'sj-ldk sj-ldkc', text: '점선 = 쌓인 산 돈 ' + won(TT.cost)}), h('span', {class: 'sj-ldk sj-ldkv', text: '실선 = 그 지금 값 ' + won(TT.val)}))) : null,
+      TT.days ? h('figure', {class: 'sj-ldfig', 'aria-label': '날마다 산 돈 막대 · 점은 그날 산 것의 지금 값'}, ledBars(L),
+        h('figcaption', {}, h('span', {text: '막대 = 그날 산 돈'}), h('span', {text: '점 = 그날 산 것의 지금 값'}), h('span', {text: (mday(first) ?? '') + ' → ' + (mday(last?.day) ?? '')}))) : null,
+      h('p', {class: 'sj-rule', text: '날을 누르면 그날 산 회사가 보여요. 줄어든 돈이 큰 회사가 위에 있어요.'}),
+      TT.days ? h('div', {class: 'sj-ldds0'}, ...newest.map((d, i) => dayRow(d, i === 0))) : h('p', {class: 'sj-tnone', text: SAID.none}),
+      endSeal('돈')),
+    TT.cos ? h('section', {class: 'sj-sec sj-ldco', 'aria-label': '회사마다 모은 장부', 'data-n': String(TT.cos)},
+      head('곳', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '회사마다 모은 장부'}), h('span', {class: 'sj-h2n', text: ' ' + TT.cos + '곳'}))),
+      h('p', {class: 'sj-rule', text: '여러 날 여러 꾀가 산 것을 회사마다 더했어요. 산 돈이 큰 회사가 위에 있어요. 수익 차례가 아니에요.'}),
+      h('ol', {class: 'sj-ldl'}, ...L.cos.slice(0, TOPC).map(coRow)),
+      L.cos.length > TOPC ? h('details', {class: 'sj-drawer sj-ldmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '나머지 ' + (L.cos.length - TOPC) + '곳도 펼치기'}), chev()), h('ol', {class: 'sj-ldl'}, ...L.cos.slice(TOPC).map(coRow))) : null,
+      endSeal('곳')) : null,
+    h('p', {class: 'sj-safe sj-sec', text: '가짜 돈으로 지난 기록을 적은 장부예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
+    endSec(D.asOf ? day(D.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 적어요.')];
+  void nameOf;
+  return frame({title: '장부', page: 'ledger', kids, tab: 6, lc: X.cur?.()?.code ?? null, next: {href: '#/r/t', label: '꾀마다 정산은 어떻게 됐을까?'}});
 }
 export {chev};
 

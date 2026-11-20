@@ -29,6 +29,8 @@ export function findBox(get) {
   inp.addEventListener('focus', () => { need(); }, {once: true});
   const form = h('form', {class: 'sj-findf', role: 'search', 'aria-label': '회사 찾기'}, inp);
   form.addEventListener('submit', e => { e.preventDefault(); const a = list.querySelector('a.sj-finda'); if (a) location.hash = a.getAttribute('href'); else run(); });
+  let go = false; try { go = sessionStorage.getItem('su-find') === '1'; if (go) sessionStorage.removeItem('su-find'); } catch { /* 저장소 없음 */ }
+  if (go) { const t0 = Date.now(), tick = () => { if (inp.isConnected) { inp.scrollIntoView({block: 'center'}); inp.focus({preventScroll: true}); } else if (Date.now() - t0 < 4000) requestAnimationFrame(tick); }; requestAnimationFrame(tick); } // 맨 위 「찾기」로 왔으면 글 칸에 커서
   return h('section', {class: 'sj-sec sj-find', 'aria-label': '회사 찾기'},
     h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '회사 찾기'})), form, note, list);
 }

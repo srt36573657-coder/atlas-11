@@ -20,7 +20,7 @@ export const FOOT = Object.freeze([['/su/privacy.html', '개인정보 처리방�
 /** 길 다섯 화면(주문 1115-2328) — [이름, 기승전결] · 짝: su.js STEPS(옛 틀 「왜 사?」 · 매매일지) · 검사 check_su.mjs ⑨ */
 export const STEP5 = Object.freeze([['오늘', '기'], ['꾀', '승'], ['회사', '전'], ['「왜 사?」', '결'], ['내 매매일지', '결']]);
 /** 탭 다섯(주문 1115-2328) — 오늘 · 꾀 · 멈춤 · 일지 · 정산 · 짝: su.js TABS(옛 틀) */
-export const TAB6 = Object.freeze([['오늘', '#/'], ['꾀', '#/k'], ['회사', '#/o'], ['멈춤', '#/q'], ['일지', '#/j'], ['정산', '#/r/t']]); // 탭 「회사」 = 여러 꾀가 고른 회사(주문 1120-1220 · 사장님 2026-11-20(마카오) 12:20 「너가 이렇게 답변한것을 탭으로 만들어」 · 12:21 「맞아 탭을 만들라고 하는거야」)
+export const TAB6 = Object.freeze([['오늘', '#/'], ['꾀', '#/k'], ['회사', '#/o'], ['멈춤', '#/q'], ['일지', '#/j'], ['정산', '#/r/t'], ['장부', '#/l']]); // 탭 「장부」 = 가짜 돈으로 산 모든 회사 추적(주문 1120-1705) // 탭 「회사」 = 여러 꾀가 고른 회사(주문 1120-1220 · 사장님 2026-11-20(마카오) 12:20 「너가 이렇게 답변한것을 탭으로 만들어」 · 12:21 「맞아 탭을 만들라고 하는거야」)
 
 /** 「글씨」 단추 — 누르면 한 단 크게(html.su-lg · 다음에 열어도 그대로) */
 function bigText(big) {
@@ -36,13 +36,23 @@ export function sayTop() {
   return b;
 }
 /** 머리 줄 — 띄어 쓴 명조 이름 · 선물 · 듣기 · 글씨(천사 · 찾기는 끝 줄로 · 주문 1119-2026) */
+/** 맨 위 「찾기」 — 회사 탭(#/o) 맨 위 찾기 칸을 열고 글 칸에 커서(이미 그 쪽이면 곧바로) · 표지는 sessionStorage 한 줄(su-find.js 가 읽고 지움) */
+function findTop() {
+  const a = h('a', {class: 'sj-btn sj-find sj-findtop', href: '#/o', 'aria-label': '회사 찾기', text: '찾기'});
+  a.addEventListener('click', e => {
+    const i = document.querySelector('#su main.sj-page[data-page="picks"] input.sj-findi');
+    if (i) { e.preventDefault(); i.scrollIntoView({block: 'center'}); i.focus({preventScroll: true}); return; }
+    try { sessionStorage.setItem('su-find', '1'); } catch { /* 저장소 없음 — 찾기 칸까지만 감 */ }
+  });
+  return a;
+}
 export function topBar() {
   const big = bigText(h('button', {class: 'sj-btn sj-bigtext', type: 'button', 'aria-label': '글씨 크게', text: '글씨'}));
   return h('header', {class: 'sj-top'},
     h('a', {class: 'sj-brand', href: '#/', 'aria-label': NAME + ' 첫 쪽', text: NAME}),
     h('div', {class: 'sj-tools'},
       h('a', {class: 'sj-btn sj-angel', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'}), h('i', {'aria-hidden': 'true', text: '↗'})),
-      h('a', {class: 'sj-btn sj-find', href: '/next/?su=guide#/find', 'aria-label': '종목 찾기', text: '찾기'}),
+      findTop(), // 회사 찾기 — 선물 옆(주문 1120-1705 · 사장님 17:05 「종목 찾기를 선물 옆에 배치」) · 회사 탭 맨 위 찾기 칸으로
       h('a', {id: 'giftBtn', class: 'sj-btn sj-gift', href: '/next/?su=guide#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}),
       sayTop(), big));
 }
@@ -143,7 +153,8 @@ const TABP = Object.freeze([
   ['M4 20V9l5-3v14M9 20V7l6-3v16M15 20v-9l5-2v11M3 20h18', ''], // 회사(주문 1120-1220)
   ['M8 12V6.5a1.5 1.5 0 0 1 3 0V11M11 10V5a1.5 1.5 0 0 1 3 0v5M14 10V6.5a1.5 1.5 0 0 1 3 0V14c0 3.5-2.5 6-6 6s-5-2-6-4l-1.5-3a1.5 1.5 0 0 1 2.6-1.5L8 13', ''],
   ['M4 6c3-1 5-1 8 1v12c-3-2-5-2-8-1zM20 6c-3-1-5-1-8 1v12c3-2 5-2 8-1z', ''],
-  ['M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM10 10h4v4h-4z', '']]);
+  ['M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM10 10h4v4h-4z', ''],
+  ['M6 3h10l3 3v15H6zM9 8h7M9 12h7M9 16h4', '']]); // 장부(주문 1120-1705) — 줄 친 장부 한 권
 const tabIco = i => { const [d, c] = TABP[i] ?? TABP[0]; return s('svg', {viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, c ? s('circle', {cx: 12, cy: 12, r: 3.6}) : null, s('path', {d})); };
 /** 탭 여섯 — cur = 켜진 탭 차례(0 오늘 · 1 꾀 · 2 회사 · 3 멈춤 · 4 일지 · 5 정산 · 탭 밖 쪽은 -1) · lc = 마지막에 본 회사 번호(멈춤 탭이 그 회사로) */
 export function tabNav(cur = 0, lc = null) {

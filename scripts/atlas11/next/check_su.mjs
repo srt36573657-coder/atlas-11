@@ -31,7 +31,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(https:\/\/finance\.naver\.com\/item\/(news|coinfo)\.naver\?code=[0-9A-Z]{6}|#\/|#\/[kqpjo]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
+const LINK_OK = /^(https:\/\/finance\.naver\.com\/item\/(news|coinfo)\.naver\?code=[0-9A-Z]{6}|#\/|#\/[kqpjol]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -294,7 +294,7 @@ for (const width of [390, 360, 320]) {
         foot: [...document.querySelectorAll('#su main > .su-src .su-srcl a')].map(a => [a.getAttribute('href'), a.querySelector('span')?.textContent ?? ''])};
     });
     const STEP5 = ['오늘', '꾀', '회사', '「왜 사?」', '내 매매일지']; // 다섯 화면 이름(화면 코드 STEP5 를 쓰지 않고 따로 적음 · 주문 1115-2328)
-    const TAB5 = '오늘 꾀 회사 멈춤 일지 정산', TAB5L = '탭 — 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산', PAGE3 = ['sonja', 'kkoe', 'co', 'why', 'journal'], CUR3 = [0, 1, -1, 3, 4]; // 회사 쪽은 탭 밖(켜진 탭 0) · 탭 여섯(주문 1120-1220 — 「회사」 탭 = 여러 꾀가 고른 회사 · 셋째)
+    const TAB5 = '오늘 꾀 회사 멈춤 일지 정산 장부', TAB5L = '탭 — 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산 · 장부', PAGE3 = ['sonja', 'kkoe', 'co', 'why', 'journal'], CUR3 = [0, 1, -1, 3, 4]; // 회사 쪽은 탭 밖(켜진 탭 0) · 탭 여섯(주문 1120-1220 — 「회사」 탭 = 여러 꾀가 고른 회사 · 셋째)
     const FOOTW = JSON.stringify([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]);
     await open(p, '#/');
     const seen = [], STEPS9 = FC ? [0, 1, 2, 3, 4] : [0, 1, 3, 4]; // 꾀가 고른 곳이 없는 날(꾀 칸 자료 없음)은 꾀 → 「왜 사?」로 바로(회사 화면을 건너뜀)
@@ -309,8 +309,8 @@ for (const width of [390, 360, 320]) {
         check(sj.prog.length === 5 && sj.prog.every((c, i) => c === (i === k ? 'sj-pcur' : i < k ? 'sj-pdone' : '')) && sj.progL === '다섯 화면 가운데 ' + (k + 1) + '번째', W + '⑨ 이야기 막대 점 다섯 · 지금 화면 ' + (k + 1) + ' — ' + sj.h1, JSON.stringify([sj.prog, sj.progL]));
         check(sj.order, W + '⑨ 쪽 차례 — ' + (k === 0 ? '표지 → 형세 보고 → 덜 잃은 꾀 차례 → 자세히 → 끝 줄' : k === 1 ? '머리 → 고르는 법 → 같은 땅 기록 → 오늘 닮은 곳 → 정산 → 앞뒤 꾀 → 끝 줄' : '머리 · 한 달 꺾은선 → 고른 꾀 → 사기 전에 멈춤 → 끝 줄') + ' — ' + sj.h1, sj.kids.join(' '));
         check(sj.lastIsSrc && JSON.stringify(sj.foot) === FOOTW, W + '⑨ 맨 아래 출처 · 조사 날짜 · 꼭 있어야 할 길 둘 — ' + sj.h1, JSON.stringify(sj.foot));
-        check(sj.tabs.length === 6 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
-          W + '⑨ 탭 여섯 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산(주문 1115-2328 · 1120-1220 회사 탭) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
+        check(sj.tabs.length === 7 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
+          W + '⑨ 탭 일곱 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산 · 장부(주문 1115-2328 · 1120-1220 회사 탭 · 1120-1705 장부 탭) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
         if (k === 0) { check(sj.moreShut && sj.ess === 3, W + '⑩ 「자세히」는 눌러야 열림 · 그 안 본질 세 줄 — ' + sj.h1, JSON.stringify({shut: sj.moreShut, ess: sj.ess})); check(sj.art, W + '⑪ 표지 붓 글씨 그림이 열림', '');
           const tc = await p.evaluate(() => { const c = document.querySelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)'), go = c?.querySelector('a.sj-tcgo'), r = go?.getBoundingClientRect(), t = document.querySelector('#su .sj-tabs')?.getBoundingClientRect(), pm = c?.parentElement?.querySelector(':scope > .sj-pm')?.getBoundingClientRect();
             return {has: !!c, go: go?.getAttribute('href') ?? null, low: r ? Math.round(r.bottom + scrollY) : null, tabs: t ? Math.round(t.top) : null, top: c && pm ? c.getBoundingClientRect().bottom <= pm.top + 1 : false, safe: (c?.querySelector('.sj-tcs')?.textContent ?? '').includes('앞날을 맞히지 않고'), red: c ? [...c.querySelectorAll('*')].filter(e => { const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length : -1}; });
@@ -376,7 +376,7 @@ for (const width of [390, 360, 320]) {
       check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? /확인 필요$/.test(t.v) : t.v && !t.v.includes('확인 필요'))), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
       const curW = k === 3 ? 3 : 4; // 「왜 사?」 = 멈춤 · 매매일지 = 일지(탭 여섯 — 주문 1120-1220)
-      check(m.tabs.length === 6 && m.tabs.map(t => t.t).join(' ') === TAB5 && m.tabs.filter(t => t.cur).length === 1 && m.tabs[curW].cur && m.tabsL === TAB5L, W + '⑨ 탭 다섯(옛 틀도 같은 다섯 · 주문 1115-2328) · 「' + TAB5.split(' ')[curW] + '」 켜짐 — ' + m.h1, JSON.stringify(m.tabs) + ' ' + m.tabsL);
+      check(m.tabs.length === 7 && m.tabs.map(t => t.t).join(' ') === TAB5 && m.tabs.filter(t => t.cur).length === 1 && m.tabs[curW].cur && m.tabsL === TAB5L, W + '⑨ 탭 다섯(옛 틀도 같은 다섯 · 주문 1115-2328) · 「' + TAB5.split(' ')[curW] + '」 켜짐 — ' + m.h1, JSON.stringify(m.tabs) + ' ' + m.tabsL);
       check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
       check(m.pro.has && !m.pro.open && m.pro.rows >= 3, W + '⑩ 전문가용 자세히 — 눌러야 열림 — ' + m.h1, JSON.stringify(m.pro));
       check(Number.isFinite(m.hard), W + '⑩ 어려운 낱말 셈 — ' + m.h1, String(m.hard) + ' ' + m.hardWords);
@@ -1230,7 +1230,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     return out;
   };
   const G29 = await J('/su/data/su21-s36.json').catch(() => null), K29 = Array.isArray(G29?.kinds) ? G29.kinds : [], C29 = K29.map(k => G29?.lists?.[k]?.[0]?.code).find(c => /^[0-9A-Z]{6}$/.test(String(c ?? ''))) ?? null;
-  const PAGES29 = ['#/', '#/k', '#/k/' + (K29[0] ?? 'g01'), ...(C29 ? ['#/c/' + C29] : []), '#/r/t', '#/q', '#/j', '#/o']; // #/o 여러 꾀가 고른 회사(주문 1120-0950)
+  const PAGES29 = ['#/', '#/k', '#/k/' + (K29[0] ?? 'g01'), ...(C29 ? ['#/c/' + C29] : []), '#/r/t', '#/q', '#/j', '#/o', '#/l']; // #/l 장부(주문 1120-1705) // #/o 여러 꾀가 고른 회사(주문 1120-0950)
   for (const [width, big] of [[390, false], [320, false], [320, true]]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'});
     await QUIET(ctx);
@@ -1345,6 +1345,50 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     check(okL, W + '다) 더 알아보기(#/c/' + code + ') — 7단 고리(3 ~ 7단) · 바깥 둘(뉴스 · 공시 / 증권사 글 — 새 창) · 증권사 앞날 값 · 사고팔기 의견 글 0', JSON.stringify({seven: g.seven, outs: g.outs, lt: g.lt.slice(0, 120)}).slice(0, 500));
     pageRules(await measure(p), W + '회사 쪽 #/c/' + code);
   }
+  check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+  await ctx.close();
+}
+{ // ㉜ 주문 1120-1705(사장님 2026-11-20(마카오) 17:05 「종목 찾기를 선물 옆에 배치 … 날짜별로 어떤종목을 … 얼마나 … 어떻게 됐는지 그래프와 데이타로 … 하단에 … 탭 … 적당한 이름 … 모든 거래내역 추적하고 기록」)
+  //   가) 맨 위 「찾기」 = 선물 바로 앞 · 보임 · #/o · 누르면 회사 탭 찾기 칸에 커서 · 세 폭(390 · 360 · 320)에서 머리 줄 한 줄(높이 그대로)
+  //   나) 장부(#/l · 탭 「장부」 켜짐) = 이 검사가 정산 장부(su21-settle.json buys · now · qty)로 따로 다시 셈 — 모두 산 돈 · 지금 · 산 날 수 · 회사 수 · 날마다(새 날 먼저 · 회사 곳 수 · 산 번 · 산 돈) · 회사마다 산 돈 차례(맨 위 스물)
+  //       꺾은선 · 막대 그림 · 손실 먼저 한 줄 · 「%」 「매수」 「수익률」 0 · 앞날 아님 한 줄
+  const W = '㉜ ';
+  for (const width of [390, 360, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage();
+    await open(p, '#/k');
+    const t = await p.evaluate(() => { const a = document.querySelector('#su .sj-top .sj-tools a.sj-findtop'), g = document.getElementById('giftBtn'), top = document.querySelector('#su .sj-top'), r = a?.getBoundingClientRect(), rg = g?.getBoundingClientRect();
+      return {has: !!a, shown: !!a && getComputedStyle(a).display !== 'none' && (r?.width ?? 0) >= 47.5 && (r?.height ?? 0) >= 47.5, next: a?.nextElementSibling === g, row: !!r && !!rg && Math.abs(r.top - rg.top) < 2, href: a?.getAttribute('href') ?? '', txt: (a?.textContent ?? '').trim(), topH: Math.round(top?.getBoundingClientRect().height ?? 0), wide: document.documentElement.scrollWidth <= innerWidth + 1}; });
+    let focus = null;
+    if (t.has) { await p.click('#su .sj-top a.sj-findtop'); await p.waitForFunction(() => location.hash === '#/o' && document.activeElement?.matches?.('input.sj-findi'), null, {timeout: 12000}).catch(() => {});
+      focus = await p.evaluate(() => ({hash: location.hash, active: document.activeElement?.matches?.('#su main.sj-page[data-page="picks"] input.sj-findi') ?? false})); }
+    check(t.has && t.shown && t.next && t.row && t.href === '#/o' && t.txt === '찾기' && t.topH <= 72 && t.wide && focus?.hash === '#/o' && focus.active,
+      W + '[' + width + '] 가) 맨 위 「찾기」 — 선물 바로 앞 · 같은 줄 · 48 넘게 · 누르면 회사 탭 찾기 칸에 커서 · 머리 줄 한 줄', JSON.stringify({t, focus}).slice(0, 300));
+    await ctx.close();
+  }
+  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+  await QUIET(ctx);
+  const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+  const DL = await J('/su/data/su21-settle.json').catch(() => null), KK = /^g(0[1-9]|[12]\d|3[0-6])$/, q = Number.isFinite(DL?.qty) ? DL.qty : 10;
+  const rows = Array.isArray(DL?.buys) && Array.isArray(DL?.kinds) ? DL.buys.filter(b => Array.isArray(b) && KK.test(String(DL.kinds[b[1]] ?? '')) && typeof b[3] === 'number' && Number.isFinite(b[3]) && b[3] > 0).map(([d, , c, buy]) => {
+    const nw = Array.isArray(DL.now?.[c]) && typeof DL.now[c][0] === 'number' && Number.isFinite(DL.now[c][0]) ? DL.now[c][0] : buy; return {d, c, cost: buy * q, val: nw * q}; }) : [];
+  const dayM = new Map(), coM = new Map();
+  for (const r of rows) { const a = dayM.get(r.d) ?? dayM.set(r.d, {cos: new Set(), n: 0, cost: 0}).get(r.d); a.cos.add(r.c); a.n++; a.cost += r.cost; const b = coM.get(r.c) ?? coM.set(r.c, {cost: 0}).get(r.c); b.cost += r.cost; }
+  const W2 = {cost: Math.round(rows.reduce((s, r) => s + r.cost, 0)), val: Math.round(rows.reduce((s, r) => s + r.val, 0)), days: dayM.size, cos: coM.size,
+    dayRows: [...dayM.keys()].sort().reverse().map(d => [d, dayM.get(d).cos.size, dayM.get(d).n]), top: [...coM].sort((a, b) => b[1].cost - a[1].cost || (a[0] < b[0] ? -1 : 1)).slice(0, 20).map(([c]) => c)};
+  await open(p, '#/l');
+  const g = await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="ledger"]'), sec = m?.querySelector('section.sj-ldg'), co = m?.querySelector('section.sj-ldco'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
+    return {main: !!m, rule: sec?.getAttribute('data-rule') ?? null, cost: +(sec?.getAttribute('data-cost') ?? NaN), val: +(sec?.getAttribute('data-val') ?? NaN), days: +(sec?.getAttribute('data-days') ?? NaN), cos: +(co?.getAttribute('data-n') ?? 0),
+      dayRows: [...(sec?.querySelectorAll('details.sj-ldd') ?? [])].map(d => [d.getAttribute('data-day'), +d.getAttribute('data-n'), d.querySelectorAll('li.sj-ldr').length]), open1: sec?.querySelector('details.sj-ldd')?.open ?? false,
+      top: [...(co?.querySelectorAll(':scope > ol.sj-ldl > li.sj-ldr') ?? [])].map(li => li.getAttribute('data-code')), charts: sec ? [!!sec.querySelector('svg.sj-ldc polyline.sj-ldval'), !!sec.querySelector('svg.sj-ldb rect.sj-ldbar')] : [],
+      loss: t(m?.querySelector('.sj-loss')), text: m?.innerText ?? '', tab: t(document.querySelector('#su .sj-tabs a[aria-current="page"]')), wide: document.documentElement.scrollWidth <= innerWidth + 1}; });
+  const dayOk = JSON.stringify(g.dayRows.map(([d, n]) => [d, n])) === JSON.stringify(W2.dayRows.map(([d, n]) => [d, n])) && g.dayRows.every(([d, n, li]) => li === n);
+  check(g.main && g.rule === 'ledger-v1' && Math.abs(g.cost - W2.cost) <= 1 && Math.abs(g.val - W2.val) <= 1 && g.days === W2.days && g.cos === W2.cos && dayOk && g.open1 && JSON.stringify(g.top) === JSON.stringify(W2.top)
+    && (rows.length ? g.charts.every(Boolean) : true) && /줄어든|아직 돈이 줄어든 회사는 없어요/.test(g.loss) && !/%|매수|매도|수익률|추천|1등|대박/.test(g.text) && /앞날을 맞히지 않고/.test(g.text) && g.tab === '장부' && g.wide,
+    W + '나) 장부(#/l · 탭 「장부」) — 이 검사가 정산 장부로 다시 센 모두 산 돈 · 지금 · 산 날 · 회사 수 · 날마다(새 날 먼저) · 회사마다 산 돈 차례 스물과 같음 · 꺾은선 · 막대 · 손실 먼저 · 「%」 「매수」 0',
+    JSON.stringify({want: {...W2, dayRows: W2.dayRows.slice(0, 3), top: W2.top.slice(0, 3)}, got: {cost: g.cost, val: g.val, days: g.days, cos: g.cos, dayRows: g.dayRows.slice(0, 3), top: g.top.slice(0, 3), charts: g.charts, tab: g.tab, open1: g.open1}}).slice(0, 600));
+  pageRules(await measure(p), W + '장부 #/l');
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();
 }

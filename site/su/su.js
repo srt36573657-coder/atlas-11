@@ -62,6 +62,7 @@ async function route() {
     if (kk) { const M = await kkoeM(); return await paintSj(hh, root, () => (kk[1] ? M.vKkoe(XS, kk[1]) : M.vKkoeAll(XS))); }
     if (co) { const M = await kkoeM(); return await paintSj(hh, root, () => M.vCo36(XS, co[1])); }
     if (hh === '#/r/t') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vSettle36(XS)); }
+    if (hh === '#/l') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vLedger(XS)); } // 장부(주문 1120-1705 · 탭 「장부」)
     if (hh === '#/o') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vPicks(XS)); } // 여러 꾀가 고른 회사(주문 1120-0950 · #/n 은 옛 쪽 이름이라 #/o)
     if (q || hh === '#/j') { // 「왜 사?」 · 매매일지 — 손자병법 판(주문 1116-0300 · 옛 틀을 지움) · 걸음 4 / 5 · 5 / 5
       const [W, Y] = await Promise.all([sjWhy(), whyM()]), X = whyX(W);
