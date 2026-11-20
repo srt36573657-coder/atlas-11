@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-20T15:07:18.773Z",
+ "at": "2026-11-20T15:58:07.246Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 582,
@@ -14,8 +14,8 @@
    "sun": true
   },
   "home": {
-   "screens": 18.92,
-   "links": 55
+   "screens": 18.8,
+   "links": 54
   },
   "t21": {
    "listed": 2557,
@@ -26,10 +26,10 @@
     "h1": "지금은 내리는 시장 이에요.",
     "page": "sonja",
     "kids": [
+     "sj-mind",
      "sj-cover",
      "sj-sun",
      "sj-s36",
-     "sj-mind",
      "sj-more",
      "sj-end"
     ],
@@ -111,9 +111,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 644,
-   "cls": 0.085,
-   "pic": 635
+   "lcp": 796,
+   "cls": 0.034,
+   "pic": 681
   },
   "white": {
    "light #/": {
