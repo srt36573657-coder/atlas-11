@@ -451,7 +451,7 @@ export async function vLedger(X) {
   const kids = [
     pageHead({kick: '가짜 돈 장부 · 꾀가 산 모든 회사', h1: '장부', seal: '장', sealDn: st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
       say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 회사를 ' + q + '주씩 샀다고 치고 한 번도 빠짐없이 적었어요. 진짜 돈이 아니에요. 줄어든 것도 숨기지 않아요.',
-      more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': st}, h('dt', {text: '모두 산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.days ? won(TT.val) : SAID.none})),
+      more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': st}, h('dt', {text: '산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.days ? won(TT.val) : SAID.none})),
         h('p', {class: 'sj-res sj-res-big', 'data-st': st}, shapeI(st), h('b', {text: TT.days ? ledRes(TT.cost, TT.val, TT.one) : SAID.none})),
         h('p', {class: 'sj-loss', 'data-say': '', text: dn.length ? '돈이 줄어든 회사는 ' + dn.length + '곳이에요. 가장 많이 줄어든 회사는 「' + dn[0].name + '」로, ' + won(dn[0].cost - dn[0].val) + ' 줄었어요.' : '아직 돈이 줄어든 회사는 없어요.'}),
         h('p', {class: 'sj-note', text: (first ? mday(first) + '부터 · ' : '') + '산 날 ' + TT.days + '일 · 산 횟수 ' + NF.format(TT.buys) + '번 · 회사 ' + NF.format(TT.cos) + '곳'})]}),

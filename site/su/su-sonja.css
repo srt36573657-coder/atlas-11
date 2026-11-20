@@ -1509,6 +1509,7 @@ html.sj-on #su .sj-find { display: grid; gap: 10px; }
    점선 = 쌓인 산 돈(옅은 먹) · 실선 = 그 지금 값(진한 먹) · 줄어든 끝 점 = 짙은 남빛(빨강 0) · 글 17px 넘게 · 누르는 것 48 넘게 ── */
 html.sj-on #su .sj-tools .sj-findtop { display: inline-flex; }
 @media (max-width: 370px) { html.sj-on #su .sj-btn { padding: 0 8px; } }
+@media (max-width: 340px) { html.sj-on #su .sj-tabs { gap: 2px; padding-left: max(6px, env(safe-area-inset-left, 0px)); padding-right: max(6px, env(safe-area-inset-right, 0px)); } } /* 탭 여섯이 보여도 320 폭에서 칸마다 48 넘게(주문 1120-1705 장부 탭) */
 #su .sj-ldfig { margin: 14px 0 0; }
 #su .sj-ldc, #su .sj-ldb { display: block; width: 100%; height: auto; }
 #su .sj-ld0 { fill: none; stroke: #C9DAD6; stroke-width: 1.5; }
