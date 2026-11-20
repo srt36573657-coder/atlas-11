@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-4",
- "when": "2026-11-20T11:48:23.989Z",
+ "when": "2026-11-20T12:40:40.090Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -73,7 +73,7 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 868,
+  "flowMs": 920,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
