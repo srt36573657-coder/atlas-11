@@ -16,6 +16,7 @@ import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap, scr
 import {MIX36, EQ36, NAME as KNAME, MEAN as KMEAN} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
 import {bambooArt} from '/su/su-bamboo.js'; // 오늘 한 장 뒤 대나무 숲(주문 1120-1422)
 import {stance3, STANCES, won100} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 — 수비 · 보편 · 공격 · 지난 같은 땅 기록으로만)
+import {MIND11, MIND_RULE} from '/su/su-mind-core.js'; // 주식 할 때 가질 자세 열한 가지(주문 1120-2116 — 사장님 격언 글자 그대로)
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {landPic, kkoePic, arrowsPic, sonmuPic, brushBar, coverFilm} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
 
@@ -404,6 +405,21 @@ async function promiseBand(box) {
   box.hidden = false;
 }
 
+/* ── 3-2 주식 할 때 가질 자세 열한 가지(주문 1120-2116 · 사장님 2026-11-20(마카오) 21:16 「전에 자료를 찾아 봐봐 주식을 할 때 가져야 할 자세 11가지 정리한 거 있어 그걸 첫 페이지에 멋지게 나열해봐」)
+   사장님이 2026-10-17 「왜 사?」 열한 질문에 붙인 격언 열한 줄 — 글자 그대로 · 남의 글 표시(data-proper) · 옛 병법 책처럼 대나무 조각 열한 장을 두 끈으로 엮은 꼴(su-sonja.css sj-jg)
+   자리 = 꾀 칸 다음 · 자세히 앞(본질 2 「꾀를 돕는 일 — 주식을 사기 전에 한 번 멈추게 한다 · ① 「왜 사?」 열한 질문」) · 고리 하나 = 멈춤(#/q · 열한 질문을 하나씩) */
+function mindSec() {
+  return h('section', {class: 'sj-sec sj-mind', 'aria-label': '주식 할 때 가질 자세 열한 가지', 'data-rule': MIND_RULE, 'data-n': String(MIND11.length)},
+    head('자세', '제3장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '주식 할 때 가질 자세'}))),
+    h('p', {class: 'sj-mlead', text: '옛 병법은 대나무 조각에 적었어요. 「왜\u00A0사?」 열한 질문마다 한 줄씩, 주식 할 때 가질 자세를 적었어요.'}),
+    h('ol', {class: 'sj-jg', 'aria-label': '자세 열한 가지'}, ...MIND11.map(m => h('li', {class: 'sj-js', 'data-n': String(m.n), 'data-g': m.g},
+      h('span', {class: 'sj-jsn', 'aria-hidden': 'true', text: String(m.n)}),
+      h('p', {class: 'sj-jsq', text: m.g + ' · ' + m.q}),
+      h('p', {class: 'sj-jsm'}, h('span', {'data-proper': '', text: m.say}))))),
+    h('p', {class: 'sj-mnote', text: '사고팔기를 권하는 말이 아니에요. 사기 전에 한 번 멈추게 하는 말이에요.'}),
+    h('a', {class: 'sj-go sj-mgo', href: '#/q'}, h('span', {text: '열한 가지를 하나씩 물어요'}), h('i', {'aria-hidden': 'true', text: '›'})));
+}
+
 /* ── 4 자세히(눌러야 열림 — 이 쪽이 어떤 곳인지 · 본질 세 줄) ── */
 function moreBox(S) {
   const lines = essenceLines(essenceData({summary: S}));
@@ -429,7 +445,7 @@ export async function vSonja(X, shell = null) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   if (!T) return null;
   const wait = trickWait(T);
-  const dd = mday((okSun(T.sun) ? T.sun.day : null) ?? T.asOf?.board), body = [sunSec(T), wait, moreBox(S), endSec(T, S)];
+  const dd = mday((okSun(T.sun) ? T.sun.day : null) ?? T.asOf?.board), body = [sunSec(T), wait, mindSec(), moreBox(S), endSec(T, S)]; // 자세 열한 가지(주문 1120-2116) — 꾀 칸 다음 · 자세히 앞
   const keep = !!shell?.main?.isConnected, main = keep ? shell.main : h('main', {class: 'sj-page', 'data-page': 'sonja', 'data-wait': ''}, cover(null)); // data-wait — 꾀 칸을 채우면 뗌(검사가 기다림)
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));

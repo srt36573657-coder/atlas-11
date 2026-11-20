@@ -233,9 +233,9 @@ for (const width of [390, 360, 320]) {
     const shapeSj = () => p.evaluate(() => {
       const main = document.querySelector('#su main.sj-page'); if (!main) return null;
       const page = main.getAttribute('data-page') ?? '';
-      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|coval|colink|costop|two|act|body|figs|whymore)$/.test(c)) ?? e.className);
-      const want = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-s36', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kst', 'sj-kpn', 'sj-end'] : page === 'co' ? ['sj-ph', 'sj-coval', 'sj-cok', 'sj-colink', 'sj-costop', 'sj-end'] : page === 'why' || page === 'journal' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-body', 'sj-figs', 'sj-whymore', 'sj-end'] : [];
-      const must = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kpn', 'sj-end'] : page === 'why' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-end'] : page === 'journal' ? ['sj-ph', 'sj-two', 'sj-end'] : ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'];
+      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|mind|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|coval|colink|costop|two|act|body|figs|whymore)$/.test(c)) ?? e.className);
+      const want = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-s36', 'sj-mind', 'sj-more', 'sj-end'] /* 자세 열한 가지 = 꾀 칸 다음 · 자세히 앞(주문 1120-2116) */ : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kst', 'sj-kpn', 'sj-end'] : page === 'co' ? ['sj-ph', 'sj-coval', 'sj-cok', 'sj-colink', 'sj-costop', 'sj-end'] : page === 'why' || page === 'journal' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-body', 'sj-figs', 'sj-whymore', 'sj-end'] : [];
+      const must = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-mind', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kpn', 'sj-end'] : page === 'why' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-end'] : page === 'journal' ? ['sj-ph', 'sj-two', 'sj-end'] : ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'];
       const order = kids.every(k => want.includes(k)) && kids.map(k => want.indexOf(k)).every((v, i, a) => !i || v > a[i - 1]) && must.every(k => kids.includes(k));
       const last = main.lastElementChild, more = main.querySelector(':scope > details.sj-more');
       const step = document.querySelector('#su .sj-step'), art = document.querySelector('#su .sj-cover img.sj-art');
@@ -307,7 +307,7 @@ for (const width of [390, 360, 320]) {
         seen.push(sj);
         check(sj.step.includes((k + 1) + ' / 5') && sj.stepL === (k + 1) + ' / 5 · ' + STEP5[k], W + '⑨ 걸음 표시 ' + (k + 1) + ' / 5 · 읽어 주기 「' + (k + 1) + ' / 5 · ' + STEP5[k] + '」 — ' + sj.h1, sj.step + ' · ' + sj.stepL);
         check(sj.prog.length === 5 && sj.prog.every((c, i) => c === (i === k ? 'sj-pcur' : i < k ? 'sj-pdone' : '')) && sj.progL === '다섯 화면 가운데 ' + (k + 1) + '번째', W + '⑨ 이야기 막대 점 다섯 · 지금 화면 ' + (k + 1) + ' — ' + sj.h1, JSON.stringify([sj.prog, sj.progL]));
-        check(sj.order, W + '⑨ 쪽 차례 — ' + (k === 0 ? '표지 → 형세 보고 → 덜 잃은 꾀 차례 → 자세히 → 끝 줄' : k === 1 ? '머리 → 고르는 법 → 같은 땅 기록 → 오늘 닮은 곳 → 정산 → 앞뒤 꾀 → 끝 줄' : '머리 · 한 달 꺾은선 → 고른 꾀 → 사기 전에 멈춤 → 끝 줄') + ' — ' + sj.h1, sj.kids.join(' '));
+        check(sj.order, W + '⑨ 쪽 차례 — ' + (k === 0 ? '표지 → 형세 보고 → 덜 잃은 꾀 차례 → 주식 할 때 가질 자세 → 자세히 → 끝 줄' : k === 1 ? '머리 → 고르는 법 → 같은 땅 기록 → 오늘 닮은 곳 → 정산 → 앞뒤 꾀 → 끝 줄' : '머리 · 한 달 꺾은선 → 고른 꾀 → 사기 전에 멈춤 → 끝 줄') + ' — ' + sj.h1, sj.kids.join(' '));
         check(sj.lastIsSrc && JSON.stringify(sj.foot) === FOOTW, W + '⑨ 맨 아래 출처 · 조사 날짜 · 꼭 있어야 할 길 둘 — ' + sj.h1, JSON.stringify(sj.foot));
         check(sj.tabs.length === 7 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
           W + '⑨ 탭 일곱 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산 · 장부(주문 1115-2328 · 1120-1220 회사 탭 · 1120-1705 장부 탭) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
@@ -1444,6 +1444,44 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   pageRules(await measure(p), W + '장부 #/l');
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();
+}
+{ // ㉝ 주문 1120-2116(사장님 2026-11-20(마카오) 21:16 「전에 자료를 찾아 봐봐 주식을 할 때 가져야 할 자세 11가지 정리한 거 있어 그걸 첫 페이지에 멋지게 나열해봐」)
+  //   첫 쪽(390 · 320 · 320 큰 글씨) — 꾀 칸 다음 · 자세히 앞에 「주식 할 때 가질 자세」 대나무 조각 열한 장(차례 1 ~ 11)
+  //   조각마다 차례 도장 · 「묶음 · 질문」 = 「왜 사?」 열한 질문(site/next/p-why.js QS q · GROUPS — 이 검사가 그 파일에서 따로 읽음) · 격언 = 사장님 2026-10-17 글 그대로(p-why.js QS say) · 남의 글 표시(data-proper)
+  //   글 17px 넘게(격언은 질문 글보다 큼) · 조각이 쪽 안 · 고리는 멈춤(#/q) 하나 · 「권하는 말이 아니에요」 한 줄
+  const WHY33 = await fs.readFile(new URL('../../../site/next/p-why.js', import.meta.url), 'utf8');
+  const Q33 = [...WHY33.matchAll(/\{q: '([^']+)', a: \[[\s\S]*?\], say: '([^']+)'\}/g)].map(m => ({q: m[1], say: m[2]}));
+  const G33 = JSON.parse((/export const GROUPS = (\[\[[^\n]*\]\]);/.exec(WHY33)?.[1] ?? '[]').replace(/'/g, '"'));
+  const want33 = Q33.map((x, i) => [i + 1, String(i + 1), (G33.find(([, ns]) => ns.includes(i + 1))?.[0] ?? '?') + ' · ' + x.q, x.say]);
+  check(Q33.length === 11 && G33.length === 4 && G33.flatMap(([, ns]) => ns).sort((a, b) => a - b).join() === '1,2,3,4,5,6,7,8,9,10,11', '㉝ 사장님 격언 열한 줄 · 네 묶음(site/next/p-why.js)을 읽음', JSON.stringify({q: Q33.length, g: G33.length}));
+  for (const [width, big] of [[390, false], [320, false], [320, true]]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'});
+    await QUIET(ctx);
+    await ctx.addInitScript(b => { try { localStorage.setItem('su-big-text', b ? '1' : '0'); } catch { /* 저장소 없음 */ } }, big);
+    const p = await ctx.newPage(), errs = [];
+    p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    const W = '㉝ [' + width + (big ? ' · 큰 글씨' : '') + '] ';
+    await open(p, '#/');
+    await p.waitForFunction(() => !document.querySelector('#su main.sj-page > section.sj-s36.sj-wait'), null, {timeout: 15000}).catch(() => {});
+    const g = await p.evaluate(() => {
+      const t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), main = document.querySelector('#su main.sj-page[data-page="sonja"]'), s = main?.querySelector(':scope > section.sj-mind');
+      if (!s) return null;
+      s.scrollIntoView({block: 'start'});
+      const L = s.getBoundingClientRect();
+      const rows = [...s.querySelectorAll(':scope > ol.sj-jg > li.sj-js')].map(li => { const q = li.querySelector(':scope > .sj-jsq'), m = li.querySelector(':scope > .sj-jsm'), pr = m?.querySelector(':scope > [data-proper]'), r = li.getBoundingClientRect();
+        return [+li.getAttribute('data-n'), t(li.querySelector(':scope > .sj-jsn')), t(q), t(m), !!pr && t(pr) === t(m), q ? parseFloat(getComputedStyle(q).fontSize) : 0, m ? parseFloat(getComputedStyle(m).fontSize) : 0, Math.round(r.left), Math.round(r.right), Math.round(r.height)]; });
+      const prev = s.previousElementSibling, next = s.nextElementSibling;
+      return {rows, W: innerWidth, l: Math.round(L.left), r: Math.round(L.right), prev: prev ? prev.tagName.toLowerCase() + '.' + [...prev.classList].join('.') : '', next: next ? next.tagName.toLowerCase() + '.' + [...next.classList].join('.') : '',
+        h2: t(s.querySelector('h2')), go: [...s.querySelectorAll('a[href]')].map(a => a.getAttribute('href')), note: t(s.querySelector(':scope > .sj-mnote')), rule: s.getAttribute('data-rule'), n: s.getAttribute('data-n')};
+    });
+    const rowsOk = !!g && g.rows.length === 11 && g.rows.every((r, i) => r[0] === want33[i][0] && r[1] === want33[i][1] && r[2] === want33[i][2] && r[3] === want33[i][3] && r[4] && r[5] >= 16.95 && r[6] > r[5] && r[7] >= 0 && r[8] <= g.W && r[9] > 0);
+    check(rowsOk && g.n === '11' && g.rule === 'mind11-v1' && /^section\.sj-sec\.sj-(s36|sun)\b/.test(g.prev) && /^details\.sj-drawer\.sj-more\b/.test(g.next) && g.h2 === '주식 할 때 가질 자세'
+      && JSON.stringify(g.go) === JSON.stringify(['#/q']) && /권하는 말이 아니에요/.test(g.note) && g.l >= 0 && g.r <= g.W,
+      W + '첫 쪽 「주식 할 때 가질 자세」 열한 가지(주문 1120-2116) — 꾀 칸 다음 · 자세히 앞 · 차례 1 ~ 11 · 묶음 · 질문 = 「왜 사?」 열한 질문 · 격언 = 사장님 글 그대로(남의 글 표시) · 큰 글 · 고리 멈춤 하나',
+      JSON.stringify(g ? {...g, rows: g.rows.filter((r, i) => !want33[i] || r[0] !== want33[i][0] || r[2] !== want33[i][2] || r[3] !== want33[i][3] || !r[4] || r[5] < 16.95 || r[6] <= r[5] || r[8] > g.W).slice(0, 3)} : null).slice(0, 500));
+    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+    await ctx.close();
+  }
 }
 await browser.close();
 R.ok = R.counts.fail === 0;

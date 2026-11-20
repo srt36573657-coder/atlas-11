@@ -1573,3 +1573,19 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-ldmkv.sj-lddn { fill: #1F2A44; stroke: #A6D0CD; }
 #su .sj-ldmkb { fill: none; stroke: #20323A; stroke-width: 2.5; }
 #su .sj-ldread { margin-top: 8px; padding: 10px 14px; border-radius: 14px; background: #F3F8F6; color: #20323A; font-size: 1.125rem; font-weight: 800; line-height: 1.5; }
+/* 주식 할 때 가질 자세 열한 가지(주문 1120-2116 · 첫 쪽 꾀 칸 다음) — 옛 병법 책처럼 대나무 조각 열한 장을 두 끈으로 엮은 꼴
+   조각마다 위 줄 = 차례 도장 · 묶음 · 질문 / 아래 줄 = 사장님 격언(굵은 명조 · 조각 폭 전부) · 끈은 조각 양 끝 여백 위 · 글을 가리지 않음 · 빨강 0 · 그림 파일 0 */
+#su .sj-mind .sj-mlead { margin: 12px 0 0; color: #2E444C; font-weight: 600; line-height: 1.6; }
+#su .sj-mind ol.sj-jg { position: relative; list-style: none; margin: 18px 0 0; padding: 12px 0; display: grid; gap: 7px; }
+#su .sj-mind ol.sj-jg::before, #su .sj-mind ol.sj-jg::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 1; width: 4px; border-radius: 2px; background: repeating-linear-gradient(180deg, #5B4728 0 10px, #7B6542 10px 14px); box-shadow: 0 0 0 1px rgba(252, 254, 253, .35); pointer-events: none; }
+#su .sj-mind ol.sj-jg::before { left: 9px; }
+#su .sj-mind ol.sj-jg::after { right: 9px; }
+#su .sj-mind li.sj-js { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr); grid-template-areas: "n q" "m m"; align-items: center; gap: 6px 10px; margin: 0; padding: 12px 24px 14px; border-radius: 8px;
+  background: linear-gradient(180deg, #F8F1DC 0%, #F0E5C6 58%, #E8D9B3 100%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), inset 0 -2px 0 rgba(110, 86, 44, .15), 0 1px 2px rgba(60, 46, 20, .14); }
+#su .sj-mind li.sj-js:nth-child(even) { background: linear-gradient(180deg, #F5ECD2 0%, #EDE0BD 58%, #E4D4AB 100%); }
+#su .sj-mind li.sj-js::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: repeating-linear-gradient(180deg, rgba(120, 92, 46, .055) 0 1px, transparent 1px 6px); pointer-events: none; }
+#su .sj-mind .sj-jsn { grid-area: n; position: relative; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; width: 44px; height: 44px; border: 2px solid #1B3A44; border-radius: 50%; background: rgba(252, 254, 253, .6); color: #1B3A44; font-family: var(--sj-serif); font-size: 1.1875rem; font-weight: 900; line-height: 1; }
+#su .sj-mind .sj-jsq { grid-area: q; position: relative; margin: 0; min-width: 0; color: #55421F; font-size: 1.0625rem; font-weight: 700; line-height: 1.4; }
+#su .sj-mind .sj-jsm { grid-area: m; position: relative; margin: 0; min-width: 0; color: #1B3A44; font-family: var(--sj-serif); font-size: 1.375rem; font-weight: 800; line-height: 1.45; letter-spacing: -.01em; text-wrap: balance; }
+#su .sj-mind .sj-mnote { margin: 16px 0 0; color: #2E444C; font-weight: 600; line-height: 1.6; }
+#su .sj-mind a.sj-mgo { margin-top: 12px; }
