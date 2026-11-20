@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-20T11:47:33.192Z",
+ "at": "2026-11-20T12:48:01.913Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -14,7 +14,7 @@
  "units": {
   "total": 241,
   "mine": 241,
-  "hash": "51e3b26e39740bcd",
+  "hash": "cdb18a1a4649ec63",
   "kinds": {
    "r": {
     "total": 241,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 138,
+ "seconds": 120,
  "counts": {
   "routes": 241,
-  "rows": 5191,
-  "btns": 5191,
-  "links": 6054,
+  "rows": 5195,
+  "btns": 5195,
+  "links": 6058,
   "clicks": 461,
   "fail": 0,
   "places": {
@@ -53,9 +53,9 @@
     "routes": 1
    },
    "hold.news": {
-    "rows": 124,
-    "btns": 124,
-    "surge": 122,
+    "rows": 128,
+    "btns": 128,
+    "surge": 126,
     "share": 2,
     "routes": 1
    },
@@ -155,9 +155,9 @@
    },
    {
     "route": "#/sub",
-    "rows": 126,
-    "btns": 126,
-    "links": 126,
+    "rows": 130,
+    "btns": 130,
+    "links": 130,
     "clicked": "hold.news",
     "fail": 0
    },
@@ -490,18 +490,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/%ED%86%B5%EC%8B%A0",
-    "rows": 26,
-    "btns": 26,
-    "links": 27,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
     "rows": 48,
     "btns": 48,
     "links": 48,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/%ED%86%B5%EC%8B%A0",
+    "rows": 26,
+    "btns": 26,
+    "links": 27,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -1178,7 +1178,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/036630",
+    "route": "#/w/267850",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1186,7 +1186,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/267850",
+    "route": "#/w/036630",
     "rows": 6,
     "btns": 6,
     "links": 11,
