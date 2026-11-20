@@ -1,39 +1,39 @@
-합침: {"ok":true,"shards":3,"got":3,"units":{"total":2562,"mine":2562,"hash":"1876294baef63f85","kinds":{"c":{"total":2557,"mine":2557},"x":{"total":1,"mine":1},"w":{"total":4,"mine":4}}},"fails":0,"seconds":167,"secondsSum":495,"pieces":["1/3 ok 164s 854","2/3 ok 164s 854","3/3 ok 167s 854"],"problems":[]}
+합침: {"ok":true,"shards":3,"got":3,"units":{"total":2562,"mine":2562,"hash":"1876294baef63f85","kinds":{"c":{"total":2557,"mine":2557},"x":{"total":1,"mine":1},"w":{"total":4,"mine":4}}},"fails":0,"seconds":161,"secondsSum":478,"pieces":["1/3 ok 158s 854","2/3 ok 159s 854","3/3 ok 161s 854"],"problems":[]}
 ── past1/3 ──
-… 100곳 · 실패 0 · 23초
-… 200곳 · 실패 0 · 42초
-… 300곳 · 실패 0 · 60초
-… 400곳 · 실패 0 · 78초
-… 500곳 · 실패 0 · 96초
-… 600곳 · 실패 0 · 115초
-… 700곳 · 실패 0 · 133초
-… 800곳 · 실패 0 · 152초
-{"time":{"old":52.2,"new":121,"wall":164.4,"opensOld":8529,"opensNew":11099,"oldPct":31.7,"oldShare":30.1},"net":{"req":856,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-4단 지나온 길 맞대기 — 회사 853곳 · 기간 화면 2559 · 맞댄 칸 63950 · 숫자 낱말 137668 · 선 누르기 2558 · 폭 화면 30(세 폭 + 아주 큰 글씨 × 10곳) · 164초
+… 100곳 · 실패 0 · 22초
+… 200곳 · 실패 0 · 40초
+… 300곳 · 실패 0 · 58초
+… 400곳 · 실패 0 · 75초
+… 500곳 · 실패 0 · 93초
+… 600곳 · 실패 0 · 111초
+… 700곳 · 실패 0 · 129초
+… 800곳 · 실패 0 · 146초
+{"time":{"old":48.9,"new":117.5,"wall":158.5,"opensOld":8529,"opensNew":11099,"oldPct":30.9,"oldShare":29.4},"net":{"req":856,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+4단 지나온 길 맞대기 — 회사 853곳 · 기간 화면 2559 · 맞댄 칸 63950 · 숫자 낱말 137674 · 선 누르기 2558 · 폭 화면 30(세 폭 + 아주 큰 글씨 × 10곳) · 158초
 알림(옛 쪽): 2 기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일 / 옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, "NaN". | Error: <rect> attribute y: Expected length, "NaN". | Error: <rect> attribute height: Expected length, "NaN". | Error: <linearGradient> attribu
 실패 0
 ── past2/3 ──
-… 100곳 · 실패 0 · 23초
-… 200곳 · 실패 0 · 42초
-… 300곳 · 실패 0 · 60초
-… 400곳 · 실패 0 · 78초
-… 500곳 · 실패 0 · 97초
-… 600곳 · 실패 0 · 115초
-… 700곳 · 실패 0 · 134초
-… 800곳 · 실패 0 · 152초
-{"time":{"old":52.6,"new":121.4,"wall":164.5,"opensOld":8519,"opensNew":11086,"oldPct":32,"oldShare":30.2},"net":{"req":855,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-4단 지나온 길 맞대기 — 회사 852곳 · 기간 화면 2556 · 맞댄 칸 63875 · 숫자 낱말 137337 · 선 누르기 2555 · 폭 화면 30(세 폭 + 아주 큰 글씨 × 10곳) · 164초
+… 100곳 · 실패 0 · 22초
+… 200곳 · 실패 0 · 40초
+… 300곳 · 실패 0 · 58초
+… 400곳 · 실패 0 · 75초
+… 500곳 · 실패 0 · 93초
+… 600곳 · 실패 0 · 111초
+… 700곳 · 실패 0 · 129초
+… 800곳 · 실패 0 · 147초
+{"time":{"old":48.7,"new":117.4,"wall":158.6,"opensOld":8519,"opensNew":11086,"oldPct":30.7,"oldShare":29.3},"net":{"req":855,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+4단 지나온 길 맞대기 — 회사 852곳 · 기간 화면 2556 · 맞댄 칸 63875 · 숫자 낱말 137200 · 선 누르기 2555 · 폭 화면 30(세 폭 + 아주 큰 글씨 × 10곳) · 159초
 알림(옛 쪽): 2 기간 값 없음(옛 쪽 맞대기 건너뜀) 028080 20거래일 / 옛 쪽 화면 오류 028080 Error: <rect> attribute height: Expected length, "NaN". | Error: <rect> attribute y: Expected length, "NaN". | Error: <rect> attribute height: Expected length, "NaN". | Error: <linearGradient> attribu
 실패 0
 ── past3/3 ──
-… 100곳 · 실패 0 · 23초
-… 200곳 · 실패 0 · 42초
-… 300곳 · 실패 0 · 60초
-… 400곳 · 실패 0 · 78초
-… 500곳 · 실패 0 · 96초
-… 600곳 · 실패 0 · 115초
-… 700곳 · 실패 0 · 133초
-… 800곳 · 실패 0 · 152초
-{"time":{"old":52.3,"new":121.2,"wall":166.8,"opensOld":8521,"opensNew":11097,"oldPct":31.3,"oldShare":30.1},"net":{"req":855,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-4단 지나온 길 맞대기 — 회사 852곳 · 기간 화면 2556 · 맞댄 칸 63900 · 숫자 낱말 137478 · 선 누르기 2556 · 폭 화면 60(세 폭 + 아주 큰 글씨 × 10곳) · 167초
+… 100곳 · 실패 0 · 22초
+… 200곳 · 실패 0 · 40초
+… 300곳 · 실패 0 · 57초
+… 400곳 · 실패 0 · 75초
+… 500곳 · 실패 0 · 93초
+… 600곳 · 실패 0 · 111초
+… 700곳 · 실패 0 · 129초
+… 800곳 · 실패 0 · 147초
+{"time":{"old":48.6,"new":117.3,"wall":161.3,"opensOld":8521,"opensNew":11097,"oldPct":30.1,"oldShare":29.3},"net":{"req":855,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+4단 지나온 길 맞대기 — 회사 852곳 · 기간 화면 2556 · 맞댄 칸 63900 · 숫자 낱말 137417 · 선 누르기 2556 · 폭 화면 60(세 폭 + 아주 큰 글씨 × 10곳) · 161초
 실패 0

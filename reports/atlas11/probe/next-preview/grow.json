@@ -7,7 +7,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-20T08:13:51.174Z",
+ "at": "2026-11-20T09:13:09.662Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,20 +32,20 @@
    }
   }
  },
- "seconds": 74,
- "secondsSum": 220,
+ "seconds": 60,
+ "secondsSum": 180,
  "time": {
-  "old": 177.2,
-  "new": 180.1,
-  "wall": 73.8,
-  "wallSum": 219.7,
+  "old": 152.3,
+  "new": 152.8,
+  "wall": 60,
+  "wallSum": 180,
   "opensOld": 7684,
   "opensNew": 10286,
-  "oldPct": 80.7,
-  "oldShare": 49.6
+  "oldPct": 84.6,
+  "oldShare": 49.9
  },
  "net": {
-  "req": 3549,
+  "req": 5280,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -66,7 +66,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "검사 · 브라우저 · 목록이 바뀜 | 바뀐 파일 597개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
+   "why": "바뀐 파일 580개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json) | 바뀐 파일 577개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json) | 바뀐 파일 572개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
    "made": null,
    "inputs": 2596,
    "reads": 2557,
@@ -82,7 +82,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 73,
+   "seconds": 60,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -95,7 +95,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 74,
+   "seconds": 60,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -108,7 +108,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 73,
+   "seconds": 60,
    "mine": 856,
    "kinds": {
     "c": 852,
