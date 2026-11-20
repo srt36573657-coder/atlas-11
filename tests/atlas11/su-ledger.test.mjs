@@ -2,7 +2,7 @@
 //   site/su/su-ledger-core.js ledgerOf — 날마다(같은 회사는 한 줄 · 주 수 더함 · 손실 먼저) · 회사마다(모든 날 더함 · 산 돈 차례) · 쌓인 산 돈 · 그 지금 값
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ledgerOf, LEDGER_RULE, ledFind, tradesOf} from '../../site/su/su-ledger-core.js';
+import {ledgerOf, LEDGER_RULE, ledFind, tradesOf, ledgerView, LEDGER_VIEWS, LEDGER_SPANS, LEDGER_RES, LEDGER_SORTS, LEDGER_PICK0} from '../../site/su/su-ledger-core.js';
 
 const r = (day, k, code, buy, now, one = false) => ({day, k, code, name: '회사' + code, buy, now, nowDay: one ? day : '2026-11-20', cost: buy * 10, val: now * 10, one});
 const rows = [r('2026-11-13', 'g01', '000001', 100, 90), r('2026-11-13', 'g02', '000001', 100, 90), r('2026-11-13', 'g03', '000002', 50, 60),
@@ -37,4 +37,33 @@ test('장부에서 회사 찾기 — 같음 → 앞이 같음 → 이름 속 · 
   assert.deepEqual(ledFind(L, ' '), []);
   assert.deepEqual(tradesOf(rows, '000002').map(r => [r.day, r.k]), [['2026-11-13', 'g03'], ['2026-11-14', 'g01']]);
   assert.deepEqual(tradesOf(null, '000002'), []);
+});
+test('거르개 열여덟 — 묶음 넷 3 · 6 · 3 · 6 · 처음은 날짜별 · 모두 · 모두 · 줄어든 돈 먼저', () => {
+  assert.equal(LEDGER_VIEWS.length + LEDGER_SPANS.length + LEDGER_RES.length + LEDGER_SORTS.length, 18);
+  assert.deepEqual([LEDGER_VIEWS.length, LEDGER_SPANS.length, LEDGER_RES.length, LEDGER_SORTS.length], [3, 6, 3, 6]);
+  assert.deepEqual({...LEDGER_PICK0}, {view: 'day', span: 'all', res: 'all', sort: 'loss'});
+  const all = [...LEDGER_VIEWS, ...LEDGER_SPANS, ...LEDGER_RES, ...LEDGER_SORTS].map(x => x[1]).join(' ');
+  assert.ok(!/%|매수|매도|수익률|추천|1위|1등/.test(all), all);
+});
+test('날짜별 — 새 날 먼저 · 한 날 안은 줄어든 돈 먼저 · 결과로 거르면 빈 날은 뺌', () => {
+  const V = ledgerView(rows);
+  assert.deepEqual(V.groups.map(g => [g.day, g.items.map(x => x.key)]), [['2026-11-14', ['000003', '000002']], ['2026-11-13', ['000001', '000002']]]);
+  assert.deepEqual(V.T, {n: 4, times: 5, cost: 5050, val: 5000});
+  const D = ledgerView(rows, {res: 'dn'});
+  assert.deepEqual(D.groups.map(g => [g.day, g.items.map(x => x.key)]), [['2026-11-13', ['000001']]], '11월 14일은 줄어든 회사가 없어 뺌');
+  assert.deepEqual(ledgerView(rows, {span: 'd1'}).groups.map(g => g.day), ['2026-11-14'], '마지막 날만');
+});
+test('회사별 · 꾀별 — 차례 여섯 · 하루치는 늘어남 · 줄어듦에서 뺌', () => {
+  const by = sort => ledgerView(rows, {view: 'co', sort}).items.map(x => x.key);
+  assert.deepEqual(by('loss'), ['000001', '000003', '000002']);
+  assert.deepEqual(by('gain'), ['000002', '000003', '000001']);
+  assert.deepEqual(by('high'), ['000002', '000003', '000001']);
+  assert.deepEqual(by('low'), ['000001', '000003', '000002']);
+  assert.deepEqual(by('cost'), ['000001', '000003', '000002']);
+  assert.deepEqual(by('times'), ['000001', '000002', '000003']);
+  assert.deepEqual(ledgerView(rows, {view: 'co', res: 'up'}).items.map(x => x.key), ['000002'], '000003 은 하루치라 늘어난 것에 안 듦');
+  assert.deepEqual(ledgerView(rows, {view: 'k', res: 'dn'}).items.map(x => x.key), ['g02', 'g01'], '꾀별 줄어든 것 — g02 −100 · g01 −50');
+  const K = ledgerView(rows, {view: 'k'}).items;
+  assert.deepEqual(K.map(x => [x.key, x.cost, x.val]), [['g02', 1000, 900], ['g01', 1550, 1500], ['g04', 2000, 2000], ['g03', 500, 600]], '꾀별 줄어든 돈 먼저 — g02 −100 · g01 −50 · g04 0 · g03 +100');
+  assert.deepEqual(ledgerView(rows, {view: 'nope', span: 'x', res: 'y', sort: 'z'}).pick, {view: 'day', span: 'all', res: 'all', sort: 'loss'}, '모르는 값은 처음 값으로');
 });

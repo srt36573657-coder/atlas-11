@@ -1371,23 +1371,42 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   await QUIET(ctx);
   const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
   const DL = await J('/su/data/su21-settle.json').catch(() => null), KK = /^g(0[1-9]|[12]\d|3[0-6])$/, q = Number.isFinite(DL?.qty) ? DL.qty : 10;
-  const rows = Array.isArray(DL?.buys) && Array.isArray(DL?.kinds) ? DL.buys.filter(b => Array.isArray(b) && KK.test(String(DL.kinds[b[1]] ?? '')) && typeof b[3] === 'number' && Number.isFinite(b[3]) && b[3] > 0).map(([d, , c, buy]) => {
-    const nw = Array.isArray(DL.now?.[c]) && typeof DL.now[c][0] === 'number' && Number.isFinite(DL.now[c][0]) ? DL.now[c][0] : buy; return {d, c, cost: buy * q, val: nw * q}; }) : [];
+  const rows = Array.isArray(DL?.buys) && Array.isArray(DL?.kinds) ? DL.buys.filter(b => Array.isArray(b) && KK.test(String(DL.kinds[b[1]] ?? '')) && typeof b[3] === 'number' && Number.isFinite(b[3]) && b[3] > 0).map(([d, ki, c, buy]) => {
+    const okN = Array.isArray(DL.now?.[c]) && typeof DL.now[c][0] === 'number' && Number.isFinite(DL.now[c][0]), nw = okN ? DL.now[c][0] : buy, nd = okN ? DL.now[c][1] : d;
+    return {d, c, k: String(DL.kinds[ki]), cost: buy * q, val: nw * q, one: !(nd > d)}; }) : [];
   const dayM = new Map(), coM = new Map();
   for (const r of rows) { const a = dayM.get(r.d) ?? dayM.set(r.d, {cos: new Set(), n: 0, cost: 0}).get(r.d); a.cos.add(r.c); a.n++; a.cost += r.cost; const b = coM.get(r.c) ?? coM.set(r.c, {cost: 0}).get(r.c); b.cost += r.cost; }
   const W2 = {cost: Math.round(rows.reduce((s, r) => s + r.cost, 0)), val: Math.round(rows.reduce((s, r) => s + r.val, 0)), days: dayM.size, cos: coM.size,
     dayRows: [...dayM.keys()].sort().reverse().map(d => [d, dayM.get(d).cos.size, dayM.get(d).n]), top: [...coM].sort((a, b) => b[1].cost - a[1].cost || (a[0] < b[0] ? -1 : 1)).slice(0, 20).map(([c]) => c)};
+  // 거르개 열여덟(주문 1120-1817) — 이 검사가 따로 셈: 기간(마지막 장날 N) · 묶기(회사 · 꾀) · 결과(늘어남 · 줄어듦 — 하루치는 뺌) · 차례(+ 같으면 산 돈 큰 곳 · 이름표 차례)
+  const allDays = [...dayM.keys()].sort(), stR = x => (x.one ? 'one' : Math.round(x.val - x.cost) > 0 ? 'up' : Math.round(x.val - x.cost) < 0 ? 'dn' : 'eq');
+  const CMPW = {loss: (a, b) => (a.val - a.cost) - (b.val - b.cost), cost: (a, b) => b.cost - a.cost, high: (a, b) => b.val / b.cost - a.val / a.cost};
+  const viewW = (by, nDays, res, sort) => { const keepD = new Set(nDays ? allDays.slice(-nDays) : allDays), m = new Map();
+    for (const r of rows) { if (!keepD.has(r.d)) continue; const key = by === 'k' ? r.k : r.c, g = m.get(key) ?? m.set(key, {key, cost: 0, val: 0, one: true}).get(key); g.cost += r.cost; g.val += r.val; g.one = g.one && r.one; }
+    return [...m.values()].filter(x => res === 'all' || stR(x) === res).sort((a, b) => CMPW[sort](a, b) || b.cost - a.cost || (a.key < b.key ? -1 : a.key > b.key ? 1 : 0)); };
   await open(p, '#/l');
-  const g = await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="ledger"]'), sec = m?.querySelector('section.sj-ldg'), co = m?.querySelector('section.sj-ldco'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
-    return {main: !!m, rule: sec?.getAttribute('data-rule') ?? null, cost: +(sec?.getAttribute('data-cost') ?? NaN), val: +(sec?.getAttribute('data-val') ?? NaN), days: +(sec?.getAttribute('data-days') ?? NaN), cos: +(co?.getAttribute('data-n') ?? 0),
-      dayRows: [...(sec?.querySelectorAll('details.sj-ldd') ?? [])].map(d => [d.getAttribute('data-day'), +d.getAttribute('data-n'), d.querySelectorAll('li.sj-ldr').length]), open1: sec?.querySelector('details.sj-ldd')?.open ?? false,
-      top: [...(co?.querySelectorAll(':scope > ol.sj-ldl > li.sj-ldr') ?? [])].map(li => li.getAttribute('data-code')), charts: sec ? [!!sec.querySelector('svg.sj-ldc polyline.sj-ldval'), !!sec.querySelector('svg.sj-ldb rect.sj-ldbar')] : [],
+  const readL = () => p.evaluate(() => { const l = document.querySelector('#su section.sj-ldf .sj-ldlist');
+    return {d: l ? Object.fromEntries([...l.attributes].filter(a => a.name.startsWith('data-')).map(a => [a.name.slice(5), a.value])) : null, keys: [...(l?.querySelectorAll(':scope > ol.sj-ldl1 > li.sj-ldr, :scope > details.sj-ldmore > ol > li.sj-ldr') ?? [])].map(li => li.getAttribute('data-key')),
+      days: [...(l?.querySelectorAll(':scope > details.sj-ldd') ?? [])].map(d => [d.getAttribute('data-day'), +d.getAttribute('data-n'), d.querySelectorAll('li.sj-ldr').length, d.open])}; });
+  const g = await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="ledger"]'), sec = m?.querySelector('section.sj-ldg'), f = m?.querySelector('section.sj-ldf'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
+    const ch = [...(f?.querySelectorAll('button.sj-ldchip') ?? [])];
+    return {main: !!m, rule: sec?.getAttribute('data-rule') ?? null, cost: +(sec?.getAttribute('data-cost') ?? NaN), val: +(sec?.getAttribute('data-val') ?? NaN), days: +(sec?.getAttribute('data-days') ?? NaN), cos: +(m?.querySelector('section.sj-ldfind')?.getAttribute('data-n') ?? 0),
+      frule: f?.getAttribute('data-rule') ?? null, chips: ch.length, groups: ['view', 'span', 'res', 'sort'].map(k => ch.filter(b => b.dataset.g === k).length), on: ch.filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.g + ':' + b.dataset.v),
+      small: ch.filter(b => b.getBoundingClientRect().height < 47.5 || parseFloat(getComputedStyle(b).fontSize) < 16.95).length, charts: sec ? [!!sec.querySelector('svg.sj-ldc polyline.sj-ldval'), !!sec.querySelector('svg.sj-ldb rect.sj-ldbar')] : [],
       loss: t(m?.querySelector('.sj-loss')), text: m?.innerText ?? '', tab: t(document.querySelector('#su .sj-tabs a[aria-current="page"]')), wide: document.documentElement.scrollWidth <= innerWidth + 1}; });
-  const dayOk = JSON.stringify(g.dayRows.map(([d, n]) => [d, n])) === JSON.stringify(W2.dayRows.map(([d, n]) => [d, n])) && g.dayRows.every(([d, n, li]) => li === n);
-  check(g.main && g.rule === 'ledger-v1' && Math.abs(g.cost - W2.cost) <= 1 && Math.abs(g.val - W2.val) <= 1 && g.days === W2.days && g.cos === W2.cos && dayOk && g.open1 && JSON.stringify(g.top) === JSON.stringify(W2.top)
+  const L0 = await readL(), opW = (() => { const i = L0.days.findIndex(([, , , o]) => o); return i; })();
+  const dayOk = JSON.stringify(L0.days.map(([d, n]) => [d, n])) === JSON.stringify(W2.dayRows.map(([d, n]) => [d, n])) && L0.days.every(([d, n, li]) => li === n) && L0.days.filter(x => x[3]).length === 1;
+  const tap = async (gk, v) => { await p.click('#su section.sj-ldf button.sj-ldchip[data-g="' + gk + '"][data-v="' + v + '"]'); await p.waitForTimeout(120); };
+  await tap('view', 'co'); await tap('sort', 'cost'); const LA = await readL();
+  await tap('view', 'k'); await tap('res', 'dn'); await tap('sort', 'loss'); const LB = await readL(), WB = viewW('k', 0, 'dn', 'loss').map(x => x.key);
+  await tap('view', 'co'); await tap('span', 'w1'); await tap('res', 'up'); await tap('sort', 'high'); const LC = await readL(), WCx = viewW('co', 5, 'up', 'high'), WC = WCx.map(x => x.key);
+  const fOk = g.frule === 'ledger-filter-v1' && g.chips === 18 && JSON.stringify(g.groups) === '[3,6,3,6]' && JSON.stringify(g.on) === JSON.stringify(['view:day', 'span:all', 'res:all', 'sort:loss']) && g.small === 0
+    && L0.d?.view === 'day' && dayOk && JSON.stringify(LA.keys.slice(0, 20)) === JSON.stringify(W2.top) && JSON.stringify(LB.keys) === JSON.stringify(WB)
+    && JSON.stringify(LC.keys) === JSON.stringify(WC) && +LC.d?.n === WC.length && Math.abs(+LC.d?.cost - Math.round(WCx.reduce((s, x) => s + x.cost, 0))) <= 1;
+  check(g.main && g.rule === 'ledger-v1' && Math.abs(g.cost - W2.cost) <= 1 && Math.abs(g.val - W2.val) <= 1 && g.days === W2.days && g.cos === W2.cos && fOk
     && (rows.length ? g.charts.every(Boolean) : true) && /줄어든|아직 돈이 줄어든 회사는 없어요/.test(g.loss) && !/%|매수|매도|수익률|추천|1등|대박/.test(g.text) && /앞날을 맞히지 않고/.test(g.text) && g.tab === '장부' && g.wide,
-    W + '나) 장부(#/l · 탭 「장부」) — 이 검사가 정산 장부로 다시 센 모두 산 돈 · 지금 · 산 날 · 회사 수 · 날마다(새 날 먼저) · 회사마다 산 돈 차례 스물과 같음 · 꺾은선 · 막대 · 손실 먼저 · 「%」 「매수」 0',
-    JSON.stringify({want: {...W2, dayRows: W2.dayRows.slice(0, 3), top: W2.top.slice(0, 3)}, got: {cost: g.cost, val: g.val, days: g.days, cos: g.cos, dayRows: g.dayRows.slice(0, 3), top: g.top.slice(0, 3), charts: g.charts, tab: g.tab, open1: g.open1}}).slice(0, 600));
+    W + '나) 장부(#/l · 탭 「장부」) — 이 검사가 정산 장부로 다시 센 모두 산 돈 · 지금 · 산 날 · 회사 수와 같음 · 거르개 열여덟(보기 셋 · 기간 여섯 · 결과 셋 · 차례 여섯 · 처음 날짜별 · 모두 · 모두 · 줄어든 돈 먼저) · 날짜별(새 날 먼저) · 회사별 산 돈 차례 · 꾀별 줄어든 것 · 1주 늘어난 것 100원이 많이 된 차례 = 다시 셈 · 「%」 「매수」 0',
+    JSON.stringify({want: {cost: W2.cost, val: W2.val, days: W2.days, cos: W2.cos, top: W2.top.slice(0, 3), B: WB.slice(0, 4), C: WC.slice(0, 4), Cn: WC.length}, got: {cost: g.cost, val: g.val, days: g.days, cos: g.cos, chips: g.chips, groups: g.groups, on: g.on, small: g.small, d0: L0.days.slice(0, 2), op: opW, A: LA.keys.slice(0, 3), B: LB.keys.slice(0, 4), C: LC.keys.slice(0, 4), Cd: LC.d}}).slice(0, 700));
   { // 다) 장부에서 회사 찾기(주문 1120-1804) — 산 돈이 가장 큰 회사 이름 그대로 → 그 회사가 맨 위 · 산 날 줄 수 = 이 검사가 장부로 다시 센 그 회사 산 셈 수 · 없는 이름 → 0 · 「없는 회사예요」
     const c0 = W2.top[0] ?? null, nm0 = c0 ? (Array.isArray(DL?.co?.[c0]) ? DL.co[c0][0] : null) ?? c0 : null, n0 = c0 ? rows.filter(r => r.c === c0).length : 0;
     const typeL = async v => { await p.fill('#su section.sj-ldfind input.sj-ldfi', v); await p.waitForTimeout(250);

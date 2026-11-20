@@ -45,3 +45,40 @@ export function ledFind(L, q, n = 5) {
 export function tradesOf(rows, code) {
   return (Array.isArray(rows) ? rows : []).filter(r => r && r.code === code).sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : String(a.k) < String(b.k) ? -1 : String(a.k) > String(b.k) ? 1 : 0));
 }
+/* ── 거르개 열여덟(주문 1120-1817 · 사장님 2026-11-20(마카오) 18:17 「지금 장부를 보면 정리 정돈이 되어 있질 않아 날짜별 이익별 꾀별 많은순 수익율 필터를 18가지로 만들어 잡스라면 어떻게 만들거야」)
+   잡스처럼 한 화면 · 묶음 넷(보기 셋 · 기간 여섯 · 결과 셋 · 차례 여섯 = 열여덟) · 처음은 날짜별 · 모두 · 모두 · 줄어든 돈 먼저(손실 먼저 — 본질 8)
+   수익 차례(늘어난 돈 먼저 · 100원이 많이 된 차례)는 본질 8 「정산 표는 날마다 수익이 높은 차례로 놓되 줄어든 묶음도 숨기지 않는다」 안에서 — 줄어든 것을 숨기지 않고 「%」 대신 「100원이 ○원」 */
+export const LEDGER_VIEWS = Object.freeze([['day', '날짜별'], ['co', '회사별'], ['k', '꾀별']]);
+export const LEDGER_SPANS = Object.freeze([['all', '모두', 0], ['d1', '마지막 날', 1], ['d3', '사흘', 3], ['w1', '1주', 5], ['w2', '2주', 10], ['m1', '1달', 20]]); // 장이 열린 날 수(한 달 = 스무 번)
+export const LEDGER_RES = Object.freeze([['all', '모두'], ['up', '늘어난 것'], ['dn', '줄어든 것']]);
+export const LEDGER_SORTS = Object.freeze([['loss', '줄어든 돈 먼저'], ['gain', '늘어난 돈 먼저'], ['low', '100원이 적게 된 차례'], ['high', '100원이 많이 된 차례'], ['cost', '산 돈 많은 차례'], ['times', '산 횟수 많은 차례']]);
+export const LEDGER_PICK0 = Object.freeze({view: 'day', span: 'all', res: 'all', sort: 'loss'});
+const stOf = x => (x.one ? 'one' : Math.round(x.val - x.cost) > 0 ? 'up' : Math.round(x.val - x.cost) < 0 ? 'dn' : 'eq');
+const keep = (res, x) => res === 'all' || stOf(x) === res;
+const CMP = {loss: (a, b) => (a.val - a.cost) - (b.val - b.cost), gain: (a, b) => (b.val - b.cost) - (a.val - a.cost), low: (a, b) => a.val / a.cost - b.val / b.cost, high: (a, b) => b.val / b.cost - a.val / a.cost, cost: (a, b) => b.cost - a.cost, times: (a, b) => b.times - a.times};
+const cmpOf = sort => (a, b) => (CMP[sort] ?? CMP.loss)(a, b) || b.cost - a.cost || (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
+function groupOf(rs, keyOf, nameOf) {
+  const m = new Map();
+  for (const r of rs) { const k = keyOf(r), g = m.get(k) ?? m.set(k, {key: k, name: nameOf(r), times: 0, cost: 0, val: 0, ds: new Set(), one: true, code: r.code, buy: r.buy, now: r.now, ks: []}).get(k);
+    g.times++; g.cost += r.cost; g.val += r.val; g.ds.add(r.day); g.one = g.one && !!r.one; g.ks.push(r.k); }
+  return [...m.values()].map(g => ({...g, days: g.ds.size, ds: undefined}));
+}
+/** 거른 장부 — {pick, days(기간 안 장날 · 오래된 날 먼저), groups(날짜별: [{day, items, cost, val, times}] 새 날 먼저 · 빈 날 뺌) | items(회사별 · 꾀별), T: {n, times, cost, val}} */
+export function ledgerView(rows, pick = {}) {
+  const P = {...LEDGER_PICK0, ...Object.fromEntries(Object.entries(pick ?? {}).filter(([, v]) => typeof v === 'string'))};
+  if (!LEDGER_VIEWS.some(x => x[0] === P.view)) P.view = 'day';
+  if (!LEDGER_SPANS.some(x => x[0] === P.span)) P.span = 'all';
+  if (!LEDGER_RES.some(x => x[0] === P.res)) P.res = 'all';
+  if (!CMP[P.sort]) P.sort = 'loss';
+  const R = (Array.isArray(rows) ? rows : []).filter(r => r && typeof r.day === 'string' && typeof r.code === 'string' && fin(r.cost) && r.cost > 0 && fin(r.val));
+  const all = [...new Set(R.map(r => r.day))].sort(), N = LEDGER_SPANS.find(x => x[0] === P.span)[2], days = N ? all.slice(-N) : all, inDay = new Set(days);
+  const rs = R.filter(r => inDay.has(r.day)), cmp = cmpOf(P.sort), name = r => r.name ?? r.code;
+  const tot = xs => ({n: xs.length, times: xs.reduce((s, x) => s + x.times, 0), cost: xs.reduce((s, x) => s + x.cost, 0), val: xs.reduce((s, x) => s + x.val, 0)});
+  if (P.view === 'day') {
+    const groups = [...days].reverse().map(day => { const items = groupOf(rs.filter(r => r.day === day), r => r.code, name).filter(x => keep(P.res, x)).sort(cmp); return {day, items, ...tot(items)}; }).filter(g => g.items.length);
+    const T = groups.reduce((a, g) => ({n: a.n + g.n, times: a.times + g.times, cost: a.cost + g.cost, val: a.val + g.val}), {n: 0, times: 0, cost: 0, val: 0});
+    return {pick: P, days, groups, T};
+  }
+  const items = groupOf(rs, P.view === 'k' ? r => r.k : r => r.code, P.view === 'k' ? r => r.k : name).filter(x => keep(P.res, x)).sort(cmp);
+  return {pick: P, days, items, T: tot(items)};
+}

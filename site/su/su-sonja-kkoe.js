@@ -21,7 +21,7 @@ import {stance3, STANCES} from '/su/su-stance.js'; // 세 태세(주문 1120-072
 import {picksOf, monthLow, dayCounts} from '/su/su-picks.js';
 import {findBox} from '/su/su-find.js'; // 회사 찾기(주문 1120-1447 — 회사 탭 맨 위)
 import {coValSec, coLinkSec} from '/su/su-coval.js';
-import {ledgerOf, ledFind, tradesOf} from '/su/su-ledger-core.js'; // 장부(주문 1120-1705) · 장부에서 회사 찾기(주문 1120-1804) // 회사 쪽 값과 실적 · 더 알아보기(주문 1120-1447) // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
+import {ledgerOf, ledFind, tradesOf, ledgerView, LEDGER_VIEWS, LEDGER_SPANS, LEDGER_RES, LEDGER_SORTS, LEDGER_PICK0} from '/su/su-ledger-core.js'; // 장부(주문 1120-1705) · 장부에서 회사 찾기(주문 1120-1804) // 회사 쪽 값과 실적 · 더 알아보기(주문 1120-1447) // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
 /** 그림 속 이야기 네 막(주문 1117-0102) — 큰 그림 바로 아래 · 그림이 그 막에 오면 그 줄이 밝아짐(꾸밈 sj-story) */
 const storyOl = k => STORY36[k] ? h('ol', {class: 'sj-story', 'aria-label': STORY_TAG}, ...STORY36[k].map((t, i) => h('li', {'data-act': String(i + 1)}, h('b', {class: 'sj-actt', text: ACTS[i]}), h('span', {class: 'sj-actb', text: t})))) : null;
 
@@ -436,18 +436,41 @@ export async function vLedger(X) {
   if (!D || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return missPage(X, '장부', '정산 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
   const q = Number.isFinite(D.qty) ? D.qty : 10, RW = settleRows(D), L = ledgerOf(RW, q), TT = L.T, st = TT.days ? ledSt(TT.cost, TT.val, TT.one) : 'none', first = L.days[0]?.day ?? null;
   const dn = L.cos.filter(c => !c.one && Math.round(c.val - c.cost) < 0).sort((a, b) => (a.val - a.cost) - (b.val - b.cost)), last = L.days[L.days.length - 1] ?? null;
-  const dayRow = (d, open) => h('details', {class: 'sj-ldd', 'data-day': d.day, 'data-n': String(d.n), 'data-st': ledSt(d.cost, d.val, d.one), open: open || null},
-    h('summary', {}, h('span', {class: 'sj-ldds'}, h('b', {text: mday(d.day) ?? d.day}), h('span', {text: '회사 ' + d.n + '곳 · ' + d.buys + '번 · 산 돈 ' + won(d.cost)})),
-      h('span', {class: 'sj-res', 'data-st': ledSt(d.cost, d.val, d.one)}, shapeI(ledSt(d.cost, d.val, d.one)), h('span', {text: ledRes(d.cost, d.val, d.one)})), chev()),
-    h('ol', {class: 'sj-ldl'}, ...d.cos.map(c => h('li', {class: 'sj-ldr', 'data-code': c.code, 'data-st': ledSt(c.cost, c.val, c.one)},
-      h('a', {class: 'sj-lda', href: '#/c/' + c.code}, h('b', {'data-proper': '', text: c.name}), h('i', {'aria-hidden': 'true', text: '›'})),
-      h('p', {class: 'sj-ldv'}, h('span', {text: c.qty + '주 · 꾀 ' + c.ks.length + '가지 · 산 값 ' + won(c.buy) + ' → 지금 ' + won(c.now)}),
-        h('span', {class: 'sj-res', 'data-st': ledSt(c.cost, c.val, c.one)}, shapeI(ledSt(c.cost, c.val, c.one)), h('span', {text: ledRes(c.cost, c.val, c.one)})))))));
-  const coRow = c => h('li', {class: 'sj-ldr', 'data-code': c.code, 'data-st': ledSt(c.cost, c.val, c.one)},
-    h('a', {class: 'sj-lda', href: '#/c/' + c.code}, h('b', {'data-proper': '', text: c.name}), h('i', {'aria-hidden': 'true', text: '›'})),
-    h('p', {class: 'sj-ldv'}, h('span', {text: c.days + '날 · ' + c.times + '번 · ' + c.qty + '주 · 산 돈 ' + won(c.cost) + ' → 지금 ' + won(c.val)}),
-      h('span', {class: 'sj-res', 'data-st': ledSt(c.cost, c.val, c.one)}, shapeI(ledSt(c.cost, c.val, c.one)), h('span', {text: ledRes(c.cost, c.val, c.one)}))));
-  const TOPC = 20, newest = [...L.days].reverse();
+  const filtSec = () => { // 거르개 열여덟(주문 1120-1817 · 사장님 18:17 「날짜별 이익별 꾀별 많은순 수익율 필터를 18가지로 … 잡스라면」) — 묶음 넷 · 고르면 아래 줄이 바로 바뀜 · 처음은 손실 먼저
+    const P = {...LEDGER_PICK0}, chips = [], list = h('div', {class: 'sj-ldlist', 'aria-live': 'polite'}), sum = h('p', {class: 'sj-ldsum'});
+    const lab = (L, v) => (L.find(x => x[0] === v) ?? L[0])[1];
+    const r100 = x => (x.cost > 0 ? (100 * x.val / x.cost).toFixed(1).replace(/\.0$/, '') + '원' : '?');
+    const row = (x, kind) => { const st = ledSt(x.cost, x.val, x.one), isK = kind === 'k';
+      return h('li', {class: 'sj-ldr', 'data-key': x.key, 'data-st': st},
+        h('a', {class: 'sj-lda', href: isK ? '#/k/' + x.key : '#/c/' + x.key}, isK ? h('b', {text: nameOf(x.key)}) : h('b', {'data-proper': '', text: x.name}), h('i', {'aria-hidden': 'true', text: '›'})),
+        h('p', {class: 'sj-ldv'}, h('span', {text: (kind === 'day' ? x.times * q + '주 · 꾀 ' + x.times + '가지' : x.days + '날 · ' + x.times + '번 · ' + x.times * q + '주') + ' · 산 돈 ' + won(x.cost) + ' → 지금 ' + won(x.val)}),
+          h('span', {class: 'sj-res', 'data-st': st}, shapeI(st), h('span', {text: ledRes(x.cost, x.val, x.one) + (x.one ? '' : ' · 100원이 ' + r100(x))})))); };
+    const draw = () => {
+      const V = ledgerView(RW, P), T = V.T, n = V.groups ? V.groups.reduce((s, g) => s + g.items.length, 0) : V.items.length;
+      sum.textContent = [lab(LEDGER_VIEWS, P.view), lab(LEDGER_SPANS, P.span), lab(LEDGER_RES, P.res), lab(LEDGER_SORTS, P.sort)].join(' · ') + ' — '
+        + (V.groups ? V.groups.length + '날 · ' + n + '줄' : P.view === 'k' ? '꾀 ' + n + '가지' : '회사 ' + n + '곳') + (n ? ' · 산 돈 ' + won(T.cost) + ' → 지금 ' + won(T.val) : '');
+      for (const [k, v] of Object.entries(P)) list.setAttribute('data-' + k, v);
+      list.setAttribute('data-n', String(n)); list.setAttribute('data-cost', String(Math.round(T.cost))); list.setAttribute('data-val', String(Math.round(T.val)));
+      if (!n) { list.replaceChildren(h('p', {class: 'sj-tnone', text: '고른 거르개에 맞는 줄이 없어요. 억지로 채우지 않았어요.'})); return; }
+      if (V.groups) { const op = Math.max(0, V.groups.findIndex(g => g.items.some(x => !x.one))); // 처음 펼친 날 = 값이 움직인 가장 새 날(마지막 날은 아직 하루치뿐일 때가 많음)
+        list.replaceChildren(...V.groups.map((g, i) => { const gs = ledSt(g.cost, g.val, g.items.every(x => x.one));
+        return h('details', {class: 'sj-ldd', 'data-day': g.day, 'data-n': String(g.items.length), 'data-st': gs, open: i === op || null},
+          h('summary', {}, h('span', {class: 'sj-ldds'}, h('b', {text: mday(g.day) ?? g.day}), h('span', {text: '회사 ' + g.items.length + '곳 · ' + g.times + '번 · 산 돈 ' + won(g.cost)})),
+            h('span', {class: 'sj-res', 'data-st': gs}, shapeI(gs), h('span', {text: ledRes(g.cost, g.val, gs === 'one')})), chev()),
+          h('ol', {class: 'sj-ldl'}, ...g.items.map(x => row(x, 'day')))); })); return; }
+      const TOP = 40, xs = V.items;
+      list.replaceChildren(h('ol', {class: 'sj-ldl sj-ldl1'}, ...xs.slice(0, TOP).map(x => row(x, P.view))),
+        xs.length > TOP ? h('details', {class: 'sj-drawer sj-ldmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '나머지 ' + (xs.length - TOP) + '줄도 펼치기'}), chev()), h('ol', {class: 'sj-ldl'}, ...xs.slice(TOP).map(x => row(x, P.view)))) : null);
+    };
+    const grp = (g, label, opts) => h('div', {class: 'sj-ldfg', role: 'group', 'aria-label': label + ' — ' + opts.length + '가지', 'data-g': g}, h('p', {class: 'sj-ldfl', text: label}),
+      h('div', {class: 'sj-ldcs'}, ...opts.map(([v, t]) => { const b = h('button', {class: 'sj-ldchip', type: 'button', 'data-g': g, 'data-v': v, 'aria-pressed': P[g] === v ? 'true' : 'false', text: t});
+        b.addEventListener('click', () => { P[g] = v; for (const c of chips) if (c.dataset.g === g) c.setAttribute('aria-pressed', c.dataset.v === v ? 'true' : 'false'); draw(); }); chips.push(b); return b; })));
+    const sec = h('section', {class: 'sj-sec sj-ldf', 'aria-label': '거르개 열여덟', 'data-rule': 'ledger-filter-v1'},
+      head('거', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '거르개 열여덟'}))),
+      h('p', {class: 'sj-rule', text: '보기 · 기간 · 결과 · 차례에서 하나씩 고르면 아래 줄이 바로 바뀌어요. 처음에는 줄어든 돈이 큰 것부터 보여요. 줄어든 것도 숨기지 않아요.'}),
+      grp('view', '보기', LEDGER_VIEWS), grp('span', '기간', LEDGER_SPANS), grp('res', '결과', LEDGER_RES), grp('sort', '차례', LEDGER_SORTS), sum, list, endSeal('거'));
+    draw(); return sec;
+  };
   const findSec = () => { // 장부에서 회사 찾기(주문 1120-1804) — 이름 · 번호를 쓰면 그 회사를 산 날을 모두(날 · 꾀 · 주 · 산 값 → 지금)
     const inp = h('input', {class: 'sj-findi sj-ldfi', type: 'search', name: 'q', placeholder: '회사 이름이나 번호', 'aria-label': '장부에서 회사 찾기 — 이름이나 번호', enterkeyhint: 'search', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false'});
     const base = '이 장부에 적힌 회사 ' + NF.format(TT.cos) + '곳에서 찾아요. 한 글자부터 찾아요.', note = h('p', {class: 'sj-findn', text: base}), out = h('div', {class: 'sj-ldfo', 'aria-live': 'polite'});
@@ -481,15 +504,9 @@ export async function vLedger(X) {
         h('figcaption', {}, h('span', {class: 'sj-ldk sj-ldkc', text: '점선 = 쌓인 산 돈 ' + won(TT.cost)}), h('span', {class: 'sj-ldk sj-ldkv', text: '실선 = 그 지금 값 ' + won(TT.val)}))) : null,
       TT.days ? h('figure', {class: 'sj-ldfig', 'aria-label': '날마다 산 돈 막대 · 점은 그날 산 것의 지금 값'}, ledBars(L),
         h('figcaption', {}, h('span', {text: '막대 = 그날 산 돈'}), h('span', {text: '점 = 그날 산 것의 지금 값'}), h('span', {text: (mday(first) ?? '') + ' → ' + (mday(last?.day) ?? '')}))) : null,
-      h('p', {class: 'sj-rule', text: '날을 누르면 그날 산 회사가 보여요. 줄어든 돈이 큰 회사가 위에 있어요.'}),
-      TT.days ? h('div', {class: 'sj-ldds0'}, ...newest.map((d, i) => dayRow(d, i === 0))) : h('p', {class: 'sj-tnone', text: SAID.none}),
+      TT.days ? null : h('p', {class: 'sj-tnone', text: SAID.none}),
       endSeal('돈')),
-    TT.cos ? h('section', {class: 'sj-sec sj-ldco', 'aria-label': '회사마다 모은 장부', 'data-n': String(TT.cos)},
-      head('곳', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '회사마다 모은 장부'}), h('span', {class: 'sj-h2n', text: ' ' + TT.cos + '곳'}))),
-      h('p', {class: 'sj-rule', text: '여러 날 여러 꾀가 산 것을 회사마다 더했어요. 산 돈이 큰 회사가 위에 있어요. 수익 차례가 아니에요.'}),
-      h('ol', {class: 'sj-ldl'}, ...L.cos.slice(0, TOPC).map(coRow)),
-      L.cos.length > TOPC ? h('details', {class: 'sj-drawer sj-ldmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '나머지 ' + (L.cos.length - TOPC) + '곳도 펼치기'}), chev()), h('ol', {class: 'sj-ldl'}, ...L.cos.slice(TOPC).map(coRow))) : null,
-      endSeal('곳')) : null,
+    TT.days ? filtSec() : null, // 거르개 열여덟(주문 1120-1817) — 날마다 · 회사마다 줄을 한곳에
     h('p', {class: 'sj-safe sj-sec', text: '가짜 돈으로 지난 기록을 적은 장부예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(D.asOf ? day(D.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 적어요.')];
     return frame({title: '장부', page: 'ledger', kids, tab: 6, lc: X.cur?.()?.code ?? null, next: {href: '#/r/t', label: '꾀마다 정산은 어떻게 됐을까?'}});

@@ -1549,3 +1549,15 @@ html.sj-on #su .sj-ldfind { display: grid; gap: 10px; }
 #su .sj-ldt { display: grid; gap: 6px; margin-top: 4px; }
 #su .sj-ldt > li { display: grid; gap: 2px; padding: 8px 10px; border-radius: 12px; background: #FCFEFD; font-size: 1.0625rem; color: #33484F; }
 #su .sj-ldt > li > b { font-size: 1.125rem; font-weight: 900; color: #20323A; }
+/* 거르개 열여덟(주문 1120-1817) — 묶음 넷(보기 셋 · 기간 여섯 · 결과 셋 · 차례 여섯) · 누른 것은 먹빛 알약 · 글 17px 넘게 · 누르는 곳 48 넘게 */
+html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
+#su .sj-ldfg { display: grid; gap: 6px; }
+#su .sj-ldfl { font-size: 1.125rem; font-weight: 900; color: #20323A; }
+#su .sj-ldcs { display: flex; flex-wrap: wrap; gap: 8px; }
+#su .sj-ldchip { min-height: 48px; padding: 10px 14px; border: 1.5px solid #7D969B; border-radius: 999px; background: #FCFEFD; color: #20323A; font: inherit; font-size: 1.0625rem; font-weight: 800; line-height: 1.3; cursor: pointer; }
+#su .sj-ldchip[aria-pressed="true"] { border-color: #20323A; background: #20323A; color: #FCFEFD; }
+#su .sj-ldchip:focus-visible { outline: 3px solid #4A6168; outline-offset: 2px; }
+#su .sj-ldsum { padding: 10px 14px; border-left: 4px solid #20323A; border-radius: 0 14px 14px 0; background: #F3F8F6; font-size: 1.0625rem; font-weight: 800; line-height: 1.5; }
+#su .sj-ldlist { display: grid; gap: 10px; }
+#su .sj-ldlist .sj-ldl1 { padding: 0; }
+#su .sj-ldlist .sj-ldl1 > .sj-ldr { background: #F3F8F6; }
