@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-20T13:07:00.869Z",
+ "at": "2026-11-20T15:07:18.773Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 575,
+  "pass": 582,
   "fail": 0
  },
  "fails": [],
@@ -14,8 +14,8 @@
    "sun": true
   },
   "home": {
-   "screens": 16.75,
-   "links": 54
+   "screens": 18.92,
+   "links": 55
   },
   "t21": {
    "listed": 2557,
@@ -29,12 +29,13 @@
      "sj-cover",
      "sj-sun",
      "sj-s36",
+     "sj-mind",
      "sj-more",
      "sj-end"
     ],
     "seals": 23,
-    "hard": 5,
-    "hardWords": "코스피,코스닥,꽃,외국인,기관"
+    "hard": 6,
+    "hardWords": "코스피,코스닥,주식,꽃,외국인,기관"
    },
    {
     "h1": "우두머리 잡기",
@@ -99,20 +100,20 @@
     "hardWords": "코스피"
    }
   ],
-  "hard": 10,
+  "hard": 11,
   "hardWords": [
    "코스피",
    "코스닥",
+   "주식",
    "꽃",
    "외국인",
    "기관",
-   "주식",
    "업종"
   ],
   "speed": {
-   "lcp": 632,
+   "lcp": 644,
    "cls": 0.085,
-   "pic": 628
+   "pic": 635
   },
   "white": {
    "light #/": {
