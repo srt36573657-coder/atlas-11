@@ -1482,7 +1482,7 @@ html.sj-on #su .sj-find { display: grid; gap: 10px; }
 #su .sj-cypk { fill: #FCFEFD; stroke: #1F2A44; stroke-width: 2; }
 #su .sj-cyfig > figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; margin-top: 6px; font-size: 1.0625rem; color: #4A6168; }
 #su .sj-cysp { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
-#su .sj-cysp > li { display: grid; gap: 2px; padding: 10px 12px; border-radius: 14px; background: #F3F8F6; }
+#su .sj-cysp > li { display: grid; align-content: start; gap: 2px; padding: 10px 12px; border-radius: 14px; background: #F3F8F6; } /* 옆 칸 값이 두 줄이라 줄 높이가 늘어도 이 칸 글은 제 높이(진짜 사이트 검사 ㉙ #/c/012750 「1주 동안」) */
 #su .sj-cysp > li > span { font-size: 1.0625rem; color: #4A6168; }
 #su .sj-cysp > li > b { font-size: 1.25rem; font-weight: 900; }
 #su .sj-cfin { margin-top: 18px; }
