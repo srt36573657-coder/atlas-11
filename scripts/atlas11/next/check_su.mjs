@@ -1419,6 +1419,16 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       JSON.stringify({sec, c0, nm0, n0, byName: byName?.cs.slice(0, 2), byCode: byCode?.cs.slice(0, 1), none}).slice(0, 400));
     await p.fill('#su section.sj-ldfind input.sj-ldfi', '');
   }
+  { // 라) 고른 것 기억(주문 1120-1935 · 사장님 19:35 「어 그렇게 해」) — 나)에서 마지막으로 고른 회사별 · 1주 · 늘어난 것 · 100원이 많이 된 차례가 다른 쪽에 갔다 와도 그대로 · 「처음대로」를 누르면 날짜별 · 모두 · 모두 · 줄어든 돈 먼저 · 다시 와도 처음대로
+    const onOf = () => p.evaluate(() => [...document.querySelectorAll('#su section.sj-ldf button.sj-ldchip[aria-pressed="true"]')].map(b => b.dataset.g + ':' + b.dataset.v).join(' ') + ' | ' + (document.querySelector('#su section.sj-ldf .sj-ldlist')?.getAttribute('data-view') ?? ''));
+    await open(p, '#/k'); await open(p, '#/l'); const kept = await onOf();
+    const rb = await p.evaluate(() => { const b = document.querySelector('#su section.sj-ldf button.sj-ldreset'), r = b?.getBoundingClientRect(); return b ? {h: Math.round(r.height), fs: parseFloat(getComputedStyle(b).fontSize), t: b.textContent.trim()} : null; });
+    if (rb) await p.click('#su section.sj-ldf button.sj-ldreset');
+    const reset1 = await onOf(); await open(p, '#/k'); await open(p, '#/l'); const reset2 = await onOf();
+    const D0 = 'view:day span:all res:all sort:loss | day';
+    check(kept === 'view:co span:w1 res:up sort:high | co' && !!rb && rb.h >= 47.5 && rb.fs >= 16.95 && rb.t === '처음대로' && reset1 === D0 && reset2 === D0,
+      W + '라) 거르개 기억(주문 1120-1935) — 다른 쪽에 갔다 와도 고른 것 그대로 · 「처음대로」 = 날짜별 · 모두 · 모두 · 줄어든 돈 먼저 · 다시 와도 처음대로', JSON.stringify({kept, rb, reset1, reset2}).slice(0, 300));
+  }
   pageRules(await measure(p), W + '장부 #/l');
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();

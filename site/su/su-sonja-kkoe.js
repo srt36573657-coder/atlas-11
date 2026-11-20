@@ -410,7 +410,7 @@ export async function vSettle36(X) {
    이름이 너무 길어 … 적당한 이름 … 그동안 약 8억 정도를 … 모든 거래내역 추적하고 기록하는 것이다」) — 정산 장부(su21-settle.json)의 모든 산 셈을 날마다 · 회사마다
    한 가지만 크게: 쌓인 산 돈(점선)과 그 지금 값(실선) 꺾은선 → 날마다 산 돈 막대(점 = 그날 산 것의 지금 값) → 날마다 산 회사(손실 먼저) → 회사마다 모은 장부(산 돈 차례 · 수익 차례 아님)
    가짜 돈 · 진짜 돈 아님 · 「%」 0 · 줄어든 것을 숨기지 않음 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 ── */
-const LDW = 320, LDH = 150, LDP = 12;
+const LDW = 320, LDH = 150, LDP = 12, LDK = 'su-ledger-pick'; // LDK = 거르개 고른 것 기억 이름(이 휴대폰 localStorage · 주문 1120-1935)
 function ledCum(L) {
   const D = L.days, hi = Math.max(1, ...D.map(d => Math.max(d.cumCost, d.cumVal))) * 1.05, f = v => Math.round(v * 10) / 10;
   const x = i => (D.length < 2 ? LDW / 2 : LDP + (LDW - 2 * LDP) * i / (D.length - 1)), y = v => LDH - LDP - (LDH - 2 * LDP) * v / hi;
@@ -438,6 +438,11 @@ export async function vLedger(X) {
   const dn = L.cos.filter(c => !c.one && Math.round(c.val - c.cost) < 0).sort((a, b) => (a.val - a.cost) - (b.val - b.cost)), last = L.days[L.days.length - 1] ?? null;
   const filtSec = () => { // 거르개 열여덟(주문 1120-1817 · 사장님 18:17 「날짜별 이익별 꾀별 많은순 수익율 필터를 18가지로 … 잡스라면」) — 묶음 넷 · 고르면 아래 줄이 바로 바뀜 · 처음은 손실 먼저
     const P = {...LEDGER_PICK0}, chips = [], list = h('div', {class: 'sj-ldlist', 'aria-live': 'polite'}), sum = h('p', {class: 'sj-ldsum'});
+    // 고른 것 기억(주문 1120-1935 · 사장님 19:35 「어 그렇게 해」 — 「거르개에서 고른 것을 다음에 열어도 그대로 두게 할까요?」의 답) — 이 휴대폰에만 · 못 읽으면 처음대로(줄어든 돈 먼저)
+    try { const sv = JSON.parse(localStorage.getItem(LDK) ?? 'null'); if (sv && typeof sv === 'object') for (const g of Object.keys(LEDGER_PICK0)) if (typeof sv[g] === 'string') P[g] = sv[g]; } catch { /* 저장소 없음 */ }
+    Object.assign(P, ledgerView([], P).pick); // 모르는 값은 처음 값으로
+    const keepP = () => { try { localStorage.setItem(LDK, JSON.stringify(P)); } catch { /* 저장소 없음 — 이번만 */ } };
+    const press = () => { for (const c of chips) c.setAttribute('aria-pressed', P[c.dataset.g] === c.dataset.v ? 'true' : 'false'); };
     const lab = (L, v) => (L.find(x => x[0] === v) ?? L[0])[1];
     const r100 = x => (x.cost > 0 ? (100 * x.val / x.cost).toFixed(1).replace(/\.0$/, '') + '원' : '?');
     const row = (x, kind) => { const st = ledSt(x.cost, x.val, x.one), isK = kind === 'k';
@@ -464,11 +469,13 @@ export async function vLedger(X) {
     };
     const grp = (g, label, opts) => h('div', {class: 'sj-ldfg', role: 'group', 'aria-label': label + ' — ' + opts.length + '가지', 'data-g': g}, h('p', {class: 'sj-ldfl', text: label}),
       h('div', {class: 'sj-ldcs'}, ...opts.map(([v, t]) => { const b = h('button', {class: 'sj-ldchip', type: 'button', 'data-g': g, 'data-v': v, 'aria-pressed': P[g] === v ? 'true' : 'false', text: t});
-        b.addEventListener('click', () => { P[g] = v; for (const c of chips) if (c.dataset.g === g) c.setAttribute('aria-pressed', c.dataset.v === v ? 'true' : 'false'); draw(); }); chips.push(b); return b; })));
+        b.addEventListener('click', () => { P[g] = v; press(); keepP(); draw(); }); chips.push(b); return b; })));
+    const reset = h('button', {class: 'sj-ldreset', type: 'button', 'aria-label': '거르개를 처음대로 — 날짜별 · 모두 · 모두 · 줄어든 돈 먼저', text: '처음대로'});
+    reset.addEventListener('click', () => { Object.assign(P, LEDGER_PICK0); press(); keepP(); draw(); });
     const sec = h('section', {class: 'sj-sec sj-ldf', 'aria-label': '거르개 열여덟', 'data-rule': 'ledger-filter-v1'},
       head('거', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '거르개 열여덟'}))),
-      h('p', {class: 'sj-rule', text: '보기 · 기간 · 결과 · 차례에서 하나씩 고르면 아래 줄이 바로 바뀌어요. 처음에는 줄어든 돈이 큰 것부터 보여요. 줄어든 것도 숨기지 않아요.'}),
-      grp('view', '보기', LEDGER_VIEWS), grp('span', '기간', LEDGER_SPANS), grp('res', '결과', LEDGER_RES), grp('sort', '차례', LEDGER_SORTS), sum, list, endSeal('거'));
+      h('p', {class: 'sj-rule', text: '보기 · 기간 · 결과 · 차례에서 하나씩 고르면 아래 줄이 바로 바뀌어요. 고른 것은 이 휴대폰이 기억해 다음에도 그대로예요. 처음에는 줄어든 돈이 큰 것부터 보여요. 줄어든 것도 숨기지 않아요.'}),
+      grp('view', '보기', LEDGER_VIEWS), grp('span', '기간', LEDGER_SPANS), grp('res', '결과', LEDGER_RES), grp('sort', '차례', LEDGER_SORTS), h('div', {class: 'sj-ldsumr'}, sum, reset), list, endSeal('거'));
     draw(); return sec;
   };
   const findSec = () => { // 장부에서 회사 찾기(주문 1120-1804) — 이름 · 번호를 쓰면 그 회사를 산 날을 모두(날 · 꾀 · 주 · 산 값 → 지금)

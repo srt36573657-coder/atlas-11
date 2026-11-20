@@ -1561,3 +1561,7 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-ldlist { display: grid; gap: 10px; }
 #su .sj-ldlist .sj-ldl1 { padding: 0; }
 #su .sj-ldlist .sj-ldl1 > .sj-ldr { background: #F3F8F6; }
+/* 거르개 기억 · 처음대로(주문 1120-1935) — 요약 한 줄 옆 작은 단추(48 넘게) */
+#su .sj-ldsumr { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 8px; }
+#su .sj-ldreset { min-height: 48px; padding: 10px 14px; border: 1.5px solid #20323A; border-radius: 14px; background: #FCFEFD; color: #20323A; font: inherit; font-size: 1.0625rem; font-weight: 800; line-height: 1.3; cursor: pointer; white-space: nowrap; }
+#su .sj-ldreset:focus-visible { outline: 3px solid #4A6168; outline-offset: 2px; }
