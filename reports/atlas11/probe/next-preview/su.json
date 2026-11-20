@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-20T13:49:52.540Z",
+ "at": "2026-11-20T15:39:42.922Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 510,
@@ -14,8 +14,8 @@
    "sun": false
   },
   "home": {
-   "screens": 6.41,
-   "links": 16
+   "screens": 6.25,
+   "links": 15
   },
   "t21": {
    "listed": 2557,
@@ -26,9 +26,9 @@
     "h1": "서른여섯 꾀",
     "page": "sonja",
     "kids": [
+     "sj-mind",
      "sj-cover",
      "sj-sun",
-     "sj-mind",
      "sj-more",
      "sj-end"
     ],
@@ -92,9 +92,9 @@
    "꽃"
   ],
   "speed": {
-   "lcp": 1632,
-   "cls": 0.005,
-   "pic": 1629
+   "lcp": 1916,
+   "cls": 0.034,
+   "pic": 1810
   },
   "white": {
    "light #/": {
