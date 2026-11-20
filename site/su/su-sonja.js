@@ -409,10 +409,10 @@ async function promiseBand(box) {
    · 23:14 「이게 아니야 돌이를 만들때 주식을 하는 명언이 있던 걸로 기억해 … 기록을 찾아봐 그리고 글을 그 수채화 위에 글을 찾아서 올려」)
    글 = 사장님 2026-10-16 「아틀란스 주식 격언 열 가지」(돌이 첫 화면 편지 · site/next/app.js HELLO_MSG) 글자 그대로 · 남의 글 표시(data-proper)
    꼴 = 손자병법 한 폭과 같은 산수 수채화(/su/su-bg.svg — 번호 도장 · 점선 뺀 그림)를 깐 족자 · 위 하늘에 붓 글씨 제목 · 그 아래 격언 열 줄(번호 도장 · 격언 굵게 · 풀이)
-   자리 = 꾀 칸 다음 · 자세히 앞(사장님 21:45 「응 그래」 — 꾀 칸 바로 아래) */
+   자리 = 첫 화면 맨 위 · 「오늘 시장」 칸(표지)보다 위(사장님 23:21 「그 글을 그림에 올려 글을 쓰고 맨 위에 두어라」 · 23:25 「맞아」) — index.html 이 같은 글로 먼저 칠함(없으면 여기서 맨 앞에 붙임) */
 function mindSec() {
   return h('section', {class: 'sj-sec sj-mind', 'aria-label': MIND_TITLE, 'data-rule': MIND_RULE, 'data-n': String(MIND10.length)},
-    h('p', {class: 'sj-k', text: '제3장 사기 전에 새기는 말'}),
+    h('p', {class: 'sj-k', text: '사기 전에 새기는 말'}),
     h('div', {class: 'sj-gk'},
       h('h2', {class: 'sj-gkh'}, h('span', {class: 'sj-brush', text: MIND_TITLE})),
       h('ol', {class: 'sj-gkl', 'aria-label': MIND_TITLE}, ...MIND10.map(m => h('li', {class: 'sj-gki', 'data-n': String(m.n)},
@@ -446,9 +446,10 @@ export async function vSonja(X, shell = null) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   if (!T) return null;
   const wait = trickWait(T);
-  const dd = mday((okSun(T.sun) ? T.sun.day : null) ?? T.asOf?.board), body = [sunSec(T), wait, mindSec(), moreBox(S), endSec(T, S)]; // 주식 격언 열 가지(주문 1120-2116) — 꾀 칸 다음 · 자세히 앞
+  const dd = mday((okSun(T.sun) ? T.sun.day : null) ?? T.asOf?.board), body = [sunSec(T), wait, moreBox(S), endSec(T, S)];
   const keep = !!shell?.main?.isConnected, main = keep ? shell.main : h('main', {class: 'sj-page', 'data-page': 'sonja', 'data-wait': ''}, cover(null)); // data-wait — 꾀 칸을 채우면 뗌(검사가 기다림)
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
+  if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec()); // 주식 격언 열 가지 — 첫 화면 맨 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) · index.html 이 먼저 칠한 판이면 그대로
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
   const aw = main.querySelector(':scope > .sj-cover .sj-artw'); if (aw && !aw.querySelector(':scope > svg.sj-artfx')) aw.insertBefore(coverFilm(), aw.querySelector(':scope > .sj-hwa')); // 표지 영화 덧칠(주문 1116-2310 — 안개 · 새 · 금빛 반짝임 · 빛 한 줄기 11초)
   { const cv0 = main.querySelector(':scope > .sj-cover'), tw = cv0?.querySelector(':scope > .sj-tc'), tc = todayCard(T, X.cur?.()?.code ?? null); if (tw) tw.replaceWith(tc); else cv0?.append(tc); } // 오늘 한 장(주문 1120-0001) — 자리(sj-tc0)를 채움

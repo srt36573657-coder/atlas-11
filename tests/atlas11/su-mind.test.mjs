@@ -30,10 +30,16 @@ test('줄마다 번호 · 격언 · 풀이로 나눠도 글자가 그대로', ()
   assert.ok(Object.isFrozen(MIND10) && MIND10.every(m => Object.isFrozen(m)) && Object.isFrozen(MIND_LINES));
 });
 
-test('첫 쪽 — 꾀 칸 다음 · 자세히 앞 · 수채화 족자 · 격언은 남의 글 표시 · 쪽 글에 쓰지 않을 말 0', async () => {
+test('첫 쪽 — 첫 화면 맨 위(표지보다 위 · 23:21 「맨 위에 두어라」) · 수채화 족자 · 격언은 남의 글 표시 · 쪽 글에 쓰지 않을 말 0', async () => {
   const sj = read('site/su/su-sonja.js');
   assert.ok(sj.includes("import {MIND10, MIND_TITLE, MIND_RULE} from '/su/su-mind-core.js';"));
-  assert.ok(sj.includes('body = [sunSec(T), wait, mindSec(), moreBox(S), endSec(T, S)];'), '꾀 칸(wait → trickSec) 다음 · 자세히 앞');
+  assert.ok(sj.includes('body = [sunSec(T), wait, moreBox(S), endSec(T, S)];') && sj.includes("if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec());"), '맨 위(표지 앞) — 먼저 칠한 판이 없으면 맨 앞에 붙임');
+  const html = read('site/su/index.html'), at = html.indexOf('<main class="sj-page sj-pre" data-page="sonja" data-wait="">'), ms = html.indexOf('<section class="sj-sec sj-mind"'), cv = html.indexOf('<section class="sj-cover"');
+  assert.ok(at >= 0 && ms > at && cv > ms, 'index.html 먼저 칠함 — main 맨 앞 격언 족자 → 표지');
+  const pre = html.slice(ms, html.indexOf('</section>', ms));
+  const said = [...pre.matchAll(/<b class="sj-gkm">([^<]+)<\/b><span class="sj-gkx">([^<]+)<\/span>/g)].map(m => m[1] + ' ' + m[2]);
+  assert.deepEqual(said, MIND10.map(m => m.say + ' ' + m.more), '먼저 칠한 글 = 사장님 글 그대로');
+  assert.ok(pre.includes('<span class="sj-brush">' + MIND_TITLE + '</span>') && pre.includes('data-proper=""') && pre.includes('data-rule="' + MIND_RULE + '"'));
   const fn = /function mindSec\(\) \{[\s\S]*?\n\}/.exec(sj)?.[0] ?? '';
   assert.ok(fn.includes("h('p', {class: 'sj-gkt', 'data-proper': ''}"), '격언은 남의 글 표시(data-proper)');
   assert.ok(!/href:/.test(fn), '고리 0');
