@@ -344,11 +344,12 @@ for (const width of [390, 360, 320]) {
           check(stOk, W + '⑫-2 세 태세(주문 1120-0728 · 샘플 s04 · s01 · d02) — 수비 → 보편 → 공격 · 이 검사가 sun.rank 로 다시 센 꾀와 같음 · 줄마다 가장 나쁜 날 → 잃은 날 → 평균 같은 크기 · 없으면 억지로 채우지 않음 · 「%」 0',
             JSON.stringify({want: want ? (want.none ? 'none' : want.ks) : null, got: sg ? {rule: sg.rule, rows: sg.rows.map(r => [r.st, r.k, r.empty, r.lines.map(l => l.t + ':' + l.fs + '/' + l.bfs).join('|')])} : null}).slice(0, 600)); }
           // ⑫-3 대나무 숲(주문 1120-1422 · 사장님 2026-11-20(마카오) 14:22 「여기 첫화면에 멋진 대나무밭 그림 …」) — 오늘 한 장 뒤 그림 · 글 뒤(누를 수 없음) · 카드 안 · 움직임 줄이기면 멈춤은 CSS
-          const bb = await p.evaluate(() => { const c = document.querySelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)'), b = c?.querySelector(':scope > .sj-tcbam'); if (!b) return null;
+          await p.waitForSelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)', {timeout: 6000}).catch(() => {});
+          const bb = await p.evaluate(() => { const c = document.querySelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)'), b = c?.querySelector(':scope > .sj-tcbam'); if (!c) return {none: true, ph: !!document.querySelector('#su .sj-tc.sj-tc0')}; if (!b) return null;
             const cs = getComputedStyle(b), r = c.getBoundingClientRect(), q = b.getBoundingClientRect(), g = b.querySelector('svg.sj-bam');
             return {first: c.firstElementChild === b, hid: b.getAttribute('aria-hidden'), pos: cs.position, z: cs.zIndex, pe: cs.pointerEvents, inL: q.left >= r.left - 0.5, inR: q.right <= r.right + 0.5, n: g?.querySelectorAll('path').length ?? 0, txt: (g?.textContent ?? '').trim().length,
-              glow: getComputedStyle(c.querySelector(':scope > .sj-tch') ?? c).textShadow}; });
-          check(!!bb && bb.first && bb.hid === 'true' && bb.pos === 'absolute' && bb.z === '-1' && bb.pe === 'none' && bb.inL && bb.inR && bb.n >= 100 && bb.txt === 0 && /252, 254, 253/.test(bb.glow ?? ''),
+              glow: getComputedStyle(c.querySelector(':scope > .sj-tck') ?? c).textShadow}; }); // 머리 한 줄(오늘 시장 · ○월 ○일)은 늘 있음 — 형세 자료가 없는 날도
+          check(!!bb && (bb.none ? bb.ph : bb.first && bb.hid === 'true' && bb.pos === 'absolute' && bb.z === '-1' && bb.pe === 'none' && bb.inL && bb.inR && bb.n >= 100 && bb.txt === 0 && /252, 254, 253/.test(bb.glow ?? '')), // 자료를 받기 전 자리 카드(sj-tc0)만 있으면 그림 없음이 맞음
             W + '⑫-3 대나무 숲(주문 1120-1422) — 오늘 한 장 뒤 글 속 그림 · 글 뒤(누를 수 없음 · 읽지 않음) · 카드 안 · 글자 0 · 글에 종이빛 테두리', JSON.stringify(bb).slice(0, 300));
         check(sj.old === 0, W + '⑪ 옛 꾸밈(그림 칸 · 무하 장식 · 옛 머리 · 탭 · 막대) 0 — 주문 1115-1706 「기존에 있던것 단 한나도 디자임 사용하지말고」 — ' + sj.h1, String(sj.old));
         check(sj.sealsOk, W + '⑪ 한눈 판별 — 회사 단추의 한 달 표(내림 · 오름 · 같음) = 그 회사 한 달 방향 · 내림 도장 = 짙은 남빛 찬 도장 + 흰 글(샘플 사) — ' + sj.h1, sj.seals.length + ' · ' + JSON.stringify(sj.sunSeal));
