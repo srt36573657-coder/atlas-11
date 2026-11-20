@@ -41,7 +41,7 @@
   "045390": "회사 글에 쓰지 않을 말",
   "080160": "회사 글에 쓰지 않을 말"
  },
- "at": "2026-11-20T08:13:51.301Z",
+ "at": "2026-11-20T09:13:09.786Z",
  "shard": "all/3",
  "units": {
   "total": 2574,
@@ -66,17 +66,17 @@
    }
   }
  },
- "seconds": 108,
- "secondsSum": 321,
+ "seconds": 104,
+ "secondsSum": 312,
  "time": {
-  "old": 96.5,
-  "new": 209.8,
-  "wall": 107.5,
-  "wallSum": 321,
+  "old": 96,
+  "new": 205.6,
+  "wall": 104.5,
+  "wallSum": 312.1,
   "opensOld": 5130,
   "opensNew": 10405,
-  "oldPct": 30.1,
-  "oldShare": 31.5
+  "oldPct": 30.8,
+  "oldShare": 31.8
  },
  "net": {
   "req": 26,
@@ -93,7 +93,7 @@
  },
  "counts": {
   "글 마디": 84387,
-  "숫자 낱말": 198057,
+  "숫자 낱말": 198054,
   "10번 중 줄": 25230,
   "고리": 38367,
   "고른 곳 밖": 2501,
@@ -110,7 +110,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 106,
+   "seconds": 104,
    "mine": 858,
    "kinds": {
     "c": 853,
@@ -123,7 +123,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 108,
+   "seconds": 104,
    "mine": 858,
    "kinds": {
     "c": 853,
@@ -136,7 +136,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 107,
+   "seconds": 104,
    "mine": 858,
    "kinds": {
     "c": 853,
