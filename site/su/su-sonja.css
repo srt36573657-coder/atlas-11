@@ -1565,3 +1565,11 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-ldsumr { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 8px; }
 #su .sj-ldreset { min-height: 48px; padding: 10px 14px; border: 1.5px solid #20323A; border-radius: 14px; background: #FCFEFD; color: #20323A; font: inherit; font-size: 1.0625rem; font-weight: 800; line-height: 1.3; cursor: pointer; white-space: nowrap; }
 #su .sj-ldreset:focus-visible { outline: 3px solid #4A6168; outline-offset: 2px; }
+/* 장부 그림을 누르면 그날 숫자(주문 1120-2041) — 세로 줄 · 큰 점 · 그림 아래 큰 글 한 줄 · 세로 쓸기는 그대로 */
+#su .sj-ldtap { touch-action: pan-y; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+#su .sj-ldmkl { fill: none; stroke: #4A6168; stroke-width: 1.5; stroke-dasharray: 3 4; }
+#su .sj-ldmkc { fill: #FCFEFD; stroke: #7D969B; stroke-width: 2.5; }
+#su .sj-ldmkv { fill: #20323A; stroke: #FCFEFD; stroke-width: 2.5; }
+#su .sj-ldmkv.sj-lddn { fill: #1F2A44; stroke: #A6D0CD; }
+#su .sj-ldmkb { fill: none; stroke: #20323A; stroke-width: 2.5; }
+#su .sj-ldread { margin-top: 8px; padding: 10px 14px; border-radius: 14px; background: #F3F8F6; color: #20323A; font-size: 1.125rem; font-weight: 800; line-height: 1.5; }

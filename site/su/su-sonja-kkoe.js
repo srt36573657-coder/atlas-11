@@ -411,23 +411,45 @@ export async function vSettle36(X) {
    한 가지만 크게: 쌓인 산 돈(점선)과 그 지금 값(실선) 꺾은선 → 날마다 산 돈 막대(점 = 그날 산 것의 지금 값) → 날마다 산 회사(손실 먼저) → 회사마다 모은 장부(산 돈 차례 · 수익 차례 아님)
    가짜 돈 · 진짜 돈 아님 · 「%」 0 · 줄어든 것을 숨기지 않음 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 ── */
 const LDW = 320, LDH = 150, LDP = 12, LDK = 'su-ledger-pick'; // LDK = 거르개 고른 것 기억 이름(이 휴대폰 localStorage · 주문 1120-1935)
+/** 누르면 그날 숫자(주문 1120-2041 · 사장님 20:41 「어 그렇게 해」 — 「장부 꺾은선을 누르면 그날 숫자가 뜨게 할까요?」의 답)
+ *  그림을 누르거나 손가락으로 끌면 가장 가까운 날을 골라 세로 줄 · 점으로 표시하고 그림 아래 큰 글 한 줄(HTML · 17px 넘게)로 그날 숫자 · 처음은 마지막 날
+ *  세로로 쓸어 넘기는 것은 그대로(touch-action pan-y) · 글은 읽어 주기에도 바로 알림(aria-live) */
+function ledTap(g, n, xOf, marks, say, cls) {
+  const mk = s('g', {class: 'sj-ldmk', 'aria-hidden': 'true'}), read = h('p', {class: 'sj-ldread ' + cls, 'aria-live': 'polite'}), f = v => Math.round(v * 10) / 10;
+  g.append(mk);
+  const show = i => { mk.replaceChildren(s('path', {class: 'sj-ldmkl', d: `M${f(xOf(i))} ${LDP - 4}V${LDH - LDP}`}), ...marks(i)); const t = say(i); read.textContent = t.text;
+    for (const [k, v] of Object.entries(t.data)) read.setAttribute('data-' + k, String(v)); g.setAttribute('data-i', String(i)); };
+  const pick = ev => { const r = g.getBoundingClientRect(); if (!r.width) return; const vx = (ev.clientX - r.left) / r.width * LDW; let best = 0, bd = Infinity;
+    for (let i = 0; i < n; i++) { const dd = Math.abs(xOf(i) - vx); if (dd < bd) { bd = dd; best = i; } } show(best); };
+  g.addEventListener('pointerdown', e => { pick(e); try { g.setPointerCapture(e.pointerId); } catch { /* 못 잡으면 누른 것만 */ } });
+  g.addEventListener('pointermove', e => { if (e.buttons) pick(e); });
+  show(n - 1);
+  return read;
+}
 function ledCum(L) {
   const D = L.days, hi = Math.max(1, ...D.map(d => Math.max(d.cumCost, d.cumVal))) * 1.05, f = v => Math.round(v * 10) / 10;
   const x = i => (D.length < 2 ? LDW / 2 : LDP + (LDW - 2 * LDP) * i / (D.length - 1)), y = v => LDH - LDP - (LDH - 2 * LDP) * v / hi;
-  const g = s('svg', {class: 'sj-ldc', viewBox: `0 0 ${LDW} ${LDH}`, 'aria-hidden': 'true', focusable: 'false'});
+  const g = s('svg', {class: 'sj-ldc sj-ldtap', viewBox: `0 0 ${LDW} ${LDH}`, 'aria-hidden': 'true', focusable: 'false'});
   g.append(s('path', {class: 'sj-ld0', d: `M${LDP} ${f(y(0))}H${LDW - LDP}`}));
   if (D.length > 1) { g.append(s('polyline', {class: 'sj-ldval', points: D.map((d, i) => f(x(i)) + ',' + f(y(d.cumVal))).join(' ')})); g.append(s('polyline', {class: 'sj-ldcost', points: D.map((d, i) => f(x(i)) + ',' + f(y(d.cumCost))).join(' ')})); } // 점선을 위에(두 선이 거의 겹쳐도 둘 다 보이게)
   const e = D[D.length - 1]; g.append(s('circle', {class: 'sj-ldce', cx: f(x(D.length - 1)), cy: f(y(e.cumCost)), r: 4})); g.append(s('circle', {class: 'sj-ldve' + (e.cumVal < e.cumCost ? ' sj-lddn' : ''), cx: f(x(D.length - 1)), cy: f(y(e.cumVal)), r: 5}));
-  return g;
+  const oneTo = i => D.slice(0, i + 1).every(d => d.one);
+  const read = ledTap(g, D.length, x, i => [s('circle', {class: 'sj-ldmkc', cx: f(x(i)), cy: f(y(D[i].cumCost)), r: 6}), s('circle', {class: 'sj-ldmkv' + (D[i].cumVal < D[i].cumCost ? ' sj-lddn' : ''), cx: f(x(i)), cy: f(y(D[i].cumVal)), r: 7})],
+    i => ({text: (mday(D[i].day) ?? D[i].day) + '까지 · 쌓인 산 돈 ' + won(D[i].cumCost) + ' · 그 지금 값 ' + won(D[i].cumVal) + ' · ' + ledRes(D[i].cumCost, D[i].cumVal, oneTo(i)),
+      data: {day: D[i].day, cost: Math.round(D[i].cumCost), val: Math.round(D[i].cumVal)}}), 'sj-ldreadc');
+  return [g, read];
 }
 function ledBars(L) {
   const D = L.days, hi = Math.max(1, ...D.map(d => Math.max(d.cost, d.val))) * 1.08, f = v => Math.round(v * 10) / 10, n = D.length, slot = (LDW - 2 * LDP) / Math.max(1, n), bw = Math.min(34, slot * 0.6);
-  const y = v => LDH - LDP - (LDH - 2 * LDP) * v / hi, g = s('svg', {class: 'sj-ldb', viewBox: `0 0 ${LDW} ${LDH}`, 'aria-hidden': 'true', focusable: 'false'});
+  const y = v => LDH - LDP - (LDH - 2 * LDP) * v / hi, g = s('svg', {class: 'sj-ldb sj-ldtap', viewBox: `0 0 ${LDW} ${LDH}`, 'aria-hidden': 'true', focusable: 'false'}), cxOf = i => LDP + slot * (i + 0.5);
   g.append(s('path', {class: 'sj-ld0', d: `M${LDP} ${f(y(0))}H${LDW - LDP}`}));
-  D.forEach((d, i) => { const cx = LDP + slot * (i + 0.5);
+  D.forEach((d, i) => { const cx = cxOf(i);
     g.append(s('rect', {class: 'sj-ldbar', x: f(cx - bw / 2), y: f(y(d.cost)), width: f(bw), height: f(Math.max(1, y(0) - y(d.cost))), rx: 3}));
     g.append(s('circle', {class: 'sj-lddot' + (d.val < d.cost ? ' sj-lddn' : ''), cx: f(cx), cy: f(y(d.val)), r: 5})); });
-  return g;
+  const read = ledTap(g, n, cxOf, i => [s('rect', {class: 'sj-ldmkb', x: f(cxOf(i) - bw / 2 - 3), y: f(y(D[i].cost) - 3), width: f(bw + 6), height: f(Math.max(1, y(0) - y(D[i].cost)) + 3), rx: 5})],
+    i => ({text: (mday(D[i].day) ?? D[i].day) + ' · 그날 산 돈 ' + won(D[i].cost) + ' · 그날 산 것 지금 ' + won(D[i].val) + ' · ' + ledRes(D[i].cost, D[i].val, D[i].one),
+      data: {day: D[i].day, cost: Math.round(D[i].cost), val: Math.round(D[i].val)}}), 'sj-ldreadb');
+  return [g, read];
 }
 const ledSt = (cost, val, one) => (one ? 'one' : Math.round(val - cost) > 0 ? 'up' : Math.round(val - cost) < 0 ? 'dn' : 'eq');
 const ledRes = (cost, val, one) => (one ? SAID.one : moved(val - cost));
@@ -507,9 +529,10 @@ export async function vLedger(X) {
     TT.cos ? findSec() : null, // 장부에서 회사 찾기(주문 1120-1804) — 머리 바로 아래
     h('section', {class: 'sj-sec sj-ldg', 'aria-label': '날마다 산 돈', 'data-rule': L.rule, 'data-days': String(TT.days), 'data-cost': String(Math.round(TT.cost)), 'data-val': String(Math.round(TT.val))},
       head('돈', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '날마다 산 돈'}))),
-      TT.days ? h('figure', {class: 'sj-ldfig', 'aria-label': '쌓인 산 돈과 그 지금 값 꺾은선 · 산 돈 ' + won(TT.cost) + ' · 지금 ' + won(TT.val)}, ledCum(L),
+      TT.days ? h('p', {class: 'sj-rule sj-ldtip', text: '꺾은선이나 막대를 누르면 그날 숫자가 아래에 떠요. 손가락으로 옆으로 끌어도 돼요.'}) : null,
+      TT.days ? h('figure', {class: 'sj-ldfig', 'aria-label': '쌓인 산 돈과 그 지금 값 꺾은선 · 산 돈 ' + won(TT.cost) + ' · 지금 ' + won(TT.val) + ' · 누르면 그날 숫자'}, ledCum(L),
         h('figcaption', {}, h('span', {class: 'sj-ldk sj-ldkc', text: '점선 = 쌓인 산 돈 ' + won(TT.cost)}), h('span', {class: 'sj-ldk sj-ldkv', text: '실선 = 그 지금 값 ' + won(TT.val)}))) : null,
-      TT.days ? h('figure', {class: 'sj-ldfig', 'aria-label': '날마다 산 돈 막대 · 점은 그날 산 것의 지금 값'}, ledBars(L),
+      TT.days ? h('figure', {class: 'sj-ldfig', 'aria-label': '날마다 산 돈 막대 · 점은 그날 산 것의 지금 값 · 막대를 누르면 그날 숫자'}, ledBars(L),
         h('figcaption', {}, h('span', {text: '막대 = 그날 산 돈'}), h('span', {text: '점 = 그날 산 것의 지금 값'}), h('span', {text: (mday(first) ?? '') + ' → ' + (mday(last?.day) ?? '')}))) : null,
       TT.days ? null : h('p', {class: 'sj-tnone', text: SAID.none}),
       endSeal('돈')),

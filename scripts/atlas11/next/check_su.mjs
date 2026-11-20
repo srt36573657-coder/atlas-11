@@ -1429,6 +1429,18 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     check(kept === 'view:co span:w1 res:up sort:high | co' && !!rb && rb.h >= 47.5 && rb.fs >= 16.95 && rb.t === '처음대로' && reset1 === D0 && reset2 === D0,
       W + '라) 거르개 기억(주문 1120-1935) — 다른 쪽에 갔다 와도 고른 것 그대로 · 「처음대로」 = 날짜별 · 모두 · 모두 · 줄어든 돈 먼저 · 다시 와도 처음대로', JSON.stringify({kept, rb, reset1, reset2}).slice(0, 300));
   }
+  { // 마) 그림을 누르면 그날 숫자(주문 1120-2041 · 사장님 20:41 「어 그렇게 해」) — 처음은 마지막 날 · 꺾은선 맨 왼쪽을 누르면 첫날까지 쌓인 돈 · 막대 첫째를 누르면 첫날 산 돈 = 이 검사가 장부로 다시 센 값 · 글 17px 넘게
+    const dd = allDays, d0 = dd[0], dN = dd[dd.length - 1], c0 = Math.round(rows.filter(r => r.d === d0).reduce((s, r) => s + r.cost, 0)), v0 = Math.round(rows.filter(r => r.d === d0).reduce((s, r) => s + r.val, 0));
+    const cN = Math.round(rows.reduce((s, r) => s + r.cost, 0)), vN = Math.round(rows.reduce((s, r) => s + r.val, 0)), cNb = Math.round(rows.filter(r => r.d === dN).reduce((s, r) => s + r.cost, 0));
+    const rd = sel => p.evaluate(sel => { const e = document.querySelector(sel); return e ? {day: e.getAttribute('data-day'), cost: +e.getAttribute('data-cost'), val: +e.getAttribute('data-val'), t: e.textContent.trim(), fs: parseFloat(getComputedStyle(e).fontSize)} : null; }, sel);
+    const tapAt = async (sel, fx) => { const b = await p.evaluate(sel => { const e = document.querySelector(sel); if (!e) return null; e.scrollIntoView({block: 'center'}); const r = e.getBoundingClientRect(); return {x: r.left, y: r.top, w: r.width, h: r.height}; }, sel); if (b) { await p.mouse.click(b.x + b.w * fx, b.y + b.h / 2); await p.waitForTimeout(150); } return !!b; };
+    const cA = await rd('#su section.sj-ldg .sj-ldreadc'), bA = await rd('#su section.sj-ldg .sj-ldreadb');
+    const okTap = dd.length ? (await tapAt('#su section.sj-ldg svg.sj-ldc', 0.02)) && (await tapAt('#su section.sj-ldg svg.sj-ldb', 0.5 / dd.length)) : true;
+    const cB = await rd('#su section.sj-ldg .sj-ldreadc'), bB = await rd('#su section.sj-ldg .sj-ldreadb');
+    check(!dd.length || (okTap && cA?.day === dN && Math.abs(cA.cost - cN) <= 1 && Math.abs(cA.val - vN) <= 1 && bA?.day === dN && Math.abs(bA.cost - cNb) <= 1 && cB?.day === d0 && Math.abs(cB.cost - c0) <= 1 && Math.abs(cB.val - v0) <= 1
+      && bB?.day === d0 && Math.abs(bB.cost - c0) <= 1 && cA.fs >= 16.95 && /까지 · 쌓인 산 돈/.test(cB.t) && /그날 산 돈/.test(bB.t) && !/%/.test(cB.t + bB.t)),
+      W + '마) 장부 그림을 누르면 그날 숫자(주문 1120-2041) — 처음은 마지막 날 · 꺾은선 맨 왼쪽 = 첫날까지 쌓인 돈 · 막대 첫째 = 첫날 산 돈(장부로 다시 셈) · 큰 글', JSON.stringify({d0, dN, c0, v0, cN, cNb, cA, bA, cB, bB}).slice(0, 500));
+  }
   pageRules(await measure(p), W + '장부 #/l');
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();
