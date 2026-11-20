@@ -1541,3 +1541,11 @@ html.sj-on #su .sj-tools .sj-findtop { display: inline-flex; }
 #su .sj-ldv { display: grid; gap: 2px; font-size: 1.0625rem; color: #33484F; }
 #su .sj-ldv > .sj-res { font-size: 1.125rem; font-weight: 800; color: #20323A; }
 #su .sj-ldmore { margin-top: 12px; }
+/* 장부에서 회사 찾기(주문 1120-1804) — 회사 탭 찾기 칸과 같은 모양 · 찾은 회사마다 산 날을 모두 */
+html.sj-on #su .sj-ldfind { display: grid; gap: 10px; }
+#su .sj-ldfo { display: grid; gap: 10px; }
+#su .sj-ldfo:empty { display: none; }
+#su .sj-ldfc { display: grid; gap: 6px; padding: 10px 12px 12px; border-radius: 16px; background: #F3F8F6; }
+#su .sj-ldt { display: grid; gap: 6px; margin-top: 4px; }
+#su .sj-ldt > li { display: grid; gap: 2px; padding: 8px 10px; border-radius: 12px; background: #FCFEFD; font-size: 1.0625rem; color: #33484F; }
+#su .sj-ldt > li > b { font-size: 1.125rem; font-weight: 900; color: #20323A; }

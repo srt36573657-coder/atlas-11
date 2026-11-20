@@ -27,3 +27,21 @@ export function ledgerOf(rows, qty = 10) {
     .sort((a, b) => b.cost - a.cost || byCode(a, b));
   return {rule: LEDGER_RULE, days, cos, T: {cost: cc, val: cv, buys: days.reduce((s, d) => s + d.buys, 0), cos: cos.length, days: days.length, one: days.length > 0 && days.every(d => d.one)}};
 }
+const norm = t => String(t ?? '').normalize('NFC').toLowerCase().replace(/[\s·.\-()]/g, '');
+/** 장부에서 회사 찾기(주문 1120-1804 · 사장님 18:04 「응」 — 「「장부」에서 날짜 대신 회사 이름으로도 찾게 할까요?」의 답) — L.cos 가운데 이름 · 번호가 맞는 곳
+ *  차례 = 같음 → 앞이 같음 → 이름 속 · 같은 칸은 산 돈 큰 곳 먼저(수익 차례 아님) · 많아야 n */
+export function ledFind(L, q, n = 5) {
+  const Q = norm(q); if (!Q) return [];
+  const out = [];
+  for (const c of Array.isArray(L?.cos) ? L.cos : []) {
+    const nm = norm(c.name), cd = String(c.code ?? '').toLowerCase();
+    const r = nm === Q || cd === Q ? 0 : nm.startsWith(Q) || cd.startsWith(Q) ? 1 : nm.includes(Q) ? 2 : -1;
+    if (r >= 0) out.push([r, c]);
+  }
+  out.sort((a, b) => a[0] - b[0] || b[1].cost - a[1].cost || byCode(a[1], b[1]));
+  return out.slice(0, n).map(x => x[1]);
+}
+/** 한 회사의 모든 산 셈 — 오래된 날 먼저 · 같은 날은 꾀 차례 */
+export function tradesOf(rows, code) {
+  return (Array.isArray(rows) ? rows : []).filter(r => r && r.code === code).sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : String(a.k) < String(b.k) ? -1 : String(a.k) > String(b.k) ? 1 : 0));
+}

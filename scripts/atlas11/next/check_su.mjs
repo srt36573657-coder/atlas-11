@@ -1388,6 +1388,18 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     && (rows.length ? g.charts.every(Boolean) : true) && /줄어든|아직 돈이 줄어든 회사는 없어요/.test(g.loss) && !/%|매수|매도|수익률|추천|1등|대박/.test(g.text) && /앞날을 맞히지 않고/.test(g.text) && g.tab === '장부' && g.wide,
     W + '나) 장부(#/l · 탭 「장부」) — 이 검사가 정산 장부로 다시 센 모두 산 돈 · 지금 · 산 날 · 회사 수 · 날마다(새 날 먼저) · 회사마다 산 돈 차례 스물과 같음 · 꺾은선 · 막대 · 손실 먼저 · 「%」 「매수」 0',
     JSON.stringify({want: {...W2, dayRows: W2.dayRows.slice(0, 3), top: W2.top.slice(0, 3)}, got: {cost: g.cost, val: g.val, days: g.days, cos: g.cos, dayRows: g.dayRows.slice(0, 3), top: g.top.slice(0, 3), charts: g.charts, tab: g.tab, open1: g.open1}}).slice(0, 600));
+  { // 다) 장부에서 회사 찾기(주문 1120-1804) — 산 돈이 가장 큰 회사 이름 그대로 → 그 회사가 맨 위 · 산 날 줄 수 = 이 검사가 장부로 다시 센 그 회사 산 셈 수 · 없는 이름 → 0 · 「없는 회사예요」
+    const c0 = W2.top[0] ?? null, nm0 = c0 ? (Array.isArray(DL?.co?.[c0]) ? DL.co[c0][0] : null) ?? c0 : null, n0 = c0 ? rows.filter(r => r.c === c0).length : 0;
+    const typeL = async v => { await p.fill('#su section.sj-ldfind input.sj-ldfi', v); await p.waitForTimeout(250);
+      return p.evaluate(() => ({cs: [...document.querySelectorAll('#su section.sj-ldfind .sj-ldfo > .sj-ldfc')].map(e => [e.getAttribute('data-code'), +e.getAttribute('data-n'), e.querySelectorAll('ol.sj-ldt > li').length]), note: (document.querySelector('#su section.sj-ldfind .sj-findn')?.textContent ?? '').trim()})); };
+    const sec = await p.evaluate(() => { const s = document.querySelector('#su main.sj-page[data-page="ledger"] > section.sj-ldfind'), i = s?.querySelector('input.sj-ldfi'), r = i?.getBoundingClientRect();
+      return {has: !!i, after: s?.previousElementSibling?.matches('section.sj-ph') === true, h: r ? Math.round(r.height) : 0, fs: i ? parseFloat(getComputedStyle(i).fontSize) : 0}; });
+    const byName = nm0 ? await typeL(nm0) : null, none = await typeL('없는회사이름가나다'), byCode = c0 ? await typeL(c0) : null;
+    check(sec.has && sec.after && sec.h >= 48 && sec.fs >= 16.95 && (!c0 || (byName.cs[0]?.[0] === c0 && byName.cs[0][1] === n0 && byName.cs[0][2] === n0 && byCode.cs[0]?.[0] === c0)) && none.cs.length === 0 && /없는 회사예요/.test(none.note),
+      W + '다) 장부에서 회사 찾기(주문 1120-1804) — 머리 바로 아래 · 이름 그대로 → 그 회사 맨 위 · 산 날 줄 수 = 장부로 다시 센 산 셈 수 · 번호로도 · 없는 이름 → 0',
+      JSON.stringify({sec, c0, nm0, n0, byName: byName?.cs.slice(0, 2), byCode: byCode?.cs.slice(0, 1), none}).slice(0, 400));
+    await p.fill('#su section.sj-ldfind input.sj-ldfi', '');
+  }
   pageRules(await measure(p), W + '장부 #/l');
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();
