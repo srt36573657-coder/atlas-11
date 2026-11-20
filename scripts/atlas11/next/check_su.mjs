@@ -343,14 +343,10 @@ for (const width of [390, 360, 320]) {
             && !/%/.test(sg.text) && !/사세요|사라|추천|1등|대박|급등|수익률/.test(sg.text);
           check(stOk, W + '⑫-2 세 태세(주문 1120-0728 · 샘플 s04 · s01 · d02) — 수비 → 보편 → 공격 · 이 검사가 sun.rank 로 다시 센 꾀와 같음 · 줄마다 가장 나쁜 날 → 잃은 날 → 평균 같은 크기 · 없으면 억지로 채우지 않음 · 「%」 0',
             JSON.stringify({want: want ? (want.none ? 'none' : want.ks) : null, got: sg ? {rule: sg.rule, rows: sg.rows.map(r => [r.st, r.k, r.empty, r.lines.map(l => l.t + ':' + l.fs + '/' + l.bfs).join('|')])} : null}).slice(0, 600));
-          // ⑫-3 대나무 숲(주문 1120-1422 · 사장님 2026-11-20(마카오) 14:22 「여기 첫화면에 멋진 대나무밭 그림 …」) — 오늘 한 장 뒤 그림 · 글 뒤(누를 수 없음) · 카드 안 · 움직임 줄이기면 멈춤은 CSS
+          // ⑫-3 대나무 숲 지움(주문 1120-2116 · 사장님 2026-11-21(마카오) 00:19 「이 사진에 대나무 지워주고」 — 1120-1422 대나무 숲) — 오늘 한 장 안팎 대나무 그림 0
           await p.waitForSelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)', {timeout: 6000}).catch(() => {});
-          const bb = await p.evaluate(() => { const c = document.querySelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)'), b = c?.querySelector(':scope > .sj-tcbam'); if (!c) return {none: true, ph: !!document.querySelector('#su .sj-tc.sj-tc0')}; if (!b) return null;
-            const cs = getComputedStyle(b), r = c.getBoundingClientRect(), q = b.getBoundingClientRect(), g = b.querySelector('svg.sj-bam');
-            return {first: c.firstElementChild === b, hid: b.getAttribute('aria-hidden'), pos: cs.position, z: cs.zIndex, pe: cs.pointerEvents, inL: q.left >= r.left - 0.5, inR: q.right <= r.right + 0.5, n: g?.querySelectorAll('path').length ?? 0, txt: (g?.textContent ?? '').trim().length,
-              glow: getComputedStyle(c.querySelector(':scope > .sj-tck') ?? c).textShadow}; }); // 머리 한 줄(오늘 시장 · ○월 ○일)은 늘 있음 — 형세 자료가 없는 날도
-          check(!!bb && (bb.none ? bb.ph : bb.first && bb.hid === 'true' && bb.pos === 'absolute' && bb.z === '-1' && bb.pe === 'none' && bb.inL && bb.inR && bb.n >= 100 && bb.txt === 0 && /252, 254, 253/.test(bb.glow ?? '')), // 자료를 받기 전 자리 카드(sj-tc0)만 있으면 그림 없음이 맞음
-            W + '⑫-3 대나무 숲(주문 1120-1422) — 오늘 한 장 뒤 글 속 그림 · 글 뒤(누를 수 없음 · 읽지 않음) · 카드 안 · 글자 0 · 글에 종이빛 테두리', JSON.stringify(bb).slice(0, 300)); } // ⑫ · ⑫-2 · ⑫-3 은 첫 쪽(k 0)에서만 — 다른 쪽엔 오늘 한 장이 없음(미리 보기 2/11 의 실패 셋 = 꾀 · 「왜 사?」 · 일지 쪽에서 돌았던 것)
+          const bb = await p.evaluate(() => document.querySelectorAll('#su .sj-tcbam, #su svg.sj-bam').length);
+          check(bb === 0, W + '⑫-3 대나무 숲 지움(주문 1120-2116 · 00:19 「이 사진에 대나무 지워주고」) — 오늘 한 장 대나무 그림 0', String(bb)); } // ⑫ · ⑫-2 · ⑫-3 은 첫 쪽(k 0)에서만 — 다른 쪽엔 오늘 한 장이 없음(미리 보기 2/11 의 실패 셋 = 꾀 · 「왜 사?」 · 일지 쪽에서 돌았던 것)
         check(sj.old === 0, W + '⑪ 옛 꾸밈(그림 칸 · 무하 장식 · 옛 머리 · 탭 · 막대) 0 — 주문 1115-1706 「기존에 있던것 단 한나도 디자임 사용하지말고」 — ' + sj.h1, String(sj.old));
         check(sj.sealsOk, W + '⑪ 한눈 판별 — 회사 단추의 한 달 표(내림 · 오름 · 같음) = 그 회사 한 달 방향 · 내림 도장 = 짙은 남빛 찬 도장 + 흰 글(샘플 사) — ' + sj.h1, sj.seals.length + ' · ' + JSON.stringify(sj.sunSeal));
         check(sj.red === 0, W + '⑪ 빨강 글 0(한국에서 빨강은 오름 — 내림을 빨강으로 읽지 않게) — ' + sj.h1, String(sj.red));
@@ -1468,15 +1464,30 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       if (!s) return null;
       s.scrollIntoView({block: 'start'});
       const gk = s.querySelector(':scope > .sj-gk'), L = (gk ?? s).getBoundingClientRect();
-      const rows = [...s.querySelectorAll(':scope > .sj-gk > ol.sj-gkl > li.sj-gki')].map(li => { const pp = li.querySelector(':scope > p.sj-gkt'), b = pp?.querySelector(':scope > b.sj-gkm'), x = pp?.querySelector(':scope > .sj-gkx'), r = li.getBoundingClientRect();
-        return [+li.getAttribute('data-n'), t(li.querySelector(':scope > .sj-gkn')), t(b) + ' ' + t(x), pp?.hasAttribute('data-proper') === true, b ? parseFloat(getComputedStyle(b).fontSize) : 0, x ? parseFloat(getComputedStyle(x).fontSize) : 0, Math.round(r.left), Math.round(r.right), Math.round(r.height)]; });
+      const rows = [...s.querySelectorAll(':scope > .sj-gk > ol.sj-gkl > li.sj-gki')].map(li => { const sm = li.querySelector(':scope > details.sj-gkd > summary.sj-gks'), pp = sm?.querySelector(':scope > p.sj-gkt'), b = pp?.querySelector(':scope > b.sj-gkm'), x = pp?.querySelector(':scope > .sj-gkx'), r = li.getBoundingClientRect();
+        return [+li.getAttribute('data-n'), t(sm?.querySelector(':scope > .sj-gkn')), t(b) + ' ' + t(x), pp?.hasAttribute('data-proper') === true, b ? parseFloat(getComputedStyle(b).fontSize) : 0, x ? parseFloat(getComputedStyle(x).fontSize) : 0, Math.round(r.left), Math.round(r.right), Math.round(r.height),
+          li.querySelector(':scope > details.sj-gkd')?.open === false && (sm?.getBoundingClientRect().height ?? 0) >= 47.5]; }); // 처음엔 닫힘 · 누르는 줄 48 넘게(주문 1120-2116 · 00:19 「그래 그렇게도 하고」)
       const prev = s.previousElementSibling, next = s.nextElementSibling;
       return {rows, W: innerWidth, l: Math.round(L.left), r: Math.round(L.right), bg: gk ? getComputedStyle(gk.querySelector(':scope > h2') ?? gk, '::before').backgroundImage : '', title: t(gk?.querySelector(':scope > h2')),
         prev: prev ? prev.tagName.toLowerCase() + '.' + [...prev.classList].join('.') : '', next: next ? next.tagName.toLowerCase() + '.' + [...next.classList].join('.') : '',
         go: s.querySelectorAll('a[href]').length, note: t(s.querySelector(':scope > .sj-mnote')), rule: s.getAttribute('data-rule'), n: s.getAttribute('data-n')};
     });
     const want = HELLO33.slice(1).map(x => /^(\d+)\. (.+)$/.exec(x));
-    const rowsOk = !!g && g.rows.length === 10 && g.rows.every((r, i) => r[0] === i + 1 && r[1] === String(i + 1) && r[2] === want[i]?.[2] && r[3] && r[5] >= 16.95 && r[4] > r[5] && r[6] >= 0 && r[7] <= g.W && r[8] > 0);
+    const rowsOk = !!g && g.rows.length === 10 && g.rows.every((r, i) => r[0] === i + 1 && r[1] === String(i + 1) && r[2] === want[i]?.[2] && r[3] && r[5] >= 16.95 && r[4] > r[5] && r[6] >= 0 && r[7] <= g.W && r[8] > 0 && r[9]);
+    // 격언을 누르면 맞는 손자병법 말씀(주문 1120-2116 · 00:19 「그래 그렇게도 하고」) — 첫째 · 열째를 눌러 열림 · 말씀 「…」 · 「손자병법 ○○편」 · 한자 0 · 글 17px 넘게 · 다시 누르면 닫힘
+    const tap33 = [];
+    for (const n of [1, 10]) {
+      const sel = '#su section.sj-mind li.sj-gki[data-n="' + n + '"] > details.sj-gkd > summary.sj-gks';
+      if (!(await p.$(sel))) { tap33.push(null); continue; }
+      await p.click(sel); await p.waitForTimeout(150);
+      const o = await p.evaluate(sel => { const d = document.querySelector(sel)?.parentElement, q = d?.querySelector(':scope > blockquote.sj-gkq'), qp = q?.querySelector('p'), c = q?.querySelector('cite'), r = q?.getBoundingClientRect();
+        return {open: !!d?.open, q: (qp?.textContent ?? '').trim(), c: (c?.textContent ?? '').trim(), fs: qp ? parseFloat(getComputedStyle(qp).fontSize) : 0, cfs: c ? parseFloat(getComputedStyle(c).fontSize) : 0, h: r ? Math.round(r.height) : 0, right: r ? Math.round(r.right) : 0}; }, sel);
+      await p.click(sel); await p.waitForTimeout(100);
+      o.shut = await p.evaluate(sel => document.querySelector(sel)?.parentElement?.open === false, sel);
+      tap33.push(o);
+    }
+    const tapOk = tap33.every(o => !!o && o.open && o.shut && /^「[^「」]{6,}」$/.test(o.q) && /^손자병법 \S+편$/.test(o.c) && !/[\u4E00-\u9FFF]/.test(o.q + o.c) && o.fs >= 16.95 && o.cfs >= 16.95 && o.h > 0 && o.right <= (g?.W ?? 0));
+    check(tapOk, W + '격언을 누르면 맞는 손자병법 말씀(주문 1120-2116 · 00:19 「그래 그렇게도 하고」) — 첫째 · 열째 눌러 열림 · 「말씀」 · 손자병법 ○○편 · 한자 0 · 큰 글 · 다시 누르면 닫힘', JSON.stringify(tap33).slice(0, 400));
     check(rowsOk && g.n === '10' && g.rule === 'gyeok10-v1' && g.title === HELLO33[0] && /su-bg\.svg/.test(g.bg) && g.prev === '' && /^section\.sj-cover\b/.test(g.next)
       && g.go === 0 && /권하는 말이 아니라/.test(g.note) && g.l >= 0 && g.r <= g.W,
       W + '첫 쪽 「손자병법 주식 격언 열 가지」(주문 1120-2116) — 첫 화면 맨 위 · 표지(오늘 시장)보다 위 · 산수 수채화 족자 위 · 제목 · 열 줄 = 돌이 편지(사장님 글) 그대로 · 남의 글 표시 · 격언 큰 글 · 고리 0',

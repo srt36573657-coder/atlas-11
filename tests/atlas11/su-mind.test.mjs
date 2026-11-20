@@ -52,3 +52,21 @@ test('첫 쪽 — 첫 화면 맨 위(표지보다 위 · 23:21 「맨 위에 두
   assert.ok(/#su \.sj-mind \.sj-gkm \{[^}]*font-size: 1\.3125rem/.test(css) && /#su \.sj-mind \.sj-gkx \{[^}]*font-size: 1\.0625rem/.test(css), '격언 21 · 풀이 17');
   assert.ok(!/sj-jg|sj-js\b/.test(css), '앞 판 대나무 조각 꾸밈 지움');
 });
+
+test('격언마다 맞는 손자병법 말씀(00:19 「그래 그렇게도 하고」) — 열 개 · 편 이름 · 한자 0 · 쓰지 않을 말 0 · 먼저 칠한 글과 같음', async () => {
+  const {MIND_SUN} = await import('../../site/su/su-mind-core.js');
+  assert.equal(MIND_SUN.length, 10);
+  const {screenHits, ruinHits} = await import('../../site/next/words.js');
+  for (const [pian, quote] of MIND_SUN) {
+    assert.match(pian, /^\S+편$/);
+    assert.ok(quote.length >= 6 && /[.다]$/.test(quote) && !/[一-鿿]/.test(quote + pian), quote);
+    assert.deepEqual([...screenHits(quote), ...ruinHits(quote).map(x => x.word)], [], quote);
+  }
+  assert.deepEqual(MIND10.map(m => [m.pian, m.quote]), MIND_SUN.map(x => [...x]));
+  const sun = read('scripts/atlas11/next/su21_sun.py');
+  for (const q of ['움직이지 않을 때는 산처럼 버틴다.', '이김은 알아볼 수 있어도, 억지로 만들 수는 없다.', '잘 싸우는 사람은 지지 않을 자리에 먼저 선다.']) assert.ok(sun.includes(q), '첫 쪽 땅 · 꾀 차례 말씀과 같은 풀이 — ' + q);
+  const html = read('site/su/index.html');
+  const pre = [...html.matchAll(/<blockquote class="sj-gkq"><p>「([^」]+)」<\/p><cite>손자병법 ([^<]+)<\/cite><\/blockquote>/g)].map(m => [m[2], m[1]]);
+  assert.deepEqual(pre, MIND_SUN.map(x => [...x]), '먼저 칠한 글(index.html)의 말씀 = su-mind-core.js');
+  assert.ok(!html.includes('su-bamboo') && !read('site/su/su-sonja.js').includes('bambooArt'), '대나무 숲 지움(00:19 「이 사진에 대나무 지워주고」)');
+});

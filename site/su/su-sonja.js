@@ -12,9 +12,8 @@ import {NEED, ymd} from '/su/su-six.js';
 import {NAME, josa} from '/next/brand.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
-import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap, scrollFig} from '/su/su-sonja-top.js';
+import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
 import {MIX36, EQ36, NAME as KNAME, MEAN as KMEAN} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
-import {bambooArt} from '/su/su-bamboo.js'; // 오늘 한 장 뒤 대나무 숲(주문 1120-1422)
 import {stance3, STANCES, won100} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 — 수비 · 보편 · 공격 · 지난 같은 땅 기록으로만)
 import {MIND10, MIND_TITLE, MIND_RULE} from '/su/su-mind-core.js'; // 손자병법 주식 격언 열 가지(주문 1120-2116 — 사장님 2026-10-16 글 그대로)
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
@@ -374,7 +373,6 @@ export function todayCard(T, lc = null) {
   const x = okSun(T.sun) ? T.sun : null, dd = mday(x?.day ?? T.asOf?.board), st = x ? stance3(x) : null;
   const band = h('div', {class: 'sj-tcp', hidden: ''}); // 한 달 전 약속(있는 날만 · 첫 칠함 뒤에 셈)
   const card = h('div', {class: 'sj-tc', 'data-land': x?.land ?? null, 'data-stance': st ? st.rule : null},
-    h('div', {class: 'sj-tcbam', 'aria-hidden': 'true'}, bambooArt()), // 대나무 숲(주문 1120-1422 · 글 뒤 · 누를 수 없음)
     h('p', {class: 'sj-tck', text: '오늘 시장' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
     x ? h('p', {class: 'sj-tcl'}, h('b', {class: 'sj-tcn', text: x.name}), h('span', {class: 'sj-tcl2', text: '이에요.'})) // 「지금은」 줄을 지움(세 태세 줄 자리 · d02 「시장 문장 두 줄을 한 줄로」)
       : h('p', {class: 'sj-tcl', text: '오늘 시장 모습은 아직 세지 못했어요.'}),
@@ -415,9 +413,14 @@ function mindSec() {
     h('p', {class: 'sj-k', text: '사기 전에 새기는 말'}),
     h('div', {class: 'sj-gk'},
       h('h2', {class: 'sj-gkh'}, h('span', {class: 'sj-brush', text: MIND_TITLE})),
+      h('p', {class: 'sj-gkhint', text: '격언을 누르면 맞는 손자병법 말씀이 펼쳐져요.'}),
       h('ol', {class: 'sj-gkl', 'aria-label': MIND_TITLE}, ...MIND10.map(m => h('li', {class: 'sj-gki', 'data-n': String(m.n)},
-        h('span', {class: 'sj-gkn', 'aria-hidden': 'true', text: String(m.n)}),
-        h('p', {class: 'sj-gkt', 'data-proper': ''}, h('b', {class: 'sj-gkm', text: m.say}), h('span', {class: 'sj-gkx', text: m.more})))))),
+        h('details', {class: 'sj-gkd'}, // 누르면 맞는 손자병법 말씀(사장님 2026-11-21 00:19 「그래 그렇게도 하고」)
+          h('summary', {class: 'sj-gks'},
+            h('span', {class: 'sj-gkn', 'aria-hidden': 'true', text: String(m.n)}),
+            h('p', {class: 'sj-gkt', 'data-proper': ''}, h('b', {class: 'sj-gkm', text: m.say}), h('span', {class: 'sj-gkx', text: m.more})),
+            chev()),
+          h('blockquote', {class: 'sj-gkq'}, h('p', {text: '「' + m.quote + '」'}), h('cite', {text: '손자병법 ' + m.pian}))))))),
     h('p', {class: 'sj-mnote', text: '산수 그림 위에 적은 주식 격언 열 가지예요. 사고팔기를 권하는 말이 아니라, 사기 전에 한 번 멈추게 하는 말이에요.'}));
 }
 
@@ -453,8 +456,7 @@ export async function vSonja(X, shell = null) {
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
   const aw = main.querySelector(':scope > .sj-cover .sj-artw'); if (aw && !aw.querySelector(':scope > svg.sj-artfx')) aw.insertBefore(coverFilm(), aw.querySelector(':scope > .sj-hwa')); // 표지 영화 덧칠(주문 1116-2310 — 안개 · 새 · 금빛 반짝임 · 빛 한 줄기 11초)
   { const cv0 = main.querySelector(':scope > .sj-cover'), tw = cv0?.querySelector(':scope > .sj-tc'), tc = todayCard(T, X.cur?.()?.code ?? null); if (tw) tw.replaceWith(tc); else cv0?.append(tc); } // 오늘 한 장(주문 1120-0001) — 자리(sj-tc0)를 채움
-  const sunS = body.find(e => e?.classList?.contains('sj-sun')), cv = main.querySelector(':scope > .sj-cover'), at = sunS ?? cv; // 손자병법 한 폭(주문 1119-1648) — 표지 아래에서 오늘 시장 칸 끝으로(주문 1119-2026 — 열면 오늘 시장이 먼저)
-  if (at && !main.querySelector('figure.sj-scroll') && !at.querySelector(':scope > figure.sj-scroll')) at.append(scrollFig());
+  // 손자병법 한 폭(주문 1119-1648 · 첫 화면 가운데 산수 그림 · 번호 여섯 · 풀이 여섯)은 지움 — 주문 1120-2116 · 사장님 2026-11-21(마카오) 00:19 「두번째 그림은 다 지워줘」 · 00:24 「뒤에 있는 배경은 그대로 두고 첫 화면 중간에 있는 그림 지우면 돼」(뒤 배경 su-bg.svg 는 그대로)
   main.append(...body.filter(e => e != null)); // 꾀 칸 자료가 없는 날 wait = null — append 가 「null」 글로 붙이지 않게
   const hardOf = () => { const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove(); const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = ''; };
   hardOf();

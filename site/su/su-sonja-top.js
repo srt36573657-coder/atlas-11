@@ -78,27 +78,8 @@ export function cover(dd = null) {
 /** 걸음 줄 끝의 자료 날 */
 export const stepDay = dd => h('span', {class: 'sj-stepd', text: dd + ' 자료'});
 
-/** 손자병법 한 폭(주문 1119-1648 — 사장님 2026-11-19(마카오) 16:48 「응」 · 「이 그림을 첫 쪽 맨 위 표지에 넣을까요?」의 답 · 그림은 주문 1119-1623 「하폭에 수채화로 … 바보도 알수 있개」)
- *  표지 안 걸음 줄 아래 · 그림 속 번호 도장 여섯 = 아래 풀이 여섯 · 글은 그림 밖 HTML(글씨 17 이상) · 첫 칠함 뒤 본문과 함께 붙임(vSonja · 늦게 받음) */
-export const SCROLL = '/su/su-sonja-scroll.svg';
-export const SCROLLK = Object.freeze([
-  ['먼 산 다섯 = 오늘 시장', '왼쪽부터 오르는, 잔잔한, 쏠린, 흔들리는, 내리는 시장이에요.'],
-  ['정자 = 꾀 서른여섯', '등불 하나가 꾀 묶음 하나, 창 한 칸이 꾀 하나예요.'],
-  ['연꽃 = 고른 회사', '꾀가 고른 회사가 꽃으로 피어요.'],
-  ['징검돌 열하나 = 「왜 사?」', '사기 전에 멈춰서 열한 가지를 물어요.'],
-  ['나룻배 = 내 매매일지', '내가 한 일을 적고, 한 달 뒤에 다시 봐요.'],
-  ['흐르는 선 = 정산', '처음 넣은 100원이 날마다 얼마가 됐는지 적어요. 한 번 적으면 고치지 않아요.']
-]);
-export function scrollFig() {
-  return h('figure', {class: 'sj-scroll', 'aria-label': '손자병법 한 폭'},
-    meanCap('손자병법 쪽 전체를 한 폭에 그렸어요. 위에서 아래로 따라가요.', 'figcaption'),
-    h('div', {class: 'sj-scrollw'},
-      h('img', {class: 'sj-scrollimg', src: SCROLL, width: '360', height: '980', loading: 'lazy', decoding: 'async',
-        alt: '수채화 한 폭 — 먼 산 다섯, 등불 여섯 단 정자, 연꽃, 징검돌 열하나, 나룻배, 흐르는 먹선. 아래 풀이 여섯과 번호가 같아요.'})),
-    h('ol', {class: 'sj-scrollk', 'aria-label': '그림 보는 법 여섯 걸음'},
-      ...SCROLLK.map(([b, t], i) => h('li', {}, h('span', {class: 'sj-scrolln', 'aria-hidden': 'true', text: String(i + 1)}),
-        h('div', {}, h('b', {text: b}), h('span', {class: 'sj-scrollt', text: t}))))));
-}
+/* 손자병법 한 폭(주문 1119-1648 — SCROLL · SCROLLK · scrollFig)은 지움(주문 1120-2116 · 사장님 2026-11-21(마카오) 00:24 「뒤에 있는 배경은 그대로 두고 첫 화면 중간에 있는 그림 지우면 돼」)
+   그림 파일 su-sonja-scroll.svg 는 뒤 배경(su-bg.svg)을 만드는 바탕이라 그대로(scripts/atlas11/next/su_bg.py) */
 
 /** 먼저 칠하는 판 — 머리 줄과 표지만 든 main(data-wait — 본문을 다 붙이고 채우면 뗌 · 검사가 기다림)
  *  root 에 index.html 이 든 판(.sj-pre)이 있으면 그것을 그대로 씀(pre = true · 다시 그리지 않음 — 첫 칠함 그대로) */
