@@ -1431,3 +1431,8 @@ html.sj-on #su .sj-pkmn { color: #1B3A44; }
 #su .sj-pkcl li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 1.0625rem; color: #20323A; }
 #su .sj-pkck { flex: none; display: inline-block; width: 28px; height: 0; border-top: 4px solid #20323A; }
 #su .sj-pkl2k { border-top: 3px dashed #2F6F6A; } #su .sj-pkl3k { border-top-color: #A07C35; } #su .sj-pkl4k { border-top: 3px dotted #4A6168; } #su .sj-pkl5k { border-top: 3px dashed #7FB3AE; }
+/* 주문 1120-1040 — 회사 쪽 날마다 고른 꾀 수 꺾은선 */
+#su .sj-cpkbox { display: grid; gap: 8px; margin: 10px 0; padding: 12px; border-radius: 16px; background: #FCFEFD; box-shadow: inset 0 0 0 1.5px #CFE3E0; }
+#su .sj-cpkbox > * { margin: 0; }
+#su .sj-cpk { width: 100%; height: auto; }
+#su .sj-cpkt { font-size: 1.0625rem; color: #20323A; line-height: 1.45; }

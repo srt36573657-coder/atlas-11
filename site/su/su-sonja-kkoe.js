@@ -18,7 +18,7 @@ import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날�
 import {kkoePic, ridgePic, heroPic, brushBar, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 손무의 이야기: 제3장 꾀를 펼치다 · 제4장 성을 살피다 · 장부 · 병서)
 import {kkoeTile} from '/su/su-sonja.js';
 import {stance3, STANCES} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 · 꾀 쪽 맨 위 표지 — 주문 1120-0950)
-import {picksOf, monthLow} from '/su/su-picks.js'; // 여러 꾀가 고른 회사(주문 1120-0950)
+import {picksOf, monthLow, dayCounts} from '/su/su-picks.js'; // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
 /** 그림 속 이야기 네 막(주문 1117-0102) — 큰 그림 바로 아래 · 그림이 그 막에 오면 그 줄이 밝아짐(꾸밈 sj-story) */
 const storyOl = k => STORY36[k] ? h('ol', {class: 'sj-story', 'aria-label': STORY_TAG}, ...STORY36[k].map((t, i) => h('li', {'data-act': String(i + 1)}, h('b', {class: 'sj-actt', text: ACTS[i]}), h('span', {class: 'sj-actb', text: t})))) : null;
 
@@ -310,8 +310,25 @@ function ddCard(sp) {
     d ? h('p', {class: 'sj-lossv'}, h('span', {class: 'sj-lossw'}, h('span', {text: '100원이 '}), h('b', {text: w100(d.r - 1)})), h('span', {class: 'sj-lossf', text: won(d.hi) + '에서 ' + won(d.lo) + '까지 내렸어요.'}))
       : h('p', {class: 'sj-lossv'}, h('b', {class: 'sj-lossn', text: '한 달 동안 그 전보다 내린 날이 없어요.'})));
 }
+/** 회사 쪽 — 날마다 이 회사를 고른 꾀 수 꺾은선(주문 1120-1040 · 사장님 2026-11-20(마카오) 10:40 「응 30분안에 해」 — 물음 「회사 쪽에도 그 회사를 고른 꾀 수 꺾은선을 붙일까요?」)
+ *  정산 장부(날마다 적고 고치지 않음) + 오늘 꾀 칸 · 바닥 = 0 · 점마다 그날 꾀 수 · 「추천」이라는 말을 쓰지 않음 */
+function coPickBox(days, n) {
+  const W = 320, H = 96, PX = 12, PT = 14, PB = 12, m = Math.max(3, ...n), f = v => Math.round(v * 10) / 10, c = n.length;
+  const x = i => (c < 2 ? W / 2 : PX + (W - 2 * PX) * i / (c - 1)), y = v => PT + (H - PT - PB) * (1 - v / m);
+  const g = s('svg', {class: 'sj-cpk', viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true', focusable: 'false'});
+  g.append(s('path', {d: `M${PX} ${f(y(0))}H${W - PX}`, class: 'sj-pksp0'}));
+  if (c > 1) g.append(s('polyline', {points: n.map((v, i) => f(x(i)) + ',' + f(y(v))).join(' '), class: 'sj-pksp1'}));
+  n.forEach((v, i) => g.append(s('circle', {cx: f(x(i)), cy: f(y(v)), r: i === c - 1 ? 5 : 3.5, class: 'sj-pkspe'})));
+  const tot = n.reduce((a, v) => a + v, 0);
+  return h('div', {class: 'sj-cpkbox', 'data-days': String(c), 'data-now': String(n[c - 1])},
+    h('p', {class: 'sj-pkch', text: '그림 뜻 · 날마다 이 회사를 고른 꾀 수예요. 위로 갈수록 많은 꾀가 골랐어요.'}), g,
+    h('p', {class: 'sj-pkcd', 'aria-hidden': 'true'}, h('span', {text: mday(days[0]) ?? ''}), h('span', {text: mday(days[c - 1]) ?? ''})),
+    h('p', {class: 'sj-cpkt', text: (c > 1 ? mday(days[0]) + '부터 ' + c + '일 동안 꾀가 모두 ' + tot + '번 골랐어요. ' : '아직 하루치예요. ') + '마지막 날은 꾀 ' + n[c - 1] + '가지예요.'}),
+    goLink('#/o', '여러 꾀가 고른 회사 보기'));
+}
 export async function vCo36(X, code) {
-  const [T, co, {S}] = await Promise.all([load21(X.get), X.get(coUrl(code)), X.base()]), g = await g36Of(X, T);
+  const [T, co, {S}, D] = await Promise.all([load21(X.get), X.get(coUrl(code)), X.base(), Promise.resolve(X.get(DST)).catch(() => null)]), g = await g36Of(X, T);
+  const DC = dayCounts(D, g.fallback ? null : g), pkN = DC.days.map(d => DC.cnt.get(d).get(code) ?? 0), pkBox = pkN.some(v => v > 0) ? coPickBox(DC.days, pkN) : null; // 날마다 고른 꾀 수(주문 1120-1040)
   const G = g, mine = G ? K36.filter(k => (G.lists[k] ?? []).slice(0, 7).some(c => String(c?.code) === code)) : [];
   const inList = mine.length ? (G.lists[mine[0]] ?? []).find(c => String(c?.code) === code) : null;
   const c = co?.c ?? null, name = typeof c?.name === 'string' && c.name ? c.name : typeof inList?.name === 'string' ? inList.name : null;
@@ -332,6 +349,7 @@ export async function vCo36(X, code) {
     h('section', {class: 'sj-sec sj-cok', 'aria-label': '이 회사를 고른 꾀', 'data-n': String(mine.length)},
       head('꾀', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 회사를 고른 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + mine.length + '가지'}))),
       mine.length && sun ? h('p', {class: 'sj-rule', text: '꾀마다 지난 기록을 적었어요. 지금 같은 ' + sun.name + '에서 덜 잃은 꾀가 위에 있어요.'}) : null,
+      pkBox, // 날마다 이 회사를 고른 꾀 수 꺾은선(주문 1120-1040)
       mine.length ? h('ol', {class: 'sj-tricks sj-cotricks'}, ...sorted.map(k => { const r = RB[k] ?? null;
         return h('li', {class: 'sj-tk', 'data-k': k, 'data-rank': r ? String(r.i) : null},
           meanCap(PIC[k]), kkoeTile(k, G.name[k]), // 그림 뜻 한 줄 → 꾀 그림(주문 1116-1313)

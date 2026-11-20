@@ -1260,6 +1260,14 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     && o.wide && /앞날을 맞히지 않고/.test(o.safe) && !/%|추천|사세요|사라|1등|대박|급등|수익률/.test(o.text) && o.tab === '꾀',
     W + '나) 여러 꾀가 고른 회사(#/o) — 이 검사가 장부로 다시 센 꾀 수와 같음 · 많이 고른 차례 · 줄마다 꺾은선 · 손실 먼저 · 「추천」 「%」 0 · 앞날 아님 한 줄',
     JSON.stringify({days: days.length, want: want ? want.size : 'many', got: o.rows.slice(0, 6).map(r => [r.c, r.n, r.say.slice(0, 12)]), chart: o.chart, legend: o.legend, wide: o.wide, tab: o.tab}).slice(0, 500));
+  if (o.rows.length) { // 다) 회사 쪽 날마다 고른 꾀 수 꺾은선(주문 1120-1040) — 이 검사가 다시 센 날마다 꾀 수와 같음
+    const r0 = o.rows[0], wantN = days.map(d => cntOf(d, r0.c));
+    await open(p, '#/c/' + r0.c);
+    const cb = await p.evaluate(() => { const b = document.querySelector('#su main.sj-page[data-page="co"] section.sj-cok .sj-cpkbox');
+      return b ? {days: b.getAttribute('data-days'), now: b.getAttribute('data-now'), dots: b.querySelectorAll('svg.sj-cpk circle').length, go: b.querySelector('a.sj-go')?.getAttribute('href') ?? '', t: (b.querySelector('.sj-cpkt')?.textContent ?? '').trim(), fs: parseFloat(getComputedStyle(b.querySelector('.sj-cpkt')).fontSize)} : null; });
+    check(!!cb && cb.days === String(days.length) && cb.now === String(wantN[wantN.length - 1]) && cb.dots === days.length && cb.go === '#/o' && cb.t.includes('꾀') && cb.fs >= 16.95 && !/%|추천/.test(cb.t),
+      W + '다) 회사 쪽 날마다 고른 꾀 수 꺾은선(주문 1120-1040) — 다시 센 꾀 수와 같음 · 점 = 날 수 · 여러 꾀가 고른 회사로 가는 고리', JSON.stringify({c: r0.c, wantN, cb}).slice(0, 300));
+  }
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();
 }
