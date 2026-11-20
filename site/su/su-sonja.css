@@ -1216,6 +1216,8 @@ html.sj-on #su .sj-nows { font-size: 1.0625rem; font-weight: 600; color: #4A6168
 #su .sj-page .sj-ydl { font-size: 1.3125rem; line-height: 1.35; font-weight: 800; }
 #su .sj-page .sj-ydk { font-size: 1.0625rem; line-height: 1.45; }
 #su .sj-page .sj-yda { flex: none; align-self: center; font-style: normal; font-size: 1.5rem; font-weight: 800; }
+/* 어제와 오늘 두 칸 — 큰 글씨 · 좁은 휴대폰에서는 위아래로(꾀 이름이 세로로 무너지지 않게 · 2026-11-20 진짜 사이트 검사 ㉙ [320 · 큰 글씨] 「다시 살아나기」) */
+@media (max-width: 400px) { html.su-lg #su .sj-page .sj-ydg { flex-direction: column; } html.su-lg #su .sj-page .sj-yda { transform: rotate(90deg); } }
 #su .sj-page .sj-ydt { margin-top: 10px; font-size: 1.1875rem; line-height: 1.55; font-weight: 800; }
 #su .sj-page .sj-ydt2 { margin-top: 4px; font-size: 1.1875rem; line-height: 1.55; font-weight: 700; }
 #su .sj-page .sj-ydn { margin-top: 6px; font-size: 1.0625rem; line-height: 1.5; }
