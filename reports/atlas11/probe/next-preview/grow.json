@@ -7,12 +7,12 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-20T07:49:03.834Z",
+ "at": "2026-11-20T08:13:51.174Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
   "mine": 2569,
-  "hash": "7f1ddf53a505ba06",
+  "hash": "269ab855110e72b1",
   "kinds": {
    "c": {
     "total": 2557,
@@ -32,20 +32,20 @@
    }
   }
  },
- "seconds": 51,
- "secondsSum": 152,
+ "seconds": 74,
+ "secondsSum": 220,
  "time": {
-  "old": 6.2,
-  "new": 134.4,
-  "wall": 50.6,
-  "wallSum": 151.6,
-  "opensOld": 13,
+  "old": 177.2,
+  "new": 180.1,
+  "wall": 73.8,
+  "wallSum": 219.7,
+  "opensOld": 7684,
   "opensNew": 10286,
-  "oldPct": 4.1,
-  "oldShare": 4.4
+  "oldPct": 80.7,
+  "oldShare": 49.6
  },
  "net": {
-  "req": 5280,
+  "req": 3549,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -65,12 +65,12 @@
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": true,
-   "why": "",
-   "made": "2026-11-20T07:21:29.115Z | 2026-11-20T07:21:29.769Z | 2026-11-20T07:21:29.188Z",
+   "use": false,
+   "why": "검사 · 브라우저 · 목록이 바뀜 | 바뀐 파일 597개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
+   "made": null,
    "inputs": 2596,
    "reads": 2557,
-   "note": "기준값 다시 씀"
+   "note": "기준값 새로 씀(파일 866개 · 값 853개) | 기준값 새로 씀(파일 865개 · 값 852개)"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
@@ -82,7 +82,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 50,
+   "seconds": 73,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -95,7 +95,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 51,
+   "seconds": 74,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -108,7 +108,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 51,
+   "seconds": 73,
    "mine": 856,
    "kinds": {
     "c": 852,
