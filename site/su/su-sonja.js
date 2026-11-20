@@ -14,6 +14,7 @@ import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
 import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap, scrollFig} from '/su/su-sonja-top.js';
 import {MIX36, EQ36, NAME as KNAME, MEAN as KMEAN} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
+import {stance3, STANCES, won100} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 — 수비 · 보편 · 공격 · 지난 같은 땅 기록으로만)
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {landPic, kkoePic, arrowsPic, sonmuPic, brushBar, coverFilm} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
 
@@ -354,17 +355,29 @@ function trickSec(g, T) {
 /* ── 0 오늘 한 장(주문 1120-0001 · 사장님 2026-11-20(마카오) 00:01 「손자병법을 대 개선 한다 / 머스크가 손자병버을 만들었다면 … 매우 매우 직관적이면서 매루매우 활용적이면서 매우매우 아름닥게」 · 00:05 「어 맞아」)
    참모 서른여섯 2차 표 — 뼈대 m08 「깃털 한 장」(첫째로 8표) + m04 「네 번째 비행」(18표 · 한 달 전 약속을 첫 쪽으로) + d07 「멈춤 문」(15표 · 가장 큰 단추는 사기가 아니라 멈춤)
    첫 화면 한 장 = 오늘 시장 한 마디 · 이런 시장에서 덜 잃은 꾀 셋 · 「사기 전에 멈춰요」 큰 단추 · (한 달 지난 약속이 있는 날만) 그날 정한 대로 했어? · 앞날을 맞히지 않음 ── */
+/** 세 태세 한 줄(주문 1120-0728) — 줄 하나가 단추 하나(누르면 그 꾀 쪽) · 잃는 쪽 먼저(s04 · 가장 나쁜 날 → 잃은 날 → 평균 · 모두 같은 크기)
+ *  수비가 바탕(s01 · 맞는 꾀가 없으면 비움 — 억지로 채우지 않음) · 세 줄 같은 꼴(d02) */
+const tsLine = (cls, k, v) => h('span', {class: cls}, h('span', {class: 'sj-tsk', text: k}), h('b', {text: v}));
+function stRow(d, r) {
+  if (!r || typeof KNAME[r.k] !== 'string') return h('li', {class: 'sj-ts sj-ts0', 'data-st': d.st},
+    h('p', {class: 'sj-ts0t'}, h('span', {class: 'sj-tsg', text: d.tag}), h('span', {class: 'sj-ts0s', text: d.st === 'att' ? '이런 시장에서 평균이 늘어난 꾀가 없었어요.' : '고루 갖춘 꾀가 없었어요.'})),
+    h('p', {class: 'sj-ts0x', text: '억지로 채우지 않았어요.'}));
+  return h('li', {class: 'sj-ts', 'data-st': d.st, 'data-k': r.k},
+    h('a', {class: 'sj-tsa', href: '#/k/' + r.k},
+      h('span', {class: 'sj-tst'}, h('span', {class: 'sj-tsg', text: d.tag}), h('b', {class: 'sj-tsn', text: KNAME[r.k]}), h('i', {'aria-hidden': 'true', text: '›'})),
+      h('span', {class: 'sj-tsv'}, tsLine('sj-tsw', '가장 나쁜 날', won100(r.worst)), tsLine('sj-tsl', '잃은 날', r.n + '번 중 ' + r.lose + '번'), tsLine('sj-tsm', '평균', won100(r.avg)))));
+}
 export function todayCard(T, lc = null) {
-  const x = okSun(T.sun) ? T.sun : null, dd = mday(x?.day ?? T.asOf?.board), w3 = x ? win3Of(x) : null;
-  const ks = (x ? (w3?.length ? w3 : x.rank.slice(0, 3).map(r => r.k)) : []).filter(k => typeof KNAME[k] === 'string');
+  const x = okSun(T.sun) ? T.sun : null, dd = mday(x?.day ?? T.asOf?.board), st = x ? stance3(x) : null;
   const band = h('div', {class: 'sj-tcp', hidden: ''}); // 한 달 전 약속(있는 날만 · 첫 칠함 뒤에 셈)
-  const card = h('div', {class: 'sj-tc', 'data-land': x?.land ?? null},
+  const card = h('div', {class: 'sj-tc', 'data-land': x?.land ?? null, 'data-stance': st ? st.rule : null},
     h('p', {class: 'sj-tck', text: '오늘 시장' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
-    x ? h('p', {class: 'sj-tcl'}, h('span', {class: 'sj-tcl1', text: '지금은'}), h('b', {class: 'sj-tcn', text: x.name}), h('span', {class: 'sj-tcl2', text: '이에요.'}))
+    x ? h('p', {class: 'sj-tcl'}, h('b', {class: 'sj-tcn', text: x.name}), h('span', {class: 'sj-tcl2', text: '이에요.'})) // 「지금은」 줄을 지움(세 태세 줄 자리 · d02 「시장 문장 두 줄을 한 줄로」)
       : h('p', {class: 'sj-tcl', text: '오늘 시장 모습은 아직 세지 못했어요.'}),
-    ks.length ? h('p', {class: 'sj-tch', text: '이런 시장에서 덜 잃은 꾀'}) : null,
-    ks.length ? h('ol', {class: 'sj-tcks'}, ...ks.map((k, i) => h('li', {}, h('a', {class: 'sj-tckk', href: '#/k/' + k, 'aria-label': (i + 1) + ' · ' + KNAME[k] + ' · 이 꾀 보기'},
-      h('span', {class: 'sj-tcki', 'aria-hidden': 'true', text: String(i + 1)}), h('b', {text: KNAME[k]}), h('i', {'aria-hidden': 'true', text: '›'}))))) : null,
+    st ? h('p', {class: 'sj-tch', text: '이런 시장의 세 태세 · 지키는 쪽부터'}) : null,
+    st?.def ? h('p', {class: 'sj-tcd', text: (x.hist?.all ? '지난 모든 날' : '지난 같은 시장') + ' · 100원이 닷새 뒤'}) : null,
+    st?.def ? h('ol', {class: 'sj-tcst', 'aria-label': '세 태세 · 수비형 · 보편형 · 공격형'}, ...STANCES.map(d => stRow(d, st[d.st])))
+      : st ? h('p', {class: 'sj-tcd', text: '센 날이 모자라 세 태세를 세지 못했어요. 억지로 채우지 않았어요.'}) : null,
     h('a', {class: 'sj-tcgo', href: lc ? '#/q/' + lc : '#/q'}, h('b', {text: '사기 전에 멈춰요'}), h('span', {text: '열한 가지를 하나씩 물어요'}), h('i', {'aria-hidden': 'true', text: '›'})),
     band,
     h('p', {class: 'sj-tcs', text: '지난 기록이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));

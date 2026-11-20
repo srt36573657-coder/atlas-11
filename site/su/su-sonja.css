@@ -1277,20 +1277,44 @@ html.sj-on #su .sj-fl { display: inline-flex; align-items: center; min-height: 4
    참모 서른여섯 2차 표: 뼈대 m08 「깃털 한 장」 + m04 「네 번째 비행」 + d07 「멈춤 문」 + d09 「한 돌 한 판」 + m01 「잃을 돈 먼저」 + m02 「묻고 지운 판」(docs/design/sonja-musk-2026-11-20/TALLY2.md)
    첫 화면 한 장(오늘 시장 · 덜 잃은 꾀 셋 · 가장 큰 단추 「사기 전에 멈춰요」 · 한 달 전 약속) · 「왜 사?」 답이 첫 화면 안 · 답 = 다음 · 손무 얼굴 칸은 첫 쪽에만 · 빨강 0 ── */
 html.sj-on #su .sj-cover > .sj-tc { order: -1; }
-#su .sj-tc { display: grid; gap: 10px; align-content: start; min-height: 452px; padding: 6px 2px 18px; border-bottom: 1.5px dashed #CFE3E0; }
+#su .sj-tc { display: grid; gap: 8px; align-content: start; min-height: 452px; padding: 6px 2px 18px; border-bottom: 1.5px dashed #CFE3E0; }
 #su .sj-tc > * { margin: 0; }
 #su .sj-tck { font-size: 1.0625rem; font-weight: 700; color: #2E444C; letter-spacing: .02em; }
 #su .sj-tcw { font-size: 1.25rem; font-weight: 700; color: #4A6168; }
-#su .sj-tcl { color: #20323A; font-size: 1.375rem; font-weight: 700; line-height: 1.3; }
-#su .sj-tcl1 { display: block; }
-#su .sj-tcn { font-family: var(--sj-brush); font-weight: 400; font-size: clamp(2.375rem, 11vw, 3rem); line-height: 1.12; color: #1B3A44; margin-right: 4px; }
-#su .sj-tch { margin-top: 6px; font-size: 1.0625rem; font-weight: 800; color: #1B3A44; }
-#su .sj-tcks { list-style: none; padding: 0; display: grid; gap: 8px; }
-#su .sj-tckk { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 6px 14px; border: 2px solid #20323A; border-radius: 16px; background: #FCFEFD; color: #20323A; text-decoration: none; }
-#su .sj-tcki { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #E3F0EE; color: #1B3A44; font-weight: 800; font-size: 1.0625rem; }
-#su .sj-tckk b { flex: 1 1 auto; min-width: 0; font-size: 1.25rem; font-weight: 800; }
-#su .sj-tckk i { font-style: normal; font-size: 1.5rem; color: #4A6168; }
-#su .sj-tcgo { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; min-height: 84px; margin-top: 6px; padding: 14px 20px; border-radius: 20px; background: #20323A; color: #FCFEFD; text-decoration: none; box-shadow: 0 0 0 4px #DCEBE8, 0 16px 28px -16px rgba(27, 58, 68, .6); }
+#su .sj-tcl { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; color: #20323A; font-size: 1.375rem; font-weight: 700; line-height: 1.3; }
+#su .sj-tcn { font-family: var(--sj-brush); font-weight: 400; font-size: clamp(2rem, 9.4vw, 2.75rem); line-height: 1.12; color: #1B3A44; }
+#su .sj-tch { margin-top: 2px; font-size: 1.0625rem; font-weight: 800; color: #1B3A44; }
+/* 세 태세(주문 1120-0728 · 샘플 셋 s04 「온전한 한 판」 · s01 「먼저 지킨 뒤 기다림」 · d02 「세 깃발 한 장」의 좋은 점)
+   줄 차례는 늘 수비 → 보편 → 공격(수익 순위가 아님) · 테 굵기 = 집(s01): 수비는 짙고 굵은 바탕 · 보편은 옅게 · 공격은 금빛 가는 한 줄
+   숫자 칸 둘은 같은 크기 · 「가장 나쁜 날」(짙게)이 먼저 · 「평균」(옅게)이 곁에(s04) · 빨강 0 · 「%」 0 */
+#su .sj-tcd { font-size: 1.0625rem; font-weight: 700; color: #2E444C; line-height: 1.45; }
+#su .sj-tcst { list-style: none; padding: 0; display: grid; gap: 6px; }
+#su .sj-ts { border-radius: 16px; background: #FCFEFD; box-shadow: inset 0 0 0 2px #A6D0CD; }
+#su .sj-ts[data-st="def"] { box-shadow: inset 0 0 0 3px #20323A; }
+#su .sj-ts[data-st="att"] { box-shadow: inset 0 0 0 1.5px #A07C35; }
+#su .sj-tsa { display: grid; gap: 2px; min-height: 48px; padding: 5px 12px 7px; color: #20323A; text-decoration: none; }
+#su .sj-tst { display: flex; align-items: center; gap: 10px; min-width: 0; }
+#su .sj-tsg { flex: none; display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border-radius: 999px; font-size: 1.0625rem; font-weight: 800; line-height: 1.2; }
+#su .sj-ts[data-st="def"] .sj-tsg { background: #1B3A44; color: #FCFEFD; }
+#su .sj-ts[data-st="mid"] .sj-tsg { background: #DCEBE8; color: #1B3A44; }
+#su .sj-ts[data-st="att"] .sj-tsg { background: #FCFEFD; color: #1B3A44; box-shadow: inset 0 0 0 2px #A07C35; }
+#su .sj-tsn { flex: 1 1 auto; min-width: 0; font-size: 1.125rem; font-weight: 800; line-height: 1.3; }
+#su .sj-tst > i { flex: none; font-style: normal; font-size: 1.5rem; line-height: 1; color: #4A6168; }
+#su .sj-tsv { display: grid; gap: 0; }
+#su .sj-tsw, #su .sj-tsl, #su .sj-tsm { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: 10px; padding: 1px 10px; margin-top: 1px; border-radius: 8px; font-size: 1.0625rem; line-height: 1.35; }
+#su .sj-tsv b { font-size: 1.0625rem; font-weight: 800; }
+#su .sj-tsw { background: #20323A; color: #FCFEFD; }
+#su .sj-tsl { color: #20323A; }
+#su .sj-tsm { background: #E3F0EE; color: #1B3A44; }
+#su .sj-ts0 { padding: 10px 12px; background: #F3F8F6; }
+#su .sj-ts0 > * { margin: 0; }
+#su .sj-ts0t { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 1.0625rem; font-weight: 700; color: #20323A; line-height: 1.45; }
+#su .sj-ts0x { margin-top: 2px; font-size: 1.0625rem; color: #2E444C; }
+html.sj-on #su .sj-tc a.sj-tsa, html.sj-on #su .sj-tc a.sj-tsa .sj-tsn, html.sj-on #su .sj-tc .sj-tsl, html.sj-on #su .sj-tc .sj-tsl b { color: #20323A; }
+html.sj-on #su .sj-tc .sj-tst > i { color: #4A6168; }
+html.sj-on #su .sj-tc .sj-ts[data-st="def"] .sj-tsg, html.sj-on #su .sj-tc .sj-tsw, html.sj-on #su .sj-tc .sj-tsw b, html.sj-on #su .sj-tc .sj-tsw span { color: #FCFEFD; }
+html.sj-on #su .sj-tc .sj-ts[data-st="mid"] .sj-tsg, html.sj-on #su .sj-tc .sj-ts[data-st="att"] .sj-tsg, html.sj-on #su .sj-tc .sj-tsm, html.sj-on #su .sj-tc .sj-tsm b, html.sj-on #su .sj-tc .sj-tsm span { color: #1B3A44; }
+#su .sj-tcgo { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; min-height: 76px; margin-top: 4px; padding: 10px 20px; border-radius: 20px; background: #20323A; color: #FCFEFD; text-decoration: none; box-shadow: 0 0 0 4px #DCEBE8, 0 16px 28px -16px rgba(27, 58, 68, .6); }
 #su .sj-tcgo b { font-size: 1.5rem; font-weight: 800; }
 #su .sj-tcgo span { grid-column: 1; font-size: 1.0625rem; font-weight: 600; color: #DCEBE8; }
 #su .sj-tcgo i { grid-column: 2; grid-row: 1 / span 2; font-style: normal; font-size: 2.25rem; line-height: 1; }

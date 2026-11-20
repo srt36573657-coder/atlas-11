@@ -314,7 +314,35 @@ for (const width of [390, 360, 320]) {
         if (k === 0) { check(sj.moreShut && sj.ess === 3, W + '⑩ 「자세히」는 눌러야 열림 · 그 안 본질 세 줄 — ' + sj.h1, JSON.stringify({shut: sj.moreShut, ess: sj.ess})); check(sj.art, W + '⑪ 표지 붓 글씨 그림이 열림', '');
           const tc = await p.evaluate(() => { const c = document.querySelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)'), go = c?.querySelector('a.sj-tcgo'), r = go?.getBoundingClientRect(), t = document.querySelector('#su .sj-tabs')?.getBoundingClientRect(), pm = c?.parentElement?.querySelector(':scope > .sj-pm')?.getBoundingClientRect();
             return {has: !!c, go: go?.getAttribute('href') ?? null, low: r ? Math.round(r.bottom + scrollY) : null, tabs: t ? Math.round(t.top) : null, top: c && pm ? c.getBoundingClientRect().bottom <= pm.top + 1 : false, safe: (c?.querySelector('.sj-tcs')?.textContent ?? '').includes('앞날을 맞히지 않고'), red: c ? [...c.querySelectorAll('*')].filter(e => { const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length : -1}; });
-          check(tc.has && /^#\/q(\/[0-9A-Z]{6})?$/.test(tc.go ?? '') && tc.low != null && tc.tabs != null && tc.low <= tc.tabs && tc.top && tc.safe && tc.red === 0, W + '⑫ 오늘 한 장(주문 1120-0001 · m08 깃털 한 장 · d07 멈춤 문) — 첫 화면 맨 위 · 「사기 전에 멈춰요」 큰 단추가 아래 탭 위 · 앞날 아님 한 줄 · 빨강 0', JSON.stringify(tc)); }
+          check(tc.has && /^#\/q(\/[0-9A-Z]{6})?$/.test(tc.go ?? '') && tc.low != null && tc.tabs != null && tc.low <= tc.tabs && tc.top && tc.safe && tc.red === 0, W + '⑫ 오늘 한 장(주문 1120-0001 · m08 깃털 한 장 · d07 멈춤 문) — 첫 화면 맨 위 · 「사기 전에 멈춰요」 큰 단추가 아래 탭 위 · 앞날 아님 한 줄 · 빨강 0', JSON.stringify(tc));
+          // ⑫-2 세 태세(주문 1120-0728 · 사장님 2026-11-20(마카오) 07:28 「공격형 지략 그리고 보편적 지략 그리고 수비형 지략을 전술화하여 …」 · 07:32 「맞아」) — 이 검사가 su21.json sun.rank 로 따로 다시 셈(화면 코드 su-stance.js 를 부르지 않음)
+          //   수비형 = win3 첫째(없으면 덜 잃은 차례 맨 위) · 공격형 = 남은 꾀 가운데 평균 가장 높은 꾀(평균 0 넘고 · 아무렇게나 일곱보다 더 자주 잃지 않은 꾀) · 보편형 = 남은 꾀 가운데 잃은 몫 차례 + 평균 차례가 가장 작은 꾀 · 센 날 minN 아래는 뺌
+          //   줄 차례는 늘 수비 → 보편 → 공격(수익 순위 아님) · 줄마다 가장 나쁜 날 → 잃은 날 → 평균(모두 같은 글씨 크기 · 잃는 쪽 먼저) · 없으면 「억지로 채우지 않았어요」 · 「%」 0 · 부추기는 말 0
+          const F = v => typeof v === 'number' && Number.isFinite(v), won = v => (100 * (1 + v)).toFixed(1).replace(/\.0$/, '') + '원', SS = T0?.sun ?? null;
+          const want = (() => { if (!SS || SS.rule !== 'sun-v1' || !Array.isArray(SS.rank)) return null;
+            const mn = Number.isInteger(SS.minN) && SS.minN > 0 ? SS.minN : Number.isInteger(SS.win3?.minN) && SS.win3.minN > 0 ? SS.win3.minN : 20;
+            const ok = SS.rank.filter(r => /^g\d\d$/.test(r?.k ?? '') && Number.isInteger(r.n) && r.n >= mn && Number.isInteger(r.lose) && r.lose >= 0 && r.lose <= r.n && F(r.avg) && F(r.worst) && r.worst <= r.avg);
+            if (!ok.length) return {none: true};
+            const pos = new Map(ok.map((r, i) => [r.k, i])), R = new Map(ok.map(r => [r.k, r]));
+            const def = (SS.win3?.rule === 'win3-v1' && Array.isArray(SS.win3.ks) ? SS.win3.ks : []).find(k => pos.has(k)) ?? ok[0].k;
+            const cand = ok.filter(r => r.k !== def && (!F(r.exp) || r.lose <= r.exp)), lr = r => r.lose / r.n;
+            let att = null; for (const r of cand) if (r.avg > 0 && (!att || r.avg > att.avg || (r.avg === att.avg && lr(r) < lr(att)))) att = r;
+            const rest = cand.filter(r => r !== att), L = [...rest].sort((a, b) => lr(a) - lr(b) || pos.get(a.k) - pos.get(b.k)), A = [...rest].sort((a, b) => b.avg - a.avg || pos.get(a.k) - pos.get(b.k));
+            let mid = null, best = Infinity; for (const r of rest) { const s = L.indexOf(r) + A.indexOf(r); if (s < best) { best = s; mid = r; } }
+            return {none: false, ks: [def, mid?.k ?? null, att?.k ?? null], R}; })();
+          const sg = await p.evaluate(() => { const c = document.querySelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)'); if (!c) return null;
+            const t = e => (e?.textContent ?? '').replace(/\s+/g, '');
+            return {rule: c.getAttribute('data-stance'), text: c.innerText, rows: [...c.querySelectorAll(':scope > ol.sj-tcst > li.sj-ts')].map(li => ({st: li.getAttribute('data-st'), k: li.getAttribute('data-k'), empty: li.classList.contains('sj-ts0'), href: li.querySelector('a.sj-tsa')?.getAttribute('href') ?? null, txt: t(li),
+              lines: [...li.querySelectorAll('.sj-tsv > span')].map(s => ({c: s.className, t: t(s), fs: parseFloat(getComputedStyle(s.querySelector('.sj-tsk') ?? s).fontSize), bfs: parseFloat(getComputedStyle(s.querySelector('b') ?? s).fontSize)}))}))}; });
+          const lineOk = (row, r) => row.lines.length === 3 && row.lines.map(l => l.c).join(' ') === 'sj-tsw sj-tsl sj-tsm'
+            && row.lines[0].t === ('가장 나쁜 날' + won(r.worst)).replace(/\s+/g, '') && row.lines[1].t === ('잃은 날' + r.n + '번 중 ' + r.lose + '번').replace(/\s+/g, '') && row.lines[2].t === ('평균' + won(r.avg)).replace(/\s+/g, '')
+            && row.lines.every(l => l.fs === row.lines[0].fs && l.bfs === row.lines[0].bfs && l.fs >= 16.95) && row.href === '#/k/' + r.k;
+          const stOk = !!sg && (!want ? !sg.rule && !sg.rows.length : want.none ? sg.rule === 'stance3-v1' && !sg.rows.length && /센 날이 모자라/.test(sg.text)
+            : sg.rule === 'stance3-v1' && sg.rows.map(r => r.st).join(' ') === 'def mid att' && sg.rows.every((row, i) => { const k = want.ks[i];
+              return k ? !row.empty && row.k === k && lineOk(row, want.R.get(k)) : row.empty && row.txt.includes('억지로채우지않았어요'); }))
+            && !/%/.test(sg.text) && !/사세요|사라|추천|1등|대박|급등|수익률/.test(sg.text);
+          check(stOk, W + '⑫-2 세 태세(주문 1120-0728 · 샘플 s04 · s01 · d02) — 수비 → 보편 → 공격 · 이 검사가 sun.rank 로 다시 센 꾀와 같음 · 줄마다 가장 나쁜 날 → 잃은 날 → 평균 같은 크기 · 없으면 억지로 채우지 않음 · 「%」 0',
+            JSON.stringify({want: want ? (want.none ? 'none' : want.ks) : null, got: sg ? {rule: sg.rule, rows: sg.rows.map(r => [r.st, r.k, r.empty, r.lines.map(l => l.t + ':' + l.fs + '/' + l.bfs).join('|')])} : null}).slice(0, 600)); }
         check(sj.old === 0, W + '⑪ 옛 꾸밈(그림 칸 · 무하 장식 · 옛 머리 · 탭 · 막대) 0 — 주문 1115-1706 「기존에 있던것 단 한나도 디자임 사용하지말고」 — ' + sj.h1, String(sj.old));
         check(sj.sealsOk, W + '⑪ 한눈 판별 — 회사 단추의 한 달 표(내림 · 오름 · 같음) = 그 회사 한 달 방향 · 내림 도장 = 짙은 남빛 찬 도장 + 흰 글(샘플 사) — ' + sj.h1, sj.seals.length + ' · ' + JSON.stringify(sj.sunSeal));
         check(sj.red === 0, W + '⑪ 빨강 글 0(한국에서 빨강은 오름 — 내림을 빨강으로 읽지 않게) — ' + sj.h1, String(sj.red));
