@@ -294,7 +294,7 @@ for (const width of [390, 360, 320]) {
         foot: [...document.querySelectorAll('#su main > .su-src .su-srcl a')].map(a => [a.getAttribute('href'), a.querySelector('span')?.textContent ?? ''])};
     });
     const STEP5 = ['오늘', '꾀', '회사', '「왜 사?」', '내 매매일지']; // 다섯 화면 이름(화면 코드 STEP5 를 쓰지 않고 따로 적음 · 주문 1115-2328)
-    const TAB5 = '오늘 꾀 멈춤 일지 정산', TAB5L = '탭 — 오늘 · 꾀 · 멈춤 · 일지 · 정산', PAGE3 = ['sonja', 'kkoe', 'co', 'why', 'journal'], CUR3 = [0, 1, -1, 2, 3]; // 회사 쪽은 탭 밖(켜진 탭 0)
+    const TAB5 = '오늘 꾀 회사 멈춤 일지 정산', TAB5L = '탭 — 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산', PAGE3 = ['sonja', 'kkoe', 'co', 'why', 'journal'], CUR3 = [0, 1, -1, 3, 4]; // 회사 쪽은 탭 밖(켜진 탭 0) · 탭 여섯(주문 1120-1220 — 「회사」 탭 = 여러 꾀가 고른 회사 · 셋째)
     const FOOTW = JSON.stringify([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]);
     await open(p, '#/');
     const seen = [], STEPS9 = FC ? [0, 1, 2, 3, 4] : [0, 1, 3, 4]; // 꾀가 고른 곳이 없는 날(꾀 칸 자료 없음)은 꾀 → 「왜 사?」로 바로(회사 화면을 건너뜀)
@@ -309,8 +309,8 @@ for (const width of [390, 360, 320]) {
         check(sj.prog.length === 5 && sj.prog.every((c, i) => c === (i === k ? 'sj-pcur' : i < k ? 'sj-pdone' : '')) && sj.progL === '다섯 화면 가운데 ' + (k + 1) + '번째', W + '⑨ 이야기 막대 점 다섯 · 지금 화면 ' + (k + 1) + ' — ' + sj.h1, JSON.stringify([sj.prog, sj.progL]));
         check(sj.order, W + '⑨ 쪽 차례 — ' + (k === 0 ? '표지 → 형세 보고 → 덜 잃은 꾀 차례 → 자세히 → 끝 줄' : k === 1 ? '머리 → 고르는 법 → 같은 땅 기록 → 오늘 닮은 곳 → 정산 → 앞뒤 꾀 → 끝 줄' : '머리 · 한 달 꺾은선 → 고른 꾀 → 사기 전에 멈춤 → 끝 줄') + ' — ' + sj.h1, sj.kids.join(' '));
         check(sj.lastIsSrc && JSON.stringify(sj.foot) === FOOTW, W + '⑨ 맨 아래 출처 · 조사 날짜 · 꼭 있어야 할 길 둘 — ' + sj.h1, JSON.stringify(sj.foot));
-        check(sj.tabs.length === 5 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
-          W + '⑨ 탭 다섯 오늘 · 꾀 · 멈춤 · 일지 · 정산(주문 1115-2328 — 옛 지도 · 기록 · 달력 지움) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
+        check(sj.tabs.length === 6 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
+          W + '⑨ 탭 여섯 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산(주문 1115-2328 · 1120-1220 회사 탭) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
         if (k === 0) { check(sj.moreShut && sj.ess === 3, W + '⑩ 「자세히」는 눌러야 열림 · 그 안 본질 세 줄 — ' + sj.h1, JSON.stringify({shut: sj.moreShut, ess: sj.ess})); check(sj.art, W + '⑪ 표지 붓 글씨 그림이 열림', '');
           const tc = await p.evaluate(() => { const c = document.querySelector('#su main.sj-page > section.sj-cover > .sj-tc:not(.sj-tc0)'), go = c?.querySelector('a.sj-tcgo'), r = go?.getBoundingClientRect(), t = document.querySelector('#su .sj-tabs')?.getBoundingClientRect(), pm = c?.parentElement?.querySelector(':scope > .sj-pm')?.getBoundingClientRect();
             return {has: !!c, go: go?.getAttribute('href') ?? null, low: r ? Math.round(r.bottom + scrollY) : null, tabs: t ? Math.round(t.top) : null, top: c && pm ? c.getBoundingClientRect().bottom <= pm.top + 1 : false, safe: (c?.querySelector('.sj-tcs')?.textContent ?? '').includes('앞날을 맞히지 않고'), red: c ? [...c.querySelectorAll('*')].filter(e => { const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length : -1}; });
@@ -367,8 +367,8 @@ for (const width of [390, 360, 320]) {
       check(m.moving >= 1, W + '⑨ 큰 그림이 움직임 — ' + m.h1, '움직임 ' + m.anim);
       check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? /확인 필요$/.test(t.v) : t.v && !t.v.includes('확인 필요'))), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
-      const curW = k === 3 ? 2 : 3; // 「왜 사?」 = 멈춤 · 매매일지 = 일지
-      check(m.tabs.length === 5 && m.tabs.map(t => t.t).join(' ') === TAB5 && m.tabs.filter(t => t.cur).length === 1 && m.tabs[curW].cur && m.tabsL === TAB5L, W + '⑨ 탭 다섯(옛 틀도 같은 다섯 · 주문 1115-2328) · 「' + TAB5.split(' ')[curW] + '」 켜짐 — ' + m.h1, JSON.stringify(m.tabs) + ' ' + m.tabsL);
+      const curW = k === 3 ? 3 : 4; // 「왜 사?」 = 멈춤 · 매매일지 = 일지(탭 여섯 — 주문 1120-1220)
+      check(m.tabs.length === 6 && m.tabs.map(t => t.t).join(' ') === TAB5 && m.tabs.filter(t => t.cur).length === 1 && m.tabs[curW].cur && m.tabsL === TAB5L, W + '⑨ 탭 다섯(옛 틀도 같은 다섯 · 주문 1115-2328) · 「' + TAB5.split(' ')[curW] + '」 켜짐 — ' + m.h1, JSON.stringify(m.tabs) + ' ' + m.tabsL);
       check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
       check(m.pro.has && !m.pro.open && m.pro.rows >= 3, W + '⑩ 전문가용 자세히 — 눌러야 열림 — ' + m.h1, JSON.stringify(m.pro));
       check(Number.isFinite(m.hard), W + '⑩ 어려운 낱말 셈 — ' + m.h1, String(m.hard) + ' ' + m.hardWords);
@@ -1257,8 +1257,8 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   const rowsOk = o.rows.every((r, i) => CD.test(r.c ?? '') && r.n >= 2 && r.n === cntOf(days[days.length - 1], r.c) && (!want || want.get(r.c) === r.n) && r.href === '#/c/' + r.c && r.say === '꾀 ' + r.n + '가지가 골랐어요.' && r.sp && r.fs >= 16.95
     && (!r.m || /^한 달 가운데 가장 낮을 때 100원이 [\d.]+원/.test(r.m)) && (i === 0 || o.rows[i - 1].n >= r.n));
   check(o.main && o.rule === 'picks-v1' && rowsOk && (want ? o.rows.length === want.size : o.rows.length === 20) && (!o.rows.length || (o.chart && o.legend === Math.min(5, o.rows.length)))
-    && o.wide && /앞날을 맞히지 않고/.test(o.safe) && !/%|추천|사세요|사라|1등|대박|급등|수익률/.test(o.text) && o.tab === '꾀',
-    W + '나) 여러 꾀가 고른 회사(#/o) — 이 검사가 장부로 다시 센 꾀 수와 같음 · 많이 고른 차례 · 줄마다 꺾은선 · 손실 먼저 · 「추천」 「%」 0 · 앞날 아님 한 줄',
+    && o.wide && /앞날을 맞히지 않고/.test(o.safe) && !/%|추천|사세요|사라|1등|대박|급등|수익률/.test(o.text) && o.tab === '회사',
+    W + '나) 여러 꾀가 고른 회사(#/o · 탭 「회사」 — 주문 1120-1220) — 이 검사가 장부로 다시 센 꾀 수와 같음 · 많이 고른 차례 · 줄마다 꺾은선 · 손실 먼저 · 「추천」 「%」 0 · 앞날 아님 한 줄',
     JSON.stringify({days: days.length, want: want ? want.size : 'many', got: o.rows.slice(0, 6).map(r => [r.c, r.n, r.say.slice(0, 12)]), chart: o.chart, legend: o.legend, wide: o.wide, tab: o.tab}).slice(0, 500));
   if (o.rows.length) { // 다) 회사 쪽 날마다 고른 꾀 수 꺾은선(주문 1120-1040) — 이 검사가 다시 센 날마다 꾀 수와 같음
     const r0 = o.rows[0], wantN = days.map(d => cntOf(d, r0.c));

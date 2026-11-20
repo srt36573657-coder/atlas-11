@@ -213,10 +213,10 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 다섯째 「정산」 #/r/t
   assert.ok(!su.includes('TAB_ORDER') && top.includes("['정산', '#/r/t']]);"), '정산 탭은 맨 끝(다섯째 · 손자병법 판 한 곳 — 주문 1116-0300 옛 틀 지움)');
   assert.ok(su.includes("if (hh === '#/r/t') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vSettle36(XS)); }"), '길 #/r/t → 손자병법 판 정산(su-sonja-kkoe.js vSettle36)');
   assert.equal(forwardTo('', '#/r/t'), null, '#/r/t 는 새 판 안(옛 판으로 넘기지 않음)');
-  assert.ok(kk.includes("return frame({title: '정산', page: 'settle', kids, tab: 4,"), '정산 쪽을 열면 정산 탭(다섯째)이 켜짐');
+  assert.ok(kk.includes("return frame({title: '정산', page: 'settle', kids, tab: 5,"), '정산 쪽을 열면 정산 탭(여섯째 — 주문 1120-1220 회사 탭이 셋째)이 켜짐');
   assert.ok(pk.includes("'scripts/atlas11/next/su21_settle.mjs'") && pk.includes("'--book', path.join(root, 'reports/atlas11/su21/settle.json')") && /su21_settle\.mjs[^\n]*\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶을 때 화면 자료 · 장부(올리기 작업만 장부를 씀)');
   assert.ok(pk.indexOf('su21_days.mjs') < pk.indexOf('su21_settle.mjs'), '그날 목록을 적은 뒤에 정산');
-  assert.ok(ck.includes("'오늘 꾀 멈춤 일지 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 다섯 · 정산 쪽');
+  assert.ok(ck.includes("'오늘 꾀 회사 멈춤 일지 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 다섯 · 정산 쪽');
   assert.ok(ck.includes("import {START as SETTLE_START} from './su21_settle.mjs';") && ck.includes('㉓ 정산 첫날'), '검사 — 정산 첫날(주문 1112-2042)');
   assert.ok(/#\\\/r\\\/t\|/.test(ck) && !/#\\\/r\\\/\[mwdykicst\]/.test(ck), '검사 고리 꼴 — #/r/t 만(옛 기록 서랍 · 달력 고리는 지움 — 주문 1115-2328)');
   assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(kk), '보안 규칙 — innerHTML · 글 속 style 없음');

@@ -185,7 +185,7 @@ export async function vQuiz(code0, X) {
     const nDone = Q.ans.filter(x => x != null).length;
     const big = val((i + 1) + ' / ' + WHY_QS.length, '', '질문 · ' + WHY_GROUPS[gi][0] + ' 묶음', {누가: '내가 고른 답', 언제: '오늘', 어디서: '이 휴대폰', 무엇을: (name ? name + ' · ' : '') + WHY_QS[i], 어떻게: '답 셋 가운데 하나를 골라요', 왜: WHY_WHY[i]},
       {mean: '지금 ' + (i + 1) + '번째 질문이에요. ' + (nDone ? '답한 질문은 ' + nDone + '개예요.' : '답은 아직 0개예요.')});
-    return {title: '왜 사?', tab: 2, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · ' + WHY_GROUPS[gi][0] + ' 묶음', h1: WHY_QS[i], big,
+    return {title: '왜 사?', tab: 3, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · ' + WHY_GROUPS[gi][0] + ' 묶음', h1: WHY_QS[i], big,
       pro: [{k: '질문 수', v: WHY_QS.length + '개', how: '네 묶음 · ' + WHY_GROUPS.map(([n, q]) => n + ' ' + q.length).join(' · ')}, {k: '지금 질문', v: (i + 1) + ' / ' + WHY_QS.length, how: WHY_GROUPS[gi][0] + ' 묶음'},
         {k: '답 셋의 점수', v: '● 0 · ▲ 1 · ■ 2', how: '■ 은 빨간 답이에요. 답 점수는 답마다 이 점수를 더한 값이에요. 낮을수록 준비가 잘 된 거예요. 준비 점수는 ' + WHY_MAX + '에서 답 점수를 뺀 값이에요. 높을수록 준비가 잘 된 거예요.'},
         {k: '판정 문턱', v: '쉬어 · 반만 · 준비됨', how: JUDGE_HOW},
@@ -203,7 +203,7 @@ export async function vQuiz(code0, X) {
     const weak = rows.filter(r => r.ready < r.max).sort((a, b) => a.ready / a.max - b.ready / b.max)[0] ?? null;
     const e = eQuizResult({score: J.ready, max: WHY_MAX, verdict: J.verdict, reds: J.reds, type: T[0], day: seoulDay(Date.now()), name});
     const big = J.sell ? Object.freeze({...e.big, mean: WHY_SELL_SAY}) : e.big; // 7번 「안 정함」 — 큰 값 밑 「그래서」 줄(그림 밖에 보이는 설명 두 줄)이 안내 한 줄(주문 1114-1306 ④)
-    return {title: '왜 사? 결과', tab: 2, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 결과', h1: J.verdict, big,
+    return {title: '왜 사? 결과', tab: 3, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 결과', h1: J.verdict, big,
       seal: '멈춤', ink: whyPic(tonesNow(), null), say: ['질문 열한 개에 모두 답했어요.', '준비는 ' + WHY_MAX + '점 가운데 ' + J.ready + '점이에요.',
           J.money && J.sell ? '그런데 빌린 돈이나 곧 쓸 돈이고, 팔 곳도 안 정했어요.' : J.money ? '그런데 내 돈 거의 다나 빌린 돈, 곧 쓸 돈이라고 답했어요.' : J.sell ? '그런데 떨어질 때 팔 곳을 안 정했다고 답했어요.'
             : weak ? '그런데 ' + weak.n + ' 묶음이 가장 덜 준비됐어요.' : '그런데 답은 오늘 마음일 뿐이에요.',
@@ -267,7 +267,7 @@ export async function vJournal(X) {
   const kept = full.filter(r => r.kept?.a === 'yes').length, asked = full.filter(r => r.kept?.a === 'yes' || r.kept?.a === 'no').length;
   const avg = {}; for (const [n] of WHY_GROUPS) { const v = full.map(r => r.groups?.[n]).filter(Number.isFinite); avg[n] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }
   const e = eJournal({recs: full, due: dues.length, kept, asked, lastDay: full[0] ? dayOf(full[0]) : null});
-  return {title: '매매일지', tab: 3, step: 5, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
+  return {title: '매매일지', tab: 4, step: 5, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
     seal: '일지', ink: journalPic(inkItems(metas)), say: [e.say].flat().filter(Boolean).slice(0, 2).join(' '),
     figs: full.length ? [tallyInk([{name: VSHORT.rest, v: vc.rest}, {name: VSHORT.wait, v: vc.wait}, {name: VSHORT.go, v: vc.go}]), groupFig(groupRowsOf(avg))] : [whyPic(new Array(WHY_QS.length).fill(null), null)], // 기록이 없으면 빈 돌 열하나(판정 칸은 첫 기록 뒤에)
     act: dues.length ? [dueBox(dues, X)] : null, // 한 달 전 약속 — 답할 것이 있을 때만 그림 바로 아래(누르는 곳 · 주문 1023 [2] 3)

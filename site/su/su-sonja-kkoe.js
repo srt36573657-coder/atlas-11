@@ -399,7 +399,7 @@ export async function vSettle36(X) {
       endSeal('셈')),
     M ? rankRace(M, nameOf) : null, // 날마다 바뀐 차례(주문 1119-0243)
     endSec(ST.asOf ? day(ST.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 셈해요.')];
-  return frame({title: '정산', page: 'settle', kids, tab: 4, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
+  return frame({title: '정산', page: 'settle', kids, tab: 5, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
 }
 export {chev};
 
@@ -460,5 +460,5 @@ export async function vPicks(X) {
       endSeal('선')) : null,
     h('p', {class: 'sj-safe sj-sec', text: '여러 꾀가 골랐다고 오르는 것은 아니에요. 지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(day(g.asOf?.board ?? T?.asOf?.board), gotOf(S))];
-  return frame({title: '여러 꾀가 고른 회사', page: 'picks', kids, tab: 1, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀 모두 볼까?'}});
+  return frame({title: '여러 꾀가 고른 회사', page: 'picks', kids, tab: 2, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀 모두 볼까?'}});
 }

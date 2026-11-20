@@ -25,7 +25,7 @@ const proList = pro => (pro?.length ? h('dl', {class: 'sj-pro'}, ...pro.flatMap(
 
 /** 쪽 하나 — {title, dom} · lc = 마지막에 본 회사 번호(탭 「멈춤」) */
 export function sjPage(m, lc = null) {
-  const page = m.page ?? (m.tab === 2 ? 'why' : m.tab === 3 ? 'journal' : 'miss');
+  const page = m.page ?? (m.tab === 3 ? 'why' : m.tab === 4 ? 'journal' : 'miss'); // 탭 여섯(주문 1120-1220 — 회사 탭이 셋째) · 멈춤 3 · 일지 4
   const inkDown = page === 'why' && !!m.ink; // 「왜 사?」는 질문과 답이 먼저 · 디딤돌 그림은 답 아래로(주문 1120-0001 · d09 「한 돌 한 판」 — 답 단추가 첫 화면 안)
   const quiz = page === 'why' && (m.act ?? []).some(e => e?.classList?.contains('su-ans'));
   const head = h('section', {class: 'sj-sec sj-ph', 'aria-label': m.h1 ?? m.title},

@@ -20,7 +20,7 @@ export const FOOT = Object.freeze([['/su/privacy.html', '개인정보 처리방�
 /** 길 다섯 화면(주문 1115-2328) — [이름, 기승전결] · 짝: su.js STEPS(옛 틀 「왜 사?」 · 매매일지) · 검사 check_su.mjs ⑨ */
 export const STEP5 = Object.freeze([['오늘', '기'], ['꾀', '승'], ['회사', '전'], ['「왜 사?」', '결'], ['내 매매일지', '결']]);
 /** 탭 다섯(주문 1115-2328) — 오늘 · 꾀 · 멈춤 · 일지 · 정산 · 짝: su.js TABS(옛 틀) */
-export const TAB5 = Object.freeze([['오늘', '#/'], ['꾀', '#/k'], ['멈춤', '#/q'], ['일지', '#/j'], ['정산', '#/r/t']]);
+export const TAB6 = Object.freeze([['오늘', '#/'], ['꾀', '#/k'], ['회사', '#/o'], ['멈춤', '#/q'], ['일지', '#/j'], ['정산', '#/r/t']]); // 탭 「회사」 = 여러 꾀가 고른 회사(주문 1120-1220 · 사장님 2026-11-20(마카오) 12:20 「너가 이렇게 답변한것을 탭으로 만들어」 · 12:21 「맞아 탭을 만들라고 하는거야」)
 
 /** 「글씨」 단추 — 누르면 한 단 크게(html.su-lg · 다음에 열어도 그대로) */
 function bigText(big) {
@@ -140,12 +140,13 @@ export function dockNav(step, nx) {
 const TABP = Object.freeze([
   ['M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4', 'c'],
   ['M5 19c2-1 3-3 4-5l7-9c1-1 3 0 2 2l-7 9c-2 2-4 3-6 3z', ''],
+  ['M4 20V9l5-3v14M9 20V7l6-3v16M15 20v-9l5-2v11M3 20h18', ''], // 회사(주문 1120-1220)
   ['M8 12V6.5a1.5 1.5 0 0 1 3 0V11M11 10V5a1.5 1.5 0 0 1 3 0v5M14 10V6.5a1.5 1.5 0 0 1 3 0V14c0 3.5-2.5 6-6 6s-5-2-6-4l-1.5-3a1.5 1.5 0 0 1 2.6-1.5L8 13', ''],
   ['M4 6c3-1 5-1 8 1v12c-3-2-5-2-8-1zM20 6c-3-1-5-1-8 1v12c3-2 5-2 8-1z', ''],
   ['M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM10 10h4v4h-4z', '']]);
 const tabIco = i => { const [d, c] = TABP[i] ?? TABP[0]; return s('svg', {viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, c ? s('circle', {cx: 12, cy: 12, r: 3.6}) : null, s('path', {d})); };
-/** 탭 다섯 — cur = 켜진 탭 차례(0 오늘 · 1 꾀 · 2 멈춤 · 3 일지 · 4 정산 · 탭 밖 쪽은 -1) · lc = 마지막에 본 회사 번호(멈춤 탭이 그 회사로) */
+/** 탭 여섯 — cur = 켜진 탭 차례(0 오늘 · 1 꾀 · 2 회사 · 3 멈춤 · 4 일지 · 5 정산 · 탭 밖 쪽은 -1) · lc = 마지막에 본 회사 번호(멈춤 탭이 그 회사로) */
 export function tabNav(cur = 0, lc = null) {
-  return h('nav', {class: 'sj-tabs', 'aria-label': '탭 — ' + TAB5.map(x => x[0]).join(' · ')}, TAB5.map(([t, href], i) =>
-    h('a', {class: 'sj-tab' + (i === cur ? ' sj-cur' : ''), href: i === 2 && lc ? '#/q/' + lc : href, 'aria-current': i === cur ? 'page' : null, 'aria-label': (i + 1) + '번째 · ' + t}, tabIco(i), h('span', {text: t}))));
+  return h('nav', {class: 'sj-tabs', 'aria-label': '탭 — ' + TAB6.map(x => x[0]).join(' · ')}, TAB6.map(([t, href], i) =>
+    h('a', {class: 'sj-tab' + (i === cur ? ' sj-cur' : ''), href: i === 3 && lc ? '#/q/' + lc : href, 'aria-current': i === cur ? 'page' : null, 'aria-label': (i + 1) + '번째 · ' + t}, tabIco(i), h('span', {text: t}))));
 }

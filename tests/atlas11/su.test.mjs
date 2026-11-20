@@ -214,11 +214,11 @@ test('새 판 화면(새로 씀) — 다음 단추 네 번 다섯 화면(주문 
   assert.equal(steps.length, 5, '다섯 화면 = 다음 단추 네 번(주문 1115-2328 — 오늘 · 꾀 · 회사 · 「왜 사?」 · 매매일지)');
   assert.deepEqual(steps.map(x => x[0]), ['오늘', '꾀', '회사', '「왜 사?」', '내 매매일지'], '다섯 화면 이름');
   assert.deepEqual(steps.map(x => x[1]), [0, 1, 2, 3, 3], '걸음이 기승전결 차례로 이어짐(주문 2044 — 21곳 · 땅 지도 · 업종 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게)');
-  const top = src('su-sonja-top.js'), t5 = /export const TAB5 = Object\.freeze\((\[[^\n]*\])\);/.exec(top); assert.ok(t5, 'TAB5'); // 탭은 손자병법 판 한 곳(주문 1116-0300 — 옛 틀 tabs · TABS · TAB_ORDER 지움)
+  const top = src('su-sonja-top.js'), t5 = /export const TAB6 = Object\.freeze\((\[[^\n]*?\])\);/.exec(top); assert.ok(t5, 'TAB6'); // 탭은 손자병법 판 한 곳(주문 1116-0300 — 옛 틀 tabs · TABS · TAB_ORDER 지움)
   const tabs5 = JSON.parse(t5[1].replace(/'/g, '"'));
-  assert.deepEqual(tabs5, [['오늘', '#/'], ['꾀', '#/k'], ['멈춤', '#/q'], ['일지', '#/j'], ['정산', '#/r/t']], '탭 다섯 = 오늘 · 꾀 · 멈춤 · 일지 · 정산(주문 1115-2328 · 옛 지도 · 기록 · 달력 지움)');
-  assert.ok(top.includes("'aria-label': '탭 — ' + TAB5.map(x => x[0]).join(' · ')") && !/['"]301곳/.test(su) && !su.includes("['달력', ") && !su.includes("['지도', ") && !su.includes('function tabs(') && !su.includes('export function page('), '탭은 손자병법 판 한 곳 · 옛 틀 page() · tabs 0');
-  assert.ok(/#su \.sj-tabs \{[^}]*grid-template-columns: repeat\(5, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su-sonja.css'), 'utf8')), '탭 줄 다섯 칸(손자병법 판)');
+  assert.deepEqual(tabs5, [['오늘', '#/'], ['꾀', '#/k'], ['회사', '#/o'], ['멈춤', '#/q'], ['일지', '#/j'], ['정산', '#/r/t']], '탭 여섯 = 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산(주문 1115-2328 · 주문 1120-1220 「회사」 탭 = 여러 꾀가 고른 회사)');
+  assert.ok(top.includes("'aria-label': '탭 — ' + TAB6.map(x => x[0]).join(' · ')") && !/['"]301곳/.test(su) && !su.includes("['달력', ") && !su.includes("['지도', ") && !su.includes('function tabs(') && !su.includes('export function page('), '탭은 손자병법 판 한 곳 · 옛 틀 page() · tabs 0');
+  assert.ok(/#su \.sj-tabs \{[^}]*grid-template-columns: repeat\(6, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su-sonja.css'), 'utf8')), '탭 줄 여섯 칸(손자병법 판 · 주문 1120-1220)');
   for (const href of ['#/', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/s', '#/r/c', '#/r/t', '#/s', '#/q', '#/q/127120', '#/j', '#/c/127120', '#/m', '#/m/hold', '#/f', '#/c/127120/more', '#/k', '#/k/g01', '#/k/g36']) assert.equal(forwardTo('', href), null, '새 판 안 — ' + href); // 지운 쪽 옛 고리도 /next/ 로 넘기지 않고 손자병법 안에서 첫 쪽(주문 1115-2328)
   const {screenHits, ruinHits} = await import('../../site/next/words.js');
   const texts = [...all.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
