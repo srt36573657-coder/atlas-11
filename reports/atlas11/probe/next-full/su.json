@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-20T05:01:57.693Z",
+ "at": "2026-11-20T07:48:35.378Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 530,
+  "pass": 531,
   "fail": 2
  },
  "fails": [
@@ -117,9 +117,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 628,
-   "cls": 0.083,
-   "pic": 622
+   "lcp": 672,
+   "cls": 0.085,
+   "pic": 676
   },
   "white": {
    "light #/": {
