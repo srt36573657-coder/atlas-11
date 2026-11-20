@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-20T02:53:46.613Z",
+ "at": "2026-11-20T03:43:50.738Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-20",
  "companies": 2557,
@@ -32,15 +32,15 @@
    }
   }
  },
- "seconds": 666,
+ "seconds": 555,
  "time": {
-  "old": 418.4,
-  "new": 352.3,
-  "wall": 666.5,
+  "old": 390,
+  "new": 307.7,
+  "wall": 554.9,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 62.8,
-  "oldShare": 54.3
+  "oldPct": 70.3,
+  "oldShare": 55.9
  },
  "net": {
   "req": 5130,
@@ -64,7 +64,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 2293개(/atlas/data/core.json · /atlas/data/lines.json · /atlas/data/surge.json)",
+   "why": "바뀐 파일 2251개(/atlas/data/core.json · /atlas/data/surge.json · /atlas/data/lines.json)",
    "made": null,
    "inputs": 2570,
    "reads": 2557,
