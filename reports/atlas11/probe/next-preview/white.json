@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-20T07:20:59.445Z",
+ "at": "2026-11-20T07:42:55.255Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,7 +13,7 @@
    "bodyLum": 1,
    "chars": 125,
    "blocks": {
-    "ess": 5539,
+    "ess": 5564,
     "find": 776,
     "today": 3617,
     "gdr": 4884,
@@ -667,8 +667,8 @@
    }
   },
   "speed": {
-   "lcp": 2144,
-   "inp": 56,
+   "lcp": 2212,
+   "inp": 40,
    "cls": 0.006
   }
  },
