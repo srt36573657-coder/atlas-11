@@ -1471,7 +1471,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       const rows = [...s.querySelectorAll(':scope > .sj-gk > ol.sj-gkl > li.sj-gki')].map(li => { const pp = li.querySelector(':scope > p.sj-gkt'), b = pp?.querySelector(':scope > b.sj-gkm'), x = pp?.querySelector(':scope > .sj-gkx'), r = li.getBoundingClientRect();
         return [+li.getAttribute('data-n'), t(li.querySelector(':scope > .sj-gkn')), t(b) + ' ' + t(x), pp?.hasAttribute('data-proper') === true, b ? parseFloat(getComputedStyle(b).fontSize) : 0, x ? parseFloat(getComputedStyle(x).fontSize) : 0, Math.round(r.left), Math.round(r.right), Math.round(r.height)]; });
       const prev = s.previousElementSibling, next = s.nextElementSibling;
-      return {rows, W: innerWidth, l: Math.round(L.left), r: Math.round(L.right), bg: gk ? getComputedStyle(gk).backgroundImage : '', title: t(gk?.querySelector(':scope > h2')),
+      return {rows, W: innerWidth, l: Math.round(L.left), r: Math.round(L.right), bg: gk ? getComputedStyle(gk.querySelector(':scope > h2') ?? gk, '::before').backgroundImage : '', title: t(gk?.querySelector(':scope > h2')),
         prev: prev ? prev.tagName.toLowerCase() + '.' + [...prev.classList].join('.') : '', next: next ? next.tagName.toLowerCase() + '.' + [...next.classList].join('.') : '',
         go: s.querySelectorAll('a[href]').length, note: t(s.querySelector(':scope > .sj-mnote')), rule: s.getAttribute('data-rule'), n: s.getAttribute('data-n')};
     });

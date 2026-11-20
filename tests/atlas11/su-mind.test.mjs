@@ -48,7 +48,7 @@ test('첫 쪽 — 첫 화면 맨 위(표지보다 위 · 23:21 「맨 위에 두
   assert.deepEqual(texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)]), [], '쪽 글(격언 밖)에 쓰지 않을 말 0');
   assert.ok(!/\.innerHTML\b|['"]style['"]/.test(fn), '보안 규칙');
   const css = read('site/su/su-sonja.css');
-  assert.ok(/#su \.sj-mind \.sj-gk \{[^}]*url\(\/su\/su-bg\.svg\)/.test(css), '산수 수채화(su-bg.svg)를 깐 족자');
+  assert.ok(/#su \.sj-mind \.sj-gkh::before \{[^}]*url\(\/su\/su-bg\.svg\)/.test(css) && /#su \.sj-mind \.sj-gk \{[^}]*isolation: isolate/.test(css), '산수 수채화(su-bg.svg)를 깐 족자(덧칠 칸 — 가장 큰 칠함이 그림을 기다리지 않음)');
   assert.ok(/#su \.sj-mind \.sj-gkm \{[^}]*font-size: 1\.3125rem/.test(css) && /#su \.sj-mind \.sj-gkx \{[^}]*font-size: 1\.0625rem/.test(css), '격언 21 · 풀이 17');
   assert.ok(!/sj-jg|sj-js\b/.test(css), '앞 판 대나무 조각 꾸밈 지움');
 });
