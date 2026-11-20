@@ -1308,15 +1308,6 @@ html.sj-on #su .sj-tc .sj-ts[data-st="mid"] .sj-tsg, html.sj-on #su .sj-tc .sj-t
 #su .sj-tcgo b { font-size: 1.5rem; font-weight: 800; }
 #su .sj-tcgo span { grid-column: 1; font-size: 1.0625rem; font-weight: 600; color: #DCEBE8; }
 #su .sj-tcgo i { grid-column: 2; grid-row: 1 / span 2; font-style: normal; font-size: 2.25rem; line-height: 1; }
-#su .sj-tcp { display: grid; gap: 8px; padding: 14px 16px; border-radius: 18px; background: #EEF6F4; box-shadow: inset 0 0 0 1.5px #A6D0CD; }
-#su .sj-tcp[hidden] { display: none; }
-#su .sj-tcp > * { margin: 0; }
-#su .sj-tcpk { font-size: 1.0625rem; font-weight: 800; color: #1B3A44; }
-#su .sj-tcpn, #su .sj-tcpm { font-size: 1.0625rem; color: #2E444C; }
-#su .sj-tcpq { font-size: 1.375rem; font-weight: 800; color: #20323A; }
-#su .sj-tcpbs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-#su .sj-tcpb { min-height: 56px; border-radius: 14px; border: 2px solid #20323A; background: #FCFEFD; color: #20323A; font: inherit; font-size: 1.25rem; font-weight: 800; }
-#su .sj-tcpj { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; color: #1B3A44; font-size: 1.0625rem; font-weight: 800; }
 #su .sj-tcs { font-size: 1.0625rem; color: #2E444C; line-height: 1.5; }
 /* 「왜 사?」 — 질문 · 답 셋이 첫 화면 안(d09) · 큰 값과 그림은 답 아래 · 쪽 머리 그림 창은 낮게 */
 html.sj-on #su main.sj-page[data-page="why"] { display: flex; flex-direction: column; }

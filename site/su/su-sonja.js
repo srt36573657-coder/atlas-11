@@ -371,7 +371,6 @@ function stRow(d, r) {
 }
 export function todayCard(T, lc = null) {
   const x = okSun(T.sun) ? T.sun : null, dd = mday(x?.day ?? T.asOf?.board), st = x ? stance3(x) : null;
-  const band = h('div', {class: 'sj-tcp', hidden: ''}); // 한 달 전 약속(있는 날만 · 첫 칠함 뒤에 셈)
   const card = h('div', {class: 'sj-tc', 'data-land': x?.land ?? null, 'data-stance': st ? st.rule : null},
     h('p', {class: 'sj-tck', text: '오늘 시장' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
     x ? h('p', {class: 'sj-tcl'}, h('b', {class: 'sj-tcn', text: x.name}), h('span', {class: 'sj-tcl2', text: '이에요.'})) // 「지금은」 줄을 지움(세 태세 줄 자리 · d02 「시장 문장 두 줄을 한 줄로」)
@@ -381,26 +380,8 @@ export function todayCard(T, lc = null) {
     st?.def ? h('ol', {class: 'sj-tcst', 'aria-label': '세 태세 · 수비형 · 보편형 · 공격형'}, ...STANCES.map(d => stRow(d, st[d.st])))
       : st ? h('p', {class: 'sj-tcd', text: '센 날이 모자라 세 태세를 세지 못했어요. 억지로 채우지 않았어요.'}) : null,
     h('a', {class: 'sj-tcgo', href: lc ? '#/q/' + lc : '#/q'}, h('b', {text: '사기 전에 멈춰요'}), h('span', {text: '열한 가지를 하나씩 물어요'}), h('i', {'aria-hidden': 'true', text: '›'})),
-    band,
-    h('p', {class: 'sj-tcs', text: '지난 기록이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
-  promiseBand(band).catch(e => console.error(e));
+    h('p', {class: 'sj-tcs', text: '지난 기록이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'})); // 한 달 전 약속 칸은 지움(주문 1121-0044 · 사장님 00:44 「정확히 4곳을 지우는 거야」 — 매매일지 맨 위 약속은 그대로)
   return card;
-}
-/** 한 달 전 약속 띠(m04) — 한 달 지난 기록이 있을 때만 · 누름 하나로 답함(매매일지와 같은 기록 · 같은 신호) · 기록이 없으면 아무것도 받지 않음 */
-async function promiseBand(box) {
-  let raw = null; try { raw = localStorage.getItem('atlas:godori-why'); } catch { return; }
-  if (!raw || raw === '[]') return;
-  const Y = await import('/su/su-why.js'), dues = await Y.duesNow();
-  if (!dues.length || !box.isConnected) return;
-  const r = dues[0], b1 = h('button', {class: 'sj-tcpb', type: 'button', text: '했어'}), b2 = h('button', {class: 'sj-tcpb', type: 'button', text: '안 했어'}), d = mday(Y.recDay(r)), nm = r.name || r.code || null;
-  const say = yes => () => { if (b1.disabled) return; b1.disabled = b2.disabled = true; Y.answerDue(r, yes);
-    box.replaceChildren(h('p', {class: 'sj-tcpk', text: '한 달 전 약속'}), h('p', {class: 'sj-tcpq', text: yes ? '적었어요. 정한 대로 했어요.' : '적었어요. 이 날 흔들린 마음을 다음에 먼저 떠올려요.'}),
-      h('a', {class: 'sj-tcpj', href: '#/j'}, h('span', {text: '내 매매일지에서 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))); };
-  b1.addEventListener('click', say(true)); b2.addEventListener('click', say(false));
-  box.replaceChildren(h('p', {class: 'sj-tcpk', text: '한 달 전 약속' + (d ? ' · ' + d : '')}), nm ? h('p', {class: 'sj-tcpn'}, h('span', {'data-proper': '', text: String(nm)}), h('span', {text: ' 앞에서 멈췄어요.'})) : '',
-    h('p', {class: 'sj-tcpq', text: '그날 정한 대로 했어?'}), h('div', {class: 'sj-tcpbs', role: 'group', 'aria-label': '그날 정한 대로 했어?'}, b1, b2),
-    dues.length > 1 ? h('p', {class: 'sj-tcpm', text: '물어볼 약속이 ' + (dues.length - 1) + '개 더 있어요. 내 매매일지에서 이어서 답해요.'}) : '');
-  box.hidden = false;
 }
 
 /* ── 3-2 손자병법 주식 격언 열 가지(주문 1120-2116 · 사장님 2026-11-20(마카오) 21:16 「… 주식을 할 때 가져야 할 자세 11가지 정리한 거 있어 그걸 첫 페이지에 멋지게 나열해봐」
