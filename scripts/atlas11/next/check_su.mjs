@@ -428,6 +428,22 @@ for (const width of [390, 360, 320]) {
       orn: [...document.querySelectorAll('#su .su-orn, .su-corners, .su-sky')].filter(shown).length, sky: !!document.querySelector('.su-sky'),
       tc: [...document.querySelectorAll('meta[name="theme-color"]')].map(m => m.getAttribute('content'))};
   });
+  // ⑫-4 산수 뒤 배경(주문 1120-1449 · 사장님 2026-11-20(마카오) 14:49 「이배경을 손자병법 싸이트 전체 뒤 배경으로 하라」) — 한 폭 산수(/su/su-bg.svg)가 모든 손자병법 쪽 뒤에
+  //   화면에 붙은 한 장(#su::after · fixed · z -1 · 누를 수 없음) · #su 가 쌓임 한 겹(position relative · z 0 — 글 뒤 · 쪽 바탕 위) · 쪽 바탕 그림(종이 결 · 옥빛 물)은 걷음
+  //   글이 산수 위에 바로 앉지 않음 — 서랍(details)을 모두 열고 main 안 보이는 글마다 위로 올라가며 종이 바탕(불투명 85 넘게 또는 그림 바탕)을 찾음 · 없으면 그 글은 산수 위에 앉은 것
+  const bgLook = p => p.evaluate(async () => {
+    const su = document.getElementById('su'), a = getComputedStyle(su, '::after'), s = getComputedStyle(su), m = document.querySelector('#su main.sj-page');
+    for (const d of document.querySelectorAll('#su main.sj-page details')) d.open = true;
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const solid = e => { for (let x = e; x && x !== su; x = x.parentElement) { const c = getComputedStyle(x); if (c.backgroundImage !== 'none') return true; const v = (/rgba?\(([^)]+)\)/.exec(c.backgroundColor)?.[1] ?? '').split(',').map(Number); if (v.length === 3 || (v.length === 4 && v[3] >= 0.85)) return true; } return false; };
+    const bare = []; const tw = document.createTreeWalker(m ?? document.body, NodeFilter.SHOW_TEXT); let n;
+    while ((n = tw.nextNode())) { const e = n.parentElement; if (!n.textContent.trim() || !e || e.closest('svg, [aria-hidden="true"]')) continue; const r = e.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue; if (!solid(e)) bare.push(n.textContent.trim().slice(0, 12)); }
+    let file = null; try { const res = await fetch('/su/su-bg.svg', {cache: 'no-store'}); const t = res.ok ? await res.text() : ''; file = {ok: res.ok, type: res.headers.get('content-type') ?? '', len: t.length, text: /<text/.test(t), script: /<script|javascript:/i.test(t), ext: /(?:href|src)="https?:/.test(t)}; } catch (e) { file = {err: String(e).slice(0, 80)}; }
+    return {c: a.content, pos: a.position, z: a.zIndex, pe: a.pointerEvents, img: /\/su\/su-bg\.svg/.test(a.backgroundImage), size: a.backgroundSize, inset: [a.top, a.left].join(' '), suPos: s.position, suZ: s.zIndex, mainImg: m ? getComputedStyle(m).backgroundImage : null, bare: bare.slice(0, 5), bareN: bare.length, file};
+  });
+  const bgOk = g => g.c === '""' && g.pos === 'fixed' && g.z === '-1' && g.pe === 'none' && g.img && g.size === 'cover' && g.inset === '0px 0px' && g.suPos === 'relative' && g.suZ === '0' && g.mainImg === 'none' && g.bareN === 0
+    && !!g.file?.ok && /svg/.test(g.file.type) && g.file.len > 1000 && !g.file.text && !g.file.script && !g.file.ext;
+  const BGW = '⑫-4 산수 뒤 배경(주문 1120-1449) — 한 폭 산수가 화면에 붙어 글 뒤에(누를 수 없음) · 쪽 바탕 그림 걷음 · 서랍을 열어도 산수 위에 바로 앉은 글 0 · 그림 속 글자 0';
   R.m.white = {};
   for (const scheme of ['light', 'dark']) {
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', colorScheme: scheme});
@@ -445,6 +461,7 @@ for (const width of [390, 360, 320]) {
       check(con(w.h1, PAPER) >= 7, W1 + '— 큰 제목 먹 글 대비 7 넘게', w.h1);
       check((w.frame === 'none' || w.frame === 'normal') && w.orn === 0, W1 + '— 둘레 겹테 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, orn: w.orn}));
       check(w.tc.length >= 1 && w.tc.every(c => c === '#F3F8F6'), W1 + '— 휴대폰 맨 위 띠 밝은 한지 색', w.tc.join(' '));
+      { const g = await bgLook(p); check(bgOk(g), W1 + BGW, JSON.stringify(g).slice(0, 400)); }
     }
     for (const hh of ['#/k', '#/k/' + FK, ...(FC ? ['#/c/' + FC.code] : []), '#/r/t', '#/q', '#/j']) { // 주문 1115-2328 — 꾀 모음 · 꾀 · 회사 · 정산도 첫 쪽과 같은 한지 판(샘플 사) · 주문 1116-0300 — 「왜 사?」 · 매매일지도(옛 흰 판 · 옛 틀 지움)
       const PAPER = 'rgb(243, 248, 246)', INKBAR = 'rgb(252, 254, 253)'; // 주문 1119-2026 — 수채화 종이 #F3F8F6 · 아래 탭 흰 판 #FCFEFD(샘플 첫째 · 둘째 합친 판)
@@ -459,6 +476,7 @@ for (const width of [390, 360, 320]) {
       check(con(w.h1, PAPER) >= 7, W1 + '— 큰 제목 먹 글 대비 7 넘게', w.h1);
       check((w.frame === 'none' || w.frame === 'normal') && w.orn === 0, W1 + '— 둘레 겹테 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, orn: w.orn}));
       check(w.tc.length >= 1 && w.tc.every(c => c === '#F3F8F6'), W1 + '— 휴대폰 맨 위 띠 밝은 한지 색', w.tc.join(' '));
+      { const g = await bgLook(p); check(bgOk(g), W1 + BGW, JSON.stringify(g).slice(0, 400)); }
     }
     await ctx.close();
   }

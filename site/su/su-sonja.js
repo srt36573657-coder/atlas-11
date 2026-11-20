@@ -437,7 +437,7 @@ export async function vSonja(X, shell = null) {
   { const cv0 = main.querySelector(':scope > .sj-cover'), tw = cv0?.querySelector(':scope > .sj-tc'), tc = todayCard(T, X.cur?.()?.code ?? null); if (tw) tw.replaceWith(tc); else cv0?.append(tc); } // 오늘 한 장(주문 1120-0001) — 자리(sj-tc0)를 채움
   const sunS = body.find(e => e?.classList?.contains('sj-sun')), cv = main.querySelector(':scope > .sj-cover'), at = sunS ?? cv; // 손자병법 한 폭(주문 1119-1648) — 표지 아래에서 오늘 시장 칸 끝으로(주문 1119-2026 — 열면 오늘 시장이 먼저)
   if (at && !main.querySelector('figure.sj-scroll') && !at.querySelector(':scope > figure.sj-scroll')) at.append(scrollFig());
-  main.append(...body);
+  main.append(...body.filter(e => e != null)); // 꾀 칸 자료가 없는 날 wait = null — append 가 「null」 글로 붙이지 않게
   const hardOf = () => { const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove(); const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = ''; };
   hardOf();
   const after = async () => { // 꾀 칸(su21-s36.json) — 첫 칠함 뒤에 받아 채움

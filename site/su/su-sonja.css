@@ -1446,3 +1446,10 @@ html.sj-on #su .sj-pkmn { color: #1B3A44; }
 @media (prefers-reduced-motion: reduce) { #su .sj-tcbam { animation: none; } }
 #su .sj-tc .sj-ts { background: rgba(252, 254, 253, .9); }
 #su .sj-tc > .sj-tck, #su .sj-tc > .sj-tcl, #su .sj-tc > .sj-tch, #su .sj-tc > .sj-tcd { text-shadow: 0 0 3px #FCFEFD, 0 0 8px #FCFEFD, 0 0 14px #FCFEFD; } /* 대숲 위 글 — 종이빛 테두리로 또렷하게 */
+/* ── 주문 1120-1449(사장님 2026-11-20(마카오) 14:49 「이배경을 손자병법 싸이트 전체 뒤 배경으로 하라」) — 손자병법 한 폭 산수(번호 도장 · 정산 점선 뺌 · /su/su-bg.svg)를 모든 쪽 뒤에 깔고 움직이지 않게(화면에 붙음)
+   쪽 바탕(종이 결 · 옥빛 물)은 걷어 둘레 · 칸 사이 · 쪽 끝에 산수가 보이고 · 글 칸(카드)은 종이 그대로(비치게 하면 정자 · 배 그림자가 글 밑에 어려 읽기 어려움 — 눈이 편한 쪽을 고름) ── */
+html.sj-on #su { position: relative; z-index: 0; }
+html.sj-on #su::after { content: ""; position: fixed; inset: 0; z-index: -1; background: #EAF5F5 url(/su/su-bg.svg) center top / cover no-repeat; pointer-events: none; } /* ::before 는 옛 겹테 자리라 비워 둠(검사 ⑫ 「둘레 겹테 0」) */
+html.sj-on #su main.sj-page { background-image: none; background-color: transparent; }
+html.sj-on #su main.sj-page.sj-sub { border-bottom: 0; } /* 부제 고르개(.sj-sub)와 이름이 겹쳐 생긴 쪽 밑 굵은 줄 — 산수를 가로지르지 않게 걷음 */
+html.sj-on #su .sj-whymore { background: #FCFEFD; border-radius: 28px; box-shadow: var(--nw-lift); padding: 6px 16px; } /* 「왜 사?」 · 일지의 「자세히」 서랍도 첫 쪽 서랍처럼 종이 칸 — 열면 글이 산수 위에 바로 앉지 않게 */
