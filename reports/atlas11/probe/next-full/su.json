@@ -1,15 +1,19 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-20T09:45:29.947Z",
+ "at": "2026-11-20T10:59:34.541Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 571,
-  "fail": 1
+  "fail": 2
  },
  "fails": [
   [
    "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795168169246"
+   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795172633941"
+  ],
+  [
+   "㉚ [390] 나) 여러 꾀가 고른 회사(#/o · 탭 「회사」 — 주문 1120-1220) — 이 검사가 장부로 다시 센 꾀 수와 같음 · 많이 고른 차례 · 줄마다 꺾은선 · 손실 먼저 · 「추천」 「%」 0 · 앞날 아님 한 줄",
+   "{\"days\":5,\"want\":\"many\",\"got\":[[\"180640\",7,\"꾀 7가지가 골랐어요.\"],[\"012750\",6,\"꾀 6가지가 골랐어요.\"],[\"089590\",5,\"꾀 5가지가 골랐어요.\"],[\"035900\",5,\"꾀 5가지가 골랐어요.\"],[\"128940\",5,\"꾀 5가지가 골랐어요.\"],[\"090430\",5,\"꾀 5가지가 골랐어요.\"]],\"chart\":true,\"legend\":5,\"wide\":true,\"tab\":\"회사\"}"
   ]
  ],
  "m": {
@@ -19,7 +23,7 @@
    "sun": true
   },
   "home": {
-   "screens": 16.69,
+   "screens": 16.72,
    "links": 54
   },
   "t21": {
@@ -115,9 +119,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 648,
+   "lcp": 680,
    "cls": 0.085,
-   "pic": 644
+   "pic": 677
   },
   "white": {
    "light #/": {
@@ -962,38 +966,40 @@
    "missO": 0
   },
   "s36": {
-   "all": 250,
+   "all": 247,
    "now": 28,
    "next": 21,
-   "s36": 201,
+   "s36": 198,
    "sn": true,
    "same": true,
-   "empty": [],
+   "empty": [
+    "g17"
+   ],
    "data": "2026-11-20",
    "sp": {
-    "want": 201,
-    "chips": 201,
+    "want": 198,
+    "chips": 198,
     "got": 16
    },
    "ovl": {
-    "n": 32,
-    "sp": 32,
+    "n": 31,
+    "sp": 31,
     "top": [
-     10,
+     9,
      6,
      6
     ],
     "days": [
      6,
-     6,
-     3
+     3,
+     1
     ],
     "from": "2026-11-13"
    },
    "days": {
     "from": "2026-11-13",
     "max": 6,
-    "n2": 116,
+    "n2": 113,
     "q": [
      3,
      3,
@@ -1007,33 +1013,33 @@
    },
    "pick": {
     "rule": "s36-v3",
-    "empty": 0,
+    "empty": 1,
     "mm": {
-     "n": 124,
+     "n": 122,
      "bad": 0
     },
     "mix": {
-     "n": 201,
+     "n": 198,
      "bad": 0
     },
     "themes": [
-     "항공 21",
-     "물류·운송 10",
-     "화장품 10",
-     "연예 기획사 13",
-     "사업 서비스·광고 8"
+     "항공 19",
+     "화장품 9",
+     "물류·운송 8",
+     "은행·카드 5",
+     "연예 기획사 13"
     ]
    }
   },
   "reopen": [
    {
-    "hash": "#/k/g15",
+    "hash": "#/k/g32",
     "try": 1,
     "status": 403,
     "err": null,
-    "url": "https://aaa7377.com/su/?v=1795168169246#/k/g15",
+    "url": "https://aaa7377.com/su/?v=1795172633941#/k/g32",
     "title": "aaa7377.com",
-    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M7W5RV94DVHVPHCCD19JD4FW"
+    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M7WA13ASAVVB7R616VG42T5S"
    }
   ]
  },
