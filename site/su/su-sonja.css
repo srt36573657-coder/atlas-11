@@ -1453,3 +1453,52 @@ html.sj-on #su::after { content: ""; position: fixed; inset: 0; z-index: -1; bac
 html.sj-on #su main.sj-page { background-image: none; background-color: transparent; }
 html.sj-on #su main.sj-page.sj-sub { border-bottom: 0; } /* 부제 고르개(.sj-sub)와 이름이 겹쳐 생긴 쪽 밑 굵은 줄 — 산수를 가로지르지 않게 걷음 */
 html.sj-on #su .sj-whymore { background: #FCFEFD; border-radius: 28px; box-shadow: var(--nw-lift); padding: 6px 16px; } /* 「왜 사?」 · 일지의 「자세히」 서랍도 첫 쪽 서랍처럼 종이 칸 — 열면 글이 산수 위에 바로 앉지 않게 */
+/* ── 주문 1120-1447(사장님 2026-11-20(마카오) 14:47 「종목 검색 기능 … 검색한 기업의 상세 정보를 한눈에 …」) — 회사 탭 찾기 칸 · 회사 쪽 값과 실적 · 더 알아보기
+   글 17px 넘게 · 누르는 것 48 넘게 · 빨강 0(내림 · 잃은 돈 = 짙은 남빛) · 「%」 0 ── */
+html.sj-on #su .sj-find { display: grid; gap: 10px; }
+#su .sj-findf { margin: 0; }
+#su .sj-findi { display: block; width: 100%; min-height: 58px; padding: 10px 16px; border: 2px solid #20323A; border-radius: 16px; background: #FCFEFD; color: #20323A; font: inherit; font-size: 1.25rem; font-weight: 700; -webkit-appearance: none; appearance: none; }
+#su .sj-findi::placeholder { color: #5E767C; font-weight: 600; }
+#su .sj-findi:focus-visible { outline: 3px solid #4A6168; outline-offset: 2px; }
+#su .sj-findn { font-size: 1.0625rem; color: #4A6168; }
+#su .sj-findl { display: grid; gap: 8px; }
+#su .sj-findl:empty { display: none; }
+#su .sj-finda { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 10px; min-height: 60px; padding: 8px 14px; border-radius: 14px; background: #E6F1EE; color: #20323A; text-decoration: none; }
+#su .sj-finda > b { grid-column: 1; font-size: 1.25rem; font-weight: 800; }
+#su .sj-finda > span { grid-column: 1; font-size: 1.0625rem; color: #4A6168; }
+#su .sj-finda > i { grid-column: 2; grid-row: 1 / span 2; font-style: normal; font-size: 1.5rem; }
+#su .sj-cynow { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 2px; margin-top: 10px; font-size: 1.125rem; }
+#su .sj-cynow > b { font-size: 1.75rem; font-weight: 900; color: #20323A; }
+#su .sj-cyd { font-size: 1.0625rem; color: #4A6168; }
+#su .sj-cylow { margin-top: 10px; padding: 10px 14px; border-left: 4px solid #1F2A44; background: #F3F8F6; border-radius: 0 14px 14px 0; font-size: 1.1875rem; }
+#su .sj-cyfig { margin: 14px 0 0; }
+#su .sj-cypic { display: block; width: 100%; height: 132px; }
+#su .sj-cybase { fill: none; stroke: #9DB5B8; stroke-width: 1.5; stroke-dasharray: 4 5; vector-effect: non-scaling-stroke; }
+#su .sj-cyline { fill: none; stroke: #20323A; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+#su .sj-cylo { fill: #1F2A44; stroke: #FCFEFD; stroke-width: 2; }
+#su .sj-cyend { fill: #4A6168; stroke: #FCFEFD; stroke-width: 2; }
+#su .sj-cypk { fill: #FCFEFD; stroke: #1F2A44; stroke-width: 2; }
+#su .sj-cyfig > figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; margin-top: 6px; font-size: 1.0625rem; color: #4A6168; }
+#su .sj-cysp { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+#su .sj-cysp > li { display: grid; gap: 2px; padding: 10px 12px; border-radius: 14px; background: #F3F8F6; }
+#su .sj-cysp > li > span { font-size: 1.0625rem; color: #4A6168; }
+#su .sj-cysp > li > b { font-size: 1.25rem; font-weight: 900; }
+#su .sj-cfin { margin-top: 18px; }
+#su .sj-cfh { margin-top: 18px; font-size: 1.25rem; font-weight: 900; color: #20323A; }
+#su .sj-cfl { display: grid; gap: 10px; margin-top: 8px; }
+#su .sj-cfy { display: grid; gap: 4px; padding: 10px 14px; border-radius: 14px; background: #F3F8F6; }
+#su .sj-cft { font-size: 1.125rem; font-weight: 900; }
+#su .sj-cfm { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 1.125rem; }
+#su .sj-cfm > b { font-weight: 900; white-space: nowrap; }
+#su .sj-cfdn > b, #su .sj-cfdn > .sj-cfk { color: #1F2A44; }
+#su .sj-cfdn > b::before { content: '▼ '; font-size: .8em; }
+#su .sj-cfx { display: grid; gap: 4px; margin-top: 12px; font-size: 1.125rem; }
+#su .sj-co7 { display: grid; gap: 8px; margin-top: 8px; }
+#su .sj-colk { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 14px; border-radius: 14px; background: #E6F1EE; color: #20323A; text-decoration: none; }
+#su .sj-colk > b { flex: 1; font-size: 1.1875rem; font-weight: 800; }
+#su .sj-colk > i { font-style: normal; font-size: 1.375rem; }
+#su .sj-co7n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 999px; background: #20323A; color: #FCFEFD; font-size: 1.0625rem; font-weight: 900; }
+#su .sj-colout { display: grid; grid-template-columns: 1fr auto; column-gap: 10px; margin-top: 8px; }
+#su .sj-colout > b { grid-column: 1; }
+#su .sj-colout > span { grid-column: 1; font-size: 1.0625rem; color: #4A6168; }
+#su .sj-colout > i { grid-column: 2; grid-row: 1 / span 2; }

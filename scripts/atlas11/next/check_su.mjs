@@ -31,7 +31,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[kqpjo]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
+const LINK_OK = /^(https:\/\/finance\.naver\.com\/item\/(news|coinfo)\.naver\?code=[0-9A-Z]{6}|#\/|#\/[kqpjo]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -233,8 +233,8 @@ for (const width of [390, 360, 320]) {
     const shapeSj = () => p.evaluate(() => {
       const main = document.querySelector('#su main.sj-page'); if (!main) return null;
       const page = main.getAttribute('data-page') ?? '';
-      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|costop|two|act|body|figs|whymore)$/.test(c)) ?? e.className);
-      const want = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-s36', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kst', 'sj-kpn', 'sj-end'] : page === 'co' ? ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'] : page === 'why' || page === 'journal' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-body', 'sj-figs', 'sj-whymore', 'sj-end'] : [];
+      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|coval|colink|costop|two|act|body|figs|whymore)$/.test(c)) ?? e.className);
+      const want = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-s36', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kst', 'sj-kpn', 'sj-end'] : page === 'co' ? ['sj-ph', 'sj-coval', 'sj-cok', 'sj-colink', 'sj-costop', 'sj-end'] : page === 'why' || page === 'journal' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-body', 'sj-figs', 'sj-whymore', 'sj-end'] : [];
       const must = page === 'sonja' ? ['sj-cover', 'sj-sun', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kpn', 'sj-end'] : page === 'why' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-end'] : page === 'journal' ? ['sj-ph', 'sj-two', 'sj-end'] : ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'];
       const order = kids.every(k => want.includes(k)) && kids.map(k => want.indexOf(k)).every((v, i, a) => !i || v > a[i - 1]) && must.every(k => kids.includes(k));
       const last = main.lastElementChild, more = main.querySelector(':scope > details.sj-more');
@@ -1293,6 +1293,57 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       return b ? {days: b.getAttribute('data-days'), now: b.getAttribute('data-now'), dots: b.querySelectorAll('svg.sj-cpk circle').length, go: b.querySelector('a.sj-go')?.getAttribute('href') ?? '', t: (b.querySelector('.sj-cpkt')?.textContent ?? '').trim(), fs: parseFloat(getComputedStyle(b.querySelector('.sj-cpkt')).fontSize)} : null; });
     check(!!cb && cb.days === String(days.length) && cb.now === String(wantN[wantN.length - 1]) && cb.dots === days.length && cb.go === '#/o' && cb.t.includes('꾀') && cb.fs >= 16.95 && !/%|추천/.test(cb.t),
       W + '다) 회사 쪽 날마다 고른 꾀 수 꺾은선(주문 1120-1040) — 다시 센 꾀 수와 같음 · 점 = 날 수 · 여러 꾀가 고른 회사로 가는 고리', JSON.stringify({c: r0.c, wantN, cb}).slice(0, 300));
+  }
+  check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+  await ctx.close();
+}
+{ // ㉛ 주문 1120-1447(사장님 2026-11-20(마카오) 14:47 「종목 검색 기능 … 검색창 … 상세 정보를 한눈에 … 연간 수익률 및 기간별 주가 변동률 현재 주가와 과거 주가 흐름 … 매출, 영업이익 … 7단 분석 … 뉴스 … 공시」 · 15:27 「5시까지」)
+  //   가) 회사 탭(#/o) 맨 위 찾기 칸 — 이 검사가 /atlas/data/mkt.json 으로 따로 고른 곳과 같음(이름 그대로 → 그 회사 맨 위 · 번호 → 그 회사 · 없는 이름 → 줄 0 · 「찾는 회사가 없어요」) · 누르면 #/c/<번호>
+  //   나) 회사 쪽 값과 실적 — 이 검사가 /atlas/data/co/<번호>.json close · fin 으로 다시 셈: 지금 값 · 1년 사이 가장 크게 떨어진 때(손실 먼저 · 셈 칸보다 앞) · 1주 · 1달 · 3달 · 1년 100원이 · 세 해 번 돈 · 「%」 0
+  //   다) 더 알아보기 — 7단 고리(3 ~ 7단 = /next/?su=back#/w/<번호>(/past · rivals · grow · range)) · 바깥 둘(네이버 증권 뉴스 · 공시 / 증권사 글 — 새 창) · 증권사 앞날 값 · 사고팔기 의견은 화면 글 0
+  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+  await QUIET(ctx);
+  const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+  const W = '㉛ [390] ', CD = /^[0-9A-Z]{6}$/, nm = t => String(t ?? '').normalize('NFC').toLowerCase().replace(/[\s·.\-()]/g, '');
+  const MK = await J('/atlas/data/mkt.json').catch(() => null), CO = MK?.companies && typeof MK.companies === 'object' ? Object.entries(MK.companies).filter(([c, o]) => CD.test(c) && typeof o?.n === 'string' && o.n) : [];
+  const pick = CO.find(([c, o]) => c === (FC?.code ?? '005930')) ?? CO.find(([, o]) => !CO.some(([, x]) => x !== o && nm(x.n).startsWith(nm(o.n)) && nm(x.n) !== nm(o.n))) ?? CO[0] ?? null; // 이름이 다른 이름의 앞머리가 아닌 회사(이름 그대로 쓰면 맨 위가 하나로 정해짐)
+  await open(p, '#/o');
+  const typeIn = async q => { await p.fill('#su section.sj-find input.sj-findi', q); await p.waitForFunction(q => { const n = document.querySelector('#su .sj-findn')?.textContent ?? ''; return !q || /누르면|찾는 회사가 없어요|받지 못했어요/.test(n); }, q, {timeout: 15000}).catch(() => {});
+    return p.evaluate(() => ({rows: [...document.querySelectorAll('#su .sj-findl > li.sj-findr')].map(li => [li.getAttribute('data-code'), li.querySelector('a.sj-finda')?.getAttribute('href') ?? '', (li.querySelector('a.sj-finda > b')?.textContent ?? '').trim()]), note: (document.querySelector('#su .sj-findn')?.textContent ?? '').trim()})); };
+  const fb = await p.evaluate(() => { const sec = document.querySelector('#su main.sj-page[data-page="picks"] > section.sj-find'), i = sec?.querySelector('input.sj-findi'), r = i?.getBoundingClientRect();
+    return {has: !!i, first: !!sec && sec.previousElementSibling?.matches('section.sj-ph') === true, type: i?.getAttribute('type') ?? '', label: i?.getAttribute('aria-label') ?? '', h: r ? Math.round(r.height) : 0, fs: i ? parseFloat(getComputedStyle(i).fontSize) : 0}; });
+  const byName = pick ? await typeIn(pick[1].n) : null, byCode = pick ? await typeIn(pick[0]) : null, none = await typeIn('없는회사이름가나다');
+  const rowsOk = r => !!r && r.rows.length >= 1 && r.rows.length <= 8 && r.rows.every(([c, href, n]) => CD.test(c ?? '') && href === '#/c/' + c && MK.companies[c]?.n === n);
+  check(fb.has && fb.first && fb.type === 'search' && /회사 찾기/.test(fb.label) && fb.h >= 48 && fb.fs >= 16.95 && !!pick && rowsOk(byName) && byName.rows[0][0] === pick[0] && rowsOk(byCode) && byCode.rows[0][0] === pick[0]
+    && none.rows.length === 0 && /찾는 회사가 없어요/.test(none.note),
+    W + '가) 회사 찾기(#/o 맨 위) — 이름 그대로 → 그 회사가 맨 위 · 번호 → 그 회사 · 없는 이름 → 줄 0 · 줄마다 #/c/<번호> · 이름 = 회사 목록 그대로 · 칸 높이 48 · 글 17px 넘게',
+    JSON.stringify({fb, pick: pick?.[0], byName: byName?.rows.slice(0, 3), byCode: byCode?.rows.slice(0, 2), none}).slice(0, 500));
+  if (pick) { // 고른 회사를 누르면 그 회사 쪽
+    await typeIn(pick[1].n); await p.click('#su .sj-findl > li.sj-findr:first-child a.sj-finda'); await p.waitForFunction(c => location.hash === '#/c/' + c && !!document.querySelector('#su main.sj-page[data-page="co"]'), pick[0], {timeout: 15000}).catch(() => {});
+    check(await p.evaluate(c => location.hash === '#/c/' + c && !!document.querySelector('#su main.sj-page[data-page="co"]'), pick[0]), W + '가) 찾은 줄을 누르면 그 회사 쪽(#/c/<번호>)', pick[0]);
+  }
+  for (const code of [pick?.[0], FC?.code].filter((c, i, a) => c && a.indexOf(c) === i)) {
+    const CJ = await J('/atlas/data/co/' + code + '.json').catch(() => null);
+    await open(p, '#/c/' + code);
+    const g = await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="co"]'), v = m?.querySelector(':scope > section.sj-coval'), l = m?.querySelector(':scope > section.sj-colink'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
+      return {v: !!v, after: v?.previousElementSibling?.matches('section.sj-ph') === true, now: t(v?.querySelector('.sj-cynow > b')), low: t(v?.querySelector('.sj-cylow')), lowFirst: !!v && !!v.querySelector('.sj-cylow') && (!v.querySelector('.sj-cysp') || !!(v.querySelector('.sj-cylow').compareDocumentPosition(v.querySelector('.sj-cysp')) & 4)),
+        sp: [...(v?.querySelectorAll('.sj-cysp > li') ?? [])].map(li => [li.getAttribute('data-span'), t(li.querySelector('b'))]), fin: [...(v?.querySelectorAll('.sj-cfl > li.sj-cfy') ?? [])].map(li => [li.getAttribute('data-year'), ...[...li.querySelectorAll('.sj-cfm')].map(x => x.getAttribute('data-k') + ':' + t(x.querySelector('b')))]),
+        vt: v?.innerText ?? '', lt: l?.innerText ?? '', seven: [...(l?.querySelectorAll('ol.sj-co7 > li a') ?? [])].map(a => a.getAttribute('href')), outs: [...(l?.querySelectorAll('a.sj-colout') ?? [])].map(a => [a.getAttribute('href'), a.getAttribute('target'), a.getAttribute('rel')])}; });
+    const cl = Array.isArray(CJ?.close) ? CJ.close.filter(v => typeof v === 'number' && v > 0) : [], n = cl.length, NFk = new Intl.NumberFormat('ko-KR'), w = r => (100 * (1 + r)).toFixed(1).replace(/\.0$/, '') + '원';
+    const y = cl.slice(-Math.min(n, 251)); let pk = y[0], dd = 0; for (const v of y) { if (v > pk) pk = v; dd = Math.min(dd, v / pk - 1); }
+    const spW = [['1주', 5], ['1달', 20], ['3달', 60], ['1년', 250]].filter(([, d]) => n > d).map(([k, d]) => [k, '100원이 ' + w(cl[n - 1] / cl[n - 1 - d] - 1)]);
+    const eok = v => { const a = Math.abs(v); return a >= 10000 ? (a / 10000).toFixed(1).replace(/\.0$/, '') + '조 원' : NFk.format(Math.round(a)) + '억 원'; }, F = CJ?.fin;
+    const finW = F && Array.isArray(F.years) ? F.years.map((t, i) => [String(t).slice(0, 4), ...[['rev', F.rev?.[i]], ['op', F.op?.[i]], ['net', F.net?.[i]]].filter(([, v]) => typeof v === 'number' && Number.isFinite(v)).map(([k, v]) => k + ':' + eok(v))]).filter(r => /^\d{4}$/.test(r[0]) && r.length > 1).reverse() : [];
+    const sevenW = ['w/' + code, 'w/' + code + '/past', 'w/' + code + '/rivals', 'w/' + code + '/grow', 'w/' + code + '/range'].map(x => '/next/?su=back#/' + x);
+    const outW = [['https://finance.naver.com/item/news.naver?code=' + code, '_blank', 'noopener noreferrer'], ['https://finance.naver.com/item/coinfo.naver?code=' + code, '_blank', 'noopener noreferrer']];
+    const lowW = y.length >= 2 ? (dd < 0 ? '사이 가장 크게 떨어졌을 때, 100원이 ' + w(dd) + '이 됐어요.' : '사이 떨어진 날이 없었어요.') : null;
+    const okV = n >= 2 && g.v && g.after && g.now === NFk.format(cl[n - 1]) + '원' && !!lowW && g.low.endsWith(lowW) && g.lowFirst && JSON.stringify(g.sp) === JSON.stringify(spW)
+      && JSON.stringify(g.fin) === JSON.stringify(finW) && !/%/.test(g.vt) && /앞날을 맞히지 않고/.test(g.vt);
+    check(okV, W + '나) 회사 쪽 값과 실적(#/c/' + code + ') — 머리 바로 아래 · 지금 값 · 1년 사이 가장 크게 떨어진 때가 셈 칸보다 앞 · 1주 · 1달 · 3달 · 1년 100원이 · 세 해 번 돈 = 이 검사가 회사 자료로 다시 셈 · 「%」 0',
+      JSON.stringify({n, now: g.now, low: g.low.slice(-40), lowW, sp: g.sp, spW, fin: g.fin.slice(0, 1), finW: finW.slice(0, 1)}).slice(0, 600));
+    const okL = sevenW.every(x => g.seven.includes(x)) && JSON.stringify(g.outs) === JSON.stringify(outW) && !/목표|매수|매도|추천|전망|%/.test(g.lt) && /앞날을 맞히는 글이라서/.test(g.lt);
+    check(okL, W + '다) 더 알아보기(#/c/' + code + ') — 7단 고리(3 ~ 7단) · 바깥 둘(뉴스 · 공시 / 증권사 글 — 새 창) · 증권사 앞날 값 · 사고팔기 의견 글 0', JSON.stringify({seven: g.seven, outs: g.outs, lt: g.lt.slice(0, 120)}).slice(0, 500));
+    pageRules(await measure(p), W + '회사 쪽 #/c/' + code);
   }
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();

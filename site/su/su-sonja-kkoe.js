@@ -18,7 +18,9 @@ import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날�
 import {kkoePic, ridgePic, heroPic, brushBar, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 손무의 이야기: 제3장 꾀를 펼치다 · 제4장 성을 살피다 · 장부 · 병서)
 import {kkoeTile} from '/su/su-sonja.js';
 import {stance3, STANCES} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 · 꾀 쪽 맨 위 표지 — 주문 1120-0950)
-import {picksOf, monthLow, dayCounts} from '/su/su-picks.js'; // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
+import {picksOf, monthLow, dayCounts} from '/su/su-picks.js';
+import {findBox} from '/su/su-find.js'; // 회사 찾기(주문 1120-1447 — 회사 탭 맨 위)
+import {coValSec, coLinkSec} from '/su/su-coval.js'; // 회사 쪽 값과 실적 · 더 알아보기(주문 1120-1447) // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
 /** 그림 속 이야기 네 막(주문 1117-0102) — 큰 그림 바로 아래 · 그림이 그 막에 오면 그 줄이 밝아짐(꾸밈 sj-story) */
 const storyOl = k => STORY36[k] ? h('ol', {class: 'sj-story', 'aria-label': STORY_TAG}, ...STORY36[k].map((t, i) => h('li', {'data-act': String(i + 1)}, h('b', {class: 'sj-actt', text: ACTS[i]}), h('span', {class: 'sj-actb', text: t})))) : null;
 
@@ -346,6 +348,7 @@ export async function vCo36(X, code) {
       say: mine.length ? '오늘 서른여섯 꾀 가운데 ' + mine.length + '가지가 이 회사를 골랐어요.' : '오늘은 서른여섯 꾀 가운데 어느 꾀도 이 회사를 고르지 않았어요.',
       pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.castle, 'figcaption'), heroPic('castle')),
       more: [ddCard(sp), line ? meanCap(PM.ridge) : null, line, sp ? null : h('p', {class: 'sj-note', text: '한 달 값 그림은 오늘 꾀가 고른 회사만 그려요.'})]}), // 손실 먼저 — 한 달 사이 가장 깊이 빠진 때(주문 1117-1120) // 산세 그림 뜻은 그림 바로 위(그림 아래 글 figcaption 은 값 셋 그대로)
+    coValSec(co), // 값과 실적(주문 1120-1447 — 지금 값 · 1년 흐름 손실 먼저 · 때마다 100원이 · 번 돈 세 해)
     h('section', {class: 'sj-sec sj-cok', 'aria-label': '이 회사를 고른 꾀', 'data-n': String(mine.length)},
       head('꾀', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 회사를 고른 꾀'}), h('span', {class: 'sj-h2n', text: ' ' + mine.length + '가지'}))),
       mine.length && sun ? h('p', {class: 'sj-rule', text: '꾀마다 지난 기록을 적었어요. 지금 같은 ' + sun.name + '에서 덜 잃은 꾀가 위에 있어요.'}) : null,
@@ -360,6 +363,7 @@ export async function vCo36(X, code) {
       mine.length ? null : goLink('#/k', '서른여섯 꾀 모두 보기'),
       h('p', {class: 'sj-safe', text: '꾀가 골랐다고 사도 된다는 뜻이 아니에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
       endSeal('꾀')),
+    coLinkSec(code, c), // 더 알아보기(주문 1120-1447 — 옛 7단 분석 · 뉴스 · 공시 · 증권사 글은 바깥 고리만)
     h('section', {class: 'sj-sec sj-costop', 'aria-label': '사기 전에 한 번 멈춰요'},
       h('a', {class: 'sj-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 질문 열한 개에 답하며, 내 이유부터 적어 봐요.'}))),
     endSec(day(G?.asOf?.board ?? T?.asOf?.board), gotOf(S))];
@@ -446,6 +450,7 @@ export async function vPicks(X) {
   const kids = [
     pageHead({kick: '서른여섯 꾀 · 함께 고른 회사', h1: '여러 꾀가 고른 회사', seal: '곳',
       say: '서른여섯 꾀는 날마다 회사를 골라요. 한 회사를 여러 꾀가 함께 고르기도 해요. 오늘 많은 꾀가 고른 회사부터 모았어요.'}),
+    findBox(X.get), // 회사 찾기(주문 1120-1447 · 사장님 14:47 「원하는 회사명이나 종목명을 직접 검색할 수 있는 검색창」)
     h('section', {class: 'sj-sec sj-pks', 'aria-label': '오늘 여러 꾀가 고른 회사', 'data-n': String(P.rows.length), 'data-rule': P.rule},
       head('곳', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '오늘 여러 꾀가 고른 회사'}), h('span', {class: 'sj-h2n', text: ' ' + P.rows.length + '곳'}))),
       h('p', {class: 'sj-dayl', text: (bd ? bd + ' 마지막 값으로 고른 회사예요. ' : '') + '꾀 두 가지 넘게 고른 곳만 적었어요. 꺾은선은 날마다 고른 꾀 수예요.'}),
