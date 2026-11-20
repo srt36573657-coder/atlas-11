@@ -14,6 +14,7 @@ import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
 import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap, scrollFig} from '/su/su-sonja-top.js';
 import {MIX36, EQ36, NAME as KNAME, MEAN as KMEAN} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
+import {bambooArt} from '/su/su-bamboo.js'; // 오늘 한 장 뒤 대나무 숲(주문 1120-1422)
 import {stance3, STANCES, won100} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 — 수비 · 보편 · 공격 · 지난 같은 땅 기록으로만)
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {landPic, kkoePic, arrowsPic, sonmuPic, brushBar, coverFilm} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 글로 풀던 것을 옛 그림으로 · 한 사람 손무의 이야기) // 머리 줄 · 표지 = 자료 없이 먼저 칠하는 판(su.js 가 먼저 붙임 — 느린 휴대폰 첫 화면) · 끝 줄 · 이야기 막대 · 탭은 모든 쪽이 같은 판(주문 1115-2328)
@@ -372,6 +373,7 @@ export function todayCard(T, lc = null) {
   const x = okSun(T.sun) ? T.sun : null, dd = mday(x?.day ?? T.asOf?.board), st = x ? stance3(x) : null;
   const band = h('div', {class: 'sj-tcp', hidden: ''}); // 한 달 전 약속(있는 날만 · 첫 칠함 뒤에 셈)
   const card = h('div', {class: 'sj-tc', 'data-land': x?.land ?? null, 'data-stance': st ? st.rule : null},
+    h('div', {class: 'sj-tcbam', 'aria-hidden': 'true'}, bambooArt()), // 대나무 숲(주문 1120-1422 · 글 뒤 · 누를 수 없음)
     h('p', {class: 'sj-tck', text: '오늘 시장' + (dd ? ' · ' + dd + ' 마지막 값' : '')}),
     x ? h('p', {class: 'sj-tcl'}, h('b', {class: 'sj-tcn', text: x.name}), h('span', {class: 'sj-tcl2', text: '이에요.'})) // 「지금은」 줄을 지움(세 태세 줄 자리 · d02 「시장 문장 두 줄을 한 줄로」)
       : h('p', {class: 'sj-tcl', text: '오늘 시장 모습은 아직 세지 못했어요.'}),

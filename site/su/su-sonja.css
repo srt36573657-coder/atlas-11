@@ -1436,3 +1436,13 @@ html.sj-on #su .sj-pkmn { color: #1B3A44; }
 #su .sj-cpkbox > * { margin: 0; }
 #su .sj-cpk { width: 100%; height: auto; }
 #su .sj-cpkt { font-size: 1.0625rem; color: #20323A; line-height: 1.45; }
+/* ── 주문 1120-1422(사장님 2026-11-20(마카오) 14:22 「여기 첫화면에 멋진 대나무밭 그림 그려서 기품있게 예술적으로 기백있게 …」) — 오늘 한 장 뒤 대나무 숲
+   그림 = /su/su-bamboo.js 의 글 속 그림(scripts/atlas11/next/su_bamboo.py 가 만듦 · 쪽빛 먹 · 마른 붓 줄기 · 바람 잎 · 빨강 0 · 글자 0 · 받아 오는 그림이 아니라 가장 큰 칠함에 들지 않음) · 글 뒤에 깔림(누를 수 없음)
+   바람 = 그림 한 장을 통째로 천천히 기울였다 세움(그림을 다시 그리지 않아 가벼움) · 움직임 줄이기 설정이면 멈춤 ── */
+#su .sj-tc { position: relative; isolation: isolate; }
+#su .sj-tcbam { position: absolute; z-index: -1; top: -4px; right: 6px; width: 72%; max-width: 360px; aspect-ratio: 300 / 460; pointer-events: none; transform-origin: 82% 100%; animation: sjBamboo 9s ease-in-out infinite; -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%); mask-image: linear-gradient(to bottom, #000 62%, transparent 100%); }
+#su .sj-tcbam > svg { display: block; width: 100%; height: 100%; }
+@keyframes sjBamboo { 0%, 100% { transform: skewX(0deg); } 34% { transform: skewX(-1deg); } 62% { transform: skewX(.35deg); } 80% { transform: skewX(-.5deg); } }
+@media (prefers-reduced-motion: reduce) { #su .sj-tcbam { animation: none; } }
+#su .sj-tc .sj-ts { background: rgba(252, 254, 253, .9); }
+#su .sj-tc > .sj-tck, #su .sj-tc > .sj-tcl, #su .sj-tc > .sj-tch, #su .sj-tc > .sj-tcd { text-shadow: 0 0 3px #FCFEFD, 0 0 8px #FCFEFD, 0 0 14px #FCFEFD; } /* 대숲 위 글 — 종이빛 테두리로 또렷하게 */
