@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-20T03:31:49.928Z",
+ "at": "2026-11-20T05:01:57.693Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 530,
@@ -24,7 +24,7 @@
   },
   "home": {
    "screens": 16.63,
-   "links": 52
+   "links": 53
   },
   "t21": {
    "listed": 2557,
@@ -117,9 +117,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 640,
+   "lcp": 628,
    "cls": 0.083,
-   "pic": 636
+   "pic": 622
   },
   "white": {
    "light #/": {
