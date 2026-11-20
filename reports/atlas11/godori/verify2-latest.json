@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-20T19:14:02Z",
+ "at": "2026-11-20T20:47:32Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -62,12 +62,12 @@
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "8dee7deecdb5d55848041b881d6cc759ba2956a16db4d49f4f56532fde17f921"
+   "sha256": "6e5dec741531807d394a176081c2c6a83cf293223aba79d185a87bf1b975ef35"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "74be71a8e4bec28b3568b012a7c9929287ea58c16af6837f50992db1df91c3db"
+   "sha256": "da19e6dea823b0693319fd29a9f7fecb20afc168ffacb96bcb04adffb31972a9"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
@@ -91,23 +91,23 @@
    "outThin": 1763,
    "outThinQ": 33,
    "outHalt": 3,
-   "outList": 0,
-   "listQ": 791,
-   "afterOut": 791,
+   "outList": 4,
+   "listQ": 787,
+   "afterOut": 787,
    "g1": 248,
-   "g2": 651,
+   "g2": 650,
    "g3": 27,
-   "g4": 677,
+   "g4": 674,
    "g5": 11,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 782,
+   "loss3": 778,
    "why": "lists"
   },
-  "loss3Years": 782,
+  "loss3Years": 778,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -380,8 +380,8 @@
    "detail": [
     1763,
     3,
-    0,
-    791,
+    4,
+    787,
     2557
    ]
   },
@@ -398,20 +398,20 @@
   "outThin": 1763,
   "outThinQ": 33,
   "outHalt": 3,
-  "outList": 0,
-  "listQ": 791,
-  "afterOut": 791,
+  "outList": 4,
+  "listQ": 787,
+  "afterOut": 787,
   "g1": 248,
-  "g2": 651,
+  "g2": 650,
   "g3": 27,
-  "g4": 677,
+  "g4": 674,
   "g5": 11,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 782,
+  "loss3": 778,
   "why": "lists"
  },
  "compared": 2693,
@@ -422,8 +422,8 @@
  "exit": 0,
  "secs": {
   "readBundle": 2.5,
-  "build": 1.4,
-  "recount": 0.6,
-  "total": 4.5
+  "build": 1.7,
+  "recount": 0.7,
+  "total": 5.0
  }
 }
