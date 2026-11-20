@@ -7,7 +7,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-20T06:54:56.872Z",
+ "at": "2026-11-20T07:07:47.540Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,17 +32,17 @@
    }
   }
  },
- "seconds": 56,
- "secondsSum": 166,
+ "seconds": 50,
+ "secondsSum": 150,
  "time": {
-  "old": 137.8,
-  "new": 139.1,
-  "wall": 55.6,
-  "wallSum": 166,
-  "opensOld": 7684,
+  "old": 5.2,
+  "new": 131.5,
+  "wall": 50.4,
+  "wallSum": 150.9,
+  "opensOld": 13,
   "opensNew": 10286,
-  "oldPct": 83,
-  "oldShare": 49.8
+  "oldPct": 3.4,
+  "oldShare": 3.8
  },
  "net": {
   "req": 5280,
@@ -65,12 +65,12 @@
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": false,
-   "why": "바뀐 파일 804개(/atlas/data/core.json · /atlas/data/surge.json · /atlas/data/comp.json) | 바뀐 파일 794개(/atlas/data/core.json · /atlas/data/surge.json · /atlas/data/comp.json) | 바뀐 파일 799개(/atlas/data/core.json · /atlas/data/surge.json · /atlas/data/comp.json)",
-   "made": null,
+   "use": true,
+   "why": "",
+   "made": "2026-11-20T06:51:14.725Z | 2026-11-20T06:51:15.030Z | 2026-11-20T06:51:15.389Z",
    "inputs": 2596,
    "reads": 2557,
-   "note": "기준값 새로 씀(파일 866개 · 값 853개) | 기준값 새로 씀(파일 865개 · 값 852개)"
+   "note": "기준값 다시 씀"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
@@ -82,7 +82,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 55,
+   "seconds": 50,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -95,7 +95,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 55,
+   "seconds": 50,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -108,7 +108,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 56,
+   "seconds": 50,
    "mine": 856,
    "kinds": {
     "c": 852,
