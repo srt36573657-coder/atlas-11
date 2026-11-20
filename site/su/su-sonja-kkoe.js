@@ -17,6 +17,8 @@ import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal,
 import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날의 바탕 글(su21_s36.py 그대로)
 import {kkoePic, ridgePic, heroPic, brushBar, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 손무의 이야기: 제3장 꾀를 펼치다 · 제4장 성을 살피다 · 장부 · 병서)
 import {kkoeTile} from '/su/su-sonja.js';
+import {stance3, STANCES} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 · 꾀 쪽 맨 위 표지 — 주문 1120-0950)
+import {picksOf, monthLow} from '/su/su-picks.js'; // 여러 꾀가 고른 회사(주문 1120-0950)
 /** 그림 속 이야기 네 막(주문 1117-0102) — 큰 그림 바로 아래 · 그림이 그 막에 오면 그 줄이 밝아짐(꾸밈 sj-story) */
 const storyOl = k => STORY36[k] ? h('ol', {class: 'sj-story', 'aria-label': STORY_TAG}, ...STORY36[k].map((t, i) => h('li', {'data-act': String(i + 1)}, h('b', {class: 'sj-actt', text: ACTS[i]}), h('span', {class: 'sj-actb', text: t})))) : null;
 
@@ -185,10 +187,11 @@ function frame({title, page, kids, step = null, next = null, tab = -1, lc = null
   return {title, dom: [topBar(), main, dockNav(step, next), tabNav(tab, lc)]};
 }
 /** 쪽 머리 — 걸음 · 작은 머리 글 · 큰 제목(도장) · 말씀 · 읽어 줄 한 줄 */
-function pageHead({step = null, dd = null, kick, h1, proper = false, seal = null, sealDn = false, quote = null, say = null, pic = null, more = []}) {
+function pageHead({step = null, dd = null, kick, h1, proper = false, seal = null, sealDn = false, quote = null, say = null, pic = null, more = [], top = null}) {
   return h('section', {class: 'sj-sec sj-ph', 'aria-label': h1},
     step ? stepTag(step, dd) : null,
     h('p', {class: 'sj-k', text: kick}),
+    top, // 맨 위 표지(주문 1120-0950 — 오늘 세 태세 가운데 이 꾀의 자리)
     h('div', {class: 'sj-today'}, h('h1', {class: 'sj-h1', ...(proper ? {'data-proper': ''} : {})}, h('b', {class: 'sj-land', text: h1})),
       seal ? h('span', {class: 'sj-seal sj-seal-big ' + (sealDn ? 'sj-seal-dn' : 'sj-seal-up'), 'aria-hidden': 'true', text: seal}) : null),
     pic,
@@ -229,6 +232,7 @@ export async function vKkoeAll(X) {
       head(SETW[i], '제' + (i + 1) + '묶음', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: g.set[ks[0]]})), i % 2 === 1),
       h('ol', {class: 'sj-kl'}, ...ks.map(k => kkoeRow(g, k, RB[k]))),
       endSeal(SETW[i]))),
+    h('section', {class: 'sj-sec sj-pkin'}, goLink('#/o', '여러 꾀가 고른 회사 보기')), // 주문 1120-0950
     h('p', {class: 'sj-safe sj-sec', text: '꾀 이름과 뜻은 옛 병법 그대로예요. 차례는 지난 기록으로 정했어요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(day(T?.asOf?.board), gotOf(S))];
   return frame({title: '서른여섯 꾀', page: 'kkoes', kids, tab: 1, lc: X.cur?.()?.code ?? null,
@@ -240,6 +244,7 @@ export async function vKkoe(X, k) {
   if (!KKOE.test(k)) return missPage(X, '꾀', '이 꾀를 찾지 못했어요.');
   const [T, D, {S}] = await Promise.all([load21(X.get), X.get(DST), X.base()]), g = await g36Of(X, T);
   const RB = rankOf(T), r = RB[k] ?? null, sun = okSun(T?.sun) ? T.sun : null, H = sun?.hist ?? null;
+  const S3 = sun ? stance3(sun) : null, my = S3 ? STANCES.find(d => S3[d.st]?.k === k) ?? null : null; // 오늘 세 태세 가운데 이 꾀의 자리(주문 1120-0950)
   const L = (Array.isArray(g.lists[k]) ? g.lists[k] : []).filter(c => CODE.test(String(c?.code ?? ''))).slice(0, 7), bd = mday(g.asOf?.board), dd = mday(g.asOf?.data) ?? bd;
   const anySp = L.some(c => sp36(g, c.code)), vol = g.by?.[k] === 'vol';
   const ST = D && Array.isArray(D.buys) ? settle36(D) : null, me = ST?.K.find(x => x.key === k) ?? null, meAt = me ? ST.K.indexOf(me) + 1 : null
@@ -249,6 +254,7 @@ export async function vKkoe(X, k) {
     pageHead({step: 2, dd: bd, kick: '삼십육계 제' + kNo(k) + '계 · ' + g.set[k], h1: g.name[k], seal: r ? '차례 ' + r.i : '꾀', sealDn: sun?.land === 'fall',
       quote: [g.mean[k], '삼십육계 제' + kNo(k) + '계 ' + g.han[k]],
       pic: h('figure', {class: 'sj-ink sj-kfig'}, meanCap(PIC[k], 'figcaption'), kkoePic(k, {w: 390, h: 292, label: g.name[k] + ' 그림'}), storyOl(k)),
+      top: my ? h('a', {class: 'sj-kst3', href: '#/', 'data-st': my.st}, h('span', {class: 'sj-tsg', text: my.tag}), h('span', {class: 'sj-kst3t', text: '오늘 ' + sun.name + '의 ' + my.tag + ' 꾀예요. ' + my.say + '로 골랐어요.'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
       say: sun ? (r?.n ? '지금은 ' + sun.name + '이에요. 예전에 이런 시장이었을 때, 이 꾀는 서른여섯 꾀 가운데 ' + r.i + '번째로 덜 잃었어요.' : '지금은 ' + sun.name + '이에요. 이 꾀는 지난 기록을 세지 못해서 맨 아래에 놓았어요.') : '오늘 시장 모습은 아직 세지 못했어요. 그래서 꾀를 원래 차례대로 놓았어요.'}),
     h('section', {class: 'sj-sec sj-kway', 'aria-label': '주식에서는 이렇게 골라요'},
       head('법', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '주식에서는 이렇게 골라요'}))),
@@ -378,3 +384,63 @@ export async function vSettle36(X) {
   return frame({title: '정산', page: 'settle', kids, tab: 4, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
 }
 export {chev};
+
+/* ── 여러 꾀가 고른 회사(#/o · 주문 1120-0950 · 사장님 2026-11-20(마카오) 09:50 「36가지 종목 중 많이 추천된 순서대로 정리 … 별도의 분석 페이지 … 데이터 추적 시스템 … 꺾은선 그래프」)
+   「추천 횟수」 = 그날 그 회사를 고른 꾀의 수(화면 글 「꾀 ○가지가 골랐어요」) · 날마다 기록은 정산 장부(올리기 작업이 장 끝난 날마다 적음 · 고치지 않음) · 오늘은 꾀 칸 자료
+   줄마다 손실 먼저(한 달 가운데 가장 낮을 때 → 지금) · 차례는 고른 꾀 수(수익 차례 아님) · 「%」 0 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 ── */
+const PKC = ['sj-pkl1', 'sj-pkl2', 'sj-pkl3', 'sj-pkl4', 'sj-pkl5']; // 선 다섯 — 굵기 · 점선 모양이 서로 다름(색만으로 가르지 않음)
+/** 날마다 고른 꾀 수 작은 꺾은선(회사 한 줄) — 바닥 = 0 · 끝 점 */
+function pickSpark(n, hi) {
+  const W = 120, H = 40, P = 5, m = Math.max(3, hi), f = v => Math.round(v * 10) / 10;
+  const x = i => (n.length < 2 ? W / 2 : P + (W - 2 * P) * i / (n.length - 1)), y = v => P + (H - 2 * P) * (1 - v / m);
+  const g = s('svg', {class: 'sj-pksp', viewBox: `0 0 ${W} ${H}`, width: W, height: H, 'aria-hidden': 'true', focusable: 'false'});
+  g.append(s('path', {d: `M${P} ${f(y(0))}H${W - P}`, class: 'sj-pksp0'}));
+  if (n.length > 1) g.append(s('polyline', {points: n.map((v, i) => f(x(i)) + ',' + f(y(v))).join(' '), class: 'sj-pksp1'}));
+  g.append(s('circle', {cx: f(x(n.length - 1)), cy: f(y(n[n.length - 1])), r: 4, class: 'sj-pkspe'}));
+  return g;
+}
+/** 많이 고른 다섯 곳의 날마다 꾀 수(큰 꺾은선) — 선마다 모양이 다름 · 이름은 그림 밖 글로 */
+function pickChart(P) {
+  const R = P.rows.slice(0, 5), n = P.days.length, W = 340, H = 190, PX = 14, PT = 12, PB = 14, hi = Math.max(3, ...R.flatMap(r => r.n)), f = v => Math.round(v * 10) / 10;
+  const x = i => (n < 2 ? W / 2 : PX + (W - 2 * PX) * i / (n - 1)), y = v => PT + (H - PT - PB) * (1 - v / hi);
+  const g = s('svg', {class: 'sj-pkc', viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true', focusable: 'false'});
+  for (let v = 0; v <= hi; v += Math.max(1, Math.round(hi / 3))) g.append(s('path', {d: `M${PX} ${f(y(v))}H${W - PX}`, class: v ? 'sj-pkcg' : 'sj-pkc0'}));
+  R.forEach((r, j) => { if (n > 1) g.append(s('polyline', {points: r.n.map((v, i) => f(x(i)) + ',' + f(y(v))).join(' '), class: PKC[j]}));
+    g.append(s('circle', {cx: f(x(n - 1)), cy: f(y(r.n[n - 1])), r: 4.5, class: PKC[j] + 'e'})); });
+  return h('div', {class: 'sj-pkcbox', 'data-days': String(n)},
+    h('p', {class: 'sj-pkch', text: '그림 뜻 · 선 하나가 회사 하나예요. 위로 갈수록 많은 꾀가 골랐어요.'}), g,
+    h('p', {class: 'sj-pkcd', 'aria-hidden': 'true'}, h('span', {text: mday(P.days[0]) ?? ''}), h('span', {text: mday(P.days[n - 1]) ?? ''})),
+    h('ul', {class: 'sj-pkcl'}, ...R.map((r, j) => h('li', {'data-j': String(j + 1)}, h('i', {class: 'sj-pkck ' + PKC[j] + 'k', 'aria-hidden': 'true'}), h('span', {'data-proper': '', text: r.name}), h('span', {text: ' · 오늘 꾀 ' + r.now + '가지'})))),
+    n < 2 ? h('p', {class: 'sj-note', text: '아직 하루치예요. 장이 끝난 날마다 한 점씩 늘어요.'}) : null);
+}
+export async function vPicks(X) {
+  const [T, D, {S}] = await Promise.all([load21(X.get), X.get(DST).catch(() => null), X.base()]), g = await g36Of(X, T);
+  const P = picksOf(D, g.fallback ? null : g), hi = Math.max(3, ...P.rows.flatMap(r => r.n)), bd = mday(g.asOf?.board);
+  const row = (r, i) => { const ml = monthLow(sp36(g, r.code));
+    return h('li', {class: 'sj-pk', 'data-code': r.code, 'data-now': String(r.now)},
+      h('a', {class: 'sj-pka', href: '#/c/' + r.code},
+        h('span', {class: 'sj-pkno', 'aria-hidden': 'true', text: String(i + 1)}),
+        h('span', {class: 'sj-pkt'}, h('b', {'data-proper': '', text: r.name}), r.sec ? h('span', {class: 'sj-pksec', text: r.sec}) : null),
+        h('i', {'aria-hidden': 'true', text: '›'})),
+      h('p', {class: 'sj-pkn'}, h('b', {text: '꾀 ' + r.now + '가지가 골랐어요.'}), h('span', {text: P.days.length > 1 ? ' 지난 ' + P.days.length + '일 동안 모두 ' + r.total + '번이에요.' : ''})),
+      pickSpark(r.n, hi),
+      ml ? h('p', {class: 'sj-pkm'}, h('span', {class: 'sj-pkml', text: '한 달 가운데 가장 낮을 때 100원이 ' + w100(ml.low)}), h('span', {class: 'sj-pkmn', text: '지금 100원이 ' + w100(ml.now)})) : null); };
+  const kids = [
+    pageHead({kick: '서른여섯 꾀 · 함께 고른 회사', h1: '여러 꾀가 고른 회사', seal: '곳',
+      say: '서른여섯 꾀는 날마다 회사를 골라요. 한 회사를 여러 꾀가 함께 고르기도 해요. 오늘 많은 꾀가 고른 회사부터 모았어요.'}),
+    h('section', {class: 'sj-sec sj-pks', 'aria-label': '오늘 여러 꾀가 고른 회사', 'data-n': String(P.rows.length), 'data-rule': P.rule},
+      head('곳', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '오늘 여러 꾀가 고른 회사'}), h('span', {class: 'sj-h2n', text: ' ' + P.rows.length + '곳'}))),
+      h('p', {class: 'sj-dayl', text: (bd ? bd + ' 마지막 값으로 고른 회사예요. ' : '') + '꾀 두 가지 넘게 고른 곳만 적었어요. 꺾은선은 날마다 고른 꾀 수예요.'}),
+      P.rows.length ? h('ol', {class: 'sj-pkl'}, ...P.rows.map(row)) : h('p', {class: 'sj-tnone', text: '오늘은 꾀 두 가지 넘게 고른 회사가 없어요. 억지로 채우지 않았어요.'}),
+      endSeal('곳')),
+    P.rows.length ? h('section', {class: 'sj-sec sj-pkg', 'aria-label': '날마다 고른 꾀 수'},
+      head('선', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '날마다 고른 꾀 수'})), true),
+      pickChart(P),
+      h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '이렇게 셌어요'}), chev()),
+        h('p', {class: 'sj-rule', text: (mday(P.from) ? mday(P.from) + '부터 ' : '') + '장이 끝난 날마다, 서른여섯 꾀가 고른 회사를 장부에 적었어요. 한 번 적은 날은 고치지 않아요.'}),
+        h('p', {class: 'sj-rule', text: '한 회사를 꾀 여러 가지가 고르면 그 꾀 수를 셌어요. 날이 지날수록 꺾은선에 점이 하나씩 늘어요.'})),
+      endSeal('선')) : null,
+    h('p', {class: 'sj-safe sj-sec', text: '여러 꾀가 골랐다고 오르는 것은 아니에요. 지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
+    endSec(day(g.asOf?.board ?? T?.asOf?.board), gotOf(S))];
+  return frame({title: '여러 꾀가 고른 회사', page: 'picks', kids, tab: 1, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀 모두 볼까?'}});
+}

@@ -1381,3 +1381,53 @@ html.sj-on #su .sj-krk { border: 0; min-width: 0; height: auto; padding: 0; back
 /* 꾀 쪽 「그림 속 이야기 네 막」 — 큰 글씨 · 아주 좁은 폭에서는 두 칸 대신 한 칸(두 칸이면 한 줄에 세 글자씩 일곱 줄로 무너짐) */
 html.sj-on.su-lg #su .sj-kfig ol.sj-story { grid-template-columns: minmax(0, 1fr); }
 @media (max-width: 340px) { html.sj-on #su .sj-kfig ol.sj-story { grid-template-columns: minmax(0, 1fr); } }
+/* ── 주문 1120-0950(사장님 2026-11-20(마카오) 09:50) — 꾀 쪽 맨 위 세 태세 표지 · 여러 꾀가 고른 회사(#/o · 날마다 고른 꾀 수 꺾은선) ── */
+#su .sj-kst3 { display: flex; align-items: center; gap: 10px; min-height: 48px; margin: 4px 0 6px; padding: 6px 12px; border-radius: 14px; background: #FCFEFD; box-shadow: inset 0 0 0 2px #A6D0CD; color: #20323A; text-decoration: none; }
+#su .sj-kst3[data-st="def"] { box-shadow: inset 0 0 0 3px #20323A; }
+#su .sj-kst3[data-st="att"] { box-shadow: inset 0 0 0 1.5px #A07C35; }
+#su .sj-kst3 .sj-tsg { flex: none; }
+#su .sj-kst3[data-st="def"] .sj-tsg { background: #1B3A44; color: #FCFEFD; }
+#su .sj-kst3[data-st="mid"] .sj-tsg { background: #DCEBE8; color: #1B3A44; }
+#su .sj-kst3[data-st="att"] .sj-tsg { background: #FCFEFD; color: #1B3A44; box-shadow: inset 0 0 0 2px #A07C35; }
+#su .sj-kst3t { flex: 1 1 auto; min-width: 0; font-size: 1.0625rem; font-weight: 700; line-height: 1.45; }
+#su .sj-kst3 > i { flex: none; font-style: normal; font-size: 1.5rem; color: #4A6168; }
+html.sj-on #su a.sj-kst3, html.sj-on #su a.sj-kst3 .sj-kst3t { color: #20323A; }
+html.sj-on #su a.sj-kst3[data-st="def"] .sj-tsg { color: #FCFEFD; }
+html.sj-on #su a.sj-kst3[data-st="mid"] .sj-tsg, html.sj-on #su a.sj-kst3[data-st="att"] .sj-tsg { color: #1B3A44; }
+#su .sj-pkl { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 10px; }
+#su .sj-pk { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; row-gap: 4px; align-items: center; padding: 10px 12px; border-radius: 16px; background: #FCFEFD; box-shadow: inset 0 0 0 2px #CFE3E0; }
+#su .sj-pk > * { margin: 0; min-width: 0; }
+#su .sj-pka { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; min-height: 48px; color: #20323A; text-decoration: none; }
+#su .sj-pkno { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #E3F0EE; color: #1B3A44; font-size: 1.0625rem; font-weight: 800; }
+#su .sj-pkt { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; }
+#su .sj-pkt b { font-size: 1.25rem; font-weight: 800; }
+#su .sj-pksec { font-size: 1.0625rem; color: #2E444C; }
+#su .sj-pka > i { flex: none; font-style: normal; font-size: 1.5rem; color: #4A6168; }
+#su .sj-pkn { grid-column: 1; font-size: 1.0625rem; color: #20323A; line-height: 1.45; }
+#su .sj-pkn b { font-weight: 800; }
+#su .sj-pksp { grid-column: 2; grid-row: 2 / span 2; width: 120px; height: 40px; }
+#su .sj-pksp0 { stroke: #A6D0CD; stroke-width: 1.5; stroke-dasharray: 3 3; fill: none; }
+#su .sj-pksp1 { stroke: #20323A; stroke-width: 2.5; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+#su .sj-pkspe { fill: #20323A; }
+#su .sj-pkm { grid-column: 1; display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 1.0625rem; line-height: 1.45; }
+#su .sj-pkml { padding: 0 8px; border-radius: 8px; background: #20323A; color: #FCFEFD; }
+#su .sj-pkmn { padding: 0 8px; border-radius: 8px; background: #E3F0EE; color: #1B3A44; }
+html.sj-on #su .sj-pka, html.sj-on #su .sj-pka b { color: #20323A; }
+html.sj-on #su .sj-pkml { color: #FCFEFD; }
+html.sj-on #su .sj-pkmn { color: #1B3A44; }
+#su .sj-pkcbox { display: grid; gap: 8px; margin-top: 10px; padding: 12px; border-radius: 16px; background: #FCFEFD; box-shadow: inset 0 0 0 1.5px #CFE3E0; }
+#su .sj-pkcbox > * { margin: 0; }
+#su .sj-pkch { font-size: 1.0625rem; font-weight: 700; color: #20323A; line-height: 1.45; }
+#su .sj-pkc { width: 100%; height: auto; }
+#su .sj-pkc0 { stroke: #4A6168; stroke-width: 1.5; fill: none; }
+#su .sj-pkcg { stroke: #DCEBE8; stroke-width: 1; fill: none; }
+#su .sj-pkcd { display: flex; justify-content: space-between; font-size: 1.0625rem; color: #2E444C; }
+#su .sj-pkl1 { stroke: #20323A; stroke-width: 3.5; fill: none; } #su .sj-pkl1e { fill: #20323A; }
+#su .sj-pkl2 { stroke: #2F6F6A; stroke-width: 2.5; stroke-dasharray: 9 5; fill: none; } #su .sj-pkl2e { fill: #2F6F6A; }
+#su .sj-pkl3 { stroke: #A07C35; stroke-width: 2.5; fill: none; } #su .sj-pkl3e { fill: #A07C35; }
+#su .sj-pkl4 { stroke: #4A6168; stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; } #su .sj-pkl4e { fill: #4A6168; }
+#su .sj-pkl5 { stroke: #7FB3AE; stroke-width: 2; stroke-dasharray: 12 4 2 4; fill: none; } #su .sj-pkl5e { fill: #7FB3AE; }
+#su .sj-pkcl { list-style: none; padding: 0; display: grid; gap: 6px; }
+#su .sj-pkcl li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 1.0625rem; color: #20323A; }
+#su .sj-pkck { flex: none; display: inline-block; width: 28px; height: 0; border-top: 4px solid #20323A; }
+#su .sj-pkl2k { border-top: 3px dashed #2F6F6A; } #su .sj-pkl3k { border-top-color: #A07C35; } #su .sj-pkl4k { border-top: 3px dotted #4A6168; } #su .sj-pkl5k { border-top: 3px dashed #7FB3AE; }

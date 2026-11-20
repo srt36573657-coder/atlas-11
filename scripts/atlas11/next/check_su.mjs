@@ -31,7 +31,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[kqpj]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
+const LINK_OK = /^(#\/|#\/[kqpjo]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -1204,7 +1204,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     return out;
   };
   const G29 = await J('/su/data/su21-s36.json').catch(() => null), K29 = Array.isArray(G29?.kinds) ? G29.kinds : [], C29 = K29.map(k => G29?.lists?.[k]?.[0]?.code).find(c => /^[0-9A-Z]{6}$/.test(String(c ?? ''))) ?? null;
-  const PAGES29 = ['#/', '#/k', '#/k/' + (K29[0] ?? 'g01'), ...(C29 ? ['#/c/' + C29] : []), '#/r/t', '#/q', '#/j'];
+  const PAGES29 = ['#/', '#/k', '#/k/' + (K29[0] ?? 'g01'), ...(C29 ? ['#/c/' + C29] : []), '#/r/t', '#/q', '#/j', '#/o']; // #/o 여러 꾀가 고른 회사(주문 1120-0950)
   for (const [width, big] of [[390, false], [320, false], [320, true]]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'});
     await QUIET(ctx);
@@ -1221,6 +1221,47 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
   }
+}
+{ // ㉚ 주문 1120-0950(사장님 2026-11-20(마카오) 09:50 「꾀 쪽 맨 위에도 어느 태세인지 표지 … 36가지 종목 중 많이 추천된 순서 … 추천 횟수 … 추적 … 꺾은선」)
+  //   가) 꾀 쪽 맨 위 표지 = 첫 쪽 세 태세 줄(⑫-2 가 따로 다시 센 꾀)과 같은 꾀 · 같은 태세 · 다른 꾀에는 표지 0
+  //   나) 여러 꾀가 고른 회사(#/o) = 이 검사가 정산 장부(su21-settle.json buys) + 오늘 꾀 칸(su21-s36.json lists)으로 따로 다시 센 「그날 고른 꾀 수」 · 많이 고른 차례 · 두 꾀 넘게 · 스물까지
+  //       줄마다 꺾은선 · 「꾀 ○가지가 골랐어요」 · 손실 먼저(가장 낮을 때 → 지금) · 「추천」 「%」 0 · 앞날 아님 한 줄
+  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+  await QUIET(ctx);
+  const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+  const W = '㉚ [390] ';
+  await open(p, '#/');
+  const st30 = await p.evaluate(() => [...document.querySelectorAll('#su main.sj-page > section.sj-cover > .sj-tc ol.sj-tcst > li.sj-ts:not(.sj-ts0)')].map(li => [li.getAttribute('data-st'), li.getAttribute('data-k')]));
+  const other = ['g01', 'g02', 'g03'].find(k => !st30.some(x => x[1] === k));
+  const tagBad = [];
+  for (const [st, k] of [...st30, ...(other ? [[null, other]] : [])]) {
+    await open(p, '#/k/' + k);
+    const t = await p.evaluate(() => { const ph = document.querySelector('#su main.sj-page[data-page="kkoe"] section.sj-ph'), a = ph?.querySelector(':scope > a.sj-kst3');
+      return {has: !!a, st: a?.getAttribute('data-st') ?? null, afterKick: !!a && a.previousElementSibling?.matches('.sj-k'), txt: (a?.textContent ?? '').replace(/\s+/g, ' ').trim()}; });
+    if (st ? !(t.has && t.st === st && t.afterKick && /(수비형|보편형|공격형) 꾀예요/.test(t.txt)) : t.has) tagBad.push([k, st, t]);
+  }
+  check(!tagBad.length, W + '가) 꾀 쪽 맨 위 세 태세 표지 — 첫 쪽 세 태세 줄과 같은 꾀 · 같은 태세 · 다른 꾀에는 없음', JSON.stringify({st30, tagBad}).slice(0, 400));
+  const D30 = await J('/su/data/su21-settle.json').catch(() => null), G30 = T0?.s36n && G0?.schema === 'su21-s36-1' && Array.isArray(G0?.kinds) && G0.kinds.length === 36 ? G0 : null;
+  const KK = /^g(0[1-9]|[12]\d|3[0-6])$/, CD = /^[0-9A-Z]{6}$/, seen = new Map(), add = (d, c, k) => { const m = seen.get(d) ?? new Map(); seen.set(d, m); (m.get(c) ?? m.set(c, new Set()).get(c)).add(k); };
+  for (const b of Array.isArray(D30?.buys) ? D30.buys : []) { const k = D30.kinds?.[b?.[1]]; if (KK.test(String(k)) && /^\d{4}-\d{2}-\d{2}$/.test(String(b[0])) && CD.test(String(b[2]))) add(b[0], b[2], k); }
+  const td = G30?.asOf?.board;
+  if (td && G30?.lists && ![...seen.keys()].some(d => d > td)) { const m = new Map(); for (const [k, L] of Object.entries(G30.lists)) if (KK.test(k) && Array.isArray(L)) for (const c of L) { const code = String(c?.code ?? ''); if (CD.test(code)) (m.get(code) ?? m.set(code, new Set()).get(code)).add(k); } if (m.size) seen.set(td, m); }
+  const days = [...seen.keys()].sort(), last = days.length ? seen.get(days[days.length - 1]) : new Map(), cntOf = (d, c) => seen.get(d)?.get(c)?.size ?? 0;
+  const q = [...last].map(([c, S]) => [c, S.size]).filter(([, n]) => n >= 2), want = q.length > 20 ? null : new Map(q);
+  await open(p, '#/o');
+  const o = await p.evaluate(() => { const main = document.querySelector('#su main.sj-page[data-page="picks"]'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
+    return {main: !!main, rule: main?.querySelector('section.sj-pks')?.getAttribute('data-rule') ?? null, text: main?.innerText ?? '', wide: document.documentElement.scrollWidth <= innerWidth + 1,
+      rows: [...(main?.querySelectorAll('ol.sj-pkl > li.sj-pk') ?? [])].map(li => ({c: li.getAttribute('data-code'), n: +li.getAttribute('data-now'), href: li.querySelector('a.sj-pka')?.getAttribute('href') ?? '', say: t(li.querySelector('.sj-pkn b')),
+        sp: !!li.querySelector('svg.sj-pksp circle'), fs: parseFloat(getComputedStyle(li.querySelector('.sj-pkn')).fontSize), m: t(li.querySelector('.sj-pkm'))})),
+      chart: !!main?.querySelector('section.sj-pkg svg.sj-pkc'), legend: main?.querySelectorAll('section.sj-pkg ul.sj-pkcl > li').length ?? 0, safe: t(main?.querySelector('p.sj-safe')), tab: t(document.querySelector('#su .sj-tabs a[aria-current="page"]'))}; });
+  const rowsOk = o.rows.every((r, i) => CD.test(r.c ?? '') && r.n >= 2 && r.n === cntOf(days[days.length - 1], r.c) && (!want || want.get(r.c) === r.n) && r.href === '#/c/' + r.c && r.say === '꾀 ' + r.n + '가지가 골랐어요.' && r.sp && r.fs >= 16.95
+    && (!r.m || /^한 달 가운데 가장 낮을 때 100원이 [\d.]+원/.test(r.m)) && (i === 0 || o.rows[i - 1].n >= r.n));
+  check(o.main && o.rule === 'picks-v1' && rowsOk && (want ? o.rows.length === want.size : o.rows.length === 20) && (!o.rows.length || (o.chart && o.legend === Math.min(5, o.rows.length)))
+    && o.wide && /앞날을 맞히지 않고/.test(o.safe) && !/%|추천|사세요|사라|1등|대박|급등|수익률/.test(o.text) && o.tab === '꾀',
+    W + '나) 여러 꾀가 고른 회사(#/o) — 이 검사가 장부로 다시 센 꾀 수와 같음 · 많이 고른 차례 · 줄마다 꺾은선 · 손실 먼저 · 「추천」 「%」 0 · 앞날 아님 한 줄',
+    JSON.stringify({days: days.length, want: want ? want.size : 'many', got: o.rows.slice(0, 6).map(r => [r.c, r.n, r.say.slice(0, 12)]), chart: o.chart, legend: o.legend, wide: o.wide, tab: o.tab}).slice(0, 500));
+  check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+  await ctx.close();
 }
 await browser.close();
 R.ok = R.counts.fail === 0;

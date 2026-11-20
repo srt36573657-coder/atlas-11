@@ -339,6 +339,7 @@ function trickSec(g, T) {
     calmBox(g), // 크게 덜 잃는 일곱(주문 1117-1731) — 손실 먼저
     themesBox(g), // 큰 갈래 차례(주문 1116-1601) — 꾀 서른여섯을 하나하나 보기 전에 한눈에
     h('ol', {class: 'sj-tricks'}, ...order.slice(0, TOP).map(one36)),
+    h('a', {class: 'sj-go sj-pkgo', href: '#/o'}, h('span', {text: '여러 꾀가 고른 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), // 여러 꾀가 고른 회사(주문 1120-0950)
     h('a', {class: 'sj-go sj-all', href: '#/k'}, h('span', {text: '서른여섯 꾀 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), // 나머지 꾀는 꾀 탭에서(주문 1117-1120)
     h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '꾀 차례는 이렇게 셌어요'}), chev()), // 센 법 · 고른 날(긴 풀이는 접은 칸 — 주문 1116-0118)
       h('p', {class: 'sj-lead', text: LEAD36(g)}),
