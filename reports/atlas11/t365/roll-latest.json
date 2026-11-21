@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-11-21T20:59:15.003Z",
- "kst": "2026-11-22 05:59",
+ "at": "2026-11-21T21:59:29.258Z",
+ "kst": "2026-11-22 06:59",
  "slot": null,
- "reason": "06:00 회차",
+ "reason": "07:00 회차",
  "ci": true,
  "version": "ml-v1",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-6MiflY/closes/20261121T205915Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-Ixpjv0/closes/20261121T215929Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261120",
-  "sec": 91,
+  "sec": 87,
   "firstErrors": []
  },
  "asOf": "2026-11-20",
@@ -128,7 +128,7 @@
   "nEach": 111,
   "fail": 0,
   "ok": true,
-  "ms": 478,
+  "ms": 683,
   "lenses": [
    {
     "key": "apple",
@@ -166,7 +166,7 @@
  },
  "home": {
   "ok": true,
-  "kst": "2026-11-22 06:01",
+  "kst": "2026-11-22 07:02",
   "live": false,
   "idx": true,
   "flows": true,
@@ -221,17 +221,17 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 91.2
+   "sec": 86.6
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 3
+   "sec": 4.2
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 3.8
+   "sec": 6
   },
   {
    "name": "업종 정리",
@@ -241,32 +241,32 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 1.6
+   "sec": 2.3
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 8.8
+   "sec": 14
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 3.2
+   "sec": 4.5
   },
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 20.7
+   "sec": 33.1
   },
   {
    "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 22.9
+   "sec": 39
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 3.3
+   "sec": 2.9
   },
   {
    "name": "첫 화면 자료",
@@ -276,27 +276,27 @@
   {
    "name": "달력 셈",
    "code": 0,
-   "sec": 4.4
+   "sec": 7.2
   },
   {
    "name": "달력 따로 세기",
    "code": 0,
-   "sec": 2.8
+   "sec": 3.9
   },
   {
    "name": "조건 찾기 셈",
    "code": 0,
-   "sec": 0.3
+   "sec": 0.5
   },
   {
    "name": "조건 찾기 따로 세기",
    "code": 0,
-   "sec": 0.2
+   "sec": 0.3
   },
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 0.5
+   "sec": 0.7
   }
  ],
  "cond": {
