@@ -102,11 +102,17 @@ async function settle(p) {
       if (!seen.has(k)) { seen.add(k); jobs.push(document.fonts.load(f, t).catch(() => null)); }
     }
     await Promise.all(jobs); await document.fonts.ready;
+    // 받은 글꼴이 글자마다 실제로 쓸 수 있을 때까지(5초 안) — 「다 받음」 뒤에도 잠깐 대신 글꼴로 재여 「왜?」 칸이 1px 넓어지고 긴 까닭 줄이 두 줄로 잡힘
+    //   (2026-11-23 진짜 사이트 검사 sonja-sun10 3/11 · 2026-11-24 미리 보기 sonja-ldjudge 1/11 ⑤ 158,182,158 — 둘째 줄 「와이지엔터테인먼트가 끌었어요.」 · 주문 1123-2358)
+    const keys = [...seen].map(k => k.split('|'));
+    for (let i = 0; i < 50 && !keys.every(([f, t]) => { try { return document.fonts.check(f, t); } catch { return true; } }); i++) await new Promise(r => setTimeout(r, 100));
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
   }).catch(() => {});
-  let last = '';
-  for (let i = 0; i < 15; i++) {
+  let last = '', same = 0;
+  for (let i = 0; i < 20; i++) { // 같은 높이가 세 번 이어질 때까지(200ms 마다)
     const now = await p.evaluate(() => JSON.stringify([...document.querySelectorAll('#view section.nh-hero ol.nh-fl-up > li')].map(li => Math.round(li.getBoundingClientRect().height)))).catch(() => '');
-    if (now && now === last) return;
+    same = now && now === last ? same + 1 : 0;
+    if (same >= 2) return;
     last = now; await p.waitForTimeout(200);
   }
 }
@@ -340,6 +346,7 @@ try {
       await p.route('**/next/data/flow-why.json*', fileOf(fall));
       await p.goto(URL_OF(en ? '&lang=en' : '&lang=ko'), {waitUntil: 'load', timeout: 60000});
       if (!await ready(p)) { check(false, `${tag} 첫 화면`, '안 그려짐'); await ctx.close(); continue; }
+      await p.waitForTimeout(300); // ② 처음 그린 화면과 같은 차례로 잼(그 높이와 맞댐)
       await settle(p); const H = await p.evaluate(heroInPage), L = en ? 'en' : 'ko';
       check(JSON.stringify(H.h1) === JSON.stringify(fall.head[L]), `${tag} 머리`, H.h1.join(' / '));
       check(JSON.stringify(H.keys) === JSON.stringify(fall.head.keys[L]), `${tag} 칸 이름`, H.keys.join(' / '));
