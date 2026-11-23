@@ -401,6 +401,12 @@ test('판 전체 하루 몫 · 걸어온 길 · 쌓인 장부 전체(주문 1123
   // 회사가 100곳 아래면 적지 않음
   const small = stepSettle(null, {su, board: {...board, companies: board.companies.slice(0, 50)}, stored: {}, sbook: null, days: {days: {}}, start}).book;
   assert.deepEqual(small.mk, {}, '회사 100곳 아래 — 적지 않음');
+  // su21 목록에 cd 가 없어도 장이 열린 날(cal)로 21 장날을 셈(2026-11-24 올림에서 장부 mk 가 빈 것 — 지금 su21.json 목록에는 cd 가 없음)
+  const noCd = {asOf: {board: D1}, lists: {hot: [{code: '000002'}], quiet: []}};
+  const viaCal = stepSettle(null, {su: noCd, board, stored: {}, sbook: null, days: {days: {}}, start, cal: ['2026-01-02', ...cd]}).book;
+  assert.deepEqual(viaCal.mk, book.mk, '장이 열린 날로 센 하루 몫 = su21 cd 로 센 것');
+  assert.deepEqual(stepSettle(null, {su: noCd, board, stored: {}, sbook: null, days: {days: {}}, start}).book.mk, {}, 'cd 도 장이 열린 날도 없으면 적지 않음');
+  assert.deepEqual(stepSettle(null, {su: noCd, board, stored: {}, sbook: null, days: {days: {}}, start, cal: cd.slice(5)}).book.mk, {}, '판 날까지 21 장날이 안 되면 적지 않음');
   // 걸어온 길 — 첫날 1 · 하루 몫을 곱함 · 빠진 장날에서 멈춤
   const B = {px: {'000001': {[cd[10]]: 1, [cd[11]]: 1, [cd[12]]: 1, [cd[13]]: 1}}, mk: {[cd[11]]: 1.01, [cd[12]]: 0.98}};
   assert.deepEqual(mkLevels(B, cd[13], cd[10]), {[cd[10]]: 1, [cd[11]]: 1.01, [cd[12]]: 0.9898}, '13번째 장날은 하루 몫이 없어 거기서 멈춤');

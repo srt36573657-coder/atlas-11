@@ -73,7 +73,7 @@ export function listsOf({days, sbook, su, suNext, quiet, s36 = {}, ovl = {}, sta
 
 /** 장부 한 걸음 — 조용한 힘 그날 일곱 · 이름 · 업종 · 값 적기 · {book, added, cut}(들어온 장부는 바꾸지 않음)
  *  su = su21.json · board = 오늘 판(board.json) · stored = {날: 저장된 판} · sbook = su21-book.json · days = days.json · start = 정산 첫날 */
-export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, s36 = null, start = START}) {
+export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, s36 = null, start = START, cal = []}) { // cal = 장이 열린 날(atlas/data/days.json dates · 판 전체 하루 몫의 21 장날 — 주문 1123-2358)
   const B = JSON.parse(JSON.stringify(okSettle(book0) ? book0 : emptySettle()));
   B.s36 ??= {}; B.ovl ??= {};
   let added = null, added36 = [], addedO = null;
@@ -124,7 +124,10 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
   //    그날 판 우량주를 같은 돈으로 고르게 나눠 든 셈의 하루 몫 = 회사마다 「그 전 장날 값 → 그날 값」의 평균 · 첫날 뒤 날마다 한 번 적음(먼저 적은 날은 그대로 · 고치지 않음)
   //    오늘 판 21날 값(c · 날은 su21 cd)으로 셈 · 하루에 30% 넘게 움직인 값(쪼개기 · 합치기)은 뺌 · 회사 100곳 넘을 때만
   B.mk = Object.fromEntries(Object.entries(B.mk ?? {}).filter(([d, f]) => DAY.test(d) && d > start && fin(f)));
-  if (cd) {
+  //    21 장날 = su21 cd → 없으면 장이 열린 날(cal)에서 판 날까지 21날(지금 su21.json 목록에는 cd 가 없음 — 2026-11-24 올림 run 45207876537 장부 mk 가 빈 것을 보고 더함)
+  const cdM = cd ?? (() => { const T = [...new Set((Array.isArray(cal) ? cal : []).filter(d => DAY.test(d ?? '')))].sort(), i = T.lastIndexOf(board?.asOf ?? ''); return i >= 20 ? T.slice(i - 20, i + 1) : null; })();
+  if (cdM) {
+    const cd = cdM;
     for (let j = 1; j < 21; j++) {
       const d = cd[j];
       if (!DAY.test(d ?? '') || d <= start || B.mk[d] != null) continue;
@@ -297,8 +300,8 @@ function main() {
   const S = readJson(path.join(su, 'su21.json')), N = readJson(path.join(su, 'su21-next.json')), board = readJson(boardF), days = readJson(daysF), sbook = readJson(path.join(su, 'su21-book.json'));
   const s36 = readJson(path.join(su, 'su21-s36.json')); // 서른여섯 꾀(주문 1113-2224 · su21.py 가 씀 · 없으면 그날은 적지 않음)
   if (!board || !Array.isArray(board.companies)) { console.error('판을 못 읽음'); process.exit(1); }
-  const stored = storedBoards(boardsDir);
-  const {book, added, added36, addedO, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36});
+  const stored = storedBoards(boardsDir), cal = calF ? readJson(calF)?.dates ?? [] : []; // 장이 열린 날(판 전체 하루 몫 21 장날 · 며칠째)
+  const {book, added, added36, addedO, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36, cal});
   const site = siteSettle(book, lists, board.asOf, days);
   // 날마다 기록(주문 1119-0829) — 올리기 작업(--keep)만 덧붙임 · 지문이 끊겼으면 덧붙이지 않음 · 화면은 적은 줄 + 아직 안 적은 날(지금 센 값)
   const trackF = path.join(path.dirname(bookF), 'settle-track.jsonl'), T0 = readTrack(trackF), TD = trackDays(book, site), broken = T0 === null ? -1 : checkTrack(T0).length;
