@@ -545,7 +545,7 @@ export async function vLedger(X) {
       head('찾', '이름으로', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '회사로 찾기'}))), form, note, out, endSeal('찾'));
   };
   const kids = [
-    pageHead({kick: '가짜 돈 장부 · 꾀가 산 모든 회사', h1: '장부', seal: '장', sealDn: st === 'dn', top: ledSwitch(0), pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
+    pageHead({kick: '가짜 돈 장부 · 꾀가 산 모든 회사', h1: '장부', seal: '장', sealDn: st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
       say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 회사를 ' + q + '주씩 샀다고 치고 한 번도 빠짐없이 적었어요. 진짜 돈이 아니에요. 줄어든 것도 숨기지 않아요.',
       more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': st}, h('dt', {text: '산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.days ? won(TT.val) : SAID.none})),
         h('p', {class: 'sj-res sj-res-big', 'data-st': st}, shapeI(st), h('b', {text: TT.days ? ledRes(TT.cost, TT.val, TT.one) : SAID.none})),
@@ -573,10 +573,6 @@ export async function vLedger(X) {
    내리는 시장인 날 꾀가 고른 일곱 회사가 다음 장날 올랐으면 산 값 위에 며칠 머물렀는지 · 아무렇게나 고른 일곱과 견줌 · 하나씩 빼 보기
    셈 scripts/atlas11/next/su21_fall.py → su/data/su21-fall.json · 지난 기록만 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 · 「%」 0 ── */
 const FALLD = '/su/data/su21-fall.json', FALL_X = ['1일', '2~4일', '5~9일', '10~19일', '내내'];
-const LDSW = [['장부', '#/l'], ['오름 날수', '#/l/d']];
-/** 장부 옆 단추 둘 — 장부 · 오름 날수(켜진 쪽 aria-current) */
-const ledSwitch = cur => h('nav', {class: 'sj-ldsw', 'aria-label': '장부 옆 — ' + LDSW.map(x => x[0]).join(' · ')},
-  ...LDSW.map(([t, href], i) => h('a', {class: 'sj-ldswa', href, 'aria-current': i === cur ? 'page' : null}, h('span', {text: t}))));
 const okFall = F => !!F && F.rule === 'fall36-v1' && Array.isArray(F.rows) && F.rows.length === 36 && !!F.steps && !!F.rand && Array.isArray(F.rand.share);
 const dn1 = v => (v == null ? '?' : String(Math.round(v * 10) / 10));
 /** 꾀 한 줄 막대 다섯 — 이 꾀(막대) · 아무렇게나(가로줄) · 열 번에 몇 번 */
@@ -659,12 +655,12 @@ export async function vFall(X) {
       h('p', {class: 'sj-rule', text: '스무 날 넘게 간 것은 모두 21일로 셌어요. 꾀와 아무렇게나 모두 똑같이 셌어요.'}),
       h('p', {class: 'sj-rule', text: '산 날 뒤 스무 장날이 지나야 셀 수 있어요. 요즘 내리는 시장은 스무 장날이 지나면 들어가요.'})));
   const kids = [
-    pageHead({kick: '장부 옆 · 지난 기록', h1: '오름 날수', seal: '날', top: ledSwitch(1),
+    pageHead({kick: '분석 · 지난 기록', h1: '오름 날수', seal: '날',
       say: '내리는 시장에서 다음 날 오른 꾀가, 산 값 위에 며칠 머물렀는지 세었어요.', more: [ansBox]}),
     stepSec, mcSec, grpSec, how,
     h('p', {class: 'sj-safe sj-sec', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(day(F.asOf), gotOf(S))];
-  return frame({title: '오름 날수', page: 'fall', kids, tab: 6, lc: X.cur?.()?.code ?? null, next: {href: '#/l', label: '장부로 돌아갈까?'}});
+  return frame({title: '분석', page: 'fall', kids, tab: 7, lc: X.cur?.()?.code ?? null, next: {href: '#/l', label: '장부로 돌아갈까?'}});
 }
 export {chev};
 

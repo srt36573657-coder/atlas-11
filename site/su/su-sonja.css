@@ -287,7 +287,7 @@ html.sj-on #su :focus-visible { outline: 3px solid #20323A; outline-offset: 2px;
 #su .sj-nk { flex: none; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 700; color: #DCEBE7; }
 #su .sj-next b { flex: 1 1 auto; min-width: 0; font-size: 1.125rem; font-weight: 800; line-height: 1.25; }
 #su .sj-next i { flex: none; font-style: normal; font-size: 1.5rem; }
-#su .sj-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; padding: 5px max(6px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); background: #F3F8F6; border-top: 1.5px solid #20323A; }
+#su .sj-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 3px; padding: 5px max(6px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); background: #F3F8F6; border-top: 1.5px solid #20323A; }
 #su .sj-tab { display: flex; align-items: center; justify-content: center; min-height: 50px; min-width: 0; padding: 0 2px; border-radius: 3px; color: #20323A; font-family: var(--sj-sans); font-size: 1.0625rem; font-weight: 700; line-height: 1.15; text-align: center; text-decoration: none; white-space: nowrap; }
 #su .sj-tab.sj-cur { background: #20323A; color: #F3F8F6; font-weight: 800; }
 html.sj-on.su-lg #su .sj-tab { white-space: normal; font-size: 1rem; }
@@ -1253,7 +1253,7 @@ html.sj-on #su .sj-dock .sj-listen { display: none; }
 html.sj-on #su .sj-dock .sj-dk { display: block; }
 html.sj-on #su .sj-next { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 76px; padding: 12px 20px; border-radius: 18px; background: #20323A; color: #FCFEFD; border: 0; box-shadow: 0 0 0 4px #DCEBE8; font-size: 1.25rem; }
 html.sj-on #su .sj-next .sj-nk { color: #DCEBE8; }
-html.sj-on #su .sj-tabs { left: 0; right: 0; bottom: 0; border-radius: 0; background: #FCFEFD; border-top: 1.5px solid #A6D0CD; box-shadow: 0 -12px 26px -18px rgba(62, 90, 99, .45); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); gap: 6px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+html.sj-on #su .sj-tabs { left: 0; right: 0; bottom: 0; border-radius: 0; background: #FCFEFD; border-top: 1.5px solid #A6D0CD; box-shadow: 0 -12px 26px -18px rgba(62, 90, 99, .45); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); gap: 2px; grid-template-columns: repeat(7, minmax(48px, 1fr)); overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; } /* 보이는 탭 일곱(일지 숨김 · 분석 더함 — 주문 1124-0432) · 칸마다 48 넘게 · 좁은 폰은 옆으로 밀어 봄 */
 html.sj-on #su .sj-tab { color: #20323A; border-radius: 14px; min-height: 60px; }
 html.sj-on #su .sj-tab.sj-cur, html.sj-on #su .sj-tabs:has(> a.sj-tab:nth-child(5).sj-cur) > a.sj-tab:nth-child(4) { background: #20323A; color: #FCFEFD; box-shadow: inset 0 4px 0 #A6D0CD; }
 html.sj-on #su .sj-tabs > a.sj-tab:nth-child(5) { display: none; } /* 일지 탭은 숨김(멈춤 탭이 켜짐을 함께 받음) · 주문 1120-1220 회사 탭이 셋째로 들어와 다섯째 */
@@ -1592,10 +1592,7 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-mind blockquote.sj-gkq cite { display: block; margin-top: 4px; color: #4A6168; font-style: normal; font-size: 1.0625rem; font-weight: 700; }
 @media (max-width: 360px) { #su .sj-mind blockquote.sj-gkq { margin-left: 12px; } }
 @media (prefers-reduced-motion: reduce) { #su .sj-mind summary.sj-gks > .sj-chev { transition: none; } }
-/* 장부 옆 단추 둘 · 오름 날수(#/l/d · 주문 1124-0432 — 분석 주문 1124-0354) — 글 17px 넘게 · 누르는 자리 48 · 붉은색 0 */
-#su .sj-ldsw { display: flex; gap: 8px; margin: 6px 0 10px; }
-#su .sj-ldswa { flex: 1 1 0; display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 12px; border: 1.5px solid #20323A; border-radius: 3px; color: #20323A; font-size: 1.0625rem; font-weight: 800; text-decoration: none; background: transparent; }
-#su .sj-ldswa[aria-current="page"] { background: #20323A; color: #F3F8F6; }
+/* 분석 탭 · 오름 날수(#/l/d · 주문 1124-0432 — 분석 주문 1124-0354 · 05:36 「분석이라는 탑을 만들라고」) — 글 17px 넘게 · 누르는 자리 48 · 붉은색 0 */
 #su .sj-fsl { display: grid; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; counter-reset: fst; }
 #su .sj-fsl > li { counter-increment: fst; position: relative; display: grid; gap: 2px; padding: 10px 12px 10px 46px; border-left: 3px solid #7D969B; background: #F3F8F6; }
 #su .sj-fsl > li::before { content: counter(fst); position: absolute; left: 10px; top: 10px; width: 26px; height: 26px; border: 1.5px solid #4A6168; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.0625rem; font-weight: 800; color: #20323A; }
