@@ -545,7 +545,7 @@ export async function vLedger(X) {
       head('찾', '이름으로', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '회사로 찾기'}))), form, note, out, endSeal('찾'));
   };
   const kids = [
-    pageHead({kick: '가짜 돈 장부 · 꾀가 산 모든 회사', h1: '장부', seal: '장', sealDn: st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
+    pageHead({kick: '가짜 돈 장부 · 꾀가 산 모든 회사', h1: '장부', seal: '장', sealDn: st === 'dn', top: ledSwitch(0), pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
       say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 회사를 ' + q + '주씩 샀다고 치고 한 번도 빠짐없이 적었어요. 진짜 돈이 아니에요. 줄어든 것도 숨기지 않아요.',
       more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': st}, h('dt', {text: '산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.days ? won(TT.val) : SAID.none})),
         h('p', {class: 'sj-res sj-res-big', 'data-st': st}, shapeI(st), h('b', {text: TT.days ? ledRes(TT.cost, TT.val, TT.one) : SAID.none})),
@@ -566,6 +566,105 @@ export async function vLedger(X) {
     h('p', {class: 'sj-safe sj-sec', text: '가짜 돈으로 지난 기록을 적은 장부예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(D.asOf ? day(D.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 적어요.')];
     return frame({title: '장부', page: 'ledger', kids, tab: 6, lc: X.cur?.()?.code ?? null, next: {href: '#/r/t', label: '꾀마다 정산은 어떻게 됐을까?'}});
+}
+
+/* ── 오름 날수(#/l/d · 장부 옆 · 주문 1124-0432 — 사장님 2026-11-24(서울) 04:32 「어 그래」(물음 「이 분석 창을 사이트 장부 옆에 넣어 볼까요?」의 답) · 04:39 「1시간내에 작업 마무리해」
+   분석 주문 1124-0354(03:54 「이런 하락 장에서 … 상승하는 꾀들이 대체 몇일이나 지속 되는지 … 몬테카를로 방식과 소거법 … 36가지의 도표」)
+   내리는 시장인 날 꾀가 고른 일곱 회사가 다음 장날 올랐으면 산 값 위에 며칠 머물렀는지 · 아무렇게나 고른 일곱과 견줌 · 하나씩 빼 보기
+   셈 scripts/atlas11/next/su21_fall.py → su/data/su21-fall.json · 지난 기록만 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 · 「%」 0 ── */
+const FALLD = '/su/data/su21-fall.json', FALL_X = ['1일', '2~4일', '5~9일', '10~19일', '내내'];
+const LDSW = [['장부', '#/l'], ['오름 날수', '#/l/d']];
+/** 장부 옆 단추 둘 — 장부 · 오름 날수(켜진 쪽 aria-current) */
+const ledSwitch = cur => h('nav', {class: 'sj-ldsw', 'aria-label': '장부 옆 — ' + LDSW.map(x => x[0]).join(' · ')},
+  ...LDSW.map(([t, href], i) => h('a', {class: 'sj-ldswa', href, 'aria-current': i === cur ? 'page' : null}, h('span', {text: t}))));
+const okFall = F => !!F && F.rule === 'fall36-v1' && Array.isArray(F.rows) && F.rows.length === 36 && !!F.steps && !!F.rand && Array.isArray(F.rand.share);
+const dn1 = v => (v == null ? '?' : String(Math.round(v * 10) / 10));
+/** 꾀 한 줄 막대 다섯 — 이 꾀(막대) · 아무렇게나(가로줄) · 열 번에 몇 번 */
+function fallBars(r, rs) {
+  const W = 320, H = 110, P = 6, sh = r.b.map(c => (r.rose ? 10 * c / r.rose : 0)), hi = Math.max(3, ...sh, ...rs) * 1.1, n = sh.length, slot = (W - 2 * P) / n, bw = slot * 0.6, f = v => Math.round(v * 10) / 10;
+  const y = v => H - P - (H - 2 * P) * v / hi, g = s('svg', {class: 'sj-fbar', viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true', focusable: 'false'});
+  g.append(s('path', {class: 'sj-ld0', d: `M${P} ${f(y(0))}H${W - P}`}));
+  sh.forEach((v, i) => { const cx = P + slot * (i + 0.5);
+    if (v > 0) g.append(s('rect', {class: 'sj-fb', x: f(cx - bw / 2), y: f(y(v)), width: f(bw), height: f(Math.max(1, y(0) - y(v))), rx: 3}));
+    g.append(s('path', {class: 'sj-frt', d: `M${f(cx - bw / 2 - 5)} ${f(y(rs[i] ?? 0))}H${f(cx + bw / 2 + 5)}`})); });
+  return g;
+}
+/** 견줌 한 줄 — 회색 띠 = 아무렇게나 고르기 결과가 거의 다 든 곳 · 점 = 이 꾀 평균(띠 밖이면 칠한 점) */
+function fallStrip(r, x0, x1) {
+  const W = 320, H = 30, P = 10, f = v => Math.round(v * 10) / 10, x = v => P + (W - 2 * P) * (v - x0) / Math.max(0.1, x1 - x0);
+  const g = s('svg', {class: 'sj-fstrip', viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true', focusable: 'false'});
+  g.append(s('path', {class: 'sj-ld0', d: `M${P} ${H / 2}H${W - P}`}));
+  g.append(s('rect', {class: 'sj-fband', x: f(x(r.lo)), y: H / 2 - 7, width: f(Math.max(2, x(r.hi) - x(r.lo))), height: 14, rx: 4}));
+  g.append(s('circle', {class: 'sj-fdot' + (r.cls === 'like' ? ' sj-fdot0' : ''), cx: f(x(r.mean)), cy: H / 2, r: 7}));
+  return g;
+}
+const FALL_CLS = {long: '아무렇게나 고른 것보다 길었어요', like: '아무렇게나 고른 것과 비슷했어요', short: '아무렇게나 고른 것보다 짧았어요', few: '오른 날이 적어 가르지 못했어요', none: '거래량 자료가 없어 셀 수 없어요'};
+const FALL_SHORT = {long: '더 길었어요', like: '비슷했어요', short: '더 짧았어요'};
+export async function vFall(X) {
+  const [F, T, {S}] = await Promise.all([X.get(FALLD).catch(() => null), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
+  if (!okFall(F)) return missPage(X, '오름 날수', '오름 날수 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
+  const st = F.steps, rd = F.rand, rs = rd.share, rows = F.rows, cnt = rows.filter(r => r.cls === 'long' || r.cls === 'like' || r.cls === 'short');
+  const ans = [
+    '아무렇게나 고른 회사는 보통 ' + dn1(rd.median) + '일 머물렀어요.',
+    st.like * 2 > st.counted ? '꾀 ' + st.counted + '가지를 견줘 보니, 대부분 아무렇게나 고른 것과 비슷했어요.' : '꾀 ' + st.counted + '가지 가운데 ' + st.like + '가지가 아무렇게나 고른 것과 비슷했어요.',
+    st.sureLong ? '오름을 더 오래 끈 꾀가 ' + st.sureLong + '가지 있었어요.' : '오름을 더 오래 끈 꾀는 뚜렷하게 없었어요.',
+    st.sureShort ? '오름이 빨리 끝난 꾀는 ' + st.sureShort + '가지가 뚜렷했어요.' : '오름이 빨리 끝난 꾀도 뚜렷하게 없었어요.'];
+  const ansBox = h('div', {class: 'sj-judge sj-fans', role: 'group', 'aria-label': '한 줄 답', 'data-rule': F.rule, 'data-rm': String(rd.median), 'data-steps': [st.kinds, st.none, st.few, st.counted, st.long, st.like, st.short, st.sureLong, st.sureShort].join(' ')},
+    h('p', {class: 'sj-jk', text: '한 줄 답'}), ...ans.map((t, i) => h('p', {class: 'sj-jbig', ...(i ? {} : {'data-say': ''}), text: t})),
+    h('p', {class: 'sj-jn', text: '머물렀다는 것은 산 값보다 높은 채로 있었다는 뜻이에요.'}));
+  const li = (t, sub = []) => h('li', {}, h('p', {class: 'sj-fst', text: t}), ...sub.map(x => h('p', {class: 'sj-fsn', text: x})));
+  const stepSec = h('section', {class: 'sj-sec sj-fsteps', 'aria-label': '하나씩 빼 보기'},
+    head('빼', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '하나씩 빼 보기'}))),
+    h('p', {class: 'sj-rule', text: '셀 수 없는 것과 우연으로 보이는 것을 차례로 뺐어요.'}),
+    h('ol', {class: 'sj-fsl'},
+      li('꾀 ' + st.kinds + '가지로 시작해요.'),
+      li('거래량 자료가 없는 꾀 ' + st.none + '가지를 빼요.', ['남은 꾀 ' + st.afterNone + '가지']),
+      li('오른 날이 ' + F.minRose + '번이 안 되는 꾀 ' + st.few + '가지를 빼요.', ['남은 꾀 ' + st.counted + '가지']),
+      li('남은 꾀를 아무렇게나 고른 것과 ' + NF.format(F.sims) + '번 견줘요.', ['더 길었어요 ' + st.long + '가지', '비슷했어요 ' + st.like + '가지', '더 짧았어요 ' + st.short + '가지']),
+      li('이웃한 날이 겹치지 않게, 이어진 날 덩어리마다 첫날만 다시 견줘요.', ['그래도 더 길었어요 ' + st.sureLong + '가지', '그래도 더 짧았어요 ' + st.sureShort + '가지'])),
+    endSeal('빼'));
+  const x0 = Math.floor(Math.min(...cnt.map(r => Math.min(r.lo, r.mean))) - 0.5), x1 = Math.ceil(Math.max(...cnt.map(r => Math.max(r.hi, r.mean))) + 0.5);
+  const mcSec = h('section', {class: 'sj-sec sj-fmc', 'aria-label': '아무렇게나 고른 것과 견주기', 'data-n': String(cnt.length), 'data-x': x0 + ' ' + x1},
+    head('견', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '아무렇게나 고른 것과 견주기'})), true),
+    h('p', {class: 'sj-rule', text: '점은 꾀의 평균 날수예요. 회색 띠는 아무렇게나 고르기를 ' + NF.format(F.sims) + '번 해 본 결과가 거의 다 들어간 곳이에요. 점이 띠 밖에 있으면 우연으로 보기 어려워요.'}),
+    h('p', {class: 'sj-fax', 'aria-hidden': 'true'}, h('span', {text: x0 + '일'}), h('span', {text: x1 + '일'})),
+    h('ol', {class: 'sj-fml'}, ...cnt.map(r => h('li', {class: 'sj-fm', 'data-k': r.k, 'data-cls': r.cls, 'data-mean': String(r.mean), 'data-lo': String(r.lo), 'data-hi': String(r.hi)},
+      h('p', {class: 'sj-fmt'}, h('b', {text: nameOf(r.k)}), h('span', {text: FALL_SHORT[r.cls]})),
+      fallStrip(r, x0, x1),
+      h('p', {class: 'sj-fmn', text: '이 꾀 평균 ' + dn1(r.mean) + '일, 아무렇게나 ' + dn1(r.lo) + '일에서 ' + dn1(r.hi) + '일'})))),
+    endSeal('견'));
+  const card = r => h('li', {class: 'sj-fk', 'data-k': r.k, 'data-cls': r.cls, 'data-rose': String(r.rose), 'data-median': r.median == null ? '' : String(r.median), 'data-p5': r.p5 == null ? '' : String(r.p5), 'data-p21': r.p21 == null ? '' : String(r.p21), 'data-b': r.b.join(' ')},
+    h('a', {class: 'sj-lda', href: '#/k/' + r.k}, h('span', {class: 'sj-kno', text: '제' + kNo(r.k) + '계'}), h('b', {text: nameOf(r.k)}), h('i', {'aria-hidden': 'true', text: '›'})),
+    ...(r.cls === 'none' ? [h('p', {class: 'sj-fkn', text: '거래량 자료가 없어 셀 수 없어요.'})] : [
+      h('p', {class: 'sj-fkb'}, h('span', {text: '보통 '}), h('b', {text: dn1(r.median)}), h('span', {text: '일 머물렀어요.'})),
+      h('p', {class: 'sj-fkl', text: '열 번에 ' + r.p5 + '번은 닷새를 버텼어요.'}),
+      h('p', {class: 'sj-fkl', text: '열 번에 ' + r.p21 + '번은 스무 날 내내 갔어요.'}),
+      h('figure', {class: 'sj-ffig'}, fallBars(r, rs), h('figcaption', {class: 'sj-fx', 'aria-hidden': 'true'}, ...FALL_X.map(t => h('span', {text: t})))),
+      h('p', {class: 'sj-fkn', text: '오른 날 ' + r.rose + '번' + (r.cls === 'few' ? '이라 가르지 못했어요.' : '이에요.')})]));
+  const grpSec = h('section', {class: 'sj-sec sj-fks', 'aria-label': '꾀마다 날수', 'data-n': String(rows.length)},
+    head('날', '제3장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '꾀마다 날수'}))),
+    h('p', {class: 'sj-rule', text: '막대는 산 값 위에 머문 날수가 열 번에 몇 번이었는지예요. 가로줄은 아무렇게나 고른 것이에요. 내내는 스무 날 내내예요.'}),
+    ...['long', 'like', 'short', 'few', 'none'].map(c => { const rr = rows.filter(r => r.cls === c); return rr.length ? h('div', {class: 'sj-fgrp', 'data-cls': c, 'data-n': String(rr.length)},
+      h('h3', {class: 'sj-fgh', text: FALL_CLS[c] + ' ' + rr.length + '가지'}), h('ol', {class: 'sj-fkl0'}, ...rr.map(card))) : null; }),
+    endSeal('날'));
+  const how = h('section', {class: 'sj-sec sj-fhow'},
+    h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '이렇게 셌어요'}), chev()),
+      h('p', {class: 'sj-rule', text: '내리는 시장인 날만 골랐어요. ' + (mday(F.fallFrom) ? (day(F.fallFrom) ?? F.fallFrom) + '부터 ' + (day(F.fallTo) ?? F.fallTo) + '까지 ' + F.fallDays + '날이에요.' : '')}),
+      h('p', {class: 'sj-rule', text: '내리는 시장은 한 달 전보다 오른 회사가 열 곳에 네 곳도 안 되고, 한가운데 회사도 내린 때예요.'}),
+      h('p', {class: 'sj-rule', text: '그날 꾀마다 고른 일곱 회사를 같은 돈으로 샀다고 쳐요. 다음 장날 일곱 회사 평균이 올랐으면, 그날부터 산 값 위에 며칠 머물렀는지 세요.'}),
+      h('p', {class: 'sj-rule', text: '같은 날 아무렇게나 고른 일곱 회사도 똑같이 세요. 이것이 견줄 잣대예요.'})),
+    h('details', {class: 'sj-drawer sj-how'}, h('summary', {}, h('span', {class: 'sj-s1', text: '조심해서 볼 것'}), chev()),
+      h('p', {class: 'sj-rule', text: '이웃한 날은 거의 같은 회사를 같은 때 들고 있어요. 그래서 날마다 따로 센 것처럼 보면 실제보다 뚜렷해 보여요. 덩어리 첫날만 다시 센 까닭이에요.'}),
+      h('p', {class: 'sj-rule', text: '꾀 ' + st.counted + '가지를 한꺼번에 견주면, 우연으로도 한쪽에 ' + dn1(st.chance) + '가지쯤은 띠 밖으로 나가요.'}),
+      h('p', {class: 'sj-rule', text: '스무 날 넘게 간 것은 모두 21일로 셌어요. 꾀와 아무렇게나 모두 똑같이 셌어요.'}),
+      h('p', {class: 'sj-rule', text: '산 날 뒤 스무 장날이 지나야 셀 수 있어요. 요즘 내리는 시장은 스무 장날이 지나면 들어가요.'})));
+  const kids = [
+    pageHead({kick: '장부 옆 · 지난 기록', h1: '오름 날수', seal: '날', top: ledSwitch(1),
+      say: '내리는 시장에서 다음 날 오른 꾀가, 산 값 위에 며칠 머물렀는지 세었어요.', more: [ansBox]}),
+    stepSec, mcSec, grpSec, how,
+    h('p', {class: 'sj-safe sj-sec', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
+    endSec(day(F.asOf), gotOf(S))];
+  return frame({title: '오름 날수', page: 'fall', kids, tab: 6, lc: X.cur?.()?.code ?? null, next: {href: '#/l', label: '장부로 돌아갈까?'}});
 }
 export {chev};
 

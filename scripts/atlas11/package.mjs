@@ -76,6 +76,9 @@ export async function buildDist() {
     else console.log('수르 21곳 다시 셈 — ' + String(stdout).trim().slice(0, 300));
   }
   catch (e) { console.warn('수르 21곳 다시 세기 못 함 — 저장된 판 그대로: ' + String(e.stderr || e.message).slice(0, 300)); }
+  // 내리는 시장 오름 날수(주문 1124-0354 · 1124-0432 「장부 옆」) — 굴린 dist 자료로 다시 셈(1분 남짓) · 멈추면 저장된 판(site/su/data/su21-fall.json)이 그대로 실림 — 올리기는 멈추지 않음
+  try { const {stdout} = await run('python3', [path.join(root, 'scripts/atlas11/next/su21_fall.py'), '--live', dist, '--repo', root, '--out', path.join(dist, 'su/data/su21-fall.json')], {maxBuffer: 1e7, timeout: 300000}); console.log('오름 날수 — ' + String(stdout).trim().slice(0, 300)); }
+  catch (e) { await fs.copyFile(path.join(root, 'site/su/data/su21-fall.json'), path.join(dist, 'su/data/su21-fall.json')).catch(() => null); console.warn('오름 날수 다시 세기 못 함 — 저장된 판 그대로: ' + String(e.stderr || e.message).slice(0, 300)); }
   // 수르 42칸 며칠째 · 첫 발견 · 포모지수(주문 0123 · 사장님 2026-11-09 01:44 「몇일째 그 항목에 있는지 … 첫 발견」 · 02:01 「포모지수값을 첫페이지 42곳에 모두」 · 02:02 「몬트리올(몬테카를로) 방식 … 소거법 … 이유 7가지」)
   //   ① 지난 판 기록(reports/atlas11/su21/days.json)에 비어 있는 날이 있으면 같은 규칙으로 다시 셈(su21_replay · 맞댐 둘이 맞을 때만 씀)
   //   ② 그날 여섯 목록을 기록에 적음(올리기 작업 — site · daily · evening 만 · 그 작업이 reports/ 를 저장소에 넣음) · 칸마다 며칠째 · 첫 발견(su21_days)

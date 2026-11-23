@@ -1592,3 +1592,34 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-mind blockquote.sj-gkq cite { display: block; margin-top: 4px; color: #4A6168; font-style: normal; font-size: 1.0625rem; font-weight: 700; }
 @media (max-width: 360px) { #su .sj-mind blockquote.sj-gkq { margin-left: 12px; } }
 @media (prefers-reduced-motion: reduce) { #su .sj-mind summary.sj-gks > .sj-chev { transition: none; } }
+/* 장부 옆 단추 둘 · 오름 날수(#/l/d · 주문 1124-0432 — 분석 주문 1124-0354) — 글 17px 넘게 · 누르는 자리 48 · 붉은색 0 */
+#su .sj-ldsw { display: flex; gap: 8px; margin: 6px 0 10px; }
+#su .sj-ldswa { flex: 1 1 0; display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 12px; border: 1.5px solid #20323A; border-radius: 3px; color: #20323A; font-size: 1.0625rem; font-weight: 800; text-decoration: none; background: transparent; }
+#su .sj-ldswa[aria-current="page"] { background: #20323A; color: #F3F8F6; }
+#su .sj-fsl { display: grid; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; counter-reset: fst; }
+#su .sj-fsl > li { counter-increment: fst; position: relative; display: grid; gap: 2px; padding: 10px 12px 10px 46px; border-left: 3px solid #7D969B; background: #F3F8F6; }
+#su .sj-fsl > li::before { content: counter(fst); position: absolute; left: 10px; top: 10px; width: 26px; height: 26px; border: 1.5px solid #4A6168; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.0625rem; font-weight: 800; color: #20323A; }
+#su .sj-fst { margin: 0; font-size: 1.0625rem; font-weight: 700; line-height: 1.5; }
+#su .sj-fsn { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #2E4148; }
+#su .sj-fax { display: flex; justify-content: space-between; margin: 10px 0 0; font-size: 1.0625rem; color: #4A6168; }
+#su .sj-fml { display: grid; gap: 10px; margin: 6px 0 0; padding: 0; list-style: none; }
+#su .sj-fm { display: grid; gap: 2px; }
+#su .sj-fmt { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; margin: 0; font-size: 1.0625rem; line-height: 1.45; }
+#su .sj-fmt b { font-weight: 800; }
+#su .sj-fmt span { color: #4A6168; font-weight: 700; }
+#su .sj-fmn { margin: 0; font-size: 1.0625rem; line-height: 1.45; color: #2E4148; }
+#su .sj-fstrip, #su .sj-fbar { display: block; width: 100%; height: auto; }
+#su .sj-fband, #su .sj-fb { fill: #DCEBE7; stroke: #7D969B; stroke-width: 1.2; }
+#su .sj-fdot { fill: #20323A; stroke: #FCFEFD; stroke-width: 2; }
+#su .sj-fdot.sj-fdot0 { fill: #FCFEFD; stroke: #20323A; stroke-width: 2.5; }
+#su .sj-frt { fill: none; stroke: #20323A; stroke-width: 3; stroke-linecap: round; }
+#su .sj-fgrp { display: grid; gap: 8px; margin-top: 16px; }
+#su .sj-fgh { margin: 0; font-size: 1.1875rem; font-weight: 800; line-height: 1.4; color: #20323A; }
+#su .sj-fkl0 { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+#su .sj-fk { display: grid; gap: 4px; padding: 10px 14px 12px; border: 1.5px solid #C9DAD6; border-radius: 3px; background: #FCFEFD; }
+#su .sj-fkb { margin: 0; font-size: 1.0625rem; line-height: 1.4; }
+#su .sj-fkb b { font-size: 1.625rem; font-weight: 800; }
+#su .sj-fkl, #su .sj-fkn { margin: 0; font-size: 1.0625rem; line-height: 1.5; }
+#su .sj-fkn { color: #2E4148; }
+#su .sj-ffig { margin: 6px 0 0; }
+#su .sj-fx { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 2px; font-size: 1.0625rem; color: #4A6168; text-align: center; }
