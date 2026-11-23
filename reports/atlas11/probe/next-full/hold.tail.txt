@@ -1,5 +1,5 @@
 {
- "sec": 91,
+ "sec": 101,
  "gatesSrc": "real",
  "scenes": 14,
  "empty360": {
@@ -150,6 +150,7 @@
   "소식 영어 판": 1,
   "접힌 칸 안 여는 그림 맞댐": 3,
   "편지 접기 판": 3,
+  "fail": 1,
   "바로 가기 판": 6,
   "기록 파일 카카오 쪽 한 번": 3,
   "탈퇴 두 번 맞댐": 1,
@@ -167,4 +168,5 @@
   "⑮ 팔 선 없음 판 en": 1
  }
 }
-실패 0
+실패 1건:
+ - 기록 파일 누를 때 망 요청 0 · 바로 가기 · 카카오 없음 360×640 https://aaa7377.com/next/roman-tag.css https://aaa7377.com/next/roman-art/38.svg https://aaa7377.com/fonts/pretendard/PretendardVariable.subset.80.woff2
