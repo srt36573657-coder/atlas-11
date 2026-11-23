@@ -1,21 +1,21 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-11-23T16:29:04.211Z",
+ "at": "2026-11-23T17:06:15.984Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-23",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 618,
+ "seconds": 371,
  "time": {
-  "old": 393.7,
-  "new": 422.2,
-  "wall": 617.8,
+  "old": 331.7,
+  "new": 270.5,
+  "wall": 370.5,
   "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 63.7,
-  "oldShare": 48.3
+  "oldPct": 89.5,
+  "oldShare": 55.1
  },
  "net": {
   "req": 5133,
@@ -33,7 +33,7 @@
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 609
+   "compare": 360
   },
   "글 마디": 51562,
   "숫자 낱말": 51368,
