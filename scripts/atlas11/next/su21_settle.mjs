@@ -124,8 +124,10 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
   //    그날 판 우량주를 같은 돈으로 고르게 나눠 든 셈의 하루 몫 = 회사마다 「그 전 장날 값 → 그날 값」의 평균 · 첫날 뒤 날마다 한 번 적음(먼저 적은 날은 그대로 · 고치지 않음)
   //    오늘 판 21날 값(c · 날은 su21 cd)으로 셈 · 하루에 30% 넘게 움직인 값(쪼개기 · 합치기)은 뺌 · 회사 100곳 넘을 때만
   B.mk = Object.fromEntries(Object.entries(B.mk ?? {}).filter(([d, f]) => DAY.test(d) && d > start && fin(f)));
-  //    21 장날 = su21 cd → 없으면 장이 열린 날(cal)에서 판 날까지 21날(지금 su21.json 목록에는 cd 가 없음 — 2026-11-24 올림 run 45207876537 장부 mk 가 빈 것을 보고 더함)
-  const cdM = cd ?? (() => { const T = [...new Set((Array.isArray(cal) ? cal : []).filter(d => DAY.test(d ?? '')))].sort(), i = T.lastIndexOf(board?.asOf ?? ''); return i >= 20 ? T.slice(i - 20, i + 1) : null; })();
+  //    21 장날 = 장이 열린 날(cal)에서 판 날까지 21날 → 없으면 su21 cd(2026-11-24 올림 두 번 장부 mk 가 빔 — su21.json 목록 첫 cd 는 한 회사의 날(180640 · 10-23 ~ 11-23 · 쉰 날이 있어
+  //    판 cFrom 10-26 과 다름)이라 거의 모든 회사가 빠짐 · 장이 열린 날을 먼저 씀)
+  const calCd = (() => { const T = [...new Set((Array.isArray(cal) ? cal : []).filter(d => DAY.test(d ?? '')))].sort(), i = T.lastIndexOf(board?.asOf ?? ''); return i >= 20 ? T.slice(i - 20, i + 1) : null; })();
+  const cdM = [calCd, cd].find(x => Array.isArray(x) && x.length === 21 && x[20] === board?.asOf) ?? null;
   if (cdM) {
     const cd = cdM;
     for (let j = 1; j < 21; j++) {

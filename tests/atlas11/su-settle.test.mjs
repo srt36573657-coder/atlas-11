@@ -405,6 +405,11 @@ test('판 전체 하루 몫 · 걸어온 길 · 쌓인 장부 전체(주문 1123
   const noCd = {asOf: {board: D1}, lists: {hot: [{code: '000002'}], quiet: []}};
   const viaCal = stepSettle(null, {su: noCd, board, stored: {}, sbook: null, days: {days: {}}, start, cal: ['2026-01-02', ...cd]}).book;
   assert.deepEqual(viaCal.mk, book.mk, '장이 열린 날로 센 하루 몫 = su21 cd 로 센 것');
+  // su21 목록 첫 cd 가 한 회사의 날(쉰 날이 있어 첫날이 다름)이어도 장이 열린 날을 먼저 씀(2026-11-24 올림 — 180640 cd 10-23 ~ 11-23 · 판 cFrom 10-26)
+  const oddCd = ['2026-10-01', ...cd.slice(0, 20).filter((_, j) => j !== 7)].concat([cd[20]]);
+  assert.equal(oddCd.length, 21);
+  const suOdd = {asOf: {board: D1}, lists: {hot: [{code: '000002', cd: oddCd}], quiet: []}};
+  assert.deepEqual(stepSettle(null, {su: suOdd, board, stored: {}, sbook: null, days: {days: {}}, start, cal: cd}).book.mk, book.mk, '장이 열린 날이 먼저 — 한 회사의 cd 로 세지 않음');
   assert.deepEqual(stepSettle(null, {su: noCd, board, stored: {}, sbook: null, days: {days: {}}, start}).book.mk, {}, 'cd 도 장이 열린 날도 없으면 적지 않음');
   assert.deepEqual(stepSettle(null, {su: noCd, board, stored: {}, sbook: null, days: {days: {}}, start, cal: cd.slice(5)}).book.mk, {}, '판 날까지 21 장날이 안 되면 적지 않음');
   // 걸어온 길 — 첫날 1 · 하루 몫을 곱함 · 빠진 장날에서 멈춤
