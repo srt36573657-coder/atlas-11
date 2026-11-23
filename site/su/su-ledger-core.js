@@ -57,11 +57,52 @@ const stOf = x => (x.one ? 'one' : Math.round(x.val - x.cost) > 0 ? 'up' : Math.
 const keep = (res, x) => res === 'all' || stOf(x) === res;
 const CMP = {loss: (a, b) => (a.val - a.cost) - (b.val - b.cost), gain: (a, b) => (b.val - b.cost) - (a.val - a.cost), low: (a, b) => a.val / a.cost - b.val / b.cost, high: (a, b) => b.val / b.cost - a.val / a.cost, cost: (a, b) => b.cost - a.cost, times: (a, b) => b.times - a.times};
 const cmpOf = sort => (a, b) => (CMP[sort] ?? CMP.loss)(a, b) || b.cost - a.cost || (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
+const mOk = r => !r.one && fin(r.mv) && r.mv > 0; // 시장과 견줄 줄(주문 1123-2358) — 하루치는 뺌 · 판 전체 길이 있는 줄만
 function groupOf(rs, keyOf, nameOf) {
   const m = new Map();
-  for (const r of rs) { const k = keyOf(r), g = m.get(k) ?? m.set(k, {key: k, name: nameOf(r), times: 0, cost: 0, val: 0, ds: new Set(), one: true, code: r.code, buy: r.buy, now: r.now, ks: []}).get(k);
-    g.times++; g.cost += r.cost; g.val += r.val; g.ds.add(r.day); g.one = g.one && !!r.one; g.ks.push(r.k); }
+  for (const r of rs) { const k = keyOf(r), g = m.get(k) ?? m.set(k, {key: k, name: nameOf(r), times: 0, cost: 0, val: 0, mc: 0, mval: 0, mv: 0, ds: new Set(), one: true, code: r.code, buy: r.buy, now: r.now, ks: []}).get(k);
+    g.times++; g.cost += r.cost; g.val += r.val; g.ds.add(r.day); g.one = g.one && !!r.one; g.ks.push(r.k);
+    if (mOk(r)) { g.mc += r.cost; g.mval += r.val; g.mv += r.mv; } }
   return [...m.values()].map(g => ({...g, days: g.ds.size, ds: undefined}));
+}
+/* ── 판정 한 줄(주문 1123-2358 · 사장님 2026-11-23(서울) 23:58 「너 맘대로 해」 — 23:48 「… 판단하는 잣대를 말이야 효과적으로 한다면 어떤 방법이 있을까 11가지를 제시해봐」의 제안
+   1번 「시장과 나란히」 · 3번 「가장 깊이 빠진 때」 · 8번 「아직 일러요」를 장부 맨 위 한 줄로(11번) · docs/design/sonja-ledger11-2026-11-23/brief.md)
+   시장 = 같은 날 같은 돈을 우량주 판 전체에 고르게 나눠 산 셈(su21_settle.mjs mkLevels) · 하루치(오늘 산 것)는 뺌 · 「%」 대신 「100원에 ○원」 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 ── */
+export const JUDGE_RULE = 'ledger-judge-v1';
+/** 100원에 이만큼 안쪽이면 「비슷해요」 */
+export const JUDGE_BAND = 1;
+/** 산 날이 이만큼 차기 전에는 「아직 일러요」(장이 열린 날 스무 번 = 한 달) */
+export const JUDGE_DAYS = 20;
+/** 100원에 ○원 글(소수 첫째 자리 · .0 은 뺌) */
+export const won100 = v => (Math.round(Math.abs(v) * 10) / 10).toFixed(1).replace(/\.0$/, '');
+/** {rule, n, cost, val, mv, d(100원에 · 장부 − 시장 · 소수 첫째 자리) | null, st: better · same · worse | null, loss, r(장부 100원이) · rm(시장 100원이), deep: {day, r} | null, days, early}
+ *  rows = settleRows(mv 붙은 줄) · tt = 쌓인 장부 전체(su21-settle.json tt — 날마다 100원이 ○원 × 10000) */
+export function judgeOf(rows, tt) {
+  const R = (Array.isArray(rows) ? rows : []).filter(r => r && typeof r.day === 'string' && fin(r.cost) && r.cost > 0 && fin(r.val) && !r.one), M = R.filter(mOk);
+  const cost = M.reduce((s, r) => s + r.cost, 0), val = M.reduce((s, r) => s + r.val, 0), mv = M.reduce((s, r) => s + r.mv, 0);
+  const d = cost > 0 ? Math.round((val - mv) / cost * 1000) / 10 : null;
+  const st = d === null ? null : Math.abs(d) < JUDGE_BAND ? 'same' : d > 0 ? 'better' : 'worse';
+  let deep = null;
+  const ds = Array.isArray(tt?.days) ? tt.days : [], ws = Array.isArray(tt?.w) ? tt.w : [];
+  ds.forEach((day, i) => { const w = ws[i]; if (typeof day === 'string' && fin(w) && w > 0 && (!deep || w / 1e4 < deep.r)) deep = {day, r: w / 1e4}; });
+  const days = new Set(R.map(r => r.day)).size;
+  return {rule: JUDGE_RULE, n: M.length, cost, val, mv, d, st, loss: Math.round(val) < Math.round(cost), r: cost > 0 ? 100 * val / cost : null, rm: cost > 0 ? 100 * mv / cost : null,
+    deep, days, early: days < JUDGE_DAYS};
+}
+/** 판정 한 줄 글 — 장부가 줄었으면 「덜 잃었어요 · 더 잃었어요」 · 늘었으면 「더 늘었어요 · 덜 늘었어요」 · 1원 안쪽은 「비슷해요」 */
+export function judgeText(J) {
+  if (!J || J.d === null || !J.st) return '';
+  if (J.st === 'same') return '시장과 비슷해요. 100원에 ' + JUDGE_BAND + '원 안쪽이에요.';
+  const v = won100(J.d), eq = Math.round(J.val) === Math.round(J.cost);
+  if (eq) return '시장보다 100원에 ' + v + '원 ' + (J.st === 'better' ? '나았어요.' : '못했어요.');
+  return '시장보다 100원에 ' + v + '원 ' + (J.st === 'better' ? (J.loss ? '덜 잃었어요.' : '더 늘었어요.') : (J.loss ? '더 잃었어요.' : '덜 늘었어요.'));
+}
+/** 거른 장부 한 줄 끝에 붙이는 시장 견줌(거르개를 고를 때마다 · 11번) — 견줄 줄이 없으면 '' */
+export function judgeTail(T) {
+  if (!T || !(T.mc > 0) || !fin(T.mv) || !fin(T.mval)) return '';
+  const d = Math.round((T.mval - T.mv) / T.mc * 1000) / 10;
+  if (Math.abs(d) < JUDGE_BAND) return '시장과 비슷함';
+  return '시장보다 100원에 ' + won100(d) + '원 ' + (d > 0 ? '나음' : '못함');
 }
 /** 거른 장부 — {pick, days(기간 안 장날 · 오래된 날 먼저), groups(날짜별: [{day, items, cost, val, times}] 새 날 먼저 · 빈 날 뺌) | items(회사별 · 꾀별), T: {n, times, cost, val}} */
 export function ledgerView(rows, pick = {}) {
@@ -73,10 +114,11 @@ export function ledgerView(rows, pick = {}) {
   const R = (Array.isArray(rows) ? rows : []).filter(r => r && typeof r.day === 'string' && typeof r.code === 'string' && fin(r.cost) && r.cost > 0 && fin(r.val));
   const all = [...new Set(R.map(r => r.day))].sort(), N = LEDGER_SPANS.find(x => x[0] === P.span)[2], days = N ? all.slice(-N) : all, inDay = new Set(days);
   const rs = R.filter(r => inDay.has(r.day)), cmp = cmpOf(P.sort), name = r => r.name ?? r.code;
-  const tot = xs => ({n: xs.length, times: xs.reduce((s, x) => s + x.times, 0), cost: xs.reduce((s, x) => s + x.cost, 0), val: xs.reduce((s, x) => s + x.val, 0)});
+  const sum = (xs, k) => xs.reduce((s, x) => s + (fin(x[k]) ? x[k] : 0), 0);
+  const tot = xs => ({n: xs.length, times: sum(xs, 'times'), cost: sum(xs, 'cost'), val: sum(xs, 'val'), mc: sum(xs, 'mc'), mval: sum(xs, 'mval'), mv: sum(xs, 'mv')});
   if (P.view === 'day') {
     const groups = [...days].reverse().map(day => { const items = groupOf(rs.filter(r => r.day === day), r => r.code, name).filter(x => keep(P.res, x)).sort(cmp); return {day, items, ...tot(items)}; }).filter(g => g.items.length);
-    const T = groups.reduce((a, g) => ({n: a.n + g.n, times: a.times + g.times, cost: a.cost + g.cost, val: a.val + g.val}), {n: 0, times: 0, cost: 0, val: 0});
+    const T = groups.reduce((a, g) => ({n: a.n + g.n, times: a.times + g.times, cost: a.cost + g.cost, val: a.val + g.val, mc: a.mc + g.mc, mval: a.mval + g.mval, mv: a.mv + g.mv}), {n: 0, times: 0, cost: 0, val: 0, mc: 0, mval: 0, mv: 0});
     return {pick: P, days, groups, T};
   }
   const items = groupOf(rs, P.view === 'k' ? r => r.k : r => r.code, P.view === 'k' ? r => r.k : name).filter(x => keep(P.res, x)).sort(cmp);

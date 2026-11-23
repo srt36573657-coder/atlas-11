@@ -1539,6 +1539,14 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-ldlist .sj-ldl1 > .sj-ldr { background: #F3F8F6; }
 /* 거르개 기억 · 처음대로(주문 1120-1935) — 요약 한 줄 옆 작은 단추(48 넘게) */
 #su .sj-ldsumr { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 8px; }
+/* 판정 한 줄(주문 1123-2358 · 장부 잣대 1 · 3 · 8 · 11번) — 장부 머리 「늘고 줆」 아래 · 글 17px 넘게 · 붉은색 0 */
+#su .sj-judge { display: grid; gap: 8px; margin: 12px 0 4px; padding: 14px 16px; border-left: 4px solid #20323A; border-radius: 0 16px 16px 0; background: #F3F8F6; color: #16262C; }
+#su .sj-judge .sj-jk { margin: 0; font-size: 1.0625rem; font-weight: 800; letter-spacing: 0.02em; }
+#su .sj-judge .sj-jbig { margin: 0; font-size: 1.3125rem; font-weight: 800; line-height: 1.45; }
+#su .sj-judge .sj-jl { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+#su .sj-judge .sj-jl li { display: grid; gap: 2px; font-size: 1.0625rem; line-height: 1.5; }
+#su .sj-judge .sj-jl b { font-weight: 800; }
+#su .sj-judge .sj-jn { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #2E4148; }
 #su .sj-ldreset { min-height: 48px; padding: 10px 14px; border: 1.5px solid #20323A; border-radius: 14px; background: #FCFEFD; color: #20323A; font: inherit; font-size: 1.0625rem; font-weight: 800; line-height: 1.3; cursor: pointer; white-space: nowrap; }
 #su .sj-ldreset:focus-visible { outline: 3px solid #4A6168; outline-offset: 2px; }
 /* 장부 그림을 누르면 그날 숫자(주문 1120-2041) — 세로 줄 · 큰 점 · 그림 아래 큰 글 한 줄 · 세로 쓸기는 그대로 */

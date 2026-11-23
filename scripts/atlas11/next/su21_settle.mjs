@@ -29,6 +29,8 @@ import {fileURLToPath} from 'node:url';
 import {calendarOf, runOf} from './su21_days.mjs'; // 며칠째 셈(주문 1114-0151 — 42칸과 같은 셈)
 
 export const SCHEMA = 'su21-settle-1', BOOK_SCHEMA = 'su21-settle-book-1', QTY = 10;
+/** 판 전체 하루 몫을 적을 때 셀 회사가 이만큼은 있어야 함(주문 1123-2358) */
+export const MK_MIN = 100;
 /** 정산 첫날(주문 1112-2042 「정산을 오늘 부터 한다」 — 받은 날 11월 12일 판) */
 export const START = '2026-11-12';
 /** 손자병법 서른여섯 꾀(주문 1113-2224 · su21_s36.py KINDS 차례 = 삼십육계 차례 1 ~ 36) */
@@ -51,7 +53,8 @@ export function okSettle(B) {
     && (B.t11 == null || typeof B.t11 === 'object') // 주문 1113-2033 의 옛 기록(읽으면 지움)
     && (B.s36 == null || (typeof B.s36 === 'object' && Object.entries(B.s36).every(([d, x]) => DAY.test(d) && x && typeof x === 'object'
       && Object.entries(x).every(([k, cs]) => S36.includes(k) && Array.isArray(cs) && cs.every(c => CODE.test(c))))))
-    && (B.ovl == null || (typeof B.ovl === 'object' && Object.entries(B.ovl).every(([d, cs]) => DAY.test(d) && Array.isArray(cs) && cs.every(c => CODE.test(c))))); // 겹친 곳(주문 1114-0802)
+    && (B.ovl == null || (typeof B.ovl === 'object' && Object.entries(B.ovl).every(([d, cs]) => DAY.test(d) && Array.isArray(cs) && cs.every(c => CODE.test(c))))) // 겹친 곳(주문 1114-0802)
+    && (B.mk == null || (typeof B.mk === 'object' && Object.entries(B.mk).every(([d, f]) => DAY.test(d) && fin(f)))); // 판 전체 하루 몫(주문 1123-2358)
 }
 const indOf = c => c?.group?.industry ?? c?.group?.label ?? c?.ind ?? null;
 
@@ -117,6 +120,24 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
   for (const code of Object.keys(B.px)) B.px[code] = Object.fromEntries(Object.entries(B.px[code]).sort(([a], [b]) => a.localeCompare(b)));
   B.px = Object.fromEntries(Object.keys(B.px).sort().map(c => [c, B.px[c]]));
   B.co = Object.fromEntries(Object.keys(B.co).sort().map(c => [c, B.co[c]]));
+  // ④ 판 전체 하루 몫(주문 1123-2358 · 사장님 2026-11-23(서울) 23:58 「너 맘대로 해」 — 장부 잣대 1번 「시장과 나란히」 · docs/design/sonja-ledger11-2026-11-23/brief.md)
+  //    그날 판 우량주를 같은 돈으로 고르게 나눠 든 셈의 하루 몫 = 회사마다 「그 전 장날 값 → 그날 값」의 평균 · 첫날 뒤 날마다 한 번 적음(먼저 적은 날은 그대로 · 고치지 않음)
+  //    오늘 판 21날 값(c · 날은 su21 cd)으로 셈 · 하루에 30% 넘게 움직인 값(쪼개기 · 합치기)은 뺌 · 회사 100곳 넘을 때만
+  B.mk = Object.fromEntries(Object.entries(B.mk ?? {}).filter(([d, f]) => DAY.test(d) && d > start && fin(f)));
+  if (cd) {
+    for (let j = 1; j < 21; j++) {
+      const d = cd[j];
+      if (!DAY.test(d ?? '') || d <= start || B.mk[d] != null) continue;
+      const xs = [];
+      for (const c of board?.companies ?? []) {
+        if (!Array.isArray(c?.c) || c.c.length !== 21 || c.cFrom !== cd[0] || c.date !== cd[20] || !fin(c.c[j]) || !fin(c.c[j - 1])) continue;
+        const r = c.c[j] / c.c[j - 1];
+        if (r > 0.7 && r < 1.3) xs.push(r);
+      }
+      if (xs.length >= MK_MIN) B.mk[d] = Math.round(xs.reduce((s, x) => s + x, 0) / xs.length * 1e6) / 1e6;
+    }
+  }
+  B.mk = Object.fromEntries(Object.keys(B.mk).sort().map(d => [d, B.mk[d]]));
   return {book: B, added, added36, addedO, lists: L, cut};
 }
 
@@ -139,8 +160,23 @@ export function siteSettle(B, L, asOf, days, start = START) {
   }
   const replay = Object.entries(days?.days ?? {}).filter(([d, x]) => x?.how === 'replay' && d >= start).map(([d]) => d).sort();
   return {schema: SCHEMA, qty: B.qty, asOf: asOf ?? null, start, kinds: [...KINDS], from, replayTo: replay[replay.length - 1] ?? null,
-    co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss};
+    co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss, mk: mkLevels(B, asOf, start)};
 }
+/** 판 전체가 걸어온 길(주문 1123-2358 · 장부 잣대 1번) — 장날마다 첫날 = 1 에서 하루 몫을 곱해 온 값 {날: 값} · 장날은 장부 값 날 ∪ 하루 몫 날
+ *  하루 몫이 빠진 장날을 만나면 거기서 멈춤(그 뒤 날은 견주지 않음 · 화면은 그 줄을 시장과 견주지 않음) */
+export function mkLevels(B, asOf, start = START) {
+  const mk = B?.mk ?? {}, days = [...new Set([...Object.values(B?.px ?? {}).flatMap(m => Object.keys(m ?? {})), ...Object.keys(mk)])].filter(d => DAY.test(d) && d >= start && (!asOf || d <= asOf)).sort();
+  const out = {};
+  let lv = 1;
+  for (const [i, d] of days.entries()) {
+    if (i) { if (!fin(mk[d])) break; lv *= mk[d]; }
+    out[d] = Math.round(lv * 1e6) / 1e6;
+  }
+  return out;
+}
+/** 쌓인 장부 전체(주문 1123-2358 · 장부 잣대 3번 「가장 깊이 빠진 때」) — 날마다 서른여섯 꾀를 모두 더한 「100원이 ○원 × 10000」(그날까지 값 · trackSite 와 같은 셈 · 산 셈 없으면 null) */
+export const trackTotal = (lines, days) => { const A = trackAll(lines, days), sum = xs => xs.reduce((s, x) => s + (x ?? 0), 0);
+  return {days: A.map(d => d.day), w: A.map(d => { const c = sum(d.c), v = sum(d.v); return c > 0 ? Math.round(v / c * 1e6) : null; })}; };
 
 /** 날마다 쌓인 값(주문 1119-0829 · 사장님 2026-11-19(마카오) 08:29 「하루치는 알수 있으나 누적값을 알수가 없다 … 꺽기 그래프는 기존이 되어야 하고 이 지금 만드는
  *    추적 시스템은 정말 소중한 데이타가 된다 … 탈무드에 지혜를 학습해」 · 08:43 「응」 — docs/design/settle-track-2026-11-19/order-0829.txt)
@@ -271,6 +307,7 @@ function main() {
   const A = trackAll(T, TD), diff = trackDiff(T, TD);
   site.rk = rankOf(A); // 날마다 바뀐 차례(주문 1119-0243) — 적은 줄 차례 그대로
   site.tr = {...trackSite(T, TD), broken, diff}; // 쌓인 값 꺾은선(주문 1119-0829)
+  site.tt = trackTotal(T, TD); // 쌓인 장부 전체(주문 1123-2358 · 장부 잣대 3번 「가장 깊이 빠진 때」)
   if (out) fs.writeFileSync(out, JSON.stringify(site) + '\n');
   if (keep) { const tmp = bookF + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(book, null, 1) + '\n'); fs.renameSync(tmp, bookF); }
   // 며칠째(주문 1114-0151) — 서른여섯 꾀(su21-s36.json) · 조용한 힘(su21.json)에 회사마다 days · found · since

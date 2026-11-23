@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK, SUN_TRACK, sealSun, checkSun, sunPick} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK, SUN_TRACK, sealSun, checkSun, sunPick, MK_MIN, mkLevels, trackTotal} from '../../scripts/atlas11/next/su21_settle.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import {forwardTo} from '../../site/su/su-data.js';
@@ -377,4 +377,38 @@ test('꾀 칸 쌓인 값 작은 꺾은선(주문 1119-1317 「꾀 칸을 보면 
   assert.ok(kk.includes('trSpark(g, k), // 쌓인 값 작은 꺾은선') && kk.includes('funnel36, eqBox, trSpark}'), '꾀 모음 · 회사 쪽 꾀 한 줄');
   assert.ok(/!\(j >= 0 && j < 36\)/.test(sj) && sj.includes('return sp.length > 1 ? sp : null;'), '이틀 넘게 있어야 그림 · 꾀 번호 밖은 그리지 않음');
   assert.ok(cs.includes("p.on('response', r => { const st = r.status(); if (st >= 400) bad4.push(") && cs.includes("' · 막힌 응답 ' + bad4.slice(0, 3).join(' / ')"), '㉕ 막힌 응답 주소를 글에(걸림 판정은 그대로)');
+});
+
+test('판 전체 하루 몫 · 걸어온 길 · 쌓인 장부 전체(주문 1123-2358 · 장부 잣대 1번 「시장과 나란히」 · 3번 「가장 깊이 빠진 때」)', () => {
+  assert.equal(MK_MIN, 100);
+  const D1 = '2026-11-07', cd = d21(D1), start = cd[10];
+  const su = {asOf: {board: D1}, lists: {hot: [{code: '000002', cd}], bloom: [], money: [], quiet: []}};
+  // 우량주 120곳 — 날마다 1% 오름(j 짝수) · 1% 내림(j 홀수) · 한 곳은 쪼개기(하루에 반값 — 뺌) · 한 곳은 cFrom 이 다름(뺌)
+  const comps = Array.from({length: 120}, (_, i) => ({code: String(100000 + i), name: '회사' + i, date: D1, close: 1000, cFrom: cd[0],
+    c: cd.map((_, j) => Math.round(1000 * Math.pow(1.01, Math.ceil(j / 2)) * Math.pow(0.99, Math.floor(j / 2))))}));
+  comps.push({code: '200000', name: '쪼갬', date: D1, close: 500, cFrom: cd[0], c: cd.map((_, j) => (j >= 15 ? 500 : 1000))});
+  comps.push({code: '200001', name: '다른날', date: D1, close: 900, cFrom: cd[1], c: cd.map(() => 900)});
+  const board = {asOf: D1, companies: [{code: '000002', name: '다라', date: D1, close: 2020, c: cd.map((_, i) => 1900 + i), cFrom: cd[0]}, ...comps]};
+  const {book} = stepSettle(null, {su, board, stored: {}, sbook: null, days: {days: {}}, start});
+  assert.ok(okSettle(book), '장부 꼴(판 전체 하루 몫 포함)');
+  assert.deepEqual(Object.keys(book.mk), cd.slice(11), '첫날 뒤 날만 · 날 차례');
+  const want = j => { const xs = board.companies.filter(c => c.cFrom === cd[0] && Array.isArray(c.c)).map(c => c.c[j] / c.c[j - 1]).filter(x => x > 0.7 && x < 1.3); return Math.round(xs.reduce((a, b) => a + b, 0) / xs.length * 1e6) / 1e6; };
+  for (let j = 11; j < 21; j++) assert.equal(book.mk[cd[j]], want(j), '하루 몫 = 회사마다 전날 → 그날 값의 평균(cFrom 이 다른 곳 · 하루 30% 넘게 움직인 값은 뺌) ' + cd[j]);
+  assert.ok(Math.abs(book.mk[cd[15]] - want(14 + 1)) < 1e-9 && Object.values(book.mk).every(f => f > 0.98 && f < 1.02), '쪼개기(반값)는 뺌 — 평균이 끌려가지 않음');
+  // 먼저 적은 날은 그대로 — 다음 걸음에서 값이 달라도 고치지 않음
+  const b2 = stepSettle(book, {su, board: {...board, companies: board.companies.map(c => ({...c, c: c.c.map(v => v * 2)}))}, stored: {}, sbook: null, days: {days: {}}, start}).book;
+  assert.deepEqual(b2.mk, book.mk, '한 번 적은 하루 몫은 고치지 않음');
+  // 회사가 100곳 아래면 적지 않음
+  const small = stepSettle(null, {su, board: {...board, companies: board.companies.slice(0, 50)}, stored: {}, sbook: null, days: {days: {}}, start}).book;
+  assert.deepEqual(small.mk, {}, '회사 100곳 아래 — 적지 않음');
+  // 걸어온 길 — 첫날 1 · 하루 몫을 곱함 · 빠진 장날에서 멈춤
+  const B = {px: {'000001': {[cd[10]]: 1, [cd[11]]: 1, [cd[12]]: 1, [cd[13]]: 1}}, mk: {[cd[11]]: 1.01, [cd[12]]: 0.98}};
+  assert.deepEqual(mkLevels(B, cd[13], cd[10]), {[cd[10]]: 1, [cd[11]]: 1.01, [cd[12]]: 0.9898}, '13번째 장날은 하루 몫이 없어 거기서 멈춤');
+  assert.deepEqual(mkLevels(B, cd[11], cd[10]), {[cd[10]]: 1, [cd[11]]: 1.01}, '판 날 뒤는 안 셈');
+  assert.deepEqual(mkLevels({}, null, cd[10]), {});
+  const S = siteSettle({...emptySettle(), px: B.px, mk: B.mk, co: {}}, {}, cd[12], {days: {}}, cd[10]);
+  assert.deepEqual(S.mk, {[cd[10]]: 1, [cd[11]]: 1.01, [cd[12]]: 0.9898}, '화면 자료 mk');
+  // 쌓인 장부 전체 — 날마다 서른여섯 꾀를 모두 더한 100원이 ○원 × 10000
+  const T = trackTotal([], [{day: cd[10], c: [1000, null, 2000], v: [1000, null, 2000]}, {day: cd[11], c: [1000, null, 2000], v: [950, null, 1940]}]);
+  assert.deepEqual(T, {days: [cd[10], cd[11]], w: [1000000, 963333]});
 });

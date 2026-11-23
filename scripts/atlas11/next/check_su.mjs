@@ -1437,6 +1437,32 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       && bB?.day === d0 && Math.abs(bB.cost - c0) <= 1 && cA.fs >= 16.95 && /까지 · 쌓인 산 돈/.test(cB.t) && /그날 산 돈/.test(bB.t) && !/%/.test(cB.t + bB.t)),
       W + '마) 장부 그림을 누르면 그날 숫자(주문 1120-2041) — 처음은 마지막 날 · 꺾은선 맨 왼쪽 = 첫날까지 쌓인 돈 · 막대 첫째 = 첫날 산 돈(장부로 다시 셈) · 큰 글', JSON.stringify({d0, dN, c0, v0, cN, cNb, cA, bA, cB, bB}).slice(0, 500));
   }
+  { // 바) 판정 한 줄(주문 1123-2358 · 사장님 2026-11-23(서울) 23:58 「너 맘대로 해」 — 23:48 「… 판단하는 잣대를 … 11가지를 제시해봐」의 제안 1 · 3 · 8 · 11번)
+    //     장부 머리 「늘고 줆」 바로 아래 · 이 검사가 정산 장부(buys · now · mk · tt)로 따로 다시 셈: 시장과 나란히(하루치 · 시장 길 없는 줄 뺌 · 100원에 ○원 · 1원 안쪽 비슷해요)
+    //     · 가장 깊이 빠진 때(tt 가장 낮은 날) · 산 날 수(스무 번 전 「아직 일러요」) · 거르개 처음 한 줄 끝 시장 견줌 · 글 17px 넘게 · 쪽 밖으로 안 나감
+    const lvW = d => (DL?.mk && typeof DL.mk[d] === 'number' && DL.mk[d] > 0 ? DL.mk[d] : null), r10 = v => Math.round(v * 10) / 10, f1 = v => (Math.round(Math.abs(v) * 10) / 10).toFixed(1).replace(/\.0$/, '');
+    const RJ = (Array.isArray(DL?.buys) ? DL.buys : []).filter(b => Array.isArray(b) && KK.test(String(DL.kinds?.[b[1]] ?? '')) && typeof b[3] === 'number' && b[3] > 0).map(([d, , c, buy]) => {
+      const okN = Array.isArray(DL.now?.[c]) && typeof DL.now[c][0] === 'number', nw = okN ? DL.now[c][0] : buy, nd = okN ? DL.now[c][1] : d, l0 = lvW(d), l1 = lvW(nd);
+      return {d, cost: buy * q, val: nw * q, one: !(nd > d), mv: l0 && l1 ? buy * q * l1 / l0 : null}; }).filter(r => !r.one);
+    const MJ = RJ.filter(r => r.mv !== null), jc = MJ.reduce((s, r) => s + r.cost, 0), jv = MJ.reduce((s, r) => s + r.val, 0), jm = MJ.reduce((s, r) => s + r.mv, 0);
+    const wd = jc > 0 ? Math.round((jv - jm) / jc * 1000) / 10 : null, wdays = new Set(RJ.map(r => r.d)).size;
+    let wdeep = null; (DL?.tt?.days ?? []).forEach((d, i) => { const w = DL.tt.w?.[i]; if (typeof w === 'number' && w > 0 && (!wdeep || w / 1e4 < wdeep.r)) wdeep = {d, r: w / 1e4}; });
+    const loss = Math.round(jv) < Math.round(jc), eq = Math.round(jv) === Math.round(jc);
+    const wbig = wd === null ? null : Math.abs(wd) < 1 ? '시장과 비슷해요. 100원에 1원 안쪽이에요.' : '시장보다 100원에 ' + f1(wd) + '원 ' + (eq ? (wd > 0 ? '나았어요.' : '못했어요.') : wd > 0 ? (loss ? '덜 잃었어요.' : '더 늘었어요.') : (loss ? '더 잃었어요.' : '덜 늘었어요.'));
+    const wtail = wd === null ? '' : Math.abs(wd) < 1 ? '시장과 비슷함' : '시장보다 100원에 ' + f1(wd) + '원 ' + (wd > 0 ? '나음' : '못함');
+    await open(p, '#/l');
+    const jg = await p.evaluate(() => { const j = document.querySelector('#su main.sj-page[data-page="ledger"] > section.sj-ph > .sj-judge'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), r = j?.getBoundingClientRect(), sm = document.querySelector('#su section.sj-ldf .sj-ldsum');
+      return j ? {after: j.previousElementSibling?.matches('p.sj-res') === true, d: j.getAttribute('data-d'), st: j.getAttribute('data-st'), deep: j.getAttribute('data-deep'), days: +j.getAttribute('data-days'), early: j.getAttribute('data-early'), rule: j.getAttribute('data-rule'),
+        big: t(j.querySelector('.sj-jbig')), items: [...j.querySelectorAll('ul.sj-jl > li > b')].map(t), text: t(j), small: [...j.querySelectorAll('p, li')].filter(e => parseFloat(getComputedStyle(e).fontSize) < 16.95).length,
+        inside: !!r && r.left >= 0 && r.right <= innerWidth + 1, mk: sm?.getAttribute('data-mk') ?? null, sum: t(sm)} : null; });
+    const want = {d: wd === null ? '' : String(wd), deep: wdeep ? wdeep.d + ' ' + f1(wdeep.r) : '', days: wdays, early: wdays < 20 ? '1' : '0'};
+    check(!!jg && jg.after && jg.rule === 'ledger-judge-v1' && jg.d === want.d && jg.deep === want.deep && jg.days === want.days && jg.early === want.early
+      && (wbig === null ? /시장 값을 아직 받지 못했어요/.test(jg.text) : jg.big === wbig) && JSON.stringify(jg.items) === JSON.stringify(['시장과 나란히', '가장 깊이 빠진 때', '아직 일러요'])
+      && (wdays < 20 ? /판단하기 일러요/.test(jg.text) : /번이 찼어요/.test(jg.text)) && jg.small === 0 && jg.inside && !/%|매수|매도|수익률|추천|예측|확률|기회/.test(jg.text)
+      && jg.mk === wtail && (!wtail || jg.sum.endsWith(wtail)),
+      W + '바) 판정 한 줄(주문 1123-2358) — 머리 「늘고 줆」 바로 아래 · 시장과 나란히 · 가장 깊이 빠진 때 · 아직 일러요 = 정산 장부(mk · tt)로 다시 셈 · 거르개 처음 한 줄 끝 시장 견줌 · 큰 글',
+      JSON.stringify({want, wbig, wtail, got: jg && {...jg, text: jg.text.slice(0, 160), sum: jg.sum.slice(-40)}}).slice(0, 700));
+  }
   pageRules(await measure(p), W + '장부 #/l');
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();
