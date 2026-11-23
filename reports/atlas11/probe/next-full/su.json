@@ -1,17 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-23T18:00:54.479Z",
+ "at": "2026-11-23T19:23:05.320Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 586,
-  "fail": 1
+  "pass": 587,
+  "fail": 0
  },
- "fails": [
-  [
-   "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795457157302"
-  ]
- ],
+ "fails": [],
  "m": {
   "data": {
    "fk": "g18",
@@ -115,9 +110,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 960,
+   "lcp": 948,
    "cls": 0.029,
-   "pic": 810
+   "pic": 783
   },
   "white": {
    "light #/": {
@@ -1031,18 +1026,7 @@
      "은행·카드 6"
     ]
    }
-  },
-  "reopen": [
-   {
-    "hash": "#/k/g21",
-    "try": 1,
-    "status": 403,
-    "err": null,
-    "url": "https://aaa7377.com/su/?v=1795457157302#/k/g21",
-    "title": "aaa7377.com",
-    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M84SC26338DATWV364HBTJXW"
-   }
-  ]
+  }
  },
- "ok": false
+ "ok": true
 }

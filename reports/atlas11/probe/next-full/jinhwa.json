@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-check-jinhwa-1",
- "at": "2026-11-23T17:59:11.467Z",
+ "at": "2026-11-23T19:21:35.956Z",
  "base": "https://aaa7377.com",
  "mode": "live",
  "all": true,
@@ -141,6 +141,6 @@
  },
  "fails": [],
  "warn": [],
- "seconds": 40.8,
+ "seconds": 40.9,
  "ok": true
 }
