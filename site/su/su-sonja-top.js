@@ -54,8 +54,11 @@ export function topBar() {
       h('a', {class: 'sj-btn sj-angel', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'}), h('i', {'aria-hidden': 'true', text: '↗'})),
       findTop(), // 회사 찾기 — 선물 옆(주문 1120-1705 · 사장님 17:05 「종목 찾기를 선물 옆에 배치」) · 회사 탭 맨 위 찾기 칸으로
       h('a', {id: 'giftBtn', class: 'sj-btn sj-gift', href: '/next/?su=guide#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}),
-      sayTop(), big));
+      sayTop(), big),
+    natTab());
 }
+/** 나라 탭 — 맨 위 「한국 | 미국」(사장님 2026-11-23 · 미국 판은 /su/us/) */
+export const natTab = (cur = 'kr') => h('nav', {class: 'sj-nat', 'aria-label': '나라 고르기'}, h('a', {href: '/su/', 'aria-current': cur === 'kr' ? 'page' : null, text: '한국'}), h('a', {href: '/su/us/', 'aria-current': cur === 'us' ? 'page' : null, text: '미국'}));
 
 /** 걸음 표시 「1 / 5 · 오늘」(n = 1 ~ 5 · dd = 「11월 13일」 같은 자료 날 · 없으면 뒤에 붙임)
  *  주문 1120-0001(참모 서른여섯 m02 「묻고 지운 판」 — 다섯 걸음에 기 · 승 · 전 · 결 넷이라 「결」이 두 번 보임 → 동그라미 글자를 지움 · 숫자와 이름만) */

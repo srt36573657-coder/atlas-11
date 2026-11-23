@@ -1,0 +1,6 @@
+/* 나라 탭 — 맨 위 「한국 | 미국」(사장님 2026-11-23 「탭을 상단에 하나 만들어 · 미국판을 만들어」) */
+#su .sj-nat { flex: 1 0 100%; display: flex; gap: 0; margin: 4px 0 0; border: 1.5px solid #20323A; border-radius: 10px; overflow: hidden; background: #FFFFFF; }
+#su .sj-nat a { flex: 1 1 50%; min-height: 44px; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; color: #20323A; text-decoration: none; }
+#su .sj-nat a + a { border-left: 1.5px solid #20323A; }
+#su .sj-nat a[aria-current="page"] { background: #20323A; color: #FFFFFF; }
+#su .sj-nat a:focus-visible { outline: 3px solid #B8860B; outline-offset: -3px; }
