@@ -165,7 +165,18 @@ export function siteSettle(B, L, asOf, days, start = START) {
   }
   const replay = Object.entries(days?.days ?? {}).filter(([d, x]) => x?.how === 'replay' && d >= start).map(([d]) => d).sort();
   return {schema: SCHEMA, qty: B.qty, asOf: asOf ?? null, start, kinds: [...KINDS], from, replayTo: replay[replay.length - 1] ?? null,
-    co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss, mk: mkLevels(B, asOf, start)};
+    co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss, mk: mkLevels(B, asOf, start), hz: horizons(B, buys, asOf, start)};
+}
+/** 같은 날수로 재기(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 「다음에는 2번 「같은 날수로 재기」를 넣어 볼까요?」의 답 · 장부 잣대 2번)
+ *  산 셈마다 산 날 뒤 1 · 5 · 20 장날의 값(그 회사의 그날까지 가장 늦은 값 · 판 날 뒤는 안 셈) — 「지금」은 산 날마다 지난 날수가 달라 견주기 어려움
+ *  {ks, days: {산 날: [하루 뒤 날 · 닷새 뒤 날 · 스무 날 뒤 날 | null]}, p: [산 셈 차례대로 [값 | null × 3]]} · 장날 = 장부 값 날 ∪ 판 전체 하루 몫 날(mkLevels 와 같음) */
+export const HZ_KS = Object.freeze([1, 5, 20]);
+export function horizons(B, buys, asOf, start = START) {
+  const tdays = [...new Set([...Object.values(B?.px ?? {}).flatMap(m => Object.keys(m ?? {})), ...Object.keys(B?.mk ?? {})])].filter(d => DAY.test(d) && d >= start && (!asOf || d <= asOf)).sort();
+  const at = new Map(tdays.map((d, i) => [d, i])), days = {};
+  for (const [d] of buys) days[d] ??= HZ_KS.map(k => { const i = at.get(d); return i == null || i + k >= tdays.length ? null : tdays[i + k]; });
+  const last = (code, t) => { let v = null, vd = ''; for (const [x, y] of Object.entries(B?.px?.[code] ?? {})) if (x <= t && fin(y) && x > vd) { vd = x; v = y; } return v; };
+  return {ks: [...HZ_KS], days, p: buys.map(([d, , code]) => days[d].map(t => (t ? last(code, t) : null)))};
 }
 /** 판 전체가 걸어온 길(주문 1123-2358 · 장부 잣대 1번) — 장날마다 첫날 = 1 에서 하루 몫을 곱해 온 값 {날: 값} · 장날은 장부 값 날 ∪ 하루 몫 날
  *  하루 몫이 빠진 장날을 만나면 거기서 멈춤(그 뒤 날은 견주지 않음 · 화면은 그 줄을 시장과 견주지 않음) */

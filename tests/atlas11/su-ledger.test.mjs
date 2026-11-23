@@ -2,7 +2,7 @@
 //   site/su/su-ledger-core.js ledgerOf — 날마다(같은 회사는 한 줄 · 주 수 더함 · 손실 먼저) · 회사마다(모든 날 더함 · 산 돈 차례) · 쌓인 산 돈 · 그 지금 값
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ledgerOf, LEDGER_RULE, ledFind, tradesOf, ledgerView, LEDGER_VIEWS, LEDGER_SPANS, LEDGER_RES, LEDGER_SORTS, LEDGER_PICK0, judgeOf, judgeText, judgeTail, won100, JUDGE_RULE, JUDGE_BAND, JUDGE_DAYS} from '../../site/su/su-ledger-core.js';
+import {ledgerOf, LEDGER_RULE, ledFind, tradesOf, ledgerView, LEDGER_VIEWS, LEDGER_SPANS, LEDGER_RES, LEDGER_SORTS, LEDGER_PICK0, judgeOf, judgeText, judgeTail, won100, JUDGE_RULE, JUDGE_BAND, JUDGE_DAYS, sameAgeOf, sameText, SAME_KS} from '../../site/su/su-ledger-core.js';
 
 const r = (day, k, code, buy, now, one = false) => ({day, k, code, name: '회사' + code, buy, now, nowDay: one ? day : '2026-11-20', cost: buy * 10, val: now * 10, one});
 const rows = [r('2026-11-13', 'g01', '000001', 100, 90), r('2026-11-13', 'g02', '000001', 100, 90), r('2026-11-13', 'g03', '000002', 50, 60),
@@ -100,4 +100,23 @@ test('거르개를 고를 때마다 시장 견줌(11번) — 묶음마다 시장
   const K = ledgerView(R, {view: 'co', sort: 'cost'});
   assert.deepEqual(K.items.map(x => [x.key, x.mc, x.mval, x.mv]), [['000001', 2000, 1920, 1880], ['000002', 1000, 900, 920], ['000004', 0, 0, 0]]);
   assert.equal(judgeTail(K.items[0]), '시장보다 100원에 2원 나음'); assert.equal(judgeTail(K.items[1]), '시장보다 100원에 2원 못함'); assert.equal(judgeTail(K.items[2]), '');
+});
+
+// 같은 날수로(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 장부 잣대 2번)
+test('같은 날수로 — 산 뒤 하루 · 닷새 · 스무 날 · 그 날수가 지난 산 셈만 · 산 돈 무게 · 시장은 같은 날수 뒤 판 전체 · 아직이면 「아직 없어요」', () => {
+  assert.deepEqual(SAME_KS.map(x => x[0]), [1, 5, 20]);
+  const hz = (a, b, c) => [a, b, c].map(x => (x === null ? null : {t: 'x', val: x[0] * 10, mv: x[1] === null ? null : x[1] * 10}));
+  const R = [{...r('2026-11-13', 'g01', '000001', 100, 90), hz: hz([98, 97], [95, 93], null)}, {...r('2026-11-13', 'g02', '000002', 200, 200), hz: hz([204, 202], null, null)},
+    {...r('2026-11-20', 'g01', '000003', 100, 100, true), hz: hz(null, null, null)}, {...r('2026-11-14', 'g03', '000004', 50, 50), hz: null}];
+  const [d1, d5, d20] = sameAgeOf(R);
+  assert.deepEqual([d1.k, d1.n, d1.days, d1.cost, d1.val], [1, 2, 1, 3000, 3020]);
+  assert.equal(Math.round(d1.r * 10), 1007); assert.equal(Math.round(d1.rm * 10), 997);
+  assert.deepEqual([d5.n, d5.cost, d5.val, Math.round(d5.r), Math.round(d5.rm)], [1, 1000, 950, 95, 93]);
+  assert.deepEqual([d20.n, d20.r, d20.rm], [0, null, null]);
+  assert.equal(sameText(d1), '산 뒤 하루 — 장부 100원이 100.7원 · 시장 99.7원 · 산 날 1번');
+  assert.equal(sameText(d5), '산 뒤 닷새 — 장부 100원이 95원 · 시장 93원 · 산 날 1번');
+  assert.equal(sameText(d20), '산 뒤 스무 날 — 아직 없어요');
+  const noM = sameAgeOf([{...r('2026-11-13', 'g01', '000001', 100, 90), hz: hz([98, null], null, null)}])[0];
+  assert.equal(noM.rm, null); assert.equal(sameText(noM), '산 뒤 하루 — 장부 100원이 98원 · 산 날 1번', '시장 길이 없으면 시장 글을 뺌');
+  assert.deepEqual(sameAgeOf(null).map(x => x.n), [0, 0, 0]);
 });

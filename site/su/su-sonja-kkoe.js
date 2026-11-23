@@ -21,7 +21,7 @@ import {stance3, STANCES} from '/su/su-stance.js'; // 세 태세(주문 1120-072
 import {picksOf, monthLow, dayCounts} from '/su/su-picks.js';
 import {findBox} from '/su/su-find.js'; // 회사 찾기(주문 1120-1447 — 회사 탭 맨 위)
 import {coValSec, coLinkSec} from '/su/su-coval.js';
-import {ledgerOf, ledFind, tradesOf, ledgerView, LEDGER_VIEWS, LEDGER_SPANS, LEDGER_RES, LEDGER_SORTS, LEDGER_PICK0, judgeOf, judgeText, judgeTail, won100, JUDGE_DAYS} from '/su/su-ledger-core.js'; // 장부(주문 1120-1705) · 장부에서 회사 찾기(주문 1120-1804) // 회사 쪽 값과 실적 · 더 알아보기(주문 1120-1447) // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
+import {ledgerOf, ledFind, tradesOf, ledgerView, LEDGER_VIEWS, LEDGER_SPANS, LEDGER_RES, LEDGER_SORTS, LEDGER_PICK0, judgeOf, judgeText, judgeTail, won100, JUDGE_DAYS, sameAgeOf, sameText} from '/su/su-ledger-core.js'; // 장부(주문 1120-1705) · 장부에서 회사 찾기(주문 1120-1804) // 회사 쪽 값과 실적 · 더 알아보기(주문 1120-1447) // 여러 꾀가 고른 회사(주문 1120-0950) · 회사 쪽 날마다 고른 꾀 수(주문 1120-1040)
 /** 그림 속 이야기 네 막(주문 1117-0102) — 큰 그림 바로 아래 · 그림이 그 막에 오면 그 줄이 밝아짐(꾸밈 sj-story) */
 const storyOl = k => STORY36[k] ? h('ol', {class: 'sj-story', 'aria-label': STORY_TAG}, ...STORY36[k].map((t, i) => h('li', {'data-act': String(i + 1)}, h('b', {class: 'sj-actt', text: ACTS[i]}), h('span', {class: 'sj-actb', text: t})))) : null;
 
@@ -57,10 +57,13 @@ export function settleRows(D) {
   if (!D || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return [];
   const q = Number.isFinite(D.qty) ? D.qty : 10;
   const lv = d => (D.mk && fin(D.mk[d]) && D.mk[d] > 0 ? D.mk[d] : null); // 판 전체가 걸어온 길(주문 1123-2358 · 장부 잣대 1번 「시장과 나란히」)
-  return D.buys.filter(b => Array.isArray(b) && KKOE.test(D.kinds[b[1]] ?? '') && fin(b[3]) && b[3] > 0).map(([dd, ki, code, buy]) => {
+  const hzOf = (i, dd, buy) => { // 같은 날수로(주문 1124-0226 · 장부 잣대 2번) — 산 뒤 1 · 5 · 20 장날의 값 · 그날 시장(판 전체) · 아직 안 지났으면 null
+    const ts = D.hz?.days?.[dd], ps = D.hz?.p?.[i];
+    return Array.isArray(ts) && Array.isArray(ps) ? ts.map((t, j) => (typeof t === 'string' && fin(ps[j]) && ps[j] > 0 ? {t, val: ps[j] * q, mv: lv(dd) && lv(t) ? buy * q * lv(t) / lv(dd) : null} : null)) : null; };
+  return D.buys.map((b, i) => [b, i]).filter(([b]) => Array.isArray(b) && KKOE.test(D.kinds[b[1]] ?? '') && fin(b[3]) && b[3] > 0).map(([[dd, ki, code, buy], i]) => {
     const [now, nowDay] = Array.isArray(D.now?.[code]) && fin(D.now[code][0]) ? D.now[code] : [buy, dd], [name] = D.co?.[code] ?? [code];
     const l0 = lv(dd), l1 = lv(nowDay); // mv = 같은 날 같은 돈을 판 전체에 고르게 나눠 산 셈의 지금(그 회사 「지금」 날까지) · 길이 없으면 null
-    return {day: dd, k: D.kinds[ki], code, name: name ?? code, buy, now, nowDay, cost: buy * q, val: now * q, one: !(nowDay > dd), mv: l0 && l1 ? buy * q * l1 / l0 : null};
+    return {day: dd, k: D.kinds[ki], code, name: name ?? code, buy, now, nowDay, cost: buy * q, val: now * q, one: !(nowDay > dd), mv: l0 && l1 ? buy * q * l1 / l0 : null, hz: hzOf(i, dd, buy)};
   });
 }
 /** 더함 — 산 돈 · 지금 · 늘고 준 돈 · 모양(모두 아직 하루치면 one · 늘고 줆은 반올림한 원으로) */
@@ -459,14 +462,17 @@ const ledSt = (cost, val, one) => (one ? 'one' : Math.round(val - cost) > 0 ? 'u
 function judgeBox(RW, tt) {
   const J = judgeOf(RW, tt), big = judgeText(J), r1 = v => won100(v) + '원';
   const deepT = J.deep ? (mday(J.deep.day) ?? J.deep.day) + ' · 100원이 ' + r1(J.deep.r) + (Math.round(J.deep.r * 10) < 1000 ? '' : ' · 산 돈 밑으로 빠진 날은 아직 없어요') : '쌓인 장부를 아직 받지 못했어요.';
+  const SA = sameAgeOf(RW); // 같은 날수로(주문 1124-0226 · 장부 잣대 2번) — 「지금」은 산 날마다 지난 날수가 달라서
   const rows = [['시장과 나란히', J.d === null ? '시장 값을 아직 받지 못했어요. 받으면 견줘요.' : '장부 100원이 ' + r1(J.r) + ' · 시장이었다면 ' + r1(J.rm)],
+    ['같은 날수로', SA.map(sameText)],
     ['가장 깊이 빠진 때', deepT],
     ['아직 일러요', J.early ? '산 날이 ' + J.days + '번뿐이에요. ' + JUDGE_DAYS + '번이 차기 전에는 판단하기 일러요.' : '산 날이 ' + J.days + '번이에요. ' + JUDGE_DAYS + '번이 찼어요.']];
   return h('div', {class: 'sj-judge', role: 'group', 'aria-label': '판정 한 줄', 'data-rule': J.rule, 'data-st': J.st ?? 'none', 'data-d': J.d === null ? '' : String(J.d), 'data-n': String(J.n),
     'data-cost': String(Math.round(J.cost)), 'data-val': String(Math.round(J.val)), 'data-mv': String(Math.round(J.mv)), 'data-deep': J.deep ? J.deep.day + ' ' + won100(J.deep.r) : '', 'data-days': String(J.days), 'data-early': J.early ? '1' : '0'},
     h('p', {class: 'sj-jk', text: '판정 한 줄'}),
     h('p', {class: 'sj-jbig', 'data-say': '', text: big || (J.early ? '아직 일러요. 산 날이 ' + J.days + '번뿐이에요.' : '시장 값을 아직 받지 못했어요.')}),
-    h('ul', {class: 'sj-jl'}, ...rows.map(([k, v]) => h('li', {}, h('b', {text: k}), h('span', {text: v})))),
+    h('ul', {class: 'sj-jl'}, ...rows.map(([k, v]) => h('li', Array.isArray(v) ? {class: 'sj-jsame', 'data-same': SA.map(x => x.k + ':' + (x.n ? won100(x.r) : '') + ':' + (x.n && x.rm !== null ? won100(x.rm) : '') + ':' + x.days).join('|')} : {},
+      h('b', {text: k}), Array.isArray(v) ? h('span', {class: 'sj-jsv'}, ...v.map(t => h('span', {class: 'sj-jsl', text: t}))) : h('span', {text: v})))),
     h('p', {class: 'sj-jn', text: '시장 = 같은 날 같은 돈을 우량주 판 전체에 고르게 나눠 산 셈이에요. 오늘 산 것은 아직 하루치라 뺐어요.'}));
 }
 const ledRes = (cost, val, one) => (one ? SAID.one : moved(val - cost));

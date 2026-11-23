@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK, SUN_TRACK, sealSun, checkSun, sunPick, MK_MIN, mkLevels, trackTotal} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK, SUN_TRACK, sealSun, checkSun, sunPick, MK_MIN, mkLevels, trackTotal, horizons, HZ_KS} from '../../scripts/atlas11/next/su21_settle.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import {forwardTo} from '../../site/su/su-data.js';
@@ -422,4 +422,17 @@ test('판 전체 하루 몫 · 걸어온 길 · 쌓인 장부 전체(주문 1123
   // 쌓인 장부 전체 — 날마다 서른여섯 꾀를 모두 더한 100원이 ○원 × 10000
   const T = trackTotal([], [{day: cd[10], c: [1000, null, 2000], v: [1000, null, 2000]}, {day: cd[11], c: [1000, null, 2000], v: [950, null, 1940]}]);
   assert.deepEqual(T, {days: [cd[10], cd[11]], w: [1000000, 963333]});
+});
+
+test('같은 날수로(주문 1124-0226 · 장부 잣대 2번) — 산 날 뒤 1 · 5 · 20 장날 값 · 그 회사의 그날까지 가장 늦은 값 · 판 날 뒤는 안 셈', () => {
+  assert.deepEqual([...HZ_KS], [1, 5, 20]);
+  const ds = ['2026-11-12', '2026-11-13', '2026-11-16', '2026-11-17', '2026-11-18', '2026-11-19', '2026-11-20', '2026-11-23'];
+  const B = {px: {'000001': Object.fromEntries(ds.map((d, i) => [d, 1000 + i * 10])), '000002': {[ds[1]]: 500, [ds[2]]: 510, [ds[5]]: 530}}, mk: {}};
+  const buys = [[ds[1], 8, '000001', 1010], [ds[1], 9, '000002', 500], [ds[6], 8, '000001', 1060]];
+  const H = horizons(B, buys, ds[7], ds[0]);
+  assert.deepEqual(H.ks, [1, 5, 20]);
+  assert.deepEqual(H.days, {[ds[1]]: [ds[2], ds[6], null], [ds[6]]: [ds[7], null, null]}, '판 날(11-23) 뒤 장날은 없음');
+  assert.deepEqual(H.p, [[1020, 1060, null], [510, 530, null], [1070, null, null]], '000002 는 11-20 값이 없어 그 전 가장 늦은 값(11-19 · 530)');
+  const S = siteSettle({...emptySettle(), px: B.px, co: {}}, {[ds[1]]: {g08: ['000001'], g09: ['000002']}, [ds[6]]: {g08: ['000001']}}, ds[7], {days: {}}, ds[0]);
+  assert.deepEqual(S.hz.p, S.buys.map(([d, , c]) => H.p[buys.findIndex(b => b[0] === d && b[2] === c)]), '화면 자료 hz.p = 산 셈 차례 그대로');
 });

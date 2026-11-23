@@ -97,6 +97,20 @@ export function judgeText(J) {
   if (eq) return '시장보다 100원에 ' + v + '원 ' + (J.st === 'better' ? '나았어요.' : '못했어요.');
   return '시장보다 100원에 ' + v + '원 ' + (J.st === 'better' ? (J.loss ? '덜 잃었어요.' : '더 늘었어요.') : (J.loss ? '더 잃었어요.' : '덜 늘었어요.'));
 }
+/** 같은 날수로 재기(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 장부 잣대 2번) — 산 뒤 하루 · 닷새 · 스무 날 */
+export const SAME_KS = Object.freeze([[1, '산 뒤 하루'], [5, '산 뒤 닷새'], [20, '산 뒤 스무 날']]);
+/** rows = settleRows(hz 붙은 줄) → 날수마다 {k, label, n(그 날수가 지난 산 셈), days(산 날 수), cost, val, r(장부 100원이), rm(시장 100원이) | null}
+ *  「지금」과 달리 모든 산 셈을 같은 날수 뒤 값으로 셈 — 오래 든 것만 손해처럼 보이지 않게 · 시장은 같은 날수 뒤 판 전체 */
+export function sameAgeOf(rows) {
+  const R0 = (Array.isArray(rows) ? rows : []).filter(r => r && typeof r.day === 'string' && fin(r.cost) && r.cost > 0 && Array.isArray(r.hz));
+  return SAME_KS.map(([k, label], j) => {
+    const R = R0.filter(r => r.hz[j] && fin(r.hz[j].val)), M = R.filter(r => fin(r.hz[j].mv) && r.hz[j].mv > 0);
+    const cost = R.reduce((s, r) => s + r.cost, 0), val = R.reduce((s, r) => s + r.hz[j].val, 0), mc = M.reduce((s, r) => s + r.cost, 0), mv = M.reduce((s, r) => s + r.hz[j].mv, 0);
+    return {k, label, n: R.length, days: new Set(R.map(r => r.day)).size, cost, val, r: cost > 0 ? 100 * val / cost : null, rm: mc > 0 && M.length === R.length ? 100 * mv / mc : null};
+  });
+}
+/** 같은 날수 한 줄 글 — 「산 뒤 하루 — 장부 100원이 ○원 · 시장 ○원 · 산 날 ○번」 · 아직 그 날수가 지난 산 셈이 없으면 「아직 없어요」 */
+export const sameText = x => (x.n ? x.label + ' — 장부 100원이 ' + won100(x.r) + '원' + (x.rm === null ? '' : ' · 시장 ' + won100(x.rm) + '원') + ' · 산 날 ' + x.days + '번' : x.label + ' — 아직 없어요');
 /** 거른 장부 한 줄 끝에 붙이는 시장 견줌(거르개를 고를 때마다 · 11번) — 견줄 줄이 없으면 '' */
 export function judgeTail(T) {
   if (!T || !(T.mc > 0) || !fin(T.mv) || !fin(T.mval)) return '';
