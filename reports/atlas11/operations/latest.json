@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-11-23T10:12:15Z",
+  "at": "2026-11-23T12:10:58Z",
   "dayKST": "2026-11-23",
   "status": "partial",
   "exitCode": 2,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-11-23T10:12:16.160Z",
+      "startedAt": "2026-11-23T12:10:59.320Z",
       "status": "ok",
-      "durationMs": 34,
+      "durationMs": 32,
       "session": true,
       "afterClose": true,
       "day": "2026-11-23",
@@ -17,19 +17,19 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-11-23T10:12:16.194Z",
+      "startedAt": "2026-11-23T12:10:59.352Z",
       "status": "ok",
-      "durationMs": 30732,
+      "durationMs": 33805,
       "attempted": true,
       "observations": 0,
       "errors": 55,
-      "recordId": "collection-e68bec9f37fdf8ea"
+      "recordId": "collection-0ecd0d1cac22bd37"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-11-23T10:12:46.926Z",
+      "startedAt": "2026-11-23T12:11:33.158Z",
       "status": "ok",
-      "durationMs": 6988,
+      "durationMs": 5846,
       "changed": false,
       "confirmedToday": 357,
       "actualAsOf": "2026-10-01",
@@ -37,25 +37,25 @@
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-11-23T10:12:53.917Z",
+      "startedAt": "2026-11-23T12:11:39.008Z",
       "view": {
-        "boardId": "board-2026-11-23-6549fb2d",
+        "boardId": "board-2026-11-23-ec9543ad",
         "asOf": "2026-11-23",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 3030260,
+        "bytes": 3039455,
         "similar": [
-          "글로벌텍스프리",
-          "셀트리온",
-          "광주신세계",
-          "IPARK현대산업개발",
-          "에스에이엠티",
-          "SIMPAC",
-          "티앤엘"
+          "안랩",
+          "원익홀딩스",
+          "엘앤씨바이오",
+          "케이씨",
+          "쎄트렉아이",
+          "RFHIC",
+          "티엘비"
         ],
-        "moves": "2026-11-18 → 2026-11-20",
+        "moves": "2026-11-20 → 2026-11-23",
         "evening": null,
         "lead6": {
           "groups": 15,
@@ -78,7 +78,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1834
+      "durationMs": 1791
     }
   ],
   "runtime": {
@@ -87,10 +87,10 @@
     "event": "workflow_dispatch",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "45153442841",
+    "runId": "45171315663",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/45153442841",
-    "commit": "b869f2827ed22a6ff4581075419e33ca6318aa86",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/45171315663",
+    "commit": "b7f86c565d35419da775a851860923156e210aa2",
     "serverInstalled": true,
     "scheduledRun": false
   },
@@ -462,12 +462,12 @@
       "finalizedToday": 0,
       "crossChecked": 40,
       "requests": 103,
-      "durationMs": 30714,
+      "durationMs": 33777,
       "corporateActionAdjusted": []
     },
-    "durationMs": 30715
+    "durationMs": 33777
   },
-  "collectionRecordId": "collection-e68bec9f37fdf8ea",
+  "collectionRecordId": "collection-0ecd0d1cac22bd37",
   "inputChanged": false,
   "actualAsOf": "2026-10-01",
   "freshStocks": 0,
@@ -844,5 +844,5 @@
   ],
   "expectedStocks": 365,
   "incompleteReason": "오늘(2026-11-23) 확정 종가 357/365 · 다음 시도에서 다시 받음",
-  "finishedAt": "2026-11-23T10:12:55.751Z"
+  "finishedAt": "2026-11-23T12:11:40.799Z"
 }
