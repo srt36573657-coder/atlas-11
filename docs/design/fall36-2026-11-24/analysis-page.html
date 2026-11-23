@@ -1,0 +1,312 @@
+<meta name="dash-one-writer">
+<style>
+.fk { font-family: var(--font-anthropic-sans); color: var(--color-fg); font-size: 17px; line-height: 1.6; }
+.fk h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.25; margin: 0; text-wrap: balance; }
+.fk h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); line-height: 1.35; margin: 0; text-wrap: balance; }
+.fk h3 { font-size: 1.05em; font-weight: var(--cds-font-weight-medium); margin: 0; }
+.fk p { margin: 0; }
+.fk b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; }
+.fk-head { display: flex; flex-direction: column; gap: var(--cds-gap-sm); max-width: 44em; }
+.fk-q { font-size: 1.15em; }
+.fk-ans { display: flex; flex-direction: column; gap: 4px; }
+.fk-sec { display: flex; flex-direction: column; gap: var(--cds-gap-md); margin-block-start: var(--cds-gap-xl); }
+.fk-mut { color: var(--color-fg-muted); }
+.fk-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--cds-gap-md); }
+.fk-tile { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fk-tile .k { color: var(--color-fg-muted); }
+.fk-tile .v { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 2.1em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.fk-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--cds-gap-sm); counter-reset: fkst; }
+.fk-steps > li { counter-increment: fkst; display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: var(--cds-gap-sm); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); }
+.fk-steps > li::before { content: counter(fkst); width: 1.7em; height: 1.7em; border-radius: 50%; border: 1px solid var(--color-border-line); display: grid; place-items: center; font-size: 0.9em; color: var(--color-fg-muted); }
+.fk-steps .body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.fk-chips { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); }
+.fk-chip { border: 1px solid var(--color-border-line); border-radius: 999px; padding: 1px 12px; background: var(--color-bg); }
+.fk-end { border-color: var(--color-fg-muted) !important; }
+.fk-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs) var(--cds-gap-lg); color: var(--color-fg-muted); font-size: 0.95em; }
+.fk-key { display: inline-flex; align-items: center; gap: 8px; }
+.fk-sw { display: inline-block; width: 14px; height: 14px; border-radius: 4px; }
+.fk-band { display: inline-block; width: 26px; height: 10px; border-radius: 4px; background: var(--cds-chart-muted); opacity: 0.55; }
+.fk-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid currentColor; }
+.fk-tick { display: inline-block; width: 18px; height: 0; border-top: 2px solid var(--color-fg); }
+.fk-mc { position: relative; min-height: 640px; }
+.fk-mc svg, .fk-chart svg { display: block; overflow: visible; }
+.fk-grp { display: flex; flex-direction: column; gap: var(--cds-gap-sm); margin-block-start: var(--cds-gap-lg); }
+.fk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: var(--cds-gap-md); min-height: 120px; }
+.fk-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fk-card .top { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.fk-card .no { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.fk-card .nm { font-weight: var(--cds-font-weight-medium); font-size: 1.05em; }
+.fk-card .big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 1.55em; line-height: 1.2; }
+.fk-card .sm { color: var(--color-fg-muted); font-size: 0.92em; }
+.fk-chart { position: relative; height: 150px; margin-block-start: 4px; }
+.fk-tip { position: absolute; z-index: 3; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 6px 10px; font-size: 14px; line-height: 1.45; white-space: nowrap; color: var(--color-fg); }
+.fk-ax text { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); font-family: var(--font-anthropic-sans); }
+.fk-lab { fill: var(--color-fg); font-size: 14px; font-family: var(--font-anthropic-sans); }
+.fk-fail { color: var(--color-fg-muted); padding: var(--cds-pad-md); }
+.fk-notes { border-top: 1px solid var(--color-border-line); padding-block-start: var(--cds-gap-md); }
+.fk-notes summary { cursor: pointer; font-weight: var(--cds-font-weight-medium); }
+.fk-notes ul { margin: var(--cds-gap-sm) 0 0; padding-inline-start: 1.2em; display: flex; flex-direction: column; gap: 6px; max-width: 44em; }
+.fk-safe { margin-block: var(--cds-gap-xl) var(--cds-gap-md); color: var(--color-fg-muted); }
+@media (prefers-reduced-motion: no-preference) { .fk-in { transition: opacity var(--cds-dur-slow) var(--cds-ease-out); } }
+</style>
+
+<div class="fk">
+  <header class="fk-head" id="fk-top">
+    <h1>내리는 장 꾀 오름 날수</h1>
+    <p class="fk-q">내리는 장에서 다음 날 오른 꾀는, 산 값 위에 며칠이나 머물렀을까요?</p>
+    <div class="fk-ans">
+      <p>아무렇게나 고른 일곱 회사는 보통 <b data-draw="fact" data-source="facts" data-field="rand_median" data-row="0">—</b>일 머물렀어요.</p>
+      <p>꾀 <b data-draw="fact" data-source="facts" data-field="counted" data-row="0">—</b>개를 견줘 보니, 대부분 아무렇게나 고른 것과 비슷했어요.</p>
+      <p data-alt="nolong">오름을 더 오래 끈 꾀는 뚜렷하게 남지 않았어요.</p>
+      <p data-alt="haslong" hidden>오름을 더 오래 끈 꾀가 <b data-draw="fact" data-source="facts" data-field="n_sure_long" data-row="0">—</b>개 남았어요.</p>
+      <p>오름이 빨리 끝난 꾀는 <b data-draw="fact" data-source="facts" data-field="n_sure_short" data-row="0">—</b>개가 뚜렷했어요.</p>
+    </div>
+  </header>
+
+  <section class="fk-sec" id="fk-tiles" aria-label="한눈에 보는 숫자">
+    <div class="fk-tiles">
+      <div class="fk-tile"><span class="k">내리는 장인 날</span><span class="v"><span data-draw="fact" data-source="facts" data-field="fall_days" data-row="0">—</span>일</span><span class="fk-mut">지난 두 해 남짓 동안</span></div>
+      <div class="fk-tile"><span class="k">아무렇게나 고른 것</span><span class="v">보통 <span data-draw="fact" data-source="facts" data-field="rand_median" data-row="0">—</span>일</span><span class="fk-mut">평균 <span data-draw="fact" data-source="facts" data-field="rand_mean" data-row="0">—</span>일</span></div>
+      <div class="fk-tile"><span class="k">닷새를 버틴 것</span><span class="v">열 번에 <span data-draw="fact" data-source="facts" data-field="rand_p5_10" data-row="0">—</span>번</span><span class="fk-mut">아무렇게나 고른 것</span></div>
+      <div class="fk-tile"><span class="k">스무 날 내내 간 것</span><span class="v">열 번에 <span data-draw="fact" data-source="facts" data-field="rand_p21_10" data-row="0">—</span>번</span><span class="fk-mut">아무렇게나 고른 것</span></div>
+    </div>
+  </section>
+
+  <section class="fk-sec" id="fk-steps">
+    <h2>하나씩 빼 보기</h2>
+    <p class="fk-mut">셀 수 없는 것과 우연으로 보이는 것을 차례로 뺐어요.</p>
+    <ol class="fk-steps">
+      <li><div class="body"><p>꾀 <b data-draw="fact" data-source="facts" data-field="kinds" data-row="0">—</b>개로 시작해요.</p></div></li>
+      <li><div class="body"><p>거래량 자료가 없는 꾀 <b data-draw="fact" data-source="facts" data-field="n_none" data-row="0">—</b>개를 빼요.</p><p class="fk-mut">남은 꾀 <b data-draw="fact" data-source="facts" data-field="after_none" data-row="0">—</b>개</p></div></li>
+      <li><div class="body"><p>오른 날이 <b data-draw="fact" data-source="facts" data-field="min_rose" data-row="0">—</b>번이 안 되는 꾀 <b data-draw="fact" data-source="facts" data-field="n_few" data-row="0">—</b>개를 빼요.</p><p class="fk-mut">남은 꾀 <b data-draw="fact" data-source="facts" data-field="counted" data-row="0">—</b>개</p></div></li>
+      <li><div class="body"><p>남은 꾀를 아무렇게나 고른 것과 <b data-draw="fact" data-source="facts" data-field="sims" data-row="0">—</b>번 견줘요.</p>
+        <div class="fk-chips"><span class="fk-chip">더 길었어요 <b data-draw="fact" data-source="facts" data-field="n_long" data-row="0">—</b>개</span><span class="fk-chip">비슷했어요 <b data-draw="fact" data-source="facts" data-field="n_like" data-row="0">—</b>개</span><span class="fk-chip">더 짧았어요 <b data-draw="fact" data-source="facts" data-field="n_short" data-row="0">—</b>개</span></div></div></li>
+      <li><div class="body"><p>이웃한 날이 겹치지 않게, 이어진 날 덩어리마다 첫날만 다시 견줘요.</p>
+        <div class="fk-chips"><span class="fk-chip">그래도 더 길었어요 <b data-draw="fact" data-source="facts" data-field="n_sure_long" data-row="0">—</b>개</span><span class="fk-chip">그래도 더 짧았어요 <b data-draw="fact" data-source="facts" data-field="n_sure_short" data-row="0">—</b>개</span></div></div></li>
+      <li class="fk-end"><div class="body"><p data-alt="nolong">남은 것: 오름을 더 오래 끈 꾀는 뚜렷하지 않아요.</p><p data-alt="haslong" hidden>남은 것: 오름을 더 오래 끈 꾀가 있어요.</p><p>오름이 빨리 끝난 꾀 <b data-draw="fact" data-source="facts" data-field="n_sure_short" data-row="0">—</b>개는 뚜렷해요.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="fk-sec" id="fk-mc">
+    <h2>아무렇게나 고른 것과 견주기</h2>
+    <p class="fk-mut">점은 꾀의 평균 날수예요. 회색 띠는 아무렇게나 고르기를 <span data-draw="fact" data-source="facts" data-field="sims" data-row="0">—</span>번 해 본 결과가 거의 다 들어간 곳이에요. 점이 띠 밖에 있으면 우연으로 보기 어려워요.</p>
+    <div class="fk-legend"><span class="fk-key"><span class="fk-band"></span>아무렇게나 고른 것</span><span class="fk-key fk-c0"><span class="fk-dot" data-fill="1"></span>띠 밖</span><span class="fk-key fk-c0"><span class="fk-dot"></span>띠 안</span></div>
+    <div class="fk-mc" data-draw="mcchart" data-source="kkoe36">—</div>
+  </section>
+
+  <section class="fk-sec" id="fk-cards">
+    <h2>꾀 서른여섯 개 하나씩</h2>
+    <p class="fk-mut">막대는 산 값 위에 머문 날수가 열 번에 몇 번이었는지예요. 가로줄은 아무렇게나 고른 것이에요.</p>
+    <div class="fk-legend"><span class="fk-key"><span class="fk-sw" data-sw="0"></span>이 꾀</span><span class="fk-key"><span class="fk-tick"></span>아무렇게나 고른 것</span><span class="fk-key">내내 = 스무 날 내내</span></div>
+
+    <div class="fk-grp" id="grp-long">
+      <h3>아무렇게나 고른 것보다 길었어요 <span class="fk-mut"><span data-draw="fact" data-source="facts" data-field="n_long" data-row="0">—</span>개</span></h3>
+      <div class="fk-grid" data-draw="grp" data-cls="long" data-source="kkoe36 base"></div>
+    </div>
+    <div class="fk-grp" id="grp-like">
+      <h3>아무렇게나 고른 것과 비슷했어요 <span class="fk-mut"><span data-draw="fact" data-source="facts" data-field="n_like" data-row="0">—</span>개</span></h3>
+      <div class="fk-grid" data-draw="grp" data-cls="like" data-source="kkoe36 base"></div>
+    </div>
+    <div class="fk-grp" id="grp-short">
+      <h3>아무렇게나 고른 것보다 짧았어요 <span class="fk-mut"><span data-draw="fact" data-source="facts" data-field="n_short" data-row="0">—</span>개</span></h3>
+      <div class="fk-grid" data-draw="grp" data-cls="short" data-source="kkoe36 base"></div>
+    </div>
+    <div class="fk-grp" id="grp-few">
+      <h3>오른 날이 적어 가르지 못했어요 <span class="fk-mut"><span data-draw="fact" data-source="facts" data-field="n_few" data-row="0">—</span>개</span></h3>
+      <div class="fk-grid" data-draw="grp" data-cls="few" data-source="kkoe36 base"></div>
+    </div>
+    <div class="fk-grp" id="grp-none">
+      <h3>거래량 자료가 없어 셀 수 없어요 <span class="fk-mut"><span data-draw="fact" data-source="facts" data-field="n_none" data-row="0">—</span>개</span></h3>
+      <div class="fk-grid" data-draw="grp" data-cls="none" data-source="kkoe36 base"></div>
+    </div>
+  </section>
+
+  <section class="fk-sec fk-notes" id="fk-notes">
+    <details>
+      <summary>이렇게 셌어요</summary>
+      <ul>
+        <li>내리는 장인 날만 골랐어요. <span data-draw="fact" data-source="facts" data-field="fall_from" data-row="0">—</span>부터 <span data-draw="fact" data-source="facts" data-field="fall_to" data-row="0">—</span>까지예요.</li>
+        <li>그날 꾀마다 고른 일곱 회사를 같은 돈으로 샀다고 쳐요.</li>
+        <li>다음 날 일곱 회사 평균이 올랐으면, 그날부터 산 값 위에 며칠 머물렀는지 세요.</li>
+        <li>스무 날 내내 산 값 위에 있었으면 「내내」로 셌어요.</li>
+        <li>같은 날 아무렇게나 고른 일곱 회사도 똑같이 세요. 이것이 견줄 잣대예요.</li>
+        <li>몬테카를로 방식: 꾀가 오른 날마다 그날 아무렇게나 고른 일곱으로 바꿔 평균을 내는 일을 여러 번 했어요. 꾀의 평균이 그 결과 거의 다보다 길면 「더 길었어요」, 짧으면 「더 짧았어요」예요.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>조심해서 볼 것</summary>
+      <ul>
+        <li>이웃한 날은 거의 같은 회사를 같은 때 들고 있어요. 그래서 날마다 따로 센 것처럼 보면 실제보다 뚜렷해 보여요. 덩어리 첫날만 다시 센 까닭이에요.</li>
+        <li>꾀 서른 개를 한꺼번에 견주면, 우연으로도 한쪽에 <span data-draw="fact" data-source="facts" data-field="chance_tail" data-row="0">—</span>개쯤은 띠 밖으로 나가요.</li>
+        <li>스무 날 넘게 간 것은 모두 21일로 셌어요. 꾀와 아무렇게나 모두 똑같이 셌으니 견주기는 공평해요.</li>
+        <li>자료는 <span data-draw="fact" data-source="facts" data-field="data_to" data-row="0">—</span>까지예요. 이번 11월 내리는 장은 스무 날이 지나야 셀 수 있어요.</li>
+      </ul>
+    </details>
+  </section>
+
+  <p class="fk-safe">지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.</p>
+</div>
+
+<script>
+(function () {
+  const BIN_TEXT = { '1': '1일', '2': '2일', '3': '3일', '4': '4일', '5~9': '5~9일', '10~19': '10~19일', '내내': '스무 날 내내' };
+  const num = (v) => (v == null || Number.isNaN(v)) ? '—' : (typeof v === 'number' ? (Number.isInteger(v) ? v.toLocaleString('ko-KR') : (Math.round(v * 10) / 10).toLocaleString('ko-KR')) : String(v));
+  const c0 = () => (window.dash && dash.colors && dash.colors[0]) || 'var(--color-fg)';
+  window.fkUtil = { BIN_TEXT, num, c0 };
+
+  dash.draw('fact', (el) => {
+    const g = dash.data('facts');
+    if (g.status !== 'ok' || !g.data.length) { el.textContent = '—'; return; }
+    el.textContent = num(g.data[0][el.dataset.field]);
+  });
+
+  dash.onData(() => {
+    const g = dash.data('facts');
+    const hasLong = g.status === 'ok' && g.data.length && g.data[0].n_sure_long > 0;
+    document.querySelectorAll('.fk [data-alt="nolong"]').forEach((p) => { p.hidden = !!hasLong; });
+    document.querySelectorAll('.fk [data-alt="haslong"]').forEach((p) => { p.hidden = !hasLong; });
+    document.querySelectorAll('.fk [data-sw="0"]').forEach((s) => { s.style.background = c0(); });
+    document.querySelectorAll('.fk .fk-c0').forEach((s) => { s.style.color = c0(); });
+    document.querySelectorAll('.fk .fk-dot[data-fill="1"]').forEach((s) => { s.style.background = c0(); });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const { num, c0 } = window.fkUtil;
+  dash.draw('mcchart', (el) => {
+    const g = dash.data('kkoe36');
+    if (g.status === 'error') { el.replaceChildren(); const p = document.createElement('p'); p.className = 'fk-fail'; p.textContent = '이 그림을 불러오지 못했어요.'; el.append(p); return; }
+    if (g.status !== 'ok') { el.textContent = '—'; return; }
+    const rows = g.data.filter((r) => r.cls === 'long' || r.cls === 'like' || r.cls === 'short').sort((a, b) => a.order - b.order);
+    el.replaceChildren();
+    const W = Math.max(280, el.clientWidth || 600);
+    const narrow = W < 560;
+    const rowH = narrow ? 46 : 28, top = 8, bottom = 40;
+    const H = top + rows.length * rowH + bottom;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+      .attr('role', 'img').attr('aria-label', '꾀마다 평균 날수와 아무렇게나 고른 것의 폭');
+    let left = 8;
+    if (!narrow) {
+      const t = svg.append('text').attr('class', 'fk-lab');
+      let lw = 0; rows.forEach((r) => { t.text(r.name); lw = Math.max(lw, t.node().getComputedTextLength()); });
+      t.remove(); left = Math.min(lw + 16, W * 0.42);
+    }
+    const lo = d3.min(rows, (r) => Math.min(r.mc_lo, r.mean)), hi = d3.max(rows, (r) => Math.max(r.mc_hi, r.mean));
+    const x = d3.scaleLinear().domain([Math.floor(lo - 0.5), Math.ceil(hi + 0.5)]).range([left, W - 12]);
+    const ticks = x.ticks(Math.max(3, Math.min(8, Math.floor((W - left) / 70))));
+    const gGrid = svg.append('g');
+    gGrid.selectAll('line').data(ticks).join('line').attr('x1', (d) => x(d)).attr('x2', (d) => x(d)).attr('y1', top).attr('y2', H - bottom + 4).style('stroke', 'var(--cds-chart-grid)');
+    const ax = svg.append('g').attr('class', 'fk-ax');
+    ax.selectAll('text').data(ticks).join('text').attr('x', (d) => x(d)).attr('y', H - bottom + 20).attr('text-anchor', 'middle').text((d) => d + '일');
+    ax.append('text').attr('x', W - 12).attr('y', H - 4).attr('text-anchor', 'end').text('평균 날수');
+    const tip = d3.select(el).append('div').attr('class', 'fk-tip').style('opacity', 0);
+    const rowG = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (r, i) => `translate(0,${top + i * rowH})`);
+    rowG.each(function (r) {
+      const gg = d3.select(this);
+      const cy = narrow ? 32 : rowH / 2;
+      gg.append('text').attr('class', 'fk-lab').attr('x', narrow ? left : left - 10).attr('y', narrow ? 14 : cy + 5).attr('text-anchor', narrow ? 'start' : 'end').text(r.name);
+      gg.append('rect').attr('x', x(r.mc_lo)).attr('y', cy - 6).attr('width', Math.max(2, x(r.mc_hi) - x(r.mc_lo))).attr('height', 12).attr('rx', 4)
+        .style('fill', 'var(--cds-chart-muted)').style('opacity', 0.55);
+      const out = r.cls !== 'like';
+      gg.append('circle').attr('cx', x(r.mean)).attr('cy', cy).attr('r', 6.5)
+        .style('fill', out ? c0() : 'var(--color-bg)').style('stroke', out ? 'var(--color-bg)' : c0()).style('stroke-width', out ? 2 : 2.5);
+      gg.append('rect').attr('x', 0).attr('y', 0).attr('width', W).attr('height', rowH).style('fill', 'transparent')
+        .on('pointerenter pointermove', (ev) => {
+          const [mx, my] = d3.pointer(ev, el);
+          tip.style('opacity', 1).html('');
+          tip.append('div').text(r.name);
+          tip.append('div').text('이 꾀 평균 ' + num(r.mean) + '일');
+          tip.append('div').text('아무렇게나 ' + num(r.mc_lo) + '일 ~ ' + num(r.mc_hi) + '일');
+          tip.append('div').text(r.cls_short);
+          const tw = tip.node().offsetWidth;
+          tip.style('left', Math.max(0, Math.min(el.clientWidth - tw, mx + 12)) + 'px').style('top', (my + 14) + 'px');
+        })
+        .on('pointerleave', () => tip.style('opacity', 0));
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const { BIN_TEXT, num, c0 } = window.fkUtil;
+  function bars(box, r, base) {
+    box.replaceChildren();
+    const W = Math.max(200, box.clientWidth || 260), H = 150, m = { t: 10, r: 4, b: 24, l: 4 };
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+      .attr('role', 'img').attr('aria-label', r.name + ' 산 값 위에 머문 날수 나눔');
+    const bins = base.map((b) => ({ label: b.label, v: r['s' + b.bin] || 0, c: r['b' + b.bin] || 0, rb: b.rand_share10 }));
+    const ymax = Math.max(3, d3.max(bins, (d) => Math.max(d.v, d.rb)));
+    const x = d3.scaleBand().domain(bins.map((d) => d.label)).range([m.l, W - m.r]).paddingInner(0.22).paddingOuter(0.08);
+    const y = d3.scaleLinear().domain([0, ymax]).range([H - m.b, m.t]);
+    const bw = x.bandwidth(), rad = Math.min(4, bw / 2);
+    const path = (d) => {
+      const x0 = x(d.label), y0 = y(0), y1 = y(d.v), h = y0 - y1;
+      if (h <= 0.5) return '';
+      const rr = Math.min(rad, h);
+      return `M${x0},${y0}V${y1 + rr}Q${x0},${y1} ${x0 + rr},${y1}H${x0 + bw - rr}Q${x0 + bw},${y1} ${x0 + bw},${y1 + rr}V${y0}Z`;
+    };
+    svg.append('g').selectAll('path').data(bins).join('path').attr('d', path).style('fill', c0());
+    svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0)).style('stroke', 'var(--cds-chart-axis)');
+    svg.append('g').selectAll('line').data(bins).join('line')
+      .attr('x1', (d) => x(d.label) - 2).attr('x2', (d) => x(d.label) + bw + 2).attr('y1', (d) => y(d.rb)).attr('y2', (d) => y(d.rb))
+      .style('stroke', 'var(--color-fg)').style('stroke-width', 2).style('stroke-linecap', 'round');
+    const ax = svg.append('g').attr('class', 'fk-ax');
+    ax.selectAll('text').data(bins).join('text').attr('x', (d) => x(d.label) + bw / 2).attr('y', H - 6).attr('text-anchor', 'middle').text((d) => d.label);
+    const tip = d3.select(box).append('div').attr('class', 'fk-tip').style('opacity', 0);
+    svg.append('g').selectAll('rect').data(bins).join('rect')
+      .attr('x', (d) => x(d.label) - bw * 0.11).attr('y', 0).attr('width', bw * 1.22).attr('height', H).style('fill', 'transparent')
+      .on('pointerenter pointermove', (ev, d) => {
+        const [mx, my] = d3.pointer(ev, box);
+        tip.style('opacity', 1).html('');
+        tip.append('div').text((BIN_TEXT[d.label] || d.label) + ' 머문 것');
+        tip.append('div').text('이 꾀 열 번에 ' + num(d.v) + '번');
+        tip.append('div').text('아무렇게나 열 번에 ' + num(d.rb) + '번');
+        const tw = tip.node().offsetWidth;
+        tip.style('left', Math.max(0, Math.min(box.clientWidth - tw, mx - tw / 2)) + 'px').style('top', Math.max(0, my - 78) + 'px');
+      })
+      .on('pointerleave', () => tip.style('opacity', 0));
+  }
+  function mark(elm, field, id) { elm.setAttribute('data-source', 'kkoe36'); elm.setAttribute('data-field', field); elm.setAttribute('data-where', 'id=' + id); return elm; }
+  function line(parent, cls, parts) {
+    const p = document.createElement('p'); if (cls) p.className = cls;
+    parts.forEach((x) => { if (typeof x === 'string') p.append(document.createTextNode(x)); else p.append(x); });
+    parent.append(p); return p;
+  }
+  function val(tag, r, field, cls) { const e = document.createElement(tag); if (cls) e.className = cls; e.textContent = num(r[field]); return mark(e, field, r.id); }
+  dash.draw('grp', (el) => {
+    const g = dash.data('kkoe36'), gb = dash.data('base');
+    if (g.status === 'error' || gb.status === 'error') { el.replaceChildren(); const p = document.createElement('p'); p.className = 'fk-fail'; p.textContent = '이 그림들을 불러오지 못했어요.'; el.append(p); return; }
+    if (g.status !== 'ok' || gb.status !== 'ok') { el.replaceChildren(); return; }
+    const cls = el.dataset.cls;
+    const rows = g.data.filter((r) => r.cls === cls).sort((a, b) => a.order - b.order);
+    const base = gb.data.slice().sort((a, b) => a.bin - b.bin);
+    el.replaceChildren();
+    const boxes = [];
+    rows.forEach((r) => {
+      const card = document.createElement('article'); card.className = 'fk-card'; card.id = 'kkoe-' + r.id;
+      const top = document.createElement('div'); top.className = 'top';
+      const no = document.createElement('span'); no.className = 'no'; no.textContent = r.no + '번';
+      top.append(no, val('span', r, 'name', 'nm'));
+      card.append(top);
+      if (cls === 'none') {
+        line(card, 'sm', ['거래량 자료가 없어 셀 수 없어요.']);
+      } else {
+        line(card, '', [document.createTextNode('보통 '), val('span', r, 'median', 'big'), document.createTextNode('일')]).className = 'big-line';
+        line(card, 'sm', ['평균 ', val('b', r, 'mean'), '일']);
+        line(card, '', ['열 번에 ', val('b', r, 'p5_10'), '번은 닷새를 버텼어요.']);
+        line(card, '', ['열 번에 ', val('b', r, 'p21_10'), '번은 스무 날 내내 갔어요.']);
+        const box = document.createElement('div'); box.className = 'fk-chart'; box.setAttribute('data-source', 'kkoe36 base');
+        card.append(box); boxes.push([box, r]);
+        line(card, 'sm', ['오른 날 ', val('b', r, 'rose'), '번']);
+        if (cls === 'few') line(card, 'sm', ['오른 날이 적어 가르지 못했어요.']);
+        if (r.sure_text) line(card, 'sm', [r.sure_text + '.']);
+      }
+      el.append(card);
+    });
+    boxes.forEach(([box, r]) => bars(box, r, base));
+  });
+})();
+</script>
