@@ -1437,43 +1437,42 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       && bB?.day === d0 && Math.abs(bB.cost - c0) <= 1 && cA.fs >= 16.95 && /까지 · 쌓인 산 돈/.test(cB.t) && /그날 산 돈/.test(bB.t) && !/%/.test(cB.t + bB.t)),
       W + '마) 장부 그림을 누르면 그날 숫자(주문 1120-2041) — 처음은 마지막 날 · 꺾은선 맨 왼쪽 = 첫날까지 쌓인 돈 · 막대 첫째 = 첫날 산 돈(장부로 다시 셈) · 큰 글', JSON.stringify({d0, dN, c0, v0, cN, cNb, cA, bA, cB, bB}).slice(0, 500));
   }
-  { // 바) 판정 한 줄(주문 1123-2358 · 사장님 2026-11-23(서울) 23:58 「너 맘대로 해」 — 23:48 「… 판단하는 잣대를 … 11가지를 제시해봐」의 제안 1 · 3 · 8 · 11번)
-    //     장부 머리 「늘고 줆」 바로 아래 · 이 검사가 정산 장부(buys · now · mk · tt)로 따로 다시 셈: 시장과 나란히(하루치 · 시장 길 없는 줄 뺌 · 100원에 ○원 · 1원 안쪽 비슷해요)
-    //     · 가장 깊이 빠진 때(tt 가장 낮은 날) · 산 날 수(스무 번 전 「아직 일러요」) · 거르개 처음 한 줄 끝 시장 견줌 · 글 17px 넘게 · 쪽 밖으로 안 나감
-    const lvW = d => (DL?.mk && typeof DL.mk[d] === 'number' && DL.mk[d] > 0 ? DL.mk[d] : null), r10 = v => Math.round(v * 10) / 10, f1 = v => (Math.round(Math.abs(v) * 10) / 10).toFixed(1).replace(/\.0$/, '');
-    const RJ = (Array.isArray(DL?.buys) ? DL.buys : []).filter(b => Array.isArray(b) && KK.test(String(DL.kinds?.[b[1]] ?? '')) && typeof b[3] === 'number' && b[3] > 0).map(([d, , c, buy]) => {
+  { // 바) 장부 맨 위 칸 「100원을 넣었다면」(주문 1123-2358 · 1124-0226 · 1124-0336 — 사장님 2026-11-24(서울) 03:35 「… 바보도 알수 있게 해」 · 03:36 「그래 더 쉽게 해」)
+    //     머리 「늘고 줆」 바로 아래 · 이 검사가 정산 장부(buys · now · mk · tt · hz)로 따로 다시 셈 — 큰 세 줄(우리 장부는 지금 ○원이에요 · 모든 회사에 나눠 넣었으면 ○원이에요 · 우리가 ○원 더 많아요)
+    //     · 오늘 산 것도 넣음 · 원 단위 · 차이 = 보이는 두 수의 차이 · 가장 나빴던 날(tt 가장 낮은 날) · 아직 일러요(산 날 스무 번 전) · 거르개 아래 한 줄 · 글 17px 넘게 · 쪽 밖으로 안 나감
+    const lvW = d => (DL?.mk && typeof DL.mk[d] === 'number' && DL.mk[d] > 0 ? DL.mk[d] : null), R0 = v => Math.round(v);
+    const RJ = (Array.isArray(DL?.buys) ? DL.buys : []).map((b, i) => [b, i]).filter(([b]) => Array.isArray(b) && KK.test(String(DL.kinds?.[b[1]] ?? '')) && typeof b[3] === 'number' && b[3] > 0).map(([[d, , c, buy], i]) => {
       const okN = Array.isArray(DL.now?.[c]) && typeof DL.now[c][0] === 'number', nw = okN ? DL.now[c][0] : buy, nd = okN ? DL.now[c][1] : d, l0 = lvW(d), l1 = lvW(nd);
-      return {d, cost: buy * q, val: nw * q, one: !(nd > d), mv: l0 && l1 ? buy * q * l1 / l0 : null}; }).filter(r => !r.one);
-    const MJ = RJ.filter(r => r.mv !== null), jc = MJ.reduce((s, r) => s + r.cost, 0), jv = MJ.reduce((s, r) => s + r.val, 0), jm = MJ.reduce((s, r) => s + r.mv, 0);
-    const wd = jc > 0 ? Math.round((jv - jm) / jc * 1000) / 10 : null, wdays = new Set(RJ.map(r => r.d)).size;
+      return {d, i, buy, cost: buy * q, val: nw * q, mv: l0 && l1 ? buy * q * l1 / l0 : null}; });
+    const jc = RJ.reduce((s, r) => s + r.cost, 0), jv = RJ.reduce((s, r) => s + r.val, 0), allM = RJ.length > 0 && RJ.every(r => r.mv !== null);
+    const MJ = RJ.filter(r => r.mv !== null), mc = MJ.reduce((s, r) => s + r.cost, 0), mval = MJ.reduce((s, r) => s + r.val, 0), mvs = MJ.reduce((s, r) => s + r.mv, 0);
+    const wr = jc > 0 ? 100 * jv / jc : null, wrm = allM && jc > 0 ? 100 * mvs / jc : null, wd = wr !== null && wrm !== null ? R0(wr) - R0(wrm) : null, wdays = new Set(RJ.map(r => r.d)).size;
     let wdeep = null; (DL?.tt?.days ?? []).forEach((d, i) => { const w = DL.tt.w?.[i]; if (typeof w === 'number' && w > 0 && (!wdeep || w / 1e4 < wdeep.r)) wdeep = {d, r: w / 1e4}; });
-    const loss = Math.round(jv) < Math.round(jc), eq = Math.round(jv) === Math.round(jc);
-    const wbig = wd === null ? null : Math.abs(wd) < 1 ? '시장과 비슷해요. 100원에 1원 안쪽이에요.' : '시장보다 100원에 ' + f1(wd) + '원 ' + (eq ? (wd > 0 ? '나았어요.' : '못했어요.') : wd > 0 ? (loss ? '덜 잃었어요.' : '더 늘었어요.') : (loss ? '더 잃었어요.' : '덜 늘었어요.'));
-    const wtail = wd === null ? '' : Math.abs(wd) < 1 ? '시장과 비슷함' : '시장보다 100원에 ' + f1(wd) + '원 ' + (wd > 0 ? '나음' : '못함');
+    const wbig = wr === null ? [] : ['우리 장부는 지금 ' + R0(wr) + '원이에요.', wrm === null ? '모든 회사 값은 아직 못 받았어요.' : '모든 회사에 나눠 넣었으면 ' + R0(wrm) + '원이에요.',
+      wd === null ? '' : wd > 0 ? '우리가 ' + wd + '원 더 많아요.' : wd < 0 ? '우리가 ' + -wd + '원 더 적어요.' : '둘이 거의 같아요.'].filter(Boolean);
+    const wtail = mc > 0 ? '100원이면 우리 ' + R0(100 * mval / mc) + '원, 모든 회사 ' + R0(100 * mvs / mc) + '원이에요.' : '';
     await open(p, '#/l');
-    const jg = await p.evaluate(() => { const j = document.querySelector('#su main.sj-page[data-page="ledger"] > section.sj-ph > .sj-judge'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), r = j?.getBoundingClientRect(), sm = document.querySelector('#su section.sj-ldf .sj-ldsum');
-      return j ? {after: j.previousElementSibling?.matches('p.sj-res') === true, d: j.getAttribute('data-d'), st: j.getAttribute('data-st'), deep: j.getAttribute('data-deep'), days: +j.getAttribute('data-days'), early: j.getAttribute('data-early'), rule: j.getAttribute('data-rule'),
-        big: t(j.querySelector('.sj-jbig')), items: [...j.querySelectorAll('ul.sj-jl > li > b')].map(t), text: t(j), small: [...j.querySelectorAll('p, li')].filter(e => parseFloat(getComputedStyle(e).fontSize) < 16.95).length,
-        inside: !!r && r.left >= 0 && r.right <= innerWidth + 1, mk: sm?.getAttribute('data-mk') ?? null, sum: t(sm)} : null; });
-    const want = {d: wd === null ? '' : String(wd), deep: wdeep ? wdeep.d + ' ' + f1(wdeep.r) : '', days: wdays, early: wdays < 20 ? '1' : '0'};
-    check(!!jg && jg.after && jg.rule === 'ledger-judge-v1' && jg.d === want.d && jg.deep === want.deep && jg.days === want.days && jg.early === want.early
-      && (wbig === null ? /시장 값을 아직 받지 못했어요/.test(jg.text) : jg.big === wbig) && JSON.stringify(jg.items) === JSON.stringify(['시장과 나란히', '같은 날수로', '가장 깊이 빠진 때', '아직 일러요'])
-      && (wdays < 20 ? /판단하기 일러요/.test(jg.text) : /번이 찼어요/.test(jg.text)) && jg.small === 0 && jg.inside && !/%|매수|매도|수익률|추천|예측|확률|기회/.test(jg.text)
-      && jg.mk === wtail && (!wtail || jg.sum.endsWith(wtail)),
-      W + '바) 판정 한 줄(주문 1123-2358) — 머리 「늘고 줆」 바로 아래 · 시장과 나란히 · 가장 깊이 빠진 때 · 아직 일러요 = 정산 장부(mk · tt)로 다시 셈 · 거르개 처음 한 줄 끝 시장 견줌 · 큰 글',
-      JSON.stringify({want, wbig, wtail, got: jg && {...jg, text: jg.text.slice(0, 160), sum: jg.sum.slice(-40)}}).slice(0, 700));
-    // 사) 같은 날수로(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 장부 잣대 2번) — 산 뒤 하루 · 닷새 · 스무 날 = 이 검사가 정산 장부(buys · hz · mk)로 따로 다시 셈
-    //     산 셈마다 그 날수 뒤 값(hz.p)이 있는 것만 · 장부 100원이 ○원(산 돈 무게) · 시장 = 같은 날수 뒤 판 전체 · 산 날 수 · 아직 안 지났으면 「아직 없어요」
-    const HZ = [[1, '산 뒤 하루'], [5, '산 뒤 닷새'], [20, '산 뒤 스무 날']];
-    const RH = (Array.isArray(DL?.buys) ? DL.buys : []).map((b, i) => [b, i]).filter(([b]) => Array.isArray(b) && KK.test(String(DL.kinds?.[b[1]] ?? '')) && typeof b[3] === 'number' && b[3] > 0);
-    const sameW = HZ.map(([k, lab], j) => { let cost = 0, val = 0, mc = 0, mv = 0, n = 0, nm = 0; const ds = new Set();
-      for (const [[d, , , buy], i] of RH) { const t = DL?.hz?.days?.[d]?.[j], pz = DL?.hz?.p?.[i]?.[j]; if (typeof t !== 'string' || typeof pz !== 'number' || !(pz > 0)) continue;
-        n++; ds.add(d); cost += buy * q; val += pz * q; const l0 = lvW(d), l1 = lvW(t); if (l0 && l1) { nm++; mc += buy * q; mv += buy * q * l1 / l0; } }
-      return {k, lab, n, s: k + ':' + (n ? f1(100 * val / cost) : '') + ':' + (n && nm === n ? f1(100 * mv / mc) : '') + ':' + ds.size}; });
+    const jg = await p.evaluate(() => { const j = document.querySelector('#su main.sj-page[data-page="ledger"] > section.sj-ph > .sj-judge'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), r = j?.getBoundingClientRect(), mk = document.querySelector('#su section.sj-ldf p.sj-ldmk');
+      return j ? {after: j.previousElementSibling?.matches('p.sj-res') === true, head: t(j.querySelector('.sj-jk')), big: [...j.querySelectorAll('p.sj-jbig')].map(t), deep: j.getAttribute('data-deep'), days: +j.getAttribute('data-days'), early: j.getAttribute('data-early'), rule: j.getAttribute('data-rule'),
+        items: [...j.querySelectorAll('ul.sj-jl > li > b')].map(t), text: t(j), small: [...j.querySelectorAll('p, li, b, .sj-jsl')].filter(e => parseFloat(getComputedStyle(e).fontSize) < 16.95).length,
+        inside: !!r && r.left >= 0 && r.right <= innerWidth + 1, mk: mk?.getAttribute('data-mk') ?? null, mkT: t(mk)} : null; });
+    const want = {big: wbig, deep: wdeep ? wdeep.d + ' ' + R0(wdeep.r) : '', days: wdays, early: wdays < 20 ? '1' : '0'};
+    check(!!jg && jg.after && jg.rule === 'ledger-judge-v2' && jg.head === '100원을 넣었다면' && JSON.stringify(jg.big) === JSON.stringify(want.big) && jg.deep === want.deep && jg.days === want.days && jg.early === want.early
+      && JSON.stringify(jg.items) === JSON.stringify(['사고 나서 며칠 뒤?', '가장 나빴던 날', '아직 일러요']) && (wdays < 20 ? /지켜봐야 해요/.test(jg.text) : /일치가 모였어요/.test(jg.text))
+      && jg.small === 0 && jg.inside && !/%|매수|매도|수익률|추천|예측|확률|기회|·/.test(jg.text) && jg.mk === wtail && jg.mkT === wtail,
+      W + '바) 장부 맨 위 칸 「100원을 넣었다면」(주문 1123-2358 · 1124-0336 쉬운 말) — 우리 장부 · 모든 회사 · 차이 = 정산 장부(mk · tt)로 다시 셈 · 가장 나빴던 날 · 아직 일러요 · 거르개 아래 한 줄 · 「·」 0 · 큰 글',
+      JSON.stringify({want, wtail, got: jg && {...jg, text: jg.text.slice(0, 200)}}).slice(0, 800));
+    // 사) 사고 나서 며칠 뒤?(주문 1124-0226 · 장부 잣대 2번 · 1124-0336 쉬운 말) — 하루 뒤 · 닷새 뒤 · 스무 날 뒤 = 정산 장부(hz · mk)로 다시 셈 · 아직이면 「아직 몰라요」
+    const HZ = [[1, '하루 뒤'], [5, '닷새 뒤'], [20, '스무 날 뒤']];
+    const sameW = HZ.map(([k, lab], j) => { let cost = 0, val = 0, mcs = 0, mv = 0, n = 0, nm = 0;
+      for (const r of RJ) { const t = DL?.hz?.days?.[r.d]?.[j], pz = DL?.hz?.p?.[r.i]?.[j]; if (typeof t !== 'string' || typeof pz !== 'number' || !(pz > 0)) continue;
+        n++; cost += r.cost; val += pz * q; const l0 = lvW(r.d), l1 = lvW(t); if (l0 && l1) { nm++; mcs += r.cost; mv += r.cost * l1 / l0; } }
+      const rr = n ? R0(100 * val / cost) : null, rmm = n && nm === n ? R0(100 * mv / mcs) : null;
+      return {s: k + ':' + (rr ?? '') + ':' + (rmm ?? ''), line: n ? lab + '에는 우리 ' + rr + '원' + (rmm === null ? '이에요.' : ', 모든 회사 ' + rmm + '원이에요.') : lab + '는 아직 몰라요.'}; });
     const sg = await p.evaluate(() => { const li = document.querySelector('#su main.sj-page[data-page="ledger"] .sj-judge li.sj-jsame'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
-      return li ? {same: li.getAttribute('data-same'), lines: [...li.querySelectorAll('.sj-jsl')].map(t), small: [...li.querySelectorAll('.sj-jsl, b')].filter(e => parseFloat(getComputedStyle(e).fontSize) < 16.95).length} : null; });
-    check(!!sg && sg.same === sameW.map(x => x.s).join('|') && sg.lines.length === 3 && sg.lines.every((l, j) => l.startsWith(HZ[j][1] + ' — ') && (sameW[j].n ? /장부 100원이 [\d.]+원/.test(l) : /아직 없어요$/.test(l))) && sg.small === 0 && !/%/.test(sg.lines.join('')),
-      W + '사) 같은 날수로(주문 1124-0226) — 산 뒤 하루 · 닷새 · 스무 날 = 정산 장부(hz · mk)로 다시 셈 · 아직 안 지났으면 「아직 없어요」 · 큰 글', JSON.stringify({want: sameW.map(x => x.s), got: sg}).slice(0, 500));
+      return li ? {same: li.getAttribute('data-same'), lines: [...li.querySelectorAll('.sj-jsl')].map(t)} : null; });
+    check(!!sg && sg.same === sameW.map(x => x.s).join('|') && JSON.stringify(sg.lines) === JSON.stringify(sameW.map(x => x.line)),
+      W + '사) 사고 나서 며칠 뒤?(주문 1124-0226 · 1124-0336) — 하루 뒤 · 닷새 뒤 · 스무 날 뒤 = 정산 장부(hz · mk)로 다시 셈 · 아직이면 「아직 몰라요」', JSON.stringify({want: sameW, got: sg}).slice(0, 600));
   }
   pageRules(await measure(p), W + '장부 #/l');
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));

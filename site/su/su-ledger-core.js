@@ -57,7 +57,7 @@ const stOf = x => (x.one ? 'one' : Math.round(x.val - x.cost) > 0 ? 'up' : Math.
 const keep = (res, x) => res === 'all' || stOf(x) === res;
 const CMP = {loss: (a, b) => (a.val - a.cost) - (b.val - b.cost), gain: (a, b) => (b.val - b.cost) - (a.val - a.cost), low: (a, b) => a.val / a.cost - b.val / b.cost, high: (a, b) => b.val / b.cost - a.val / a.cost, cost: (a, b) => b.cost - a.cost, times: (a, b) => b.times - a.times};
 const cmpOf = sort => (a, b) => (CMP[sort] ?? CMP.loss)(a, b) || b.cost - a.cost || (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
-const mOk = r => !r.one && fin(r.mv) && r.mv > 0; // 시장과 견줄 줄(주문 1123-2358) — 하루치는 뺌 · 판 전체 길이 있는 줄만
+const mOk = r => fin(r.mv) && r.mv > 0; // 모든 회사와 견줄 줄(주문 1123-2358 · 1124-0336) — 오늘 산 것도 넣음(머리 「산 돈 → 지금」과 같은 셈) · 판 전체 길이 있는 줄만
 function groupOf(rs, keyOf, nameOf) {
   const m = new Map();
   for (const r of rs) { const k = keyOf(r), g = m.get(k) ?? m.set(k, {key: k, name: nameOf(r), times: 0, cost: 0, val: 0, mc: 0, mval: 0, mv: 0, ds: new Set(), one: true, code: r.code, buy: r.buy, now: r.now, ks: []}).get(k);
@@ -65,42 +65,37 @@ function groupOf(rs, keyOf, nameOf) {
     if (mOk(r)) { g.mc += r.cost; g.mval += r.val; g.mv += r.mv; } }
   return [...m.values()].map(g => ({...g, days: g.ds.size, ds: undefined}));
 }
-/* ── 판정 한 줄(주문 1123-2358 · 사장님 2026-11-23(서울) 23:58 「너 맘대로 해」 — 23:48 「… 판단하는 잣대를 말이야 효과적으로 한다면 어떤 방법이 있을까 11가지를 제시해봐」의 제안
-   1번 「시장과 나란히」 · 3번 「가장 깊이 빠진 때」 · 8번 「아직 일러요」를 장부 맨 위 한 줄로(11번) · docs/design/sonja-ledger11-2026-11-23/brief.md)
-   시장 = 같은 날 같은 돈을 우량주 판 전체에 고르게 나눠 산 셈(su21_settle.mjs mkLevels) · 하루치(오늘 산 것)는 뺌 · 「%」 대신 「100원에 ○원」 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 ── */
-export const JUDGE_RULE = 'ledger-judge-v1';
-/** 100원에 이만큼 안쪽이면 「비슷해요」 */
-export const JUDGE_BAND = 1;
-/** 산 날이 이만큼 차기 전에는 「아직 일러요」(장이 열린 날 스무 번 = 한 달) */
+/* ── 장부 맨 위 칸 「100원을 넣었다면」(주문 1123-2358 · 1124-0226 · 1124-0336 — 사장님 2026-11-24(서울) 03:35 「너 말이 글이 헷갈리게 어렵게 표현하고 있어 바보도 알수 있게 해」
+   · 03:36 「그래 더 쉽게 해」) — 우리 장부는 지금 ○원 · 모든 회사에 나눠 넣었으면 ○원 · 우리가 ○원 더 많아요(더 적어요 · 거의 같아요)
+   원 단위(소수 없음) · 차이 = 보이는 두 수의 차이 · 오늘 산 것도 넣음(머리 「산 돈 → 지금」과 같은 셈 · 가장 나빴던 날과도 같은 셈)
+   모든 회사 = 같은 날 같은 돈을 우량주 판 전체에 고르게 나눠 산 셈(su21_settle.mjs mkLevels) · 「%」 0 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음 ── */
+export const JUDGE_RULE = 'ledger-judge-v2';
+/** 산 날이 이만큼 모이기 전에는 「아직 일러요」(장이 열린 날 스무 번 = 한 달) */
 export const JUDGE_DAYS = 20;
-/** 100원에 ○원 글(소수 첫째 자리 · .0 은 뺌) */
+/** 100원에 ○원 글(소수 첫째 자리 · .0 은 뺌) — 옛 셈과 시험이 씀 */
 export const won100 = v => (Math.round(Math.abs(v) * 10) / 10).toFixed(1).replace(/\.0$/, '');
-/** {rule, n, cost, val, mv, d(100원에 · 장부 − 시장 · 소수 첫째 자리) | null, st: better · same · worse | null, loss, r(장부 100원이) · rm(시장 100원이), deep: {day, r} | null, days, early}
- *  rows = settleRows(mv 붙은 줄) · tt = 쌓인 장부 전체(su21-settle.json tt — 날마다 100원이 ○원 × 10000) */
+/** {rule, n, cost, val, mv | null, r(우리 100원이) | null, rm(모든 회사 100원이) | null, d(원 단위 차이 = 반올림한 r − 반올림한 rm) | null, st: more · same · less | null, deep: {day, r} | null, days, early}
+ *  rows = settleRows(mv 붙은 줄 · 오늘 산 것 포함) · 모든 줄에 모든 회사 값이 있을 때만 견줌 · tt = 쌓인 장부 전체(날마다 100원이 ○원 × 10000) */
 export function judgeOf(rows, tt) {
-  const R = (Array.isArray(rows) ? rows : []).filter(r => r && typeof r.day === 'string' && fin(r.cost) && r.cost > 0 && fin(r.val) && !r.one), M = R.filter(mOk);
-  const cost = M.reduce((s, r) => s + r.cost, 0), val = M.reduce((s, r) => s + r.val, 0), mv = M.reduce((s, r) => s + r.mv, 0);
-  const d = cost > 0 ? Math.round((val - mv) / cost * 1000) / 10 : null;
-  const st = d === null ? null : Math.abs(d) < JUDGE_BAND ? 'same' : d > 0 ? 'better' : 'worse';
+  const R = (Array.isArray(rows) ? rows : []).filter(r => r && typeof r.day === 'string' && fin(r.cost) && r.cost > 0 && fin(r.val)), ok = R.length > 0 && R.every(mOk);
+  const cost = R.reduce((s, r) => s + r.cost, 0), val = R.reduce((s, r) => s + r.val, 0), mv = ok ? R.reduce((s, r) => s + r.mv, 0) : null;
+  const r = cost > 0 ? 100 * val / cost : null, rm = ok && cost > 0 ? 100 * mv / cost : null, d = r !== null && rm !== null ? Math.round(r) - Math.round(rm) : null;
   let deep = null;
   const ds = Array.isArray(tt?.days) ? tt.days : [], ws = Array.isArray(tt?.w) ? tt.w : [];
   ds.forEach((day, i) => { const w = ws[i]; if (typeof day === 'string' && fin(w) && w > 0 && (!deep || w / 1e4 < deep.r)) deep = {day, r: w / 1e4}; });
-  const days = new Set(R.map(r => r.day)).size;
-  return {rule: JUDGE_RULE, n: M.length, cost, val, mv, d, st, loss: Math.round(val) < Math.round(cost), r: cost > 0 ? 100 * val / cost : null, rm: cost > 0 ? 100 * mv / cost : null,
-    deep, days, early: days < JUDGE_DAYS};
+  const days = new Set(R.map(x => x.day)).size;
+  return {rule: JUDGE_RULE, n: R.length, cost, val, mv, r, rm, d, st: d === null ? null : d > 0 ? 'more' : d < 0 ? 'less' : 'same', deep, days, early: days < JUDGE_DAYS};
 }
-/** 판정 한 줄 글 — 장부가 줄었으면 「덜 잃었어요 · 더 잃었어요」 · 늘었으면 「더 늘었어요 · 덜 늘었어요」 · 1원 안쪽은 「비슷해요」 */
-export function judgeText(J) {
-  if (!J || J.d === null || !J.st) return '';
-  if (J.st === 'same') return '시장과 비슷해요. 100원에 ' + JUDGE_BAND + '원 안쪽이에요.';
-  const v = won100(J.d), eq = Math.round(J.val) === Math.round(J.cost);
-  if (eq) return '시장보다 100원에 ' + v + '원 ' + (J.st === 'better' ? '나았어요.' : '못했어요.');
-  return '시장보다 100원에 ' + v + '원 ' + (J.st === 'better' ? (J.loss ? '덜 잃었어요.' : '더 늘었어요.') : (J.loss ? '더 잃었어요.' : '덜 늘었어요.'));
+/** 맨 위 세 줄 — 우리 장부는 지금 ○원이에요 · 모든 회사에 나눠 넣었으면 ○원이에요 · 우리가 ○원 더 많아요(더 적어요 · 둘이 거의 같아요) */
+export function judgeLines(J) {
+  if (!J || J.r === null) return {ours: '', all: '', cmp: ''};
+  return {ours: '우리 장부는 지금 ' + Math.round(J.r) + '원이에요.', all: J.rm === null ? '모든 회사 값은 아직 못 받았어요.' : '모든 회사에 나눠 넣었으면 ' + Math.round(J.rm) + '원이에요.',
+    cmp: J.d === null ? '' : J.d > 0 ? '우리가 ' + J.d + '원 더 많아요.' : J.d < 0 ? '우리가 ' + -J.d + '원 더 적어요.' : '둘이 거의 같아요.'};
 }
-/** 같은 날수로 재기(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 장부 잣대 2번) — 산 뒤 하루 · 닷새 · 스무 날 */
-export const SAME_KS = Object.freeze([[1, '산 뒤 하루'], [5, '산 뒤 닷새'], [20, '산 뒤 스무 날']]);
-/** rows = settleRows(hz 붙은 줄) → 날수마다 {k, label, n(그 날수가 지난 산 셈), days(산 날 수), cost, val, r(장부 100원이), rm(시장 100원이) | null}
- *  「지금」과 달리 모든 산 셈을 같은 날수 뒤 값으로 셈 — 오래 든 것만 손해처럼 보이지 않게 · 시장은 같은 날수 뒤 판 전체 */
+/** 사고 나서 며칠 뒤(주문 1124-0226 · 장부 잣대 2번 · 1124-0336 쉬운 말) — 하루 뒤 · 닷새 뒤 · 스무 날 뒤 */
+export const SAME_KS = Object.freeze([[1, '하루 뒤'], [5, '닷새 뒤'], [20, '스무 날 뒤']]);
+/** rows = settleRows(hz 붙은 줄) → 날수마다 {k, label, n(그 날수가 지난 산 셈), days(산 날 수), cost, val, r(우리 100원이), rm(모든 회사 100원이) | null}
+ *  「지금」과 달리 모든 산 셈을 같은 날수 뒤 값으로 셈 — 오래 든 것만 손해처럼 보이지 않게 · 모든 회사도 같은 날수 뒤 */
 export function sameAgeOf(rows) {
   const R0 = (Array.isArray(rows) ? rows : []).filter(r => r && typeof r.day === 'string' && fin(r.cost) && r.cost > 0 && Array.isArray(r.hz));
   return SAME_KS.map(([k, label], j) => {
@@ -109,14 +104,12 @@ export function sameAgeOf(rows) {
     return {k, label, n: R.length, days: new Set(R.map(r => r.day)).size, cost, val, r: cost > 0 ? 100 * val / cost : null, rm: mc > 0 && M.length === R.length ? 100 * mv / mc : null};
   });
 }
-/** 같은 날수 한 줄 글 — 「산 뒤 하루 — 장부 100원이 ○원 · 시장 ○원 · 산 날 ○번」 · 아직 그 날수가 지난 산 셈이 없으면 「아직 없어요」 */
-export const sameText = x => (x.n ? x.label + ' — 장부 100원이 ' + won100(x.r) + '원' + (x.rm === null ? '' : ' · 시장 ' + won100(x.rm) + '원') + ' · 산 날 ' + x.days + '번' : x.label + ' — 아직 없어요');
-/** 거른 장부 한 줄 끝에 붙이는 시장 견줌(거르개를 고를 때마다 · 11번) — 견줄 줄이 없으면 '' */
+/** 한 줄 글 — 「하루 뒤에는 우리 99원, 모든 회사 99원이에요.」 · 아직 그 날수가 지난 산 셈이 없으면 「스무 날 뒤는 아직 몰라요.」 */
+export const sameText = x => (x.n ? x.label + '에는 우리 ' + Math.round(x.r) + '원' + (x.rm === null ? '이에요.' : ', 모든 회사 ' + Math.round(x.rm) + '원이에요.') : x.label + '는 아직 몰라요.');
+/** 거르개를 고를 때마다 한 줄(11번 · 1124-0336 쉬운 말) — 「100원이면 우리 97원, 모든 회사 95원이에요.」 · 견줄 줄이 없으면 '' */
 export function judgeTail(T) {
   if (!T || !(T.mc > 0) || !fin(T.mv) || !fin(T.mval)) return '';
-  const d = Math.round((T.mval - T.mv) / T.mc * 1000) / 10;
-  if (Math.abs(d) < JUDGE_BAND) return '시장과 비슷함';
-  return '시장보다 100원에 ' + won100(d) + '원 ' + (d > 0 ? '나음' : '못함');
+  return '100원이면 우리 ' + Math.round(100 * T.mval / T.mc) + '원, 모든 회사 ' + Math.round(100 * T.mv / T.mc) + '원이에요.';
 }
 /** 거른 장부 — {pick, days(기간 안 장날 · 오래된 날 먼저), groups(날짜별: [{day, items, cost, val, times}] 새 날 먼저 · 빈 날 뺌) | items(회사별 · 꾀별), T: {n, times, cost, val}} */
 export function ledgerView(rows, pick = {}) {

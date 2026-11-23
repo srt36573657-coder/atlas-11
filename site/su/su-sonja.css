@@ -1548,6 +1548,8 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-judge .sj-jl b { font-weight: 800; }
 #su .sj-judge .sj-jsv { display: grid; gap: 2px; } /* 같은 날수로 세 줄(주문 1124-0226) */
 #su .sj-judge .sj-jsl { display: block; }
+#su .sj-judge .sj-jcmp { font-size: 1.375rem; } /* 우리가 ○원 더 많아요(주문 1124-0336) */
+#su .sj-ldmk { margin: 8px 0 0; padding: 10px 14px; border-left: 4px solid #20323A; border-radius: 0 14px 14px 0; background: #F3F8F6; font-size: 1.0625rem; font-weight: 800; line-height: 1.5; } /* 거르개 아래 한 줄 — 모든 회사와 견줌(주문 1124-0336) */
 #su .sj-judge .sj-jn { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #2E4148; }
 #su .sj-ldreset { min-height: 48px; padding: 10px 14px; border: 1.5px solid #20323A; border-radius: 14px; background: #FCFEFD; color: #20323A; font: inherit; font-size: 1.0625rem; font-weight: 800; line-height: 1.3; cursor: pointer; white-space: nowrap; }
 #su .sj-ldreset:focus-visible { outline: 3px solid #4A6168; outline-offset: 2px; }

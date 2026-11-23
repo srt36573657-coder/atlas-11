@@ -2,7 +2,7 @@
 //   site/su/su-ledger-core.js ledgerOf — 날마다(같은 회사는 한 줄 · 주 수 더함 · 손실 먼저) · 회사마다(모든 날 더함 · 산 돈 차례) · 쌓인 산 돈 · 그 지금 값
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ledgerOf, LEDGER_RULE, ledFind, tradesOf, ledgerView, LEDGER_VIEWS, LEDGER_SPANS, LEDGER_RES, LEDGER_SORTS, LEDGER_PICK0, judgeOf, judgeText, judgeTail, won100, JUDGE_RULE, JUDGE_BAND, JUDGE_DAYS, sameAgeOf, sameText, SAME_KS} from '../../site/su/su-ledger-core.js';
+import {ledgerOf, LEDGER_RULE, ledFind, tradesOf, ledgerView, LEDGER_VIEWS, LEDGER_SPANS, LEDGER_RES, LEDGER_SORTS, LEDGER_PICK0, judgeOf, judgeLines, judgeTail, won100, JUDGE_RULE, JUDGE_DAYS, sameAgeOf, sameText, SAME_KS} from '../../site/su/su-ledger-core.js';
 
 const r = (day, k, code, buy, now, one = false) => ({day, k, code, name: '회사' + code, buy, now, nowDay: one ? day : '2026-11-20', cost: buy * 10, val: now * 10, one});
 const rows = [r('2026-11-13', 'g01', '000001', 100, 90), r('2026-11-13', 'g02', '000001', 100, 90), r('2026-11-13', 'g03', '000002', 50, 60),
@@ -68,55 +68,47 @@ test('회사별 · 꾀별 — 차례 여섯 · 하루치는 늘어남 · 줄어�
   assert.deepEqual(ledgerView(rows, {view: 'nope', span: 'x', res: 'y', sort: 'z'}).pick, {view: 'day', span: 'all', res: 'all', sort: 'loss'}, '모르는 값은 처음 값으로');
 });
 
-// 판정 한 줄(주문 1123-2358 · 사장님 2026-11-23(서울) 23:58 「너 맘대로 해」 — 23:48 「… 판단하는 잣대를 … 11가지를 제시해봐」의 제안 1 · 3 · 8 · 11번)
+// 장부 맨 위 칸 「100원을 넣었다면」(주문 1123-2358 · 1124-0226 · 1124-0336 — 사장님 2026-11-24(서울) 03:35 「… 바보도 알수 있게 해」 · 03:36 「그래 더 쉽게 해」)
 const rm = (day, k, code, buy, now, mvNow, one = false) => ({...r(day, k, code, buy, now, one), mv: mvNow === null ? null : mvNow * 10});
-test('판정 한 줄 — 시장과 나란히(하루치 · 시장 길 없는 줄 뺌) · 1원 안쪽은 비슷해요 · 덜 잃음 · 더 잃음 · 더 늘음 · 덜 늘음', () => {
-  assert.equal(JUDGE_RULE, 'ledger-judge-v1'); assert.equal(JUDGE_BAND, 1); assert.equal(JUDGE_DAYS, 20);
-  const R = [rm('2026-11-13', 'g01', '000001', 100, 96, 94), rm('2026-11-13', 'g02', '000002', 100, 97, 95), rm('2026-11-14', 'g01', '000003', 100, 90, null), rm('2026-11-20', 'g03', '000004', 100, 100, 100, true)];
-  const J = judgeOf(R, {days: ['2026-11-13', '2026-11-14', '2026-11-20'], w: [1000000, 985000, 966000]});
-  assert.equal(J.n, 2, '시장 길이 없는 줄 · 하루치는 뺌');
-  assert.deepEqual([J.cost, J.val, J.mv, J.d, J.st, J.loss], [2000, 1930, 1890, 2, 'better', true]);
-  assert.equal(Math.round(J.r * 10), 965); assert.equal(Math.round(J.rm * 10), 945);
-  assert.deepEqual(J.deep, {day: '2026-11-20', r: 96.6}, '가장 깊이 빠진 날 = 쌓인 장부가 가장 낮은 날');
-  assert.equal(J.days, 2, '산 날 = 하루치가 아닌 날 수'); assert.equal(J.early, true);
-  assert.equal(judgeText(J), '시장보다 100원에 2원 덜 잃었어요.');
-  assert.equal(judgeText({...J, d: -1.94, st: 'worse'}), '시장보다 100원에 1.9원 더 잃었어요.');
-  assert.equal(judgeText({...J, val: 2100, loss: false}), '시장보다 100원에 2원 더 늘었어요.');
-  assert.equal(judgeText({...J, val: 2100, loss: false, d: -3, st: 'worse'}), '시장보다 100원에 3원 덜 늘었어요.');
-  assert.equal(judgeText({...J, d: 0.4, st: 'same'}), '시장과 비슷해요. 100원에 1원 안쪽이에요.');
-  assert.equal(judgeText({...J, d: null, st: null}), '', '시장 길이 없으면 빈 글');
-  assert.equal(won100(1.25), '1.3'); assert.equal(won100(-2), '2'); assert.equal(won100(0.04), '0');
-  const E = judgeOf([], null);
-  assert.deepEqual([E.n, E.d, E.st, E.deep, E.days, E.early], [0, null, null, null, 0, true], '빈 장부');
+test('100원을 넣었다면 — 세 줄 글', () => {
+  const R = [rm('2026-11-13', 'g01', '000001', 100, 96, 94), rm('2026-11-13', 'g02', '000002', 200, 194, 188), rm('2026-11-20', 'g03', '000004', 100, 100, 100, true)];
+  const J = judgeOf(R, {days: ['2026-11-13', '2026-11-20'], w: [1000000, 966000]});
+  assert.deepEqual([J.n, J.cost, J.val, J.mv], [3, 4000, 3900, 3820]);
+  assert.equal(Math.round(J.r), 98); assert.equal(Math.round(J.rm), 96); assert.equal(J.d, 2); assert.equal(J.st, 'more');
+  assert.deepEqual(J.deep, {day: '2026-11-20', r: 96.6}); assert.equal(J.days, 2); assert.equal(J.early, true);
+  assert.deepEqual(judgeLines(J), {ours: '우리 장부는 지금 98원이에요.', all: '모든 회사에 나눠 넣었으면 96원이에요.', cmp: '우리가 2원 더 많아요.'});
+  assert.equal(judgeLines({...J, d: -3}).cmp, '우리가 3원 더 적어요.');
+  assert.equal(judgeLines({...J, d: 0}).cmp, '둘이 거의 같아요.');
+  const noM = judgeOf([...R, rm('2026-11-14', 'g05', '000005', 100, 90, null)], null);
+  assert.deepEqual([noM.rm, noM.d, noM.st], [null, null, null], '모든 회사 값이 빠진 줄이 있으면 견주지 않음');
+  assert.deepEqual(judgeLines(noM), {ours: '우리 장부는 지금 96원이에요.', all: '모든 회사 값은 아직 못 받았어요.', cmp: ''});
+  assert.deepEqual(judgeLines(judgeOf([], null)), {ours: '', all: '', cmp: ''});
   const many = Array.from({length: 20}, (_, i) => rm('2026-10-' + String(i + 1).padStart(2, '0'), 'g01', '000001', 100, 100, 100));
-  assert.equal(judgeOf(many, null).early, false, '산 날 스무 번이 차면 아직 일러요가 아님');
-  for (const t of [judgeText(J), judgeText({...J, d: -3, st: 'worse'}), judgeText({...J, d: 0, st: 'same'})]) assert.ok(!/%|매수|매도|수익률|추천|예측|확률|기회/.test(t), t);
+  assert.equal(judgeOf(many, null).early, false, '산 날 스무 번이 모이면 아직 일러요가 아님');
+  for (const t of Object.values(judgeLines(J))) assert.ok(!/%|·|매수|매도|수익률|추천|예측|확률|기회/.test(t), t);
+  assert.equal(won100(1.25), '1.3');
 });
-test('거르개를 고를 때마다 시장 견줌(11번) — 묶음마다 시장 길이 있는 줄만 더함 · 하루치 뺌', () => {
+test('거르개 아래 한 줄 — 「100원이면 우리 ○원, 모든 회사 ○원이에요.」 · 모든 회사 값이 있는 줄만', () => {
   const R = [rm('2026-11-13', 'g01', '000001', 100, 96, 94), rm('2026-11-13', 'g02', '000001', 100, 96, 94), rm('2026-11-14', 'g01', '000002', 100, 90, 92), rm('2026-11-20', 'g03', '000004', 100, 100, 100, true)];
   const V = ledgerView(R);
-  assert.deepEqual([V.T.mc, V.T.mval, V.T.mv], [3000, 2820, 2800]);
-  assert.equal(judgeTail(V.T), '시장과 비슷함', '100원에 0.7원 — 1원 안쪽');
+  assert.deepEqual([V.T.mc, V.T.mval, V.T.mv], [4000, 3820, 3800], '오늘 산 것도 넣음');
+  assert.equal(judgeTail(V.T), '100원이면 우리 96원, 모든 회사 95원이에요.');
   const K = ledgerView(R, {view: 'co', sort: 'cost'});
-  assert.deepEqual(K.items.map(x => [x.key, x.mc, x.mval, x.mv]), [['000001', 2000, 1920, 1880], ['000002', 1000, 900, 920], ['000004', 0, 0, 0]]);
-  assert.equal(judgeTail(K.items[0]), '시장보다 100원에 2원 나음'); assert.equal(judgeTail(K.items[1]), '시장보다 100원에 2원 못함'); assert.equal(judgeTail(K.items[2]), '');
+  assert.equal(judgeTail(K.items[0]), '100원이면 우리 96원, 모든 회사 94원이에요.');
+  assert.equal(judgeTail({mc: 0, mv: 0, mval: 0}), '');
 });
-
-// 같은 날수로(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 장부 잣대 2번)
-test('같은 날수로 — 산 뒤 하루 · 닷새 · 스무 날 · 그 날수가 지난 산 셈만 · 산 돈 무게 · 시장은 같은 날수 뒤 판 전체 · 아직이면 「아직 없어요」', () => {
-  assert.deepEqual(SAME_KS.map(x => x[0]), [1, 5, 20]);
+// 사고 나서 며칠 뒤?(주문 1124-0226 · 장부 잣대 2번 · 1124-0336 쉬운 말)
+test('사고 나서 며칠 뒤? — 하루 뒤 · 닷새 뒤 · 스무 날 뒤 · 그 날수가 지난 산 셈만 · 원 단위 · 아직이면 「아직 몰라요」', () => {
+  assert.deepEqual(SAME_KS.map(x => x[1]), ['하루 뒤', '닷새 뒤', '스무 날 뒤']);
   const hz = (a, b, c) => [a, b, c].map(x => (x === null ? null : {t: 'x', val: x[0] * 10, mv: x[1] === null ? null : x[1] * 10}));
   const R = [{...r('2026-11-13', 'g01', '000001', 100, 90), hz: hz([98, 97], [95, 93], null)}, {...r('2026-11-13', 'g02', '000002', 200, 200), hz: hz([204, 202], null, null)},
     {...r('2026-11-20', 'g01', '000003', 100, 100, true), hz: hz(null, null, null)}, {...r('2026-11-14', 'g03', '000004', 50, 50), hz: null}];
   const [d1, d5, d20] = sameAgeOf(R);
   assert.deepEqual([d1.k, d1.n, d1.days, d1.cost, d1.val], [1, 2, 1, 3000, 3020]);
-  assert.equal(Math.round(d1.r * 10), 1007); assert.equal(Math.round(d1.rm * 10), 997);
-  assert.deepEqual([d5.n, d5.cost, d5.val, Math.round(d5.r), Math.round(d5.rm)], [1, 1000, 950, 95, 93]);
-  assert.deepEqual([d20.n, d20.r, d20.rm], [0, null, null]);
-  assert.equal(sameText(d1), '산 뒤 하루 — 장부 100원이 100.7원 · 시장 99.7원 · 산 날 1번');
-  assert.equal(sameText(d5), '산 뒤 닷새 — 장부 100원이 95원 · 시장 93원 · 산 날 1번');
-  assert.equal(sameText(d20), '산 뒤 스무 날 — 아직 없어요');
+  assert.equal(sameText(d1), '하루 뒤에는 우리 101원, 모든 회사 100원이에요.');
+  assert.equal(sameText(d5), '닷새 뒤에는 우리 95원, 모든 회사 93원이에요.');
+  assert.equal(sameText(d20), '스무 날 뒤는 아직 몰라요.');
   const noM = sameAgeOf([{...r('2026-11-13', 'g01', '000001', 100, 90), hz: hz([98, null], null, null)}])[0];
-  assert.equal(noM.rm, null); assert.equal(sameText(noM), '산 뒤 하루 — 장부 100원이 98원 · 산 날 1번', '시장 길이 없으면 시장 글을 뺌');
+  assert.equal(sameText(noM), '하루 뒤에는 우리 98원이에요.', '모든 회사 값이 없으면 그 글을 뺌');
   assert.deepEqual(sameAgeOf(null).map(x => x.n), [0, 0, 0]);
 });
