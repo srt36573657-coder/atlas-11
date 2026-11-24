@@ -1039,3 +1039,4 @@
 {"at":"2026-11-24T16:59:07.758Z","kst":"2026-11-25 01:59","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-11-24T17:59:06.415Z","kst":"2026-11-25 02:59","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-11-24T18:43:33.092Z","kst":"2026-11-25 03:43","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
+{"at":"2026-11-24T18:59:21.012Z","kst":"2026-11-25 03:59","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
