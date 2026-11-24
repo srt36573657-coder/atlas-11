@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-24T13:56:44.722Z",
+ "at": "2026-11-24T17:22:08.712Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-24",
  "companies": 2557,
@@ -32,15 +32,15 @@
    }
   }
  },
- "seconds": 681,
+ "seconds": 2072,
  "time": {
-  "old": 475.8,
-  "new": 319.8,
-  "wall": 681.5,
+  "old": 1214.7,
+  "new": 908.1,
+  "wall": 2071.6,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 69.8,
-  "oldShare": 59.8
+  "oldPct": 58.6,
+  "oldShare": 57.2
  },
  "net": {
   "req": 5130,
@@ -49,10 +49,13 @@
   "why": {},
   "cut": 0,
   "page": {
-   "retry": 0,
-   "waitSec": 0,
+   "retry": 2,
+   "waitSec": 5,
    "blocked": 0,
-   "why": {}
+   "why": {
+    "답 없는 요청": 1,
+    "열기 끊김": 1
+   }
   }
  },
  "counts": {

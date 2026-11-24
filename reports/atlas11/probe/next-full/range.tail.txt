@@ -1,1 +1,10 @@
-{"ok":true,"seconds":650,"checked":2557,"wide":40,"time":{"old":232.6,"new":411.9,"wall":650.1,"opensOld":5130,"opensNew":10405,"oldPct":35.8,"oldShare":36.1},"net":{"req":10,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}},"counts":{"글 마디":81822,"숫자 낱말":190361,"10번 중 줄":25230,"고리":38430,"고른 곳 밖":2501,"고른 곳":56,"없는 주소":2,"빈 날 길":9,"채점 길":3,"채점 길 건너뜀":1,"세 폭 화면":80},"fails":[]}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at openNew (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_range.mjs:188:76)
+    at async file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_range.mjs:452:11
+
+Node.js v22.23.5
+시간 넘김 — 1528초 안에 못 끝남(작업 시간 75분 안에서 남은 만큼) · 위가 멈춘 곳의 끝 글
