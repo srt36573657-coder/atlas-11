@@ -1,33 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-24T16:08:48.010Z",
+ "at": "2026-11-24T16:20:18.083Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 553,
-  "fail": 5
+  "pass": 558,
+  "fail": 0
  },
- "fails": [
-  [
-   "[390] 화면 오류 0",
-   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive"
-  ],
-  [
-   "[360] 화면 오류 0",
-   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive"
-  ],
-  [
-   "[320] 화면 오류 0",
-   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive"
-  ],
-  [
-   "㉓ 정산 [390] 화면 오류 0",
-   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 / Refused to apply inline style because it violates the following Content Security Policy directive"
-  ],
-  [
-   "㉓ 정산 [320] 화면 오류 0",
-   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 / Refused to apply inline style because it violates the following Content Security Policy directive"
-  ]
- ],
+ "fails": [],
  "m": {
   "data": {
    "fk": "g01",
@@ -35,7 +14,7 @@
    "sun": false
   },
   "home": {
-   "screens": 4.67,
+   "screens": 4.7,
    "links": 14
   },
   "t21": {
@@ -979,5 +958,5 @@
    }
   }
  },
- "ok": false
+ "ok": true
 }
