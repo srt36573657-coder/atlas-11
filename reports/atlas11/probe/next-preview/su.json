@@ -1,12 +1,33 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-24T13:20:50.307Z",
+ "at": "2026-11-24T16:08:48.010Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 546,
-  "fail": 0
+  "pass": 553,
+  "fail": 5
  },
- "fails": [],
+ "fails": [
+  [
+   "[390] 화면 오류 0",
+   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive"
+  ],
+  [
+   "[360] 화면 오류 0",
+   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive"
+  ],
+  [
+   "[320] 화면 오류 0",
+   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive"
+  ],
+  [
+   "㉓ 정산 [390] 화면 오류 0",
+   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 / Refused to apply inline style because it violates the following Content Security Policy directive"
+  ],
+  [
+   "㉓ 정산 [320] 화면 오류 0",
+   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 / Refused to apply inline style because it violates the following Content Security Policy directive"
+  ]
+ ],
  "m": {
   "data": {
    "fk": "g01",
@@ -14,7 +35,7 @@
    "sun": false
   },
   "home": {
-   "screens": 4.7,
+   "screens": 4.67,
    "links": 14
   },
   "t21": {
@@ -91,9 +112,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 1976,
-   "cls": 0.034,
-   "pic": 1852
+   "lcp": 2152,
+   "cls": 0.029,
+   "pic": 1942
   },
   "white": {
    "light #/": {
@@ -958,5 +979,5 @@
    }
   }
  },
- "ok": true
+ "ok": false
 }

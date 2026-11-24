@@ -1,2 +1,7 @@
-느린 4G 첫 화면 — 가장 큰 칠함 1976ms · 무하 큰 그림 1852ms
-손자병법 두 길 검사 — 통과 546 · 실패 0
+실패 [390] 화면 오류 0 — Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive
+실패 [360] 화면 오류 0 — Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive
+실패 [320] 화면 오류 0 — Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 | Refused to apply inline style because it violates the following Content Security Policy directive
+느린 4G 첫 화면 — 가장 큰 칠함 2152ms · 무하 큰 그림 1942ms
+실패 ㉓ 정산 [390] 화면 오류 0 — Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 / Refused to apply inline style because it violates the following Content Security Policy directive
+실패 ㉓ 정산 [320] 화면 오류 0 — Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-E7p7tzGEsqn2rZWNmADcu2dncjlr8 / Refused to apply inline style because it violates the following Content Security Policy directive
+손자병법 두 길 검사 — 통과 553 · 실패 5
