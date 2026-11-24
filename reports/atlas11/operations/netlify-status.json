@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-24T01:09:06.232Z",
+  "at": "2026-11-24T02:03:34.278Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -124,7 +124,7 @@
       "robots": null,
       "server": "Netlify",
       "location": "/",
-      "bodyStart": "Redirecting to /"
+      "bodyStart": "Redirecting to / "
     }
   ]
 }
