@@ -1592,31 +1592,33 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-mind blockquote.sj-gkq cite { display: block; margin-top: 4px; color: #4A6168; font-style: normal; font-size: 1.0625rem; font-weight: 700; }
 @media (max-width: 360px) { #su .sj-mind blockquote.sj-gkq { margin-left: 12px; } }
 @media (prefers-reduced-motion: reduce) { #su .sj-mind summary.sj-gks > .sj-chev { transition: none; } }
-/* 분석 탭 · 오름 날수(#/l/d · 주문 1124-0432 — 분석 주문 1124-0354 · 05:36 「분석이라는 탑을 만들라고」) — 글 17px 넘게 · 누르는 자리 48 · 붉은색 0 */
-#su .sj-fsl { display: grid; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; counter-reset: fst; }
-#su .sj-fsl > li { counter-increment: fst; position: relative; display: grid; gap: 2px; padding: 10px 12px 10px 46px; border-left: 3px solid #7D969B; background: #F3F8F6; }
-#su .sj-fsl > li::before { content: counter(fst); position: absolute; left: 10px; top: 10px; width: 26px; height: 26px; border: 1.5px solid #4A6168; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.0625rem; font-weight: 800; color: #20323A; }
-#su .sj-fst { margin: 0; font-size: 1.0625rem; font-weight: 700; line-height: 1.5; }
-#su .sj-fsn { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #2E4148; }
-#su .sj-fax { display: flex; justify-content: space-between; margin: 10px 0 0; font-size: 1.0625rem; color: #4A6168; }
-#su .sj-fml { display: grid; gap: 10px; margin: 6px 0 0; padding: 0; list-style: none; }
-#su .sj-fm { display: grid; gap: 2px; }
-#su .sj-fmt { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; margin: 0; font-size: 1.0625rem; line-height: 1.45; }
-#su .sj-fmt b { font-weight: 800; }
-#su .sj-fmt span { color: #4A6168; font-weight: 700; }
-#su .sj-fmn { margin: 0; font-size: 1.0625rem; line-height: 1.45; color: #2E4148; }
-#su .sj-fstrip, #su .sj-fbar { display: block; width: 100%; height: auto; }
-#su .sj-fband, #su .sj-fb { fill: #DCEBE7; stroke: #7D969B; stroke-width: 1.2; }
-#su .sj-fdot { fill: #20323A; stroke: #FCFEFD; stroke-width: 2; }
-#su .sj-fdot.sj-fdot0 { fill: #FCFEFD; stroke: #20323A; stroke-width: 2.5; }
-#su .sj-frt { fill: none; stroke: #20323A; stroke-width: 3; stroke-linecap: round; }
+/* 분석 탭 · 오른 꾀, 며칠 버틸까(#/l/d · 머스크 판 주문 1124-1625 — 옛 판 주문 1124-0432 · 05:36 「분석이라는 탑을 만들라고」) — 답 하나 · 그림 하나(점 열 개 두 줄) · 고르기 하나 · 꾀 목록 · 글 17px 넘게 · 누르는 자리 48 · 붉은색 0 */
+#su .sj-fans .sj-fhero { margin: 0; font-size: 1.375rem; font-weight: 800; line-height: 1.35; color: #16262C; }
+#su .sj-fans .sj-fhero b { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.01em; }
+#su .sj-fans .sj-jn { margin: 0 0 4px; font-size: 1.0625rem; line-height: 1.5; color: #2E4148; }
+#su .sj-fsel { display: block; width: 100%; min-height: 52px; margin: 12px 0 6px; padding: 10px 12px; border: 2px solid #20323A; border-radius: 12px; background: #FCFEFD; color: #16262C; font: inherit; font-size: 1.1875rem; font-weight: 800; }
+#su .sj-fbox { display: grid; gap: 10px; }
+#su .sj-fpick { margin: 4px 0 0; font-size: 1.0625rem; line-height: 1.5; color: #2E4148; }
+#su .sj-fpick b { color: #16262C; font-size: 1.1875rem; font-weight: 800; }
+#su .sj-fdl { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+#su .sj-fd { display: grid; gap: 6px; padding: 10px 12px 12px; border-left: 3px solid #7D969B; border-radius: 0 12px 12px 0; background: #F3F8F6; }
+#su .sj-fdw { margin: 0; font-size: 1.125rem; font-weight: 800; line-height: 1.4; color: #20323A; }
+#su .sj-fdr { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0; font-size: 1.0625rem; line-height: 1.4; }
+#su .sj-fdn { flex: none; width: 5.2em; font-weight: 700; color: #2E4148; }
+#su .sj-fdots { display: inline-grid; grid-template-columns: repeat(10, 11px); gap: 3px; flex: none; }
+#su .sj-fdots i { display: block; width: 11px; height: 11px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7D969B; }
+#su .sj-fdots.me i.on { background: #20323A; border-color: #20323A; }
+#su .sj-fdots.rnd i.on { background: #A3B3B6; border-color: #A3B3B6; }
+#su .sj-fme b { font-weight: 800; color: #16262C; }
+#su .sj-frnd .sj-fdc { font-weight: 700; color: #4A6168; }
+#su .sj-fverd { margin: 2px 0 0; padding: 10px 12px; border-radius: 12px; background: #E8F1EE; font-size: 1.1875rem; font-weight: 800; line-height: 1.45; color: #16262C; }
 #su .sj-fgrp { display: grid; gap: 8px; margin-top: 16px; }
 #su .sj-fgh { margin: 0; font-size: 1.1875rem; font-weight: 800; line-height: 1.4; color: #20323A; }
-#su .sj-fkl0 { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-#su .sj-fk { display: grid; gap: 4px; padding: 10px 14px 12px; border: 1.5px solid #C9DAD6; border-radius: 3px; background: #FCFEFD; }
-#su .sj-fkb { margin: 0; font-size: 1.0625rem; line-height: 1.4; }
-#su .sj-fkb b { font-size: 1.625rem; font-weight: 800; }
-#su .sj-fkl, #su .sj-fkn { margin: 0; font-size: 1.0625rem; line-height: 1.5; }
-#su .sj-fkn { color: #2E4148; }
-#su .sj-ffig { margin: 6px 0 0; }
-#su .sj-fx { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 2px; font-size: 1.0625rem; color: #4A6168; text-align: center; }
+#su .sj-frows { display: grid; gap: 6px; }
+#su .sj-frow { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; box-sizing: border-box; padding: 8px 12px; border: 1.5px solid #C9DAD6; border-radius: 12px; background: #FCFEFD; color: #16262C; font: inherit; font-size: 1.0625rem; line-height: 1.4; text-align: left; }
+#su button.sj-frow { cursor: pointer; }
+#su .sj-frow > b { flex: 1; min-width: 0; font-weight: 800; }
+#su .sj-frow > .sj-kno { min-width: 0; }
+#su .sj-frow > .sj-fw { flex: none; color: #4A6168; font-weight: 700; }
+#su .sj-frow.sj-frow0 { background: #F3F8F6; border-style: dashed; }
+#su .sj-fsel:focus-visible, #su button.sj-frow:focus-visible { outline: 3px solid #20323A; outline-offset: 2px; }

@@ -30,6 +30,7 @@ export const UPDATES_DIR = 'reports/atlas11/t365/updates';
 const SITE = process.env.ATLAS_SITE_URL || 'https://aaa7377.com';
 const DATA_FILES = ['core.json', 'comp.json', 'lines.json', 'names.json', 'days.json', 'range.json', 'mkt.json']; // mkt.json = 모든 회사(2026-10-14 「나」 — 업종 화면 회사 줄)
 const OPT_FILES = ['time.json', 'grow.json', 'home.json', 'surge.json', 'surgecal.json', 'surgetr.json', 'surgetr-case.json']; // 봉인 시간 자료(14:37 · 14:39 「3년후 5년후 10년후 이야기」) · 회사 성장 이야기 요약(16:51) · 첫 화면 종합 정보(2026-10-12 14:54) · 급등 탭(2026-10-15 14:27 · 규칙 69) — 올리기 전 사이트엔 없을 수 있음 · 못 받으면 지금 묶음의 것을 그대로
+const MIRROR_OPT = ['cond.json']; // 거울에만 더 받는 자료(회차 산출물 · 올리기 전 사이트엔 없을 수 있음) — 주문 1124-1625
 // 급등 탭(사장님 2026-10-15 14:27(싱가포르) 「탭을 하나 더 만들어라 … 최근 5일에 급등한 종목을 36개 모아높는곳이다 기준은 cia라면 어떻게 할것인지 에이전트 총 사용해서 하고
 //   하루에 4번 업데이트할때미다 그때 선택도 하고 탈락도 시켜라」 · 규칙 69) — 고른 판 기록은 새 파일만(reports/atlas11/t365/surge/<UTC>.json · 올라간 고르기만)
 export const SURGE_DIR = 'reports/atlas11/t365/surge';
@@ -108,9 +109,16 @@ async function mirrorLive(target) {
   await fs.rm(stage, {recursive: true, force: true}); await fs.mkdir(path.join(stage, 'co'), {recursive: true});
   for (const f of DATA_FILES) await fs.writeFile(path.join(stage, f), await getLive(f));
   for (const f of OPT_FILES) { try { await fs.writeFile(path.join(stage, f), await getLive(f)); } catch { try { await fs.copyFile(path.join(target, f), path.join(stage, f)); } catch { /* 없으면 없음 */ } } }
-  const comp = JSON.parse(await fs.readFile(path.join(stage, 'comp.json'), 'utf8')).companies, codes = Object.keys(comp);
-  let next = 0; const work = async () => { while (next < codes.length) { const c = codes[next++]; await fs.writeFile(path.join(stage, 'co', c + '.json'), await getLive(`co/${c}.json`)); } };
-  await Promise.all([work(), work(), work(), work(), work(), work()]);
+  // 테마 자료(cond.json) — 거울에 없으면 테마 시계 · 손자병법 다시 세기가 멈춤(2026-11-24 09:58 ~ 「테마 시계 못 만듦 — ENOENT … cond.json」 · 주문 1124-1625)
+  for (const f of MIRROR_OPT) { try { await fs.writeFile(path.join(stage, f), await getLive(f)); } catch { try { await fs.copyFile(path.join(target, f), path.join(stage, f)); } catch { /* 없으면 없음 */ } } }
+  // 모든 회사 7단(core.co7) — 고른 곳 밖 회사도 회사 파일을 받음. 옛 거울은 고른 곳(comp.json)만 받아 나머지 3~7단이 「없는 주소」가 되고(네 눈 점검 애플 · 클로드)
+  //   본질 문 ⑥ 이 오른 회사의 회사 파일을 못 찾아 올리기를 막았음(2026-11-24 09:58 ~ 매시 · 주문 1124-1625 「사이트 올리기가 막혀 있어서 그것도 함께 고칠게요」)
+  const comp = JSON.parse(await fs.readFile(path.join(stage, 'comp.json'), 'utf8')).companies, core = JSON.parse(await fs.readFile(path.join(stage, 'core.json'), 'utf8'));
+  const mk = core.co7 ? (JSON.parse(await fs.readFile(path.join(stage, 'mkt.json'), 'utf8')).companies ?? {}) : {};
+  const codes = [...new Set([...Object.keys(comp), ...Object.keys(mk)])];
+  const getCo = async c => { let e0 = null; for (let i = 0; i < 3; i++) { try { return await getLive(`co/${c}.json`); } catch (e) { e0 = e; await new Promise(z => setTimeout(z, 400 * (i + 1))); } } throw e0; };
+  let next = 0; const work = async () => { while (next < codes.length) { const c = codes[next++]; await fs.writeFile(path.join(stage, 'co', c + '.json'), await getCo(c)); } };
+  await Promise.all(Array.from({length: 16}, work));
   await fs.rm(target, {recursive: true, force: true}); await fs.rename(stage, target);
 }
 
