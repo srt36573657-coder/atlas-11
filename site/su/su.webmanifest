@@ -1,0 +1,17 @@
+{
+ "name": "손자병법",
+ "short_name": "손자병법",
+ "description": "서른여섯 가지 꾀로 지난 기록을 세는 주식 기록장이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.",
+ "lang": "ko",
+ "start_url": "/su/",
+ "scope": "/su/",
+ "display": "standalone",
+ "background_color": "#20323A",
+ "theme_color": "#F3F8F6",
+ "icons": [
+  {"src": "/su/su-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
+  {"src": "/su/su-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+  {"src": "/su/su-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+  {"src": "/su/su-icon-512m.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ]
+}

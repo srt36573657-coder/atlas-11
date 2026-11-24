@@ -39,6 +39,19 @@ html.sj-on #su :focus-visible { outline: 3px solid #20323A; outline-offset: 2px;
 #su .sj-top { flex-wrap: wrap; row-gap: 4px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-block: 8px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); background: #F3F8F6; border-bottom: 1.5px solid #20323A; }
 #su .sj-brand { display: inline-flex; align-items: center; min-height: 48px; color: #20323A; font-family: var(--sj-serif); font-size: 1.25rem; font-weight: 800; letter-spacing: .26em; white-space: nowrap; text-decoration: none; }
 #su .sj-tools { display: flex; gap: 6px; flex: none; margin-left: auto; }
+/* 앱 얼굴(주문 1124-1942 — 치지처럼 이름 앞 둥근 네모 얼굴 하나 · 치자색 · 상투 튼 손무) */
+#su .sj-brand { gap: 8px; }
+#su .sj-brand-ic { flex: none; display: block; width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 1px 3px rgba(32, 50, 58, .22); }
+#su .sj-brand-t { display: inline-block; }
+@media (max-width: 370px) { #su .sj-brand-ic { width: 28px; height: 28px; border-radius: 7px; } #su .sj-brand { gap: 6px; } }
+/* 열림 쪽(주문 1124-1942 · 사장님 19:42 「… 손자 병법에 을 이렇게 고쳐」 — 치지 첫 화면처럼 흐린 먹 바탕 · 가운데 앱 얼굴 · 그 아래 굵은 한지색 이름 한 줄)
+   새로 켤 때 한 번(su-boot.js 가 html.sj-opening 을 1.5초 둠) · 글 쪽 요소가 아니라 그림(앞뒤 덧그림)이라 읽기 · 누르기를 막지 않음 · 움직임 줄이기면 움직이지 않음 */
+html.sj-opening::before { content: ""; position: fixed; inset: -40px; z-index: 2147483000; pointer-events: none; background: linear-gradient(rgba(23, 36, 42, .74), rgba(18, 29, 34, .9)), url(/su/su-bg.svg) center 30% / cover no-repeat, #20323A; filter: blur(12px) saturate(.85); animation: sjOpenOut .32s ease-in 1.2s forwards; }
+html.sj-opening::after { content: "손자병법"; position: fixed; left: 0; right: 0; top: 50%; z-index: 2147483001; pointer-events: none; transform: translateY(-62%); padding-top: 186px; background: url(/su/su-icon.svg) center top / 156px 156px no-repeat; color: #FCFEFD; font-family: var(--sj-sans, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif); font-size: 2.75rem; font-weight: 800; line-height: 1.2; letter-spacing: .04em; text-align: center; text-shadow: 0 2px 14px rgba(0, 0, 0, .35); animation: sjOpenIn .55s cubic-bezier(.2, .8, .2, 1) both, sjOpenOut .32s ease-in 1.2s forwards; }
+html.sj-opening-calm::before, html.sj-opening-calm::after { animation: none; }
+@keyframes sjOpenIn { from { opacity: 0; transform: translateY(-58%) scale(.94); } to { opacity: 1; transform: translateY(-62%) scale(1); } }
+@keyframes sjOpenOut { to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { html.sj-opening::before, html.sj-opening::after { animation: none; } }
 @media (max-width: 370px) { #su .sj-brand { letter-spacing: .1em; font-size: 1.125rem; } #su .sj-tools { gap: 4px; } #su .sj-btn { padding: 0 5px; } }
 #su .sj-btn { display: inline-flex; align-items: center; justify-content: center; gap: 2px; min-width: 48px; min-height: 48px; padding: 0 7px; border: 1.5px solid #20323A; border-radius: 3px; background: transparent; color: #20323A; font-family: var(--sj-sans); font-size: 1.0625rem; font-weight: 800; line-height: 1.15; text-decoration: none; cursor: pointer; }
 #su .sj-btn i { font-style: normal; font-weight: 700; }

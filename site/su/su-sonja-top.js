@@ -49,7 +49,7 @@ function findTop() {
 export function topBar() {
   const big = bigText(h('button', {class: 'sj-btn sj-bigtext', type: 'button', 'aria-label': '글씨 크게', text: '글씨'}));
   return h('header', {class: 'sj-top'},
-    h('a', {class: 'sj-brand', href: '#/', 'aria-label': NAME + ' 첫 쪽', text: NAME}),
+    h('a', {class: 'sj-brand', href: '#/', 'aria-label': NAME + ' 첫 쪽'}, h('img', {class: 'sj-brand-ic', src: '/su/su-icon.svg', alt: '', width: 32, height: 32, decoding: 'async'}), h('span', {class: 'sj-brand-t', text: NAME})), // 앱 얼굴 + 이름(주문 1124-1942 — 치지처럼 얼굴 하나 · 이름 하나)
     h('div', {class: 'sj-tools'},
       h('a', {class: 'sj-btn sj-angel', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'}), h('i', {'aria-hidden': 'true', text: '↗'})),
       findTop(), // 회사 찾기 — 선물 옆(주문 1120-1705 · 사장님 17:05 「종목 찾기를 선물 옆에 배치」) · 회사 탭 맨 위 찾기 칸으로

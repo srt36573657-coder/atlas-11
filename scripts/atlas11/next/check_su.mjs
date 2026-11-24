@@ -1597,6 +1597,35 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();
 }
+{ // ㉟ 주문 1124-1942(사장님 2026-11-24(서울) 19:42 「여기 ui ux를 1000가지 분석해 그래서 손자 병법에 을 이렇게 고쳐 2시간 이내에 에이전트 100개 가동해서」 — 치지 앱 첫 화면처럼)
+  //   열림 쪽(새로 켤 때 한 번 · 먹 바탕 · 가운데 앱 얼굴 · 굵은 한지색 이름 · 누르기를 막지 않음 · 몇 초 안에 걷힘 · 같은 창 다음 쪽은 없음) · 맨 위 이름 옆 앱 얼굴 · 홈 화면 앱(설명 파일 · 얼굴 그림 다섯)
+  //   자동 검사 브라우저는 열림 쪽을 안 보임(다른 검사를 가리지 않게) — ?sjopen=1(늘) · ?sjopen=2(사람처럼 창마다 한 번)로 여기서만 잼
+  const W = '㉟ ';
+  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+  await QUIET(ctx);
+  const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+  await p.goto(base + '/su/?sjopen=2#/', {waitUntil: 'domcontentloaded'}).catch(() => {});
+  await p.waitForFunction(() => document.documentElement.classList.contains('sj-opening') && document.getAnimations().some(a => /sjOpenIn/.test(a.animationName) && (a.currentTime ?? 0) > 250), null, {timeout: 10000}).catch(() => {});
+  const o1 = await p.evaluate(() => { const d = document.documentElement, A = getComputedStyle(d, '::after'), B = getComputedStyle(d, '::before');
+    return {on: d.classList.contains('sj-opening'), name: A.content, icon: /su-icon\.svg/.test(A.backgroundImage), fs: parseFloat(A.fontSize), color: A.color, pe: [A.pointerEvents, B.pointerEvents], z: [+A.zIndex, +B.zIndex], bg: B.backgroundColor}; });
+  const hitOk = await p.evaluate(() => { const b = document.querySelector('#su .sj-brand'); if (!b) return false; const r = b.getBoundingClientRect(), e = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !!e && b.contains(e); });
+  await p.waitForFunction(() => !document.documentElement.classList.contains('sj-opening'), null, {timeout: 8000}).catch(() => {});
+  const o2 = await p.evaluate(() => ({on: document.documentElement.classList.contains('sj-opening')}));
+  check(o1.on && o1.name === '"손자병법"' && o1.icon && o1.fs >= 40 && o1.color === 'rgb(252, 254, 253)' && o1.pe.every(x => x === 'none') && o1.z.every(z => z > 1e9) && o1.bg === 'rgb(32, 50, 58)' && hitOk && !o2.on,
+    W + '가) 열림 쪽(치지 첫 화면처럼) — 먹 바탕 · 가운데 앱 얼굴 · 굵은 한지색 이름 40px 넘게 · 누르기를 막지 않음 · 몇 초 안에 걷힘', JSON.stringify({o1, hitOk, o2}));
+  await p.goto(base + '/su/?sjopen=2#/k', {waitUntil: 'domcontentloaded'}).catch(() => {}); await p.waitForTimeout(400);
+  const o3 = await p.evaluate(() => document.documentElement.classList.contains('sj-opening'));
+  await open(p, '#/');
+  const br = await p.evaluate(() => { const a = document.querySelector('#su .sj-top .sj-brand'), i = a?.querySelector('img.sj-brand-ic'), r = i?.getBoundingClientRect(), ra = a?.getBoundingClientRect();
+    return {txt: (a?.textContent ?? '').trim(), alt: i?.getAttribute('alt'), src: i?.getAttribute('src') ?? '', w: r ? Math.round(r.width) : 0, h: r ? Math.round(r.height) : 0, done: !!i?.complete && (i?.naturalWidth ?? 0) > 0, ah: ra ? Math.round(ra.height) : 0, wide: document.documentElement.scrollWidth <= innerWidth + 1, open: document.documentElement.classList.contains('sj-opening')}; });
+  check(!o3 && !br.open && br.txt === '손자병법' && br.alt === '' && br.src === '/su/su-icon.svg' && br.w >= 27 && br.h >= 27 && br.done && br.ah >= 47.5 && br.wide, W + '나) 맨 위 이름 옆 앱 얼굴(그림만 · 이름 글 그대로 · 누르는 자리 48) · 같은 창 다음 쪽은 열림 쪽 없음 · 자동 검사 브라우저는 열림 쪽 없음', JSON.stringify({o3, br}));
+  const man = await J('/su/su.webmanifest').catch(() => null), links = await p.evaluate(() => ({m: document.querySelector('link[rel="manifest"]')?.getAttribute('href') ?? '', t: document.querySelector('link[rel="apple-touch-icon"]')?.getAttribute('href') ?? '', i: document.querySelector('link[rel="icon"]')?.getAttribute('href') ?? ''}));
+  const pics = await Promise.all(['/su/su-icon.svg', '/su/su-icon-180.png', '/su/su-icon-192.png', '/su/su-icon-512.png', '/su/su-icon-512m.png'].map(u => fetch(base + u).then(r => r.ok && /^image\//.test(r.headers.get('content-type') ?? '')).catch(() => false)));
+  check(!!man && man.name === '손자병법' && man.short_name === '손자병법' && man.start_url === '/su/' && man.display === 'standalone' && man.background_color === '#20323A' && (man.icons ?? []).length >= 4 && links.m === '/su/su.webmanifest' && links.t === '/su/su-icon-180.png' && links.i === '/su/su-icon.svg' && pics.every(Boolean),
+    W + '다) 홈 화면 앱 — 설명 파일(이름 · 주소창 없이 · 먹 바탕) · 앱 얼굴 그림 다섯(둥근 네모 · 휴대폰 · 설명 파일)', JSON.stringify({man: man ? {name: man.name, start: man.start_url, display: man.display, bg: man.background_color, n: (man.icons ?? []).length} : null, links, pics}));
+  check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+  await ctx.close();
+}
 await browser.close();
 R.ok = R.counts.fail === 0;
 console.log(`손자병법 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- 손자병법 앱 얼굴(주문 1124-1942 · 사장님 2026-11-24(서울) 19:42 「여기 ui ux를 1000가지 분석해 그래서 손자 병법에 을 이렇게 고쳐」)
+       치지 앱처럼 둥근 네모 · 밝은 한 색 · 굵은 선 얼굴 하나 — 우리 것: 치자색(치자 열매로 물들인 노랑) 바탕 · 상투와 동곳을 꽂은 손무 · 닫힌 둥근 얼굴(남의 로고 · 왕관 · 글자 얼굴은 쓰지 않음) -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7D65C"/><stop offset="1" stop-color="#ECBD34"/></linearGradient>
+    <radialGradient id="h" cx="50%" cy="34%" r="64%"><stop offset="0" stop-color="#FFF4BF" stop-opacity=".5"/><stop offset="1" stop-color="#FFF4BF" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect class="b" width="512" height="512" rx="116" fill="url(#g)"/>
+  <rect class="b" width="512" height="512" rx="116" fill="url(#h)"/>
+  <g fill="none" stroke="#27302D" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="256" cy="126" r="22" stroke-width="24"/>
+    <path d="M210 126 L302 126" stroke-width="14"/>
+    <circle cx="256" cy="292" r="116" stroke-width="28"/>
+    <path d="M208 330 Q256 368 304 330" stroke-width="22"/>
+  </g>
+  <circle cx="212" cy="276" r="16" fill="#27302D"/>
+  <circle cx="300" cy="276" r="16" fill="#27302D"/>
+</svg>

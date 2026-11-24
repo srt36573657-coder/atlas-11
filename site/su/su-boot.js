@@ -13,4 +13,20 @@
   var t = document.querySelectorAll('meta[name="theme-color"]');
   for (i = 0; i < t.length; i++) t[i].setAttribute('content', '#F3F8F6');
   try { if (localStorage.getItem('su-big-text') === '1') d.classList.add('su-lg'); } catch (e) { /* 저장소 없음 */ }
+  // 열림 쪽(주문 1124-1942 · 사장님 2026-11-24(서울) 19:42 「여기 ui ux를 1000가지 분석해 그래서 손자 병법에 을 이렇게 고쳐」 — 치지 앱 첫 화면처럼 먹 바탕 · 가운데 앱 얼굴 · 굵은 이름 한 줄)
+  //   새로 켤 때 한 번만(같은 창에서 탭을 오가거나 다시 들어오면 안 보임) · 1.5초 안에 걷힘 · 누르는 것을 막지 않음(그림뿐) · 움직임 줄이기면 움직이지 않고 짧게
+  //   자동 검사 브라우저(navigator.webdriver)는 다른 검사를 가리지 않게 안 보임 — 주소에 ?sjopen=1(늘) · ?sjopen=2(사람처럼 창마다 한 번)를 붙이면 보임(check_su ㉟ 가 이 길로 따로 잼)
+  try {
+    var q = (/[?&]sjopen=([12])(&|$)/.exec(location.search) || [])[1], force = q === '1', user = q === '2', seen = false; // 1 = 늘 보임 · 2 = 사람처럼(창마다 한 번)
+    try { seen = sessionStorage.getItem('sj-opened') === '1'; sessionStorage.setItem('sj-opened', '1'); } catch (e) { /* 저장소 없음 — 한 번 보임 */ }
+    if (force || (!seen && (user || !navigator.webdriver))) {
+      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      d.classList.add('sj-opening');
+      if (calm) d.classList.add('sj-opening-calm');
+      var off = function () { d.classList.remove('sj-opening', 'sj-opening-calm'); }; // 휴대폰 맨 위 띠 색은 그대로(화면 코드가 쪽마다 다시 칠함 — 바꿨다 되돌리면 깜빡임)
+      // 시계는 첫 칠함부터(꾸밈 파일을 받는 동안 흘러가 버리면 느린 망에서 열림 쪽이 안 보임) — 그림이 처음 칠해지는 때(requestAnimationFrame)에 잼 · 4초 넘으면 그대로 걷음
+      var held = setTimeout(off, 4000);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { clearTimeout(held); setTimeout(off, calm ? 900 : 1500); }); });
+    }
+  } catch (e) { /* 열림 쪽 없이 그대로 */ }
 })();
