@@ -1,61 +1,39 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-11-23T23:59:10.179Z",
- "kst": "2026-11-24 08:59",
- "slot": null,
- "reason": "09:00 회차",
+ "at": "2026-11-24T00:58:57.770Z",
+ "kst": "2026-11-24 09:58",
+ "slot": "10:00",
+ "reason": "10:00 회차",
  "ci": true,
  "version": "ml-v1",
- "result": "바꿈",
- "served": "rolled",
- "why": null,
+ "result": "실패",
+ "served": "live",
+ "why": "7단 범위 따로 세기 멈춤: {\"checks\":15322,\"mcChecks\":184,\"skipped\":4,\"bad\":1,\"first\":[{\"what\":\"밖 크게 잃는 길 몫 004970 오르는 장\",\"got\":0.11150000000000002,\"want\":0.18,\"tol\":0.06742254002843343}]} — 지금 사이트 자료 그대로 다시 올림 · 네 눈 점검에서 걸림(올라가는 자료) — 애플 32건(100030 회사 파일(co/100030.json) 없음 — 3~7단이 「없는 주소」) · 클로드 27건(100030 3단 자료 없음)",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-JSl2v3/closes/20261123T235910Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-86pRU4/closes/20261124T005857Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261124",
-  "sec": 103,
+  "sec": 102,
   "firstErrors": []
  },
- "asOf": "2026-11-23",
- "base": "2026-10-26",
- "provisional": false,
- "roll": {
-  "files": 1,
-  "added": 75267,
-  "mismatch": 0,
-  "rebased": 33
- },
- "digest": "6b4024898957fdfb",
- "in": [],
- "out": [],
- "counts": {
-  "picked": 56,
-  "mg": 27,
-  "ly": 32,
-  "both": 3,
-  "q": 1768
- },
+ "asOf": null,
+ "base": null,
+ "provisional": null,
+ "roll": null,
+ "digest": null,
+ "in": null,
+ "out": null,
+ "counts": null,
  "tiers": null,
  "kinds": null,
- "stay": 56,
- "ruleChanged": false,
- "prevVersion": "ml-v1",
- "buffer": false,
- "all": {
-  "chg": -7.48,
-  "up": 9,
-  "down": 46
- },
- "top": {
-  "short": "지주·유통",
-  "chg": -3.51,
-  "scope": "mkt"
- },
- "range": {
-  "eligible": 56,
-  "reused": false
- },
+ "stay": null,
+ "ruleChanged": null,
+ "prevVersion": null,
+ "buffer": null,
+ "all": null,
+ "top": null,
+ "range": null,
  "market": {
   "schema": "atlas-market-read-1",
   "rule": "mr-v2",
@@ -125,17 +103,21 @@
  "inspect": {
   "version": "i4-v1",
   "nEach": 111,
-  "fail": 0,
-  "ok": true,
-  "ms": 690,
+  "fail": 59,
+  "ok": false,
+  "ms": 394,
   "lenses": [
    {
     "key": "apple",
     "name": "애플",
     "n": 111,
-    "fail": 0,
+    "fail": 32,
     "things": 18813,
-    "first": []
+    "first": [
+     "100030 회사 파일(co/100030.json) 없음 — 3~7단이 「없는 주소」",
+     "100090 회사 파일(co/100090.json) 없음 — 3~7단이 「없는 주소」",
+     "100130 회사 파일(co/100130.json) 없음 — 3~7단이 「없는 주소」"
+    ]
    },
    {
     "key": "google",
@@ -149,74 +131,37 @@
     "key": "claude",
     "name": "클로드",
     "n": 111,
-    "fail": 0,
-    "things": 489540,
-    "first": []
+    "fail": 27,
+    "things": 242490,
+    "first": [
+     "100030 3단 자료 없음",
+     "100090 3단 자료 없음",
+     "100130 3단 자료 없음"
+    ]
    },
    {
     "key": "cia",
     "name": "CIA",
     "n": 111,
     "fail": 0,
-    "things": 188323,
+    "things": 94683,
     "first": []
    }
   ]
  },
- "home": {
-  "ok": true,
-  "kst": "2026-11-24 09:02",
-  "live": true,
-  "idx": true,
-  "flows": true,
-  "sectors": true,
-  "us": true,
-  "stale": {},
-  "errors": [],
-  "alerts": 0
- },
- "homeFetch": {
-  "ok": 10,
-  "failed": []
- },
- "surge": {
-  "kind": "carry",
-  "from": "2026-11-23T08:59:36.175Z",
-  "fromKst": "2026-11-23 17:59",
-  "fromSlot": "18:00",
-  "digest": "e3106ea95a7e2b05"
- },
- "cal": {
-  "version": "tr-v1",
-  "asOf": "2026-11-23",
-  "provisional": false,
-  "records": 74,
-  "cases": 736,
-  "N": 730,
-  "a": 102,
-  "b": 626,
-  "k": 6,
-  "n10": 1,
-  "m10": 1,
-  "alerts": [
-   [
-    "half",
-    10
-   ]
-  ]
- },
+ "home": null,
+ "homeFetch": null,
+ "surge": null,
+ "cal": null,
  "verify": {
   "pick": "멍거 · 린치 조건 따로 세기 — 고른 곳 56 · 멍거 27 · 린치 32 · 둘 다 3 · 틀림 0",
-  "site": "{\"checks\":161837,\"bad\":0,\"first\":[]}",
-  "range": "{\"checks\":15322,\"mcChecks\":184,\"skipped\":4,\"bad\":0,\"first\":[]}",
-  "cal": "{\"ok\":true,\"checks\":14287,\"bad\":0,\"asOf\":\"2026-11-23\",\"last\":\"2026-11-23\",\"cases\":736,\"first\":[]}",
-  "cond": "조건 찾기 따로 세기: 회사 2557 · 짝 100 · 맞댐 36526 · 틀림 0 · 기본 2557 → 164 → 7 → 4"
+  "site": "{\"checks\":161899,\"bad\":0,\"first\":[]}"
  },
  "steps": [
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 102.7
+   "sec": 102
   },
   {
    "name": "후보 표",
@@ -226,7 +171,7 @@
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 6
+   "sec": 5.9
   },
   {
    "name": "업종 정리",
@@ -241,70 +186,27 @@
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 14
+   "sec": 14.1
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 4.8
+   "sec": 4.6
   },
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 32.3
+   "sec": 32.9
   },
   {
    "name": "7단 범위 따로 세기",
-   "code": 0,
-   "sec": 39.2
-  },
-  {
-   "name": "첫 화면 원문 받기",
-   "code": 0,
-   "sec": 4.1
-  },
-  {
-   "name": "첫 화면 자료",
-   "code": 0,
-   "sec": 0
-  },
-  {
-   "name": "달력 셈",
-   "code": 0,
-   "sec": 7.2
-  },
-  {
-   "name": "달력 따로 세기",
-   "code": 0,
-   "sec": 4
-  },
-  {
-   "name": "조건 찾기 셈",
-   "code": 0,
-   "sec": 0.5
-  },
-  {
-   "name": "조건 찾기 따로 세기",
-   "code": 0,
-   "sec": 0.3
+   "code": 1,
+   "sec": 38.9
   },
   {
    "name": "네 눈 점검",
-   "code": 0,
-   "sec": 0.7
+   "code": 1,
+   "sec": 0.4
   }
- ],
- "cond": {
-  "version": "cd-v1",
-  "n": 2557,
-  "bytes": 185159,
-  "rise": 6,
-  "rc": 7,
-  "up": 4,
-  "x5": 83,
-  "q5": 9,
-  "f3": 1061,
-  "f3q": 18,
-  "noRank": 0
- }
+ ]
 }
