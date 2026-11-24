@@ -1640,3 +1640,50 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-rec .sj-recb { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 4px; border-radius: 24px; border: 1.5px solid #A6D0CD; background: #FCFEFD; color: #20323A; font-size: max(17px, 1.0625rem); font-weight: 700; text-decoration: none; white-space: nowrap; }
 #su .sj-rec .sj-recb.sj-recon { background: #20323A; border-color: #20323A; color: #FCFEFD; }
 #su .sj-rec .sj-recb:focus-visible { outline: 3px solid #E9B949; outline-offset: 2px; }
+/* 사고 팔기 견줌 · 설명칸(주문 1125-0049 · 사장님 2026-11-25 00:40 · 00:49 — 사기만 · 사고 팔기 두 셈 나란히 · 어린이도 알 설명 · 실제 보기 · 종가로만) · 붉은색 없음 · 글 17 넘게 · 누르는 곳 48 넘게 */
+#su .sj-svc { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; } /* 두 셈을 위아래로(돈 글이 길어 옆으로 놓으면 줄이 꺾임) */
+#su .sj-svcard { min-width: 0; border: 2px solid #A6D0CD; border-radius: 16px; background: #FCFEFD; padding: 12px; }
+#su .sj-svcard[data-m="sell"] { border-color: #20323A; }
+#su .sj-svt { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; row-gap: 2px; margin: 0; }
+#su .sj-svt b { font-size: 1.25rem; color: #20323A; }
+#su .sj-svt span { font-size: 1.0625rem; color: #3E5560; }
+#su .sj-svbig { display: flex; margin: 8px 0 4px; font-size: 1.3125rem; }
+#su .sj-svl { margin: 2px 0; font-size: 1.0625rem; color: #20323A; overflow-wrap: anywhere; }
+#su .sj-svfig { display: grid; gap: 10px; margin: 14px 0 6px; }
+#su .sj-svbr { display: grid; grid-template-columns: 5.6em minmax(0, 1fr); column-gap: 8px; row-gap: 2px; align-items: center; }
+#su .sj-svbl { grid-row: 1 / span 2; font-size: 1.0625rem; font-weight: 800; color: #20323A; }
+#su .sj-svtrack { position: relative; display: block; height: 18px; border-radius: 9px; background: #E3EEEB; }
+#su .sj-svtrack::before { content: ""; position: absolute; left: calc(50% - 1px); top: -4px; bottom: -4px; width: 2px; background: #20323A; }
+#su .sj-svfill { position: absolute; top: 2px; bottom: 2px; left: 50%; width: var(--w, 0%); border-radius: 7px; background: #20323A; }
+#su .sj-svbr[data-st="dn"] .sj-svfill { left: auto; right: 50%; background: #6F8F9A; }
+#su .sj-svbv { font-size: 1.0625rem; color: #20323A; }
+#su .sj-svcap, #su .sj-svnote, #su .sj-svlg, #su .sj-svdn { margin: 6px 0; font-size: 1.0625rem; line-height: 1.6; color: #3E5560; }
+#su .sj-svsay { margin: 10px 0 4px; font-size: 1.25rem; font-weight: 800; color: #20323A; }
+#su .sj-svk { margin-top: 12px; border-top: 1px solid #C9DCD8; }
+#su .sj-svks { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 52px; cursor: pointer; list-style: none; font-size: 1.125rem; font-weight: 800; color: #20323A; }
+#su .sj-svks::-webkit-details-marker { display: none; }
+#su .sj-svksn { font-size: 1.0625rem; font-weight: 600; color: #3E5560; }
+#su .sj-svkl { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+#su .sj-svkr { display: grid; gap: 8px; padding: 10px 0; border-bottom: 1px solid #E3EEEB; }
+#su .sj-svkn { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; margin: 0; font-size: 1.0625rem; color: #20323A; }
+#su .sj-svstep { display: grid; gap: 10px; margin: 10px 0; padding: 0; list-style: none; }
+#su .sj-svst { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 10px; row-gap: 2px; align-items: start; padding: 12px; border: 1.5px solid #C9DCD8; border-radius: 14px; background: #FCFEFD; }
+#su .sj-svic { grid-row: 1 / span 2; width: 40px; height: 40px; color: #20323A; }
+#su .sj-svst b { font-size: 1.1875rem; color: #20323A; }
+#su .sj-svst span { font-size: 1.0625rem; line-height: 1.55; color: #20323A; }
+#su .sj-svdays { margin: 12px 0; padding: 12px; border-radius: 14px; background: #E9F3F1; }
+#su .sj-svdt { margin: 0 0 6px; font-size: 1.125rem; font-weight: 800; color: #20323A; }
+#su .sj-svdl { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+#su .sj-svdr { display: flex; justify-content: space-between; font-size: 1.0625rem; color: #20323A; }
+#su .sj-svh3 { margin: 16px 0 6px; font-size: 1.25rem; color: #20323A; }
+#su .sj-svexs { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+#su .sj-svex { padding: 12px; border: 1.5px solid #C9DCD8; border-radius: 14px; background: #FCFEFD; }
+#su .sj-svexh { margin: 0 0 6px; font-size: 1.125rem; color: #20323A; }
+#su .sj-svpic { display: block; width: 100%; height: auto; max-height: 150px; }
+#su .sj-svln { fill: none; stroke: #20323A; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+#su .sj-svbuyl { stroke: #A6D0CD; stroke-width: 2; }
+#su .sj-svcutl { stroke: #6F8F9A; stroke-width: 2; stroke-dasharray: 6 5; }
+#su .sj-svb0 { fill: #FCFEFD; stroke: #20323A; stroke-width: 3; }
+#su .sj-svs1 { fill: #E9B949; stroke: #20323A; stroke-width: 2; }
+#su .sj-svexl { margin: 6px 0; font-size: 1.0625rem; line-height: 1.6; color: #20323A; overflow-wrap: anywhere; }
+#su .sj-svexr { display: flex; margin-top: 6px; font-size: 1.1875rem; }

@@ -378,12 +378,103 @@ export async function vCo36(X, code) {
 }
 
 /* ── 정산(#/r/t) — 서른여섯 꾀 표만 ── */
+/** 사고 팔기 셈(주문 1125-0049 · 사장님 2026-11-25(서울) 00:40 「이제는 매수 와 매도를 하자 … 그 기준 날짜로 팔고 … 12프로 하락이면 자동으로 팔게 … 오늘까지 한것과 … 매도 기준을 잡고 난 이후애 결과는 어떻게 됐는지 직관적으로 잘보이개 상대 비교」
+ *    · 00:49 「어린이도 알수있게 설명과 실제에 심플들을 만들어서 설명칸을 만들고 … 모든 거래는 종가 기준」) — 정산 장부 sell(su21_settle.mjs sellsOf)
+ *  사기만 = 오늘까지 한 셈(산 뒤 계속 들고 있음 · 지금 = 가장 늦은 종가) · 사고 팔기 = 같은 산 셈을 새 규칙으로 다시 센 셈(판 것 = 판 종가 · 아직 정한 날 전 = 가장 늦은 종가) */
+const S36K = Object.freeze(Array.from({length: 36}, (_, i) => 'g' + String(i + 1).padStart(2, '0')));
+const stOfD = d => (!fin(Math.abs(d)) && d !== 0 ? 'none' : Math.round(d) > 0 ? 'up' : Math.round(d) < 0 ? 'dn' : 'eq');
+export function sellSum(D) {
+  const q = Number.isFinite(D?.qty) ? D.qty : 10, SV = D?.sell;
+  if (!SV || !Array.isArray(SV.s) || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return null;
+  const blank = k => ({k, cost: 0, valB: 0, valS: 0, d: 0, c: 0, h: 0, n: 0}), per = new Map(), tot = blank('all');
+  D.buys.forEach((b, i) => {
+    const x = SV.s[i];
+    if (!Array.isArray(b) || !Array.isArray(x) || !KKOE.test(D.kinds[b[1]] ?? '') || !(b[3] > 0) || !(x[2] > 0)) return;
+    const k = D.kinds[b[1]], nowV = Array.isArray(D.now?.[b[2]]) && D.now[b[2]][0] > 0 ? D.now[b[2]][0] : b[3], g = per.get(k) ?? blank(k);
+    for (const o of [g, tot]) { o.cost += b[3] * q; o.valB += nowV * q; o.valS += x[2] * q; o[x[0]] = (o[x[0]] ?? 0) + 1; o.n++; }
+    per.set(k, g);
+  });
+  return {q, tot, per, days: SV.days ?? {}, ex: Array.isArray(SV.ex) ? SV.ex : [], cut: SV.cut ?? 88};
+}
+const svBar = (m, label, d, mx) => h('div', {class: 'sj-svbr', 'data-m': m, 'data-st': stOfD(d)},
+  h('span', {class: 'sj-svbl', text: label}),
+  h('span', {class: 'sj-svtrack', 'aria-hidden': 'true'}, h('i', {class: 'sj-svfill', style: '--w:' + (mx > 0 ? Math.min(50, Math.abs(d) / mx * 50) : 0).toFixed(2) + '%'})),
+  h('span', {class: 'sj-svbv', text: moved(d)}));
+function svCompare(SV, nameOf) {
+  const T = SV.tot, dB = T.valB - T.cost, dS = T.valS - T.cost, gap = dS - dB, mx = Math.max(Math.abs(dB), Math.abs(dS));
+  const card = (m, title, sub, d, val, extra) => h('div', {class: 'sj-svcard', 'data-m': m, 'data-st': stOfD(d)},
+    h('p', {class: 'sj-svt'}, h('b', {text: title}), h('span', {text: sub})),
+    h('p', {class: 'sj-svbig sj-res', 'data-st': stOfD(d)}, shapeI(stOfD(d)), h('b', {text: moved(d)})),
+    h('p', {class: 'sj-svl', text: '산 돈 ' + won(T.cost)}), h('p', {class: 'sj-svl', text: val}), extra ?? null);
+  const kd = S36K.map(k => SV.per.get(k)).filter(Boolean), mxK = Math.max(0, ...kd.flatMap(g => [Math.abs(g.valB - g.cost), Math.abs(g.valS - g.cost)]));
+  return h('section', {class: 'sj-sec sj-sv', 'aria-label': '사기만과 사고 팔기 견줌', 'data-n': String(T.n)},
+    head('견줌', '사고 팔기', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '사기만 · 사고 팔기'}))),
+    h('p', {class: 'sj-rule', text: '같은 날, 같은 회사를, 같은 값에 샀어요. 파는 법만 달라요.'}),
+    h('div', {class: 'sj-svc'},
+      card('buy', '사기만', '오늘까지 한 셈', dB, '지금 ' + won(T.valB)),
+      card('sell', '사고 팔기', '새 규칙으로 다시 센 셈', dS, '판 돈과 남은 것 ' + won(T.valS), h('p', {class: 'sj-svl', text: '판 것 ' + NF.format(T.d + T.c) + '번 · 들고 있는 것 ' + NF.format(T.h) + '번'}))),
+    h('figure', {class: 'sj-svfig', 'aria-label': '두 셈의 늘고 준 돈'}, svBar('buy', '사기만', dB, mx), svBar('sell', '사고 팔기', dS, mx),
+      h('figcaption', {class: 'sj-svcap', text: '가운데 줄보다 오른쪽은 늘어난 돈, 왼쪽은 줄어든 돈이에요.'})),
+    h('p', {class: 'sj-svsay', 'data-say': '', text: Math.round(gap) === 0 ? '두 셈이 같아요.' : '사고 팔기 셈이 사기만 셈보다 ' + won(Math.abs(gap)) + (gap > 0 ? ' 더 많아요.' : ' 더 적어요.')}),
+    h('p', {class: 'sj-svnote', text: '판 것 가운데 정한 날에 판 것 ' + NF.format(T.d) + '번, 88원 줄에서 판 것 ' + NF.format(T.c) + '번이에요. 판 돈은 다시 사지 않아요. 아직 정한 날이 안 온 것은 가장 늦은 종가로 셌어요.'}),
+    h('details', {class: 'sj-svk'}, h('summary', {class: 'sj-svks'}, h('span', {text: '꾀마다 견줘 보기'}), h('span', {class: 'sj-svksn', text: kd.length + '가지'})),
+      h('ol', {class: 'sj-svkl'}, ...kd.map(g => h('li', {class: 'sj-svkr', 'data-k': g.k},
+        h('p', {class: 'sj-svkn'}, h('b', {text: nameOf(g.k)}), h('span', {text: (SV.days[g.k] ?? '?') + '일째에 팔아요'})),
+        svBar('buy', '사기만', g.valB - g.cost, mxK), svBar('sell', '사고 팔기', g.valS - g.cost, mxK))))));
+}
+const SV_STEPS = Object.freeze([
+  ['buy', '사요', '꾀가 고른 회사를, 그날 장이 끝날 때 값(종가)으로 10주 사요.'],
+  ['count', '날을 세요', '산 다음 장날이 1일째예요. 꾀마다 파는 날이 정해져 있어요.'],
+  ['day', '정한 날에 팔아요', '정한 날이 되면 그날 종가로 팔아요. 올랐든 안 올랐든 팔아요.'],
+  ['cut', '많이 내리면 바로 팔아요', '100원에 산 것이 88원 이하로 마감하면, 정한 날 전이라도 그날 종가로 팔아요.']]);
+const SV_ICON = Object.freeze({buy: 'M5 12h14M12 5v14', count: 'M7 4v4M17 4v4M4 9h16M5 6h14v14H5zM9 13h2M13 13h2M9 17h2', day: 'M5 13l4 4L19 7', cut: 'M4 7l6 6 4-4 6 6M20 10v5h-5'});
+const svIcon = k => s('svg', {class: 'sj-svic', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d: SV_ICON[k] ?? '', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round'}));
+function svExPic(e, buy, cutAt) { // 산 날부터 판 날까지 종가 꺾은선 — 산 날 동그라미 · 판 날 네모 · 88원 줄(점선)
+  const pts = e.ser.map(([, v], i) => [i, v]).filter(([, v]) => v > 0), W = 300, H = 120, L = 14, R = 14, Tp = 14, B = 14;
+  const vs = [...pts.map(([, v]) => v), buy, ...(cutAt ? [cutAt] : [])], lo = Math.min(...vs), hi = Math.max(...vs), n = Math.max(1, e.ser.length - 1);
+  const x = i => L + (W - L - R) * i / n, y = v => (hi === lo ? H / 2 : Tp + (H - Tp - B) * (hi - v) / (hi - lo));
+  const last = pts[pts.length - 1];
+  return s('svg', {class: 'sj-svpic', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '산 날부터 판 날까지 종가 꺾은선'},
+    s('line', {class: 'sj-svbuyl', x1: L, x2: W - R, y1: y(buy).toFixed(1), y2: y(buy).toFixed(1)}),
+    cutAt ? s('line', {class: 'sj-svcutl', x1: L, x2: W - R, y1: y(cutAt).toFixed(1), y2: y(cutAt).toFixed(1)}) : null,
+    s('polyline', {class: 'sj-svln', points: pts.map(([i, v]) => x(i).toFixed(1) + ',' + y(v).toFixed(1)).join(' ')}),
+    s('circle', {class: 'sj-svb0', cx: x(0).toFixed(1), cy: y(buy).toFixed(1), r: 7}),
+    last ? s('rect', {class: 'sj-svs1', x: (x(last[0]) - 7).toFixed(1), y: (y(last[1]) - 7).toFixed(1), width: 14, height: 14, rx: 2}) : null);
+}
+function svExplain(SV, D, nameOf) {
+  const byN = new Map(); for (const k of S36K) { const n = SV.days[k]; if (n) byN.set(n, (byN.get(n) ?? 0) + 1); }
+  const KIND = {up: '정한 날에 팔았더니 올라 있었어요', flat: '정한 날에 팔았더니 내려 있었어요', cut: '88원 줄 밑으로 내려 바로 팔았어요'};
+  const exs = SV.ex.map(e => {
+    const b = D.buys[e.i], x = SV.s?.[e.i] ?? D.sell?.s?.[e.i];
+    if (!Array.isArray(b) || !Array.isArray(x)) return null;
+    const [dd, ki, code, buy] = b, k = D.kinds[ki], co = D.co?.[code]?.[0] ?? code, cutAt = Math.ceil(buy * SV.cut / 100), d = (x[2] - buy) * SV.q;
+    return h('li', {class: 'sj-svex', 'data-kind': e.kind, 'data-k': k},
+      h('p', {class: 'sj-svexh'}, h('b', {text: KIND[e.kind] ?? ''})),
+      svExPic(e, buy, e.kind === 'cut' ? cutAt : null),
+      h('p', {class: 'sj-svexl', text: mday(dd) + ', 「' + nameOf(k) + '」 꾀가 고른 ' + josa(co, '를') + ' 종가 ' + won(buy) + '에 10주 샀어요.'}),
+      e.kind === 'cut'
+        ? h('p', {class: 'sj-svexl', text: x[3] + '일째인 ' + mday(x[1]) + ', 종가가 ' + won(x[2]) + '이었어요. 88원 줄인 ' + won(cutAt) + '보다 낮아서 바로 팔았어요.'})
+        : h('p', {class: 'sj-svexl', text: '이 꾀는 ' + (SV.days[k] ?? x[3]) + '일째에 팔아요. ' + x[3] + '일째인 ' + mday(x[1]) + ', 종가 ' + won(x[2]) + '에 팔았어요.'}),
+      h('p', {class: 'sj-svexr sj-res', 'data-st': stOfD(d)}, shapeI(stOfD(d)), h('b', {text: moved(d)})));
+  }).filter(Boolean);
+  return h('section', {class: 'sj-sec sj-svx', 'aria-label': '사고 팔기 설명칸'},
+    head('설명', '사고 팔기', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이렇게 사고 팔아요'}))),
+    h('ol', {class: 'sj-svstep'}, ...SV_STEPS.map(([ic, t, say], i) => h('li', {class: 'sj-svst', 'data-step': String(i + 1)}, svIcon(ic), h('b', {text: (i + 1) + '. ' + t}), h('span', {text: say})))),
+    h('div', {class: 'sj-svdays', 'aria-label': '꾀마다 파는 날'}, h('p', {class: 'sj-svdt', text: '꾀마다 파는 날'}),
+      h('ul', {class: 'sj-svdl'}, ...[...byN.entries()].sort((a, b) => a[0] - b[0]).map(([n, c]) => h('li', {class: 'sj-svdr'}, h('b', {text: n + '일째'}), h('span', {text: '꾀 ' + c + '가지'})))),
+      h('p', {class: 'sj-svdn', text: '파는 날은 지난 기록에서 그 꾀가 오른 뒤 절반이 끝난 날이에요. 기록이 모자란 꾀는 아무렇게나 고른 회사처럼 4일째예요.'})),
+    exs.length ? h('h3', {class: 'sj-svh3', text: '실제 보기'}) : null,
+    exs.length ? h('ol', {class: 'sj-svexs'}, ...exs) : h('p', {class: 'sj-svnote', text: '아직 판 셈이 없어요. 정한 날이 지나면 실제 보기가 생겨요.'}),
+    exs.length ? h('p', {class: 'sj-svlg', text: '동그라미는 산 날, 네모는 판 날이에요. 가로줄은 산 값이고, 점선은 88원 줄이에요.'}) : null,
+    h('p', {class: 'sj-svnote', text: '정한 날에 종가 기록이 빠져 있으면, 다음 장날 종가로 팔아요.'}));
+}
 export async function vSettle36(X) {
   const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
   if (!D || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return missPage(X, '정산', '정산 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
   const ST = settle36(D), {K, T: TT, rows} = ST, first = rows.map(r => r.day).sort()[0] ?? null, rated = K.some(x => rateOf(x) !== null), M = rankMoves(D, K), TK = trackOf(D, K); // M = 날마다 바뀐 차례(주문 1119-0243) · TK = 쌓인 값(주문 1119-0829)
   const mx = Math.max(0, ...K.map(rateOf).filter(v => v !== null).map(Math.abs));
   const dn = K.filter(x => x.st === 'dn').sort((a, b) => a.diff - b.diff);
+  const SVS = sellSum(D); // 사고 팔기(주문 1125-0049) — 자료에 sell 이 없으면 null(옛 자료 · 보이지 않음)
   const bar = x => brushBar(rateOf(x), mx); // 붓 막대 — 늘면 오른쪽 먹 획 · 줄면 왼쪽 남빛 획(주문 1116-0118)
   const kids = [
     pageHead({kick: '정산 · 가짜 돈으로 해 본 셈', h1: '서른여섯 꾀 정산', seal: '셈', sealDn: TT.st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
@@ -391,6 +482,7 @@ export async function vSettle36(X) {
       more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': TT.st}, h('dt', {text: '산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.n ? won(TT.val) : SAID.none})),
         h('p', {class: 'sj-res sj-res-big', 'data-st': TT.st}, shapeI(TT.st), h('b', {text: resText(TT)})),
         h('p', {class: 'sj-note', text: (first ? mday(first) + '부터 · ' : '') + '산 횟수 ' + NF.format(rows.length) + '번 · 고른 날 ' + NF.format(TT.days) + '일' + (ST.miss ? ' · 값이 없어 못 센 ' + NF.format(ST.miss) + '번' : '') + (ST.asOf ? ' · ' + mday(ST.asOf) + ' 값까지' : '')})]}),
+    ...(SVS ? [svCompare(SVS, nameOf), svExplain(SVS, D, nameOf)] : []), // 사고 팔기 견줌 · 설명칸(주문 1125-0049)
     h('section', {class: 'sj-sec sj-st36', 'aria-label': '꾀마다 정산', 'data-n': String(K.length)},
       head('셈', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '꾀마다 정산'}), h('span', {class: 'sj-h2n', text: ' ' + K.length + '가지'}))),
       h('p', {class: 'sj-rule', text: rated ? '산 돈에 비해 많이 늘어난 꾀가 맨 위예요. 날마다 다시 줄을 세워요. 줄어든 꾀도 숨기지 않아요.' : '아직 하루밖에 안 지나서 꾀 차례대로 놓았어요. 하루가 더 지나면 많이 늘어난 꾀가 맨 위로 가요.'}),

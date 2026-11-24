@@ -165,7 +165,47 @@ export function siteSettle(B, L, asOf, days, start = START) {
   }
   const replay = Object.entries(days?.days ?? {}).filter(([d, x]) => x?.how === 'replay' && d >= start).map(([d]) => d).sort();
   return {schema: SCHEMA, qty: B.qty, asOf: asOf ?? null, start, kinds: [...KINDS], from, replayTo: replay[replay.length - 1] ?? null,
-    co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss, mk: mkLevels(B, asOf, start), hz: horizons(B, buys, asOf, start)};
+    co: Object.fromEntries([...new Set(buys.map(b => b[2]))].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, now, miss, mk: mkLevels(B, asOf, start), hz: horizons(B, buys, asOf, start), sell: sellsOf(B, buys, asOf, start)}; // sell = 사고 팔기(주문 1125-0049)
+}
+/** 사고 팔기(주문 1125-0049 · 사장님 2026-11-25(서울) 00:40 「이제는 매수 와 매도를 하자 · 매수는 지금처럼 하고 매도는 꾀에서 오르는 기준을 잡았잖아 그 기준 날짜로 팔고 … 매수 할때보다 12프로 하락이면 자동으로 팔게」
+ *    · 00:45 「숫자로 이야기해봐」 · 00:49 「그래 이렇게 하고 … 모든 거래는 종가 기준으로 거래를 하는 것이다」 — docs/design/sell-2026-11-25/order-0049.txt)
+ *  사는 것은 지금 그대로(꾀가 고른 날 종가로 10주) · 산 다음 장날 = 1일째 · 날마다 그날 종가를 봄(종가가 없는 날은 건너뛰고 장날 수만 셈)
+ *  ① 100원에 산 것이 88원 이하로 마감하면 그날 종가로 팜('c' · 12프로 내림) ② 꾀마다 정한 날(SELL_DAYS)이 되면 올랐든 안 올랐든 그날 종가로 팜('d')
+ *  ③ 아직 정한 날이 안 왔으면 들고 있음('h' · 가장 늦은 종가 · 산 날 뒤 종가가 없으면 산 값) · 판 돈은 다시 사지 않음
+ *  정한 날 = 분석 쪽(su21-fall.json fall36-v1 · 2024-05-30 ~ 2026-08-05 내리는 장 173날) 꾀마다 「오른 뒤 절반이 끝나는 날」(가운데 날수 · 반 날은 다음 날로 올림)
+ *    · 고른 것이 없거나(거래량 자료 없음 g08 · g13 · g19 · g29 · g32) 오른 날이 30번 아래(g33)인 꾀 = 아무렇게나 고른 회사의 가운데 4일째 · 이 표는 굳힘(sell-v1 · 분석을 다시 세도 안 바뀜) */
+export const SELL_RULE = 'sell-v1', SELL_CUT = 88;
+export const SELL_DAYS = Object.freeze({g01: 4, g02: 6, g03: 6, g04: 4, g05: 3, g06: 6, g07: 4, g08: 4, g09: 7, g10: 7, g11: 5, g12: 6, g13: 4, g14: 6, g15: 5, g16: 9, g17: 4, g18: 5,
+  g19: 4, g20: 4, g21: 3, g22: 7, g23: 8, g24: 8, g25: 5, g26: 4, g27: 7, g28: 4, g29: 4, g30: 3, g31: 4, g32: 4, g33: 4, g34: 6, g35: 5, g36: 6});
+/** 산 셈 하나 — px = 그 회사 {날: 종가} · tdays = 장날(차례) · i0 = 산 날 차례 · buy = 산 값(산 날 종가) · n = 정한 날 → [how, 날, 값, 며칠째] */
+export function sellOne(px, tdays, i0, buy, n) {
+  if (i0 == null || !fin(buy) || !(n >= 1)) return null;
+  let lastD = null, lastV = null, lastK = 0;
+  for (let k = 1; i0 + k < tdays.length; k++) {
+    const t = tdays[i0 + k], v = px?.[t];
+    if (!fin(v)) continue;
+    lastD = t; lastV = v; lastK = k;
+    if (v * 100 <= buy * SELL_CUT) return ['c', t, v, k];
+    if (k >= n) return ['d', t, v, k];
+  }
+  return ['h', lastD ?? tdays[i0], lastV ?? buy, lastK];
+}
+/** 산 셈마다 사고 팔기 — 꾀(g01 ~ g36)가 산 셈만(다른 묶음은 null) · 장날 = 장부 값 날 ∪ 판 전체 하루 몫 날(horizons 와 같음)
+ *  {rule, cut, days, s: [산 셈 차례대로 [how, 날, 값, 며칠째] | null], ex: 실제 보기 셋(정한 날 바로 그날 판 것 — 오른 것 · 안 오른 것 / 88원 줄에서 판 것 · 종가가 하루도 안 빠진 것 · 가장 이른 산 날 · 꾀 차례 · 번호 차례로 하나씩 · 산 날부터 판 날까지 종가)} */
+export function sellsOf(B, buys, asOf, start = START) {
+  const tdays = [...new Set([...Object.values(B?.px ?? {}).flatMap(m => Object.keys(m ?? {})), ...Object.keys(B?.mk ?? {})])].filter(d => DAY.test(d) && d >= start && (!asOf || d <= asOf)).sort();
+  const at = new Map(tdays.map((d, i) => [d, i]));
+  const s = buys.map(([d, ki, code, buy]) => { const n = SELL_DAYS[KINDS[ki]]; return n ? sellOne(B?.px?.[code], tdays, at.get(d), buy, n) : null; });
+  const order = s.map((x, i) => [x, i]).filter(([x]) => x).sort(([, a], [, b]) => buys[a][0].localeCompare(buys[b][0]) || buys[a][1] - buys[b][1] || buys[a][2].localeCompare(buys[b][2]));
+  const full = i => { const [d, , code] = buys[i], i0 = at.get(d), i1 = at.get(s[i][1]); return i0 != null && i1 != null && tdays.slice(i0, i1 + 1).every(t => fin(B?.px?.[code]?.[t])); }; // 보기는 종가가 하루도 안 빠진 것만
+  const pick = f => order.find(([x, i]) => f(x, buys[i]) && full(i))?.[1] ?? null;
+  const onDay = (x, b) => x[0] === 'd' && x[3] === SELL_DAYS[KINDS[b[1]]]; // 정한 날 바로 그날 판 것
+  const ex = [['up', (x, b) => onDay(x, b) && x[2] > b[3]], ['flat', (x, b) => onDay(x, b) && x[2] <= b[3]], ['cut', x => x[0] === 'c']].map(([kind, f]) => {
+    const i = pick(f); if (i == null) return null;
+    const [d, , code] = buys[i], i0 = at.get(d), i1 = at.get(s[i][1]);
+    return {kind, i, ser: tdays.slice(i0, i1 + 1).map(t => [t, fin(B?.px?.[code]?.[t]) ? B.px[code][t] : null])};
+  }).filter(Boolean);
+  return {rule: SELL_RULE, cut: SELL_CUT, days: {...SELL_DAYS}, s, ex};
 }
 /** 같은 날수로 재기(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 「다음에는 2번 「같은 날수로 재기」를 넣어 볼까요?」의 답 · 장부 잣대 2번)
  *  산 셈마다 산 날 뒤 1 · 5 · 20 장날의 값(그 회사의 그날까지 가장 늦은 값 · 판 날 뒤는 안 셈) — 「지금」은 산 날마다 지난 날수가 달라 견주기 어려움

@@ -1662,6 +1662,71 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
   await ctx.close();
 }
+{ // ㊲ 주문 1125-0049(사장님 2026-11-25(서울) 00:40 「이제는 매수 와 매도를 하자 … 그 기준 날짜로 팔고 … 12프로 하락이면 자동으로 팔게 … 오늘까지 한것과 … 상대 비교」 · 00:49 「… 설명칸 … 모든 거래는 종가 기준」)
+  //   정산 쪽(#/r/t) 「사기만 · 사고 팔기」 견줌 · 「이렇게 사고 팔아요」 설명칸 — 이 검사가 정산 자료(su21-settle.json)에서 따로 셈
+  //   가) 판 셈마다 규칙: 88원 줄(종가 × 100 ≤ 산 값 × 88) · 정한 날(며칠째 ≥ 꾀 날 · 줄 위) · 들고 있음(며칠째 < 꾀 날 · 값 = 가장 늦은 종가) · 판 날 ≥ 산 날
+  //   나) 두 셈 = 따로 센 값(산 돈 · 지금 · 판 돈과 남은 것 · 늘고 준 돈 · 판 것 · 들고 있는 것) · 막대 둘 · 한 줄 차이
+  //   다) 꾀마다(꾀 차례 · 순위 아님 · 파는 날) · 서랍 단추 48 · 라) 설명칸 네 걸음 · 꾀마다 파는 날 합 36 · 실제 보기 = 자료 보기(산 값 · 판 값 · 며칠째 · 날) · 오류 0
+  const W = '㊲ ';
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    await open(p, '#/r/t');
+    await p.waitForSelector('#su section.sj-sv', {timeout: 20000}).catch(() => {});
+    const g = await p.evaluate(async () => {
+      const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), D = await fetch('/su/data/su21-settle.json', {cache: 'no-store'}).then(r => r.json()).catch(() => null);
+      const KK = /^g(0[1-9]|[12]\d|3[0-6])$/, SV = D?.sell, q = Number.isFinite(D?.qty) ? D.qty : 10, bad = [], per = {};
+      let cost = 0, vB = 0, vS = 0, nd = 0, nc = 0, nh = 0, n = 0;
+      (D?.buys ?? []).forEach((b, i) => {
+        const k = D.kinds[b[1]]; if (!KK.test(k ?? '') || !(b[3] > 0)) return;
+        const x = SV?.s?.[i]; if (!Array.isArray(x)) { bad.push('셈 없음 ' + i); return; }
+        const now = D.now?.[b[2]]?.[0] > 0 ? D.now[b[2]][0] : b[3], N = SV.days?.[k];
+        n++; cost += b[3] * q; vB += now * q; vS += x[2] * q;
+        const o = per[k] ??= {cost: 0, vB: 0, vS: 0}; o.cost += b[3] * q; o.vB += now * q; o.vS += x[2] * q;
+        if (!(x[1] >= b[0])) bad.push('판 날 차례 ' + i);
+        if (x[0] === 'c') { nc++; if (!(x[2] * 100 <= b[3] * SV.cut)) bad.push('88원 줄 ' + i); }
+        else if (x[0] === 'd') { nd++; if (!(x[3] >= N) || x[2] * 100 <= b[3] * SV.cut) bad.push('정한 날 ' + i); }
+        else if (x[0] === 'h') { nh++; if (!(x[3] < N) || x[2] !== now) bad.push('들고 있음 ' + i); }
+        else bad.push('꼴 ' + i);
+      });
+      const sec = document.querySelector('#su main.sj-page[data-page="settle"] section.sj-sv'), sx = document.querySelector('#su main.sj-page[data-page="settle"] section.sj-svx');
+      const det = sec?.querySelector('details.sj-svk'), sum = det?.querySelector('summary')?.getBoundingClientRect();
+      if (det) det.open = true;
+      const days = SV?.days ?? {}, byN = {}; for (const v of Object.values(days)) byN[v] = (byN[v] ?? 0) + 1;
+      const order = [...document.querySelectorAll('#su main.sj-page[data-page="settle"] > section')].map(x => x.classList.contains('sj-sv') ? 'sv' : x.classList.contains('sj-svx') ? 'svx' : x.classList.contains('sj-st36') ? 'st36' : x.classList.contains('sj-ph') ? 'ph' : '');
+      return {ok: !!D, has: !!SV, rule: SV?.rule, cut: SV?.cut, n, cost, vB, vS, nd, nc, nh, bad: bad.slice(0, 5), nbad: bad.length, per, days, byN,
+        ex: (SV?.ex ?? []).map(e => ({kind: e.kind, b: D.buys[e.i], x: SV.s[e.i], co: D.co?.[D.buys[e.i]?.[2]]?.[0] ?? null, n: days[D.kinds[D.buys[e.i]?.[1]]]})),
+        sec: !!sec, sx: !!sx, order: order.filter(Boolean).join(' '),
+        cards: [...(sec?.querySelectorAll('.sj-svc > .sj-svcard') ?? [])].map(c => ({m: c.dataset.m, st: c.dataset.st, t: txt(c.querySelector('.sj-svt b')), big: txt(c.querySelector('.sj-svbig b')), l: [...c.querySelectorAll('.sj-svl')].map(txt)})),
+        bars: [...(sec?.querySelectorAll('figure.sj-svfig > .sj-svbr') ?? [])].map(b => ({m: b.dataset.m, st: b.dataset.st, v: txt(b.querySelector('.sj-svbv')), w: Math.round(b.querySelector('.sj-svfill')?.getBoundingClientRect().width ?? -1)})),
+        say: txt(sec?.querySelector('.sj-svsay')), sumH: sum ? Math.round(sum.height) : 0,
+        rows: [...(sec?.querySelectorAll('ol.sj-svkl > li.sj-svkr') ?? [])].map(li => ({k: li.dataset.k, d: txt(li.querySelector('.sj-svkn span')), v: [...li.querySelectorAll('.sj-svbv')].map(txt)})),
+        steps: [...(sx?.querySelectorAll('ol.sj-svstep > li') ?? [])].map(li => txt(li.querySelector('b'))),
+        dl: [...(sx?.querySelectorAll('ul.sj-svdl > li') ?? [])].map(li => [txt(li.querySelector('b')), txt(li.querySelector('span'))]),
+        exs: [...(sx?.querySelectorAll('ol.sj-svexs > li.sj-svex') ?? [])].map(li => ({kind: li.dataset.kind, t: txt(li), pic: !!li.querySelector('svg.sj-svpic polyline')})),
+        text: (sec?.innerText ?? '') + ' ' + (sx?.innerText ?? ''), over: document.documentElement.scrollWidth - innerWidth};
+    });
+    check(g.ok && g.has && g.rule === 'sell-v1' && g.cut === 88 && g.n > 0 && g.nbad === 0, W + width + ' 가) 판 셈마다 규칙 — 88원 줄 · 정한 날 · 들고 있음 · 판 날 차례(자료에서 따로 맞댐)', JSON.stringify({ok: g.ok, has: g.has, rule: g.rule, cut: g.cut, n: g.n, nbad: g.nbad, bad: g.bad}));
+    const dB = g.vB - g.cost, dS = g.vS - g.cost, gap = dS - dB, st = d => (Math.round(d) > 0 ? 'up' : Math.round(d) < 0 ? 'dn' : 'eq');
+    const cB = g.cards.find(c => c.m === 'buy'), cS = g.cards.find(c => c.m === 'sell');
+    check(g.sec && g.order.startsWith('ph sv svx st36') && g.cards.length === 2 && cB?.t === '사기만' && cS?.t === '사고 팔기' && cB.big === movedM(dB) && cS.big === movedM(dS) && cB.st === st(dB) && cS.st === st(dS)
+      && JSON.stringify(cB.l) === JSON.stringify(['산 돈 ' + wonM(g.cost), '지금 ' + wonM(g.vB)]) && JSON.stringify(cS.l) === JSON.stringify(['산 돈 ' + wonM(g.cost), '판 돈과 남은 것 ' + wonM(g.vS), '판 것 ' + (g.nd + g.nc).toLocaleString('ko-KR') + '번 · 들고 있는 것 ' + g.nh.toLocaleString('ko-KR') + '번']),
+      W + width + ' 나) 두 셈 = 따로 센 값(사기만 · 사고 팔기 · 산 돈 · 지금 · 판 돈과 남은 것 · 판 것 · 들고 있는 것) · 맨 위 다음 · 꾀마다 정산 앞', JSON.stringify({order: g.order, cards: g.cards, want: [movedM(dB), movedM(dS), wonM(g.cost), wonM(g.vB), wonM(g.vS), g.nd, g.nc, g.nh]}));
+    const mx = Math.max(Math.abs(dB), Math.abs(dS)), bw = d => (mx > 0 ? Math.abs(d) / mx : 0);
+    check(g.bars.length === 2 && g.bars[0].m === 'buy' && g.bars[1].m === 'sell' && g.bars[0].v === movedM(dB) && g.bars[1].v === movedM(dS) && g.bars[0].st === st(dB) && g.bars[1].st === st(dS)
+      && (bw(dB) >= bw(dS) ? g.bars[0].w >= g.bars[1].w : g.bars[0].w <= g.bars[1].w) && g.say === (Math.round(gap) === 0 ? '두 셈이 같아요.' : '사고 팔기 셈이 사기만 셈보다 ' + wonM(Math.abs(gap)) + (gap > 0 ? ' 더 많아요.' : ' 더 적어요.')),
+      W + width + ' 나) 막대 둘(더 많이 늘고 준 셈이 더 긴 막대) · 한 줄 차이 = 따로 센 값', JSON.stringify({bars: g.bars, say: g.say, gap}));
+    const ks = Object.keys(g.per).sort(), want = ks.map(k => ({k, d: g.days[k] + '일째에 팔아요', v: [movedM(g.per[k].vB - g.per[k].cost), movedM(g.per[k].vS - g.per[k].cost)]}));
+    check(g.sumH >= 47.5 && JSON.stringify(g.rows.map(r => ({k: r.k, d: r.d, v: r.v}))) === JSON.stringify(want), W + width + ' 다) 꾀마다 견줌 — 꾀 차례(순위 아님) · 파는 날 · 두 셈 · 서랍 단추 48 넘게', JSON.stringify({sumH: g.sumH, n: g.rows.length, want: want.length, first: g.rows[0], w0: want[0]}));
+    const dlWant = Object.entries(g.byN).sort((a, b) => a[0] - b[0]).map(([n, c]) => [n + '일째', '꾀 ' + c + '가지']);
+    const exOk = g.exs.length === g.ex.length && g.ex.every((e, i) => { const t = g.exs[i]?.t ?? ''; return g.exs[i].kind === e.kind && g.exs[i].pic && t.includes(mdM(e.b[0])) && t.includes('종가 ' + wonM(e.b[3])) && t.includes(mdM(e.x[1])) && t.includes(wonM(e.x[2])) && t.includes(e.x[3] + '일째') && (e.co ? t.includes(e.co) : true) && t.includes(movedM((e.x[2] - e.b[3]) * 10)); });
+    check(g.sx && JSON.stringify(g.steps) === JSON.stringify(['1. 사요', '2. 날을 세요', '3. 정한 날에 팔아요', '4. 많이 내리면 바로 팔아요']) && Object.values(g.byN).reduce((a, b) => a + b, 0) === 36 && JSON.stringify(g.dl) === JSON.stringify(dlWant) && exOk && /종가/.test(g.text) && /88원 이하/.test(g.text),
+      W + width + ' 라) 설명칸 — 네 걸음 · 꾀마다 파는 날(합 36) · 실제 보기 = 자료(산 날 · 산 값 · 판 날 · 판 값 · 며칠째 · 회사 · 늘고 준 돈) · 꺾은선', JSON.stringify({steps: g.steps, dl: g.dl, ex: g.ex.length, exs: g.exs.map(x => x.kind + ' ' + x.t.slice(0, 80))}));
+    check(!/%|매수|매도|추천/.test(g.text) && g.over <= 0 && !errs.length, W + width + ' 「%」 · 어려운 말 0 · 가로 넘침 0 · 화면 오류 0', JSON.stringify({over: g.over, errs: errs.slice(0, 2)}));
+    await ctx.close();
+  }
+}
 await browser.close();
 R.ok = R.counts.fail === 0;
 console.log(`손자병법 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);
