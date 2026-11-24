@@ -1,0 +1,450 @@
+{
+ "schema": "atlas11-evening-1",
+ "universe": "u2-n365-v1-2026-10-05",
+ "asOf": "2026-11-24",
+ "recordedAt": "2026-11-24T10:28:35.706Z",
+ "run": "evening",
+ "boardId": "board-2026-11-24-1e46db32",
+ "cand": [
+  {
+   "rank": 1,
+   "code": "181710",
+   "name": "NHN",
+   "g": "i395e4aea",
+   "close": 51200,
+   "date": "2026-11-24",
+   "status": "recheck",
+   "reason": "1년 추세 +62.6%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +31.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "과열 경고 이력 — 11월 10일 「[투자주의]투자경고종목 지정예고」(7일 지남)",
+   "gap": 13.92259529895924,
+   "r20": 2.7081243731193583,
+   "grow": {
+    "m12": 62.64,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "IT서비스",
+    "sectorRank": null,
+    "fi": 103,
+    "power": 0.5537,
+    "rank": 27,
+    "fomo": 91
+   }
+  },
+  {
+   "rank": 2,
+   "code": "124500",
+   "name": "아이티센글로벌",
+   "g": "ifd7313ac",
+   "close": 17740,
+   "date": "2026-11-24",
+   "status": "wait",
+   "reason": "1년 추세 −7.4%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +31.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "그물 밖으로 나감 — 1년 추세가 상위 20% 기준선 아래 · 석 달 동안은 그대로 두고 다음 담는 날에 정리",
+   "gap": -2.459495010899781,
+   "r20": -13.673965936739663,
+   "grow": {
+    "m12": -7.43,
+    "plantedAt": "2026-10-08",
+    "inNet": false
+   },
+   "flow": {
+    "sector": "IT 시스템 통합",
+    "sectorRank": null,
+    "fi": -15,
+    "power": -0.2151,
+    "rank": 219,
+    "fomo": 25
+   }
+  },
+  {
+   "rank": 3,
+   "code": "103590",
+   "name": "일진전기",
+   "g": "if5c9be18",
+   "close": 55100,
+   "date": "2026-11-24",
+   "status": "wait",
+   "reason": "1년 추세 −8.0%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +31.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "그물 밖으로 나감 — 1년 추세가 상위 20% 기준선 아래 · 석 달 동안은 그대로 두고 다음 담는 날에 정리",
+   "gap": 8.736594819645195,
+   "r20": -2.4778761061946875,
+   "grow": {
+    "m12": -7.98,
+    "plantedAt": "2026-10-08",
+    "inNet": false
+   },
+   "flow": {
+    "sector": "전선·전기장비",
+    "sectorRank": null,
+    "fi": 41,
+    "power": 0.0996,
+    "rank": 85,
+    "fomo": 71
+   }
+  },
+  {
+   "rank": 4,
+   "code": "039030",
+   "name": "이오테크닉스",
+   "g": "iafb9068f",
+   "close": 309500,
+   "date": "2026-11-24",
+   "status": "met",
+   "reason": "1년 추세 +38.4%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +31.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 — 지난 2년 초입 7곳은 석 달 뒤 평균을 이긴 날 100번 중 60번(그물 전체 85번)",
+   "gap": -10.431098694413288,
+   "r20": -21.64556962025317,
+   "grow": {
+    "m12": 38.35,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "반도체 장비",
+    "sectorRank": null,
+    "fi": -250,
+    "power": -0.3785,
+    "rank": 249,
+    "fomo": 14
+   }
+  },
+  {
+   "rank": 5,
+   "code": "088350",
+   "name": "한화생명",
+   "g": "i15189549",
+   "close": 3520,
+   "date": "2026-11-24",
+   "status": "wait",
+   "reason": "1년 추세 +23.7%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +31.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "그물 밖으로 나감 — 1년 추세가 상위 20% 기준선 아래 · 석 달 동안은 그대로 두고 다음 담는 날에 정리",
+   "gap": -1.8719488272465394,
+   "r20": -13.086419753086421,
+   "grow": {
+    "m12": 23.66,
+    "plantedAt": "2026-10-08",
+    "inNet": false
+   },
+   "flow": {
+    "sector": "보험",
+    "sectorRank": null,
+    "fi": -123,
+    "power": -0.267,
+    "rank": 229,
+    "fomo": 21
+   }
+  },
+  {
+   "rank": 6,
+   "code": "161890",
+   "name": "한국콜마",
+   "g": "i9af5b434",
+   "close": 121400,
+   "date": "2026-11-24",
+   "status": "met",
+   "reason": "1년 추세 +80.7%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +31.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 — 지난 2년 초입 7곳은 석 달 뒤 평균을 이긴 날 100번 중 60번(그물 전체 85번)",
+   "gap": 14.886546075284802,
+   "r20": 3.67207514944492,
+   "grow": {
+    "m12": 80.71,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "화장품",
+    "sectorRank": null,
+    "fi": 11,
+    "power": 0.0333,
+    "rank": 112,
+    "fomo": 62
+   }
+  },
+  {
+   "rank": 7,
+   "code": "001450",
+   "name": "현대해상",
+   "g": "i15189549",
+   "close": 33250,
+   "date": "2026-11-24",
+   "status": "met",
+   "reason": "1년 추세 +41.0%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +31.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "같은 업종 후보 2곳 — 같은 사건에 함께 흔들릴 수 있음",
+   "gap": -9.524504044362734,
+   "r20": -20.738974970202616,
+   "grow": {
+    "m12": 41.01,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "보험",
+    "sectorRank": null,
+    "fi": -143,
+    "power": -0.3525,
+    "rank": 246,
+    "fomo": 16
+   }
+  }
+ ],
+ "candRules": "cand-rules-5",
+ "candPool": {
+  "universe": 365,
+  "valid": 359,
+  "net": 72,
+  "netElig": 62,
+  "newc": 14,
+  "data": 359,
+  "profit": 299,
+  "risk": 290
+ },
+ "hot": [
+  {
+   "id": "idbce9b07",
+   "label": "항공",
+   "change20": 0.446663
+  },
+  {
+   "id": "ia322e43a",
+   "label": "연예 기획사",
+   "change20": 0.164878
+  },
+  {
+   "id": "i395e4aea",
+   "label": "IT서비스",
+   "change20": 0.147767
+  },
+  {
+   "id": "i1f7e7302",
+   "label": "제약",
+   "change20": 0.130046
+  },
+  {
+   "id": "ibaf1f1d7",
+   "label": "로봇·건설기계",
+   "change20": 0.094611
+  },
+  {
+   "id": "if16069cc",
+   "label": "콘텐츠 제작",
+   "change20": 0.069512
+  },
+  {
+   "id": "i75fe8fc8",
+   "label": "방송",
+   "change20": 0.065051
+  },
+  {
+   "id": "i47aca19f",
+   "label": "물류·운송",
+   "change20": 0.051572
+  },
+  {
+   "id": "ia26340cb",
+   "label": "은행·카드",
+   "change20": 0.044207
+  },
+  {
+   "id": "i9af5b434",
+   "label": "화장품",
+   "change20": 0.037657
+  },
+  {
+   "id": "ib275142c",
+   "label": "음료",
+   "change20": 0.018513
+  }
+ ],
+ "similar": [
+  {
+   "code": "029460",
+   "name": "케이씨",
+   "groupId": "i3b897314",
+   "groupLabel": "반도체 검사·측정",
+   "matched": 3
+  },
+  {
+   "code": "030530",
+   "name": "원익홀딩스",
+   "groupId": "i2f453d90",
+   "groupLabel": "반도체 소재",
+   "matched": 3
+  },
+  {
+   "code": "290650",
+   "name": "엘앤씨바이오",
+   "groupId": "i5d55c4dc",
+   "groupLabel": "의료기기",
+   "matched": 3
+  },
+  {
+   "code": "053800",
+   "name": "안랩",
+   "groupId": "ibaad6b46",
+   "groupLabel": "소프트웨어",
+   "matched": 3
+  },
+  {
+   "code": "099320",
+   "name": "쎄트렉아이",
+   "groupId": "i8e72bf92",
+   "groupLabel": "항공·우주",
+   "matched": 3
+  },
+  {
+   "code": "218410",
+   "name": "RFHIC",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비",
+   "matched": 3
+  },
+  {
+   "code": "389500",
+   "name": "에스비비테크",
+   "groupId": "id486d496",
+   "groupLabel": "일반 기계",
+   "matched": 3
+  }
+ ],
+ "common": [
+  "ups",
+  "r20",
+  "ins"
+ ],
+ "next": [
+  {
+   "code": "029460",
+   "name": "케이씨",
+   "groupId": "i3b897314",
+   "groupLabel": "반도체 검사·측정"
+  },
+  {
+   "code": "030530",
+   "name": "원익홀딩스",
+   "groupId": "i2f453d90",
+   "groupLabel": "반도체 소재"
+  },
+  {
+   "code": "290650",
+   "name": "엘앤씨바이오",
+   "groupId": "i5d55c4dc",
+   "groupLabel": "의료기기"
+  },
+  {
+   "code": "053800",
+   "name": "안랩",
+   "groupId": "ibaad6b46",
+   "groupLabel": "소프트웨어"
+  },
+  {
+   "code": "099320",
+   "name": "쎄트렉아이",
+   "groupId": "i8e72bf92",
+   "groupLabel": "항공·우주"
+  },
+  {
+   "code": "290550",
+   "name": "디케이티",
+   "groupId": "ia84fa0e7",
+   "groupLabel": "휴대폰 부품"
+  },
+  {
+   "code": "218410",
+   "name": "RFHIC",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비"
+  },
+  {
+   "code": "389500",
+   "name": "에스비비테크",
+   "groupId": "id486d496",
+   "groupLabel": "일반 기계"
+  },
+  {
+   "code": "009160",
+   "name": "SIMPAC",
+   "groupId": "i1fb69618",
+   "groupLabel": "비철금속"
+  },
+  {
+   "code": "034230",
+   "name": "파라다이스",
+   "groupId": "i90fe36a6",
+   "groupLabel": "호텔·레저"
+  },
+  {
+   "code": "302440",
+   "name": "SK바이오사이언스",
+   "groupId": "i829a5180",
+   "groupLabel": "바이오 의약품"
+  },
+  {
+   "code": "214450",
+   "name": "파마리서치",
+   "groupId": "i8407a2da",
+   "groupLabel": "의료용품"
+  },
+  {
+   "code": "340570",
+   "name": "티앤엘",
+   "groupId": "i8407a2da",
+   "groupLabel": "의료용품"
+  },
+  {
+   "code": "251970",
+   "name": "펌텍코리아",
+   "groupId": "i679cb731",
+   "groupLabel": "종이·포장재"
+  },
+  {
+   "code": "058610",
+   "name": "에스피지",
+   "groupId": "ib8333ad0",
+   "groupLabel": "전기 부품"
+  },
+  {
+   "code": "032500",
+   "name": "케이엠더블유",
+   "groupId": "id7ac3044",
+   "groupLabel": "통신장비"
+  },
+  {
+   "code": "326030",
+   "name": "SK바이오팜",
+   "groupId": "i578e846b",
+   "groupLabel": "신약 개발"
+  },
+  {
+   "code": "140410",
+   "name": "메지온",
+   "groupId": "i578e846b",
+   "groupLabel": "신약 개발"
+  },
+  {
+   "code": "137310",
+   "name": "에스디바이오센서",
+   "groupId": "i5d55c4dc",
+   "groupLabel": "의료기기"
+  },
+  {
+   "code": "068270",
+   "name": "셀트리온",
+   "groupId": "i829a5180",
+   "groupLabel": "바이오 의약품"
+  },
+  {
+   "code": "161390",
+   "name": "한국타이어앤테크놀로지",
+   "groupId": "i74256cb4",
+   "groupLabel": "자동차부품"
+  },
+  {
+   "code": "004170",
+   "name": "신세계",
+   "groupId": "if39e885a",
+   "groupLabel": "유통"
+  }
+ ]
+}
