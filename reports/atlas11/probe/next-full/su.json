@@ -1,17 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-24T16:43:49.582Z",
+ "at": "2026-11-24T20:44:48.682Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 629,
-  "fail": 1
+  "pass": 630,
+  "fail": 0
  },
- "fails": [
-  [
-   "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795538909567"
-  ]
- ],
+ "fails": [],
  "m": {
   "data": {
    "fk": "g18",
@@ -115,9 +110,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 944,
+   "lcp": 904,
    "cls": 0.029,
-   "pic": 765
+   "pic": 760
   },
   "white": {
    "light #/": {
@@ -1030,5 +1025,5 @@
    }
   }
  },
- "ok": false
+ "ok": true
 }
