@@ -1,44 +1,48 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-23T21:14:24.069Z",
+ "at": "2026-11-24T08:39:39.194Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 600,
-  "fail": 0
+  "pass": 531,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  [
+   "㉔ 며칠째 자료(주문 1114-0151) — 꾀마다 회사 · 조용한 힘 일곱 · 1 넘는 정수 · 첫 발견 = 기록 첫날 ~ 판 날(장부에 그날 기록이 없으면 며칠째 없음)",
+   "{\"bad\":[{\"code\":\"033780\",\"name\":\"KT&G\",\"days\":1,\"found\":\"2026-11-24\",\"since\":false},{\"code\":\"002840\",\"name\":\"미원상사\",\"days\":1,\"found\":\"2026-11-24\",\"since\":false}],\"q\":[],\"from\":\"2026-11-13\"}"
+  ]
+ ],
  "m": {
   "data": {
-   "fk": "g18",
-   "fc": "한진칼",
-   "sun": true
+   "fk": "g01",
+   "fc": null,
+   "sun": false
   },
   "home": {
-   "screens": 17.07,
-   "links": 54
+   "screens": 4.67,
+   "links": 16
   },
   "t21": {
    "listed": 2557,
-   "board": "2026-11-23"
+   "board": "2026-11-06"
   },
   "path": [
    {
-    "h1": "지금은 내리는 시장 이에요.",
+    "h1": "서른여섯 꾀",
     "page": "sonja",
     "kids": [
      "sj-mind",
      "sj-cover",
      "sj-sun",
-     "sj-s36",
      "sj-more",
      "sj-end"
     ],
-    "seals": 22,
-    "hard": 5,
-    "hardWords": "코스피,코스닥,주식,외국인,기관"
+    "seals": 0,
+    "hard": 3,
+    "hardWords": "코스피,코스닥,주식"
    },
    {
-    "h1": "우두머리 잡기",
+    "h1": "몰래 바다 건너기",
     "page": "kkoe",
     "kids": [
      "sj-ph",
@@ -49,24 +53,9 @@
      "sj-kpn",
      "sj-end"
     ],
-    "seals": 1,
+    "seals": 0,
     "hard": 1,
     "hardWords": "주식"
-   },
-   {
-    "h1": "한진칼",
-    "page": "co",
-    "kids": [
-     "sj-ph",
-     "sj-coval",
-     "sj-cok",
-     "sj-colink",
-     "sj-costop",
-     "sj-end"
-    ],
-    "seals": 0,
-    "hard": 2,
-    "hardWords": "코스피,업종"
    },
    {
     "h1": "왜 사?",
@@ -100,19 +89,16 @@
     "hardWords": "코스피"
    }
   ],
-  "hard": 10,
+  "hard": 6,
   "hardWords": [
    "코스피",
    "코스닥",
-   "주식",
-   "외국인",
-   "기관",
-   "업종"
+   "주식"
   ],
   "speed": {
-   "lcp": 796,
-   "cls": 0.034,
-   "pic": 702
+   "lcp": 812,
+   "cls": 0.029,
+   "pic": 713
   },
   "white": {
    "light #/": {
@@ -143,22 +129,7 @@
      "#F3F8F6"
     ]
    },
-   "light #/k/g18": {
-    "sj": true,
-    "body": "rgb(243, 248, 246)",
-    "top": "rgb(243, 248, 246)",
-    "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(252, 254, 253)",
-    "h1": "rgb(32, 50, 58)",
-    "frame": "none",
-    "orn": 0,
-    "old": 0,
-    "cover": 0,
-    "tc": [
-     "#F3F8F6"
-    ]
-   },
-   "light #/c/180640": {
+   "light #/k/g01": {
     "sj": true,
     "body": "rgb(243, 248, 246)",
     "top": "rgb(243, 248, 246)",
@@ -246,22 +217,7 @@
      "#F3F8F6"
     ]
    },
-   "dark #/k/g18": {
-    "sj": true,
-    "body": "rgb(243, 248, 246)",
-    "top": "rgb(243, 248, 246)",
-    "dock": "rgba(0, 0, 0, 0)",
-    "tabs": "rgb(252, 254, 253)",
-    "h1": "rgb(32, 50, 58)",
-    "frame": "none",
-    "orn": 0,
-    "old": 0,
-    "cover": 0,
-    "tc": [
-     "#F3F8F6"
-    ]
-   },
-   "dark #/c/180640": {
+   "dark #/k/g01": {
     "sj": true,
     "body": "rgb(243, 248, 246)",
     "top": "rgb(243, 248, 246)",
@@ -944,9 +900,9 @@
     42
    ],
    "up36": [
-    "g25",
-    "g33",
-    "g19"
+    "g18",
+    "g29",
+    "g36"
    ],
    "inds": 59,
    "cos": 125,
@@ -957,76 +913,61 @@
    "missO": 0
   },
   "s36": {
-   "all": 228,
+   "all": 49,
    "now": 28,
    "next": 21,
-   "s36": 179,
-   "sn": true,
-   "same": true,
+   "s36": 0,
+   "sn": false,
+   "same": false,
    "empty": [
-    "g07",
-    "g21",
+    "g17",
+    "g18",
     "g24",
     "g29",
-    "g33",
-    "g35"
+    "g33"
    ],
-   "data": "2026-11-23",
+   "data": "2026-10-13",
    "sp": {
-    "want": 179,
-    "chips": 179,
-    "got": 15
+    "want": 199,
+    "chips": 199,
+    "got": 0
    },
    "ovl": {
-    "n": 23,
-    "sp": 23,
-    "top": [
-     7,
-     7,
-     6
-    ],
-    "days": [
-     7,
-     4,
-     4
-    ],
-    "from": "2026-11-13"
+    "n": 0,
+    "sp": 0,
+    "top": [],
+    "days": [],
+    "from": null
    },
    "days": {
     "from": "2026-11-13",
     "max": 7,
-    "n2": 111,
+    "n2": 20,
     "q": [
-     4,
-     8,
-     6,
-     1,
-     1,
-     1,
-     1
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
     ],
-    "qFrom": "2026-11-12"
+    "qFrom": null
    },
    "pick": {
-    "rule": "s36-v3",
-    "empty": 6,
+    "rule": null,
+    "empty": null,
     "mm": {
-     "n": 105,
+     "n": 0,
      "bad": 0
     },
     "mix": {
-     "n": 179,
+     "n": 0,
      "bad": 0
     },
-    "themes": [
-     "항공 17",
-     "물류·운송 6",
-     "전자부품 4",
-     "연예 기획사 9",
-     "은행·카드 6"
-    ]
+    "themes": []
    }
   }
  },
- "ok": true
+ "ok": false
 }
