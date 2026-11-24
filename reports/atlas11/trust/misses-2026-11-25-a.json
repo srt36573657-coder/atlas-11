@@ -1,0 +1,20 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-11-25T01:40+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-11-25 01:05(서울) 주문 1125-0049 첫 미리 보기 sonja-sell 1/11",
+  "to": "2026-11-25 01:16(서울) 미리 보기 끝 — 손자병법 「화면 오류 0」 다섯"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 262,
+   "when": "2026-11-25 01:05–01:16(서울) 주문 1125-0049",
+   "what": "사고 팔기 막대 길이를 h() 의 style('--w:…%')로 넣음 — 사이트 보안 규칙(style-src 'self')이 인라인 꾸밈을 막아 정산 쪽에서 화면 오류 다섯(390 · 360 · 320 · ㉓ 390 · 320) · 지역 서버(invite_dev)는 이 규칙을 안 걸어 지역 검사 ㊲ 열둘이 통과해 못 봄 · 미리 보기 한 번(sonja-sell 1/11)을 씀",
+   "found_by": "미리 보기 run 45433095498 su.tail.txt 「Refused to apply inline style because it violates the following Content Security Policy directive: style-src 'self'」",
+   "fixed": "막대를 SVG 네모(x · width 값)로 바꿈(커밋 61f749d795) · 지역에서 같은 보안 규칙을 걸고 열어 꾸밈 글 0 · 화면 오류 0 확인 · 시험 tests/atlas11/su-nostyle.test.mjs(site/su/*.js 에 style 넘김 · style 속성 쓰기 0)로 글에서 미리 막음"
+  }
+ ]
+}
