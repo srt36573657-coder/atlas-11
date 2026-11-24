@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-23T22:54:15Z",
+ "at": "2026-11-24T00:26:45Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,7 +30,7 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "3d506bc84fb1415e262365487057dec6bc122e67272260c8fac498c19f53baaf",
+   "sha256": "260d895de7c710b73156b15ae005b7e2fdd429b7c554879fe758407e328ce441",
    "last": "2026-11-23"
   },
   "mkt": {
@@ -62,7 +62,7 @@
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "104aabf9252d8cce47a25cd7209c340eb8579f573fd74ffd80b0554ce46e1e11"
+   "sha256": "7026e0d0529300dd2758abf036f6f6114f505401ba647bd0e6a510014faf8a28"
   },
   "gates": {
    "path": "site/next/data/gates.json",
@@ -89,7 +89,7 @@
    "listed": 4307,
    "companies": 2557,
    "outThin": 1772,
-   "outThinQ": 34,
+   "outThinQ": 36,
    "outHalt": 2,
    "outList": 3,
    "listQ": 780,
@@ -396,7 +396,7 @@
   "listed": 4307,
   "companies": 2557,
   "outThin": 1772,
-  "outThinQ": 34,
+  "outThinQ": 36,
   "outHalt": 2,
   "outList": 3,
   "listQ": 780,
@@ -421,9 +421,9 @@
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 2.9,
-  "build": 1.8,
+  "readBundle": 2.5,
+  "build": 1.7,
   "recount": 0.7,
-  "total": 5.4
+  "total": 5.0
  }
 }
