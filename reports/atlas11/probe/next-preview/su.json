@@ -1,17 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-24T11:04:00.121Z",
+ "at": "2026-11-24T11:31:38.121Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 531,
-  "fail": 1
+  "pass": 546,
+  "fail": 0
  },
- "fails": [
-  [
-   "㉜ [320] 가) 맨 위 「찾기」 — 선물 바로 앞 · 같은 줄 · 48 넘게 · 누르면 회사 탭 찾기 칸에 커서 · 머리 줄 한 줄",
-   "{\"t\":{\"has\":true,\"shown\":true,\"next\":true,\"row\":true,\"href\":\"#/o\",\"txt\":\"찾기\",\"topH\":122,\"wide\":true},\"focus\":{\"hash\":\"#/o\",\"active\":true}}"
-  ]
- ],
+ "fails": [],
  "m": {
   "data": {
    "fk": "g01",
@@ -20,7 +15,7 @@
   },
   "home": {
    "screens": 4.7,
-   "links": 16
+   "links": 14
   },
   "t21": {
    "listed": 2557,
@@ -96,9 +91,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 1952,
+   "lcp": 1964,
    "cls": 0.034,
-   "pic": 1848
+   "pic": 1841
   },
   "white": {
    "light #/": {
@@ -963,5 +958,5 @@
    }
   }
  },
- "ok": false
+ "ok": true
 }
