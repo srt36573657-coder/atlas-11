@@ -25,6 +25,37 @@ const sgn = v => (v > 0 ? '+' : v < 0 ? '−' : '');
 const p2 = v => sgn(v) + Math.abs(v).toFixed(2) + '%';
 const T = (s, x, y, t, cls, anchor = 'start') => { const e = sv('text', {class: cls, x: (+x).toFixed(1), y: (+y).toFixed(1), 'text-anchor': anchor}); e.textContent = t; s.append(e); return e; };
 const svgBox = (cls, W, H, label) => sv('svg', {class: 'nh-svg ' + cls, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': label});
+/** 그림 속 이름 글이 그림 밖으로 나가지 않게(주문 1124-2206 · 2026-11-24 진짜 사이트 검사 theme 「영어 — 화면 밖 — nh-dl」 — 새 자료에서 긴 영어 업종 이름이 점 오른쪽으로 그림 밖까지 나감)
+ *   업종 이름(nh-dl) = 점 옆 원래 쪽 → 반대쪽 → 그림 안으로 당김 · 그래도 그림보다 길면 글자 사이를 좁힘 · 칸 이름 · 축 글 = 그림 안으로 당김
+ *   그린 뒤 한 번(붙을 때까지 기다림) · 글이 바뀔 때마다(영어 팩이 글을 바꿈) · 글꼴을 다 받은 뒤 다시 잼 — 한국어 화면에서 그림 안에 있던 글은 그대로 */
+const FIT_PAD = 3;
+function fitText(svg, W) {
+  for (const e of svg.querySelectorAll('text.nh-dl, text.nh-zl, text.nh-axt:not(.nh-axv)')) {
+    let b; try { b = e.getBBox(); } catch { continue; }
+    if (!b || !(b.width > 0)) continue;
+    const room = W - FIT_PAD * 2, w = Math.min(b.width, room);
+    if (b.width > room) { e.setAttribute('textLength', room.toFixed(1)); e.setAttribute('lengthAdjust', 'spacingAndGlyphs'); } else if (e.hasAttribute('textLength')) { e.removeAttribute('textLength'); e.removeAttribute('lengthAdjust'); }
+    const ok = (x, a) => { const l = a === 'start' ? x : a === 'end' ? x - w : x - w / 2; return l >= FIT_PAD - 0.01 && l + w <= W - FIT_PAD + 0.01; };
+    const cur = [+e.getAttribute('x'), e.getAttribute('text-anchor') || 'start'];
+    let pick = null;
+    if (e.classList.contains('nh-dl') && e.dataset.cx) {
+      const cx = +e.dataset.cx, home = e.dataset.side === 'end' ? [[cx - 11, 'end'], [cx + 11, 'start']] : [[cx + 11, 'start'], [cx - 11, 'end']];
+      pick = home.find(([x, a]) => ok(x, a)) ?? null;
+      if (!pick) pick = [Math.min(Math.max(cx - w / 2, FIT_PAD), W - FIT_PAD - w), 'start'];
+    } else if (!ok(cur[0], cur[1])) {
+      const l = cur[1] === 'start' ? cur[0] : cur[1] === 'end' ? cur[0] - w : cur[0] - w / 2;
+      pick = [Math.min(Math.max(l, FIT_PAD), W - FIT_PAD - w), 'start'];
+    }
+    if (pick && (Math.abs(pick[0] - cur[0]) > 0.05 || pick[1] !== cur[1])) { e.setAttribute('x', pick[0].toFixed(1)); e.setAttribute('text-anchor', pick[1]); }
+  }
+}
+function fitSoon(svg, W) {
+  let k = 0; const go = () => { if (svg.isConnected) { fitText(svg, W); return; } if (++k < 120) requestAnimationFrame(go); };
+  requestAnimationFrame(go);
+  try { new MutationObserver(() => { if (svg.isConnected) fitText(svg, W); }).observe(svg, {subtree: true, characterData: true, childList: true}); } catch { /* 지켜보기 못 함 */ }
+  try { document.fonts?.ready?.then(() => { if (svg.isConnected) fitText(svg, W); }); } catch { /* 글꼴 소식 없음 */ }
+}
+
 /** 네 자리 쉬운 이름 — 놓는 자리는 theme-rule.js zoneOf 그대로(가로 RULE.bloomX · 세로 0) */
 export const ZNAME = Object.freeze({S: '막 오르기 시작', B: '한 달 내내 강함', W: '강하다 꺾임', Q: '조용함'});
 const ZORDER = ['S', 'B', 'Q', 'W']; // 위 왼쪽 · 위 오른쪽 · 아래 왼쪽 · 아래 오른쪽
@@ -303,12 +334,13 @@ function plot(TH) {
   for (const i of I) s.append(sv('circle', {class: 'nh-dot nh-dot-' + i.z + (i.sc === 4 ? ' nh-dot4' : ''), cx: sx(i.x).toFixed(1), cy: sy(i.y).toFixed(1), r: i.sc === 4 ? 8 : 5.5}));
   T(s, L + 6, Tp + 20, `${ZNAME.S} ${fin(cnt.S) ? cnt.S : '?'}`, 'nh-zl nh-zl-S'); T(s, L + pw - 6, Tp + 20, `${ZNAME.B} ${fin(cnt.B) ? cnt.B : '?'}`, 'nh-zl nh-zl-B', 'end');
   T(s, L + 6, Tp + ph - 9, `${ZNAME.Q} ${fin(cnt.Q) ? cnt.Q : '?'}`, 'nh-zl nh-zl-Q'); T(s, L + pw - 6, Tp + ph - 9, `${ZNAME.W} ${fin(cnt.W) ? cnt.W : '?'}`, 'nh-zl nh-zl-W', 'end');
-  for (const i of lab) { const x = sx(i.x), y = sy(i.y), right = x < L + pw * 0.62; T(s, right ? x + 11 : x - 11, y + 5, i.n, 'nh-dl', right ? 'start' : 'end'); }
+  for (const i of lab) { const x = sx(i.x), y = sy(i.y), right = x < L + pw * 0.62, e = T(s, right ? x + 11 : x - 11, y + 5, i.n, 'nh-dl', right ? 'start' : 'end'); e.dataset.cx = x.toFixed(1); e.dataset.side = right ? 'start' : 'end'; }
   // 축 — 화살표와 기준 숫자를 그림 안에(글 풀이 대신)
   s.append(sv('line', {class: 'nh-axl', x1: L, y1: H - 22, x2: L + pw, y2: H - 22}), sv('path', {class: 'nh-axh', d: `M${L + pw - 7},${H - 26} L${L + pw},${H - 22} L${L + pw - 7},${H - 18}`}));
   T(s, L + pw - 10, H - 28, '한 달 동안 시장보다 더 오름', 'nh-axt', 'end'); // 「+5%p」 · 「0」 눈금 글은 뺌(2026-10-29 13:33 「헷갈리게 글을 적는 것 모두 빼」 — 줄은 그대로)
   s.append(sv('line', {class: 'nh-axl', x1: 10, y1: Tp + ph, x2: 10, y2: Tp}), sv('path', {class: 'nh-axh', d: `M6,${Tp + 7} L10,${Tp} L14,${Tp + 7}`}));
   T(s, 20, Tp + ph * 0.26, '닷새 동안 더 오름', 'nh-axt nh-axv', 'middle').setAttribute('transform', `rotate(-90 20 ${(Tp + ph * 0.26).toFixed(1)})`);
+  fitSoon(s, W); // 이름 · 칸 · 축 글이 그림 밖으로 나가지 않게(주문 1124-2206)
   return {svg: s, n: I.length};
 }
 

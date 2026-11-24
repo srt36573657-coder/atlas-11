@@ -304,6 +304,22 @@ try {
       await ctx.close();
     }
   }
+  /* ⑦-2 이름 글 끝 자리(주문 1124-2206 · 2026-11-24 진짜 사이트 theme 「영어 — 화면 밖 — B #/ nh-dl」 — 새 자료에서 긴 영어 업종 이름이 점 오른쪽으로 화면 밖)
+     업종을 모두 굵은 점(이름 붙음)으로 · 이름이 가장 멀리 뻗는 자리(오른쪽으로 뻗는 끝 · 왼쪽으로 뻗는 끝)에 모아 · 영어 · 한국어 · 320 · 360 → 그림 속 이름 · 칸 이름 · 축 글이 화면 밖 0 */
+  if (HM) for (const [mode, xx, zz] of [['오른쪽 끝', 22.4, 'S'], ['왼쪽 끝', 24, 'W']]) {
+    const hm = structuredClone(HM), n = hm.inds.length; hm.inds.forEach((i, k) => Object.assign(i, k === 0 ? {x: 40, y: 0, sc: 4, z: 'B'} : {x: xx, y: -4.5 + 9 * k / n, sc: 4, z: zz}));
+    for (const en of [true, false]) for (const w of [320, 360]) {
+      const {p, ctx} = await open((en ? '?lang=en' : '?lang=ko') + '#/', {w, h: 640, routes: [['**/next/data/theme-home.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(hm)})]]});
+      await p.waitForSelector('#view svg.nh-plot text.nh-dl', {timeout: 15000}).catch(() => {});
+      if (en) await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {});
+      await p.waitForTimeout(400);
+      const g = await p.evaluate(() => { const vw = innerWidth, L = [...document.querySelectorAll('#view svg.nh-plot text.nh-dl, #view svg.nh-plot text.nh-zl, #view svg.nh-plot text.nh-axt:not(.nh-axv)')];
+        return {n: L.filter(e => e.classList.contains('nh-dl')).length, off: L.filter(e => { const q = e.getBoundingClientRect(); return q.width > 0 && (q.right > vw + 0.5 || q.left < -0.5); }).map(e => e.getAttribute('class') + ' ' + e.textContent.slice(0, 24))}; });
+      if (g.n < n || g.off.length) fail('그림 이름 끝 자리', mode + (en ? ' 영어 ' : ' 한국어 ') + w + ' — 이름 ' + g.n + '/' + n + ' · 화면 밖 ' + g.off.slice(0, 3).join(' | '));
+      if (p._errs.length) fail('화면 오류', '그림 이름 끝 자리 ' + mode + ' ' + p._errs.slice(0, 2).join(' | '));
+      bump('그림 이름 끝 자리'); await ctx.close();
+    }
+  }
   /* ⑨ 관심 업종 · 사이트 안 알림(2026-10-19 「다해」 못 한 것 1 · 견본 18 · 26 쪽) — 담기 → 알림 쪽 줄 · 켜짐 단추 · 첫 화면 소식(바뀐 자리만 · 꺼 두면 없음) */
   {
     const z0 = I1.z, other = z0 === 'S' ? 'Q' : 'S', want = {S: '싹 자리에 들어왔어요', B: '꽃 선을 넘었어요', W: '시듦 자리로 갔어요', Q: '잠잠 자리로 갔어요'}[z0];
