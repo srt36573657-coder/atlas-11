@@ -396,10 +396,16 @@ export function sellSum(D) {
   });
   return {q, tot, per, days: SV.days ?? {}, ex: Array.isArray(SV.ex) ? SV.ex : [], cut: SV.cut ?? 88};
 }
-const svBar = (m, label, d, mx) => h('div', {class: 'sj-svbr', 'data-m': m, 'data-st': stOfD(d)},
-  h('span', {class: 'sj-svbl', text: label}),
-  h('span', {class: 'sj-svtrack', 'aria-hidden': 'true'}, h('i', {class: 'sj-svfill', style: '--w:' + (mx > 0 ? Math.min(50, Math.abs(d) / mx * 50) : 0).toFixed(2) + '%'})),
-  h('span', {class: 'sj-svbv', text: moved(d)}));
+const svBar = (m, label, d, mx) => { // 붓 막대 — 가운데 줄에서 늘면 오른쪽(먹) · 줄면 왼쪽(남빛) · 그림 속 값(글은 밖) · 인라인 꾸밈 없음(보안 규칙 style-src 'self')
+  const st = stOfD(d), f = mx > 0 ? Math.min(1, Math.abs(d) / mx) : 0, w = 100 * f;
+  return h('div', {class: 'sj-svbr', 'data-m': m, 'data-st': st},
+    h('span', {class: 'sj-svbl', text: label}),
+    s('svg', {class: 'sj-svtrack', viewBox: '0 0 200 18', preserveAspectRatio: 'none', 'aria-hidden': 'true'},
+      s('rect', {class: 'sj-svtr', x: 0, y: 0, width: 200, height: 18}),
+      s('rect', {class: 'sj-svfill', x: (st === 'dn' ? 100 - w : 100).toFixed(2), y: 3, width: w.toFixed(2), height: 12}),
+      s('rect', {class: 'sj-svmid', x: 99, y: 0, width: 2, height: 18})),
+    h('span', {class: 'sj-svbv', text: moved(d)}));
+};
 function svCompare(SV, nameOf) {
   const T = SV.tot, dB = T.valB - T.cost, dS = T.valS - T.cost, gap = dS - dB, mx = Math.max(Math.abs(dB), Math.abs(dS));
   const card = (m, title, sub, d, val, extra) => h('div', {class: 'sj-svcard', 'data-m': m, 'data-st': stOfD(d)},
