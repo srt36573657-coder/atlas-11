@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-11-24T12:21:32.145Z",
+ "at": "2026-11-24T14:08:50.541Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-24",
  "combos": 100,
@@ -12,15 +12,15 @@
   "widths"
  ],
  "full": true,
- "seconds": 51,
+ "seconds": 53,
  "time": {
-  "old": 16.9,
-  "new": 20.6,
-  "wall": 50.7,
+  "old": 17.9,
+  "new": 21.6,
+  "wall": 53.2,
   "opensOld": 654,
   "opensNew": 681,
-  "oldPct": 33.4,
-  "oldShare": 45.1
+  "oldPct": 33.6,
+  "oldShare": 45.3
  },
  "net": {
   "req": 3,
