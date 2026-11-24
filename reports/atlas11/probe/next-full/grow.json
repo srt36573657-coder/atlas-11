@@ -1,8 +1,8 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-24T08:41:00.268Z",
+ "at": "2026-11-24T12:08:11.000Z",
  "base": "https://aaa7377.com",
- "asOf": "2026-10-13",
+ "asOf": "2026-11-24",
  "companies": 2557,
  "of": 2557,
  "all": true,
@@ -12,7 +12,7 @@
  "units": {
   "total": 2569,
   "mine": 2569,
-  "hash": "93be7759dc916b0a",
+  "hash": "269ab855110e72b1",
   "kinds": {
    "c": {
     "total": 2557,
@@ -32,15 +32,15 @@
    }
   }
  },
- "seconds": 410,
+ "seconds": 746,
  "time": {
-  "old": 266.5,
-  "new": 206.4,
-  "wall": 410.3,
+  "old": 354.3,
+  "new": 360.5,
+  "wall": 746.1,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 64.9,
-  "oldShare": 56.4
+  "oldPct": 47.5,
+  "oldShare": 49.6
  },
  "net": {
   "req": 2560,
