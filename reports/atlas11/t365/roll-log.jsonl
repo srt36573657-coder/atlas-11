@@ -1028,3 +1028,4 @@
 {"at":"2026-11-24T10:50:38.171Z","kst":"2026-11-24 19:50","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":null}
 {"at":"2026-11-24T11:39:17.188Z","kst":"2026-11-24 20:39","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":null}
 {"at":"2026-11-24T11:59:20.081Z","kst":"2026-11-24 20:59","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
+{"at":"2026-11-24T12:15:21.817Z","kst":"2026-11-24 21:15","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
