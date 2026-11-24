@@ -10,7 +10,7 @@ import {h, s} from '/su/su-fig.js';
 import {NAME, josa} from '/next/brand.js';
 import {kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js';
-import {topBar, stepTag, endSec, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
+import {topBar, stepTag, endSec, dockNav, tabNav, recNav, meanCap} from '/su/su-sonja-top.js';
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {STORY36, ACTS, STORY_TAG} from '/su/su-sonja-story.js'; // 그림 속 이야기 네 막(주문 1117-0102 — 36초짜리 한 편 · 막마다 한 줄 · 감정)
 import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin, funnel36, eqBox, trSpark} from '/su/su-sonja.js';
@@ -188,11 +188,11 @@ function rankRace(M, nameOf) {
 
 /* ── 쪽 틀 ── */
 /** 쪽 하나 — 머리 줄 · main(쪽 이름 data-page) · 이야기 막대 · 탭 · 풀이 없이 남은 어려운 낱말 셈(main data-hard) */
-function frame({title, page, kids, step = null, next = null, tab = -1, lc = null, attrs = {}}) {
+function frame({title, page, kids, step = null, next = null, tab = -1, rec = null, lc = null, attrs = {}}) {
   const main = h('main', {class: 'sj-page sj-sub', 'data-page': page, ...attrs}, ...kids);
   const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove();
   const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = '';
-  return {title, dom: [topBar(), main, dockNav(step, next), tabNav(tab, lc)]};
+  return {title, dom: [topBar(), rec == null ? null : recNav(rec), main, dockNav(step, next), tabNav(tab, lc)].filter(Boolean)}; // 기록 탭 쪽은 맨 위 갈래 줄(주문 1124-1942)
 }
 /** 쪽 머리 — 걸음 · 작은 머리 글 · 큰 제목(도장) · 말씀 · 읽어 줄 한 줄 */
 function pageHead({step = null, dd = null, kick, h1, proper = false, seal = null, sealDn = false, quote = null, say = null, pic = null, more = [], top = null}) {
@@ -409,7 +409,7 @@ export async function vSettle36(X) {
       endSeal('셈')),
     M ? rankRace(M, nameOf) : null, // 날마다 바뀐 차례(주문 1119-0243)
     endSec(ST.asOf ? day(ST.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 셈해요.')];
-  return frame({title: '정산', page: 'settle', kids, tab: 5, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
+  return frame({title: '정산', page: 'settle', kids, tab: 4, rec: 1, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
 }
 /* ── 장부(#/l · 탭 「장부」 · 주문 1120-1705 · 사장님 2026-11-20(마카오) 17:05 「그동안 날짜별로 어떤종목을 … 얼마나 … 그래서 어떻게 됐는지 그래프와 데이타로 … 하단에 … 탭을 만들어서 한눈에 …
    이름이 너무 길어 … 적당한 이름 … 그동안 약 8억 정도를 … 모든 거래내역 추적하고 기록하는 것이다」) — 정산 장부(su21-settle.json)의 모든 산 셈을 날마다 · 회사마다
@@ -565,7 +565,7 @@ export async function vLedger(X) {
     TT.days ? filtSec() : null, // 거르개 열여덟(주문 1120-1817) — 날마다 · 회사마다 줄을 한곳에
     h('p', {class: 'sj-safe sj-sec', text: '가짜 돈으로 지난 기록을 적은 장부예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(D.asOf ? day(D.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 적어요.')];
-    return frame({title: '장부', page: 'ledger', kids, tab: 6, lc: X.cur?.()?.code ?? null, next: {href: '#/r/t', label: '꾀마다 정산은 어떻게 됐을까?'}});
+    return frame({title: '장부', page: 'ledger', kids, tab: 4, rec: 0, lc: X.cur?.()?.code ?? null, next: {href: '#/r/t', label: '꾀마다 정산은 어떻게 됐을까?'}});
 }
 
 /* ── 오름 날수(#/l/d · 장부 옆 · 주문 1124-0432 — 사장님 2026-11-24(서울) 04:32 「어 그래」(물음 「이 분석 창을 사이트 장부 옆에 넣어 볼까요?」의 답) · 04:39 「1시간내에 작업 마무리해」
@@ -648,7 +648,7 @@ export async function vFall(X) {
     picSec, listSec, how,
     h('p', {class: 'sj-safe sj-sec', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(day(F.asOf), gotOf(S))];
-  return frame({title: '분석', page: 'fall', kids, tab: 7, lc: X.cur?.()?.code ?? null, next: {href: '#/l', label: '장부도 볼까?'}});
+  return frame({title: '분석', page: 'fall', kids, tab: 4, rec: 2, lc: X.cur?.()?.code ?? null, next: {href: '#/l', label: '장부도 볼까?'}});
 }
 export {chev};
 

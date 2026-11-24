@@ -216,9 +216,9 @@ test('새 판 화면(새로 씀) — 다음 단추 네 번 다섯 화면(주문 
   assert.deepEqual(steps.map(x => x[1]), [0, 1, 2, 3, 3], '걸음이 기승전결 차례로 이어짐(주문 2044 — 21곳 · 땅 지도 · 업종 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게)');
   const top = src('su-sonja-top.js'), t5 = /export const TAB6 = Object\.freeze\((\[[^\n]*?\])\);/.exec(top); assert.ok(t5, 'TAB6'); // 탭은 손자병법 판 한 곳(주문 1116-0300 — 옛 틀 tabs · TABS · TAB_ORDER 지움)
   const tabs5 = JSON.parse(t5[1].replace(/'/g, '"'));
-  assert.deepEqual(tabs5, [['오늘', '#/'], ['꾀', '#/k'], ['회사', '#/o'], ['멈춤', '#/q'], ['일지', '#/j'], ['정산', '#/r/t'], ['장부', '#/l'], ['분석', '#/l/d']], '탭 여섯 = 오늘 · 꾀 · 회사 · 멈춤 · 일지 · 정산(주문 1115-2328 · 주문 1120-1220 「회사」 탭 = 여러 꾀가 고른 회사)');
+  assert.deepEqual(tabs5, [['오늘', '#/'], ['꾀', '#/k'], ['회사', '#/o'], ['멈춤', '#/q'], ['기록', '#/l']], '탭 다섯 = 오늘 · 꾀 · 회사 · 멈춤 · 기록(주문 1124-1942 치지 짜임 1000가지 — 장부 · 정산 · 분석 · 일지는 기록 탭 안 갈래)');
   assert.ok(top.includes("'aria-label': '탭 — ' + TAB6.map(x => x[0]).join(' · ')") && !/['"]301곳/.test(su) && !su.includes("['달력', ") && !su.includes("['지도', ") && !su.includes('function tabs(') && !su.includes('export function page('), '탭은 손자병법 판 한 곳 · 옛 틀 page() · tabs 0');
-  assert.ok(/#su \.sj-tabs \{[^}]*grid-template-columns: repeat\(8, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su-sonja.css'), 'utf8')), '탭 줄 일곱 칸(손자병법 판 · 주문 1120-1220 · 1120-1705 장부)');
+  assert.ok(/#su \.sj-tabs \{[^}]*grid-template-columns: repeat\(5, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su-sonja.css'), 'utf8')), '탭 줄 다섯 칸(손자병법 판 · 주문 1124-1942 치지 짜임)');
   for (const href of ['#/', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/s', '#/r/c', '#/r/t', '#/s', '#/q', '#/q/127120', '#/j', '#/c/127120', '#/m', '#/m/hold', '#/f', '#/c/127120/more', '#/k', '#/k/g01', '#/k/g36']) assert.equal(forwardTo('', href), null, '새 판 안 — ' + href); // 지운 쪽 옛 고리도 /next/ 로 넘기지 않고 손자병법 안에서 첫 쪽(주문 1115-2328)
   const {screenHits, ruinHits} = await import('../../site/next/words.js');
   const texts = [...all.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));

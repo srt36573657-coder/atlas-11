@@ -7,7 +7,7 @@ import {h} from '/su/su-fig.js';
 import {NAME} from '/next/brand.js';
 import {kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js';
-import {topBar, stepTag, endSec, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
+import {topBar, stepTag, endSec, dockNav, tabNav, recNav, meanCap} from '/su/su-sonja-top.js';
 import {PM, whyMean} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
 import {sonmuPic} from '/su/su-sonja-ink.js';
 import {chev, day} from '/su/su-sonja.js';
@@ -46,7 +46,7 @@ export function sjPage(m, lc = null) {
   const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove();
   const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = '';
   const nx = m.next ? {href: m.next.href, k: m.next.k ?? (m.next.step ? m.next.step + ' / 5' : null), label: m.next.label} : null;
-  return {title: m.title ?? NAME, dom: [topBar(), main, nx ? dockNav(m.step ?? null, nx) : null, tabNav(m.tab ?? -1, lc)].filter(Boolean)};
+  return {title: m.title ?? NAME, dom: [topBar(), m.rec == null ? null : recNav(m.rec), main, nx ? dockNav(m.step ?? null, nx) : null, tabNav(m.tab ?? -1, lc)].filter(Boolean)}; // 기록 탭 쪽은 맨 위 갈래 줄(주문 1124-1942)
 }
 /** 찾지 못한 쪽 — 손자병법 판 · 처음으로 */
 export const missModel = t => ({title: '찾지 못했어요', h1: '찾지 못했어요', page: 'miss', tab: -1, say: t, body: [h('a', {class: 'sj-go', href: '#/'}, h('span', {text: '처음으로 · 오늘 시장 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))]});

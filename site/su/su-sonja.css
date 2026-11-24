@@ -44,6 +44,7 @@ html.sj-on #su :focus-visible { outline: 3px solid #20323A; outline-offset: 2px;
 #su .sj-brand-ic { flex: none; display: block; width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 1px 3px rgba(32, 50, 58, .22); }
 #su .sj-brand-t { display: inline-block; }
 @media (max-width: 370px) { #su .sj-brand-ic { width: 28px; height: 28px; border-radius: 7px; } #su .sj-brand { gap: 6px; } }
+@media (max-width: 340px) { #su .sj-brand-ic { display: none; } } /* 아주 좁은 폰(320)은 얼굴을 빼고 이름만 — 머리 줄 한 줄(검사 ㉜ 가) */
 /* 열림 쪽(주문 1124-1942 · 사장님 19:42 「… 손자 병법에 을 이렇게 고쳐」 — 치지 첫 화면처럼 흐린 먹 바탕 · 가운데 앱 얼굴 · 그 아래 굵은 한지색 이름 한 줄)
    새로 켤 때 한 번(su-boot.js 가 html.sj-opening 을 1.5초 둠) · 글 쪽 요소가 아니라 그림(앞뒤 덧그림)이라 읽기 · 누르기를 막지 않음 · 움직임 줄이기면 움직이지 않음 */
 html.sj-opening::before { content: ""; position: fixed; inset: -40px; z-index: 2147483000; pointer-events: none; background: linear-gradient(rgba(23, 36, 42, .74), rgba(18, 29, 34, .9)), url(/su/su-bg.svg) center 30% / cover no-repeat, #20323A; filter: blur(12px) saturate(.85); animation: sjOpenOut .32s ease-in 1.2s forwards; }
@@ -300,7 +301,7 @@ html.sj-opening-calm::before, html.sj-opening-calm::after { animation: none; }
 #su .sj-nk { flex: none; font-family: var(--sj-serif); font-size: 1.0625rem; font-weight: 700; color: #DCEBE7; }
 #su .sj-next b { flex: 1 1 auto; min-width: 0; font-size: 1.125rem; font-weight: 800; line-height: 1.25; }
 #su .sj-next i { flex: none; font-style: normal; font-size: 1.5rem; }
-#su .sj-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 3px; padding: 5px max(6px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); background: #F3F8F6; border-top: 1.5px solid #20323A; }
+#su .sj-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; padding: 5px max(6px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); background: #F3F8F6; border-top: 1.5px solid #20323A; }
 #su .sj-tab { display: flex; align-items: center; justify-content: center; min-height: 50px; min-width: 0; padding: 0 2px; border-radius: 3px; color: #20323A; font-family: var(--sj-sans); font-size: 1.0625rem; font-weight: 700; line-height: 1.15; text-align: center; text-decoration: none; white-space: nowrap; }
 #su .sj-tab.sj-cur { background: #20323A; color: #F3F8F6; font-weight: 800; }
 html.sj-on.su-lg #su .sj-tab { white-space: normal; font-size: 1rem; }
@@ -1266,10 +1267,9 @@ html.sj-on #su .sj-dock .sj-listen { display: none; }
 html.sj-on #su .sj-dock .sj-dk { display: block; }
 html.sj-on #su .sj-next { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 76px; padding: 12px 20px; border-radius: 18px; background: #20323A; color: #FCFEFD; border: 0; box-shadow: 0 0 0 4px #DCEBE8; font-size: 1.25rem; }
 html.sj-on #su .sj-next .sj-nk { color: #DCEBE8; }
-html.sj-on #su .sj-tabs { left: 0; right: 0; bottom: 0; border-radius: 0; background: #FCFEFD; border-top: 1.5px solid #A6D0CD; box-shadow: 0 -12px 26px -18px rgba(62, 90, 99, .45); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); gap: 2px; grid-template-columns: repeat(7, minmax(48px, 1fr)); overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; } /* 보이는 탭 일곱(일지 숨김 · 분석 더함 — 주문 1124-0432) · 칸마다 48 넘게 · 좁은 폰은 옆으로 밀어 봄 */
+html.sj-on #su .sj-tabs { left: 0; right: 0; bottom: 0; border-radius: 0; background: #FCFEFD; border-top: 1.5px solid #A6D0CD; box-shadow: 0 -12px 26px -18px rgba(62, 90, 99, .45); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); gap: 2px; grid-template-columns: repeat(5, minmax(48px, 1fr)); overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; } /* 탭 다섯(주문 1124-1942 · 치지 짜임 — 오늘 · 꾀 · 회사 · 멈춤 · 기록) · 칸마다 48 넘게 · 옆으로 밀 일 없음 */
 html.sj-on #su .sj-tab { color: #20323A; border-radius: 14px; min-height: 60px; }
-html.sj-on #su .sj-tab.sj-cur, html.sj-on #su .sj-tabs:has(> a.sj-tab:nth-child(5).sj-cur) > a.sj-tab:nth-child(4) { background: #20323A; color: #FCFEFD; box-shadow: inset 0 4px 0 #A6D0CD; }
-html.sj-on #su .sj-tabs > a.sj-tab:nth-child(5) { display: none; } /* 일지 탭은 숨김(멈춤 탭이 켜짐을 함께 받음) · 주문 1120-1220 회사 탭이 셋째로 들어와 다섯째 */
+html.sj-on #su .sj-tab.sj-cur { background: #20323A; color: #FCFEFD; box-shadow: inset 0 4px 0 #A6D0CD; }
 html.sj-on #su .sj-win3 { background: transparent; color: #20323A; padding: 0; }
 html.sj-on #su .sj-win3 :is(p, b, span, i):not(.sj-w3n) { color: #20323A; }
 html.sj-on #su .sj-w3a { border: 2px solid #20323A; border-radius: 16px; background: #FCFEFD; padding: 10px 12px; min-height: 64px; }
@@ -1635,3 +1635,8 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-frow > .sj-fw { flex: none; color: #4A6168; font-weight: 700; }
 #su .sj-frow.sj-frow0 { background: #F3F8F6; border-style: dashed; }
 #su .sj-fsel:focus-visible, #su button.sj-frow:focus-visible { outline: 3px solid #20323A; outline-offset: 2px; }
+/* 기록 갈래 줄(주문 1124-1942 · 치지 짜임 1000가지) — 기록 탭 안 네 갈래(장부 · 정산 · 분석 · 일지) · 맨 위 한 줄 · 칸마다 48 넘게 · 켜진 갈래는 먹색 */
+#su .sj-rec { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding-block: 6px 10px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); background: #F3F8F6; }
+#su .sj-rec .sj-recb { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 4px; border-radius: 24px; border: 1.5px solid #A6D0CD; background: #FCFEFD; color: #20323A; font-size: max(17px, 1.0625rem); font-weight: 700; text-decoration: none; white-space: nowrap; }
+#su .sj-rec .sj-recb.sj-recon { background: #20323A; border-color: #20323A; color: #FCFEFD; }
+#su .sj-rec .sj-recb:focus-visible { outline: 3px solid #E9B949; outline-offset: 2px; }
