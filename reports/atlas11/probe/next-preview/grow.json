@@ -7,7 +7,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-24T11:10:05.136Z",
+ "at": "2026-11-24T11:37:42.664Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,20 +32,20 @@
    }
   }
  },
- "seconds": 57,
- "secondsSum": 171,
+ "seconds": 51,
+ "secondsSum": 153,
  "time": {
-  "old": 134.6,
-  "new": 138,
-  "wall": 56.7,
-  "wallSum": 169.9,
-  "opensOld": 7684,
+  "old": 5,
+  "new": 131,
+  "wall": 50.7,
+  "wallSum": 152.1,
+  "opensOld": 13,
   "opensNew": 10286,
-  "oldPct": 79.2,
-  "oldShare": 49.4
+  "oldPct": 3.3,
+  "oldShare": 3.7
  },
  "net": {
-  "req": 2684,
+  "req": 5280,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -65,12 +65,12 @@
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": false,
-   "why": "검사 · 브라우저 · 목록이 바뀜",
-   "made": null,
+   "use": true,
+   "why": "",
+   "made": "2026-11-24T11:03:50.807Z | 2026-11-24T11:03:51.111Z | 2026-11-24T11:03:51.141Z",
    "inputs": 2596,
    "reads": 2557,
-   "note": "기준값 새로 씀(파일 866개 · 값 853개) | 기준값 새로 씀(파일 865개 · 값 852개)"
+   "note": "기준값 다시 씀"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
@@ -82,7 +82,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 57,
+   "seconds": 51,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -95,7 +95,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 57,
+   "seconds": 51,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -108,7 +108,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 57,
+   "seconds": 51,
    "mine": 856,
    "kinds": {
     "c": 852,
