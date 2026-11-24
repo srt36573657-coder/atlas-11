@@ -46,6 +46,10 @@ import daese  # noqa: E402  이어 받은 일봉을 합치는 규칙을 고르�
 H, LIMIT, WIN, WMIN, VOLQ, UPTH, DNTH = 20, 0.305, 500, 250, 0.75, 0.03, -0.03
 PROFIT, BIGLOSS = 0.003, -0.15
 PAIRS = 100_000_000 // (100 if QUICK else 1)
+# 고른 곳 밖 회사는 경로를 네 배로(주문 1124-1900 · 사장님 2026-11-24(서울) 19:00 「어 고쳐」 · 19:01 「1시간 이내에 고쳐」)
+#   밖 회사 2,500곳 넘게 나누면 한 회사 경로가 4만 남짓 — 드문 일(크게 잃는 길 0.1%대)의 몫이 흔들려, 따로 세기(경로 200만)와 4σ 넘게 벌어진 곳 하나(004970 오르는 장 0.18 ↔ 0.11)에
+#   2026-11-24 09:58 부터 회차가 매시 멈춤(같은 자료 · 같은 씨앗이라 날마다 같은 값) → 경로를 늘려 몫을 더 정확히(따로 세기 허용 폭도 그만큼 좁아짐 · 검사는 더 엄격해짐)
+OTH_X = 4
 DIRS = [('up', '오르는 장'), ('down', '내리는 장'), ('flat', '옆으로 가는 장'), ('wild', '크게 출렁이는 장')]
 CHUNK = 6000
 
@@ -218,7 +222,7 @@ if now is None:
     sys.exit('range: 셈을 못 함(역사 창 · 방향 날 모자람)')
 rg = now['rg']
 say('방향 날 수 ' + json.dumps(rg['n'], ensure_ascii=False) + f" · 출렁 문턱 {rg['volTh']:.5f}")
-oth = ranges(T, ASOF, list(range(NO)), PAIRS, RO, '·밖') if NO else None
+oth = ranges(T, ASOF, list(range(NO)), PAIRS * OTH_X, RO, '·밖') if NO else None
 if NO and oth is None:
     sys.exit('range: 고른 곳 밖 회사 셈을 못 함')
 if NO:
