@@ -15,7 +15,7 @@
   "323280",
   "000040"
  ],
- "made": "2026-11-24T08:05:47.282Z",
+ "made": "2026-11-24T10:15:21.369Z",
  "shard": "all/3",
  "units": {
   "total": 2562,
@@ -36,17 +36,17 @@
    }
   }
  },
- "sec": 168,
- "secondsSum": 500,
+ "sec": 201,
+ "secondsSum": 599,
  "time": {
-  "old": 160,
-  "new": 366.3,
-  "wall": 168.5,
-  "wallSum": 500.4,
-  "opensOld": 25569,
-  "opensNew": 33282,
-  "oldPct": 32,
-  "oldShare": 30.4
+  "old": 234.2,
+  "new": 455.2,
+  "wall": 201.1,
+  "wallSum": 598.3,
+  "opensOld": 25573,
+  "opensNew": 33284,
+  "oldPct": 39.1,
+  "oldShare": 34
  },
  "net": {
   "req": 2566,
@@ -62,29 +62,23 @@
   }
  },
  "counts": {
-  "맞댄 칸": 191725,
-  "숫자 낱말": 408106,
-  "맨 위 결 한 줄": 7669,
-  "선 누르기": 7669,
+  "맞댄 칸": 191775,
+  "숫자 낱말": 406156,
+  "맨 위 결 한 줄": 7671,
+  "선 누르기": 7671,
   "화면(기간)": 7671,
   "회사": 2557,
-  "기간 값 없음": 2,
   "폭 화면": 120,
   "없는 번호": 1
  },
  "fails": [],
- "warn": [
-  "기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일",
-  "옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
-  "기간 값 없음(옛 쪽 맞대기 건너뜀) 028080 20거래일",
-  "옛 쪽 화면 오류 028080 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
- ],
+ "warn": [],
  "shards": [
   {
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 166,
+   "seconds": 199,
    "mine": 854,
    "kinds": {
     "c": 853,
@@ -96,7 +90,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 166,
+   "seconds": 199,
    "mine": 854,
    "kinds": {
     "c": 852,
@@ -108,7 +102,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 168,
+   "seconds": 201,
    "mine": 854,
    "kinds": {
     "c": 852,
