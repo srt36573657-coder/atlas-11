@@ -267,7 +267,7 @@ export async function vJournal(X) {
   const kept = full.filter(r => r.kept?.a === 'yes').length, asked = full.filter(r => r.kept?.a === 'yes' || r.kept?.a === 'no').length;
   const avg = {}; for (const [n] of WHY_GROUPS) { const v = full.map(r => r.groups?.[n]).filter(Number.isFinite); avg[n] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }
   const e = eJournal({recs: full, due: dues.length, kept, asked, lastDay: full[0] ? dayOf(full[0]) : null});
-  return {title: '매매일지', tab: 4, rec: 3, step: 5, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
+  return {title: '매매일지', tab: 4, rec: 4, step: 5, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
     seal: '일지', ink: journalPic(inkItems(metas)), say: [e.say].flat().filter(Boolean).slice(0, 2).join(' '),
     figs: full.length ? [tallyInk([{name: VSHORT.rest, v: vc.rest}, {name: VSHORT.wait, v: vc.wait}, {name: VSHORT.go, v: vc.go}]), groupFig(groupRowsOf(avg))] : [whyPic(new Array(WHY_QS.length).fill(null), null)], // 기록이 없으면 빈 돌 열하나(판정 칸은 첫 기록 뒤에)
     act: dues.length ? [dueBox(dues, X)] : null, // 한 달 전 약속 — 답할 것이 있을 때만 그림 바로 아래(누르는 곳 · 주문 1023 [2] 3)

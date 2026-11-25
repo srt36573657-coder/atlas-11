@@ -31,7 +31,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(https:\/\/finance\.naver\.com\/item\/(news|coinfo)\.naver\?code=[0-9A-Z]{6}|#\/|#\/[kqpjol]|#\/l\/[dbs]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
+const LINK_OK = /^(https:\/\/finance\.naver\.com\/item\/(news|coinfo)\.naver\?code=[0-9A-Z]{6}|#\/|#\/[kqpjol]|#\/l\/[abds]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -1628,7 +1628,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
 }
 { // ㊱ 주문 1124-1942(사장님 2026-11-24(서울) 20:01 「너 잘못하고 있어 이앱에 구조를 1000가지로 파악 하라고 한거야」 — 치지 앱 짜임 1000가지(에이전트 100명 × 10가지)를 손자병법 짜임에)
   //   아래 탭 여덟(일곱 보임 · 좁은 폰은 옆으로 밂) → 다섯(오늘 · 꾀 · 회사 · 멈춤 · 기록) · 장부 · 정산 · 분석 · 일지는 「기록」 탭 하나 · 기록 쪽 맨 위 갈래 줄 넷(켜진 갈래 하나 · 칸마다 48 · 글씨 17 넘게) · 320 폭에서도 옆으로 밀 일 없음
-  const W = '㊱ ', REC = '장부 정산 분석 일지 산 회사 판 회사', RECN = ['장부', '정산', '분석', '일지', '산 회사', '판 회사'], RECH = ['#/l', '#/r/t', '#/l/d', '#/j', '#/l/b', '#/l/s']; // 갈래 여섯(주문 1125-1144 산 회사 · 판 회사)
+  const W = '㊱ ', REC = '한눈에 장부 정산 분석 일지 산 회사 판 회사', RECN = ['한눈에', '장부', '정산', '분석', '일지', '산 회사', '판 회사'], RECH = ['#/l/a', '#/l', '#/r/t', '#/l/d', '#/j', '#/l/b', '#/l/s']; // 갈래 일곱(주문 1125-1144 산 회사 · 판 회사 · 1125-2101 한눈에 맨 앞)
   const ctx = await browser.newContext({viewport: {width: 320, height: 640}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
   await QUIET(ctx);
   const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
@@ -1638,7 +1638,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       navN: document.querySelectorAll('#su nav.sj-rec').length, recs: rb.map(a => t(a)).join(' '), hrefs: rb.map(a => a.getAttribute('href')), on: rb.filter(a => a.getAttribute('aria-current') === 'page').map(a => t(a)), recBox: rb.map(box), fs: rb.map(a => parseFloat(getComputedStyle(a).fontSize)),
       under: !!nav && !!document.querySelector('#su .sj-top') && nav.getBoundingClientRect().top >= document.querySelector('#su .sj-top').getBoundingClientRect().bottom - 1 && (nav.nextElementSibling?.tagName ?? '') === 'MAIN',
       wide: document.documentElement.scrollWidth <= innerWidth + 1, tabsW: (() => { const n = document.querySelector('#su .sj-tabs'); return n ? n.scrollWidth <= n.clientWidth + 1 : false; })()}; });
-  for (const [k, hash, page] of [[0, '#/l', 'ledger'], [1, '#/r/t', 'settle'], [2, '#/l/d', 'fall'], [3, '#/j', 'journal'], [4, '#/l/b', 'held'], [5, '#/l/s', 'sold']]) {
+  for (const [k, hash, page] of [[0, '#/l/a', 'glance'], [1, '#/l', 'ledger'], [2, '#/r/t', 'settle'], [3, '#/l/d', 'fall'], [4, '#/j', 'journal'], [5, '#/l/b', 'held'], [6, '#/l/s', 'sold']]) {
     await open(p, hash);
     await p.waitForSelector('#su nav.sj-rec', {timeout: 15000}).catch(() => {});
     const g = await look(), nm = RECN[k];
@@ -1805,6 +1805,43 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     check(g.n === 1 && g.all === 1 && g.t === WANT && g.role === 'note' && g.prev && g.next && g.shape && g.fs >= 16.95 && g.h >= 47.5 && g.inW && g.lines === 1 && g.over <= 0 && !errs.length,
       W + width + ' — 「' + WANT + '」 · 하나 · 머리 줄 바로 아래 · 지금 시장 바로 위 · 별 · 한 줄 · 글 17 넘게 · 높이 48 넘게 · 넘침 0 · 오류 0', JSON.stringify({...g, errs: errs.slice(0, 2)}));
     if (width === 360) { await open(p, '#/k'); await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); const k = await p.evaluate(() => document.querySelectorAll('#su .sj-cheer').length); check(k === 0, W + '꾀 쪽에는 응원 한 줄이 없음(첫 화면 맨 위만)', String(k)); }
+    await ctx.close();
+  }
+}
+{ // ㊶ 주문 1125-2101(사장님 2026-11-25(서울) 20:52 「전체 투자 자산, 수익률, 자산 배분, 기간별 추이까지 한 화면에서 … 어떠한 꾀가 많이 골랐던 업종이 어떠한 분야였는지 그림으로도 한 눈에」 · 21:01 「응 한시간 이내 만들어」) — 기록 탭 맨 앞 「한눈에」(#/l/a)
+  //   이 검사가 정산 자료(su21-settle.json sell · co · tt)에서 따로 셈: 들인 돈 · 지금 값(판 돈 + 들고 있는 것 가장 늦은 종가) · 늘고 준 돈 · 프로 · 나눔 조각 수 · 꾀 줄 수 · 첫 꾀 가장 많이 고른 업종 · 흐름 장날 수(전체)
+  //   기간 단추 48 넘게 · 누르면 바뀜 · 「%」 · 매수 · 매도 · 추천 0 · 빨강 글 0 · 글 17 넘게 · 가로 넘침 0 · 화면 오류 0 · 320 · 390 넓이
+  const W = '㊶ ', pct = r => { const v = Math.round(r * 1000) / 10; return v > 0 ? v.toFixed(1) + '프로 올랐어요' : v < 0 ? (-v).toFixed(1) + '프로 내렸어요' : '그대로예요'; };
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    await open(p, '#/l/a');
+    await p.waitForSelector('#su section.sj-glal', {timeout: 20000}).catch(() => {});
+    const g = await p.evaluate(async () => {
+      const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), D = await fetch('/su/data/su21-settle.json', {cache: 'no-store'}).then(r => r.json()).catch(() => null);
+      const KK = /^g(0[1-9]|[12]\d|3[0-6])$/, SV = D?.sell, q = Number.isFinite(D?.qty) ? D.qty : 10; let cost = 0, val = 0, n = 0; const per = new Map(), ind = c => (typeof D?.co?.[c]?.[1] === 'string' && D.co[c][1].trim()) || '그 밖 업종';
+      (D?.buys ?? []).forEach((b, i) => { const x = SV?.s?.[i], k = D.kinds[b[1]]; if (!Array.isArray(x) || !KK.test(k ?? '') || !(b[3] > 0) || !(x[2] > 0)) return; cost += b[3] * q; val += x[2] * q; n++; const m = per.get(k) ?? new Map(); m.set(ind(b[2]), (m.get(ind(b[2])) ?? 0) + 1); per.set(k, m); });
+      const k0 = [...per.keys()].sort()[0], best0 = k0 ? [...per.get(k0).entries()].filter(([i]) => i !== '그 밖 업종').sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0] : null;
+      const P = (D?.tt?.days ?? []).map((d, i) => [d, D.tt.w?.[i]]).filter(([d, v]) => typeof d === 'string' && Number.isFinite(v) && v > 0).length;
+      const main = document.querySelector('#su main'), sps = [...document.querySelectorAll('#su .sj-glsp')], all = sps.find(b => b.dataset.span === '전체');
+      const before = document.querySelector('#su .sj-gltrp')?.getAttribute('data-n'); all?.click(); await new Promise(r => setTimeout(r, 120));
+      const fsOf = sel => [...document.querySelectorAll(sel)].map(e => parseFloat(getComputedStyle(e).fontSize));
+      return {cost, val, n, nk: per.size, best0, k0, P, page: main?.dataset.page, c: txt(document.querySelector('#su .sj-glcost')), v: txt(document.querySelector('#su .sj-glval')), res: txt(document.querySelector('#su .sj-glres b')), pc: txt(document.querySelector('#su .sj-glpct b')),
+        parts: document.querySelectorAll('#su .sj-glal .sj-gllegi').length, arcs: document.querySelectorAll('#su svg.sj-gldo circle[data-part]').length, rows: document.querySelectorAll('#su .sj-glk').length,
+        r0: txt(document.querySelector('#su .sj-glk .sj-glkt')), r0k: document.querySelector('#su .sj-glk')?.dataset.k ?? null, sh: sps.map(b => Math.round(b.getBoundingClientRect().height)), on: sps.filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.span), before, after: document.querySelector('#su .sj-gltrp')?.getAttribute('data-n'),
+        text: txt(main), red: [...(main?.querySelectorAll('*') ?? [])].filter(e => { const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length,
+        fs: [...fsOf('#su .sj-gllegi'), ...fsOf('#su .sj-gllead'), ...fsOf('#su .sj-glsp'), ...fsOf('#su .sj-glkh'), ...fsOf('#su .sj-glkt'), ...fsOf('#su .sj-gltrc')], over: document.documentElement.scrollWidth - innerWidth};
+    });
+    check(g.page === 'glance' && g.n > 0 && g.c === wonM(g.cost) && g.v === wonM(g.val) && g.res === movedM(g.val - g.cost) && g.pc === pct(g.val / g.cost - 1),
+      W + width + ' 가) 들인 돈 · 지금 값 · 늘고 준 돈 · 프로 = 자료에서 따로 셈', JSON.stringify({c: g.c, v: g.v, res: g.res, pc: g.pc, cost: g.cost, val: g.val}));
+    check(g.parts >= 1 && g.parts <= 10 && g.arcs === g.parts && g.rows === g.nk && g.r0k === g.k0 && (!g.best0 || g.r0.startsWith('가장 많이 고른 업종은 ' + g.best0[0] + '이에요 · ') && g.r0.endsWith(' 가운데 ' + NFm.format(g.best0[1]) + '번')),
+      W + width + ' 나) 나눔 동그라미 조각 = 이름표 · 꾀 줄 = 산 꾀 수 · 첫 꾀 가장 많이 고른 업종 = 자료에서 셈', JSON.stringify({parts: g.parts, arcs: g.arcs, rows: g.rows, nk: g.nk, r0: g.r0, best0: g.best0}));
+    check(g.sh.length >= 2 && g.sh.every(x => x >= 47.5) && g.on.length === 1 && g.on[0] === '전체' && +g.after === g.P && (g.P < 2 || +g.before <= g.P),
+      W + width + ' 다) 흐름 기간 단추 48 넘게 · 「전체」 누르면 장날 ' + g.P + '일 다 그림', JSON.stringify({sh: g.sh, on: g.on, before: g.before, after: g.after, P: g.P}));
+    check(!/%|매수|매도|추천/.test(g.text) && g.red === 0 && g.fs.length > 0 && g.fs.every(f => f >= 16.9) && g.over <= 0 && !errs.length,
+      W + width + ' 라) 「%」 · 매수 · 매도 · 추천 0 · 빨강 0 · 글 17 넘게 · 넘침 0 · 오류 0', JSON.stringify({red: g.red, fsMin: Math.min(...g.fs), over: g.over, errs: errs.slice(0, 2)}));
     await ctx.close();
   }
 }

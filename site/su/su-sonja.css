@@ -1714,3 +1714,30 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-cheer { display: flex; align-items: center; gap: 12px; min-height: 52px; padding-block: 8px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); background: #FFF4D2; border-bottom: 1px solid #EAD59A; }
 #su .sj-cheeri { flex: none; width: 22px; height: 22px; background: #D99A00; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
 #su .sj-cheerp { margin: 0; min-width: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.4; color: #20323A; overflow-wrap: anywhere; }
+/* 한눈에(#/l/a · 주문 1125-2101) — 기록 갈래 맨 앞(한 줄 가득) · 동그라미 나눔 · 지나온 흐름 · 꾀마다 업종 막대 · 빨강 없음 · 글 17 넘게 · 단추 48 넘게 */
+#su .sj-rec .sj-recb[href="#/l/a"] { grid-column: 1 / -1; }
+#su .sj-glpct { font-size: 1.125rem; }
+#su .sj-glalw { display: grid; gap: 12px; }
+#su .sj-gldo { display: block; width: min(210px, 62vw); height: auto; margin: 4px auto 6px; }
+#su .sj-glleg { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+#su .sj-gllegi { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 10px; align-items: center; font-size: 1.0625rem; color: #20323A; }
+#su .sj-gllegi > span { grid-column: 2; color: #3E5560; }
+#su .sj-gldot { width: 16px; height: 16px; }
+#su .sj-gllead { margin: 0 0 10px; font-size: 1.0625rem; line-height: 1.6; color: #3E5560; }
+#su .sj-glsps { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 10px; }
+#su .sj-glsp { min-height: 48px; min-width: 64px; padding: 0 14px; border-radius: 24px; border: 1.5px solid #A6D0CD; background: #FCFEFD; color: #20323A; font-size: max(17px, 1.0625rem); font-weight: 700; cursor: pointer; }
+#su .sj-glsp[aria-pressed="true"] { background: #20323A; border-color: #20323A; color: #FCFEFD; }
+#su .sj-glsp:focus-visible { outline: 3px solid #E9B949; outline-offset: 2px; }
+#su .sj-gltrs { display: block; width: 100%; height: 150px; border-radius: 10px; }
+#su .sj-gltrbg { fill: #F6FAF9; }
+#su .sj-gltr100 { stroke: #8FA6AE; stroke-width: 1.2; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
+#su .sj-gltrp { fill: none; stroke: #20323A; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+#su .sj-gltrl { margin: 10px 0 0; font-size: 1.125rem; }
+#su .sj-gltrc { margin: 4px 0 0; font-size: 1.0625rem; color: #3E5560; }
+#su .sj-glks { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 16px; }
+#su .sj-glk { display: grid; gap: 6px; }
+#su .sj-glkh { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; font-size: 1.0625rem; color: #20323A; }
+#su .sj-glkn { color: #3E5560; }
+#su .sj-glkb { display: block; width: 100%; height: 20px; }
+#su .sj-glkt { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #3E5560; }
+

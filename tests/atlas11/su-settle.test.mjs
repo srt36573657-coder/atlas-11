@@ -210,13 +210,13 @@ test('서른여섯 꾀 셈(su21_s36.py 스스로 시험 · 이름 = 화면 · �
 
 test('탭 · 길 · 묶기 · 검사 — 아래 탭 다섯째 「정산」 #/r/t · 손자병법 판 서른여섯 꾀 표만(주문 1115-2328) · 올리기 작업만 장부를 씀 · 검사 ㉓ · 화면 글', () => {
   const su = rd('site/su/su.js'), kk = rd('site/su/su-sonja-kkoe.js'), top = rd('site/su/su-sonja-top.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.ok(!su.includes('TAB_ORDER') && top.includes("['멈춤', '#/q'], ['기록', '#/l']]);") && top.includes("export const REC4 = Object.freeze([['장부', '#/l'], ['정산', '#/r/t'], ['분석', '#/l/d'], ['일지', '#/j'], ['산 회사', '#/l/b'], ['판 회사', '#/l/s']]);"), '탭 다섯 끝 「기록」 · 기록 갈래 장부 · 정산 · 분석 · 일지(주문 1124-1942 치지 짜임 — 옛 정산 · 장부 · 분석 탭을 한 탭에)');
+  assert.ok(!su.includes('TAB_ORDER') && top.includes("['멈춤', '#/q'], ['기록', '#/l']]);") && top.includes("export const REC4 = Object.freeze([['한눈에', '#/l/a'], ['장부', '#/l'], ['정산', '#/r/t'], ['분석', '#/l/d'], ['일지', '#/j'], ['산 회사', '#/l/b'], ['판 회사', '#/l/s']]);"), '탭 다섯 끝 「기록」 · 기록 갈래 장부 · 정산 · 분석 · 일지(주문 1124-1942 치지 짜임 — 옛 정산 · 장부 · 분석 탭을 한 탭에)');
   assert.ok(su.includes("if (hh === '#/r/t') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vSettle36(XS)); }"), '길 #/r/t → 손자병법 판 정산(su-sonja-kkoe.js vSettle36)');
   assert.equal(forwardTo('', '#/r/t'), null, '#/r/t 는 새 판 안(옛 판으로 넘기지 않음)');
-  assert.ok(kk.includes("return frame({title: '정산', page: 'settle', kids, tab: 4, rec: 1,"), '정산 쪽을 열면 기록 탭(다섯째)과 기록 갈래 「정산」이 켜짐(주문 1124-1942)');
+  assert.ok(kk.includes("return frame({title: '정산', page: 'settle', kids, tab: 4, rec: 2,"), '정산 쪽을 열면 기록 탭(다섯째)과 기록 갈래 「정산」이 켜짐(주문 1124-1942 · 1125-2101 한눈에가 맨 앞이라 둘째)');
   assert.ok(pk.includes("'scripts/atlas11/next/su21_settle.mjs'") && pk.includes("'--book', path.join(root, 'reports/atlas11/su21/settle.json')") && /su21_settle\.mjs[^\n]*\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶을 때 화면 자료 · 장부(올리기 작업만 장부를 씀)');
   assert.ok(pk.indexOf('su21_days.mjs') < pk.indexOf('su21_settle.mjs'), '그날 목록을 적은 뒤에 정산');
-  assert.ok(ck.includes("'오늘 꾀 회사 멈춤 기록'") && ck.includes("REC = '장부 정산 분석 일지 산 회사 판 회사'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 다섯 · 정산 쪽');
+  assert.ok(ck.includes("'오늘 꾀 회사 멈춤 기록'") && ck.includes("REC = '한눈에 장부 정산 분석 일지 산 회사 판 회사'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 다섯 · 정산 쪽');
   assert.ok(ck.includes("import {START as SETTLE_START} from './su21_settle.mjs';") && ck.includes('㉓ 정산 첫날'), '검사 — 정산 첫날(주문 1112-2042)');
   assert.ok(/#\\\/r\\\/t\|/.test(ck) && !/#\\\/r\\\/\[mwdykicst\]/.test(ck), '검사 고리 꼴 — #/r/t 만(옛 기록 서랍 · 달력 고리는 지움 — 주문 1115-2328)');
   assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(kk), '보안 규칙 — innerHTML · 글 속 style 없음');

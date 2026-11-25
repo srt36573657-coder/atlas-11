@@ -528,7 +528,91 @@ export async function vTrades(X, mode = 's') {
       L.length ? list : h('p', {class: 'sj-svnote', text: sold ? '아직 판 회사가 없어요.' : '지금 들고 있는 회사가 없어요.'}),
       L.length ? more : null),
     endSec(day(T?.asOf?.board), gotOf(S))];
-  return frame({title, page: sold ? 'sold' : 'held', kids, tab: 4, rec: sold ? 5 : 4, next: {href: '#/r/t', label: '두 셈 견줌도 볼까?'}});
+  return frame({title, page: sold ? 'sold' : 'held', kids, tab: 4, rec: sold ? 6 : 5, next: {href: '#/r/t', label: '두 셈 견줌도 볼까?'}});
+}
+/* ── 한눈에(#/l/a · 주문 1125-2101 · 사장님 2026-11-25(서울) 20:52 「전체 투자 자산, 수익률, 자산 배분, 기간별 추이까지 한 화면에서 … 어떠한 꾀가 많이 골랐던 업종이 어떠한 분야였는지 그림으로도 한 눈에」 · 21:01 「응 한시간 이내 만들어」) ──
+ *  사고 팔기 셈(sell-v1 · 종가 · 10주) 모두 — 들인 돈 · 지금 값(판 돈 + 들고 있는 회사 가장 늦은 종가) · 늘고 준 돈 · 프로
+ *  지금 값 나눔 = 들고 있는 회사 업종별 + 판 돈(동그라미) · 지나온 흐름 = 쌓인 장부 전체(tt · 사기만 셈 · 기간 고르기) · 꾀마다 고른 업종(모든 산 셈 번수 · 쌓은 막대)
+ *  업종 색 = 들고 있는 값 큰 업종 여덟(같으면 고른 번수 · 이름 차례) · 나머지는 「그 밖 업종」 회색 · 빨강 없음 · 그림 속 글 없음(글은 밖) · 인라인 꾸밈 없음 */
+const GL_COL = Object.freeze(['#20323A', '#2F7F86', '#D99A00', '#5B6FB5', '#7FB08F', '#A07A4A', '#8A6FB0', '#4F9A6B']), GL_ETC = '#B9C6CA', GL_CASH = '#E6D9B8', GL_ETCN = '그 밖 업종';
+export const glShare = (a, b) => (b > 0 ? Math.round(a / b * 100) : 0);
+export function glanceOf(D) {
+  const TR = sellTrades(D); if (!TR) return null;
+  const q = TR.q, all = [...TR.hold, ...TR.sold], indOf = code => (typeof D.co?.[code]?.[1] === 'string' && D.co[code][1].trim()) || GL_ETCN;
+  const cost = all.reduce((a, t) => a + t.p0 * q, 0), cash = TR.sold.reduce((a, t) => a + t.p1 * q, 0), held = TR.hold.reduce((a, t) => a + t.p1 * q, 0), val = cash + held;
+  const pickN = new Map(); for (const t of all) { const i = indOf(t.code); pickN.set(i, (pickN.get(i) ?? 0) + 1); }
+  const heldV = new Map(); for (const t of TR.hold) { const i = indOf(t.code); heldV.set(i, (heldV.get(i) ?? 0) + t.p1 * q); } // 색 차례 = 들고 있는 값 큰 업종 → 고른 번수 → 이름
+  const top = [...pickN.keys()].filter(i => i !== GL_ETCN).sort((a, b) => (heldV.get(b) ?? 0) - (heldV.get(a) ?? 0) || pickN.get(b) - pickN.get(a) || a.localeCompare(b)).slice(0, GL_COL.length);
+  const keyOf = i => (top.includes(i) ? i : GL_ETCN), colOf = i => (top.includes(i) ? GL_COL[top.indexOf(i)] : GL_ETC);
+  const byInd = new Map(); for (const t of TR.hold) { const k = keyOf(indOf(t.code)); byInd.set(k, (byInd.get(k) ?? 0) + t.p1 * q); }
+  const parts = [...top.filter(i => byInd.has(i)).map(i => ({name: i, v: byInd.get(i), col: colOf(i)})), ...(byInd.has(GL_ETCN) ? [{name: GL_ETCN, v: byInd.get(GL_ETCN), col: GL_ETC}] : []), ...(cash > 0 ? [{name: '판 돈', v: cash, col: GL_CASH, cash: true}] : [])];
+  const per = new Map(); for (const t of all) { const m = per.get(t.k) ?? {n: 0, raw: new Map(), seg: new Map()}; const i = indOf(t.code); m.n++; m.raw.set(i, (m.raw.get(i) ?? 0) + 1); m.seg.set(keyOf(i), (m.seg.get(keyOf(i)) ?? 0) + 1); per.set(t.k, m); }
+  const kk = [...per.keys()].sort().map(k => { const m = per.get(k), best = [...m.raw.entries()].filter(([i]) => i !== GL_ETCN).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0] ?? null;
+    return {k, n: m.n, best, segs: [...m.seg.entries()].sort((a, b) => (a[0] === GL_ETCN) - (b[0] === GL_ETCN) || b[1] - a[1] || a[0].localeCompare(b[0])).map(([name, c]) => ({name, c, col: name === GL_ETCN ? GL_ETC : colOf(name)}))}; });
+  return {q, cost, val, cash, held, diff: val - cost, r: cost > 0 ? val / cost - 1 : 0, n: all.length, nHold: TR.hold.length, nSold: TR.sold.length, parts, top, kk};
+}
+const glDot = col => s('svg', {class: 'sj-gldot', viewBox: '0 0 10 10', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 10, height: 10, rx: 2, fill: col}));
+function glDonut(parts) { // 동그라미(지금 값 나눔) — 조각 사이 틈 · 12시에서 시계 방향
+  const tot = parts.reduce((a, x) => a + x.v, 0), R = 46, C = 2 * Math.PI * R; let at = 0;
+  return s('svg', {class: 'sj-gldo', viewBox: '0 0 120 120', role: 'img', 'aria-label': '지금 값 나눔 — ' + parts.map(x => x.name + ' ' + glShare(x.v, tot) + '프로').join(' · ')},
+    s('circle', {cx: 60, cy: 60, r: R, fill: 'none', stroke: '#EEF3F2', 'stroke-width': 22}),
+    s('g', {transform: 'rotate(-90 60 60)'}, ...parts.map(x => { const len = tot > 0 ? x.v / tot * C : 0, gap = parts.length > 1 && len > 3 ? 1.6 : 0, c = s('circle', {cx: 60, cy: 60, r: R, fill: 'none', stroke: x.col, 'stroke-width': 22, 'stroke-dasharray': (len - gap).toFixed(2) + ' ' + (C - len + gap).toFixed(2), 'stroke-dashoffset': (-at).toFixed(2), 'data-part': x.name}); at += len; return c; })));
+}
+const GL_SPAN = Object.freeze([['1주', 5], ['2주', 10], ['1달', 21], ['3달', 63], ['전체', 0]]);
+function glTrend(tt) { // 지나온 흐름 — 쌓인 장부 전체(100원이 ○원) · 기간 단추 · 100원 줄(점선)
+  const days = Array.isArray(tt?.days) ? tt.days : [], w = Array.isArray(tt?.w) ? tt.w : [], P = days.map((d, i) => [d, w[i]]).filter(([d, v]) => typeof d === 'string' && fin(v) && v > 0);
+  if (P.length < 2) return h('section', {class: 'sj-sec sj-gltr', 'data-n': String(P.length)}, h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '지나온 흐름'})), h('p', {class: 'sj-svnote', text: '아직 쌓인 날이 이틀이 안 돼요.'}));
+  const spans = GL_SPAN.filter(([, n]) => n === 0 || n < P.length), pick0 = spans.find(([t]) => t === '1달') ?? spans[spans.length - 1];
+  const svg = s('svg', {class: 'sj-gltrs', viewBox: '0 0 300 130', preserveAspectRatio: 'none', 'aria-hidden': 'true'}), cap = h('p', {class: 'sj-gltrc'}), last = h('p', {class: 'sj-gltrl sj-res'});
+  const draw = ([t, n]) => {
+    const L = n ? P.slice(-(n + 1)) : P, vs = L.map(x => x[1]), lo = Math.min(1e6, ...vs), hi = Math.max(1e6, ...vs), pad = (hi - lo) * 0.12 || 2e4, y0 = lo - pad, y1 = hi + pad;
+    const X = i => (L.length > 1 ? i / (L.length - 1) * 296 + 2 : 150), Y = v => 126 - (v - y0) / (y1 - y0) * 122, dd = L.map((x, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(x[1]).toFixed(1)).join(' ');
+    svg.replaceChildren(s('rect', {class: 'sj-gltrbg', x: 0, y: 0, width: 300, height: 130}), s('line', {class: 'sj-gltr100', x1: 0, x2: 300, y1: Y(1e6).toFixed(1), y2: Y(1e6).toFixed(1)}),
+      s('path', {class: 'sj-gltrp', d: dd, 'data-n': String(L.length)}));
+    const v = L[L.length - 1][1], st = stOfD(v - 1e6);
+    cap.textContent = mday(L[0][0]) + '부터 ' + mday(L[L.length - 1][0]) + '까지 · 장날 ' + L.length + '일';
+    last.dataset.st = st; last.replaceChildren(shapeI(st), h('b', {text: '100원이 ' + (Math.round(v / 100) / 100).toFixed(2) + '원이 됐어요'}));
+    for (const b of btns) b.setAttribute('aria-pressed', b.dataset.span === t ? 'true' : 'false');
+  };
+  const btns = spans.map(([t, n]) => { const b = h('button', {class: 'sj-glsp', type: 'button', 'data-span': t, text: t}); b.addEventListener('click', () => draw([t, n])); return b; });
+  draw(pick0);
+  return h('section', {class: 'sj-sec sj-gltr', 'data-n': String(P.length), 'aria-label': '지나온 흐름'},
+    head('흐', '지나온 흐름', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '100원이 날마다 얼마였나'}))),
+    h('p', {class: 'sj-gllead', text: '꾀 서른여섯이 산 회사를 모두 계속 들고 있었다면, 100원이 날마다 얼마였는지 그렸어요. 점선이 100원이에요.'}),
+    h('div', {class: 'sj-glsps', role: 'group', 'aria-label': '기간 고르기'}, ...btns), svg, last, cap);
+}
+export async function vGlance(X) {
+  const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
+  const A = D ? glanceOf(D) : null;
+  if (!A || !A.n) return missPage(X, '한눈에', '사고 팔기 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
+  const st = stOfD(A.diff), tot = A.parts.reduce((a, x) => a + x.v, 0);
+  const legend = (L, valOf) => h('ul', {class: 'sj-glleg'}, ...L.map(x => h('li', {class: 'sj-gllegi', 'data-part': x.name}, glDot(x.col), h('b', {text: x.name}), valOf ? h('span', {text: valOf(x)}) : null)));
+  const keys = [...A.top.map((name, j) => ({name, col: GL_COL[j]})), ...(A.kk.some(r => r.segs.some(g => g.name === GL_ETCN)) ? [{name: GL_ETCN, col: GL_ETC}] : [])];
+  const kkRow = r => h('li', {class: 'sj-glk', 'data-k': r.k, 'data-n': String(r.n)},
+    h('p', {class: 'sj-glkh'}, h('b', {text: nameOf(r.k)}), h('span', {class: 'sj-glkn', text: NF.format(r.n) + '번 샀어요'})),
+    s('svg', {class: 'sj-glkb', viewBox: '0 0 300 20', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, ...(() => { let x = 0; return r.segs.map(g => { const w = g.c / r.n * 300, e = s('rect', {x: x.toFixed(2), y: 0, width: Math.max(0, w - (r.segs.length > 1 ? 1.5 : 0)).toFixed(2), height: 20, rx: 3, fill: g.col, 'data-part': g.name}); x += w; return e; }); })()),
+    h('p', {class: 'sj-glkt', text: r.best ? '가장 많이 고른 업종은 ' + r.best[0] + '이에요 · ' + NF.format(r.n) + '번 가운데 ' + NF.format(r.best[1]) + '번' : '업종을 모르는 회사만 샀어요'}));
+  const kids = [
+    pageHead({kick: '기록 · 한눈에', h1: '한눈에', seal: '눈', sealDn: st === 'dn',
+      say: '꾀 서른여섯이 사고 판 것을 모두 합쳤어요. 들인 돈, 지금 값, 나눔, 흐름을 한 화면에 모았어요.',
+      more: [h('dl', {class: 'sj-money sj-glsum', 'data-st': st},
+        h('dt', {text: '들인 돈'}), h('dd', {class: 'sj-glcost', text: won(A.cost)}),
+        h('dt', {text: '지금 값'}), h('dd', {class: 'sj-glval', text: won(A.val)}),
+        h('dt', {text: '산 것'}), h('dd', {class: 'sj-gln', text: NF.format(A.n) + '번 · 들고 있는 것 ' + NF.format(A.nHold) + '번 · 판 것 ' + NF.format(A.nSold) + '번'})),
+        h('p', {class: 'sj-res sj-res-big sj-glres', 'data-st': st}, shapeI(st), h('b', {text: moved(A.diff)})),
+        h('p', {class: 'sj-res sj-glpct', 'data-st': st}, h('b', {text: pctText(A.r)})),
+        h('p', {class: 'sj-note', text: '지금 값은 판 돈과, 들고 있는 회사를 가장 늦은 종가로 센 값을 더했어요. 모두 종가로 10주씩 샀다고 친 가짜 돈이에요.'})]}),
+    h('section', {class: 'sj-sec sj-glal', 'data-n': String(A.parts.length), 'aria-label': '지금 값 나눔'},
+      head('나', '지금 값 나눔', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '어디에 들어 있나'}))),
+      h('div', {class: 'sj-glalw'}, glDonut(A.parts), legend(A.parts, x => won(x.v) + ' · ' + glShare(x.v, tot) + '프로'))),
+    glTrend(D.tt),
+    h('section', {class: 'sj-sec sj-glkk', 'data-n': String(A.kk.length), 'aria-label': '꾀마다 많이 고른 업종'},
+      head('업', '꾀마다 고른 업종', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '꾀마다 많이 고른 업종'}))),
+      h('p', {class: 'sj-gllead', text: '막대 하나가 꾀 하나예요. 색 하나가 업종 하나이고, 길수록 많이 골랐어요.'}),
+      legend(keys, null),
+      h('ol', {class: 'sj-glks'}, ...A.kk.map(kkRow))),
+    endSec(day(T?.asOf?.board), gotOf(S))];
+  return frame({title: '한눈에', page: 'glance', kids, tab: 4, rec: 0, next: {href: '#/l/b', label: '산 회사도 볼까?'}});
 }
 export async function vSettle36(X) {
   const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
@@ -563,7 +647,7 @@ export async function vSettle36(X) {
       endSeal('셈')),
     M ? rankRace(M, nameOf) : null, // 날마다 바뀐 차례(주문 1119-0243)
     endSec(ST.asOf ? day(ST.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 셈해요.')];
-  return frame({title: '정산', page: 'settle', kids, tab: 4, rec: 1, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
+  return frame({title: '정산', page: 'settle', kids, tab: 4, rec: 2, lc: X.cur?.()?.code ?? null, next: {href: '#/k', label: '서른여섯 꾀는 어떤 꾀일까?'}});
 }
 /* ── 장부(#/l · 탭 「장부」 · 주문 1120-1705 · 사장님 2026-11-20(마카오) 17:05 「그동안 날짜별로 어떤종목을 … 얼마나 … 그래서 어떻게 됐는지 그래프와 데이타로 … 하단에 … 탭을 만들어서 한눈에 …
    이름이 너무 길어 … 적당한 이름 … 그동안 약 8억 정도를 … 모든 거래내역 추적하고 기록하는 것이다」) — 정산 장부(su21-settle.json)의 모든 산 셈을 날마다 · 회사마다
@@ -719,7 +803,7 @@ export async function vLedger(X) {
     TT.days ? filtSec() : null, // 거르개 열여덟(주문 1120-1817) — 날마다 · 회사마다 줄을 한곳에
     h('p', {class: 'sj-safe sj-sec', text: '가짜 돈으로 지난 기록을 적은 장부예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(D.asOf ? day(D.asOf) : day(T?.asOf?.board), gotOf(S), '「지금」은 그 회사의 가장 최근 마지막 값이에요. 산 날 뒤에 값이 아직 없으면, 하루밖에 안 지난 것으로 적어요.')];
-    return frame({title: '장부', page: 'ledger', kids, tab: 4, rec: 0, lc: X.cur?.()?.code ?? null, next: {href: '#/r/t', label: '꾀마다 정산은 어떻게 됐을까?'}});
+    return frame({title: '장부', page: 'ledger', kids, tab: 4, rec: 1, lc: X.cur?.()?.code ?? null, next: {href: '#/r/t', label: '꾀마다 정산은 어떻게 됐을까?'}});
 }
 
 /* ── 오름 날수(#/l/d · 장부 옆 · 주문 1124-0432 — 사장님 2026-11-24(서울) 04:32 「어 그래」(물음 「이 분석 창을 사이트 장부 옆에 넣어 볼까요?」의 답) · 04:39 「1시간내에 작업 마무리해」
@@ -802,7 +886,7 @@ export async function vFall(X) {
     picSec, listSec, how,
     h('p', {class: 'sj-safe sj-sec', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(day(F.asOf), gotOf(S))];
-  return frame({title: '분석', page: 'fall', kids, tab: 4, rec: 2, lc: X.cur?.()?.code ?? null, next: {href: '#/l', label: '장부도 볼까?'}});
+  return frame({title: '분석', page: 'fall', kids, tab: 4, rec: 3, lc: X.cur?.()?.code ?? null, next: {href: '#/l', label: '장부도 볼까?'}});
 }
 export {chev};
 

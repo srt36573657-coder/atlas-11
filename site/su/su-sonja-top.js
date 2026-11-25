@@ -128,8 +128,8 @@ export function dockNav(step, nx) {
       nx ? h('a', {class: 'sj-next', href: nx.href}, nx.k ? h('span', {class: 'sj-nk', text: nx.k}) : null, h('b', {text: nx.label}), h('i', {'aria-hidden': 'true', text: '›'})) : null));
 }
 /** 기록 갈래(주문 1124-1942 · 치지 짜임 1000가지 — 아래 탭 여덟을 다섯으로 · 장부 · 정산 · 분석 · 일지는 「기록」 탭 하나에 모으고 맨 위 갈래 단추로 나눔) */
-export const REC4 = Object.freeze([['장부', '#/l'], ['정산', '#/r/t'], ['분석', '#/l/d'], ['일지', '#/j'], ['산 회사', '#/l/b'], ['판 회사', '#/l/s']]); // 주문 1125-1144 「기록 탭에 … 탭을 두개 만들어줘 매수한종목 매동한 종목」 — 갈래 여섯(세 칸 두 줄)
-/** 기록 갈래 줄 — cur = 켜진 갈래 차례(0 장부 · 1 정산 · 2 분석 · 3 일지 · 4 산 회사 · 5 판 회사) */
+export const REC4 = Object.freeze([['한눈에', '#/l/a'], ['장부', '#/l'], ['정산', '#/r/t'], ['분석', '#/l/d'], ['일지', '#/j'], ['산 회사', '#/l/b'], ['판 회사', '#/l/s']]); // 주문 1125-1144 「기록 탭에 … 탭을 두개 만들어줘 매수한종목 매동한 종목」 — 갈래 여섯(세 칸 두 줄)
+/** 기록 갈래 줄 — cur = 켜진 갈래 차례(0 한눈에(주문 1125-2101) · 1 장부 · 2 정산 · 3 분석 · 4 일지 · 5 산 회사 · 6 판 회사) */
 export function recNav(cur = 0) {
   return h('nav', {class: 'sj-rec', 'aria-label': '기록 갈래 — ' + REC4.map(x => x[0]).join(' · ')}, REC4.map(([t, href], i) =>
     h('a', {class: 'sj-recb' + (i === cur ? ' sj-recon' : ''), href, 'aria-current': i === cur ? 'page' : null, text: t})));

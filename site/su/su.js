@@ -64,6 +64,7 @@ async function route() {
     if (hh === '#/r/t') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vSettle36(XS)); }
     if (hh === '#/l') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vLedger(XS)); } // 장부(주문 1120-1705 · 탭 「장부」)
     if (hh === '#/l/d') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vFall(XS)); } // 오름 날수(주문 1124-0432 · 장부 옆)
+    if (hh === '#/l/a') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vGlance(XS)); } // 한눈에(주문 1125-2101 · 기록 탭 맨 앞 갈래)
     if (hh === '#/l/b') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vTrades(XS, 'b')); } // 산 회사(주문 1125-1144 · 기록 탭 안 갈래 · 장부 옆)
     if (hh === '#/l/s') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vTrades(XS, 's')); } // 판 회사(주문 1125-1144 · #/r/s 는 지운 쪽 고리라 쓰지 않음)
     if (hh === '#/o') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vPicks(XS)); } // 여러 꾀가 고른 회사(주문 1120-0950 · #/n 은 옛 쪽 이름이라 #/o)
