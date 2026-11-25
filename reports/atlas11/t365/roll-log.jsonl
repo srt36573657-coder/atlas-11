@@ -1048,3 +1048,4 @@
 {"at":"2026-11-24T22:17:13.518Z","kst":"2026-11-25 07:17","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-11-24T22:53:28.784Z","kst":"2026-11-25 07:53","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-24","base":"2026-10-27","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-11-24T23:59:35.407Z","kst":"2026-11-25 08:59","slot":null,"result":"실패","served":"live","asOf":null,"base":null,"in":null,"out":null,"inspectFail":0,"surge":null,"why":"사이트 자료 멈춤: site_build: 365곳 마지막 종가 날 2026-11-24 이 고르는 날 2026-11-25 과 다름 — 지금 사이트 자료 그대로 다시 올림"}
+{"at":"2026-11-25T00:59:20.667Z","kst":"2026-11-25 09:59","slot":"10:00","result":"바꿈","served":"rolled","asOf":"2026-11-25","base":"2026-10-28","in":0,"out":0,"inspectFail":0,"surge":"pick","why":null}
