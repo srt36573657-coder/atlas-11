@@ -1567,7 +1567,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   await open(p, '#/l');
   const tbL = await p.evaluate(() => { const a = [...document.querySelectorAll('#su .sj-tabs a.sj-tab')], b = a.find(x => x.textContent.trim() === '기록'), r = b?.getBoundingClientRect();
     return {n: a.length, cur: a.find(x => x.getAttribute('aria-current') === 'page')?.textContent.trim() ?? '', href: b?.getAttribute('href') ?? '', last: a.at(-1) === b, w: r ? Math.round(r.width) : 0, h: r ? Math.round(r.height) : 0, sw: document.querySelectorAll('#su nav.sj-ldsw').length}; });
-  check(tbL.n === 5 && tbL.cur === '기록' && tbL.href === '#/l' && tbL.last && tbL.w >= 47.5 && tbL.h >= 47.5 && tbL.sw === 0, W + '나) 아래 탭 맨 끝 「기록」(주문 1124-1942 치지 짜임 — 분석은 기록 탭 안 갈래 · 옛 주문 1124-0432) — #/l · 48 넘게 · 장부 쪽은 「기록」 켜짐 · 옛 단추 둘 0', JSON.stringify(tbL));
+  check(tbL.n === 5 && tbL.cur === '기록' && tbL.href === '#/l/a' && tbL.last && tbL.w >= 47.5 && tbL.h >= 47.5 && tbL.sw === 0, W + '나) 아래 탭 맨 끝 「기록」(주문 1124-1942 치지 짜임 — 분석은 기록 탭 안 갈래 · 옛 주문 1124-0432 · 주문 1126-0229 기록 탭은 한눈에부터) — #/l/a · 48 넘게 · 장부 쪽은 「기록」 켜짐 · 옛 단추 둘 0', JSON.stringify(tbL));
   await open(p, '#/l/d');
   await p.waitForSelector('#su main.sj-page[data-page="fall"]', {timeout: 15000}).catch(() => {});
   const g = await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="fall"]'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
