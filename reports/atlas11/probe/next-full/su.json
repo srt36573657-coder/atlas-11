@@ -1,12 +1,17 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-25T14:26:10.566Z",
+ "at": "2026-11-25T15:16:54.891Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 675,
-  "fail": 0
+  "pass": 674,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  [
+   "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795620086980"
+  ]
+ ],
  "m": {
   "data": {
    "fk": "g18",
@@ -14,7 +19,7 @@
    "sun": true
   },
   "home": {
-   "screens": 17.35,
+   "screens": 17.31,
    "links": 53
   },
   "t21": {
@@ -110,9 +115,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 852,
+   "lcp": 960,
    "cls": 0.204,
-   "pic": 745
+   "pic": 968
   },
   "white": {
    "light #/": {
@@ -1022,7 +1027,18 @@
      "물류·운송 4"
     ]
    }
-  }
+  },
+  "reopen": [
+   {
+    "hash": "#/k/g01",
+    "try": 1,
+    "status": 403,
+    "err": null,
+    "url": "https://aaa7377.com/su/?v=1795620086980#/k/g01",
+    "title": "aaa7377.com",
+    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M89MR9629DE0B4VTR4TKCA9Z"
+   }
+  ]
  },
- "ok": true
+ "ok": false
 }

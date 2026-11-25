@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-check-jinhwa-1",
- "at": "2026-11-25T14:24:07.605Z",
+ "at": "2026-11-25T15:16:42.807Z",
  "base": "https://aaa7377.com",
  "mode": "live",
  "all": true,
@@ -118,29 +118,16 @@
  ],
  "key": "? 진짜 사이트 — 사장님 열쇠가 없어 열쇠 길은 못 봄",
  "server": "? 진짜 사이트 — 사장님 열쇠가 없어 열쇠 길은 못 봄",
- "beacon": {
-  "visit": [
-   "visit"
-  ],
-  "rest": [
-   "stop_rest"
-  ],
-  "stop": [
-   "stop"
-  ],
-  "promise": [
-   "promise_yes",
-   "promise"
-  ],
-  "bot": 0
- },
+ "beacon": "?",
  "en": "? 진짜 사이트 — 사장님 열쇠가 없어 열쇠 길은 못 봄",
  "counts": {
-  "pass": 81,
-  "fail": 0
+  "pass": 77,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "신호 판 멈춤 — page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://aaa7377.com/next/?dev=1#/why/005930"
+ ],
  "warn": [],
- "seconds": 35.8,
- "ok": true
+ "seconds": 31.6,
+ "ok": false
 }
