@@ -1710,4 +1710,7 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-mktt { font-size: 1.125rem; color: #20323A; }
 #su .sj-mkts { font-size: 1.0625rem; color: #20323A; }
 #su .sj-mktd { font-size: 1.0625rem; color: #3E5560; }
-
+/* 사장님 응원 한 줄(주문 1125-2019) — 「오늘」 맨 위 · 지금 시장 한 줄 바로 위 · 따뜻한 노랑 바탕 · 별 모양 · 빨강 없음 · 글 20px */
+#su .sj-cheer { display: flex; align-items: center; gap: 12px; min-height: 52px; padding-block: 8px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); background: #FFF4D2; border-bottom: 1px solid #EAD59A; }
+#su .sj-cheeri { flex: none; width: 22px; height: 22px; background: #D99A00; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+#su .sj-cheerp { margin: 0; min-width: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.4; color: #20323A; overflow-wrap: anywhere; }

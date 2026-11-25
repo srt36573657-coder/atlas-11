@@ -1781,11 +1781,30 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await p.waitForSelector('#su > .sj-mkt', {timeout: 20000}).catch(() => {});
     const g = await p.evaluate(() => { const t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), m = document.querySelectorAll('#su > .sj-mkt'), e = m[0];
       return {n: m.length, st: e?.dataset.st, t: t(e?.querySelector('.sj-mktt')), s: t(e?.querySelector('.sj-mkts')), d: t(e?.querySelector('.sj-mktd')), role: e?.getAttribute('role'),
-        next: e?.nextElementSibling?.tagName === 'MAIN' && e.nextElementSibling.dataset.page === 'sonja', prev: !!e?.previousElementSibling?.matches('.sj-top, header'),
+        next: e?.nextElementSibling?.tagName === 'MAIN' && e.nextElementSibling.dataset.page === 'sonja', prev: !!e && (!!e.previousElementSibling?.matches('.sj-top, header') || (!!e.previousElementSibling?.matches('.sj-cheer') && !!e.previousElementSibling.previousElementSibling?.matches('.sj-top, header'))),
         fs: [...(e?.querySelectorAll('b, span') ?? [])].map(x => parseFloat(getComputedStyle(x).fontSize)), shape: !!e?.querySelector('i.sj-mkti'), over: document.documentElement.scrollWidth - innerWidth}; });
     check(g.n === 1 && g.st === st && g.t === t && g.s === sub && /^자료는 (오늘 오[전후] \d+시( \d+분)? 값이에요|\d+월 \d+일 값이에요)$/.test(g.d) && g.role === 'status' && g.next && g.prev && g.shape && g.fs.every(f => f >= 16.95) && g.over <= 0 && !errs.length,
-      W + when.slice(0, 16) + ' — ' + t + ' · ' + sub + ' · 자료 때 · 머리 줄 바로 아래 · main 바로 위 · 모양 · 글 17 넘게', JSON.stringify({...g, errs: errs.slice(0, 2)}));
+      W + when.slice(0, 16) + ' — ' + t + ' · ' + sub + ' · 자료 때 · 머리 줄(또는 응원 한 줄) 바로 아래 · main 바로 위 · 모양 · 글 17 넘게', JSON.stringify({...g, errs: errs.slice(0, 2)}));
     if (st === 'open') { await open(p, '#/k'); await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); const k = await p.evaluate(() => document.querySelectorAll('#su .sj-mkt').length); check(k === 0, W + '꾀 쪽에는 지금 시장 한 줄이 없음(「오늘」 맨 위만)', String(k)); }
+    await ctx.close();
+  }
+}
+{ // ㊵ 주문 1125-2019(사장님 2026-11-25(서울) 20:19 「한사장 화이팅 힘내! 첫페이지에 너어라 1시간이내에 해」) — 첫 화면(「오늘」) 맨 위 응원 한 줄
+  //   글 그대로 「한사장 화이팅 힘내!」 · 하나만 · 머리 줄 바로 아래 · 지금 시장 한 줄 바로 위 · 별 모양 · 글 17 넘게 · 높이 48 넘게 · 가로 넘침 0 · 화면 오류 0 · 다른 쪽(꾀)에는 없음 · 320 · 360 · 390 넓이
+  const W = '㊵ ', WANT = '한사장 화이팅 힘내!';
+  for (const width of [320, 360, 390]) {
+    const ctx = await browser.newContext({viewport: {width, height: 780}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    await open(p, '#/');
+    await p.waitForSelector('#su > .sj-cheer', {timeout: 20000}).catch(() => {});
+    const g = await p.evaluate(() => { const t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), m = document.querySelectorAll('#su > .sj-cheer'), e = m[0], q = e?.querySelector('p.sj-cheerp'), r = e?.getBoundingClientRect(), i = e?.querySelector('i.sj-cheeri');
+      return {n: m.length, all: document.querySelectorAll('#su .sj-cheer').length, t: t(q), role: e?.getAttribute('role'), prev: !!e?.previousElementSibling?.matches('.sj-top, header'), next: !!e?.nextElementSibling?.matches('.sj-mkt'),
+        shape: !!i && i.getAttribute('aria-hidden') === 'true' && i.getBoundingClientRect().width >= 16, fs: q ? parseFloat(getComputedStyle(q).fontSize) : 0, h: r ? Math.round(r.height) : 0, inW: !!r && r.left >= -0.5 && r.right <= innerWidth + 0.5,
+        lines: q ? Math.round(q.getBoundingClientRect().height / parseFloat(getComputedStyle(q).lineHeight)) : 0, over: document.documentElement.scrollWidth - innerWidth}; });
+    check(g.n === 1 && g.all === 1 && g.t === WANT && g.role === 'note' && g.prev && g.next && g.shape && g.fs >= 16.95 && g.h >= 47.5 && g.inW && g.lines === 1 && g.over <= 0 && !errs.length,
+      W + width + ' — 「' + WANT + '」 · 하나 · 머리 줄 바로 아래 · 지금 시장 바로 위 · 별 · 한 줄 · 글 17 넘게 · 높이 48 넘게 · 넘침 0 · 오류 0', JSON.stringify({...g, errs: errs.slice(0, 2)}));
+    if (width === 360) { await open(p, '#/k'); await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); const k = await p.evaluate(() => document.querySelectorAll('#su .sj-cheer').length); check(k === 0, W + '꾀 쪽에는 응원 한 줄이 없음(첫 화면 맨 위만)', String(k)); }
     await ctx.close();
   }
 }

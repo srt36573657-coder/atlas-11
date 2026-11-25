@@ -430,6 +430,10 @@ const nextOf = T => { const k = firstKkoe(T); return {href: '#/k/' + (k ?? 'g01'
 /* ── 지금 시장 한 줄(주문 1125-1359 · 사장님 2026-11-25(서울) 13:59 「어 해!」 — 「오늘」 화면 맨 위 · 머리 줄 바로 아래 · main 밖)
    장 상태 넷(쉬는 날 · 열리기 전 · 열려 있음 · 닫힘 — su-mkt.js) · 다음 일(여는 때 · 닫는 때 · 다음 장날) · 자료 때(오늘 받은 값이면 그 시각 · 아니면 판 날)
    모양으로도 가름(빈 동그라미 · 찬 동그라미 · 네모 · 줄 — 붉은색 없음) · 30초마다 다시 셈(말이 바뀔 때만 고침) ── */
+// 사장님 응원 한 줄(주문 1125-2019 · 사장님 2026-11-25(서울) 20:19 「한사장 화이팅 힘내! 첫페이지에 너어라」) — 「오늘」 맨 위 · 글은 여기 한 곳만 고치면 됨
+export const CHEER = '한사장 화이팅 힘내!';
+export const cheerLine = () => h('div', {class: 'sj-cheer', role: 'note'}, h('i', {class: 'sj-cheeri', 'aria-hidden': 'true'}), h('p', {class: 'sj-cheerp', text: CHEER}));
+
 export function mktLine(T) {
   const el = h('div', {class: 'sj-mkt', role: 'status'});
   const data = () => { const n = T?.now, today = kst(Date.now()).day; if (okNow(n) && n.day === today) return '자료는 오늘 ' + hmWords(n.hm) + ' 값이에요'; const b = T?.asOf?.board; return b ? '자료는 ' + mday(b) + ' 값이에요' : ''; };
@@ -465,7 +469,7 @@ export async function vSonja(X, shell = null) {
     if (ok36(g, T)) wait.replaceWith(trickSec(g, T)); else wait.remove();
     hardOf(); main.removeAttribute('data-wait');
   };
-  const dock = dockNav(1, nextOf(T)), tabs = tabNav(0, X.cur?.()?.code ?? null), mkt = mktLine(T); // 지금 시장 한 줄 — 머리 줄 바로 아래(주문 1125-1359)
-  if (keep) { const old = main.parentElement?.querySelector(':scope > .sj-mkt'); if (old) old.replaceWith(mkt); else main.before(mkt); }
-  return {title: '오늘', keep, dom: [keep ? shell.top : topBar(), mkt, main, dock, tabs], rest: [dock, tabs], after}; // keep = 먼저 칠한 판에 이어 붙임(su.js 는 rest 만 붙임)
+  const dock = dockNav(1, nextOf(T)), tabs = tabNav(0, X.cur?.()?.code ?? null), mkt = mktLine(T), cheer = cheerLine(); // 응원 한 줄 → 지금 시장 한 줄 — 머리 줄 바로 아래(주문 1125-2019 · 1125-1359)
+  if (keep) { const par = main.parentElement, old = par?.querySelector(':scope > .sj-mkt'), oc = par?.querySelector(':scope > .sj-cheer'); if (old) old.replaceWith(mkt); else main.before(mkt); if (oc) oc.replaceWith(cheer); else mkt.before(cheer); }
+  return {title: '오늘', keep, dom: [keep ? shell.top : topBar(), cheer, mkt, main, dock, tabs], rest: [dock, tabs], after}; // keep = 먼저 칠한 판에 이어 붙임(su.js 는 rest 만 붙임)
 }
