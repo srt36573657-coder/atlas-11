@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-26",
- "fetchedAt": "2026-11-25T17:51:40Z",
- "file": "reports/atlas11/context/2026-11-26/2026-11-25T17-51-40Z.json",
+ "fetchedAt": "2026-11-25T18:21:44Z",
+ "file": "reports/atlas11/context/2026-11-26/2026-11-25T18-21-44Z.json",
  "summary": {
   "day": "2026-11-26",
-  "fetchedAt": "2026-11-25T17:51:40Z",
+  "fetchedAt": "2026-11-25T18:21:44Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-25",
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-25",
-     "value": 1345.4,
-     "changePct": 0.22
+     "value": 1343.6,
+     "changePct": 0.08
     },
     "rows": 10
    },
@@ -173,8 +173,8 @@
     "label": "WTI 현물(EIA)",
     "factorId": "F33",
     "latest": {
-     "date": "2026-11-17",
-     "value": 89.53
+     "date": "2026-11-24",
+     "value": 82.24
     },
     "rows": 60
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-25",
-     "value": 1345.4,
+     "value": 1343.6,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -518,14 +518,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-11-17",
-   "calendarLagDays": 9,
+   "latestObservation": "2026-11-24",
+   "calendarLagDays": 2,
    "series": [
     {
      "series": "DCOILWTICO",
      "label": "WTI 현물(EIA)",
-     "latestObservation": "2026-11-17",
-     "value": 89.53,
+     "latestObservation": "2026-11-24",
+     "value": 82.24,
      "unit": "USD_per_barrel",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-07-29"
     }

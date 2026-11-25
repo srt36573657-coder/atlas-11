@@ -1,5 +1,5 @@
 {
- "made": "2026-11-25T16:17:17.254Z",
+ "made": "2026-11-25T18:51:48.220Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -54,15 +54,15 @@
   "기간 값 없음(옛 쪽 맞대기 건너뜀) 028080 20거래일",
   "옛 쪽 화면 오류 028080 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
  ],
- "sec": 882,
+ "sec": 678,
  "time": {
-  "old": 328.6,
-  "new": 525.8,
-  "wall": 882.5,
+  "old": 182,
+  "new": 418.7,
+  "wall": 678.3,
   "opensOld": 25567,
   "opensNew": 33280,
-  "oldPct": 37.2,
-  "oldShare": 38.5
+  "oldPct": 26.8,
+  "oldShare": 30.3
  },
  "net": {
   "req": 2560,

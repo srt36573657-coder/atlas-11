@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-11-25T17:52:43Z",
+  "at": "2026-11-25T18:22:47Z",
   "dayKST": "2026-11-26",
   "status": "complete",
   "exitCode": 0,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-11-25T17:52:43.989Z",
+      "startedAt": "2026-11-25T18:22:48.252Z",
       "status": "ok",
-      "durationMs": 25,
+      "durationMs": 45,
       "session": true,
       "afterClose": false,
       "day": "2026-11-26",
@@ -17,30 +17,30 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-11-25T17:52:44.014Z",
+      "startedAt": "2026-11-25T18:22:48.297Z",
       "status": "ok",
-      "durationMs": 0,
+      "durationMs": 1,
       "skipped": true,
       "reason": "정규장 마감(15:30) 전 · 장중값은 받지 않음"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-11-25T17:52:44.014Z",
+      "startedAt": "2026-11-25T18:22:48.298Z",
       "status": "ok",
       "durationMs": 0,
       "skipped": true
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-11-25T17:52:44.099Z",
+      "startedAt": "2026-11-25T18:22:48.389Z",
       "view": {
-        "boardId": "board-2026-11-25-a2748b64",
+        "boardId": "board-2026-11-25-6208ba02",
         "asOf": "2026-11-25",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 3051712,
+        "bytes": 3051590,
         "similar": [
           "안랩",
           "쎄트렉아이",
@@ -64,9 +64,8 @@
           "mismatch": []
         },
         "changelog": {
-          "file": "reports/atlas11/changelog/data-kr/kr-20261126T025243.json",
-          "wrote": true,
-          "title": "수급 · 기사 · 공시를 새로 모음"
+          "wrote": false,
+          "reason": "앞 기록과 같음(종가 · 회사 · 모은 자료 · 들고 남)"
         },
         "issue": {
           "wrote": false,
@@ -74,7 +73,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1634
+      "durationMs": 1271
     }
   ],
   "runtime": {
@@ -83,10 +82,10 @@
     "event": "schedule",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "45668786937",
+    "runId": "45672051099",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/45668786937",
-    "commit": "4ad6a276446e3a67799641e1851621d002937deb",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/45672051099",
+    "commit": "bce820f3f7aa010d208d01131fe71313fa036769",
     "serverInstalled": true,
     "scheduledRun": true
   },
@@ -113,5 +112,5 @@
   "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
   "inputSnapshotSHA256": "331bd072fb9d6db42e4ff1fefe258db12b2ee457d54918b840e28bcdffaad1ae",
   "expectedStocks": 365,
-  "finishedAt": "2026-11-25T17:52:45.733Z"
+  "finishedAt": "2026-11-25T18:22:49.660Z"
 }
