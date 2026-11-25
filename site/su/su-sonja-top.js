@@ -131,8 +131,12 @@ export function dockNav(step, nx) {
 export const REC4 = Object.freeze([['한눈에', '#/l/a'], ['장부', '#/l'], ['정산', '#/r/t'], ['분석', '#/l/d'], ['일지', '#/j'], ['산 회사', '#/l/b'], ['판 회사', '#/l/s']]); // 주문 1125-1144 「기록 탭에 … 탭을 두개 만들어줘 매수한종목 매동한 종목」 — 갈래 여섯(세 칸 두 줄)
 /** 기록 갈래 줄 — cur = 켜진 갈래 차례(0 한눈에(주문 1125-2101) · 1 장부 · 2 정산 · 3 분석 · 4 일지 · 5 산 회사 · 6 판 회사) */
 export function recNav(cur = 0) {
-  return h('nav', {class: 'sj-rec', 'aria-label': '기록 갈래 — ' + REC4.map(x => x[0]).join(' · ')}, REC4.map(([t, href], i) =>
+  const nav = h('nav', {class: 'sj-rec', 'aria-label': '기록 갈래 — ' + REC4.map(x => x[0]).join(' · ')}, REC4.map(([t, href], i) =>
     h('a', {class: 'sj-recb' + (i === cur ? ' sj-recon' : ''), href, 'aria-current': i === cur ? 'page' : null, text: t})));
+  // 글자 탭 한 줄(주문 1126-0229) — 켜진 탭이 옆으로 밀려 안 보이면 가운데로 끌어옴
+  const show = () => { const a = nav.querySelector('a.sj-recon'); if (a && nav.isConnected && nav.scrollWidth > nav.clientWidth + 1) nav.scrollLeft = Math.max(0, a.offsetLeft - (nav.clientWidth - a.offsetWidth) / 2); };
+  requestAnimationFrame(() => requestAnimationFrame(show));
+  return nav;
 }
 /** 탭 그림(주문 1117-1049 · 샘플 다) — 붓선 기호 다섯: 오늘 = 해 · 꾀 = 붓 · 멈춤 = 손바닥 · 일지 = 책 · 정산 = 엽전(글자는 그대로 · 그림은 읽지 않음) */
 const TABP = Object.freeze([

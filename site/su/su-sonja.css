@@ -1785,7 +1785,7 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-pfarea { fill: #20323A; fill-opacity: 0.08; stroke: none; }
 #su .sj-glkk .sj-pfh2 { margin-bottom: 8px; }
 /* 기록 창 3판(주문 1126-0229 「너 기록창을 이렇게 만들어」 · 본보기 그대로) — 맨 위 글자 탭 한 줄(밑줄) · 나눔 고르기 칸 밖 · 제목과 총 평가 금액 한 줄 · 동그라미 옆 이름표 · 기간 넷 한 덩이 · 점 찍은 꺾은선 · 끝 값 말풍선 · 글 17 넘게 · 누름 48 넘게 · 빨강 없음 */
-#su nav.sj-rec { display: flex; flex-wrap: nowrap; gap: 4px; overflow-x: auto; overflow-y: hidden; padding-block: 0; background: #FFFFFF; box-shadow: inset 0 -1px 0 #DCE6E4; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+#su nav.sj-rec { position: relative; display: flex; flex-wrap: nowrap; gap: 4px; overflow-x: auto; overflow-y: hidden; padding-block: 0; background: #FFFFFF; box-shadow: inset 0 -1px 0 #DCE6E4; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 #su nav.sj-rec::-webkit-scrollbar { display: none; }
 #su .sj-rec .sj-recb, #su .sj-rec .sj-recb[href="#/l/a"] { grid-column: auto; flex: none; min-width: 48px; min-height: 48px; padding: 0 12px; border: 0; border-radius: 0; background: transparent; color: #6F8F9A; font-size: max(17px, 1.0625rem); font-weight: 700; white-space: nowrap; }
 #su .sj-rec .sj-recb.sj-recon { background: transparent; color: #20323A; font-weight: 800; box-shadow: inset 0 -3px 0 #20323A; }

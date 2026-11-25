@@ -1636,6 +1636,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const box = e => { const r = e.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height), Math.round(r.left), Math.round(r.right)]; };
     return {tabs: tb.map(a => t(a.querySelector('span'))).join(' '), tabOn: t(document.querySelector('#su .sj-tabs a.sj-tab[aria-current="page"] span')), tabBox: tb.map(box), hid: tb.filter(a => getComputedStyle(a).display === 'none').length,
       navN: document.querySelectorAll('#su nav.sj-rec').length, recs: rb.map(a => t(a)).join(' '), hrefs: rb.map(a => a.getAttribute('href')), on: rb.filter(a => a.getAttribute('aria-current') === 'page').map(a => t(a)), recBox: rb.map(box), fs: rb.map(a => parseFloat(getComputedStyle(a).fontSize)),
+      onVis: (() => { const a = nav?.querySelector('a.sj-recon'); if (!a) return false; const r = a.getBoundingClientRect(), q = nav.getBoundingClientRect(); return r.left >= q.left - 1 && r.right <= q.right + 1; })(), // 글자 탭 한 줄 — 켜진 탭이 보임(주문 1126-0229)
       under: !!nav && !!document.querySelector('#su .sj-top') && nav.getBoundingClientRect().top >= document.querySelector('#su .sj-top').getBoundingClientRect().bottom - 1 && (nav.nextElementSibling?.tagName ?? '') === 'MAIN',
       wide: document.documentElement.scrollWidth <= innerWidth + 1, tabsW: (() => { const n = document.querySelector('#su .sj-tabs'); return n ? n.scrollWidth <= n.clientWidth + 1 : false; })()}; });
   for (const [k, hash, page] of [[0, '#/l/a', 'glance'], [1, '#/l', 'ledger'], [2, '#/r/t', 'settle'], [3, '#/l/d', 'fall'], [4, '#/j', 'journal'], [5, '#/l/b', 'held'], [6, '#/l/s', 'sold']]) {
@@ -1644,7 +1645,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const g = await look(), nm = RECN[k];
     check(g.tabs === '오늘 꾀 회사 멈춤 기록' && g.tabOn === '기록' && g.hid === 0 && g.tabBox.every(b => b[0] >= 47.5 && b[1] >= 47.5) && g.tabsW && g.wide,
       W + '가) ' + nm + ' 쪽(' + hash + ') — 아래 탭 다섯 오늘 · 꾀 · 회사 · 멈춤 · 기록 · 「기록」 켜짐 · 숨긴 탭 0 · 칸마다 48 · 320 폭에서 옆으로 밀 일 없음', JSON.stringify({tabs: g.tabs, on: g.tabOn, hid: g.hid, box: g.tabBox, tabsW: g.tabsW, wide: g.wide}));
-    check(g.navN === 1 && g.recs === REC && JSON.stringify(g.hrefs) === JSON.stringify(RECH) && g.on.length === 1 && g.on[0] === nm && g.recBox.every(b => b[1] >= 47.5 && b[0] >= 47.5) && g.fs.every(f => f >= 16.9) && g.under,
+    check(g.navN === 1 && g.recs === REC && JSON.stringify(g.hrefs) === JSON.stringify(RECH) && g.on.length === 1 && g.on[0] === nm && g.recBox.every(b => b[1] >= 47.5 && b[0] >= 47.5) && g.fs.every(f => f >= 16.9) && g.under && g.onVis,
       W + '나) ' + nm + ' 쪽 맨 위 기록 갈래 줄 여섯(장부 · 정산 · 분석 · 일지 · 산 회사 · 판 회사 — 세 칸 두 줄) · 「' + nm + '」 켜짐 · 칸마다 48 · 글씨 17 넘게 · 머리 줄 바로 아래', JSON.stringify({n: g.navN, recs: g.recs, hrefs: g.hrefs, on: g.on, box: g.recBox, fs: g.fs, under: g.under}));
   }
   for (const [hash, nm] of [['#/', '오늘'], ['#/k', '꾀'], ['#/o', '회사'], ['#/q', '멈춤']]) {
