@@ -1,17 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-25T12:48:10.009Z",
+ "at": "2026-11-25T13:24:02.782Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 672,
-  "fail": 1
+  "pass": 673,
+  "fail": 0
  },
- "fails": [
-  [
-   "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795611198541"
-  ]
- ],
+ "fails": [],
  "m": {
   "data": {
    "fk": "g18",
@@ -115,9 +110,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 968,
+   "lcp": 848,
    "cls": 0.204,
-   "pic": 818
+   "pic": 724
   },
   "white": {
    "light #/": {
@@ -1027,18 +1022,7 @@
      "물류·운송 4"
     ]
    }
-  },
-  "reopen": [
-   {
-    "hash": "#/k/g19",
-    "try": 1,
-    "status": 403,
-    "err": null,
-    "url": "https://aaa7377.com/su/?v=1795611198541#/k/g19",
-    "title": "aaa7377.com",
-    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M89C912G36JD5CBDCA2VXJJP"
-   }
-  ]
+  }
  },
- "ok": false
+ "ok": true
 }
