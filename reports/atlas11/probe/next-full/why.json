@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-4",
- "when": "2026-11-25T03:48:04.519Z",
+ "when": "2026-11-25T06:01:33.492Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "all": true,
@@ -33,7 +33,7 @@
   "median": {
    "coFiles": 2557,
    "coMissing": 0,
-   "rowsChecked": 6,
+   "rowsChecked": 9,
    "fileRows": 850
   },
   "taps": {
@@ -50,159 +50,100 @@
   },
   "verdictPx": 30,
   "nextPx": 24,
+  "later": {
+   "한 달 뒤 360×640": {
+    "qmarks": 4,
+    "medOk": true
+   },
+   "한 달 뒤 · 가운데 값 못 받음 390×844": {
+    "qmarks": 4,
+    "medOk": false
+   }
+  },
+  "offer": 1,
+  "tapsQuestions": {
+   "oneTap1018": 11,
+   "now": 22
+  },
+  "tapsAll": {
+   "now": 23
+  },
   "fontSizesPerScreenMax": 5,
-  "leftEdgesPerScreenMax": 2,
-  "leftScreens": 18
+  "leftEdgesPerScreenMax": 3,
+  "leftScreens": 113
  },
- "timing": {},
- "sec": 59,
+ "timing": {
+  "flowMs": 891,
+  "taps": 23,
+  "qTaps": 22,
+  "qTapsOneTap1018": 11
+ },
+ "sec": 100,
  "counts": {
   "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
-  "맞댄 시작 화면": 32,
-  "아래 칸 숨김 · 보임 맞음": 53,
-  "모양 잰 화면": 18,
+  "맞댄 시작 화면": 70,
+  "아래 칸 숨김 · 보임 맞음": 125,
+  "모양 잰 화면": 130,
   "번호로 열어도 시작 화면": 3,
   "작은 글자 번호 → 기록": 1,
   "펀드 번호 → 종목 없음": 1,
   "회사 화면 → 시작 화면": 1,
-  "④ 옛 판정 이름 기록 → 새 이름으로 보임": 25,
-  "맞댄 종목 없는 줄": 25,
-  "[5] 9 가운데 값 따로 셈 맞댄 줄": 6,
-  "[5] 8 먼저 물음": 25,
-  "맞댄 기록 목록": 1,
-  "질문 장 색 점 0": 906,
-  "맞댄 질문 화면": 302,
-  "답 셋 화면 안": 143,
-  "「왜 사?」 칸 「매수」(order-1011 2 허락)": 6,
-  "답 없이 다음 막음": 2,
-  "누름 셈 맞음": 10,
-  "맞댄 성향 넷": 13,
-  "맞댄 결과": 13,
-  "판정 준비됐어, 정해 둔 대로만": 2,
-  "[2] 7 권유 부른 수 맞음": 13,
+  "④ 옛 판정 이름 기록 → 새 이름으로 보임": 50,
+  "맞댄 종목 없는 줄": 66,
+  "[5] 9 가운데 값 따로 셈 맞댄 줄": 9,
+  "[5] 8 먼저 물음": 60,
+  "맞댄 기록 목록": 19,
+  "질문 장 색 점 0": 2226,
+  "맞댄 질문 화면": 742,
+  "답 셋 화면 안": 352,
+  "「왜 사?」 칸 「매수」(order-1011 2 허락)": 40,
+  "답 없이 다음 막음": 6,
+  "누름 셈 맞음": 24,
+  "맞댄 성향 넷": 32,
+  "맞댄 결과": 32,
+  "판정 준비됐어, 정해 둔 대로만": 6,
+  "[2] 7 권유 부른 수 맞음": 30,
   "공유하기 → 글 복사": 1,
   "감정 상태 체크": 1,
   "투자 일지 → 아래 기록 목록": 1,
-  "맞댄 상세 분석 all": 13,
-  "맞댄 상세 분석 mind": 13,
-  "맞댄 상세 분석 habit": 13,
-  "맞댄 상세 분석 guide": 13,
+  "맞댄 상세 분석 all": 32,
+  "맞댄 상세 분석 mind": 32,
+  "맞댄 상세 분석 habit": 32,
+  "맞댄 상세 분석 guide": 32,
   "체크리스트 복사": 1,
-  "끝낸 길": 13,
-  "맞댄 기록": 13,
-  "목록 바로 늘어남": 13,
-  "B15 첫 줄 접음": 13,
-  "[5] 7 todayResult 맞음": 13,
-  "판정 오늘은 쉬어 가자": 9,
-  "fail": 24,
-  "B8 날짜 칸 화면 안": 3,
-  "날짜 없이 막음": 1,
-  "지난 날 막음": 1,
-  "판정 반만 준비됐어": 2,
-  "11번 「‹ 이전」": 2,
-  "[5] 6 쉬어 가자(점수와 상관없이)": 5,
-  "1번 ← = 시작 화면 · 고른 답 남음": 1,
-  "3번 날짜 넣고 답 바꿈": 1,
-  "← 단추 길": 1,
-  "④ 팔 곳 안내 한 줄": 3
+  "끝낸 길": 32,
+  "맞댄 기록": 28,
+  "목록 바로 늘어남": 27,
+  "B15 첫 줄 접음": 27,
+  "[5] 7 todayResult 맞음": 32,
+  "판정 오늘은 쉬어 가자": 22,
+  "B8 날짜 칸 화면 안": 6,
+  "날짜 없이 막음": 2,
+  "지난 날 막음": 2,
+  "판정 반만 준비됐어": 4,
+  "11번 「‹ 이전」": 6,
+  "[5] 6 쉬어 가자(점수와 상관없이)": 12,
+  "1번 ← = 시작 화면 · 고른 답 남음": 2,
+  "3번 날짜 넣고 답 바꿈": 2,
+  "← 단추 길": 2,
+  "④ 팔 곳 안내 한 줄": 8,
+  "[5] 8 아직 줄": 39,
+  "맞댄 종목 있는 줄": 65,
+  "[5] 9 맞댄 한 달 뒤 값": 22,
+  "[5] 9 「?」 값": 28,
+  "B20 값은 자료가 오면": 10,
+  "B17 맞댄 맨 위 칸": 6,
+  "[5] 8 답 남김": 2,
+  "B17 맞댄 빈 칸": 2,
+  "B17 맨 위 칸 답 길": 2,
+  "[5] 7 todayResult null": 1,
+  "onDone 한 번": 1,
+  "meRecords 맞음": 1,
+  "[2] 7 한 번 그대로": 1,
+  "투자 일지 → #/why/later(붙인 칸)": 1,
+  "첫 화면에 매매일지 칸 없음(가운데 단추로만)": 1,
+  "기억 · 자료 바꾼 길": 5
  },
- "fails": [
-  [
-   "화면 오류",
-   "360×640 #/why · 빨강 넷 · 합 12 밑 · 429 https://aaa7377.com/media/makbi-icon.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-icon.svg | 429 https://aaa7377.com/media/makbi-hello.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 노랑 여섯 · 합 6 · 429 https://aaa7377.com/media/makbi-hello.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-hello.svg | 429 https://aaa7377.com/media/stone/why-q1.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 빨강 셋 · 합 6 · 429 https://aaa7377.com/next/roman-art/43.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/next/roman-art/43.svg | 429 https://aaa7377.com/media/makbi-hello.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 합 5 · 429 https://aaa7377.com/media/makbi-hello.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-hello.svg | 429 https://aaa7377.com/media/makbi-icon.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 9번 곧 · 빨강 셋 노랑 다섯 · 합 11 · 429 https://aaa7377.com/media/makbi-hello.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-hello.svg | 429 https://aaa7377.com/media/makbi-icon.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 빨강 셋 노랑 여섯 · 합 12 · 429 https://aaa7377.com/media/makbi-hello.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-hello.svg | 429 https://aaa7377.com/media/makbi-icon.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 섞음 · 뒤로 단추 · 429 https://aaa7377.com/media/makbi-hello.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-hello.svg | 429 https://aaa7377.com/media/makbi-hello.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 모두 빨강 · 429 https://aaa7377.com/media/makbi-icon.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-icon.svg | 429 https://aaa7377.com/media/makbi-hello.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 쉬어 가자 4번 · 합 2 · 429 https://aaa7377.com/media/makbi-hello.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-hello.svg | 429 https://aaa7377.com/media/makbi-icon.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 쉬어 가자 9번 · 합 2 · 429 https://aaa7377.com/media/makbi-hello.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-hello.svg | 429 https://aaa7377.com/media/makbi-icon.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 쉬어 가자 7번 · 합 2 · 429 https://aaa7377.com/media/makbi-icon.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-icon.svg | 429 https://aaa7377.com/media/makbi-hello.svg"
-  ],
-  [
-   "화면 오류",
-   "360×640 #/why · 쉬어 가자 4번 · 7번 · 합 4 · 429 https://aaa7377.com/media/makbi-icon.svg | Failed to load resource: the server responded with a status of 429 () @ https://aaa7377.com/media/makbi-icon.svg | 429 https://aaa7377.com/media/makbi-hello.svg"
-  ],
-  [
-   "판 멈춤",
-   "360×640 #/why: page.waitForFunction: Timeout 30000ms exceeded."
-  ],
-  [
-   "판 멈춤",
-   "한 달 뒤 360×640: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why · goto 앞 about:blank → #/why · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "판 멈춤",
-   "한 달 뒤 · 가운데 값 못 받음 390×844: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why · goto 앞 about:blank → #/why · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "판 멈춤",
-   "390×844 #/why/000660: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why/000660 · goto 앞 about:blank → #/why/000660 · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "판 멈춤",
-   "360×640 whyCard 옵션: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/find · goto 앞 about:blank → #/find · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "판 멈춤",
-   "390×844 #/ 첫 화면: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/ · goto 앞 about:blank → #/ · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "바꾼 길 멈춤",
-   "localStorage 막힘 390×844 #/why: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why · goto 앞 about:blank → #/why · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "바꾼 길 멈춤",
-   "localStorage 막힘 360×640 #/why/005930 · 카톡 꺼짐: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why/005930 · goto 앞 about:blank → #/why/005930 · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "바꾼 길 멈춤",
-   "쓰기만 막힘 390×844 #/why · 카톡 그대로: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why · goto 앞 about:blank → #/why · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "바꾼 길 멈춤",
-   "손자병법 칸 자료 못 받음 360×640 #/why: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why · goto 앞 about:blank → #/why · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "바꾼 길 멈춤",
-   "망가진 줄 섞임 390×844: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why · goto 앞 about:blank → #/why · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ],
-  [
-   "판 멈춤",
-   "걸린 때 390×844: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://aaa7377.com/next/?dev=1#/why · goto 앞 about:blank → #/why · 뒤 about:blank · 문서 \"eval page.evaluate: Execution context was destroyed, most likely \" · 안 끝난 요청 []"
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }
