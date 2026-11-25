@@ -1636,7 +1636,7 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-frow.sj-frow0 { background: #F3F8F6; border-style: dashed; }
 #su .sj-fsel:focus-visible, #su button.sj-frow:focus-visible { outline: 3px solid #20323A; outline-offset: 2px; }
 /* 기록 갈래 줄(주문 1124-1942 · 치지 짜임 1000가지) — 기록 탭 안 네 갈래(장부 · 정산 · 분석 · 일지) · 맨 위 한 줄 · 칸마다 48 넘게 · 켜진 갈래는 먹색 */
-#su .sj-rec { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding-block: 6px 10px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); background: #F3F8F6; }
+#su .sj-rec { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding-block: 6px 10px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); background: #F3F8F6; }
 #su .sj-rec .sj-recb { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 4px; border-radius: 24px; border: 1.5px solid #A6D0CD; background: #FCFEFD; color: #20323A; font-size: max(17px, 1.0625rem); font-weight: 700; text-decoration: none; white-space: nowrap; }
 #su .sj-rec .sj-recb.sj-recon { background: #20323A; border-color: #20323A; color: #FCFEFD; }
 #su .sj-rec .sj-recb:focus-visible { outline: 3px solid #E9B949; outline-offset: 2px; }
@@ -1688,3 +1688,15 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-svs1 { fill: #E9B949; stroke: #20323A; stroke-width: 2; }
 #su .sj-svexl { margin: 6px 0; font-size: 1.0625rem; line-height: 1.6; color: #20323A; overflow-wrap: anywhere; }
 #su .sj-svexr { display: flex; margin-top: 6px; font-size: 1.1875rem; }
+/* 산 회사 · 판 회사(주문 1125-1144) — 기록 갈래 여섯은 세 칸 두 줄 · 줄마다 회사 · 꾀 · 산 날 · 산 값 · 판 날 · 판 값 · 들고 있은 날 · 변동 · 늘고 준 돈 · 서른 개씩 더 보기 */
+#su .sj-trl0 { display: grid; gap: 10px; margin: 8px 0 0; padding: 0; list-style: none; }
+#su .sj-trow { display: grid; gap: 2px; padding: 12px; border: 1.5px solid #C9DCD8; border-radius: 14px; background: #FCFEFD; }
+#su .sj-trow[data-how="c"] { border-color: #6F8F9A; }
+#su .sj-trh { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 10px; margin: 0 0 2px; }
+#su .sj-trh b { font-size: 1.1875rem; color: #20323A; overflow-wrap: anywhere; }
+#su .sj-trk { font-size: 1.0625rem; color: #3E5560; }
+#su .sj-trl { margin: 0; font-size: 1.0625rem; line-height: 1.55; color: #20323A; overflow-wrap: anywhere; }
+#su .sj-trr { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 4px; font-size: 1.125rem; }
+#su .sj-trm { font-size: 1.0625rem; color: #20323A; }
+#su .sj-trmore { display: block; width: 100%; min-height: 52px; margin-top: 12px; border: 2px solid #20323A; border-radius: 26px; background: #FCFEFD; color: #20323A; font-size: 1.125rem; font-weight: 800; cursor: pointer; }
+#su .sj-trmore[hidden] { display: none; }

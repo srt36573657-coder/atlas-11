@@ -423,6 +423,7 @@ function svCompare(SV, nameOf) {
       h('figcaption', {class: 'sj-svcap', text: '가운데 줄보다 오른쪽은 늘어난 돈, 왼쪽은 줄어든 돈이에요.'})),
     h('p', {class: 'sj-svsay', 'data-say': '', text: Math.round(gap) === 0 ? '두 셈이 같아요.' : '사고 팔기 셈이 사기만 셈보다 ' + won(Math.abs(gap)) + (gap > 0 ? ' 더 많아요.' : ' 더 적어요.')}),
     h('p', {class: 'sj-svnote', text: '판 것 가운데 정한 날에 판 것 ' + NF.format(T.d) + '번, 88원 줄에서 판 것 ' + NF.format(T.c) + '번이에요. 판 돈은 다시 사지 않아요. 아직 정한 날이 안 온 것은 가장 늦은 종가로 셌어요.'}),
+    h('div', {class: 'sj-svgo'}, goLink('#/r/s', '판 회사 낱낱이 보기'), goLink('#/r/b', '산 회사 낱낱이 보기')), // 주문 1125-1144
     h('details', {class: 'sj-svk'}, h('summary', {class: 'sj-svks'}, h('span', {text: '꾀마다 견줘 보기'}), h('span', {class: 'sj-svksn', text: kd.length + '가지'})),
       h('ol', {class: 'sj-svkl'}, ...kd.map(g => h('li', {class: 'sj-svkr', 'data-k': g.k},
         h('p', {class: 'sj-svkn'}, h('b', {text: nameOf(g.k)}), h('span', {text: (SV.days[g.k] ?? '?') + '일째에 팔아요'})),
@@ -473,6 +474,61 @@ function svExplain(SV, D, nameOf) {
     exs.length ? h('ol', {class: 'sj-svexs'}, ...exs) : h('p', {class: 'sj-svnote', text: '아직 판 셈이 없어요. 정한 날이 지나면 실제 보기가 생겨요.'}),
     exs.length ? h('p', {class: 'sj-svlg', text: '동그라미는 산 날, 네모는 판 날이에요. 가로줄은 산 값이고, 점선은 88원 줄이에요.'}) : null,
     h('p', {class: 'sj-svnote', text: '정한 날에 종가 기록이 빠져 있으면, 다음 장날 종가로 팔아요.'}));
+}
+/** 산 회사 · 판 회사(주문 1125-1144 · 사장님 2026-11-25(서울) 11:44 「기록 탭에 말이야 그안안 탭을 두개 만들어줘 매수한종목 매동한 종목 그리고 언제 얼망에 매수해고 매도 했는지 그래서 보유기간은 몇일이였고 몇프로에 변동이 있었으며 수익은 어땠는지」)
+ *  사고 팔기 셈(sell-v1 · 종가) 낱건 — 산 회사 = 아직 들고 있는 것('h') · 판 회사 = 판 것('d' 정한 날 · 'c' 88원 줄)
+ *  줄마다 회사 · 꾀 · 산 날 · 산 값 · 판 날 · 판 값(들고 있으면 가장 늦은 종가) · 들고 있은 날(장날) · 변동(프로) · 늘고 준 돈(10주) · 판 까닭 · 새것 먼저 · 서른 개씩 */
+export function sellTrades(D) {
+  const SV = D?.sell, q = Number.isFinite(D?.qty) ? D.qty : 10;
+  if (!SV || !Array.isArray(SV.s) || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return null;
+  const hold = [], sold = [];
+  D.buys.forEach((b, i) => {
+    const x = SV.s[i];
+    if (!Array.isArray(b) || !Array.isArray(x) || !KKOE.test(D.kinds[b[1]] ?? '') || !(b[3] > 0) || !(x[2] > 0)) return;
+    const k = D.kinds[b[1]], t = {i, k, code: b[2], co: D.co?.[b[2]]?.[0] ?? b[2], d0: b[0], p0: b[3], how: x[0], d1: x[1], p1: x[2], days: x[3], n: SV.days?.[k] ?? null, diff: (x[2] - b[3]) * q, r: x[2] / b[3] - 1};
+    (x[0] === 'h' ? hold : sold).push(t);
+  });
+  const newer = key => (a, b) => String(b[key]).localeCompare(String(a[key])) || a.k.localeCompare(b.k) || a.code.localeCompare(b.code);
+  hold.sort(newer('d0')); sold.sort(newer('d1'));
+  const sum = L => ({n: L.length, up: L.filter(t => Math.round(t.diff) > 0).length, dn: L.filter(t => Math.round(t.diff) < 0).length, diff: L.reduce((a, t) => a + t.diff, 0), cost: L.reduce((a, t) => a + t.p0 * q, 0), days: L.length ? L.reduce((a, t) => a + t.days, 0) / L.length : 0});
+  return {q, hold, sold, H: sum(hold), S: sum(sold), cut: SV.cut ?? 88};
+}
+export const pctText = r => { const v = Math.round(r * 1000) / 10; return !Number.isFinite(v) ? '' : v > 0 ? v.toFixed(1) + '프로 올랐어요' : v < 0 ? (-v).toFixed(1) + '프로 내렸어요' : '그대로예요'; };
+const TR_STEP = 30;
+function trRow(t, mode, nameOf) {
+  const st = stOfD(t.diff), sold = mode === 's';
+  return h('li', {class: 'sj-trow', 'data-how': t.how, 'data-st': st, 'data-i': String(t.i)},
+    h('p', {class: 'sj-trh'}, h('b', {text: t.co}), h('span', {class: 'sj-trk', text: nameOf(t.k)})),
+    h('p', {class: 'sj-trl', 'data-f': 'buy', text: '산 날 ' + mday(t.d0) + ' · 산 값 ' + won(t.p0)}),
+    h('p', {class: 'sj-trl', 'data-f': 'sell', text: sold ? '판 날 ' + mday(t.d1) + ' · 판 값 ' + won(t.p1) : mday(t.d1) + ' 종가 ' + won(t.p1)}),
+    h('p', {class: 'sj-trl', 'data-f': 'days', text: (sold ? '들고 있은 날 ' : '들고 있는 날 ') + t.days + '일 · ' + (sold ? (t.how === 'c' ? '88원 줄 밑으로 내려 팔았어요' : '정한 날(' + t.n + '일째)에 팔았어요') : '정한 날(' + t.n + '일째)까지 ' + Math.max(0, t.n - t.days) + '일')}),
+    h('p', {class: 'sj-trr sj-res', 'data-st': st}, shapeI(st), h('b', {text: pctText(t.r)}), h('span', {class: 'sj-trm', text: moved(t.diff)})));
+}
+export async function vTrades(X, mode = 's') {
+  const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
+  const sold = mode === 's', title = sold ? '판 회사' : '산 회사', TR = D ? sellTrades(D) : null;
+  if (!TR) return missPage(X, title, '사고 팔기 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
+  const L = sold ? TR.sold : TR.hold, M = sold ? TR.S : TR.H, st = stOfD(M.diff);
+  const list = h('ol', {class: 'sj-trl0', 'aria-label': title + ' 목록'}), more = h('button', {class: 'sj-trmore', type: 'button'});
+  let shown = 0;
+  const fill = () => { const end = Math.min(L.length, shown + TR_STEP); for (; shown < end; shown++) list.append(trRow(L[shown], mode, nameOf)); const left = L.length - shown; more.hidden = left <= 0; more.textContent = left > 0 ? Math.min(TR_STEP, left) + '개 더 보기 · 남은 ' + NF.format(left) + '개' : ''; };
+  more.addEventListener('click', fill); fill();
+  const kids = [
+    pageHead({kick: '기록 · ' + (sold ? '판 회사' : '산 회사'), h1: sold ? '판 회사' : '산 회사 · 들고 있는 것', seal: sold ? '팖' : '삼', sealDn: st === 'dn',
+      say: sold ? '사고 팔기 셈으로 판 회사예요. 언제 얼마에 사고 팔았는지, 며칠 들고 있었는지 적었어요.' : '사고 팔기 셈으로 사서 아직 들고 있는 회사예요. 정한 날이 오면 그날 종가로 팔아요.',
+      more: [h('dl', {class: 'sj-money sj-trsum', 'data-st': st},
+        h('dt', {text: sold ? '판 것' : '들고 있는 것'}), h('dd', {text: NF.format(M.n) + '번'}),
+        h('dt', {text: '오른 것 · 내린 것'}), h('dd', {text: NF.format(M.up) + '번 · ' + NF.format(M.dn) + '번'}),
+        h('dt', {text: sold ? '들고 있은 날' : '들고 있는 날'}), h('dd', {text: '평균 ' + (Math.round(M.days * 10) / 10) + '일'}),
+        h('dt', {text: '산 돈'}), h('dd', {text: won(M.cost)})),
+        h('p', {class: 'sj-res sj-res-big', 'data-st': st}, shapeI(st), h('b', {text: (sold ? '판 것 모두 ' : '지금 값으로 모두 ') + moved(M.diff)})),
+        h('p', {class: 'sj-note', text: '날은 장이 열린 날로 셌어요. 모두 종가로 10주씩 샀다고 친 가짜 돈이에요.'})]}),
+    h('section', {class: 'sj-sec sj-tr', 'data-mode': sold ? 's' : 'b', 'data-n': String(L.length), 'aria-label': title + ' 낱낱이'},
+      head(sold ? '팖' : '삼', sold ? '판 것' : '산 것', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: sold ? '판 날이 늦은 것부터' : '산 날이 늦은 것부터'}), h('span', {class: 'sj-h2n', text: ' ' + NF.format(L.length) + '번'}))),
+      L.length ? list : h('p', {class: 'sj-svnote', text: sold ? '아직 판 회사가 없어요.' : '지금 들고 있는 회사가 없어요.'}),
+      L.length ? more : null),
+    endSec(day(T?.asOf?.board), gotOf(S))];
+  return frame({title, page: sold ? 'sold' : 'held', kids, tab: 4, rec: sold ? 5 : 4, next: {href: '#/r/t', label: '두 셈 견줌도 볼까?'}});
 }
 export async function vSettle36(X) {
   const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
