@@ -532,9 +532,10 @@ export async function vTrades(X, mode = 's') {
 }
 /* ── 한눈에(#/l/a · 주문 1125-2101 · 사장님 2026-11-25(서울) 20:52 「전체 투자 자산, 수익률, 자산 배분, 기간별 추이까지 한 화면에서 … 어떠한 꾀가 많이 골랐던 업종이 어떠한 분야였는지 그림으로도 한 눈에」 · 21:01 「응 한시간 이내 만들어」) ──
  *  사고 팔기 셈(sell-v1 · 종가 · 10주) 모두 — 들인 돈 · 지금 값(판 돈 + 들고 있는 회사 가장 늦은 종가) · 늘고 준 돈 · 프로
- *  지금 값 나눔 = 들고 있는 회사 업종별 + 판 돈(동그라미) · 지나온 흐름 = 쌓인 장부 전체(tt · 사기만 셈 · 기간 고르기) · 꾀마다 고른 업종(모든 산 셈 번수 · 쌓은 막대)
+ *  지금 값 나눔 = 들고 있는 회사 업종별 + 판 돈(동그라미) · 지나온 흐름 = 쌓인 장부 전체(tt · 사기만 셈 · 기간 고르기) · 꾀마다 고른 업종(모든 산 셈 번수 · 막대 = 가장 많이 · 두 번째 · 나머지)
  *  업종 색 = 들고 있는 값 큰 업종 여덟(같으면 고른 번수 · 이름 차례) · 나머지는 「그 밖 업종」 회색 · 빨강 없음 · 그림 속 글 없음(글은 밖) · 인라인 꾸밈 없음 */
-const GL_COL = Object.freeze(['#20323A', '#2F7F86', '#D99A00', '#5B6FB5', '#7FB08F', '#A07A4A', '#8A6FB0', '#4F9A6B']), GL_ETC = '#B9C6CA', GL_CASH = '#E6D9B8', GL_ETCN = '그 밖 업종';
+const GL_COL = Object.freeze(['#20323A', '#2F7F86', '#D99A00', '#5B6FB5', '#7FB08F', '#A07A4A', '#8A6FB0', '#4F9A6B']), GL_ETC = '#B9C6CA', GL_CASH = '#E6D9B8', GL_ETCN = '그 밖 업종', GL_K1 = '#20323A', GL_K2 = '#2F7F86';
+export const glIeyo = w => { const c = String(w ?? '').trim().slice(-1).charCodeAt(0); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 === 0 ? '예요' : '이에요'; }; // 받침 없으면 「예요」
 export const glShare = (a, b) => (b > 0 ? Math.round(a / b * 100) : 0);
 export function glanceOf(D) {
   const TR = sellTrades(D); if (!TR) return null;
@@ -547,8 +548,8 @@ export function glanceOf(D) {
   const byInd = new Map(); for (const t of TR.hold) { const k = keyOf(indOf(t.code)); byInd.set(k, (byInd.get(k) ?? 0) + t.p1 * q); }
   const parts = [...top.filter(i => byInd.has(i)).map(i => ({name: i, v: byInd.get(i), col: colOf(i)})), ...(byInd.has(GL_ETCN) ? [{name: GL_ETCN, v: byInd.get(GL_ETCN), col: GL_ETC}] : []), ...(cash > 0 ? [{name: '판 돈', v: cash, col: GL_CASH, cash: true}] : [])];
   const per = new Map(); for (const t of all) { const m = per.get(t.k) ?? {n: 0, raw: new Map(), seg: new Map()}; const i = indOf(t.code); m.n++; m.raw.set(i, (m.raw.get(i) ?? 0) + 1); m.seg.set(keyOf(i), (m.seg.get(keyOf(i)) ?? 0) + 1); per.set(t.k, m); }
-  const kk = [...per.keys()].sort().map(k => { const m = per.get(k), best = [...m.raw.entries()].filter(([i]) => i !== GL_ETCN).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0] ?? null;
-    return {k, n: m.n, best, segs: [...m.seg.entries()].sort((a, b) => (a[0] === GL_ETCN) - (b[0] === GL_ETCN) || b[1] - a[1] || a[0].localeCompare(b[0])).map(([name, c]) => ({name, c, col: name === GL_ETCN ? GL_ETC : colOf(name)}))}; });
+  const kk = [...per.keys()].sort().map(k => { const m = per.get(k), L = [...m.raw.entries()].filter(([i]) => i !== GL_ETCN).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])), best = L[0] ?? null, next = L[1] ?? null, rest = m.n - (best?.[1] ?? 0) - (next?.[1] ?? 0);
+    return {k, n: m.n, best, next, segs: [...(best ? [{name: best[0], c: best[1], col: GL_K1}] : []), ...(next ? [{name: next[0], c: next[1], col: GL_K2}] : []), ...(rest > 0 ? [{name: '나머지 업종', c: rest, col: GL_ETC}] : [])]}; }); // 막대 = 그 꾀가 가장 많이 고른 업종(진한 색) · 두 번째(청록) · 나머지(회색)
   return {q, cost, val, cash, held, diff: val - cost, r: cost > 0 ? val / cost - 1 : 0, n: all.length, nHold: TR.hold.length, nSold: TR.sold.length, parts, top, kk};
 }
 const glDot = col => s('svg', {class: 'sj-gldot', viewBox: '0 0 10 10', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 10, height: 10, rx: 2, fill: col}));
@@ -587,11 +588,12 @@ export async function vGlance(X) {
   if (!A || !A.n) return missPage(X, '한눈에', '사고 팔기 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
   const st = stOfD(A.diff), tot = A.parts.reduce((a, x) => a + x.v, 0);
   const legend = (L, valOf) => h('ul', {class: 'sj-glleg'}, ...L.map(x => h('li', {class: 'sj-gllegi', 'data-part': x.name}, glDot(x.col), h('b', {text: x.name}), valOf ? h('span', {text: valOf(x)}) : null)));
-  const keys = [...A.top.map((name, j) => ({name, col: GL_COL[j]})), ...(A.kk.some(r => r.segs.some(g => g.name === GL_ETCN)) ? [{name: GL_ETCN, col: GL_ETC}] : [])];
+  const keys = [{name: '그 꾀가 가장 많이 고른 업종', col: GL_K1}, {name: '두 번째로 많이 고른 업종', col: GL_K2}, {name: '나머지 업종', col: GL_ETC}];
   const kkRow = r => h('li', {class: 'sj-glk', 'data-k': r.k, 'data-n': String(r.n)},
     h('p', {class: 'sj-glkh'}, h('b', {text: nameOf(r.k)}), h('span', {class: 'sj-glkn', text: NF.format(r.n) + '번 샀어요'})),
     s('svg', {class: 'sj-glkb', viewBox: '0 0 300 20', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, ...(() => { let x = 0; return r.segs.map(g => { const w = g.c / r.n * 300, e = s('rect', {x: x.toFixed(2), y: 0, width: Math.max(0, w - (r.segs.length > 1 ? 1.5 : 0)).toFixed(2), height: 20, rx: 3, fill: g.col, 'data-part': g.name}); x += w; return e; }); })()),
-    h('p', {class: 'sj-glkt', text: r.best ? '가장 많이 고른 업종은 ' + r.best[0] + '이에요 · ' + NF.format(r.n) + '번 가운데 ' + NF.format(r.best[1]) + '번' : '업종을 모르는 회사만 샀어요'}));
+    h('p', {class: 'sj-glkt', text: r.best ? '가장 많이 고른 업종은 ' + r.best[0] + glIeyo(r.best[0]) + ' · ' + NF.format(r.n) + '번 가운데 ' + NF.format(r.best[1]) + '번' : '업종을 모르는 회사만 샀어요'}),
+    r.next ? h('p', {class: 'sj-glk2', text: '두 번째는 ' + r.next[0] + glIeyo(r.next[0]) + ' · ' + NF.format(r.next[1]) + '번'}) : null);
   const kids = [
     pageHead({kick: '기록 · 한눈에', h1: '한눈에', seal: '눈', sealDn: st === 'dn',
       say: '꾀 서른여섯이 사고 판 것을 모두 합쳤어요. 들인 돈, 지금 값, 나눔, 흐름을 한 화면에 모았어요.',
@@ -608,7 +610,7 @@ export async function vGlance(X) {
     glTrend(D.tt),
     h('section', {class: 'sj-sec sj-glkk', 'data-n': String(A.kk.length), 'aria-label': '꾀마다 많이 고른 업종'},
       head('업', '꾀마다 고른 업종', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '꾀마다 많이 고른 업종'}))),
-      h('p', {class: 'sj-gllead', text: '막대 하나가 꾀 하나예요. 색 하나가 업종 하나이고, 길수록 많이 골랐어요.'}),
+      h('p', {class: 'sj-gllead', text: '막대 하나가 꾀 하나예요. 진한 칸이 길수록 그 꾀가 한 업종을 많이 골랐어요.'}),
       legend(keys, null),
       h('ol', {class: 'sj-glks'}, ...A.kk.map(kkRow))),
     endSec(day(T?.asOf?.board), gotOf(S))];

@@ -1832,11 +1832,11 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
         parts: document.querySelectorAll('#su .sj-glal .sj-gllegi').length, arcs: document.querySelectorAll('#su svg.sj-gldo circle[data-part]').length, rows: document.querySelectorAll('#su .sj-glk').length,
         r0: txt(document.querySelector('#su .sj-glk .sj-glkt')), r0k: document.querySelector('#su .sj-glk')?.dataset.k ?? null, sh: sps.map(b => Math.round(b.getBoundingClientRect().height)), on: sps.filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.span), before, after: document.querySelector('#su .sj-gltrp')?.getAttribute('data-n'),
         text: txt(main), red: [...(main?.querySelectorAll('*') ?? [])].filter(e => { const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length,
-        fs: [...fsOf('#su .sj-gllegi'), ...fsOf('#su .sj-gllead'), ...fsOf('#su .sj-glsp'), ...fsOf('#su .sj-glkh'), ...fsOf('#su .sj-glkt'), ...fsOf('#su .sj-gltrc')], over: document.documentElement.scrollWidth - innerWidth};
+        fs: [...fsOf('#su .sj-gllegi'), ...fsOf('#su .sj-gllead'), ...fsOf('#su .sj-glsp'), ...fsOf('#su .sj-glkh'), ...fsOf('#su .sj-glkt'), ...fsOf('#su .sj-glk2'), ...fsOf('#su .sj-gltrc')], over: document.documentElement.scrollWidth - innerWidth};
     });
     check(g.page === 'glance' && g.n > 0 && g.c === wonM(g.cost) && g.v === wonM(g.val) && g.res === movedM(g.val - g.cost) && g.pc === pct(g.val / g.cost - 1),
       W + width + ' 가) 들인 돈 · 지금 값 · 늘고 준 돈 · 프로 = 자료에서 따로 셈', JSON.stringify({c: g.c, v: g.v, res: g.res, pc: g.pc, cost: g.cost, val: g.val}));
-    check(g.parts >= 1 && g.parts <= 10 && g.arcs === g.parts && g.rows === g.nk && g.r0k === g.k0 && (!g.best0 || g.r0.startsWith('가장 많이 고른 업종은 ' + g.best0[0] + '이에요 · ') && g.r0.endsWith(' 가운데 ' + NFm.format(g.best0[1]) + '번')),
+    check(g.parts >= 1 && g.parts <= 10 && g.arcs === g.parts && g.rows === g.nk && g.r0k === g.k0 && (!g.best0 || g.r0.startsWith('가장 많이 고른 업종은 ' + g.best0[0] + ((cc => cc >= 0xAC00 && cc <= 0xD7A3 && (cc - 0xAC00) % 28 === 0 ? '예요' : '이에요')(g.best0[0].trim().slice(-1).charCodeAt(0))) + ' · ') && g.r0.endsWith(' 가운데 ' + NFm.format(g.best0[1]) + '번')),
       W + width + ' 나) 나눔 동그라미 조각 = 이름표 · 꾀 줄 = 산 꾀 수 · 첫 꾀 가장 많이 고른 업종 = 자료에서 셈', JSON.stringify({parts: g.parts, arcs: g.arcs, rows: g.rows, nk: g.nk, r0: g.r0, best0: g.best0}));
     check(g.sh.length >= 2 && g.sh.every(x => x >= 47.5) && g.on.length === 1 && g.on[0] === '전체' && +g.after === g.P && (g.P < 2 || +g.before <= g.P),
       W + width + ' 다) 흐름 기간 단추 48 넘게 · 「전체」 누르면 장날 ' + g.P + '일 다 그림', JSON.stringify({sh: g.sh, on: g.on, before: g.before, after: g.after, P: g.P}));

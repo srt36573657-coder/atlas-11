@@ -1739,5 +1739,7 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-glkh { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; font-size: 1.0625rem; color: #20323A; }
 #su .sj-glkn { color: #3E5560; }
 #su .sj-glkb { display: block; width: 100%; height: 20px; }
-#su .sj-glkt { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #3E5560; }
+#su .sj-glkt { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #20323A; }
+#su .sj-glk2 { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #3E5560; }
+#su .sj-glkk .sj-glleg { gap: 6px; margin-bottom: 4px; }
 
