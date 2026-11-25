@@ -1700,3 +1700,14 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-trm { font-size: 1.0625rem; color: #20323A; }
 #su .sj-trmore { display: block; width: 100%; min-height: 52px; margin-top: 12px; border: 2px solid #20323A; border-radius: 26px; background: #FCFEFD; color: #20323A; font-size: 1.125rem; font-weight: 800; cursor: pointer; }
 #su .sj-trmore[hidden] { display: none; }
+/* 지금 시장 한 줄(주문 1125-1359) — 「오늘」 맨 위 · 머리 줄 바로 아래 · 장 상태를 모양으로도(빈 동그라미 열리기 전 · 찬 동그라미 열림 · 네모 닫힘 · 줄 쉬는 날) · 붉은색 없음 · 글 17 넘게 */
+#su .sj-mkt { display: flex; align-items: center; gap: 10px; min-height: 48px; padding-block: 8px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); background: #E9F3F1; border-bottom: 1px solid #C9DCD8; }
+#su .sj-mkti { flex: none; box-sizing: border-box; width: 16px; height: 16px; border: 3px solid #20323A; border-radius: 50%; }
+#su .sj-mkt[data-st="open"] .sj-mkti { background: #20323A; }
+#su .sj-mkt[data-st="closed"] .sj-mkti { border-radius: 3px; border-color: #6F8F9A; background: #6F8F9A; }
+#su .sj-mkt[data-st="rest"] .sj-mkti { height: 6px; border-width: 3px; border-radius: 3px; }
+#su .sj-mktp { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; min-width: 0; margin: 0; }
+#su .sj-mktt { font-size: 1.125rem; color: #20323A; }
+#su .sj-mkts { font-size: 1.0625rem; color: #20323A; }
+#su .sj-mktd { font-size: 1.0625rem; color: #3E5560; }
+

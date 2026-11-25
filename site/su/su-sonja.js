@@ -14,6 +14,7 @@ import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
 import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
 import {MIX36, EQ36, NAME as KNAME, MEAN as KMEAN} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
+import {mktNow, mktWords, kst} from '/su/su-mkt.js'; // 지금 시장 한 줄(주문 1125-1359)
 import {stance3, STANCES, won100} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 — 수비 · 보편 · 공격 · 지난 같은 땅 기록으로만)
 import {MIND10, MIND_TITLE, MIND_RULE} from '/su/su-mind-core.js'; // 손자병법 주식 격언 열 가지(주문 1120-2116 — 사장님 2026-10-16 글 그대로)
 import {PIC, PM} from '/su/su-sonja-mean.js'; // 그림 뜻 한 줄(주문 1116-1313 — 그림마다 맨 위)
@@ -426,6 +427,22 @@ const nextOf = T => { const k = firstKkoe(T); return {href: '#/k/' + (k ?? 'g01'
 /* ── 쪽 ── */
 /** 첫 쪽 — {title, dom: [머리, 본문, 이야기 막대, 탭], after()} · su.js route 가 이것만 붙임(옛 page() · afterPaint() 를 거치지 않음) */
 /** 첫 쪽 본문 — shell(su-sonja-top.js sonjaShell 이 먼저 칠한 머리 줄 · 표지)이 붙어 있으면 그 main 뒤에 본문을 이어 붙임(표지를 다시 그리지 않음) */
+/* ── 지금 시장 한 줄(주문 1125-1359 · 사장님 2026-11-25(서울) 13:59 「어 해!」 — 「오늘」 화면 맨 위 · 머리 줄 바로 아래 · main 밖)
+   장 상태 넷(쉬는 날 · 열리기 전 · 열려 있음 · 닫힘 — su-mkt.js) · 다음 일(여는 때 · 닫는 때 · 다음 장날) · 자료 때(오늘 받은 값이면 그 시각 · 아니면 판 날)
+   모양으로도 가름(빈 동그라미 · 찬 동그라미 · 네모 · 줄 — 붉은색 없음) · 30초마다 다시 셈(말이 바뀔 때만 고침) ── */
+export function mktLine(T) {
+  const el = h('div', {class: 'sj-mkt', role: 'status'});
+  const data = () => { const n = T?.now, today = kst(Date.now()).day; if (okNow(n) && n.day === today) return '자료는 오늘 ' + hmWords(n.hm) + ' 값이에요'; const b = T?.asOf?.board; return b ? '자료는 ' + mday(b) + ' 값이에요' : ''; };
+  let key = '';
+  const draw = () => {
+    const m = mktNow(Date.now()), w = mktWords(m), d = data(), k = m.st + '|' + w.t + '|' + w.s + '|' + d;
+    if (k === key) return; key = k; el.dataset.st = m.st;
+    el.replaceChildren(h('i', {class: 'sj-mkti', 'aria-hidden': 'true'}), h('p', {class: 'sj-mktp'}, h('b', {class: 'sj-mktt', text: w.t}), w.s ? h('span', {class: 'sj-mkts', text: w.s}) : null, d ? h('span', {class: 'sj-mktd', text: d}) : null));
+  };
+  draw();
+  const iv = setInterval(() => { if (!el.isConnected) { clearInterval(iv); return; } draw(); }, 30000);
+  return el;
+}
 export async function vSonja(X, shell = null) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   if (!T) return null;
@@ -448,6 +465,7 @@ export async function vSonja(X, shell = null) {
     if (ok36(g, T)) wait.replaceWith(trickSec(g, T)); else wait.remove();
     hardOf(); main.removeAttribute('data-wait');
   };
-  const dock = dockNav(1, nextOf(T)), tabs = tabNav(0, X.cur?.()?.code ?? null);
-  return {title: '오늘', keep, dom: [keep ? shell.top : topBar(), main, dock, tabs], rest: [dock, tabs], after}; // keep = 먼저 칠한 판에 이어 붙임(su.js 는 rest 만 붙임)
+  const dock = dockNav(1, nextOf(T)), tabs = tabNav(0, X.cur?.()?.code ?? null), mkt = mktLine(T); // 지금 시장 한 줄 — 머리 줄 바로 아래(주문 1125-1359)
+  if (keep) { const old = main.parentElement?.querySelector(':scope > .sj-mkt'); if (old) old.replaceWith(mkt); else main.before(mkt); }
+  return {title: '오늘', keep, dom: [keep ? shell.top : topBar(), mkt, main, dock, tabs], rest: [dock, tabs], after}; // keep = 먼저 칠한 판에 이어 붙임(su.js 는 rest 만 붙임)
 }

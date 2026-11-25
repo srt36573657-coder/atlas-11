@@ -1768,6 +1768,27 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await ctx.close();
   }
 }
+{ // ㊴ 주문 1125-1359(사장님 2026-11-25(서울) 13:59 「어 해!」 — 「오늘」 화면 맨 위 「지금 시장」 한 줄 · 치지 짜임 1000가지 「오늘 탭 맨 위 지금 시장 상태 한 줄」)
+  //   시계를 정해 둔 넷(평일 8시 30분 열리기 전 · 10시 열려 있음 · 오후 4시 닫힘 · 토요일 쉬는 날) — 머리 줄 바로 아래 · main 바로 위 · 상태 · 큰 말 · 다음 일 · 자료 때 · 글 17 넘게 · 다른 쪽에는 없음
+  const W = '㊴ ', CASES = [['2026-11-25T08:30:00+09:00', 'pre', '장 열리기 전이에요', '오늘 오전 9시에 열려요'], ['2026-11-25T10:00:00+09:00', 'open', '장이 열려 있어요', '오후 3시 30분에 닫혀요'],
+    ['2026-11-25T16:00:00+09:00', 'closed', '오늘 장은 닫혔어요', '다음 장날은 11월 26일 목요일 오전 9시예요'], ['2026-11-28T11:00:00+09:00', 'rest', '오늘은 장이 쉬는 날이에요', '다음 장날은 11월 30일 월요일 오전 9시예요']];
+  for (const [when, st, t, sub] of CASES) {
+    const ctx = await browser.newContext({viewport: {width: 360, height: 780}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    await p.clock.setFixedTime(new Date(when));
+    await open(p, '#/');
+    await p.waitForSelector('#su > .sj-mkt', {timeout: 20000}).catch(() => {});
+    const g = await p.evaluate(() => { const t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), m = document.querySelectorAll('#su > .sj-mkt'), e = m[0];
+      return {n: m.length, st: e?.dataset.st, t: t(e?.querySelector('.sj-mktt')), s: t(e?.querySelector('.sj-mkts')), d: t(e?.querySelector('.sj-mktd')), role: e?.getAttribute('role'),
+        next: e?.nextElementSibling?.tagName === 'MAIN' && e.nextElementSibling.dataset.page === 'sonja', prev: !!e?.previousElementSibling?.matches('.sj-top, header'),
+        fs: [...(e?.querySelectorAll('b, span') ?? [])].map(x => parseFloat(getComputedStyle(x).fontSize)), shape: !!e?.querySelector('i.sj-mkti'), over: document.documentElement.scrollWidth - innerWidth}; });
+    check(g.n === 1 && g.st === st && g.t === t && g.s === sub && /^자료는 (오늘 오[전후] \d+시( \d+분)? 값이에요|\d+월 \d+일 값이에요)$/.test(g.d) && g.role === 'status' && g.next && g.prev && g.shape && g.fs.every(f => f >= 16.95) && g.over <= 0 && !errs.length,
+      W + when.slice(0, 16) + ' — ' + t + ' · ' + sub + ' · 자료 때 · 머리 줄 바로 아래 · main 바로 위 · 모양 · 글 17 넘게', JSON.stringify({...g, errs: errs.slice(0, 2)}));
+    if (st === 'open') { await open(p, '#/k'); await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); const k = await p.evaluate(() => document.querySelectorAll('#su .sj-mkt').length); check(k === 0, W + '꾀 쪽에는 지금 시장 한 줄이 없음(「오늘」 맨 위만)', String(k)); }
+    await ctx.close();
+  }
+}
 await browser.close();
 R.ok = R.counts.fail === 0;
 console.log(`손자병법 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);
