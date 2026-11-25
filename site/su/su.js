@@ -42,7 +42,6 @@ function sonjaOn() {
   for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.setAttribute('content', SJ_TC);
 }
 /** 지운 쪽(주문 1115-2328) — 옛 고리로 오면 첫 쪽(주소도 #/ 로 바꿈) · 옛 회사 고리 #/k/<번호> 는 그 회사 쪽 */
-const KEEP_R = new Set(['#/r/t', '#/r/b', '#/r/s']); // 지운 쪽 틀에 걸려도 살리는 쪽 — 정산 · 산 회사 · 판 회사(주문 1125-1144)
 const GONE_T = /^#\/(b|m|n|s|f|r|g)$/, GONE_M = /^#\/(m|i|r|g)\/.+$|^#\/c\/[0-9A-Z]{6}\/.+$/; // #/g · #/g/<묶음> = 옛 기능 쪽(주문 1114-1306 에서 버림)
 /** 손자병법 판 쪽 그리기 — 머리 줄 · main · 이야기 막대 · 탭(옛 page() · afterPaint() 를 거치지 않음) */
 async function paintSj(hh, root, make) {
@@ -56,7 +55,7 @@ async function route() {
   if (fw) { location.replace(fw); return; }
   const old = /^#\/k\/([0-9A-Z]{6})$/.exec(hh);
   if (old) { history.replaceState(null, '', '#/c/' + old[1]); hh = '#/c/' + old[1]; }
-  else if ((GONE_T.test(hh) || GONE_M.test(hh)) && !KEEP_R.has(hh)) { history.replaceState(null, '', location.pathname + location.search + '#/'); hh = '#/'; }
+  else if (GONE_T.test(hh) && hh !== '#/r/t' || GONE_M.test(hh) && hh !== '#/r/t') { history.replaceState(null, '', location.pathname + location.search + '#/'); hh = '#/'; }
   const root = document.getElementById('su');
   try {
     const kk = /^#\/k(?:\/(.+))?$/.exec(hh), co = /^#\/c\/([0-9A-Z]{6})$/.exec(hh), q = /^#\/(q|p)(?:\/(.+))?$/.exec(hh);
@@ -65,8 +64,8 @@ async function route() {
     if (hh === '#/r/t') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vSettle36(XS)); }
     if (hh === '#/l') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vLedger(XS)); } // 장부(주문 1120-1705 · 탭 「장부」)
     if (hh === '#/l/d') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vFall(XS)); } // 오름 날수(주문 1124-0432 · 장부 옆)
-    if (hh === '#/r/b') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vTrades(XS, 'b')); } // 산 회사(주문 1125-1144 · 기록 탭 안 갈래)
-    if (hh === '#/r/s') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vTrades(XS, 's')); } // 판 회사(주문 1125-1144)
+    if (hh === '#/l/b') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vTrades(XS, 'b')); } // 산 회사(주문 1125-1144 · 기록 탭 안 갈래 · 장부 옆)
+    if (hh === '#/l/s') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vTrades(XS, 's')); } // 판 회사(주문 1125-1144 · #/r/s 는 지운 쪽 고리라 쓰지 않음)
     if (hh === '#/o') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vPicks(XS)); } // 여러 꾀가 고른 회사(주문 1120-0950 · #/n 은 옛 쪽 이름이라 #/o)
     if (q || hh === '#/j') { // 「왜 사?」 · 매매일지 — 손자병법 판(주문 1116-0300 · 옛 틀을 지움) · 걸음 4 / 5 · 5 / 5
       const [W, Y] = await Promise.all([sjWhy(), whyM()]), X = whyX(W);

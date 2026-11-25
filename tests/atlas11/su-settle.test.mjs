@@ -210,7 +210,7 @@ test('서른여섯 꾀 셈(su21_s36.py 스스로 시험 · 이름 = 화면 · �
 
 test('탭 · 길 · 묶기 · 검사 — 아래 탭 다섯째 「정산」 #/r/t · 손자병법 판 서른여섯 꾀 표만(주문 1115-2328) · 올리기 작업만 장부를 씀 · 검사 ㉓ · 화면 글', () => {
   const su = rd('site/su/su.js'), kk = rd('site/su/su-sonja-kkoe.js'), top = rd('site/su/su-sonja-top.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.ok(!su.includes('TAB_ORDER') && top.includes("['멈춤', '#/q'], ['기록', '#/l']]);") && top.includes("export const REC4 = Object.freeze([['장부', '#/l'], ['정산', '#/r/t'], ['분석', '#/l/d'], ['일지', '#/j'], ['산 회사', '#/r/b'], ['판 회사', '#/r/s']]);"), '탭 다섯 끝 「기록」 · 기록 갈래 장부 · 정산 · 분석 · 일지(주문 1124-1942 치지 짜임 — 옛 정산 · 장부 · 분석 탭을 한 탭에)');
+  assert.ok(!su.includes('TAB_ORDER') && top.includes("['멈춤', '#/q'], ['기록', '#/l']]);") && top.includes("export const REC4 = Object.freeze([['장부', '#/l'], ['정산', '#/r/t'], ['분석', '#/l/d'], ['일지', '#/j'], ['산 회사', '#/l/b'], ['판 회사', '#/l/s']]);"), '탭 다섯 끝 「기록」 · 기록 갈래 장부 · 정산 · 분석 · 일지(주문 1124-1942 치지 짜임 — 옛 정산 · 장부 · 분석 탭을 한 탭에)');
   assert.ok(su.includes("if (hh === '#/r/t') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vSettle36(XS)); }"), '길 #/r/t → 손자병법 판 정산(su-sonja-kkoe.js vSettle36)');
   assert.equal(forwardTo('', '#/r/t'), null, '#/r/t 는 새 판 안(옛 판으로 넘기지 않음)');
   assert.ok(kk.includes("return frame({title: '정산', page: 'settle', kids, tab: 4, rec: 1,"), '정산 쪽을 열면 기록 탭(다섯째)과 기록 갈래 「정산」이 켜짐(주문 1124-1942)');

@@ -31,7 +31,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(https:\/\/finance\.naver\.com\/item\/(news|coinfo)\.naver\?code=[0-9A-Z]{6}|#\/|#\/[kqpjol]|#\/l\/d|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
+const LINK_OK = /^(https:\/\/finance\.naver\.com\/item\/(news|coinfo)\.naver\?code=[0-9A-Z]{6}|#\/|#\/[kqpjol]|#\/l\/[dbs]|#\/[cqp]\/[0-9A-Z]{6}|#\/k\/g(0[1-9]|[12]\d|3[0-6])|#\/r\/t|#\/gift|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|\/next\/\?(lang=en&)?su=[a-z]+#\/(?!(talk|surge|cal|today)(\/|$))[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 1115-2328 — 손자병법 길뿐: 첫 쪽 #/ · 꾀 모음 #/k · 꾀 #/k/g01 ~ g36 · 회사 #/c/<번호> · 멈춤 #/q(/<번호>) · #/p · 일지 #/j · 정산 #/r/t · 선물 · /next/ 옛 쪽(찾기 · 고객센터 …) · 지운 쪽(#/b · #/m · #/n · #/s · #/f · #/r · #/r/<서랍> · #/i/<업종> · #/c/<번호>/more · t · y)으로 가는 고리 0 // 주문 1114-1306 ⑧ · ② — 옛 기능 쪽 #/g · 닫히는 옛 쪽(#/talk · #/surge · #/cal · #/today)과 /atlas/ 화면으로 가는 고리 0
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -1628,7 +1628,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
 }
 { // ㊱ 주문 1124-1942(사장님 2026-11-24(서울) 20:01 「너 잘못하고 있어 이앱에 구조를 1000가지로 파악 하라고 한거야」 — 치지 앱 짜임 1000가지(에이전트 100명 × 10가지)를 손자병법 짜임에)
   //   아래 탭 여덟(일곱 보임 · 좁은 폰은 옆으로 밂) → 다섯(오늘 · 꾀 · 회사 · 멈춤 · 기록) · 장부 · 정산 · 분석 · 일지는 「기록」 탭 하나 · 기록 쪽 맨 위 갈래 줄 넷(켜진 갈래 하나 · 칸마다 48 · 글씨 17 넘게) · 320 폭에서도 옆으로 밀 일 없음
-  const W = '㊱ ', REC = '장부 정산 분석 일지 산 회사 판 회사', RECN = ['장부', '정산', '분석', '일지', '산 회사', '판 회사'], RECH = ['#/l', '#/r/t', '#/l/d', '#/j', '#/r/b', '#/r/s']; // 갈래 여섯(주문 1125-1144 산 회사 · 판 회사)
+  const W = '㊱ ', REC = '장부 정산 분석 일지 산 회사 판 회사', RECN = ['장부', '정산', '분석', '일지', '산 회사', '판 회사'], RECH = ['#/l', '#/r/t', '#/l/d', '#/j', '#/l/b', '#/l/s']; // 갈래 여섯(주문 1125-1144 산 회사 · 판 회사)
   const ctx = await browser.newContext({viewport: {width: 320, height: 640}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
   await QUIET(ctx);
   const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
@@ -1638,7 +1638,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       navN: document.querySelectorAll('#su nav.sj-rec').length, recs: rb.map(a => t(a)).join(' '), hrefs: rb.map(a => a.getAttribute('href')), on: rb.filter(a => a.getAttribute('aria-current') === 'page').map(a => t(a)), recBox: rb.map(box), fs: rb.map(a => parseFloat(getComputedStyle(a).fontSize)),
       under: !!nav && !!document.querySelector('#su .sj-top') && nav.getBoundingClientRect().top >= document.querySelector('#su .sj-top').getBoundingClientRect().bottom - 1 && (nav.nextElementSibling?.tagName ?? '') === 'MAIN',
       wide: document.documentElement.scrollWidth <= innerWidth + 1, tabsW: (() => { const n = document.querySelector('#su .sj-tabs'); return n ? n.scrollWidth <= n.clientWidth + 1 : false; })()}; });
-  for (const [k, hash, page] of [[0, '#/l', 'ledger'], [1, '#/r/t', 'settle'], [2, '#/l/d', 'fall'], [3, '#/j', 'journal'], [4, '#/r/b', 'held'], [5, '#/r/s', 'sold']]) {
+  for (const [k, hash, page] of [[0, '#/l', 'ledger'], [1, '#/r/t', 'settle'], [2, '#/l/d', 'fall'], [3, '#/j', 'journal'], [4, '#/l/b', 'held'], [5, '#/l/s', 'sold']]) {
     await open(p, hash);
     await p.waitForSelector('#su nav.sj-rec', {timeout: 15000}).catch(() => {});
     const g = await look(), nm = RECN[k];
@@ -1728,10 +1728,10 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   }
 }
 { // ㊳ 주문 1125-1144(사장님 2026-11-25(서울) 11:44 「기록 탭에 말이야 그안안 탭을 두개 만들어줘 매수한종목 매동한 종목 그리고 언제 얼망에 매수해고 매도 했는지 그래서 보유기간은 몇일이였고 몇프로에 변동이 있었으며 수익은 어땠는지」)
-  //   산 회사(#/r/b · 들고 있는 것) · 판 회사(#/r/s · 판 것) — 이 검사가 정산 자료(su21-settle.json sell)에서 따로 셈: 묶음 수 · 오른 것 · 내린 것 · 평균 날 · 산 돈 · 늘고 준 돈 합
+  //   산 회사(#/l/b · 들고 있는 것) · 판 회사(#/l/s · 판 것 · #/r/s 는 지운 쪽 고리) — 이 검사가 정산 자료(su21-settle.json sell)에서 따로 셈: 묶음 수 · 오른 것 · 내린 것 · 평균 날 · 산 돈 · 늘고 준 돈 합
   //   줄 차례(산 회사 = 산 날 늦은 것부터 · 판 회사 = 판 날 늦은 것부터 · 꾀 · 번호) · 줄마다 회사 · 산 날 · 산 값 · 판 날 · 판 값 · 들고 있은 날 · 판 까닭 · 변동(프로) · 늘고 준 돈 · 서른 개씩 더 보기(48 넘게) · 「%」 0 · 넘침 0 · 오류 0
   const W = '㊳ ', pct = r => { const v = Math.round(r * 1000) / 10; return v > 0 ? v.toFixed(1) + '프로 올랐어요' : v < 0 ? (-v).toFixed(1) + '프로 내렸어요' : '그대로예요'; };
-  for (const [hash, mode] of [['#/r/s', 's'], ['#/r/b', 'b']]) for (const width of [390, 320]) {
+  for (const [hash, mode] of [['#/l/s', 's'], ['#/l/b', 'b']]) for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));

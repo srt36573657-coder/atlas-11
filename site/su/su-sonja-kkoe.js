@@ -423,7 +423,7 @@ function svCompare(SV, nameOf) {
       h('figcaption', {class: 'sj-svcap', text: '가운데 줄보다 오른쪽은 늘어난 돈, 왼쪽은 줄어든 돈이에요.'})),
     h('p', {class: 'sj-svsay', 'data-say': '', text: Math.round(gap) === 0 ? '두 셈이 같아요.' : '사고 팔기 셈이 사기만 셈보다 ' + won(Math.abs(gap)) + (gap > 0 ? ' 더 많아요.' : ' 더 적어요.')}),
     h('p', {class: 'sj-svnote', text: '판 것 가운데 정한 날에 판 것 ' + NF.format(T.d) + '번, 88원 줄에서 판 것 ' + NF.format(T.c) + '번이에요. 판 돈은 다시 사지 않아요. 아직 정한 날이 안 온 것은 가장 늦은 종가로 셌어요.'}),
-    h('div', {class: 'sj-svgo'}, goLink('#/r/s', '판 회사 낱낱이 보기'), goLink('#/r/b', '산 회사 낱낱이 보기')), // 주문 1125-1144
+    h('div', {class: 'sj-svgo'}, goLink('#/l/s', '판 회사 낱낱이 보기'), goLink('#/l/b', '산 회사 낱낱이 보기')), // 주문 1125-1144
     h('details', {class: 'sj-svk'}, h('summary', {class: 'sj-svks'}, h('span', {text: '꾀마다 견줘 보기'}), h('span', {class: 'sj-svksn', text: kd.length + '가지'})),
       h('ol', {class: 'sj-svkl'}, ...kd.map(g => h('li', {class: 'sj-svkr', 'data-k': g.k},
         h('p', {class: 'sj-svkn'}, h('b', {text: nameOf(g.k)}), h('span', {text: (SV.days[g.k] ?? '?') + '일째에 팔아요'})),
