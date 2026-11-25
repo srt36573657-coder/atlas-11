@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-11-25T05:57:06.563Z",
+ "at": "2026-11-25T06:40:16.745Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-25",
  "ready": [
@@ -23,11 +23,11 @@
  "full": true,
  "oldNameScreens": 2690,
  "oldNameAllow": [],
- "seconds": 200,
+ "seconds": 347,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 200,
+  "wall": 347.4,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
