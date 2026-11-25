@@ -1808,40 +1808,51 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await ctx.close();
   }
 }
-{ // ㊶ 주문 1125-2101(사장님 2026-11-25(서울) 20:52 「전체 투자 자산, 수익률, 자산 배분, 기간별 추이까지 한 화면에서 … 어떠한 꾀가 많이 골랐던 업종이 어떠한 분야였는지 그림으로도 한 눈에」 · 21:01 「응 한시간 이내 만들어」) — 기록 탭 맨 앞 「한눈에」(#/l/a)
-  //   이 검사가 정산 자료(su21-settle.json sell · co · tt)에서 따로 셈: 들인 돈 · 지금 값(판 돈 + 들고 있는 것 가장 늦은 종가) · 늘고 준 돈 · 프로 · 나눔 조각 수 · 꾀 줄 수 · 첫 꾀 가장 많이 고른 업종 · 흐름 장날 수(전체)
-  //   기간 단추 48 넘게 · 누르면 바뀜 · 「%」 · 매수 · 매도 · 추천 0 · 빨강 글 0 · 글 17 넘게 · 가로 넘침 0 · 화면 오류 0 · 320 · 390 넓이
+{ // ㊶ 주문 1125-2101(사장님 2026-11-25(서울) 20:52 「전체 투자 자산, 수익률, 자산 배분, 기간별 추이까지 한 화면에서 … 어떠한 꾀가 많이 골랐던 업종이 어떠한 분야였는지 그림으로도 한 눈에」) · 1125-2248(22:48 본보기 그림과 「이렇게 만들어줘 … 제대로 읽어」) — 기록 탭 맨 앞 「한눈에」(#/l/a)
+  //   본보기 짜임: 나눔 고르기(꾀별 분포 · 업종별 분포) · 자산 포트폴리오 · 총 평가 금액 · 늘고 준 돈 · 프로 · 동그라미(가운데 총 자산) · 이름표(몫 · 돈) · 한 줄 알림 · 수익률 추이(기간 단추 · 눈금 셋 · 날짜 셋 · 끝 값)
+  //   이 검사가 정산 자료(su21-settle.json sell · co · sell.tt)에서 따로 셈: 총 평가 금액 · 들인 돈 · 늘고 준 돈 · 프로 · 가운데 줄인 값 · 꾀 줄 수 · 첫 꾀 가장 많이 고른 업종 · 추이 장날 수 · 끝 값 = 총 평가 금액과 같은 셈
+  //   「%」 · 매수 · 매도 · 추천 0 · 빨강 글 0 · 글 17 넘게(동그라미 안 숫자 · 눈금 · 날짜 포함) · 단추 48 넘게 · 가로 넘침 0 · 화면 오류 0 · 390 · 320 넓이
   const W = '㊶ ', pct = r => { const v = Math.round(r * 1000) / 10; return v > 0 ? v.toFixed(1) + '프로 올랐어요' : v < 0 ? (-v).toFixed(1) + '프로 내렸어요' : '그대로예요'; };
+  const wonS = v => { const a = Math.abs(v); return a >= 1e8 ? (Math.round(a / 1e6) / 100).toFixed(2) + '억' : a >= 1e4 ? NFm.format(Math.round(a / 1e4)) + '만' : NFm.format(Math.round(a)); };
+  const ieyo = w => { const c = String(w).trim().slice(-1).charCodeAt(0); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 === 0 ? '예요' : '이에요'; };
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
     await open(p, '#/l/a');
-    await p.waitForSelector('#su section.sj-glal', {timeout: 20000}).catch(() => {});
+    await p.waitForSelector('#su section.sj-pf', {timeout: 20000}).catch(() => {});
     const g = await p.evaluate(async () => {
       const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), D = await fetch('/su/data/su21-settle.json', {cache: 'no-store'}).then(r => r.json()).catch(() => null);
       const KK = /^g(0[1-9]|[12]\d|3[0-6])$/, SV = D?.sell, q = Number.isFinite(D?.qty) ? D.qty : 10; let cost = 0, val = 0, n = 0; const per = new Map(), ind = c => (typeof D?.co?.[c]?.[1] === 'string' && D.co[c][1].trim()) || '그 밖 업종';
       (D?.buys ?? []).forEach((b, i) => { const x = SV?.s?.[i], k = D.kinds[b[1]]; if (!Array.isArray(x) || !KK.test(k ?? '') || !(b[3] > 0) || !(x[2] > 0)) return; cost += b[3] * q; val += x[2] * q; n++; const m = per.get(k) ?? new Map(); m.set(ind(b[2]), (m.get(ind(b[2])) ?? 0) + 1); per.set(k, m); });
       const k0 = [...per.keys()].sort()[0], best0 = k0 ? [...per.get(k0).entries()].filter(([i]) => i !== '그 밖 업종').sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0] : null;
-      const P = (D?.tt?.days ?? []).map((d, i) => [d, D.tt.w?.[i]]).filter(([d, v]) => typeof d === 'string' && Number.isFinite(v) && v > 0).length;
-      const main = document.querySelector('#su main'), sps = [...document.querySelectorAll('#su .sj-glsp')], all = sps.find(b => b.dataset.span === '전체');
-      const before = document.querySelector('#su .sj-gltrp')?.getAttribute('data-n'); all?.click(); await new Promise(r => setTimeout(r, 120));
-      const fsOf = sel => [...document.querySelectorAll(sel)].map(e => parseFloat(getComputedStyle(e).fontSize));
-      return {cost, val, n, nk: per.size, best0, k0, P, page: main?.dataset.page, c: txt(document.querySelector('#su .sj-glcost')), v: txt(document.querySelector('#su .sj-glval')), res: txt(document.querySelector('#su .sj-glres b')), pc: txt(document.querySelector('#su .sj-glpct b')),
-        parts: document.querySelectorAll('#su .sj-glal .sj-gllegi').length, arcs: document.querySelectorAll('#su svg.sj-gldo circle[data-part]').length, rows: document.querySelectorAll('#su .sj-glk').length,
-        r0: txt(document.querySelector('#su .sj-glk .sj-glkt')), r0k: document.querySelector('#su .sj-glk')?.dataset.k ?? null, sh: sps.map(b => Math.round(b.getBoundingClientRect().height)), on: sps.filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.span), before, after: document.querySelector('#su .sj-gltrp')?.getAttribute('data-n'),
+      const TT = (SV?.tt?.days ?? []).map((d, i) => [d, SV.tt.c?.[i], SV.tt.v?.[i]]).filter(([d, c, v]) => typeof d === 'string' && Number.isFinite(c) && c > 0 && Number.isFinite(v));
+      const sec = document.querySelector('#su section.sj-pf'), legOf = () => [...document.querySelectorAll('#su .sj-pf .sj-gllegi')], arcN = () => document.querySelectorAll('#su .sj-pf svg.sj-gldo circle[data-part]').length, shSum = () => legOf().reduce((a, e) => a + (parseInt(txt(e.querySelector('.sj-pfsh')), 10) || 0), 0);
+      const v0 = {view: sec?.dataset.view, leg: legOf().length, arcs: arcN(), sum: shSum()}, bI = document.querySelector('#su .sj-pfsb[data-view="i"]'); bI?.click(); await new Promise(r => setTimeout(r, 120));
+      const v1 = {view: sec?.dataset.view, leg: legOf().length, arcs: arcN(), sum: shSum(), on: [...document.querySelectorAll('#su .sj-pfsb[aria-pressed="true"]')].map(b => b.dataset.view)};
+      const sps = [...document.querySelectorAll('#su .sj-pftr .sj-glsp')], all = sps.find(b => b.dataset.span === '전체'); all?.click(); await new Promise(r => setTimeout(r, 120));
+      const main = document.querySelector('#su main'), fsOf = sel => [...document.querySelectorAll(sel)].map(e => parseFloat(getComputedStyle(e).fontSize));
+      return {cost, val, n, nk: per.size, best0, k0, TT: TT.length, lastD: TT.at(-1)?.[0] ?? null, lastR: TT.length ? TT.at(-1)[2] / TT.at(-1)[1] - 1 : null, page: main?.dataset.page, h1: txt(document.querySelector('#su main h1')),
+        val0: txt(document.querySelector('#su .sj-pfval')), cost0: txt(document.querySelector('#su .sj-pfcost')), res: txt(document.querySelector('#su .sj-pf .sj-glres b')), pc: txt(document.querySelector('#su .sj-pf .sj-glpct b')), ctr: txt(document.querySelector('#su .sj-pfctr > b')),
+        v0, v1, segH: [...document.querySelectorAll('#su .sj-pfsb')].map(b => Math.round(b.getBoundingClientRect().height)), ins: txt(document.querySelector('#su .sj-pfinb')), insH: Math.round(document.querySelector('#su a.sj-pfin')?.getBoundingClientRect().height ?? 0),
+        rows: document.querySelectorAll('#su .sj-glk').length, r0: txt(document.querySelector('#su .sj-glk .sj-glkt')), r0k: document.querySelector('#su .sj-glk')?.dataset.k ?? null,
+        sh: sps.map(b => Math.round(b.getBoundingClientRect().height)), spOn: sps.filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.span), pathN: document.querySelector('#su .sj-pftr .sj-gltrp')?.getAttribute('data-n'), last: txt(document.querySelector('#su .sj-pflast b')),
+        ys: document.querySelectorAll('#su .sj-pfy > span').length, xs: document.querySelectorAll('#su .sj-pfx > span').length,
         text: txt(main), red: [...(main?.querySelectorAll('*') ?? [])].filter(e => { const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length,
-        fs: [...fsOf('#su .sj-gllegi'), ...fsOf('#su .sj-gllead'), ...fsOf('#su .sj-glsp'), ...fsOf('#su .sj-glkh'), ...fsOf('#su .sj-glkt'), ...fsOf('#su .sj-glk2'), ...fsOf('#su .sj-gltrc')], over: document.documentElement.scrollWidth - innerWidth};
+        fs: [...fsOf('#su .sj-pf .sj-gllegi'), ...fsOf('#su .sj-pfsb'), ...fsOf('#su .sj-pfctr > *'), ...fsOf('#su text.sj-pfsl'), ...fsOf('#su .sj-pfy > span'), ...fsOf('#su .sj-pfx > span'), ...fsOf('#su .sj-glsp'), ...fsOf('#su .sj-pfint'), ...fsOf('#su .sj-glkh'), ...fsOf('#su .sj-glkt'), ...fsOf('#su .sj-glk2')], over: document.documentElement.scrollWidth - innerWidth};
     });
-    check(g.page === 'glance' && g.n > 0 && g.c === wonM(g.cost) && g.v === wonM(g.val) && g.res === movedM(g.val - g.cost) && g.pc === pct(g.val / g.cost - 1),
-      W + width + ' 가) 들인 돈 · 지금 값 · 늘고 준 돈 · 프로 = 자료에서 따로 셈', JSON.stringify({c: g.c, v: g.v, res: g.res, pc: g.pc, cost: g.cost, val: g.val}));
-    check(g.parts >= 1 && g.parts <= 10 && g.arcs === g.parts && g.rows === g.nk && g.r0k === g.k0 && (!g.best0 || g.r0.startsWith('가장 많이 고른 업종은 ' + g.best0[0] + ((cc => cc >= 0xAC00 && cc <= 0xD7A3 && (cc - 0xAC00) % 28 === 0 ? '예요' : '이에요')(g.best0[0].trim().slice(-1).charCodeAt(0))) + ' · ') && g.r0.endsWith(' 가운데 ' + NFm.format(g.best0[1]) + '번')),
-      W + width + ' 나) 나눔 동그라미 조각 = 이름표 · 꾀 줄 = 산 꾀 수 · 첫 꾀 가장 많이 고른 업종 = 자료에서 셈', JSON.stringify({parts: g.parts, arcs: g.arcs, rows: g.rows, nk: g.nk, r0: g.r0, best0: g.best0}));
-    check(g.sh.length >= 2 && g.sh.every(x => x >= 47.5) && g.on.length === 1 && g.on[0] === '전체' && +g.after === g.P && (g.P < 2 || +g.before <= g.P),
-      W + width + ' 다) 흐름 기간 단추 48 넘게 · 「전체」 누르면 장날 ' + g.P + '일 다 그림', JSON.stringify({sh: g.sh, on: g.on, before: g.before, after: g.after, P: g.P}));
+    const md = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일';
+    check(g.page === 'glance' && g.h1 === '자산 포트폴리오' && g.n > 0 && g.val0 === wonM(g.val) && g.cost0 === '들인 돈 ' + wonM(g.cost) && g.res === movedM(g.val - g.cost) && g.pc === pct(g.val / g.cost - 1) && g.ctr === wonS(g.val) + '원',
+      W + width + ' 가) 자산 포트폴리오 · 총 평가 금액 · 들인 돈 · 늘고 준 돈 · 프로 · 가운데 총 자산 = 자료에서 따로 셈', JSON.stringify({h1: g.h1, val0: g.val0, cost0: g.cost0, res: g.res, pc: g.pc, ctr: g.ctr, cost: g.cost, val: g.val}));
+    check(g.v0.view === 'k' && g.v1.view === 'i' && g.v1.on.length === 1 && g.v1.on[0] === 'i' && [g.v0, g.v1].every(v => v.leg >= 1 && v.leg <= 10 && v.arcs === v.leg && v.sum >= 96 && v.sum <= 104) && g.segH.length === 2 && g.segH.every(x => x >= 47.5) && g.ins.length > 0 && g.insH >= 47.5,
+      W + width + ' 나) 나눔 고르기 둘(꾀별 → 업종별) · 동그라미 조각 = 이름표 · 몫 합 100 안팎 · 단추 48 넘게 · 한 줄 알림', JSON.stringify({v0: g.v0, v1: g.v1, segH: g.segH, ins: g.ins, insH: g.insH}));
+    check(g.TT >= 2 && g.sh.length >= 2 && g.sh.every(x => x >= 47.5) && g.spOn.length === 1 && g.spOn[0] === '전체' && +g.pathN === g.TT && g.last === md(g.lastD) + ' ' + pct(g.lastR) && Math.abs(g.lastR - (g.val / g.cost - 1)) < 1e-9 && g.ys === 3 && g.xs === 3,
+      W + width + ' 다) 수익률 추이 — 「전체」 누르면 장날 ' + g.TT + '일 · 끝 값 = 총 평가 금액 셈 · 눈금 셋 · 날짜 셋 · 단추 48 넘게', JSON.stringify({TT: g.TT, sh: g.sh, spOn: g.spOn, pathN: g.pathN, last: g.last, lastR: g.lastR, ys: g.ys, xs: g.xs}));
+    check(g.rows === g.nk && g.r0k === g.k0 && (!g.best0 || g.r0.startsWith('가장 많이 고른 업종은 ' + g.best0[0] + ieyo(g.best0[0]) + ' · ') && g.r0.endsWith(' 가운데 ' + NFm.format(g.best0[1]) + '번')),
+      W + width + ' 라) 꾀마다 많이 고른 업종 — 꾀 줄 = 산 꾀 수 · 첫 꾀 가장 많이 고른 업종 = 자료에서 셈', JSON.stringify({rows: g.rows, nk: g.nk, r0: g.r0, best0: g.best0}));
     check(!/%|매수|매도|추천/.test(g.text) && g.red === 0 && g.fs.length > 0 && g.fs.every(f => f >= 16.9) && g.over <= 0 && !errs.length,
-      W + width + ' 라) 「%」 · 매수 · 매도 · 추천 0 · 빨강 0 · 글 17 넘게 · 넘침 0 · 오류 0', JSON.stringify({red: g.red, fsMin: Math.min(...g.fs), over: g.over, errs: errs.slice(0, 2)}));
+      W + width + ' 마) 「%」 · 매수 · 매도 · 추천 0 · 빨강 0 · 글 17 넘게 · 넘침 0 · 오류 0', JSON.stringify({red: g.red, fsMin: Math.min(...g.fs), over: g.over, errs: errs.slice(0, 2)}));
     await ctx.close();
   }
 }

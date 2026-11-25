@@ -1742,4 +1742,46 @@ html.sj-on #su .sj-ldf { display: grid; gap: 12px; }
 #su .sj-glkt { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #20323A; }
 #su .sj-glk2 { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #3E5560; }
 #su .sj-glkk .sj-glleg { gap: 6px; margin-bottom: 4px; }
+/* 한눈에 2판(주문 1125-2248 · 보내 주신 본보기 그대로 — 나눔 고르기 · 자산 포트폴리오 · 총 평가 금액 · 동그라미와 이름표 · 한 줄 알림 · 수익률 추이) · 빨강 없음 · 「%」 대신 「프로」 · 글 17 넘게 · 단추 48 넘게 */
+#su .sj-pfseg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: #EAF1EF; }
+#su .sj-pfsb { min-height: 48px; padding: 0 8px; border: 0; border-radius: 11px; background: transparent; color: #3E5560; font-size: max(17px, 1.0625rem); font-weight: 700; cursor: pointer; }
+#su .sj-pfsb[aria-pressed="true"] { background: #FFFFFF; color: #20323A; box-shadow: 0 1px 3px rgba(32, 50, 58, 0.18); }
+#su .sj-pfsb:focus-visible { outline: 3px solid #E9B949; outline-offset: 2px; }
+#su .sj-pfhd { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 8px 12px; margin: 16px 0 6px; }
+#su .sj-pfh1 { margin: 0; font-size: 1.375rem; font-weight: 800; line-height: 1.3; color: #20323A; }
+#su .sj-pftot { display: grid; justify-items: end; gap: 2px; min-width: 0; margin-left: auto; text-align: right; }
+#su .sj-pftl { font-size: 1.0625rem; color: #3E5560; }
+#su .sj-pfval { font-size: 1.5rem; font-weight: 800; line-height: 1.25; color: #20323A; }
+#su .sj-pftot .sj-glres, #su .sj-pftot .sj-glpct { margin: 0; font-size: 1.0625rem; }
+#su .sj-pfbody { display: grid; gap: 14px; justify-items: center; margin-top: 8px; }
+@media (min-width: 440px) { #su .sj-pfbody { grid-template-columns: 180px minmax(0, 1fr); justify-items: stretch; align-items: center; } }
+#su .sj-pfdo { display: grid; width: 180px; height: 180px; }
+#su .sj-pfdo > * { grid-area: 1 / 1; }
+#su .sj-pfdo .sj-gldo { display: block; width: 180px; height: 180px; margin: 0; }
+#su .sj-pfsl { font-size: 17px; font-weight: 800; fill: #FFFFFF; }
+#su .sj-pfsl.sj-pfsl-dk { fill: #20323A; }
+#su .sj-pfctr { align-self: center; justify-self: center; display: grid; justify-items: center; text-align: center; line-height: 1.25; }
+#su .sj-pfctr > span { font-size: 1.0625rem; color: #3E5560; }
+#su .sj-pfctr > b { font-size: 1.375rem; font-weight: 800; color: #20323A; }
+#su .sj-pf .sj-glleg { width: 100%; gap: 10px; }
+#su .sj-pf .sj-gllegi { grid-template-columns: 16px minmax(0, 1fr) auto; row-gap: 0; }
+#su .sj-pf .sj-gllegi > .sj-pfsh { grid-column: 3; grid-row: 1; font-weight: 800; color: #20323A; }
+#su .sj-pf .sj-gllegi > .sj-pfam { grid-column: 2 / 4; grid-row: 2; color: #3E5560; }
+#su .sj-pfin { display: flex; align-items: center; gap: 12px; min-height: 48px; margin: 16px 0 4px; padding: 12px 14px; border-radius: 14px; background: #F1F6F5; color: #20323A; text-decoration: none; }
+#su .sj-pfini { flex: none; width: 28px; height: 28px; fill: none; stroke: #2F7F86; }
+#su .sj-pfint { display: grid; gap: 2px; min-width: 0; font-size: 1.0625rem; line-height: 1.5; }
+#su .sj-pfinb { font-weight: 800; color: #20323A; }
+#su .sj-pfint > span { color: #3E5560; }
+#su .sj-pfin > i { margin-left: auto; font-size: 1.5rem; font-style: normal; color: #6F8F9A; }
+#su .sj-pfcost { margin: 8px 0 0; font-size: 1.0625rem; font-weight: 700; color: #20323A; }
+#su .sj-pftrhd { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 12px; }
+#su .sj-pfh2 { margin: 0; font-size: 1.25rem; font-weight: 800; color: #20323A; }
+#su .sj-pftr .sj-glsps { margin: 0; }
+#su .sj-pflast { margin: 10px 0 6px; font-size: 1.125rem; }
+#su .sj-pfch { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 8px; row-gap: 4px; }
+#su .sj-pfy { display: flex; flex-direction: column; justify-content: space-between; height: 150px; font-size: 1.0625rem; line-height: 1; color: #3E5560; text-align: right; }
+#su .sj-pfch .sj-gltrs { height: 150px; }
+#su .sj-pfx { display: flex; justify-content: space-between; gap: 6px; font-size: 1.0625rem; color: #3E5560; }
+#su .sj-pfarea { fill: #20323A; fill-opacity: 0.08; stroke: none; }
+#su .sj-glkk .sj-pfh2 { margin-bottom: 8px; }
 

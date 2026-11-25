@@ -552,66 +552,87 @@ export function glanceOf(D) {
     return {k, n: m.n, best, next, segs: [...(best ? [{name: best[0], c: best[1], col: GL_K1}] : []), ...(next ? [{name: next[0], c: next[1], col: GL_K2}] : []), ...(rest > 0 ? [{name: '나머지 업종', c: rest, col: GL_ETC}] : [])]}; }); // 막대 = 그 꾀가 가장 많이 고른 업종(진한 색) · 두 번째(청록) · 나머지(회색)
   return {q, cost, val, cash, held, diff: val - cost, r: cost > 0 ? val / cost - 1 : 0, n: all.length, nHold: TR.hold.length, nSold: TR.sold.length, parts, top, kk};
 }
-const glDot = col => s('svg', {class: 'sj-gldot', viewBox: '0 0 10 10', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 10, height: 10, rx: 2, fill: col}));
-function glDonut(parts) { // 동그라미(지금 값 나눔) — 조각 사이 틈 · 12시에서 시계 방향
-  const tot = parts.reduce((a, x) => a + x.v, 0), R = 46, C = 2 * Math.PI * R; let at = 0;
-  return s('svg', {class: 'sj-gldo', viewBox: '0 0 120 120', role: 'img', 'aria-label': '지금 값 나눔 — ' + parts.map(x => x.name + ' ' + glShare(x.v, tot) + '프로').join(' · ')},
-    s('circle', {cx: 60, cy: 60, r: R, fill: 'none', stroke: '#EEF3F2', 'stroke-width': 22}),
-    s('g', {transform: 'rotate(-90 60 60)'}, ...parts.map(x => { const len = tot > 0 ? x.v / tot * C : 0, gap = parts.length > 1 && len > 3 ? 1.6 : 0, c = s('circle', {cx: 60, cy: 60, r: R, fill: 'none', stroke: x.col, 'stroke-width': 22, 'stroke-dasharray': (len - gap).toFixed(2) + ' ' + (C - len + gap).toFixed(2), 'stroke-dashoffset': (-at).toFixed(2), 'data-part': x.name}); at += len; return c; })));
+const glDot = col => s('svg', {class: 'sj-gldot', viewBox: '0 0 10 10', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 10, height: 10, rx: 5, fill: col}));
+const GL_LIGHT = new Set([GL_ETC, GL_CASH, '#7FB08F', '#D99A00']); // 밝은 조각 위 숫자는 먹색
+export const glWonS = v => { const a = Math.abs(v); return a >= 1e8 ? (Math.round(a / 1e6) / 100).toFixed(2) + '억' : a >= 1e4 ? NF.format(Math.round(a / 1e4)) + '만' : NF.format(Math.round(a)); }; // 동그라미 가운데 줄인 값(14.48억 · 7,575만)
+function glDonut(parts) { // 동그라미(보내 주신 본보기 그대로 — 조각 · 조각 안 몫 숫자 · 가운데 총 자산은 글로 겹침) · 12시에서 시계 방향 · 180 × 180 그대로(글 17 그대로 보이게)
+  const tot = parts.reduce((a, x) => a + x.v, 0), R = 70, C = 2 * Math.PI * R; let at = 0;
+  const arcs = [], labs = [];
+  for (const x of parts) {
+    const f = tot > 0 ? x.v / tot : 0, len = f * C, gap = parts.length > 1 && len > 3 ? 2 : 0, mid = (at + len / 2) / C * 2 * Math.PI - Math.PI / 2, sh = glShare(x.v, tot);
+    arcs.push(s('circle', {cx: 90, cy: 90, r: R, fill: 'none', stroke: x.col, 'stroke-width': 36, transform: 'rotate(-90 90 90)', 'stroke-dasharray': Math.max(0, len - gap).toFixed(2) + ' ' + (C - len + gap).toFixed(2), 'stroke-dashoffset': (-at).toFixed(2), 'data-part': x.name}));
+    if (sh >= 8) labs.push(s('text', {class: 'sj-pfsl' + (GL_LIGHT.has(x.col) ? ' sj-pfsl-dk' : ''), x: (90 + R * Math.cos(mid)).toFixed(1), y: (90 + R * Math.sin(mid)).toFixed(1), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'aria-hidden': 'true', text: String(sh)}));
+    at += len;
+  }
+  return s('svg', {class: 'sj-gldo', viewBox: '0 0 180 180', width: 180, height: 180, role: 'img', 'aria-label': '나눔 — ' + parts.map(x => x.name + ' ' + glShare(x.v, tot) + '프로').join(' · ')}, s('circle', {cx: 90, cy: 90, r: R, fill: 'none', stroke: '#EEF3F2', 'stroke-width': 36}), ...arcs, ...labs);
 }
-const GL_SPAN = Object.freeze([['1주', 5], ['2주', 10], ['1달', 21], ['3달', 63], ['전체', 0]]);
-function glTrend(tt) { // 지나온 흐름 — 쌓인 장부 전체(100원이 ○원) · 기간 단추 · 100원 줄(점선)
-  const days = Array.isArray(tt?.days) ? tt.days : [], w = Array.isArray(tt?.w) ? tt.w : [], P = days.map((d, i) => [d, w[i]]).filter(([d, v]) => typeof d === 'string' && fin(v) && v > 0);
-  if (P.length < 2) return h('section', {class: 'sj-sec sj-gltr', 'data-n': String(P.length)}, h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '지나온 흐름'})), h('p', {class: 'sj-svnote', text: '아직 쌓인 날이 이틀이 안 돼요.'}));
-  const spans = GL_SPAN.filter(([, n]) => n === 0 || n < P.length), pick0 = spans.find(([t]) => t === '1달') ?? spans[spans.length - 1];
-  const svg = s('svg', {class: 'sj-gltrs', viewBox: '0 0 300 130', preserveAspectRatio: 'none', 'aria-hidden': 'true'}), cap = h('p', {class: 'sj-gltrc'}), last = h('p', {class: 'sj-gltrl sj-res'});
+const GL_SPAN = Object.freeze([['1주', 5], ['2주', 10], ['1개월', 21], ['3개월', 63], ['6개월', 126], ['1년', 250], ['전체', 0]]);
+export const glPp = r => { const v = Math.round(r * 1000) / 10; return (v > 0 ? '+' : v < 0 ? '-' : '') + Math.abs(v).toFixed(1) + '프로'; }; // 눈금 글(+1.0프로 · 0.0프로 · -2.5프로)
+export function glTT(D) { const T = D?.sell?.tt; if (!T || !Array.isArray(T.days)) return []; return T.days.map((d, i) => [d, T.c?.[i], T.v?.[i]]).filter(([d, c, v]) => typeof d === 'string' && fin(c) && c > 0 && fin(v)).map(([d, c, v]) => [d, v / c - 1]); }
+function glTrend(D) { // 수익률 추이(보내 주신 본보기 그대로 — 제목 · 기간 단추 · 왼쪽 눈금 · 꺾은선과 밑 칠 · 아래 날짜 · 끝 값) — 사고 팔기 셈 날마다(sell.tt)
+  const P = glTT(D);
+  if (P.length < 2) return h('section', {class: 'sj-sec sj-pftr', 'data-n': String(P.length)}, h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '수익률 추이'})), h('p', {class: 'sj-gllead', text: '아직 쌓인 날이 이틀이 안 돼요.'}));
+  const spans = GL_SPAN.filter(([, n]) => n === 0 || n < P.length - 1), pick0 = spans.find(([t]) => t === '1개월') ?? spans[spans.length - 1];
+  const svg = s('svg', {class: 'sj-gltrs', viewBox: '0 0 300 150', preserveAspectRatio: 'none', 'aria-hidden': 'true'}), yl = h('div', {class: 'sj-pfy', 'aria-hidden': 'true'}), xl = h('div', {class: 'sj-pfx'}), last = h('p', {class: 'sj-pflast sj-res'}), cap = h('p', {class: 'sj-gltrc'});
   const draw = ([t, n]) => {
-    const L = n ? P.slice(-(n + 1)) : P, vs = L.map(x => x[1]), lo = Math.min(1e6, ...vs), hi = Math.max(1e6, ...vs), pad = (hi - lo) * 0.12 || 2e4, y0 = lo - pad, y1 = hi + pad;
-    const X = i => (L.length > 1 ? i / (L.length - 1) * 296 + 2 : 150), Y = v => 126 - (v - y0) / (y1 - y0) * 122, dd = L.map((x, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(x[1]).toFixed(1)).join(' ');
-    svg.replaceChildren(s('rect', {class: 'sj-gltrbg', x: 0, y: 0, width: 300, height: 130}), s('line', {class: 'sj-gltr100', x1: 0, x2: 300, y1: Y(1e6).toFixed(1), y2: Y(1e6).toFixed(1)}),
-      s('path', {class: 'sj-gltrp', d: dd, 'data-n': String(L.length)}));
-    const v = L[L.length - 1][1], st = stOfD(v - 1e6);
-    cap.textContent = mday(L[0][0]) + '부터 ' + mday(L[L.length - 1][0]) + '까지 · 장날 ' + L.length + '일';
-    last.dataset.st = st; last.replaceChildren(shapeI(st), h('b', {text: '100원이 ' + (Math.round(v / 100) / 100).toFixed(2) + '원이 됐어요'}));
+    const L = n ? P.slice(-(n + 1)) : P, vs = L.map(x => x[1]), lo0 = Math.min(0, ...vs), hi0 = Math.max(0, ...vs), pad = (hi0 - lo0) * 0.15 || 0.01, y0 = lo0 - pad, y1 = hi0 + pad;
+    const X = i => (L.length > 1 ? i / (L.length - 1) * 296 + 2 : 150), Y = v => 146 - (v - y0) / (y1 - y0) * 142, line = L.map((x, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(x[1]).toFixed(1)).join(' ');
+    svg.replaceChildren(s('rect', {class: 'sj-gltrbg', x: 0, y: 0, width: 300, height: 150}), s('line', {class: 'sj-gltr100', x1: 0, x2: 300, y1: Y(0).toFixed(1), y2: Y(0).toFixed(1)}),
+      s('path', {class: 'sj-pfarea', d: line + ' L' + X(L.length - 1).toFixed(1) + ' 150 L' + X(0).toFixed(1) + ' 150 Z'}), s('path', {class: 'sj-gltrp', d: line, 'data-n': String(L.length)}));
+    yl.replaceChildren(...[y1, (y0 + y1) / 2, y0].map(v => h('span', {text: glPp(v)})));
+    xl.replaceChildren(...[L[0][0], L[Math.floor((L.length - 1) / 2)][0], L[L.length - 1][0]].map(d => h('span', {text: mday(d)})));
+    const r = L[L.length - 1][1], st = stOfD(Math.round(r * 1000)), r0 = L[0][1];
+    last.dataset.st = st; last.replaceChildren(shapeI(st), h('b', {text: mday(L[L.length - 1][0]) + ' ' + pctText(r)}));
+    cap.textContent = mday(L[0][0]) + '부터 ' + mday(L[L.length - 1][0]) + '까지 · 장날 ' + L.length + '일 · 처음 ' + glPp(r0) + ' → 끝 ' + glPp(r);
     for (const b of btns) b.setAttribute('aria-pressed', b.dataset.span === t ? 'true' : 'false');
   };
   const btns = spans.map(([t, n]) => { const b = h('button', {class: 'sj-glsp', type: 'button', 'data-span': t, text: t}); b.addEventListener('click', () => draw([t, n])); return b; });
   draw(pick0);
-  return h('section', {class: 'sj-sec sj-gltr', 'data-n': String(P.length), 'aria-label': '지나온 흐름'},
-    head('흐', '지나온 흐름', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '100원이 날마다 얼마였나'}))),
-    h('p', {class: 'sj-gllead', text: '꾀 서른여섯이 산 회사를 모두 계속 들고 있었다면, 100원이 날마다 얼마였는지 그렸어요. 점선이 100원이에요.'}),
-    h('div', {class: 'sj-glsps', role: 'group', 'aria-label': '기간 고르기'}, ...btns), svg, last, cap);
+  return h('section', {class: 'sj-sec sj-pftr', 'data-n': String(P.length), 'aria-label': '수익률 추이'},
+    h('div', {class: 'sj-pftrhd'}, h('h2', {class: 'sj-pfh2', text: '수익률 추이'}), h('div', {class: 'sj-glsps', role: 'group', 'aria-label': '기간 고르기'}, ...btns)),
+    last, h('div', {class: 'sj-pfch'}, yl, svg, h('i', {class: 'sj-pfxs', 'aria-hidden': 'true'}), xl), cap,
+    h('p', {class: 'sj-gllead', text: '꾀 서른여섯이 사고 판 것을 날마다 모두 합쳐, 들인 돈보다 몇 프로 늘고 줄었는지 그렸어요. 점선이 0이에요.'}));
 }
 export async function vGlance(X) {
   const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
   const A = D ? glanceOf(D) : null;
   if (!A || !A.n) return missPage(X, '한눈에', '사고 팔기 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
-  const st = stOfD(A.diff), tot = A.parts.reduce((a, x) => a + x.v, 0);
-  const legend = (L, valOf) => h('ul', {class: 'sj-glleg'}, ...L.map(x => h('li', {class: 'sj-gllegi', 'data-part': x.name}, glDot(x.col), h('b', {text: x.name}), valOf ? h('span', {text: valOf(x)}) : null)));
+  const st = stOfD(A.diff);
+  // 꾀별 나눔(본보기의 「상품별 분포」) — 꾀마다 지금 값(들고 있는 것 + 판 돈) 큰 일곱 + 그 밖 꾀
+  const TR = sellTrades(D), byK = new Map(); for (const t of [...TR.hold, ...TR.sold]) byK.set(t.k, (byK.get(t.k) ?? 0) + t.p1 * TR.q);
+  const kTop = [...byK.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])), kParts = [...kTop.slice(0, 7).map(([k, v], j) => ({name: nameOf(k), v, col: GL_COL[j], k})), ...(kTop.length > 7 ? [{name: '그 밖 꾀', v: kTop.slice(7).reduce((a, x) => a + x[1], 0), col: GL_ETC}] : [])];
+  const VIEWS = {k: {label: '꾀별 분포', parts: kParts}, i: {label: '업종별 분포', parts: A.parts}};
+  const insight = view => { const P = VIEWS[view].parts, tot = P.reduce((a, x) => a + x.v, 0), cash = P.find(x => x.cash), big = [...P].filter(x => !x.cash && !/^그 밖/.test(x.name)).sort((a, b) => b.v - a.v)[0];
+    return view === 'k' ? (big ? '지금 값이 가장 큰 꾀는 「' + big.name + '」' + glIeyo(big.name) + '. 모두의 ' + glShare(big.v, tot) + '프로예요.' : '')
+      : (cash ? '지금 값의 ' + glShare(cash.v, tot) + '프로는 판 돈이에요. ' : '') + (big ? '들고 있는 회사 가운데는 ' + josa(big.name, '이') + ' 가장 커요.' : ''); };
+  const box = h('div', {class: 'sj-pfdo'}), leg = h('ul', {class: 'sj-glleg'}), ins = h('b', {class: 'sj-pfinb'}), sec = h('section', {class: 'sj-sec sj-pf sj-glal', 'aria-label': '자산 포트폴리오'});
+  const show = view => { const P = VIEWS[view].parts, tot = P.reduce((a, x) => a + x.v, 0);
+    box.replaceChildren(glDonut(P), h('div', {class: 'sj-pfctr', 'aria-hidden': 'true'}, h('span', {text: '총 자산'}), h('b', {text: glWonS(A.val) + '원'}), h('span', {class: 'sj-res', 'data-st': st}, shapeI(st), h('span', {text: glPp(A.r)}))));
+    leg.replaceChildren(...P.map(x => h('li', {class: 'sj-gllegi', 'data-part': x.name}, glDot(x.col), h('b', {text: x.name}), h('span', {class: 'sj-pfsh', text: glShare(x.v, tot) + '프로'}), h('span', {class: 'sj-pfam', text: won(x.v)}))));
+    ins.textContent = insight(view); sec.dataset.view = view;
+    for (const b of segB) b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); };
+  const segB = Object.entries(VIEWS).map(([v, o]) => { const b = h('button', {class: 'sj-pfsb', type: 'button', 'data-view': v, text: o.label}); b.addEventListener('click', () => show(v)); return b; });
+  sec.append(
+    h('div', {class: 'sj-pfseg', role: 'group', 'aria-label': '나눔 고르기'}, ...segB),
+    h('div', {class: 'sj-pfhd'}, h('h1', {class: 'sj-pfh1', text: '자산 포트폴리오'}),
+      h('div', {class: 'sj-pftot'}, h('span', {class: 'sj-pftl', text: '총 평가 금액'}), h('b', {class: 'sj-pfval sj-glval', text: won(A.val)}),
+        h('p', {class: 'sj-res sj-glres', 'data-st': st}, shapeI(st), h('b', {text: moved(A.diff)})), h('p', {class: 'sj-glpct', 'data-st': st}, h('b', {text: pctText(A.r)})))),
+    h('div', {class: 'sj-pfbody'}, box, leg),
+    h('a', {class: 'sj-pfin', href: '#/l/b'}, s('svg', {class: 'sj-pfini', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d: 'M4 20V14M9 20V10M14 20V12M19 20V6', 'stroke-width': 3, 'stroke-linecap': 'round'})), h('span', {class: 'sj-pfint'}, ins, h('span', {text: '들고 있는 회사를 낱낱이 볼까요?'})), h('i', {'aria-hidden': 'true', text: '›'})),
+    h('p', {class: 'sj-pfcost sj-glcost', text: '들인 돈 ' + won(A.cost)}),
+    h('p', {class: 'sj-note', text: '산 것 ' + NF.format(A.n) + '번 · 들고 있는 것 ' + NF.format(A.nHold) + '번 · 판 것 ' + NF.format(A.nSold) + '번. 모두 종가로 10주씩 샀다고 친 가짜 돈이에요.'}));
+  show('k');
   const keys = [{name: '그 꾀가 가장 많이 고른 업종', col: GL_K1}, {name: '두 번째로 많이 고른 업종', col: GL_K2}, {name: '나머지 업종', col: GL_ETC}];
   const kkRow = r => h('li', {class: 'sj-glk', 'data-k': r.k, 'data-n': String(r.n)},
     h('p', {class: 'sj-glkh'}, h('b', {text: nameOf(r.k)}), h('span', {class: 'sj-glkn', text: NF.format(r.n) + '번 샀어요'})),
     s('svg', {class: 'sj-glkb', viewBox: '0 0 300 20', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, ...(() => { let x = 0; return r.segs.map(g => { const w = g.c / r.n * 300, e = s('rect', {x: x.toFixed(2), y: 0, width: Math.max(0, w - (r.segs.length > 1 ? 1.5 : 0)).toFixed(2), height: 20, rx: 3, fill: g.col, 'data-part': g.name}); x += w; return e; }); })()),
     h('p', {class: 'sj-glkt', text: r.best ? '가장 많이 고른 업종은 ' + r.best[0] + glIeyo(r.best[0]) + ' · ' + NF.format(r.n) + '번 가운데 ' + NF.format(r.best[1]) + '번' : '업종을 모르는 회사만 샀어요'}),
     r.next ? h('p', {class: 'sj-glk2', text: '두 번째는 ' + r.next[0] + glIeyo(r.next[0]) + ' · ' + NF.format(r.next[1]) + '번'}) : null);
-  const kids = [
-    pageHead({kick: '기록 · 한눈에', h1: '한눈에', seal: '눈', sealDn: st === 'dn',
-      say: '꾀 서른여섯이 사고 판 것을 모두 합쳤어요. 들인 돈, 지금 값, 나눔, 흐름을 한 화면에 모았어요.',
-      more: [h('dl', {class: 'sj-money sj-glsum', 'data-st': st},
-        h('dt', {text: '들인 돈'}), h('dd', {class: 'sj-glcost', text: won(A.cost)}),
-        h('dt', {text: '지금 값'}), h('dd', {class: 'sj-glval', text: won(A.val)}),
-        h('dt', {text: '산 것'}), h('dd', {class: 'sj-gln', text: NF.format(A.n) + '번 · 들고 있는 것 ' + NF.format(A.nHold) + '번 · 판 것 ' + NF.format(A.nSold) + '번'})),
-        h('p', {class: 'sj-res sj-res-big sj-glres', 'data-st': st}, shapeI(st), h('b', {text: moved(A.diff)})),
-        h('p', {class: 'sj-res sj-glpct', 'data-st': st}, h('b', {text: pctText(A.r)})),
-        h('p', {class: 'sj-note', text: '지금 값은 판 돈과, 들고 있는 회사를 가장 늦은 종가로 센 값을 더했어요. 모두 종가로 10주씩 샀다고 친 가짜 돈이에요.'})]}),
-    h('section', {class: 'sj-sec sj-glal', 'data-n': String(A.parts.length), 'aria-label': '지금 값 나눔'},
-      head('나', '지금 값 나눔', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '어디에 들어 있나'}))),
-      h('div', {class: 'sj-glalw'}, glDonut(A.parts), legend(A.parts, x => won(x.v) + ' · ' + glShare(x.v, tot) + '프로'))),
-    glTrend(D.tt),
+  const kids = [sec, glTrend(D),
     h('section', {class: 'sj-sec sj-glkk', 'data-n': String(A.kk.length), 'aria-label': '꾀마다 많이 고른 업종'},
-      head('업', '꾀마다 고른 업종', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '꾀마다 많이 고른 업종'}))),
+      h('h2', {class: 'sj-pfh2', text: '꾀마다 많이 고른 업종'}),
       h('p', {class: 'sj-gllead', text: '막대 하나가 꾀 하나예요. 진한 칸이 길수록 그 꾀가 한 업종을 많이 골랐어요.'}),
-      legend(keys, null),
+      h('ul', {class: 'sj-glleg'}, ...keys.map(x => h('li', {class: 'sj-gllegi'}, glDot(x.col), h('b', {text: x.name})))),
       h('ol', {class: 'sj-glks'}, ...A.kk.map(kkRow))),
     endSec(day(T?.asOf?.board), gotOf(S))];
   return frame({title: '한눈에', page: 'glance', kids, tab: 4, rec: 0, next: {href: '#/l/b', label: '산 회사도 볼까?'}});
