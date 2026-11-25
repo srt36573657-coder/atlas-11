@@ -1,3 +1,2 @@
-느린 4G 첫 화면 — 가장 큰 칠함 960ms · 무하 큰 그림 968ms
-실패 ㉕ 손자병법 다른 쪽 [390] 화면 오류 0 — Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795620086980
-손자병법 두 길 검사 — 통과 674 · 실패 1
+느린 4G 첫 화면 — 가장 큰 칠함 848ms · 무하 큰 그림 738ms
+손자병법 두 길 검사 — 통과 675 · 실패 0
