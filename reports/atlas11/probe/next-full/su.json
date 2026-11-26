@@ -1,15 +1,15 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-25T18:36:08.157Z",
+ "at": "2026-11-26T05:35:10.158Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 676,
+  "pass": 680,
   "fail": 1
  },
  "fails": [
   [
    "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795632058414"
+   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795671567409"
   ]
  ],
  "m": {
@@ -19,8 +19,8 @@
    "sun": true
   },
   "home": {
-   "screens": 17.31,
-   "links": 53
+   "screens": 17.76,
+   "links": 54
   },
   "t21": {
    "listed": 2557,
@@ -31,6 +31,7 @@
     "h1": "지금은 내리는 시장 이에요.",
     "page": "sonja",
     "kids": [
+     "sj-hero",
      "sj-mind",
      "sj-cover",
      "sj-sun",
@@ -115,9 +116,9 @@
    "업종"
   ],
   "speed": {
-   "lcp": 956,
-   "cls": 0.204,
-   "pic": 797
+   "lcp": 968,
+   "cls": 0.555,
+   "pic": 787
   },
   "white": {
    "light #/": {
@@ -962,10 +963,10 @@
    "missO": 0
   },
   "s36": {
-   "all": 251,
+   "all": 252,
    "now": 28,
    "next": 21,
-   "s36": 202,
+   "s36": 203,
    "sn": true,
    "same": true,
    "empty": [
@@ -974,37 +975,37 @@
    ],
    "data": "2026-11-25",
    "sp": {
-    "want": 202,
-    "chips": 202,
+    "want": 203,
+    "chips": 203,
     "got": 16
    },
    "ovl": {
-    "n": 26,
-    "sp": 26,
+    "n": 29,
+    "sp": 29,
     "top": [
      10,
      9,
-     8
+     9
     ],
     "days": [
      9,
-     6,
-     1
+     1,
+     6
     ],
     "from": "2026-11-13"
    },
    "days": {
     "from": "2026-11-13",
     "max": 9,
-    "n2": 102,
+    "n2": 104,
     "q": [
-     1,
      6,
      10,
      2,
      2,
      8,
-     1
+     1,
+     3
     ],
     "qFrom": "2026-11-12"
    },
@@ -1012,15 +1013,15 @@
     "rule": "s36-v3",
     "empty": 2,
     "mm": {
-     "n": 125,
+     "n": 126,
      "bad": 0
     },
     "mix": {
-     "n": 202,
+     "n": 203,
      "bad": 0
     },
     "themes": [
-     "항공 20",
+     "항공 19",
      "화장품 13",
      "유통 7",
      "전산 서비스 6",
