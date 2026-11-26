@@ -491,7 +491,7 @@ function coDayFill(sec, G) { // 오늘의 꾀(오늘의 꾀 한 장과 같은 �
   const ln = c0 ? G.line?.[c0.code] : null, cs = Array.isArray(ln?.c) ? ln.c.filter(v => fin(v) && v > 0) : [], close = fin(ln?.close) && ln.close > 0 ? ln.close : cs.at(-1) ?? null, prev = cs.length >= 2 ? cs.at(-2) : null;
   sec.querySelector(':scope > .sj-cdn')?.remove();
   if (!c0 || !close) {
-    sec.append(h('p', {class: 'sj-cdn', text: !k ? '오늘의 꾀가 정해지면 그 꾀가 고른 회사를 여기에 보여 드려요.' : !G ? '꾀가 고른 회사를 아직 받지 못했어요.' : '오늘 이 꾀가 고른 회사가 없어요. 억지로 채우지 않았어요.'}));
+    sec.append(h('p', {class: 'sj-cdn', text: !k ? '오늘의 꾀가 정해지면 그 꾀가 고른 회사를 여기에 보여 드려요.' : !G ? '꾀가 고른 회사 자료가 아직 없어요. 억지로 채우지 않았어요.' : '오늘 이 꾀가 고른 회사가 없어요. 억지로 채우지 않았어요.'}));
     sec.removeAttribute('data-wait'); return;
   }
   const v = prev ? close / prev - 1 : null, ind = typeof G.ind?.[c0.code] === 'string' && G.ind[c0.code] ? G.ind[c0.code] : null, dd = mday(ln.date);
@@ -539,7 +539,7 @@ export async function vSonja(X, shell = null) {
   const hardOf = () => { const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove(); const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = ''; };
   hardOf();
   const after = async () => { // 꾀 칸(su21-s36.json) — 첫 칠함 뒤에 받아 채움 · 오늘의 기업도 같은 자료로(주문 1126-1544)
-    const g = await X.get(D36).catch(() => null), G = ok36(g, T) ? g : null;
+    const g = wait ? await X.get(D36).catch(() => null) : null, G = ok36(g, T) ? g : null; // 꾀 칸 자료가 없는 날(s36n 없음)은 부르지 않음 — 없는 파일을 부르면 화면 오류(미리 보기 sonja-today4 1/11)
     if (!main.isConnected) return;
     coDayFill(main.querySelector(':scope > section.sj-coday'), G);
     if (wait?.isConnected) { if (G) wait.replaceWith(trickSec(G, T)); else wait.remove(); }

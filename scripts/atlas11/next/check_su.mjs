@@ -1929,7 +1929,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const ln = c0 ? G43.line?.[c0.code] : null, cs = Array.isArray(ln?.c) ? ln.c.filter(v => Number.isFinite(v) && v > 0) : [], close = Number.isFinite(ln?.close) && ln.close > 0 ? ln.close : cs.at(-1) ?? null, prev = cs.length >= 2 ? cs.at(-2) : null;
     const v = close && prev ? close / prev - 1 : null, wantWon = close ? Math.round(close).toLocaleString('ko-KR') + '원' : null, wantChg = v == null ? '' : (v > 0 ? '▲ ' : v < 0 ? '▼ ' : '― ') + Math.abs(Math.round(v * 1000) / 10).toFixed(1) + '프로';
     const NAME = await p.evaluate(async () => (await import('/su/su-sonja-36.js')).NAME).catch(() => ({}));
-    const wantNote = !KR.test(g.k ?? '') ? '오늘의 꾀가 정해지면 그 꾀가 고른 회사를 여기에 보여 드려요.' : !ok43 ? '꾀가 고른 회사를 아직 받지 못했어요.' : '오늘 이 꾀가 고른 회사가 없어요. 억지로 채우지 않았어요.';
+    const wantNote = !KR.test(g.k ?? '') ? '오늘의 꾀가 정해지면 그 꾀가 고른 회사를 여기에 보여 드려요.' : !ok43 ? '꾀가 고른 회사 자료가 아직 없어요. 억지로 채우지 않았어요.' : '오늘 이 꾀가 고른 회사가 없어요. 억지로 채우지 않았어요.';
     const cdOk = g.wait === false && g.h2 === '오늘의 기업' && g.cdk === g.k && (c0 && close
       ? g.code === c0.code && g.name === c0.name.trim() && g.logo === c0.name.trim().slice(0, 1) && g.won === wantWon && g.chg === wantChg && (v == null || g.chgM === (v > 0 ? 'up' : v < 0 ? 'dn' : 'eq'))
         && g.go === '#/c/' + c0.code && g.goH >= 47.5 && g.goW >= 47.5 && g.goL === c0.name.trim() + ' 자세히 보기' && /마지막 값/.test(g.sub) && g.why === '「' + NAME[g.k] + '」 꾀가 고른 회사 가운데 첫째예요. 사고팔기를 권하지 않아요.'
