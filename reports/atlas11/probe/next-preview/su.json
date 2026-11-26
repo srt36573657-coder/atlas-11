@@ -1,12 +1,57 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-26T05:13:39.235Z",
+ "at": "2026-11-26T07:19:15.172Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 609,
-  "fail": 0
+  "pass": 604,
+  "fail": 11
  },
- "fails": [],
+ "fails": [
+  [
+   "[390] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 404 (Not Found) | Failed to load resource: the server responded with a status of 404 (Not Found) | Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "[360] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "[320] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "㉔ 처음 쪽 [390] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "㉔ 처음 쪽 [320] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "㉘ 큰 갈래 · 세 거름 [390] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "㉘ 큰 갈래 · 세 거름 [320] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "㊷ 390 나) 옆으로 넘기면 점이 따라감 · 장마다 한 화면 폭 · 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 넘침 0 · 오류 0",
+   "{\"d0\":\"10\",\"d1\":\"01\",\"tox\":\"auto\",\"tw\":358,\"sw\":[358,358],\"fsMin\":17,\"red\":0,\"over\":0,\"errs\":[\"Failed to load resource: the server responded with a status of 404 (Not Found)\"]}"
+  ],
+  [
+   "㊷ 320 나) 옆으로 넘기면 점이 따라감 · 장마다 한 화면 폭 · 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 넘침 0 · 오류 0",
+   "{\"d0\":\"10\",\"d1\":\"01\",\"tox\":\"auto\",\"tw\":288,\"sw\":[288,288],\"fsMin\":17,\"red\":0,\"over\":0,\"errs\":[\"Failed to load resource: the server responded with a status of 404 (Not Found)\"]}"
+  ],
+  [
+   "㊸ 390 다) 인사 · 오늘의 기업 · 투자 점검 — 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 넘침 0 · 오류 0",
+   "{\"fsMin\":17,\"red\":0,\"over\":0,\"bad\":null,\"errs\":[\"Failed to load resource: the server responded with a status of 404 (Not Found)\",\"Failed to load resource: the server responded with a status of 404 (Not Found)\"]}"
+  ],
+  [
+   "㊸ 320 다) 인사 · 오늘의 기업 · 투자 점검 — 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 넘침 0 · 오류 0",
+   "{\"fsMin\":17,\"red\":0,\"over\":0,\"bad\":null,\"errs\":[\"Failed to load resource: the server responded with a status of 404 (Not Found)\",\"Failed to load resource: the server responded with a status of 404 (Not Found)\"]}"
+  ]
+ ],
  "m": {
   "data": {
    "fk": "g01",
@@ -14,8 +59,8 @@
    "sun": false
   },
   "home": {
-   "screens": 5.19,
-   "links": 15
+   "screens": 5.93,
+   "links": 18
   },
   "t21": {
    "listed": 2557,
@@ -26,7 +71,10 @@
     "h1": "서른여섯 꾀",
     "page": "sonja",
     "kids": [
+     "sj-greet",
      "sj-hero",
+     "sj-coday",
+     "sj-todo",
      "sj-mind",
      "sj-cover",
      "sj-sun",
@@ -92,9 +140,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 2192,
-   "cls": 0.576,
-   "pic": 2048
+   "lcp": 2332,
+   "cls": 1.011,
+   "pic": 2130
   },
   "white": {
    "light #/": {
@@ -959,5 +1007,5 @@
    }
   }
  },
- "ok": true
+ "ok": false
 }
