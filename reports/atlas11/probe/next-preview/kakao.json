@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-26T05:01:04.579Z",
+ "at": "2026-11-26T05:11:36.740Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -14,7 +14,7 @@
  "units": {
   "total": 241,
   "mine": 241,
-  "hash": "1258e2abd55eb84c",
+  "hash": "1df1fd804b53e40a",
   "kinds": {
    "r": {
     "total": 241,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 125,
+ "seconds": 126,
  "counts": {
   "routes": 241,
-  "rows": 5392,
-  "btns": 5392,
-  "links": 6255,
+  "rows": 5393,
+  "btns": 5393,
+  "links": 6256,
   "clicks": 461,
   "fail": 0,
   "places": {
@@ -46,10 +46,10 @@
     "routes": 2
    },
    "cond.row": {
-    "rows": 5,
-    "btns": 5,
+    "rows": 6,
+    "btns": 6,
     "surge": 0,
-    "share": 5,
+    "share": 6,
     "routes": 1
    },
    "hold.news": {
@@ -147,9 +147,9 @@
    },
    {
     "route": "#/cond",
-    "rows": 5,
-    "btns": 5,
-    "links": 5,
+    "rows": 6,
+    "btns": 6,
+    "links": 6,
     "clicked": "cond.row",
     "fail": 0
    },
@@ -994,7 +994,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/123690",
+    "route": "#/w/192820",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1090,7 +1090,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/064240",
+    "route": "#/w/069960",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1306,7 +1306,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/109610",
+    "route": "#/w/186230",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1498,7 +1498,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/006120",
+    "route": "#/w/126880",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1522,7 +1522,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/058610",
+    "route": "#/w/042110",
     "rows": 6,
     "btns": 6,
     "links": 11,
