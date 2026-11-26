@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-26",
- "fetchedAt": "2026-11-26T07:55:36Z",
- "file": "reports/atlas11/context/2026-11-26/2026-11-26T07-55-36Z.json",
+ "fetchedAt": "2026-11-26T10:11:54Z",
+ "file": "reports/atlas11/context/2026-11-26/2026-11-26T10-11-54Z.json",
  "summary": {
   "day": "2026-11-26",
-  "fetchedAt": "2026-11-26T07:55:36Z",
+  "fetchedAt": "2026-11-26T10:11:54Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-26",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7215,
-   "distinct": 7156,
-   "republished": 59,
+   "distinct": 7155,
+   "republished": 60,
    "sameArticle": 0,
-   "stocksWithTodayNews": 198,
-   "todayDistinct": 1330
+   "stocksWithTodayNews": 207,
+   "todayDistinct": 1453
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 841
+   "corporateActions": 843
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-26",
-     "value": 1343.7,
-     "changePct": -0.13
+     "value": 1344.9,
+     "changePct": -0.04
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 252,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,32 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-11-26",
-   "corporateActions": 841,
+   "corporateActions": 843,
    "recentActions": [
+    {
+     "code": "066790",
+     "title": "(주)씨씨에스충북방송 (정정)상장폐지",
+     "publishedAt": "2026-11-26T19:01:58+09:00",
+     "word": "상장폐지"
+    },
+    {
+     "code": "036830",
+     "title": "솔브레인홀딩스(주) 자기주식 처분 결정(자회사의 주요경영사항)",
+     "publishedAt": "2026-11-26T17:05:45+09:00",
+     "word": "자기주식"
+    },
+    {
+     "code": "357780",
+     "title": "솔브레인 주식회사 자기주식 처분 결정",
+     "publishedAt": "2026-11-26T17:01:17+09:00",
+     "word": "자기주식"
+    },
+    {
+     "code": "036830",
+     "title": "솔브레인홀딩스(주) 자기주식 처분 결정",
+     "publishedAt": "2026-11-26T17:00:19+09:00",
+     "word": "자기주식"
+    },
     {
      "code": "066970",
      "title": "(주)엘앤에프 전환사채권발행결정",
@@ -287,30 +311,6 @@
      "title": "에이치디현대(주) 유상증자 또는 주식관련사채 등의 발행결과(자율공시)",
      "publishedAt": "2026-11-26T15:54:03+09:00",
      "word": "유상증자"
-    },
-    {
-     "code": "002380",
-     "title": "(주)케이씨씨 주식 소각 결정",
-     "publishedAt": "2026-11-26T15:53:05+09:00",
-     "word": "소각"
-    },
-    {
-     "code": "037710",
-     "title": "(주)광주신세계 중간(분기)배당락 기준가격 안내",
-     "publishedAt": "2026-11-26T15:52:07+09:00",
-     "word": "배당락"
-    },
-    {
-     "code": "021240",
-     "title": "코웨이(주) 중간(분기)배당락 기준가격 안내",
-     "publishedAt": "2026-11-26T15:52:01+09:00",
-     "word": "배당락"
-    },
-    {
-     "code": "017800",
-     "title": "현대엘리베이터(주) 중간(분기)배당락 기준가격 안내",
-     "publishedAt": "2026-11-26T15:51:54+09:00",
-     "word": "배당락"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-26",
-     "value": 1343.7,
+     "value": 1344.9,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
