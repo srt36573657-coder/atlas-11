@@ -977,7 +977,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await ctx.close();
   }
   // ㉕ 주문 1115-2328(사장님 2026-11-15(마카오) 22:28 「어고쳐」 — 「다른 쪽들도 병법 서른여섯 가지에 맞게 고칠까요?」의 답) — 다른 쪽도 병법 서른여섯만 · 이 검사가 자료에서 따로 셈(화면 코드를 쓰지 않음)
-  //   가) 꾀 모음 #/k — 여섯 묶음(묶음 이름 = 자료 set) × 여섯 꾀(삼십육계 차례) · 꾀마다 「제 ○계」 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 첫 쪽 꾀 이름 줄도 그 꾀 쪽
+  //   가) 꾀 모음 #/k — 산 셈이 있는 날 = 요즘 많이 오른 차례 1등 ~ 36등(주문 1126-1752 · 정산 쪽과 같은 차례 · 지난 7일 오르내림) · 산 셈이 없는 날 = 여섯 묶음(묶음 이름 = 자료 set) × 여섯 꾀(삼십육계 차례) · 꾀마다 「제 ○계」 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 첫 쪽 꾀 이름 줄도 그 꾀 쪽
   //   나) 꾀 한 가지 #/k/g01 ~ g36(390 은 서른여섯 모두 · 320 은 셋) — 걸음 2 / 5 · 머리(묶음 · 도장 = 오늘 차례 · 뜻 · 지금 땅에서 몇 위) · 고르는 법 · 같은 땅 기록 · 오늘 닮은 곳(누르면 그 회사) · 이 꾀 정산 · 앞뒤 꾀 · 다음 단추
   //   다) 회사 #/c/<번호>(길 셋째 회사 · 오늘 어느 꾀에도 없는 회사 하나) — 걸음 3 / 5 · 이름 · 시장 · 업종 · 고른 꾀(덜 잃은 차례 · 지난 기록 · 고르는 법 · 누르면 그 꾀) · 한 달 꺾은선 글 · 「왜 사?」 고리
   const ST25 = await J('/su/data/su21-settle.json').catch(() => null);
@@ -1020,13 +1020,35 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     if (same) { await open(p, '#/'); await p.waitForFunction(() => document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), null, {timeout: 15000}).catch(() => {});
       const hs = await p.evaluate(() => [...document.querySelectorAll('#su section.sj-s36 li.sj-tk')].map(li => [li.getAttribute('data-k'), li.querySelector(':scope > a.sj-tkh')?.getAttribute('href') ?? '']));
       check(hs.length === HOME36 && hs.every(([k, hr]) => hr === '#/k/' + k), W + '첫 쪽 꾀 이름 줄을 누르면 그 꾀 쪽(#/k/<꾀> · 첫 쪽 꾀 셋 — 주문 1117-1120)', JSON.stringify(hs.filter(([k, hr]) => hr !== '#/k/' + k).slice(0, 3))); }
+    // 가-2) 꾀 모음 = 요즘 많이 오른 차례(주문 1126-1752 · 사장님 2026-11-26(서울) 17:52 「꾀 탭에서 … 요즘 상승률 순위에 순으로 배치하라 1위부터 36위까지 그리고 매일 그 순위에 등락을 화살표로 표기하라 7일 자료를 말이야」)
+    //   차례 = 정산 쪽(#/r/t · 같은 셈)과 같은 차례 · 1등부터 36등 · 앞 장날 오르내림 = 정산 쪽 표와 같음 · 지난 7일 날마다 오르내린 칸 = 이 검사가 장부 rk + 오늘 차례로 따로 셈 · 산 셈이 없는 날은 옛 여섯 묶음
+    await open(p, '#/r/t');
+    const st25 = await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="settle"]');
+      return {rows: [...(m?.querySelectorAll('section.sj-st36 li.sj-str') ?? [])].map(li => [li.getAttribute('data-k'), (li.querySelector('a.sj-sta .sj-stm')?.textContent ?? '').trim()]), rated: /많이 늘어난 꾀가 맨 위/.test(m?.querySelector('section.sj-st36 .sj-rule')?.textContent ?? '')}; }); // 맨 앞 .sj-rule 은 사고 팔기 견줌 칸(주문 1125-0049)일 수 있음 — 꾀마다 정산 칸 안에서 찾음
     await open(p, '#/k');
-    const ga = await p.evaluate(new Function(txtJS + `const main = document.querySelector('#su main.sj-page[data-page="kkoes"]');
+    const ga = await p.evaluate(new Function(txtJS + `const main = document.querySelector('#su main.sj-page[data-page="kkoes"]'), rs = main?.querySelector('section.sj-krank');
       return {main: !!main, h1: txt(document.querySelector('#su h1')), tab: txt(document.querySelector('#su .sj-tabs a[aria-current="page"]')), next: document.querySelector('#su .sj-next')?.getAttribute('href') ?? null,
+        rank: rs ? {h: txt(rs.querySelector('h2')), rows: [...rs.querySelectorAll('li.sj-krr')].map(li => [li.getAttribute('data-k'), li.querySelector('a.sj-ka')?.getAttribute('href') ?? '', txt(li.querySelector('.sj-krn')), txt(li.querySelector('.sj-kno')), txt(li.querySelector('.sj-kt b')), txt(li.querySelector('.sj-khan')), txt(li.querySelector('a.sj-ka .sj-stm')),
+          [...li.querySelectorAll('.sj-kwa')].map(a => [a.getAttribute('data-day'), txt(a)]), txt(li.querySelector('.sj-kmean')), txt(li.querySelector('.sj-krv > span'))]),
+          fs: [...rs.querySelectorAll('.sj-krn, .sj-kwa, .sj-kwkk, .sj-krv span')].map(e => parseFloat(getComputedStyle(e).fontSize)), text: txt(rs)} : null,
         sets: [...(main?.querySelectorAll('section.sj-kset') ?? [])].map(s => ({n: s.getAttribute('data-set'), h: txt(s.querySelector('h2')), rows: [...s.querySelectorAll('li.sj-kr')].map(li => [li.getAttribute('data-k'), li.querySelector('a.sj-ka')?.getAttribute('href') ?? '', txt(li.querySelector('.sj-kno')), txt(li.querySelector('.sj-kt b')), txt(li.querySelector('.sj-khan')), txt(li.querySelector('.sj-krk')), txt(li.querySelector('.sj-kmean'))])}))};`));
-    const setsW = [0, 1, 2, 3, 4, 5].map(i => ({n: String(i + 1), h: G25.set[K36[i * 6]], rows: K36.slice(i * 6, i * 6 + 6).map(k => [k, '#/k/' + k, '제' + kn25(k) + '계', G25.name[k], G25.han[k], RK36[k] ? RK36[k].i + '번째' : '', G25.mean[k]])}));
-    check(okT25 && ga.main && ga.h1 === '병법 서른여섯 가지' && ga.tab === '꾀' && JSON.stringify(ga.sets) === JSON.stringify(setsW) && ga.next === '#/k/' + (sun25 ? ORD36[0] : 'g01'),
-      W + '가) 꾀 모음 — 여섯 묶음 × 여섯 꾀(삼십육계 차례 · 묶음 이름 = 자료) · 제 ○계 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 탭 「꾀」 · 다음 = 맨 위 꾀', JSON.stringify({main: ga.main, h1: ga.h1, tab: ga.tab, next: ga.next, bad: setsW ? ga.sets.map((s, i) => (JSON.stringify(s) === JSON.stringify(setsW[i]) ? null : [s.n, s.h, s.rows.find((r, j) => JSON.stringify(r) !== JSON.stringify(setsW[i].rows[j]))])).filter(Boolean).slice(0, 2) : 'data'}).slice(0, 500));
+    if (st25.rated) {
+      const D25 = await J('/su/data/su21-settle.json').catch(() => null), today = typeof D25?.asOf === 'string' ? D25.asOf : null, okO = o => Array.isArray(o) && o.length === 36 && new Set(o).size === 36 && o.every(j => Number.isInteger(j) && j >= 0 && j < 36);
+      const days = [], orders = []; if (today && Array.isArray(D25?.rk?.days) && Array.isArray(D25?.rk?.order) && D25.rk.days.length === D25.rk.order.length) D25.rk.days.forEach((d, i) => { if (typeof d === 'string' && d < today && okO(D25.rk.order[i])) { days.push(d); orders.push(D25.rk.order[i]); } });
+      if (days.length) { days.push(today); orders.push(st25.rows.map(r => K36.indexOf(r[0]))); }
+      const weekW = k => { if (orders.length < 2) return []; const j = K36.indexOf(k), rk = orders.map(o => o.indexOf(j) + 1), out = [];
+        for (let i = Math.max(1, rk.length - 7); i < rk.length; i++) if (rk[i] > 0 && rk[i - 1] > 0) { const mv = rk[i - 1] - rk[i]; out.push([days[i], mv > 0 ? '▲' + mv : mv < 0 ? '▼' + -mv : '―']); } return out; };
+      const rowsW = st25.rows.map(([k, mvT], i) => [k, '#/k/' + k, (i + 1) + '등', '제' + kn25(k) + '계', G25.name[k], G25.han[k], mvT, weekW(k), G25.mean[k]]);
+      const rowsG = ga.rank ? ga.rank.rows.map(r => r.slice(0, 9)) : null, valOk = !!ga.rank && ga.rank.rows.every(r => /^처음 넣은 100원이 지금 [0-9.,]+원이에요\.$|하루밖에|산 적이 없어요/.test(r[9]));
+      check(okT25 && ga.main && ga.h1 === '병법 서른여섯 가지' && ga.tab === '꾀' && st25.rows.length === 36 && !!ga.rank && ga.rank.h === '요즘 많이 오른 차례' && JSON.stringify(rowsG) === JSON.stringify(rowsW) && valOk && ga.sets.length === 0 && ga.next === '#/k/' + st25.rows[0][0]
+        && ga.rank.fs.length > 0 && ga.rank.fs.every(f => f >= 16.9) && !/%|1위|추천|매수|매도/.test(ga.rank.text),
+        W + '가) 꾀 모음 = 요즘 많이 오른 차례(주문 1126-1752) — 정산 쪽과 같은 차례 · 1등부터 36등 · 앞 장날 오르내림 = 정산 쪽 · 지난 7일 날마다 오르내린 칸 = 장부 rk + 오늘 차례 · 처음 넣은 100원이 지금 ○원 · 누르면 그 꾀 쪽 · 다음 = 1등 꾀 · 글 17 넘게 · 「1위」 · 「%」 0',
+        JSON.stringify({main: ga.main, h1: ga.h1, tab: ga.tab, next: ga.next, n: st25.rows.length, h: ga.rank?.h, valOk, fsMin: ga.rank ? Math.min(...ga.rank.fs) : null, days: days.length, bad: rowsG ? rowsG.map((r, i) => (JSON.stringify(r) === JSON.stringify(rowsW[i]) ? null : [i, r, rowsW[i]])).filter(Boolean).slice(0, 2) : 'no rank'}).slice(0, 900));
+    } else {
+      const setsW = [0, 1, 2, 3, 4, 5].map(i => ({n: String(i + 1), h: G25.set[K36[i * 6]], rows: K36.slice(i * 6, i * 6 + 6).map(k => [k, '#/k/' + k, '제' + kn25(k) + '계', G25.name[k], G25.han[k], RK36[k] ? RK36[k].i + '번째' : '', G25.mean[k]])}));
+      check(okT25 && ga.main && ga.h1 === '병법 서른여섯 가지' && ga.tab === '꾀' && JSON.stringify(ga.sets) === JSON.stringify(setsW) && ga.next === '#/k/' + (sun25 ? ORD36[0] : 'g01'),
+        W + '가) 꾀 모음 — 여섯 묶음 × 여섯 꾀(삼십육계 차례 · 묶음 이름 = 자료) · 제 ○계 · 쉬운 이름 · 꾀 이름 · 오늘 차례 · 뜻 · 누르면 그 꾀 쪽 · 탭 「꾀」 · 다음 = 맨 위 꾀', JSON.stringify({main: ga.main, h1: ga.h1, tab: ga.tab, next: ga.next, bad: setsW ? ga.sets.map((s, i) => (JSON.stringify(s) === JSON.stringify(setsW[i]) ? null : [s.n, s.h, s.rows.find((r, j) => JSON.stringify(r) !== JSON.stringify(setsW[i].rows[j]))])).filter(Boolean).slice(0, 2) : 'data'}).slice(0, 500));
+    }
     // 나) 꾀 한 가지
     const KS25 = width === 390 ? ORD36 : [...new Set([ORD36[0], ORD36[35], ...K36.filter(k => G25.by?.[k] === 'vol').slice(0, 1)])];
     const badK = [];

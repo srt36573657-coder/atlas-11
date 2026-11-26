@@ -1916,3 +1916,17 @@ html.sj-on #su main.sj-page .sj-coday a.sj-cdgo, html.sj-on #su main.sj-page .sj
 #su .sj-l7c > b { display: grid; justify-items: start; gap: 4px; min-width: 0; } /* 등수 도장 위 · 이름 아래 — 좁은 폭(320)에서 이름이 세로로 무너지지 않게 */
 #su .sj-l7r { flex: none; display: inline-grid; place-items: center; min-width: 2.6em; padding: 1px 8px; border-radius: 999px; background: #20323A; color: #FFFFFF; font-size: 1.0625rem; font-weight: 900; line-height: 1.5; }
 #su .sj-l7n { min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
+/* 꾀 탭 요즘 많이 오른 차례(주문 1126-1752) — 1등부터 36등 · 앞 장날 오르내림 · 지난 7일 날마다 오르내린 칸 */
+#su .sj-krl { list-style: none; padding: 0; }
+#su .sj-krn { flex: none; display: inline-grid; place-items: center; min-width: 3.2em; padding: 2px 10px; border-radius: 999px; background: #20323A; color: #FFFFFF; font-size: max(17px, 1.0625rem); font-weight: 900; line-height: 1.5; }
+html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
+#su .sj-krv { margin: 6px 0 0; display: flex; align-items: center; gap: 8px; font-size: max(17px, 1.0625rem); font-weight: 800; line-height: 1.5; color: #1D2A33; }
+#su .sj-krv[data-st="dn"] { color: #23406B; }
+#su .sj-kwk { margin: 6px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+#su .sj-kwkk { flex: none; font-size: max(17px, 1.0625rem); font-weight: 700; color: #4A6168; }
+#su .sj-kwkl { display: flex; flex-wrap: wrap; gap: 3px; min-width: 0; }
+#su .sj-kwa { display: inline-grid; place-items: center; min-width: 2em; padding: 0 3px; border-radius: 8px; background: #EEF3F2; font-size: max(17px, 1.0625rem); font-weight: 800; line-height: 1.6; color: #20323A; white-space: nowrap; }
+#su .sj-kwa[data-m="dn"] { background: #E6ECF5; color: #23406B; }
+#su .sj-kwa[data-m="eq"] { color: #566C70; }
+#su .sj-kr > .sj-krv, #su .sj-kr > .sj-kwk { grid-column: 1 / -1; } /* 꾀 줄은 두 칸 판(그림 108 · 글) — 값 줄 · 7일 줄은 온 폭(그림 칸으로 들어가지 않게 · .sj-ktr 와 같은 까닭) */
+#su .sj-krr > .sj-ka .sj-krn { order: -2; } /* 등수 도장이 맨 앞(이름 위) */

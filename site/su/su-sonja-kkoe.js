@@ -227,19 +227,57 @@ function kkoeRow(g, k, r, extra = null) {
     h('p', {class: 'sj-kmean', text: g.mean[k]}), extra);
 }
 
-/* ── 꾀 모음(#/k) ── */
+/* ── 꾀 모음(#/k) ── 요즘 많이 오른 차례(주문 1126-1752 · 사장님 2026-11-26(서울) 17:52 「꾀 탭에서 말이야 여러 꾀가 상황에 꾀를 나타내게 되어 있다 그걸 요즘 상승률 순위에
+   순으로 배치하라 1위부터 36위까지 그리고 매일 그 순위에 등락을 화살표로 표기하라 7일 자료를 말이야」 — docs/design/kkoe-rank-2026-11-26/order-1752.txt)
+   차례 = 정산 장부(su21-settle.json)에서 꾀마다 처음 넣은 100원이 지금 얼마가 됐는지(정산 쪽과 같은 셈 settle36 — 본질 8번 · 주문 1113-2224 「수익율이 높은 순으로」) · 1등부터 36등(「1위」는 쓰지 않을 말)
+   줄마다 앞 장날보다 오르내린 칸(▲ · ▼ · ―) + 지난 7일 날마다 오르내린 칸 · 날마다 차례 = 장부가 적은 차례(D.rk) + 오늘 차례(rankMoves · 정산 쪽과 같음) · 산 셈이 아직 없으면 옛 여섯 묶음 그대로 */
+const WEEK = 7;
+/** 지난 7일 날마다 오르내린 칸 — [{day, mv}] (mv = 앞 장날 차례 − 그날 차례 · 늘면 오름) · 앞 날이 없으면 null */
+export const weekOf = (M, k) => { if (!M || !Array.isArray(M.order) || M.order.length < 2) return null; const j = K36.indexOf(k), rk = M.order.map(o => o.indexOf(j) + 1), out = [];
+  for (let i = Math.max(1, rk.length - WEEK); i < rk.length; i++) if (rk[i] > 0 && rk[i - 1] > 0) out.push({day: M.days[i], mv: rk[i - 1] - rk[i]});
+  return out.length ? out : null; };
+const wkSay = mv => (mv > 0 ? mv + '칸 오름' : mv < 0 ? -mv + '칸 내림' : '그대로');
+function weekRow(W) {
+  return h('div', {class: 'sj-kwk', 'data-n': String(W.length), role: 'img', 'aria-label': '지난 ' + W.length + '일 차례 · ' + W.map(w => (mday(w.day) ?? '') + ' ' + wkSay(w.mv)).join(' · ')},
+    h('span', {class: 'sj-kwkk', 'aria-hidden': 'true', text: '지난 ' + W.length + '일'}),
+    h('span', {class: 'sj-kwkl', 'aria-hidden': 'true'}, ...W.map(w => h('span', {class: 'sj-kwa', 'data-m': w.mv > 0 ? 'up' : w.mv < 0 ? 'dn' : 'eq', 'data-day': w.day, text: w.mv > 0 ? '▲' + w.mv : w.mv < 0 ? '▼' + -w.mv : '―'}))));
+}
+function rankRow(g, x, i, M) {
+  const k = x.key, v = rateOf(x), W = weekOf(M, k), mv = M ? M.move.get(k) : null;
+  return h('li', {class: 'sj-kr sj-krr', 'data-k': k, 'data-rank': String(i + 1), 'data-st': x.st},
+    meanCap(PIC[k]), kkoeTile(k, g.name[k], 'sj-kpic', 120, 90), // 그림 뜻 한 줄 → 꾀 그림(주문 1116-1313)
+    h('a', {class: 'sj-ka', href: '#/k/' + k, 'aria-label': (i + 1) + '등 · 제' + kNo(k) + '계 · ' + g.name[k] + ' · ' + (v !== null ? '처음 넣은 100원이 지금 ' + w100(v / 1e6) : resText(x)) + (mv != null ? ' · ' + mvSay(mv) : '')},
+      h('span', {class: 'sj-krn', text: (i + 1) + '등'}),
+      h('span', {class: 'sj-kno', text: '제' + kNo(k) + '계'}),
+      h('span', {class: 'sj-kt'}, h('b', {text: g.name[k]}), h('span', {class: 'sj-khan', text: g.han[k]})),
+      mv != null ? mvMark(mv) : null, h('i', {'aria-hidden': 'true', text: '›'})),
+    h('p', {class: 'sj-krv', 'data-st': x.st}, shapeI(x.st), h('span', {text: v !== null ? '처음 넣은 100원이 지금 ' + w100(v / 1e6) + '이에요.' : resText(x)})),
+    W ? weekRow(W) : null,
+    h('p', {class: 'sj-kmean', text: g.mean[k]}));
+}
 export async function vKkoeAll(X) {
-  const [T, {S}] = await Promise.all([load21(X.get), X.base()]), g = await g36Of(X, T);
-  const RB = rankOf(T), sun = okSun(T?.sun) ? T.sun : null, first = sun?.rank[0]?.k ?? null;
-  const sets = []; for (let i = 0; i < 6; i++) sets.push(K36.slice(i * 6, i * 6 + 6));
+  const [T, {S}, D] = await Promise.all([load21(X.get), X.base(), Promise.resolve(X.get(DST)).catch(() => null)]), g = await g36Of(X, T);
+  const RB = rankOf(T), sun = okSun(T?.sun) ? T.sun : null;
+  const ST = D && Array.isArray(D.buys) && Array.isArray(D.kinds) ? settle36(D) : null, K = ST ? ST.K : null, rated = !!K && K.some(x => rateOf(x) !== null), M = rated ? rankMoves(D, K) : null;
+  const first = rated ? K[0].key : sun?.rank[0]?.k ?? null, quote = sun?.rankQ?.quote ? [sun.rankQ.quote, '손자병법 ' + (sun.rankQ.pian ?? '')] : null;
+  const fig = h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.book, 'figcaption'), heroPic('book')), tap = h('p', {class: 'sj-lead', text: '꾀 그림이나 이름을 누르면, 그 꾀를 자세히 볼 수 있어요.'});
+  const nW = rated ? Math.max(0, ...K.map(x => weekOf(M, x.key)?.length ?? 0)) : 0;
+  const body = rated ? [h('section', {class: 'sj-sec sj-krank', 'aria-label': '요즘 많이 오른 차례', 'data-n': String(K.length), 'data-days': String(nW)},
+      head('차례', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '요즘 많이 오른 차례'}))),
+      h('p', {class: 'sj-rule', text: (ST.rows.length ? mday(ST.rows.map(r => r.day).sort()[0]) + '부터 ' : '') + '날마다 꾀마다 고른 회사를 샀다고 치고 셌어요. 처음 넣은 100원이 지금 많이 늘어난 꾀가 1등이에요. 날마다 다시 줄을 세워요. 가짜 돈이에요.'}),
+      M ? h('p', {class: 'sj-stmk', text: '▲는 앞 장날보다 오른 칸, ▼는 내린 칸, ―는 그대로예요.' + (nW ? ' 줄마다 지난 ' + nW + '일을 날마다 보여 줘요. 왼쪽이 ' + mday(M.days[M.days.length - nW]) + ', 오른쪽이 ' + mday(M.days[M.days.length - 1]) + '이에요.' : '')}) : null,
+      h('ol', {class: 'sj-kl sj-krl'}, ...K.map((x, i) => rankRow(g, x, i, M))),
+      endSeal('차례'))]
+    : (() => { const sets = []; for (let i = 0; i < 6; i++) sets.push(K36.slice(i * 6, i * 6 + 6)); // 산 셈이 아직 없는 날 — 옛 여섯 묶음 그대로
+      return sets.map((ks, i) => h('section', {class: 'sj-sec sj-kset', 'data-set': String(i + 1), 'aria-label': g.set[ks[0]]},
+        head(SETW[i], '제' + (i + 1) + '묶음', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: g.set[ks[0]]})), i % 2 === 1),
+        h('ol', {class: 'sj-kl'}, ...ks.map(k => kkoeRow(g, k, RB[k]))),
+        endSeal(SETW[i]))); })();
   const kids = [
-    pageHead({kick: '삼십육계 · 여섯 묶음', h1: '병법 서른여섯 가지', seal: '꾀', quote: sun?.rankQ?.quote ? [sun.rankQ.quote, '손자병법 ' + (sun.rankQ.pian ?? '')] : null,
-      say: '삼십육계는 옛날부터 전해 오는 꾀 서른여섯 가지예요. 여섯 묶음에 꾀가 여섯 가지씩 있어요.' + (sun ? ' 지금 같은 ' + sun.name + '에서 덜 잃은 차례도 함께 적었어요.' : ''),
-      more: [h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.book, 'figcaption'), heroPic('book')), h('p', {class: 'sj-lead', text: '꾀 그림이나 이름을 누르면, 그 꾀를 자세히 볼 수 있어요.'})]}),
-    ...sets.map((ks, i) => h('section', {class: 'sj-sec sj-kset', 'data-set': String(i + 1), 'aria-label': g.set[ks[0]]},
-      head(SETW[i], '제' + (i + 1) + '묶음', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: g.set[ks[0]]})), i % 2 === 1),
-      h('ol', {class: 'sj-kl'}, ...ks.map(k => kkoeRow(g, k, RB[k]))),
-      endSeal(SETW[i]))),
+    pageHead({kick: rated ? '삼십육계 · 요즘 많이 오른 차례' : '삼십육계 · 여섯 묶음', h1: '병법 서른여섯 가지', seal: '꾀', quote,
+      say: '삼십육계는 옛날부터 전해 오는 꾀 서른여섯 가지예요. ' + (rated ? '요즘 많이 오른 차례로 1등부터 36등까지 놓았어요.' : '여섯 묶음에 꾀가 여섯 가지씩 있어요.' + (sun ? ' 지금 같은 ' + sun.name + '에서 덜 잃은 차례도 함께 적었어요.' : '')),
+      more: [fig, tap]}),
+    ...body,
     h('section', {class: 'sj-sec sj-pkin'}, goLink('#/o', '여러 꾀가 고른 회사 보기')), // 주문 1120-0950
     h('p', {class: 'sj-safe sj-sec', text: '꾀 이름과 뜻은 옛 병법 그대로예요. 차례는 지난 기록으로 정했어요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
     endSec(day(T?.asOf?.board), gotOf(S))];
