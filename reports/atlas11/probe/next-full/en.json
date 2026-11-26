@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-26T08:49:52.615Z",
+ "at": "2026-11-26T10:18:24.401Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -14,24 +14,24 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "co": true,
-  "rivals": true,
-  "cond": true,
-  "past": true,
   "range": true,
-  "grow": true,
-  "time": true,
-  "theme": true,
-  "x": true,
-  "hold": true,
-  "up": true,
-  "gdr": true,
-  "sage": true,
-  "why": true,
-  "share": true,
-  "roman": true,
+  "rivals": true,
+  "past": true,
+  "cond": true,
   "info": true,
-  "chx": true
+  "up": true,
+  "co": true,
+  "time": true,
+  "hold": true,
+  "share": true,
+  "why": true,
+  "theme": true,
+  "sage": true,
+  "gdr": true,
+  "grow": true,
+  "chx": true,
+  "x": true,
+  "roman": true
  },
  "edge": true,
  "only": null,
@@ -40,14 +40,14 @@
  "full": false,
  "units": {
   "total": 13016,
-  "hash": "21278e33b6b38f38",
+  "hash": "db277274a78e867d",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 1053,
- "secondsSum": 2950,
+ "seconds": 1071,
+ "secondsSum": 3023,
  "shards": [
   {
    "shard": "1/3",
@@ -56,10 +56,10 @@
    "routes": 4370,
    "screens": 4413,
    "mine": 4370,
-   "seconds": 930,
+   "seconds": 1071,
    "secs": {
-    "open": 0.4,
-    "routes": 926.6
+    "open": 0.6,
+    "routes": 1069.4
    }
   },
   {
@@ -69,11 +69,11 @@
    "routes": 4360,
    "screens": 4424,
    "mine": 4355,
-   "seconds": 1053,
+   "seconds": 1034,
    "secs": {
-    "open": 0.9,
-    "routes": 1043.3,
-    "newwin": 4.5
+    "open": 0.6,
+    "routes": 1028.2,
+    "newwin": 4
    }
   },
   {
@@ -83,12 +83,12 @@
    "routes": 4290,
    "screens": 4411,
    "mine": 4291,
-   "seconds": 967,
+   "seconds": 918,
    "secs": {
-    "open": 1,
-    "routes": 949.6,
-    "act": 6.6,
-    "edge": 7.8,
+    "open": 0.3,
+    "routes": 902.3,
+    "act": 6.2,
+    "edge": 6.6,
     "grammar": 0
    }
   }
@@ -130,8 +130,6 @@
  "missingList": [],
  "all": [],
  "truncated": false,
- "problems": [
-  "몫마다 일감 목록이 다름(도는 사이 자료가 바뀜?) 21278e33b6b38f38·13016 | b31584f89f74db57·13016"
- ],
- "ok": false
+ "problems": [],
+ "ok": true
 }
