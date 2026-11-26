@@ -1,21 +1,21 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-11-26T12:32:18.702Z",
+ "at": "2026-11-26T14:16:32.961Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-26",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 168,
+ "seconds": 174,
  "time": {
-  "old": 141.2,
-  "new": 115.5,
-  "wall": 167.6,
+  "old": 147.5,
+  "new": 131.2,
+  "wall": 173.7,
   "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 84.2,
-  "oldShare": 55
+  "oldPct": 84.9,
+  "oldShare": 52.9
  },
  "net": {
   "req": 5133,
@@ -33,7 +33,7 @@
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 161
+   "compare": 167
   },
   "글 마디": 51562,
   "숫자 낱말": 51367,
@@ -44,7 +44,7 @@
   "옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)": 7,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 460개(/atlas/data/core.json · /atlas/data/home.json · /atlas/data/lines.json)",
+   "why": "바뀐 파일 2개(/atlas/data/core.json · /atlas/data/home.json)",
    "made": null,
    "inputs": 2572,
    "reads": 2564,
