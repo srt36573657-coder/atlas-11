@@ -471,6 +471,56 @@ function heroSec(T) {
   let raf = 0; track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); [...dots.children].forEach((d, j) => d.classList.toggle('sj-heroon', j === i)); track.dataset.at = String(i); }); }, {passive: true});
   return h('section', {class: 'sj-sec sj-hero', 'data-from': from, ...(k ? {'data-k': k} : {}), ...(x ? {'data-land': x.land} : {}), 'data-n': String(S3.length), 'aria-label': '오늘의 꾀'}, track, dots);
 }
+/* ── 0-1 인사 두 줄 · 0-3 오늘의 기업 · 0-4 오늘의 투자 점검(주문 1126-1544 · 사장님 2026-11-26(서울) 15:44 직원 본보기 그림 다시 보내심 — docs/design/today-2026-11-26/order-1544.txt)
+ *  그림 차례 그대로: 인사 → 오늘의 핵심 키워드(= 오늘의 꾀 한 장) → 오늘의 추천 종목 → 오늘의 투자 체크리스트 · 그 아래는 지금 첫 화면 그대로
+ *  사이트 규칙으로만 바꿈 — 「추천 종목」 → 직원 글의 「오늘의 기업」(오늘의 꾀가 고른 첫 회사 · 사라고 권하지 않음) · 「+」 → 「›」(그 회사 쪽) · 「수익을 만듭니다」 → 「실력을 만듭니다」(돈을 약속하지 않음)
+ *  「체크리스트」 → 「점검」(바깥말 없음) · 「무리한 매수는 피하기」 → 「무리하게 사지 않기」(매수 낱말 없음) · 상표 그림 대신 이름 첫 글자 · 빨강 · 퍼센트 기호 없음 */
+function greetSec() {
+  return h('section', {class: 'sj-sec sj-greet', 'aria-label': '오늘 인사'},
+    h('p', {class: 'sj-grh'}, h('span', {text: '오늘도'}), h('span', {text: '성장하는 투자자예요!'})),
+    h('p', {class: 'sj-grs', text: '꾸준한 공부가 실력을 만듭니다'}));
+}
+const cdWon = v => Math.round(v).toLocaleString('ko-KR') + '원', cdChg = v => (v > 0 ? '▲ ' : v < 0 ? '▼ ' : '― ') + Math.abs(Math.round(v * 1000) / 10).toFixed(1) + '프로';
+function coDaySec(k) { // 첫 칠함 — 자리만(꾀 칸 자료 su21-s36.json 을 받은 뒤 after 에서 채움)
+  return h('section', {class: 'sj-sec sj-coday', 'aria-label': '오늘의 기업', 'data-wait': '', ...(k ? {'data-k': k} : {})},
+    h('h2', {class: 'sj-cdh', text: '오늘의 기업'}), h('p', {class: 'sj-cdn', text: '꾀가 고른 회사를 불러오고 있어요.'}));
+}
+function coDayFill(sec, G) { // 오늘의 꾀(오늘의 꾀 한 장과 같은 꾀)가 고른 회사 가운데 첫째 · 값 = 꾀 칸 자료의 한 달 값(line) 마지막 · 그 앞날보다 오르내린 몫
+  if (!sec?.isConnected) return;
+  const k = sec.dataset.k ?? null, L = k && G ? G.lists?.[k] : null, c0 = Array.isArray(L) ? L.find(c => /^\d{6}$/.test(String(c?.code ?? '')) && typeof c?.name === 'string' && c.name.trim()) ?? null : null;
+  const ln = c0 ? G.line?.[c0.code] : null, cs = Array.isArray(ln?.c) ? ln.c.filter(v => fin(v) && v > 0) : [], close = fin(ln?.close) && ln.close > 0 ? ln.close : cs.at(-1) ?? null, prev = cs.length >= 2 ? cs.at(-2) : null;
+  sec.querySelector(':scope > .sj-cdn')?.remove();
+  if (!c0 || !close) {
+    sec.append(h('p', {class: 'sj-cdn', text: !k ? '오늘의 꾀가 정해지면 그 꾀가 고른 회사를 여기에 보여 드려요.' : !G ? '꾀가 고른 회사를 아직 받지 못했어요.' : '오늘 이 꾀가 고른 회사가 없어요. 억지로 채우지 않았어요.'}));
+    sec.removeAttribute('data-wait'); return;
+  }
+  const v = prev ? close / prev - 1 : null, ind = typeof G.ind?.[c0.code] === 'string' && G.ind[c0.code] ? G.ind[c0.code] : null, dd = mday(ln.date);
+  sec.dataset.code = c0.code;
+  sec.append(
+    h('div', {class: 'sj-cdrow'},
+      h('span', {class: 'sj-cdlogo', 'aria-hidden': 'true', text: c0.name.trim().slice(0, 1)}),
+      h('div', {class: 'sj-cdtx'},
+        h('b', {class: 'sj-cdname', 'data-proper': '', text: c0.name.trim()}),
+        h('p', {class: 'sj-cdpx'}, h('span', {class: 'sj-cdwon', text: cdWon(close)}), v != null ? h('span', {class: 'sj-cdchg', 'data-m': v > 0 ? 'up' : v < 0 ? 'dn' : 'eq', text: cdChg(v)}) : null)),
+      h('a', {class: 'sj-cdgo', href: '#/c/' + c0.code, 'aria-label': c0.name.trim() + ' 자세히 보기'}, h('i', {'aria-hidden': 'true', text: '›'}))),
+    h('p', {class: 'sj-cdsub'}, h('span', {text: dd ? dd + ' 마지막 값' : '마지막 값'}), ind ? h('span', {'data-proper': '', text: ' · ' + ind}) : null),
+    h('p', {class: 'sj-cdwhy', text: '「' + KNAME[k] + '」 꾀가 고른 회사 가운데 첫째예요. 사고팔기를 권하지 않아요.'}));
+  sec.removeAttribute('data-wait');
+}
+export const TODO3 = Object.freeze(['시장 흐름 확인하기', '내 투자 회사 점검하기', '무리하게 사지 않기']), TODO_KEY = 'su-todo-v1';
+function todoSec() { // 누르면 표시 · 이 휴대폰에만 그날 하루(이어 누른 날 세기 · 상 없음 — 본질: 연속 접속 보상 없음)
+  const day = kst(Date.now()).day; let on = TODO3.map(() => false);
+  try { const o = JSON.parse(localStorage.getItem(TODO_KEY) ?? 'null'); if (o && o.day === day && Array.isArray(o.on)) on = TODO3.map((_, i) => o.on[i] === true); } catch { /* 저장소 없음 — 표시만 */ }
+  const save = () => { try { localStorage.setItem(TODO_KEY, JSON.stringify({day, on})); } catch { /* 저장소 없음 */ } };
+  const items = TODO3.map((t, i) => {
+    const b = h('button', {type: 'button', class: 'sj-tdb', 'aria-pressed': on[i] ? 'true' : 'false'}, h('span', {class: 'sj-tdm', 'aria-hidden': 'true', text: '✓'}), h('span', {class: 'sj-tdt', text: t}));
+    b.addEventListener('click', () => { on[i] = !on[i]; b.setAttribute('aria-pressed', on[i] ? 'true' : 'false'); save(); });
+    return h('li', {class: 'sj-tdi'}, b);
+  });
+  return h('section', {class: 'sj-sec sj-todo', 'aria-label': '오늘의 투자 점검'},
+    h('h2', {class: 'sj-tdh', text: '오늘의 투자 점검'}), h('ul', {class: 'sj-tdl'}, ...items),
+    h('p', {class: 'sj-tdn', text: '누르면 표시돼요. 이 휴대폰에만 오늘 하루 남아요.'}));
+}
 export async function vSonja(X, shell = null) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   if (!T) return null;
@@ -479,7 +529,8 @@ export async function vSonja(X, shell = null) {
   const keep = !!shell?.main?.isConnected, main = keep ? shell.main : h('main', {class: 'sj-page', 'data-page': 'sonja', 'data-wait': ''}, cover(null)); // data-wait — 꾀 칸을 채우면 뗌(검사가 기다림)
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
   if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec());
-  { const old = main.querySelector(':scope > section.sj-hero'), hs = heroSec(T); if (old) old.remove(); if (hs) main.prepend(hs); } // 오늘의 꾀 한 장 — 첫 화면 맨 위(주문 1126-1249 · 격언 족자 위) // 주식 격언 열 가지 — 첫 화면 맨 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) · index.html 이 먼저 칠한 판이면 그대로
+  { const old = main.querySelector(':scope > section.sj-hero'), hs = heroSec(T); if (old) old.remove(); if (hs) main.prepend(hs); }
+  { for (const e of main.querySelectorAll(':scope > section.sj-greet, :scope > section.sj-coday, :scope > section.sj-todo')) e.remove(); const hs = main.querySelector(':scope > section.sj-hero'), gr = greetSec(), cd = coDaySec(hs?.dataset.k ?? null), td = todoSec(); main.prepend(gr); (hs ?? gr).after(cd, td); } // 본보기 그림 차례 — 인사 → 오늘의 꾀 한 장 → 오늘의 기업 → 오늘의 투자 점검(주문 1126-1544) // 오늘의 꾀 한 장 — 첫 화면 맨 위(주문 1126-1249 · 격언 족자 위) // 주식 격언 열 가지 — 첫 화면 맨 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) · index.html 이 먼저 칠한 판이면 그대로
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
   const aw = main.querySelector(':scope > .sj-cover .sj-artw'); if (aw && !aw.querySelector(':scope > svg.sj-artfx')) aw.insertBefore(coverFilm(), aw.querySelector(':scope > .sj-hwa')); // 표지 영화 덧칠(주문 1116-2310 — 안개 · 새 · 금빛 반짝임 · 빛 한 줄기 11초)
   { const cv0 = main.querySelector(':scope > .sj-cover'), tw = cv0?.querySelector(':scope > .sj-tc'), tc = todayCard(T, X.cur?.()?.code ?? null); if (tw) tw.replaceWith(tc); else cv0?.append(tc); } // 오늘 한 장(주문 1120-0001) — 자리(sj-tc0)를 채움
@@ -487,11 +538,11 @@ export async function vSonja(X, shell = null) {
   main.append(...body.filter(e => e != null)); // 꾀 칸 자료가 없는 날 wait = null — append 가 「null」 글로 붙이지 않게
   const hardOf = () => { const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove(); const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = ''; };
   hardOf();
-  const after = async () => { // 꾀 칸(su21-s36.json) — 첫 칠함 뒤에 받아 채움
-    if (!wait) { main.removeAttribute('data-wait'); return; }
-    const g = await X.get(D36).catch(() => null);
-    if (!wait.isConnected) return;
-    if (ok36(g, T)) wait.replaceWith(trickSec(g, T)); else wait.remove();
+  const after = async () => { // 꾀 칸(su21-s36.json) — 첫 칠함 뒤에 받아 채움 · 오늘의 기업도 같은 자료로(주문 1126-1544)
+    const g = await X.get(D36).catch(() => null), G = ok36(g, T) ? g : null;
+    if (!main.isConnected) return;
+    coDayFill(main.querySelector(':scope > section.sj-coday'), G);
+    if (wait?.isConnected) { if (G) wait.replaceWith(trickSec(G, T)); else wait.remove(); }
     hardOf(); main.removeAttribute('data-wait');
   };
   const dock = dockNav(1, nextOf(T)), tabs = tabNav(0, X.cur?.()?.code ?? null), mkt = mktLine(T), cheer = cheerLine(); // 응원 한 줄 → 지금 시장 한 줄 — 머리 줄 바로 아래(주문 1125-2019 · 1125-1359)
