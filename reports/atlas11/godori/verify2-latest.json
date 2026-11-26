@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-25T20:35:40Z",
+ "at": "2026-11-26T20:20:56Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "af18dadd2a281bd7cc235f130f458879b335fdc6c20f7a068b67d7fe78541ebf",
-   "last": "2026-11-25"
+   "sha256": "a85938630a852bae17b5360a2125c47b3fc183df1f94ea3789e33bdba4e37655",
+   "last": "2026-11-26"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 870,
+   "n": 871,
    "first": "2023-04-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "fc7c857f6a96bc3d0017f9748a7514deefae980859ff7537337938900ea6f933"
+   "sha256": "25329ad696716dfc718ec0a2e992f4d1f994a6bc03a664fe85b07cde59979627"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "7133447bc91d89f57d4c258849ff0b294ac629a233545a5e1f826b73d195f1cd"
+   "sha256": "a56706b6a985d3372151c53848cdfe0e52c080737d16e8929515989624c9a050"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "8d4b7417cb0f372ab38ff0fe6483841a38267b55fa507c373778f0e17af37e66"
+   "sha256": "a8cae9526b26e4510246d0b485245bd820b37464649052d62c30ce94438e59e5"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 869,
-  "day": "2026-11-25",
+  "k": 870,
+  "day": "2026-11-26",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1775,
+   "outThin": 1785,
    "outThinQ": 36,
    "outHalt": 1,
-   "outList": 3,
-   "listQ": 778,
-   "afterOut": 778,
-   "g1": 250,
-   "g2": 631,
-   "g3": 25,
-   "g4": 675,
+   "outList": 4,
+   "listQ": 767,
+   "afterOut": 767,
+   "g1": 245,
+   "g2": 609,
+   "g3": 23,
+   "g4": 654,
    "g5": 11,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 769,
+   "loss3": 758,
    "why": "lists"
   },
-  "loss3Years": 769,
+  "loss3Years": 758,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -321,8 +321,8 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-10-28",
-   "to": "2026-11-25",
+   "from": "2026-10-29",
+   "to": "2026-11-26",
    "n": 0,
    "counted": 0,
    "up": 0,
@@ -378,10 +378,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1775,
+    1785,
     1,
-    3,
-    778,
+    4,
+    767,
     2557
    ]
   },
@@ -395,23 +395,23 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1775,
+  "outThin": 1785,
   "outThinQ": 36,
   "outHalt": 1,
-  "outList": 3,
-  "listQ": 778,
-  "afterOut": 778,
-  "g1": 250,
-  "g2": 631,
-  "g3": 25,
-  "g4": 675,
+  "outList": 4,
+  "listQ": 767,
+  "afterOut": 767,
+  "g1": 245,
+  "g2": 609,
+  "g3": 23,
+  "g4": 654,
   "g5": 11,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 769,
+  "loss3": 758,
   "why": "lists"
  },
  "compared": 2693,
@@ -421,9 +421,9 @@
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 3.1,
-  "build": 2.3,
-  "recount": 0.9,
-  "total": 6.4
+  "readBundle": 2.8,
+  "build": 2.1,
+  "recount": 0.8,
+  "total": 5.8
  }
 }
