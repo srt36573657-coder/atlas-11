@@ -1,8 +1,8 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-25T18:46:32.314Z",
+ "at": "2026-11-26T05:46:42.618Z",
  "base": "https://aaa7377.com",
- "asOf": "2026-11-25",
+ "asOf": "2026-11-26",
  "companies": 2557,
  "of": 2557,
  "all": true,
@@ -12,7 +12,7 @@
  "units": {
   "total": 2569,
   "mine": 2569,
-  "hash": "be0fa11fdbc7dfcc",
+  "hash": "22b726c064a08526",
   "kinds": {
    "c": {
     "total": 2557,
@@ -32,18 +32,18 @@
    }
   }
  },
- "seconds": 402,
+ "seconds": 460,
  "time": {
-  "old": 225.3,
-  "new": 197.4,
-  "wall": 402.2,
+  "old": 216,
+  "new": 216.3,
+  "wall": 459.7,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 56,
-  "oldShare": 53.3
+  "oldPct": 47,
+  "oldShare": 50
  },
  "net": {
-  "req": 5130,
+  "req": 2560,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -57,14 +57,14 @@
  },
  "counts": {
   "새 화면 옛 고리 0": 1,
-  "맞댄 글 낱낱": 43387,
-  "맞댄 숫자 낱말": 80068,
+  "맞댄 글 낱낱": 45948,
+  "맞댄 숫자 낱말": 90312,
   "이야기 있는 회사": 61,
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 1개(/atlas/data/core.json)",
+   "why": "검사 · 브라우저 · 목록이 바뀜",
    "made": null,
    "inputs": 2570,
    "reads": 2557,
