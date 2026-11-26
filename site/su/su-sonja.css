@@ -1908,3 +1908,11 @@ html.sj-on #su main.sj-page .sj-coday a.sj-cdgo, html.sj-on #su main.sj-page .sj
 #su .sj-tdt { min-width: 0; word-break: keep-all; }
 #su .sj-tdn { margin: 10px 0 0; font-size: max(17px, 1.0625rem); line-height: 1.5; color: #56707A; word-break: keep-all; }
 @media (max-width: 359px) { #su .sj-cdrow { gap: 8px; padding: 12px 10px; } #su .sj-cdlogo { width: 44px; height: 44px; font-size: 1.25rem; } #su .sj-grh { font-size: 1.5rem; } }
+/* 회사 단추의 날 수(「10일째」)가 좁은 폭(320)에서 두 줄로 무너지지 않게 — 진짜 사이트 검사 ㉙(주문 1126-1544 · 날 수가 두 자리가 된 날) */
+#su .sj-chipd { white-space: nowrap; }
+@media (max-width: 359px) { #su .sj-chip { grid-template-areas: "n n" "d d" "s m"; } }
+/* 요즘 주도주 일곱 곳(주문 1126-1748) — 덜 흔들린 일곱 칸 꼴 그대로 · 등수 도장 */
+#su .sj-l7l { list-style: none; padding: 0; }
+#su .sj-l7c > b { display: grid; justify-items: start; gap: 4px; min-width: 0; } /* 등수 도장 위 · 이름 아래 — 좁은 폭(320)에서 이름이 세로로 무너지지 않게 */
+#su .sj-l7r { flex: none; display: inline-grid; place-items: center; min-width: 2.6em; padding: 1px 8px; border-radius: 999px; background: #20323A; color: #FFFFFF; font-size: 1.0625rem; font-weight: 900; line-height: 1.5; }
+#su .sj-l7n { min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }

@@ -73,7 +73,7 @@ export function cover(dd = null) {
     h('div', {class: 'sj-artw'},
       h('img', {class: 'sj-art', src: ART, width: '390', height: '470', alt: '붓 글씨 「' + NAME + '」 · 먼 산과 붓 한 획', decoding: 'async', fetchpriority: 'high'}),
       h('p', {class: 'sj-hwa'}, ...HWA.map(([w1, w2]) => h('span', {}, w1, h('i', {text: ' '}), w2)))),
-    stepTag(1, dd), todayWait());
+    stepTag(1, dd)); // 오늘 한 장 자리(todayWait)는 지움 — 주문 1126-1748 「지금 첫번째 구역은 헷갈린다 삭제 하라」
 }
 /** 걸음 줄 끝의 자료 날 */
 export const stepDay = dd => h('span', {class: 'sj-stepd', text: dd + ' 자료'});

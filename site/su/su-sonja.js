@@ -284,6 +284,27 @@ function calmBox(g) {
     R ? h('p', {class: 'sj-calmr2', text: '잃은 때는 100번 가운데 ' + p100(R.lose / R.n) + '번이에요. 아무 회사나 고르면 ' + p100(R.exp / R.n) + '번이에요.'}) : null,
     R ? h('p', {class: 'sj-calmd', text: '장이 열린 지난 ' + R.n + '일 동안, 날마다 같은 방법으로 골라 닷새 뒤 값과 비교했어요.' + (ym(R.from) && ym(R.to) ? ' 센 기간은 ' + ym(R.from) + '부터 ' + ym(R.to) + '까지예요.' : '')}) : null);
 }
+/** 요즘 주도주 일곱 곳(주문 1126-1748 · 사장님 2026-11-26(서울) 17:48 「두번재 그림이 덜 흔들리는걸로 배치 되러 있다 그걸 료즘 주도주 7주로 다시 찾아내 1등부터 7등까지 배치하라」)
+ *  자료 = 첫 화면 자료 lists.hot(불장 일곱 · su21.py — 요즘 오르는 업종 안 · 한 달 오른 회사 → 빚투 쏠림 · 본전 버티기는 뺌 → 새 높은 값 · 사람이 몰린 날이 많은 차례 → 한 달 오른 만큼이 드문 차례 · 업종마다 둘)
+ *  그 차례 그대로 1등부터 7등 · 오른 크기 숫자는 싣지 않음(수익 순위 아님 · 한 달 꺾은선과 오름 · 내림 표만) · 누르면 그 회사 쪽 · 사고팔기를 권하지 않음 */
+export const LEAD_LINE = '요즘 오르는 업종 안에서 한 달 동안 오른 회사 가운데, 새 높은 값을 찍고 사람이 몰린 날이 많은 회사부터 1등이에요. 하는 일이 같은 회사는 두 곳까지만 골랐어요.';
+export const leadOf = T => (Array.isArray(T?.lists?.hot) ? T.lists.hot.filter(c => c && /^\d{6}$/.test(String(c.code ?? '')) && typeof c.name === 'string' && c.name.trim() !== '').slice(0, 7) : null);
+function leadChip(c, r, bd) {
+  const code = String(c.code), name = c.name.trim(), sp = Array.isArray(c.c) && c.c.length >= 2 && c.c.every(v => fin(v) && v > 0) ? c.c : null, m = monOf(sp);
+  return h('li', {}, h('a', {class: 'sj-chip sj-l7c', href: '#/c/' + encodeURIComponent(code), 'data-code': code, 'data-rank': String(r), 'data-mon': m ?? 'na',
+    'aria-label': r + '등 · ' + name + (sp ? ' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[sp.length - 1]) + ' · ' + MONW[m] : '')},
+    h('b', {}, h('span', {class: 'sj-l7r', text: r + '등'}), h('span', {class: 'sj-l7n', 'data-proper': '', text: name})), sp ? spark(sp, 64, 26, 'sj-sps') : null,
+    m ? h('i', {class: 'sj-chipm sj-chipm-' + m, 'aria-hidden': 'true', text: m === 'dn' ? '내림' : m === 'up' ? '오름' : '같음'}) : null));
+}
+function leadBox(T) {
+  const L = leadOf(T); if (!L) return null;
+  const bd = mday(T?.asOf?.board);
+  return h('div', {class: 'sj-calm sj-lead7', 'data-n': String(L.length)},
+    h('p', {class: 'sj-calmk', text: '요즘 주도주 일곱 곳'}),
+    h('p', {class: 'sj-calml', text: LEAD_LINE}),
+    L.length ? h('ol', {class: 'sj-chips sj-l7l'}, ...L.map((c, i) => leadChip(c, i + 1, bd))) : h('p', {class: 'sj-tnone', text: '오늘은 고른 회사가 없어요.'}),
+    h('p', {class: 'sj-calmd', text: (bd ? bd + ' 마지막 값까지 센 지난 기록이에요. ' : '지난 기록이에요. ') + '앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+}
 /** 지금 땅의 꾀 셋(주문 1117-1859 · 사장님 2026-11-17(마카오) 18:59 「지금 주식상황에 전략적으로 승리 할수 있는 병법 3가지를 선정해서 첫 페이지애 잘보이게 하라」)
  *  덜 잃은 차례(본질 8) 안에서, 같은 땅 날들에 ① 잃은 번이 아무렇게나 고른 일곱보다 적고 ② 가장 나빴던 열에 한 주가 아무렇게나 일곱보다 얕은 꾀 · 셋까지(su21_sun win3)
  *  꾀 칸 맨 위(차례 말씀 바로 아래) · 먹 칸에 크게 · 누르면 그 꾀 쪽 · 앞날을 맞히지 않음 — 지난 같은 땅 기록 */
@@ -338,7 +359,7 @@ function trickSec(g, T) {
     S?.rankQ?.quote ? h('blockquote', {class: 'sj-q'}, h('p', {text: '「' + S.rankQ.quote + '」'}), h('cite', {text: '손자병법 ' + (S.rankQ.pian ?? '')})) : null,
     S ? winBox(g, S, RB) : null, // 지금 땅의 꾀 셋(주문 1117-1859) — 꾀 칸 맨 위에 크게
     lossTh(g), // 줄어든 갈래 한 칸 — 손실 먼저(주문 1117-1120 샘플 다)
-    calmBox(g), // 크게 덜 잃는 일곱(주문 1117-1731) — 손실 먼저
+    leadBox(T), // 요즘 주도주 일곱 곳 · 1등부터 7등(주문 1126-1748 — 옛 「덜 흔들린 회사 일곱 곳」 자리)
     themesBox(g), // 큰 갈래 차례(주문 1116-1601) — 꾀 서른여섯을 하나하나 보기 전에 한눈에
     h('ol', {class: 'sj-tricks'}, ...order.slice(0, TOP).map(one36)),
     h('a', {class: 'sj-go sj-pkgo', href: '#/o'}, h('span', {text: '여러 꾀가 고른 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), // 여러 꾀가 고른 회사(주문 1120-0950)
@@ -533,7 +554,7 @@ export async function vSonja(X, shell = null) {
   { for (const e of main.querySelectorAll(':scope > section.sj-greet, :scope > section.sj-coday, :scope > section.sj-todo')) e.remove(); const hs = main.querySelector(':scope > section.sj-hero'), gr = greetSec(), cd = coDaySec(hs?.dataset.k ?? null), td = todoSec(); main.prepend(gr); (hs ?? gr).after(cd, td); } // 본보기 그림 차례 — 인사 → 오늘의 꾀 한 장 → 오늘의 기업 → 오늘의 투자 점검(주문 1126-1544) // 오늘의 꾀 한 장 — 첫 화면 맨 위(주문 1126-1249 · 격언 족자 위) // 주식 격언 열 가지 — 첫 화면 맨 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) · index.html 이 먼저 칠한 판이면 그대로
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
   const aw = main.querySelector(':scope > .sj-cover .sj-artw'); if (aw && !aw.querySelector(':scope > svg.sj-artfx')) aw.insertBefore(coverFilm(), aw.querySelector(':scope > .sj-hwa')); // 표지 영화 덧칠(주문 1116-2310 — 안개 · 새 · 금빛 반짝임 · 빛 한 줄기 11초)
-  { const cv0 = main.querySelector(':scope > .sj-cover'), tw = cv0?.querySelector(':scope > .sj-tc'), tc = todayCard(T, X.cur?.()?.code ?? null); if (tw) tw.replaceWith(tc); else cv0?.append(tc); } // 오늘 한 장(주문 1120-0001) — 자리(sj-tc0)를 채움
+  main.querySelector(':scope > .sj-cover > .sj-tc')?.remove(); // 오늘 시장 · 세 태세 칸(오늘 한 장 · 주문 1120-0001 · 1120-0728)을 지움 — 주문 1126-1748 사장님 17:48 「지금 첫번째 구역은 헷갈린다 삭제 하라」(먼저 칠한 옛 판의 자리도 뗌)
   // 손자병법 한 폭(주문 1119-1648 · 첫 화면 가운데 산수 그림 · 번호 여섯 · 풀이 여섯)은 지움 — 주문 1120-2116 · 사장님 2026-11-21(마카오) 00:19 「두번째 그림은 다 지워줘」 · 00:24 「뒤에 있는 배경은 그대로 두고 첫 화면 중간에 있는 그림 지우면 돼」(뒤 배경 su-bg.svg 는 그대로)
   main.append(...body.filter(e => e != null)); // 꾀 칸 자료가 없는 날 wait = null — append 가 「null」 글로 붙이지 않게
   const hardOf = () => { const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove(); const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = ''; };
