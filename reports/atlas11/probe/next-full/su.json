@@ -1,17 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-26T10:51:53.596Z",
+ "at": "2026-11-26T11:26:00.235Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 685,
-  "fail": 1
+  "pass": 686,
+  "fail": 0
  },
- "fails": [
-  [
-   "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795690588067"
-  ]
- ],
+ "fails": [],
  "m": {
   "data": {
    "fk": "g18",
@@ -19,7 +14,7 @@
    "sun": true
   },
   "home": {
-   "screens": 17.7,
+   "screens": 17.67,
    "links": 54
   },
   "t21": {
@@ -119,9 +114,9 @@
    "기관"
   ],
   "speed": {
-   "lcp": 916,
+   "lcp": 888,
    "cls": 0.996,
-   "pic": 807
+   "pic": 750
   },
   "white": {
    "light #/": {
@@ -966,22 +961,22 @@
    "missO": 0
   },
   "s36": {
-   "all": 260,
+   "all": 261,
    "now": 28,
    "next": 21,
-   "s36": 211,
+   "s36": 212,
    "sn": true,
    "same": true,
    "empty": [],
    "data": "2026-11-26",
    "sp": {
-    "want": 211,
-    "chips": 211,
+    "want": 212,
+    "chips": 212,
     "got": 16
    },
    "ovl": {
-    "n": 27,
-    "sp": 27,
+    "n": 29,
+    "sp": 29,
     "top": [
      10,
      8,
@@ -997,15 +992,15 @@
    "days": {
     "from": "2026-11-13",
     "max": 10,
-    "n2": 121,
+    "n2": 120,
     "q": [
+     1,
      1,
      7,
      11,
      3,
      3,
-     4,
-     1
+     4
     ],
     "qFrom": "2026-11-12"
    },
@@ -1017,29 +1012,18 @@
      "bad": 0
     },
     "mix": {
-     "n": 211,
+     "n": 212,
      "bad": 0
     },
     "themes": [
-     "항공 20",
-     "화장품 16",
+     "항공 19",
      "물류·운송 6",
-     "정밀화학 6",
-     "제약 6"
+     "화장품 15",
+     "제약 7",
+     "정밀화학 6"
     ]
    }
-  },
-  "reopen": [
-   {
-    "hash": "#/k/g26",
-    "try": 1,
-    "status": 403,
-    "err": null,
-    "url": "https://aaa7377.com/su/?v=1795690588067#/k/g26",
-    "title": "aaa7377.com",
-    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M8BQZSXM45D3R81503Y3GTH4"
-   }
-  ]
+  }
  },
- "ok": false
+ "ok": true
 }
