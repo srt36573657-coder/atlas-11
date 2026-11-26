@@ -1,32 +1,32 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-11-26T04:45:02.649Z",
+ "at": "2026-11-26T05:06:51.838Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "ref": "musk-1023b",
- "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
- "run": 45756168788,
- "wallSeconds": 576,
+ "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+ "run": 45758399991,
+ "wallSeconds": 579,
  "data": {
   "from": "live",
   "asOf": "2026-11-26",
   "built": "2026-11-26T04:07:09.622Z",
-  "seconds": 37
+  "seconds": 52
  },
  "pages": [
   {
    "name": "chx",
    "code": 0,
-   "seconds": 30,
+   "seconds": 32,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 28,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "co",
    "code": 0,
-   "seconds": 142,
+   "seconds": 118,
    "shards": 3,
    "codes": [
     0,
@@ -34,28 +34,28 @@
     0
    ],
    "shardSeconds": [
-    142,
-    142,
-    142
+    118,
+    118,
+    118
    ],
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
    "data": "live 2026-11-26",
-   "build": 36
+   "build": 33
   },
   {
    "name": "cond",
    "code": 0,
-   "seconds": 48,
+   "seconds": 40,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 35,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 34,
    "data": "live 2026-11-26"
   },
   {
    "name": "en",
    "code": 0,
-   "seconds": 210,
+   "seconds": 216,
    "shards": 12,
    "codes": [
     0,
@@ -72,40 +72,40 @@
     0
    ],
    "shardSeconds": [
-    207,
-    205,
-    205,
+    197,
+    197,
+    197,
+    211,
+    211,
+    216,
     200,
-    200,
+    198,
+    197,
     204,
-    206,
-    205,
-    205,
-    210,
-    207,
-    206
+    203,
+    202
    ],
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
    "data": "live 2026-11-26",
-   "build": 43
+   "build": 37
   },
   {
    "name": "essence",
    "code": 0,
-   "seconds": 7,
+   "seconds": 8,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 28,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "gdr",
    "code": 0,
-   "seconds": 187,
+   "seconds": 167,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 35,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 34,
    "data": "live 2026-11-26"
   },
   {
@@ -113,8 +113,8 @@
    "code": 0,
    "seconds": 174,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 28,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
@@ -133,26 +133,26 @@
     51
    ],
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
    "data": "live 2026-11-26",
-   "build": 31
+   "build": 34
   },
   {
    "name": "help",
    "code": 0,
-   "seconds": 16,
+   "seconds": 17,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 28,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "hold",
    "code": 0,
-   "seconds": 89,
+   "seconds": 84,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 35,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 34,
    "data": "live 2026-11-26"
   },
   {
@@ -160,41 +160,41 @@
    "code": 0,
    "seconds": 43,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 29,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "kakao",
    "code": 0,
-   "seconds": 135,
+   "seconds": 125,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 35,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 34,
    "data": "live 2026-11-26"
   },
   {
    "name": "misc",
    "code": 0,
-   "seconds": 34,
+   "seconds": 40,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 29,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "next",
    "code": 0,
-   "seconds": 195,
+   "seconds": 163,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 35,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 34,
    "data": "live 2026-11-26"
   },
   {
    "name": "past",
    "code": 0,
-   "seconds": 151,
+   "seconds": 162,
    "shards": 3,
    "codes": [
     0,
@@ -202,114 +202,114 @@
     0
    ],
    "shardSeconds": [
-    148,
-    148,
-    151
+    159,
+    159,
+    162
    ],
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
    "data": "live 2026-11-26",
-   "build": 27
+   "build": 31
   },
   {
    "name": "range",
-   "code": 0,
-   "seconds": 113,
+   "code": 1,
+   "seconds": 92,
    "shards": 3,
    "codes": [
     0,
-    0,
-    0
+    1,
+    1
    ],
    "shardSeconds": [
-    112,
-    113,
-    112
+    91,
+    92,
+    91
    ],
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
    "data": "live 2026-11-26",
-   "build": 34
+   "build": 33
   },
   {
    "name": "rivals",
    "code": 0,
-   "seconds": 50,
+   "seconds": 54,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 29,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "roman",
    "code": 0,
-   "seconds": 238,
+   "seconds": 240,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
    "build": 29,
    "data": "live 2026-11-26"
   },
   {
    "name": "sage",
    "code": 0,
-   "seconds": 105,
+   "seconds": 107,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 29,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "share",
    "code": 0,
-   "seconds": 105,
+   "seconds": 110,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 29,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "su",
-   "code": 1,
+   "code": 0,
    "seconds": 388,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 31,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 30,
    "data": "live 2026-11-26"
   },
   {
    "name": "theme",
    "code": 0,
-   "seconds": 164,
+   "seconds": 172,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 28,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "white",
    "code": 0,
-   "seconds": 60,
+   "seconds": 59,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 31,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 30,
    "data": "live 2026-11-26"
   },
   {
    "name": "why",
    "code": 0,
-   "seconds": 52,
+   "seconds": 54,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 28,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   },
   {
    "name": "why11",
    "code": 0,
-   "seconds": 59,
+   "seconds": 64,
    "mode": "local",
-   "sha": "0da3f3063982939e34f08afb1902a761e8516d69",
-   "build": 29,
+   "sha": "50ac412e4a23978a4cf7c0f94210ad4870c8f46f",
+   "build": 36,
    "data": "live 2026-11-26"
   }
  ],
