@@ -233,7 +233,7 @@ for (const width of [390, 360, 320]) {
     const shapeSj = () => p.evaluate(() => {
       const main = document.querySelector('#su main.sj-page'); if (!main) return null;
       const page = main.getAttribute('data-page') ?? '';
-      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(cover|sun|s36|mind|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|coval|colink|costop|two|act|body|figs|whymore)$/.test(c)) ?? e.className);
+      const kids = [...main.children].map(e => e.className.split(' ').find(c => /^sj-(hero|cover|sun|s36|mind|count|up3|how|grp|quiet|mode|more|end|ph|kway|krec|kco|kst|kpn|cok|coval|colink|costop|two|act|body|figs|whymore)$/.test(c)) ?? e.className);
       const want = page === 'sonja' ? ['sj-hero', 'sj-mind', 'sj-cover', 'sj-sun', 'sj-s36', 'sj-more', 'sj-end'] /* 주식 격언 열 가지 = 첫 화면 맨 위 · 표지보다 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) */ : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kst', 'sj-kpn', 'sj-end'] : page === 'co' ? ['sj-ph', 'sj-coval', 'sj-cok', 'sj-colink', 'sj-costop', 'sj-end'] : page === 'why' || page === 'journal' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-body', 'sj-figs', 'sj-whymore', 'sj-end'] : [];
       const must = page === 'sonja' ? ['sj-hero', 'sj-mind', 'sj-cover', 'sj-sun', 'sj-more', 'sj-end'] : page === 'kkoe' ? ['sj-ph', 'sj-kway', 'sj-krec', 'sj-kco', 'sj-kpn', 'sj-end'] : page === 'why' ? ['sj-ph', 'sj-two', 'sj-act', 'sj-end'] : page === 'journal' ? ['sj-ph', 'sj-two', 'sj-end'] : ['sj-ph', 'sj-cok', 'sj-costop', 'sj-end'];
       const order = kids.every(k => want.includes(k)) && kids.map(k => want.indexOf(k)).every((v, i, a) => !i || v > a[i - 1]) && must.every(k => kids.includes(k));
@@ -1211,6 +1211,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   //   쪽마다 · 두 폭(390 · 320) · 큰 글씨(320) — 글이 세로로 무너진 곳(두 줄 넘게 한 줄에 두세 글자) 0 · 화면 옆으로 넘친 글 0 · 잘린 글 0
   //   일부러 세로로 쓴 표지 글(.sj-hwa) · 그림 속 글(svg) · 닫힌 서랍 · 크기가 정해진 도장(.sj-seal)은 뺌
   const FIND29 = () => {
+    const inSwipe = e => { for (let a = e.parentElement; a && a.id !== 'su'; a = a.parentElement) { const c = getComputedStyle(a); if (/auto|scroll/.test(c.overflowX)) { const q = a.getBoundingClientRect(); return q.left >= -1 && q.right <= innerWidth + 1 && a.scrollWidth > a.clientWidth; } } return false; };
     const W = innerWidth, out = [], txtOf = e => [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').replace(/\s+/g, ' ').trim();
     for (const e of document.querySelectorAll('#su main *, #su .sj-top *, #su .sj-tabs *')) {
       const t = txtOf(e), chars = t.replace(/\s/g, '').length; if (chars < 3 || e.closest('svg, .sj-hwa, .sj-seal, details:not([open]) > :not(summary)')) continue;
@@ -1219,7 +1220,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       const fs = parseFloat(cs.fontSize), lh = parseFloat(cs.lineHeight) || fs * 1.45, ch = r.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth), lines = Math.max(1, Math.round(ch / lh));
       const at = (e.parentElement?.className && typeof e.parentElement.className === 'string' ? e.parentElement.className.trim().split(/\s+/)[0] + ' > ' : '') + ((typeof e.className === 'string' && e.className.trim()) || e.tagName.toLowerCase());
       if (chars >= 4 && ((lines >= 3 && chars / lines < 3) || (lines >= 2 && chars / lines < 2.2))) out.push(['세로', at, Math.round(r.width), lines, t.slice(0, 20)]);
-      if (r.right > W + 1 || r.left < -1) out.push(['넘침', at, Math.round(r.left), Math.round(r.right), t.slice(0, 20)]);
+      if ((r.right > W + 1 || r.left < -1) && !inSwipe(e)) out.push(['넘침', at, Math.round(r.left), Math.round(r.right), t.slice(0, 20)]); // 옆으로 넘겨 보는 칸(가로 스크롤 · 칸 자신은 화면 안 — 오늘의 꾀 한 장 · 주문 1126-1249) 속 다음 장은 넘침이 아님
       if (/hidden|clip/.test(cs.overflowX + ' ' + cs.overflow) && e.scrollWidth > e.clientWidth + 2 && cs.textOverflow !== 'ellipsis') out.push(['잘림', at, e.scrollWidth, e.clientWidth, t.slice(0, 20)]);
     }
     if (document.documentElement.scrollWidth > W + 1) out.push(['쪽 넘침', document.documentElement.scrollWidth]);
@@ -1525,9 +1526,9 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     }
     const tapOk = tap33.every(o => !!o && o.open && o.shut && /^「[^「」]{6,}」$/.test(o.q) && /^손자병법 \S+편$/.test(o.c) && !/[\u4E00-\u9FFF]/.test(o.q + o.c) && o.fs >= 16.95 && o.cfs >= 16.95 && o.h > 0 && o.right <= (g?.W ?? 0));
     check(tapOk, W + '격언을 누르면 맞는 손자병법 말씀(주문 1120-2116 · 00:19 「그래 그렇게도 하고」) — 첫째 · 열째 눌러 열림 · 「말씀」 · 손자병법 ○○편 · 한자 0 · 큰 글 · 다시 누르면 닫힘', JSON.stringify(tap33).slice(0, 400));
-    check(rowsOk && g.n === '10' && g.rule === 'gyeok10-v1' && g.title === HELLO33[0] && /su-bg\.svg/.test(g.bg) && g.prev === '' && /^section\.sj-cover\b/.test(g.next)
+    check(rowsOk && g.n === '10' && g.rule === 'gyeok10-v1' && g.title === HELLO33[0] && /su-bg\.svg/.test(g.bg) && g.prev === 'section.sj-sec.sj-hero' && /^section\.sj-cover\b/.test(g.next)
       && g.go === 0 && /권하는 말이 아니라/.test(g.note) && g.l >= 0 && g.r <= g.W,
-      W + '첫 쪽 「손자병법 주식 격언 열 가지」(주문 1120-2116) — 첫 화면 맨 위 · 표지(오늘 시장)보다 위 · 산수 수채화 족자 위 · 제목 · 열 줄 = 돌이 편지(사장님 글) 그대로 · 남의 글 표시 · 격언 큰 글 · 고리 0',
+      W + '첫 쪽 「손자병법 주식 격언 열 가지」(주문 1120-2116) — 오늘의 꾀 한 장 바로 아래(주문 1126-1249) · 표지(오늘 시장)보다 위 · 산수 수채화 족자 위 · 제목 · 열 줄 = 돌이 편지(사장님 글) 그대로 · 남의 글 표시 · 격언 큰 글 · 고리 0',
       JSON.stringify(g ? {...g, rows: g.rows.filter((r, i) => r[0] !== i + 1 || r[2] !== want[i]?.[2] || !r[3] || r[5] < 16.95 || r[4] <= r[5] || r[7] > g.W).slice(0, 3)} : null).slice(0, 500));
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
@@ -1883,7 +1884,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       const fs = [...(hs?.querySelectorAll('.sj-herok, .sj-heroh, .sj-herop, .sj-herogo, .sj-herostamp > *') ?? [])].map(e => parseFloat(getComputedStyle(e).fontSize));
       return {first: m?.children[0] === hs, second: !!m?.children[1]?.classList.contains('sj-mind'), n: S.length, keys: S.map(s => s.dataset.slide).join(' '), from: hs?.dataset.from ?? null, sub0: txt(S[0]?.querySelector('.sj-herop')), k: hs?.dataset.k ?? null, nowK: document.querySelector('#su .sj-now')?.dataset.k ?? null,
         title0: txt(S[0]?.querySelector('.sj-heroh')), kick0: txt(S[0]?.querySelector('.sj-herok')), go: go?.getAttribute('href') ?? null, goH: gr ? Math.round(gr.height) : 0, goW: gr ? Math.round(gr.width) : 0, goTxt: txt(go), goCol: go ? getComputedStyle(go).color : '', d0, d1,
-        text: txt(hs), red: [...(hs?.querySelectorAll('*') ?? [])].filter(e => { const q = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return q && +q[1] > 170 && +q[2] < 90 && +q[3] < 90; }).length, fs, over: document.documentElement.scrollWidth - innerWidth};
+        sw: S.map(e => Math.round(e.getBoundingClientRect().width)), tw: tr ? tr.clientWidth : 0, tox: tr ? getComputedStyle(tr).overflowX : '', text: txt(hs), red: [...(hs?.querySelectorAll('*') ?? [])].filter(e => { const q = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return q && +q[1] > 170 && +q[2] < 90 && +q[3] < 90; }).length, fs, over: document.documentElement.scrollWidth - innerWidth};
     });
     const NAME = await p.evaluate(async () => (await import('/su/su-sonja-36.js')).NAME).catch(() => ({}));
     const dLog = log42 ? (+log42.day.slice(5, 7)) + '월 ' + (+log42.day.slice(8, 10)) + '일' : '';
@@ -1891,8 +1892,8 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const subOk = from42 === 'log' ? g.sub0.includes('오늘 시장은 아직 세는 중이에요') && g.sub0.includes(dLog + '에 고른 꾀') : from42 === 'none' ? g.sub0.includes('오늘 시장 모습을 다 세면') : !g.sub0.includes('세는 중');
     check(g.first && g.second && g.from === from42 && g.keys === keys42 && g.n === keys42.split(' ').length && (from42 === 'none' ? g.k == null && g.title0 === '서른여섯 꾀' : g.k === k42 && g.title0 === NAME[k42]) && (from42 !== 'now' || g.nowK == null || g.nowK === g.k) && g.kick0 === '오늘의 꾀' && goOk && subOk,
       W + width + ' 가) 첫 화면 맨 위 오늘의 꾀 한 장 — 오늘 시장을 센 날 = 넘기는 장 셋 · 첫 장 = 지금 볼 꾀 이름 · 아직 못 센 때 = 두 장 · 첫 장 = 가장 최근에 적은 꾀(그 날짜를 밝힘) · 「이 꾀 보기」 = 그 꾀 쪽 · 48 넘게 · 그 아래 격언 족자', JSON.stringify({want: from42, from: g.from, first: g.first, second: g.second, n: g.n, keys: g.keys, k: g.k, k42, nowK: g.nowK, title0: g.title0, sub0: g.sub0.slice(0, 80), go: g.go, goH: g.goH, goTxt: g.goTxt, goCol: g.goCol}));
-    check(g.n >= 2 && g.d0 === '1' + '0'.repeat(g.n - 1) && g.d1 === '01' + '0'.repeat(g.n - 2) && g.fs.length > 0 && g.fs.every(f => f >= 16.9) && g.red === 0 && !/%|매수|매도|추천/.test(g.text) && g.over <= 0 && !errs.length,
-      W + width + ' 나) 옆으로 넘기면 점이 따라감 · 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 넘침 0 · 오류 0', JSON.stringify({d0: g.d0, d1: g.d1, fsMin: Math.min(...g.fs), red: g.red, over: g.over, errs: errs.slice(0, 2)}));
+    check(g.n >= 2 && g.d0 === '1' + '0'.repeat(g.n - 1) && g.d1 === '01' + '0'.repeat(g.n - 2) && g.tox === 'auto' && g.tw > 0 && g.sw.every(w => Math.abs(w - g.tw) <= 1) && g.fs.length > 0 && g.fs.every(f => f >= 16.9) && g.red === 0 && !/%|매수|매도|추천/.test(g.text) && g.over <= 0 && !errs.length,
+      W + width + ' 나) 옆으로 넘기면 점이 따라감 · 장마다 한 화면 폭 · 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 넘침 0 · 오류 0', JSON.stringify({d0: g.d0, d1: g.d1, tox: g.tox, tw: g.tw, sw: g.sw, fsMin: Math.min(...g.fs), red: g.red, over: g.over, errs: errs.slice(0, 2)}));
     await ctx.close();
   }
 }
