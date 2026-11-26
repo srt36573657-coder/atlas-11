@@ -506,7 +506,7 @@ def _now_out():
     fl = {s: {k: v.get(k) for k in ('date', 'today', 'foreign', 'inst', 'indiv')} for s, v in (NOWJ.get('flows') or {}).items() if s in ('KOSPI', 'KOSDAQ') and isinstance(v, dict) and num(v.get('foreign'))}
     pr = NOWJ.get('prices') or {}
     return {'at': NOWJ.get('at'), 'day': NOWJ['day'], 'hm': NOWJ.get('hm'), 'open': bool(NOWJ.get('open')), 'prov': NCOL is not None, 'board': b['asOf'],
-            'index': ix, 'flows': fl, 'unit': '억원', 'n': pr.get('n'), 'of': pr.get('of'), 'src': '네이버 증권 · 한국 시각 오전 10시 · 오후 2시 · 저녁 6시에 받음'}
+            'index': ix, 'flows': fl, 'unit': '억원', 'n': pr.get('n'), 'of': pr.get('of'), 'src': '네이버 증권 · 장이 열리는 날 한국 시각 오전 9시부터 오후 3시까지 한 시간마다 받음'}
 out['now'] = _now_out()
 # 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」 — docs/design/sonja-wise2-2026-11-17/order-1720.txt) — 오늘 꾀들이 고른 곳 가운데 두 꾀 넘게 · 덜 흔들린 차례 · 업종 둘까지
 #   지난 기록 = 형세 셈(su21_sun)이 지난 날마다 같은 법으로 다시 골라 센 값(첫 화면 자료를 가볍게 — 꾀 칸 자료 su21-s36.json 에 둠)

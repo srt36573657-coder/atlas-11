@@ -899,7 +899,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
         ix: Object.keys(IXN).filter(s => fin2(NW.index[s]?.price) && NW.index[s].price > 0).map(s => [s, IXN[s], ixF.format(NW.index[s].price), NW.index[s].today === false ? md(NW.index[s].date) + ' 마지막 값이에요.' : mv(NW.index[s])]),
         fl: Object.keys(IXN).filter(s => fin2(NW.flows?.[s]?.foreign)).map(s => [s, (NW.flows[s].today === false ? md(NW.flows[s].date) + ' 하루 동안 ' : '') + fsay(s, NW.flows[s].foreign)]),
         f0: Object.keys(IXN).some(s => fin2(NW.flows?.[s]?.foreign)) ? '' : '외국인이 사고판 돈은 아직 받지 못했어요.',
-        href: pk ? '#/k/' + pk : null, win: pk ? (wk[0] === pk ? '1' : '0') : null, pick: pk ? NM[pk] : '', safe: '하루에 세 번 새로 봐요. 한국 시간으로 오전 10시, 오후 2시, 장이 끝난 뒤 오후 6시예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'} : null;
+        href: pk ? '#/k/' + pk : null, win: pk ? (wk[0] === pk ? '1' : '0') : null, pick: pk ? NM[pk] : '', safe: '장이 열리는 날 오전 9시부터 오후 3시까지 한 시간마다, 하루 일곱 번 새로 봐요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'} : null;
       const got = g.now ? {prev: g.now.prev, k: g.now.k, open: g.now.open, prov: g.now.prov, head: g.now.head, o: g.now.o, ix: g.now.ix, fl: g.now.fl, f0: g.now.f0, href: g.now.href, win: g.now.win, pick: g.now.pick, safe: g.now.safe} : null;
       const provOk = !okN || !NW.prov || (SUN.prov === true && SUN.day === NW.day && SUN.conf === T36?.asOf?.board);
       check(want ? JSON.stringify(got) === JSON.stringify(want) && g.now.small === 0 && (g.now.tap ?? 0) >= 48 && provOk : !g.now,

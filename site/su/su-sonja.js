@@ -145,7 +145,7 @@ export function nowBox(T, x) {
       h('b', {class: 'sj-nowp2', text: KNAME[pk.k]}),
       typeof KMEAN[pk.k] === 'string' ? h('span', {class: 'sj-nowp3', text: KMEAN[pk.k]}) : null,
       h('span', {class: 'sj-nowp4', text: pk.win ? '예전에 지금처럼 ' + x.name + '이었을 때, 아무 회사나 고른 것보다 덜 잃은 꾀예요.' : '예전에 지금처럼 ' + x.name + '이었을 때, 돈을 가장 덜 잃은 꾀예요.'})) : null,
-    h('p', {class: 'sj-nows', text: '하루에 세 번 새로 봐요. 한국 시간으로 오전 10시, 오후 2시, 장이 끝난 뒤 오후 6시예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
+    h('p', {class: 'sj-nows', text: '장이 열리는 날 오전 9시부터 오후 3시까지 한 시간마다, 하루 일곱 번 새로 봐요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}));
 }
 /* ── 어제와 오늘(주문 1119-1151 · 사장님 2026-11-19(마카오) 11:51 「어제의 주식상황은 이랬고 오늘의 주식상황은 이렇게 변화가 있다 … 어제는 이런 병법으로 대처를 했고
    오늘은 이런 병법이어야 한다는 식의 구조를 첫페이지에 … 잡스라면」 — docs/design/sonja-yday-2026-11-19/order-1151.txt)
