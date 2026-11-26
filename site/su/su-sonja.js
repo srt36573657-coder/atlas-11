@@ -448,23 +448,28 @@ export function mktLine(T) {
   return el;
 }
 /* ── 0 오늘의 꾀 한 장(주문 1126-1249 · 사장님 직원 바람 「첫 화면에 오늘의 꾀가 무엇인지 오늘의 주된 컨텐츠를 이미지화 시켜서 만들고 밑에 지금의 aaa처럼 여러 꾀의 내용이 정리」 · 본보기 「오늘의 핵심 키워드」 넘기는 그림 칸) ──
- *  첫 화면 맨 위 · 옆으로 넘기는 세 장(오늘의 꾀 · 오늘 시장 · 오늘의 한 줄) · 아래 점 셋 · 그 아래는 지금 첫 화면 그대로
+ *  첫 화면 맨 위 · 옆으로 넘기는 세 장(오늘의 꾀 · 오늘 시장 · 오늘의 한 줄) · 아래 점 · 그 아래는 지금 첫 화면 그대로 · 오늘 시장을 아직 못 센 때는 두 장(가장 최근 꾀 · 한 줄)
  *  꾀 = 「지금 볼 꾀 하나」(nowPick — 지금 시장 칸과 같은 꾀) · 글은 그림 밖 글(HTML) · 빨강 없음 · 앞날을 맞히지 않고 사고팔기를 권하지 않음 */
 function heroSec(T) {
-  const x = okSun(T.sun) ? T.sun : null, pk = x ? nowPick(x) : null; if (!x || !pk) return null;
-  const no = +pk.k.slice(1), dd = mday(x.day);
+  const x = okSun(T.sun) ? T.sun : null, pk = x ? nowPick(x) : null; // 오늘 시장을 아직 못 센 때(장중 자료가 모자란 때 sun = null)에도 한 장은 늘 — 가장 최근에 적은 꾀(sunLog · 그날 첫 쪽 그대로)
+  const rows = Array.isArray(T?.sunLog?.rows) ? T.sunLog.rows : [], r = pk ? null : rows.filter(q => typeof q?.day === 'string' && LANDK.includes(q.land) && typeof KNAME[q.k] === 'string').at(-1) ?? null;
+  const from = pk ? 'now' : r ? 'log' : 'none', k = pk ? pk.k : r ? r.k : null, dd = mday(x ? x.day : T.asOf?.board);
   const slide = (key, kick, title, sub, art, more = null) => h('article', {class: 'sj-heros', 'data-slide': key, 'aria-roledescription': '장', 'aria-label': kick},
     h('div', {class: 'sj-herotx'}, h('p', {class: 'sj-herok', text: kick}), h('h2', {class: 'sj-heroh', text: title}), sub ? h('p', {class: 'sj-herop', text: sub}) : null, more),
     h('div', {class: 'sj-heroart', 'aria-hidden': 'true'}, art));
+  const mean = k && typeof KMEAN[k] === 'string' ? KMEAN[k] + ' ' : '', stamp = (b, s1, s2) => h('span', {class: 'sj-herostamp'}, s1 ? h('small', {text: s1}) : null, h('b', {text: b}), s2 ? h('small', {text: s2}) : null);
+  const why = from === 'now' ? (pk.win ? '예전에 지금처럼 ' + x.name + '이었을 때, 아무 회사나 고른 것보다 덜 잃은 꾀예요.' : '예전에 지금처럼 ' + x.name + '이었을 때, 돈을 가장 덜 잃은 꾀예요.')
+    : from === 'log' ? '오늘 시장은 아직 세는 중이에요. 그래서 ' + mday(r.day) + '에 고른 꾀를 먼저 보여 드려요.' : '오늘 시장 모습을 다 세면, 예전에 그런 시장에서 돈을 덜 잃은 꾀를 여기에 크게 보여 드려요.';
+  const M = MIND10[((Number(String(x?.day ?? T.asOf?.board ?? '').slice(8, 10)) || 1) - 1) % MIND10.length], qt = typeof x?.quote === 'string' ? {q: x.quote, p: x.pian ?? ''} : M ? {q: M.quote, p: M.pian} : null; // 오늘의 한 줄 — 오늘 시장 글이 없으면 격언 열 가지의 손자 말(날짜로 하나)
   const S3 = [
-    slide('kkoe', '오늘의 꾀', KNAME[pk.k], (typeof KMEAN[pk.k] === 'string' ? KMEAN[pk.k] + ' ' : '') + (pk.win ? '예전에 지금처럼 ' + x.name + '이었을 때, 아무 회사나 고른 것보다 덜 잃은 꾀예요.' : '예전에 지금처럼 ' + x.name + '이었을 때, 돈을 가장 덜 잃은 꾀예요.'),
-      h('span', {class: 'sj-herostamp'}, h('small', {text: '제'}), h('b', {text: String(no)}), h('small', {text: '계'})), h('a', {class: 'sj-herogo', href: '#/k/' + pk.k, text: '이 꾀 보기 ›'})),
-    slide('land', '오늘 시장' + (dd ? ' · ' + dd : ''), '지금은 ' + x.name + '이에요.', typeof x.do === 'string' ? x.do : null,
-      h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), text: x.name})),
-    typeof x.quote === 'string' ? slide('word', '오늘의 한 줄', '「' + x.quote + '」', '손자병법 ' + (x.pian ?? ''), h('span', {class: 'sj-herostamp sj-heroq'}, h('b', {text: '손자'}), h('small', {text: '병법'}))) : null].filter(Boolean); // 글 도장(그림 아님 — 그림 뜻 한 줄 규칙 밖)
+    k ? slide('kkoe', '오늘의 꾀', KNAME[k], mean + why, stamp(String(+k.slice(1)), '제', '계'), h('a', {class: 'sj-herogo', href: '#/k/' + k, text: '이 꾀 보기 ›'}))
+      : slide('kkoe', '오늘의 꾀', '서른여섯 꾀', why, stamp('36', null, '꾀')),
+    x ? slide('land', '오늘 시장' + (dd ? ' · ' + dd : ''), '지금은 ' + x.name + '이에요.', typeof x.do === 'string' ? x.do : null,
+      h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), text: x.name})) : null,
+    qt ? slide('word', '오늘의 한 줄', '「' + qt.q + '」', '손자병법 ' + qt.p, h('span', {class: 'sj-herostamp sj-heroq'}, h('b', {text: '손자'}), h('small', {text: '병법'}))) : null].filter(Boolean); // 글 도장(그림 아님 — 그림 뜻 한 줄 규칙 밖)
   const track = h('div', {class: 'sj-herot', tabindex: '0', 'aria-label': '오늘의 꾀 · 옆으로 넘겨 보기'}, ...S3), dots = h('div', {class: 'sj-herodots', 'aria-hidden': 'true'}, ...S3.map((_, i) => h('i', {class: i ? '' : 'sj-heroon'})));
   let raf = 0; track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); [...dots.children].forEach((d, j) => d.classList.toggle('sj-heroon', j === i)); track.dataset.at = String(i); }); }, {passive: true});
-  return h('section', {class: 'sj-sec sj-hero', 'data-k': pk.k, 'data-land': x.land, 'data-n': String(S3.length), 'aria-label': '오늘의 꾀'}, track, dots);
+  return h('section', {class: 'sj-sec sj-hero', 'data-from': from, ...(k ? {'data-k': k} : {}), ...(x ? {'data-land': x.land} : {}), 'data-n': String(S3.length), 'aria-label': '오늘의 꾀'}, track, dots);
 }
 export async function vSonja(X, shell = null) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);

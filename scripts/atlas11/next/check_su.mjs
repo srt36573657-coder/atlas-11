@@ -1860,9 +1860,14 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   }
 }
 { // ㊷ 주문 1126-1249(사장님 2026-11-26(서울) 12:49 직원 바람 「첫 화면에 오늘의 꾀가 무엇인지 오늘의 주된 컨텐츠를 이미지화 시켜서 만들고 밑에 지금의 aaa처럼 여러 꾀의 내용이 정리」 · 「1시간 이내에 작업 해」) — 첫 화면 맨 위 「오늘의 꾀」 한 장
-  //   main 첫째 = section.sj-hero · 넘기는 장 셋(오늘의 꾀 · 오늘 시장 · 오늘의 한 줄) · 첫 장 제목 = 지금 시장 칸의 「지금 볼 꾀」(.sj-now 의 data-k 와 같은 꾀) · 「이 꾀 보기」 = #/k/{꾀} · 48 넘게
+  //   main 첫째 = section.sj-hero · 넘기는 장 셋(오늘의 꾀 · 오늘 시장 · 오늘의 한 줄 — 오늘 시장을 아직 못 센 때는 둘) · 첫 장 제목 = 지금 시장 칸의 「지금 볼 꾀」(.sj-now 의 data-k 와 같은 꾀) · 「이 꾀 보기」 = #/k/{꾀} · 48 넘게
   //   옆으로 넘기면 점이 따라감 · 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 가로 넘침 0 · 화면 오류 0 · 그 아래 격언 족자 · 표지 그대로 · 320 · 390
-  const W = '㊷ ';
+  const W = '㊷ ', KR = /^g(0[1-9]|[12]\d|3[0-6])$/, LK = ['fall', 'shake', 'rise', 'narrow', 'calm'];
+  //   오늘 시장을 아직 못 센 때(장중 자료가 모자라 sun = null)에도 한 장은 늘 — 가장 최근에 적은 꾀(sunLog 마지막 줄) · 그것도 없으면 「서른여섯 꾀」 · 장은 둘(오늘의 꾀 · 오늘의 한 줄 = 격언 열 가지의 손자 말)
+  const T42 = await J('/su/data/su21.json').catch(() => null), sun42 = T42?.sun, okS42 = !!sun42 && sun42.rule === 'sun-v1' && LK.includes(sun42.land) && Number.isInteger(sun42.m?.n) && sun42.m.n > 0 && Number.isInteger(sun42.m?.up) && sun42.m.up >= 0 && sun42.m.up <= sun42.m.n;
+  const pk42 = okS42 ? ((sun42.win3?.ks ?? []).filter(k => KR.test(k))[0] ?? (sun42.rank ?? []).map(q => q?.k).filter(k => KR.test(k ?? ''))[0] ?? null) : null;
+  const log42 = pk42 ? null : (Array.isArray(T42?.sunLog?.rows) ? T42.sunLog.rows : []).filter(q => typeof q?.day === 'string' && LK.includes(q.land) && KR.test(q.k ?? '')).at(-1) ?? null;
+  const from42 = pk42 ? 'now' : log42 ? 'log' : 'none', k42 = pk42 ?? log42?.k ?? null, keys42 = from42 === 'now' ? 'kkoe land word' : 'kkoe word';
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
@@ -1876,14 +1881,17 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       if (tr) { tr.style.scrollBehavior = 'auto'; tr.scrollLeft = tr.clientWidth; } await new Promise(r => setTimeout(r, 300));
       const d1 = [...(hs?.querySelectorAll('.sj-herodots > i') ?? [])].map(d => d.classList.contains('sj-heroon') ? 1 : 0).join('');
       const fs = [...(hs?.querySelectorAll('.sj-herok, .sj-heroh, .sj-herop, .sj-herogo, .sj-herostamp > *') ?? [])].map(e => parseFloat(getComputedStyle(e).fontSize));
-      return {first: m?.children[0] === hs, second: !!m?.children[1]?.classList.contains('sj-mind'), n: S.length, keys: S.map(s => s.dataset.slide).join(' '), k: hs?.dataset.k ?? null, nowK: document.querySelector('#su .sj-now')?.dataset.k ?? null,
+      return {first: m?.children[0] === hs, second: !!m?.children[1]?.classList.contains('sj-mind'), n: S.length, keys: S.map(s => s.dataset.slide).join(' '), from: hs?.dataset.from ?? null, sub0: txt(S[0]?.querySelector('.sj-herop')), k: hs?.dataset.k ?? null, nowK: document.querySelector('#su .sj-now')?.dataset.k ?? null,
         title0: txt(S[0]?.querySelector('.sj-heroh')), kick0: txt(S[0]?.querySelector('.sj-herok')), go: go?.getAttribute('href') ?? null, goH: gr ? Math.round(gr.height) : 0, goW: gr ? Math.round(gr.width) : 0, goTxt: txt(go), goCol: go ? getComputedStyle(go).color : '', d0, d1,
         text: txt(hs), red: [...(hs?.querySelectorAll('*') ?? [])].filter(e => { const q = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return q && +q[1] > 170 && +q[2] < 90 && +q[3] < 90; }).length, fs, over: document.documentElement.scrollWidth - innerWidth};
     });
     const NAME = await p.evaluate(async () => (await import('/su/su-sonja-36.js')).NAME).catch(() => ({}));
-    check(g.first && g.second && g.n === 3 && g.keys === 'kkoe land word' && /^g(0[1-9]|[12]\d|3[0-6])$/.test(g.k ?? '') && (g.nowK == null || g.nowK === g.k) && g.kick0 === '오늘의 꾀' && g.title0 === NAME[g.k] && g.go === '#/k/' + g.k && g.goH >= 47.5 && g.goW >= 47.5 && g.goTxt === '이 꾀 보기 ›' && g.goCol === 'rgb(255, 255, 255)',
-      W + width + ' 가) 첫 화면 맨 위 오늘의 꾀 한 장 — 넘기는 장 셋 · 첫 장 = 지금 볼 꾀 이름 · 「이 꾀 보기」 = 그 꾀 쪽 · 48 넘게 · 그 아래 격언 족자', JSON.stringify({first: g.first, second: g.second, n: g.n, keys: g.keys, k: g.k, nowK: g.nowK, title0: g.title0, go: g.go, goH: g.goH, goTxt: g.goTxt, goCol: g.goCol}));
-    check(g.d0 === '100' && g.d1 === '010' && g.fs.length > 0 && g.fs.every(f => f >= 16.9) && g.red === 0 && !/%|매수|매도|추천/.test(g.text) && g.over <= 0 && !errs.length,
+    const dLog = log42 ? (+log42.day.slice(5, 7)) + '월 ' + (+log42.day.slice(8, 10)) + '일' : '';
+    const goOk = from42 === 'none' ? g.go == null : g.go === '#/k/' + k42 && g.goH >= 47.5 && g.goW >= 47.5 && g.goTxt === '이 꾀 보기 ›' && g.goCol === 'rgb(255, 255, 255)';
+    const subOk = from42 === 'log' ? g.sub0.includes('오늘 시장은 아직 세는 중이에요') && g.sub0.includes(dLog + '에 고른 꾀') : from42 === 'none' ? g.sub0.includes('오늘 시장 모습을 다 세면') : !g.sub0.includes('세는 중');
+    check(g.first && g.second && g.from === from42 && g.keys === keys42 && g.n === keys42.split(' ').length && (from42 === 'none' ? g.k == null && g.title0 === '서른여섯 꾀' : g.k === k42 && g.title0 === NAME[k42]) && (from42 !== 'now' || g.nowK == null || g.nowK === g.k) && g.kick0 === '오늘의 꾀' && goOk && subOk,
+      W + width + ' 가) 첫 화면 맨 위 오늘의 꾀 한 장 — 오늘 시장을 센 날 = 넘기는 장 셋 · 첫 장 = 지금 볼 꾀 이름 · 아직 못 센 때 = 두 장 · 첫 장 = 가장 최근에 적은 꾀(그 날짜를 밝힘) · 「이 꾀 보기」 = 그 꾀 쪽 · 48 넘게 · 그 아래 격언 족자', JSON.stringify({want: from42, from: g.from, first: g.first, second: g.second, n: g.n, keys: g.keys, k: g.k, k42, nowK: g.nowK, title0: g.title0, sub0: g.sub0.slice(0, 80), go: g.go, goH: g.goH, goTxt: g.goTxt, goCol: g.goCol}));
+    check(g.n >= 2 && g.d0 === '1' + '0'.repeat(g.n - 1) && g.d1 === '01' + '0'.repeat(g.n - 2) && g.fs.length > 0 && g.fs.every(f => f >= 16.9) && g.red === 0 && !/%|매수|매도|추천/.test(g.text) && g.over <= 0 && !errs.length,
       W + width + ' 나) 옆으로 넘기면 점이 따라감 · 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 넘침 0 · 오류 0', JSON.stringify({d0: g.d0, d1: g.d1, fsMin: Math.min(...g.fs), red: g.red, over: g.over, errs: errs.slice(0, 2)}));
     await ctx.close();
   }
