@@ -1085,3 +1085,4 @@
 {"at":"2026-11-25T21:59:28.365Z","kst":"2026-11-26 06:59","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-25","base":"2026-10-28","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-11-25T22:14:33.801Z","kst":"2026-11-26 07:14","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-25","base":"2026-10-28","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-11-25T22:53:56.754Z","kst":"2026-11-26 07:53","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-25","base":"2026-10-28","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
+{"at":"2026-11-26T00:00:00.631Z","kst":"2026-11-26 09:00","slot":null,"result":"실패","served":"live","asOf":null,"base":null,"in":null,"out":null,"inspectFail":0,"surge":null,"why":"사이트 자료 멈춤: site_build: 365곳 마지막 종가 날 2026-11-25 이 고르는 날 2026-11-26 과 다름 — 지금 사이트 자료 그대로 다시 올림"}
