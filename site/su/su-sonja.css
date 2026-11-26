@@ -1854,3 +1854,29 @@ html.sj-on #su main.sj-page[data-page="glance"] .sj-sec { background-color: #FFF
 #su nav.sj-rec a.sj-recb[href] { position: relative; }
 #su nav.sj-rec a.sj-recb[href].sj-recon, #su nav.sj-rec a.sj-recb[href][aria-current="page"] { box-shadow: none; }
 #su nav.sj-rec a.sj-recb[href].sj-recon::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: 0; height: 3px; border-radius: 3px; background: #20323A; }
+/* 오늘의 꾀 한 장(주문 1126-1249 · 본보기 「오늘의 핵심 키워드」) — 첫 화면 맨 위 · 옆으로 넘기는 세 장 · 연한 푸른 바탕 둥근 칸 · 왼쪽 글 · 오른쪽 그림 · 아래 점 셋 · 빨강 없음 · 글 17 넘게 · 누름 48 넘게 */
+html.sj-on #su main.sj-page > section.sj-hero { padding: 0; background: transparent; box-shadow: none; border: 0; }
+#su .sj-herot { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch; border-radius: 24px; }
+#su .sj-herot::-webkit-scrollbar { display: none; }
+#su .sj-herot:focus-visible { outline: 3px solid #E9B949; outline-offset: 2px; }
+#su .sj-heros { flex: 0 0 100%; scroll-snap-align: start; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 230px; padding: 22px 18px 20px 20px; border-radius: 24px; background: linear-gradient(135deg, #E7EEFB 0%, #DCE6F8 55%, #E9F1F7 100%); color: #20323A; }
+#su .sj-herotx { display: grid; gap: 8px; min-width: 0; }
+#su .sj-herok { margin: 0; font-size: max(17px, 1.0625rem); font-weight: 800; color: #2F56A8; }
+#su .sj-heroh { margin: 0; font-size: 1.625rem; font-weight: 900; line-height: 1.3; color: #1D2A33; word-break: keep-all; overflow-wrap: anywhere; }
+#su .sj-herop { margin: 0; font-size: max(17px, 1.0625rem); font-weight: 500; line-height: 1.55; color: #3E5560; word-break: keep-all; }
+#su .sj-herogo { justify-self: start; display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border-radius: 24px; background: #20323A; color: #FFFFFF; font-size: max(17px, 1.0625rem); font-weight: 800; text-decoration: none; }
+#su .sj-herogo:focus-visible { outline: 3px solid #E9B949; outline-offset: 2px; }
+#su .sj-heroart { display: grid; place-items: center; width: 104px; }
+#su .sj-herostamp { display: grid; place-items: center; align-content: center; width: 96px; height: 96px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #3B5F86 0%, #20323A 70%); color: #FFFFFF; box-shadow: 0 10px 22px rgba(32, 50, 58, 0.28), inset 0 -4px 0 rgba(0, 0, 0, 0.18); line-height: 1; }
+#su .sj-herostamp > small { font-size: max(17px, 1.0625rem); font-weight: 700; }
+#su .sj-herostamp > b { font-size: 2.25rem; font-weight: 900; margin: 2px 0; }
+#su .sj-heroart .sj-seal { transform: none; }
+#su .sj-herodots { display: flex; justify-content: center; gap: 8px; margin: 12px 0 2px; }
+#su .sj-herodots > i { width: 10px; height: 10px; border-radius: 5px; background: #C5D2DA; transition: width .2s; }
+#su .sj-herodots > i.sj-heroon { width: 24px; background: #2F56A8; }
+@media (max-width: 359px) { #su .sj-heros { grid-template-columns: minmax(0, 1fr); } #su .sj-heroart { display: none; } }
+@media (prefers-reduced-motion: reduce) { #su .sj-herot { scroll-behavior: auto; } #su .sj-herodots > i { transition: none; } }
+html.sj-on #su main.sj-page .sj-hero a.sj-herogo, html.sj-on #su main.sj-page .sj-hero a.sj-herogo:visited { color: #FFFFFF; background: #20323A; text-decoration: none; }
+html.sj-on #su .sj-herodots > i { background: #9FB2BD; }
+html.sj-on #su .sj-herodots > i.sj-heroon { background: #2F56A8; }
+

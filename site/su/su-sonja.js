@@ -447,6 +447,25 @@ export function mktLine(T) {
   const iv = setInterval(() => { if (!el.isConnected) { clearInterval(iv); return; } draw(); }, 30000);
   return el;
 }
+/* ── 0 오늘의 꾀 한 장(주문 1126-1249 · 사장님 직원 바람 「첫 화면에 오늘의 꾀가 무엇인지 오늘의 주된 컨텐츠를 이미지화 시켜서 만들고 밑에 지금의 aaa처럼 여러 꾀의 내용이 정리」 · 본보기 「오늘의 핵심 키워드」 넘기는 그림 칸) ──
+ *  첫 화면 맨 위 · 옆으로 넘기는 세 장(오늘의 꾀 · 오늘 시장 · 오늘의 한 줄) · 아래 점 셋 · 그 아래는 지금 첫 화면 그대로
+ *  꾀 = 「지금 볼 꾀 하나」(nowPick — 지금 시장 칸과 같은 꾀) · 글은 그림 밖 글(HTML) · 빨강 없음 · 앞날을 맞히지 않고 사고팔기를 권하지 않음 */
+function heroSec(T) {
+  const x = okSun(T.sun) ? T.sun : null, pk = x ? nowPick(x) : null; if (!x || !pk) return null;
+  const no = +pk.k.slice(1), dd = mday(x.day);
+  const slide = (key, kick, title, sub, art, more = null) => h('article', {class: 'sj-heros', 'data-slide': key, 'aria-roledescription': '장', 'aria-label': kick},
+    h('div', {class: 'sj-herotx'}, h('p', {class: 'sj-herok', text: kick}), h('h2', {class: 'sj-heroh', text: title}), sub ? h('p', {class: 'sj-herop', text: sub}) : null, more),
+    h('div', {class: 'sj-heroart', 'aria-hidden': 'true'}, art));
+  const S3 = [
+    slide('kkoe', '오늘의 꾀', KNAME[pk.k], (typeof KMEAN[pk.k] === 'string' ? KMEAN[pk.k] + ' ' : '') + (pk.win ? '예전에 지금처럼 ' + x.name + '이었을 때, 아무 회사나 고른 것보다 덜 잃은 꾀예요.' : '예전에 지금처럼 ' + x.name + '이었을 때, 돈을 가장 덜 잃은 꾀예요.'),
+      h('span', {class: 'sj-herostamp'}, h('small', {text: '제'}), h('b', {text: String(no)}), h('small', {text: '계'})), h('a', {class: 'sj-herogo', href: '#/k/' + pk.k, text: '이 꾀 보기 ›'})),
+    slide('land', '오늘 시장' + (dd ? ' · ' + dd : ''), '지금은 ' + x.name + '이에요.', typeof x.do === 'string' ? x.do : null,
+      h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), text: x.name})),
+    typeof x.quote === 'string' ? slide('word', '오늘의 한 줄', '「' + x.quote + '」', '손자병법 ' + (x.pian ?? ''), sonmuPic({w: 84, h: 100})) : null].filter(Boolean);
+  const track = h('div', {class: 'sj-herot', tabindex: '0', 'aria-label': '오늘의 꾀 · 옆으로 넘겨 보기'}, ...S3), dots = h('div', {class: 'sj-herodots', 'aria-hidden': 'true'}, ...S3.map((_, i) => h('i', {class: i ? '' : 'sj-heroon'})));
+  let raf = 0; track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); [...dots.children].forEach((d, j) => d.classList.toggle('sj-heroon', j === i)); track.dataset.at = String(i); }); }, {passive: true});
+  return h('section', {class: 'sj-sec sj-hero', 'data-k': pk.k, 'data-land': x.land, 'data-n': String(S3.length), 'aria-label': '오늘의 꾀'}, track, dots);
+}
 export async function vSonja(X, shell = null) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   if (!T) return null;
@@ -454,7 +473,8 @@ export async function vSonja(X, shell = null) {
   const dd = mday((okSun(T.sun) ? T.sun.day : null) ?? T.asOf?.board), body = [sunSec(T), wait, moreBox(S), endSec(T, S)];
   const keep = !!shell?.main?.isConnected, main = keep ? shell.main : h('main', {class: 'sj-page', 'data-page': 'sonja', 'data-wait': ''}, cover(null)); // data-wait — 꾀 칸을 채우면 뗌(검사가 기다림)
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
-  if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec()); // 주식 격언 열 가지 — 첫 화면 맨 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) · index.html 이 먼저 칠한 판이면 그대로
+  if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec());
+  { const old = main.querySelector(':scope > section.sj-hero'), hs = heroSec(T); if (old) old.remove(); if (hs) main.prepend(hs); } // 오늘의 꾀 한 장 — 첫 화면 맨 위(주문 1126-1249 · 격언 족자 위) // 주식 격언 열 가지 — 첫 화면 맨 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) · index.html 이 먼저 칠한 판이면 그대로
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
   const aw = main.querySelector(':scope > .sj-cover .sj-artw'); if (aw && !aw.querySelector(':scope > svg.sj-artfx')) aw.insertBefore(coverFilm(), aw.querySelector(':scope > .sj-hwa')); // 표지 영화 덧칠(주문 1116-2310 — 안개 · 새 · 금빛 반짝임 · 빛 한 줄기 11초)
   { const cv0 = main.querySelector(':scope > .sj-cover'), tw = cv0?.querySelector(':scope > .sj-tc'), tc = todayCard(T, X.cur?.()?.code ?? null); if (tw) tw.replaceWith(tc); else cv0?.append(tc); } // 오늘 한 장(주문 1120-0001) — 자리(sj-tc0)를 채움
