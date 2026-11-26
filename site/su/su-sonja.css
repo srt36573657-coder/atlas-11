@@ -1879,4 +1879,5 @@ html.sj-on #su main.sj-page > section.sj-hero { padding: 0; background: transpar
 html.sj-on #su main.sj-page .sj-hero a.sj-herogo, html.sj-on #su main.sj-page .sj-hero a.sj-herogo:visited { color: #FFFFFF; background: #20323A; text-decoration: none; }
 html.sj-on #su .sj-herodots > i { background: #9FB2BD; }
 html.sj-on #su .sj-herodots > i.sj-heroon { background: #2F56A8; }
+#su .sj-herostamp.sj-heroq > b { font-size: 1.625rem; margin: 0 0 4px; }
 

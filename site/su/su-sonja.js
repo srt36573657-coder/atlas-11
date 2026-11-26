@@ -461,7 +461,7 @@ function heroSec(T) {
       h('span', {class: 'sj-herostamp'}, h('small', {text: '제'}), h('b', {text: String(no)}), h('small', {text: '계'})), h('a', {class: 'sj-herogo', href: '#/k/' + pk.k, text: '이 꾀 보기 ›'})),
     slide('land', '오늘 시장' + (dd ? ' · ' + dd : ''), '지금은 ' + x.name + '이에요.', typeof x.do === 'string' ? x.do : null,
       h('span', {class: 'sj-seal sj-seal-big ' + (x.land === 'fall' ? 'sj-seal-dn' : 'sj-seal-up'), text: x.name})),
-    typeof x.quote === 'string' ? slide('word', '오늘의 한 줄', '「' + x.quote + '」', '손자병법 ' + (x.pian ?? ''), sonmuPic({w: 84, h: 100})) : null].filter(Boolean);
+    typeof x.quote === 'string' ? slide('word', '오늘의 한 줄', '「' + x.quote + '」', '손자병법 ' + (x.pian ?? ''), h('span', {class: 'sj-herostamp sj-heroq'}, h('b', {text: '손자'}), h('small', {text: '병법'}))) : null].filter(Boolean); // 글 도장(그림 아님 — 그림 뜻 한 줄 규칙 밖)
   const track = h('div', {class: 'sj-herot', tabindex: '0', 'aria-label': '오늘의 꾀 · 옆으로 넘겨 보기'}, ...S3), dots = h('div', {class: 'sj-herodots', 'aria-hidden': 'true'}, ...S3.map((_, i) => h('i', {class: i ? '' : 'sj-heroon'})));
   let raf = 0; track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); [...dots.children].forEach((d, j) => d.classList.toggle('sj-heroon', j === i)); track.dataset.at = String(i); }); }, {passive: true});
   return h('section', {class: 'sj-sec sj-hero', 'data-k': pk.k, 'data-land': x.land, 'data-n': String(S3.length), 'aria-label': '오늘의 꾀'}, track, dots);
