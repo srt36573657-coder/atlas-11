@@ -1099,3 +1099,4 @@
 {"at":"2026-11-26T07:41:11.490Z","kst":"2026-11-26 16:41","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-11-26","base":"2026-10-29","in":0,"out":0,"inspectFail":0,"surge":"carry","why":null}
 {"at":"2026-11-26T08:01:02.968Z","kst":"2026-11-26 17:01","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-11-26","base":"2026-10-29","in":0,"out":0,"inspectFail":0,"surge":"carry","why":null}
 {"at":"2026-11-26T08:14:47.520Z","kst":"2026-11-26 17:14","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-11-26","base":"2026-10-29","in":0,"out":0,"inspectFail":0,"surge":"carry","why":null}
+{"at":"2026-11-26T08:59:28.657Z","kst":"2026-11-26 17:59","slot":"18:00","result":"바꿈","served":"rolled","asOf":"2026-11-26","base":"2026-10-29","in":0,"out":0,"inspectFail":0,"surge":"pick","why":null}
