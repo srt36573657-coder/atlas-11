@@ -554,11 +554,13 @@ export async function vTrades(X, mode = 's') {
   const kids = [
     pageHead({kick: '기록 · ' + (sold ? '판 회사' : '산 회사'), h1: sold ? '판 회사' : '산 회사 · 들고 있는 것', seal: sold ? '팖' : '삼', sealDn: st === 'dn',
       say: sold ? '사고 팔기 셈으로 판 회사예요. 언제 얼마에 사고 팔았는지, 며칠 들고 있었는지 적었어요.' : '사고 팔기 셈으로 사서 아직 들고 있는 회사예요. 정한 날이 오면 그날 종가로 팔아요.',
-      more: [h('dl', {class: 'sj-money sj-trsum', 'data-st': st},
-        h('dt', {text: sold ? '판 것' : '들고 있는 것'}), h('dd', {text: NF.format(M.n) + '번'}),
-        h('dt', {text: '오른 것 · 내린 것'}), h('dd', {text: NF.format(M.up) + '번 · ' + NF.format(M.dn) + '번'}),
+      more: [h('dl', {class: 'sj-money sj-trsum', 'data-st': st}, // 회사 수 · 그대로 · 지금 값 모두(판 돈 모두) · 판 까닭(주문 1126-2137 · 일꾼 50명이 찾은 빈 곳)
+        h('dt', {text: sold ? '판 것' : '들고 있는 것'}), h('dd', {text: NF.format(M.n) + '번 · ' + NF.format(new Set(L.map(t => t.code)).size) + '곳'}),
+        h('dt', {text: '오른 · 내린 · 그대로'}), h('dd', {text: NF.format(M.up) + '번 · ' + NF.format(M.dn) + '번 · ' + NF.format(M.n - M.up - M.dn) + '번'}),
         h('dt', {text: sold ? '들고 있은 날' : '들고 있는 날'}), h('dd', {text: '평균 ' + (Math.round(M.days * 10) / 10) + '일'}),
-        h('dt', {text: '산 돈'}), h('dd', {text: won(M.cost)})),
+        h('dt', {text: '산 돈'}), h('dd', {text: won(M.cost)}),
+        h('dt', {text: sold ? '판 돈 모두' : '지금 값 모두'}), h('dd', {text: won(L.reduce((x, t) => x + t.p1 * TR.q, 0))}),
+        ...(sold ? [h('dt', {text: '정한 날 · 88원 줄 밑'}), h('dd', {text: NF.format(L.filter(t => t.how !== 'c').length) + '번 · ' + NF.format(L.filter(t => t.how === 'c').length) + '번'})] : [])),
         h('p', {class: 'sj-res sj-res-big', 'data-st': st}, shapeI(st), h('b', {text: (sold ? '판 것 모두 ' : '지금 값으로 모두 ') + moved(M.diff)})),
         h('p', {class: 'sj-note', text: '날은 장이 열린 날로 셌어요. 모두 종가로 10주씩 샀다고 친 가짜 돈이에요.'})]}),
     h('section', {class: 'sj-sec sj-tr', 'data-mode': sold ? 's' : 'b', 'data-n': String(L.length), 'aria-label': title + ' 낱낱이'},
@@ -612,7 +614,7 @@ function glTrend(D) { // 최근 수익률 추이(보내 주신 본보기 그대�
   if (P.length < 2) return h('section', {class: 'sj-sec sj-pftr', 'data-n': String(P.length)}, h('h2', {class: 'sj-pfh2', text: '최근 수익률 추이'}), h('p', {class: 'sj-gllead', text: '아직 쌓인 날이 이틀이 안 돼요.'}));
   const svg = s('svg', {class: 'sj-gltrs', viewBox: '0 0 300 150', preserveAspectRatio: 'none', 'aria-hidden': 'true'}), yl = h('div', {class: 'sj-pfy', 'aria-hidden': 'true'}), xl = h('div', {class: 'sj-pfx'}), last = h('p', {class: 'sj-pflast sj-res'}), cap = h('p', {class: 'sj-gltrc'});
   const draw = ([t, n]) => {
-    const L = P.slice(-(n + 1)), vs = L.map(x => x[1]), lo0 = Math.min(0, ...vs), hi0 = Math.max(0, ...vs), pad = (hi0 - lo0) * 0.15 || 0.01, y0 = lo0 - pad, y1 = hi0 + pad;
+    const L = P.slice(-(n + 1)), vs = L.map(x => x[1]), mx = Math.max(-Math.min(0, ...vs), Math.max(0, ...vs)) || 0.01, y0 = -mx * 1.15, y1 = mx * 1.15; // 0 을 가운데에 — 가운데 눈금 「0.0프로」 = 점선(주문 1126-2137 · 일꾼 19 「점선이 0이라는데 눈금은 −0.7」)
     const X = i => (L.length > 1 ? i / (L.length - 1) * 290 + 5 : 150), Y = v => 146 - (v - y0) / (y1 - y0) * 142, pts = L.map((x, i) => [X(i).toFixed(1), Y(x[1]).toFixed(1)]), line = pts.map(([x, y], i) => (i ? 'L' : 'M') + x + ' ' + y).join(' ');
     svg.replaceChildren(s('rect', {class: 'sj-gltrbg', x: 0, y: 0, width: 300, height: 150}), ...[4, 75, 146].map(y => s('line', {class: 'sj-pfgrid', x1: 0, x2: 300, y1: y, y2: y})), s('line', {class: 'sj-gltr100', x1: 0, x2: 300, y1: Y(0).toFixed(1), y2: Y(0).toFixed(1)}),
       s('path', {class: 'sj-pfarea', d: line + ' L' + pts[pts.length - 1][0] + ' 150 L' + pts[0][0] + ' 150 Z'}), s('path', {class: 'sj-gltrp', d: line, 'data-n': String(L.length)}),
@@ -631,6 +633,44 @@ function glTrend(D) { // 최근 수익률 추이(보내 주신 본보기 그대�
     last, h('div', {class: 'sj-pfch'}, yl, svg, h('i', {class: 'sj-pfxs', 'aria-hidden': 'true'}), xl), cap,
     h('p', {class: 'sj-gllead', text: '꾀 서른여섯이 사고 판 것을 날마다 모두 합쳐, 들인 돈보다 몇 프로 늘고 줄었는지 그렸어요. 점선이 0이에요. 쌓인 날보다 긴 기간 단추는 날이 쌓이면 눌려요.'}));
 }
+/* ── 날마다 보기 · 총 보유 금액 · 보유 종목(주문 1126-2137 · 사장님 2026-11-26(서울) 21:37 「총 매수 금액은 표기 되어 있는대 총 보유 금액은 표기가 되어 있지 않아 그리고 몇종목 보유하고 있는지
+   수자가 나타나지 않고 있고 날짜별 표기와 기타등등은 에이전트 50개 가동해서 뭐가 더 필요한지 찾아내서 더 채워라」 — docs/design/record-2026-11-26/order-2137.txt · 일꾼 50명의 답 rec50-sum.md)
+   날마다 = 장부가 날마다 적은 sell.tt(c 그날까지 들인 돈 · v 그날 값 모두 = 들고 있는 것 그날 종가 + 판 돈) + 그날 산 것 · 판 것 · 그날 끝에 들고 있는 것(번 · 곳) · 새 날이 위 · 처음 다섯 날 + 「더 보기」
+   늘어난 날도 줄어든 날도 같은 크기 · 같은 모양(▲ · ▼ · ―) · 가장 좋은 날 뽐내기 없음 · 가짜 돈 · 앞날을 맞히지 않음 ── */
+const GL_WK = '일월화수목금토';
+export const glWk = d => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(d ?? '')); return m ? GL_WK[new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).getUTCDay()] : ''; };
+/** [{d, c, v, g = v − c, dg = 앞 장날보다 바뀐 g(첫날 null), nBuy, nSell, nHeld, cHeld(곳)}] · 날 차례(옛 날 → 새 날) */
+export function glDays(D) {
+  const TR = sellTrades(D), T = D?.sell?.tt;
+  if (!TR || !T || !Array.isArray(T.days)) return [];
+  const all = [...TR.hold, ...TR.sold], R = T.days.map((d, i) => [d, T.c?.[i], T.v?.[i]]).filter(([d, c, v]) => typeof d === 'string' && fin(c) && c > 0 && fin(v));
+  return R.map(([d, c, v], j) => {
+    const held = all.filter(t => t.d0 <= d && (t.how === 'h' || t.d1 > d));
+    return {d, c, v, g: v - c, dg: j ? (v - c) - (R[j - 1][2] - R[j - 1][1]) : null, nBuy: all.filter(t => t.d0 === d).length, nSell: TR.sold.filter(t => t.d1 === d).length, nHeld: held.length, cHeld: new Set(held.map(t => t.code)).size};
+  });
+}
+const GL_DAY0 = 5; // 처음 보이는 날 수(새 날부터) — 나머지는 「더 보기」
+const glVs = (lab, v) => (Math.round(v) === 0 ? lab + '과 같아요' : lab + '보다 ' + moved(v)); // 「앞 장날보다 ○원 늘었어요」 · 같으면 「앞 장날과 같아요」
+function glDaySec(R) {
+  if (!R.length) return null;
+  const L = [...R].reverse(), ol = h('ol', {class: 'sj-gldl'}), more = h('button', {class: 'sj-gldmore', type: 'button'});
+  const row = x => { const st = stOfD(x.g), sd = x.dg == null ? null : stOfD(x.dg);
+    return h('li', {class: 'sj-gldr', 'data-day': x.d, 'data-st': st},
+      h('p', {class: 'sj-gldh'}, h('b', {text: mday(x.d) + '(' + glWk(x.d) + ')'}),
+        sd ? h('span', {class: 'sj-gldd sj-res', 'data-st': sd}, shapeI(sd), h('span', {text: glVs('앞 장날', x.dg)})) : h('span', {class: 'sj-gldd', text: '첫날이에요'})),
+      h('p', {class: 'sj-gldt', 'data-f': 'n', text: '산 것 ' + NF.format(x.nBuy) + '번 · 판 것 ' + NF.format(x.nSell) + '번 · 들고 있는 것 ' + NF.format(x.nHeld) + '번(' + NF.format(x.cHeld) + '곳)'}),
+      h('p', {class: 'sj-gldt', 'data-f': 'won', text: '들인 돈 ' + won(x.c) + ' · 그날 값 ' + won(x.v)}),
+      h('p', {class: 'sj-gldg sj-res', 'data-st': st}, shapeI(st), h('span', {text: glVs('들인 돈', x.g)}))); };
+  let shown = 0;
+  const fill = all => { const end = all ? L.length : Math.min(L.length, GL_DAY0); for (; shown < end; shown++) ol.append(row(L[shown])); const left = L.length - shown; more.hidden = left <= 0; more.textContent = left > 0 ? '남은 ' + NF.format(left) + '날 더 보기' : ''; };
+  more.addEventListener('click', () => fill(true)); fill(false);
+  const short = R.length < 20 ? ' 기록이 ' + NF.format(R.length) + '일뿐이라, 오르고 내림이 우연일 수 있어요.' : '';
+  return h('section', {class: 'sj-sec sj-glday', 'data-n': String(R.length), 'aria-label': '날마다 보기'},
+    h('h2', {class: 'sj-pfh2', text: '날마다 보기'}),
+    h('p', {class: 'sj-gllead', text: '장이 열린 날마다, 그날 종가로 센 값이에요. 새 날이 위예요.' + short}),
+    ol, more,
+    h('p', {class: 'sj-gllead', text: '「그날 값」은 그날 들고 있던 것의 종가 값과 그때까지 판 돈을 더한 값이에요. 모두 가짜 돈이에요.'}));
+}
 export async function vGlance(X) {
   const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
   const A = D ? glanceOf(D) : null;
@@ -638,6 +678,7 @@ export async function vGlance(X) {
   const st = stOfD(A.diff);
   // 꾀별 나눔(본보기의 「상품별 분포」) — 꾀마다 지금 값(들고 있는 것 + 판 돈) 큰 일곱 + 그 밖 꾀
   const TR = sellTrades(D), byK = new Map(); for (const t of [...TR.hold, ...TR.sold]) byK.set(t.k, (byK.get(t.k) ?? 0) + t.p1 * TR.q);
+  const nCo = new Set(TR.hold.map(t => t.code)).size, DY = glDays(D), d1 = DY.length > 1 ? DY[DY.length - 1] : null, asOf = DY.length ? DY[DY.length - 1].d : typeof D.asOf === 'string' ? D.asOf : null; // 보유 종목 · 날마다 · 앞 장날 · 기준 날(주문 1126-2137)
   const kTop = [...byK.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])), kParts = [...kTop.slice(0, 5).map(([k, v], j) => ({name: nameOf(k), v, col: GL_COL[j], k})), ...(kTop.length > 5 ? [{name: '그 밖 꾀', v: kTop.slice(5).reduce((a, x) => a + x[1], 0), col: GL_ETC}] : [])]; // 본보기처럼 여섯 칸 — 큰 꾀 다섯 + 그 밖
   const iTop = A.parts.filter(x => !x.cash && x.name !== GL_ETCN).sort((a, b) => b.v - a.v), iEtc = A.parts.filter(x => x.name === GL_ETCN).reduce((a, x) => a + x.v, 0) + iTop.slice(4).reduce((a, x) => a + x.v, 0), cashP = A.parts.find(x => x.cash);
   const iParts = [...iTop.slice(0, 4), ...(iEtc > 0 ? [{name: GL_ETCN, v: iEtc, col: GL_ETC}] : []), ...(cashP ? [cashP] : [])]; // 업종도 여섯 칸 — 큰 업종 넷 + 그 밖 업종 + 판 돈
@@ -656,10 +697,22 @@ export async function vGlance(X) {
   sec.append(
     h('div', {class: 'sj-pfhd'}, h('h1', {class: 'sj-pfh1'}, h('span', {text: '자산 포트폴리오'}), s('svg', {class: 'sj-pfi', viewBox: '0 0 20 20', 'aria-hidden': 'true'}, s('circle', {cx: 10, cy: 10, r: 8.5}), s('path', {d: 'M10 9v5.5M10 5.8v.2'}))),
       h('div', {class: 'sj-pftot'}, h('span', {class: 'sj-pftl', text: '총 평가 금액'}), h('b', {class: 'sj-pfval sj-glval', text: won(A.val)}),
-        h('p', {class: 'sj-res sj-glres', 'data-st': st}, shapeI(st), h('b', {text: moved(A.diff)})), h('p', {class: 'sj-glpct', 'data-st': st}, h('b', {text: pctText(A.r)})))),
+        h('p', {class: 'sj-res sj-glres', 'data-st': st}, shapeI(st), h('b', {text: moved(A.diff)})), h('p', {class: 'sj-glpct', 'data-st': st}, h('b', {text: pctText(A.r)})),
+        d1 ? h('p', {class: 'sj-res sj-glday1', 'data-st': stOfD(d1.dg)}, shapeI(stOfD(d1.dg)), h('span', {text: glVs('앞 장날', d1.dg)})) : null)),
+    asOf ? h('p', {class: 'sj-glasof', text: mday(asOf) + '(' + glWk(asOf) + ') 종가로 셌어요 · 모두 가짜 돈이에요'}) : null,
+    h('dl', {class: 'sj-glsum'}, // 총 보유 금액 · 보유 종목 · 판 돈 · 들인 돈(주문 1126-2137)
+      h('div', {class: 'sj-glsc', 'data-f': 'held'}, h('dt', {text: '총 보유 금액'}), h('dd', {text: won(A.held)}), h('dd', {class: 'sj-glss', text: '들고 있는 ' + NF.format(A.nHold) + '번을 그날 종가로'})),
+      h('div', {class: 'sj-glsc', 'data-f': 'cos'}, h('dt', {text: '보유 종목'}), h('dd', {text: NF.format(nCo) + '곳'}), h('dd', {class: 'sj-glss', text: '같은 회사를 여러 번 산 것은 한 곳으로 셌어요'})),
+      h('div', {class: 'sj-glsc', 'data-f': 'cash'}, h('dt', {text: '판 돈'}), h('dd', {text: won(A.cash)}), h('dd', {class: 'sj-glss', text: '판 것 ' + NF.format(A.nSold) + '번'})),
+      h('div', {class: 'sj-glsc', 'data-f': 'cost'}, h('dt', {text: '들인 돈'}), h('dd', {text: won(A.cost)}), h('dd', {class: 'sj-glss', text: '산 것 ' + NF.format(A.n) + '번'}))),
+    h('ul', {class: 'sj-glsplit', 'aria-label': '늘고 준 돈 나눠 보기'}, // 들고 있는 것 · 판 것 · 모두 — 같은 크기(줄어든 것을 숨기지 않음)
+      ...[['hold', '들고 있는 것', TR.H.diff, '산 돈 ' + won(TR.H.cost) + ' → 지금 ' + won(A.held), '오른 것 ' + NF.format(TR.H.up) + '번 · 내린 것 ' + NF.format(TR.H.dn) + '번 · 그대로 ' + NF.format(TR.H.n - TR.H.up - TR.H.dn) + '번'],
+        ['sold', '판 것', TR.S.diff, '산 돈 ' + won(TR.S.cost) + ' → 판 돈 ' + won(A.cash), '정한 날에 판 것 ' + NF.format(TR.sold.filter(t => t.how !== 'c').length) + '번 · 88원 줄 밑으로 판 것 ' + NF.format(TR.sold.filter(t => t.how === 'c').length) + '번'],
+        ['all', '모두', A.diff, '들고 있는 것과 판 것을 더했어요', null]].map(([f, k, v, l1, l2]) => { const t = stOfD(v);
+        return h('li', {class: 'sj-glsr', 'data-f': f, 'data-st': t}, h('b', {class: 'sj-glsrk', text: k}), h('p', {class: 'sj-res sj-glsrv', 'data-st': t}, shapeI(t), h('span', {text: moved(v)})),
+          h('p', {class: 'sj-glsrs', text: l1}), l2 ? h('p', {class: 'sj-glsrs', text: l2}) : null); })),
     h('div', {class: 'sj-pfbody'}, box, leg),
     h('a', {class: 'sj-pfin', href: '#/l/b'}, s('svg', {class: 'sj-pfini', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d: 'M4 20V14M9 20V10M14 20V12M19 20V6', 'stroke-width': 3, 'stroke-linecap': 'round'})), h('span', {class: 'sj-pfint'}, ins, h('span', {text: '들고 있는 회사를 낱낱이 볼까요?'})), h('i', {'aria-hidden': 'true', text: '›'})),
-    h('p', {class: 'sj-pfcost sj-glcost', text: '들인 돈 ' + won(A.cost)}),
     h('p', {class: 'sj-note', text: '산 것 ' + NF.format(A.n) + '번 · 들고 있는 것 ' + NF.format(A.nHold) + '번 · 판 것 ' + NF.format(A.nSold) + '번. 모두 종가로 10주씩 샀다고 친 가짜 돈이에요.'}));
   show('k');
   const keys = [{name: '그 꾀가 가장 많이 고른 업종', col: GL_K1}, {name: '두 번째로 많이 고른 업종', col: GL_K2}, {name: '나머지 업종', col: GL_ETC}];
@@ -668,7 +721,7 @@ export async function vGlance(X) {
     s('svg', {class: 'sj-glkb', viewBox: '0 0 300 20', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, ...(() => { let x = 0; return r.segs.map(g => { const w = g.c / r.n * 300, e = s('rect', {x: x.toFixed(2), y: 0, width: Math.max(0, w - (r.segs.length > 1 ? 1.5 : 0)).toFixed(2), height: 20, rx: 3, fill: g.col, 'data-part': g.name}); x += w; return e; }); })()),
     h('p', {class: 'sj-glkt', text: r.best ? '가장 많이 고른 업종은 ' + r.best[0] + glIeyo(r.best[0]) + ' · ' + NF.format(r.n) + '번 가운데 ' + NF.format(r.best[1]) + '번' : '업종을 모르는 회사만 샀어요'}),
     r.next ? h('p', {class: 'sj-glk2', text: '두 번째는 ' + r.next[0] + glIeyo(r.next[0]) + ' · ' + NF.format(r.next[1]) + '번'}) : null);
-  const kids = [seg, sec, glTrend(D),
+  const kids = [seg, sec, glTrend(D), glDaySec(DY), // 날마다 보기(주문 1126-2137)
     h('section', {class: 'sj-sec sj-glkk', 'data-n': String(A.kk.length), 'aria-label': '꾀마다 많이 고른 업종'},
       h('h2', {class: 'sj-pfh2', text: '꾀마다 많이 고른 업종'}),
       h('p', {class: 'sj-gllead', text: '막대 하나가 꾀 하나예요. 진한 칸이 길수록 그 꾀가 한 업종을 많이 골랐어요.'}),

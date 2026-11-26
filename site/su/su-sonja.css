@@ -1930,3 +1930,31 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-kwa[data-m="eq"] { color: #566C70; }
 #su .sj-kr > .sj-krv, #su .sj-kr > .sj-kwk { grid-column: 1 / -1; } /* 꾀 줄은 두 칸 판(그림 108 · 글) — 값 줄 · 7일 줄은 온 폭(그림 칸으로 들어가지 않게 · .sj-ktr 와 같은 까닭) */
 #su .sj-krr > .sj-ka .sj-krn { order: -2; } /* 등수 도장이 맨 앞(이름 위) */
+/* 기록 · 한눈에 — 총 보유 금액 · 보유 종목 · 판 돈 · 들인 돈 · 늘고 준 돈 나눠 보기 · 날마다 보기 · 산 회사 · 판 회사 묶음(주문 1126-2137 · 일꾼 50명이 찾은 빈 곳) — 빨강 없음 · 글 17 넘게 · 누름 48 넘게 */
+#su .sj-pftot .sj-glday1 { margin: 0; font-size: 1.0625rem; }
+#su .sj-glasof { margin: 6px 0 0; font-size: 1.0625rem; line-height: 1.5; color: #3E5560; word-break: keep-all; }
+#su .sj-glsum { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; }
+#su .sj-glsc { display: grid; align-content: start; gap: 2px; min-width: 0; margin: 0; padding: 12px; border-radius: 14px; background: #F1F6F5; }
+#su .sj-glsc > dt { font-size: 1.0625rem; font-weight: 700; line-height: 1.4; color: #3E5560; }
+#su .sj-glsc > dd { margin: 0; font-size: 1.1875rem; font-weight: 800; line-height: 1.35; color: #20323A; overflow-wrap: anywhere; word-break: keep-all; }
+#su .sj-glsc > dd.sj-glss { font-size: 1.0625rem; font-weight: 500; line-height: 1.45; color: #3E5560; }
+#su .sj-glsc[data-f="held"] { background: #20323A; }
+#su .sj-glsc[data-f="held"] > dt, #su .sj-glsc[data-f="held"] > dd, #su .sj-glsc[data-f="held"] > dd.sj-glss { color: #FFFFFF; }
+#su .sj-glsplit { list-style: none; display: grid; gap: 8px; margin: 12px 0 0; padding: 0; }
+#su .sj-glsr { display: grid; gap: 2px; min-width: 0; padding: 10px 12px; border: 1.5px solid #DCE6E4; border-radius: 14px; background: #FFFFFF; }
+#su .sj-glsrk { font-size: 1.0625rem; font-weight: 800; color: #20323A; }
+#su .sj-glsrv { margin: 0; font-size: 1.125rem; }
+#su .sj-glsrs { margin: 0; font-size: 1.0625rem; line-height: 1.45; color: #3E5560; overflow-wrap: anywhere; word-break: keep-all; }
+#su .sj-glday .sj-gldl { list-style: none; display: grid; gap: 8px; margin: 10px 0 0; padding: 0; }
+#su .sj-gldr { display: grid; gap: 2px; min-width: 0; padding: 12px; border-radius: 14px; background: #F1F6F5; }
+#su .sj-gldh { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 10px; margin: 0 0 2px; font-size: 1.0625rem; }
+#su .sj-gldh > b { font-size: 1.125rem; font-weight: 800; color: #20323A; }
+#su .sj-gldd { font-size: 1.0625rem; color: #3E5560; }
+#su .sj-gldt { margin: 0; font-size: 1.0625rem; line-height: 1.45; color: #20323A; overflow-wrap: anywhere; word-break: keep-all; }
+#su .sj-gldg { margin: 2px 0 0; font-size: 1.0625rem; }
+#su .sj-gldmore { width: 100%; min-height: 48px; margin: 10px 0 0; padding: 0 12px; border: 1.5px solid #20323A; border-radius: 14px; background: #FFFFFF; color: #20323A; font-size: max(17px, 1.0625rem); font-weight: 800; cursor: pointer; }
+#su .sj-gldmore:focus-visible { outline: 3px solid #E9B949; outline-offset: 2px; }
+@media (max-width: 359px) { #su .sj-glsum { grid-template-columns: minmax(0, 1fr); } }
+#su .sj-trsum { grid-template-columns: minmax(0, 1fr) auto; } /* 산 회사 · 판 회사 묶음 — 값은 한 줄(이름이 접힘 · 주문 1126-2137) */
+#su .sj-trsum dd { white-space: nowrap; }
+@media (max-width: 359px) { #su .sj-trsum dd { white-space: normal; } }
