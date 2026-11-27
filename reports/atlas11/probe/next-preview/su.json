@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-27T10:40:01.257Z",
+ "at": "2026-11-27T13:01:08.671Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 630,
+  "pass": 633,
   "fail": 0
  },
  "fails": [],
@@ -14,8 +14,8 @@
    "sun": false
   },
   "home": {
-   "screens": 5.42,
-   "links": 17
+   "screens": 3.94,
+   "links": 18
   },
   "t21": {
    "listed": 2557,
@@ -95,9 +95,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 2356,
-   "cls": 1.011,
-   "pic": 2211
+   "lcp": 2400,
+   "cls": 1.016,
+   "pic": 2215
   },
   "white": {
    "light #/": {
