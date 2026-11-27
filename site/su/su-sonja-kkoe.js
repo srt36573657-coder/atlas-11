@@ -592,8 +592,14 @@ export function glanceOf(D) {
     return {k, n: m.n, best, next, segs: [...(best ? [{name: best[0], c: best[1], col: GL_K1}] : []), ...(next ? [{name: next[0], c: next[1], col: GL_K2}] : []), ...(rest > 0 ? [{name: '나머지 업종', c: rest, col: GL_ETC}] : [])]}; }); // 막대 = 그 꾀가 가장 많이 고른 업종(진한 색) · 두 번째(청록) · 나머지(회색)
   return {q, cost, val, cash, held, diff: val - cost, r: cost > 0 ? val / cost - 1 : 0, n: all.length, nHold: TR.hold.length, nSold: TR.sold.length, parts, top, kk};
 }
-const glDot = col => s('svg', {class: 'sj-gldot', viewBox: '0 0 10 10', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 10, height: 10, rx: 5, fill: col}));
-const GL_LIGHT = new Set([GL_ETC, GL_CASH, '#7FB08F', '#D99A00']); // 밝은 조각 위 숫자는 먹색
+/* 꾀별 나눔 서른여섯 꾀 모두(주문 1127-0938 · 사장님 2026-11-27(서울) 09:38 「지금은 몇개만 표현했다 36개 모두를 표기 하라」 · docs/design/record-2026-11-27/order-0938.txt)
+   색 = 여섯 집안(먹 · 청록 · 금 · 남 · 쑥 · 밤) × 여섯 단(진함 → 옅음) — 지금 값 큰 차례로 집안을 돌려 이웃 조각은 늘 다른 집안 · 첫 여섯은 옛 색 그대로 · 빨강 없음 */
+const GL_FAM = Object.freeze([['#20323A', '#3B5562', '#56717E', '#7690A0', '#9CB2BE', '#C3D3DA'], ['#2F7F86', '#4B959B', '#68AAAF', '#88BFC3', '#ABD3D6', '#CDE6E8'], ['#D99A00', '#E2AC2E', '#E8BD59', '#EECD84', '#F3DDAD', '#F8EDD4'],
+  ['#5B6FB5', '#7383C1', '#8C99CD', '#A6AFDA', '#C1C8E6', '#DDE1F2'], ['#7FB08F', '#93BDA1', '#A7CAB3', '#BCD7C5', '#D0E4D7', '#E5F1E9'], ['#A07A4A', '#B08E63', '#C0A27D', '#D0B798', '#DFCCB4', '#EFE3D3']]);
+export const GL_COL36 = Object.freeze(Array.from({length: 36}, (_, j) => GL_FAM[j % 6][Math.floor(j / 6)]));
+const GL_PALE = new Set(GL_FAM.flatMap(f => f.slice(3))); // 옅은 단 — 이름표 점에 테두리(흰 바탕에서도 보이게)
+const glDot = col => s('svg', {class: 'sj-gldot', viewBox: '0 0 10 10', 'aria-hidden': 'true'}, s('rect', {x: 0.5, y: 0.5, width: 9, height: 9, rx: 4.5, fill: col, ...(GL_PALE.has(col) ? {stroke: '#7690A0', 'stroke-width': 1} : {})}));
+const GL_LIGHT = new Set([GL_ETC, GL_CASH, '#7FB08F', '#D99A00', ...GL_FAM.flatMap((f, i) => (i === 2 || i === 4 ? f : f.slice(2)))]); // 밝은 조각 위 숫자는 먹색
 export const glWonS = v => { const a = Math.abs(v); return a >= 1e8 ? (Math.round(a / 1e6) / 100).toFixed(2) + '억' : a >= 1e4 ? NF.format(Math.round(a / 1e4)) + '만' : NF.format(Math.round(a)); }; // 동그라미 가운데 줄인 값(14.48억 · 7,575만)
 function glDonut(parts) { // 동그라미(보내 주신 본보기 그대로 — 조각 · 조각 안 몫 숫자 · 가운데 총 자산은 글로 겹침) · 12시에서 시계 방향 · 140 × 140 그대로(글 17 그대로 보이게)
   const tot = parts.reduce((a, x) => a + x.v, 0), R = 54, C = 2 * Math.PI * R; let at = 0;
@@ -676,20 +682,21 @@ export async function vGlance(X) {
   const A = D ? glanceOf(D) : null;
   if (!A || !A.n) return missPage(X, '한눈에', '사고 팔기 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
   const st = stOfD(A.diff);
-  // 꾀별 나눔(본보기의 「상품별 분포」) — 꾀마다 지금 값(들고 있는 것 + 판 돈) 큰 일곱 + 그 밖 꾀
+  // 꾀별 나눔(본보기의 「상품별 분포」) — 꾀마다 지금 값(들고 있는 것 + 판 돈) · 서른여섯 꾀 모두(주문 1127-0938)
   const TR = sellTrades(D), byK = new Map(); for (const t of [...TR.hold, ...TR.sold]) byK.set(t.k, (byK.get(t.k) ?? 0) + t.p1 * TR.q);
   const nCo = new Set(TR.hold.map(t => t.code)).size, DY = glDays(D), d1 = DY.length > 1 ? DY[DY.length - 1] : null, asOf = DY.length ? DY[DY.length - 1].d : typeof D.asOf === 'string' ? D.asOf : null; // 보유 종목 · 날마다 · 앞 장날 · 기준 날(주문 1126-2137)
-  const kTop = [...byK.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])), kParts = [...kTop.slice(0, 5).map(([k, v], j) => ({name: nameOf(k), v, col: GL_COL[j], k})), ...(kTop.length > 5 ? [{name: '그 밖 꾀', v: kTop.slice(5).reduce((a, x) => a + x[1], 0), col: GL_ETC}] : [])]; // 본보기처럼 여섯 칸 — 큰 꾀 다섯 + 그 밖
+  const kTop = K36.map(k => [k, byK.get(k) ?? 0]).sort((a, b) => b[1] - a[1] || K36.indexOf(a[0]) - K36.indexOf(b[0])), kParts = kTop.map(([k, v], j) => ({name: nameOf(k), v, col: GL_COL36[j], k})); // 서른여섯 꾀 모두 — 지금 값 큰 차례(같으면 꾀 차례) · 산 적 없는 꾀도 0원으로(주문 1127-0938 · 옛 판: 큰 꾀 다섯 + 그 밖 꾀)
   const iTop = A.parts.filter(x => !x.cash && x.name !== GL_ETCN).sort((a, b) => b.v - a.v), iEtc = A.parts.filter(x => x.name === GL_ETCN).reduce((a, x) => a + x.v, 0) + iTop.slice(4).reduce((a, x) => a + x.v, 0), cashP = A.parts.find(x => x.cash);
   const iParts = [...iTop.slice(0, 4), ...(iEtc > 0 ? [{name: GL_ETCN, v: iEtc, col: GL_ETC}] : []), ...(cashP ? [cashP] : [])]; // 업종도 여섯 칸 — 큰 업종 넷 + 그 밖 업종 + 판 돈
   const VIEWS = {k: {label: '꾀별 분포', parts: kParts}, i: {label: '업종별 분포', parts: iParts}};
   const insight = view => { const P = VIEWS[view].parts, tot = P.reduce((a, x) => a + x.v, 0), cash = P.find(x => x.cash), big = [...P].filter(x => !x.cash && !/^그 밖/.test(x.name)).sort((a, b) => b.v - a.v)[0];
     return view === 'k' ? (big ? '지금 값이 가장 큰 꾀는 「' + big.name + '」' + glIeyo(big.name) + '. 모두의 ' + glShare(big.v, tot) + '프로예요.' : '')
       : (cash ? '지금 값의 ' + glShare(cash.v, tot) + '프로는 판 돈이에요. ' : '') + (big ? '들고 있는 회사 가운데는 ' + josa(big.name, '이') + ' 가장 커요.' : ''); };
-  const box = h('div', {class: 'sj-pfdo'}), leg = h('ul', {class: 'sj-glleg'}), ins = h('b', {class: 'sj-pfinb'}), sec = h('section', {class: 'sj-sec sj-pf sj-glal', 'aria-label': '자산 포트폴리오'});
+  const box = h('div', {class: 'sj-pfdo'}), leg = h('ul', {class: 'sj-glleg'}), legCap = h('p', {class: 'sj-gllegcap'}), ins = h('b', {class: 'sj-pfinb'}), sec = h('section', {class: 'sj-sec sj-pf sj-glal', 'aria-label': '자산 포트폴리오'});
   const show = view => { const P = VIEWS[view].parts, tot = P.reduce((a, x) => a + x.v, 0);
     box.replaceChildren(glDonut(P), h('div', {class: 'sj-pfctr', 'aria-hidden': 'true'}, h('span', {text: '총 자산'}), h('b', {text: glWonS(A.val)}), h('span', {class: 'sj-pfctrr', 'data-st': st, text: ({up: '▲', dn: '▼'}[st] ?? '') + glPp(A.r)})));
-    leg.replaceChildren(...P.map(x => h('li', {class: 'sj-gllegi', 'data-part': x.name}, glDot(x.col), h('b', {text: x.name}), h('span', {class: 'sj-pfsh', text: glShare(x.v, tot) + '프로'}), h('span', {class: 'sj-pfam', text: glWonS(x.v) + '원'}))));
+    leg.replaceChildren(...P.map(x => h('li', {class: 'sj-gllegi', 'data-part': x.name, 'data-k': x.k ?? null}, glDot(x.col), h('b', {text: x.name}), h('span', {class: 'sj-pfsh', text: glShare(x.v, tot) + '프로'}), h('span', {class: 'sj-pfam', text: glWonS(x.v) + '원'}))));
+    legCap.hidden = view !== 'k'; legCap.textContent = view === 'k' ? '서른여섯 꾀 모두예요. 지금 값(들고 있는 것 + 판 돈)이 큰 차례예요.' : '';
     ins.textContent = insight(view); sec.dataset.view = view;
     for (const b of segB) b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); };
   const segB = Object.entries(VIEWS).map(([v, o]) => { const b = h('button', {class: 'sj-pfsb', type: 'button', 'data-view': v, text: o.label}); b.addEventListener('click', () => show(v)); return b; });
@@ -711,7 +718,7 @@ export async function vGlance(X) {
         ['all', '모두', A.diff, '들고 있는 것과 판 것을 더했어요', null]].map(([f, k, v, l1, l2]) => { const t = stOfD(v);
         return h('li', {class: 'sj-glsr', 'data-f': f, 'data-st': t}, h('b', {class: 'sj-glsrk', text: k}), h('p', {class: 'sj-res sj-glsrv', 'data-st': t}, shapeI(t), h('span', {text: moved(v)})),
           h('p', {class: 'sj-glsrs', text: l1}), l2 ? h('p', {class: 'sj-glsrs', text: l2}) : null); })),
-    h('div', {class: 'sj-pfbody'}, box, leg),
+    h('div', {class: 'sj-pfbody'}, box, legCap, leg),
     h('a', {class: 'sj-pfin', href: '#/l/b'}, s('svg', {class: 'sj-pfini', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d: 'M4 20V14M9 20V10M14 20V12M19 20V6', 'stroke-width': 3, 'stroke-linecap': 'round'})), h('span', {class: 'sj-pfint'}, ins, h('span', {text: '들고 있는 회사를 낱낱이 볼까요?'})), h('i', {'aria-hidden': 'true', text: '›'})),
     h('p', {class: 'sj-note', text: '산 것 ' + NF.format(A.n) + '번 · 들고 있는 것 ' + NF.format(A.nHold) + '번 · 판 것 ' + NF.format(A.nSold) + '번. 모두 종가로 10주씩 샀다고 친 가짜 돈이에요.'}));
   show('k');

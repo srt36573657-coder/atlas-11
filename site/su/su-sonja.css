@@ -1958,3 +1958,13 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-trsum { grid-template-columns: minmax(0, 1fr) auto; } /* 산 회사 · 판 회사 묶음 — 값은 한 줄(이름이 접힘 · 주문 1126-2137) */
 #su .sj-trsum dd { white-space: nowrap; }
 @media (max-width: 359px) { #su .sj-trsum dd { white-space: normal; } }
+/* 꾀별 나눔 — 서른여섯 꾀 모두(주문 1127-0938) · 동그라미는 위에 크게 · 이름표는 그 아래 온 폭 한 줄씩(점 · 이름 · 프로 · 금액) */
+#su .sj-pf[data-view="k"] .sj-pfbody { grid-template-columns: minmax(0, 1fr); justify-items: center; row-gap: 10px; }
+#su .sj-pf[data-view="k"] .sj-pfbody > .sj-pfdo { position: static; }
+#su .sj-pf[data-view="k"] .sj-pfdo, #su .sj-pf[data-view="k"] .sj-pfdo .sj-gldo { width: 180px; height: 180px; }
+#su .sj-gllegcap { justify-self: stretch; margin: 0; font-size: 1.0625rem; line-height: 1.45; color: #3E5560; word-break: keep-all; }
+#su .sj-pf[data-view="k"] .sj-glleg { justify-self: stretch; gap: 0; }
+#su .sj-pf[data-view="k"] .sj-gllegi { grid-template-columns: 16px minmax(0, 1fr) auto auto; column-gap: 8px; padding: 6px 0; border-bottom: 1px solid #E3EBEA; }
+#su .sj-pf[data-view="k"] .sj-gllegi > .sj-pfsh { grid-column: 3; grid-row: 1; }
+#su .sj-pf[data-view="k"] .sj-gllegi > .sj-pfam { grid-column: 4; grid-row: 1; min-width: 5.2em; text-align: right; color: #20323A; }
+@media (max-width: 359px) { #su .sj-pf[data-view="k"] .sj-gllegi { grid-template-columns: 16px minmax(0, 1fr) auto; } #su .sj-pf[data-view="k"] .sj-gllegi > .sj-pfam { grid-column: 2 / 4; grid-row: 2; min-width: 0; text-align: left; color: #3E5560; } }
