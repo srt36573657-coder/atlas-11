@@ -679,8 +679,9 @@ function glDaySec(R) {
 }
 /* 꾀별 이름표 한 줄(주문 1127-1137 · 사장님 2026-11-27(서울) 11:37 「매수한 비중이라고 표기하고 그래서 수익률이 얼마인지도 표기하라」 · docs/design/record-2026-11-27/order-1137.txt)
    윗줄 = 점 · 꾀 이름 · 「산 비중 ○프로」(모든 산 돈 가운데 그 꾀가 쓴 몫 · 동그라미 조각과 같은 셈) · 아랫줄 = 「산 돈 ○원」 · 「수익률 ▲ ○프로」(그 꾀의 지금 값 ÷ 산 돈 − 1)
-   「매수」는 사이트 규칙대로 「산」 · 차례는 산 돈 큰 차례(수익률로 줄 세우지 않음) · 오른 것도 내린 것도 같은 크기 · 같은 모양(▲ · ▼ · ―) · 빨강 없음 */
-export const GL_KCAP = Object.freeze(['서른여섯 꾀 모두예요. 산 돈이 큰 차례예요.', '산 비중은 모든 산 돈에서 그 꾀가 쓴 몫이에요.', '수익률은 그 꾀가 쓴 돈이 지금 몇 프로 늘거나 줄었는지예요. 판 것은 판 돈으로 셌어요.']); // 세 줄(한 줄씩 끊어 「산 비중」이 갈라지지 않게)
+   「매수」는 사이트 규칙대로 「산」 · 오른 것도 내린 것도 같은 크기 · 같은 모양(▲ · ▼ · ―)
+   주문 1127-1244(사장님 2026-11-27(서울) 12:44 「배치를 수익률순으로 하고 수익은 빨강 화살펴 내림은 파랑으로 해」 · docs/design/record-2026-11-27/order-1244.txt) — 차례 = 수익률 높은 차례 · 오름 ▲ 과 그 프로 = 빨강 · 내림 ▼ 과 그 프로 = 파랑(이 줄에만 · 사장님 말씀) */
+export const GL_KCAP = Object.freeze(['서른여섯 꾀 모두예요. 수익률이 높은 차례예요.', '산 비중은 모든 산 돈에서 그 꾀가 쓴 몫이에요.', '수익률은 그 꾀가 쓴 돈이 지금 몇 프로 늘거나 줄었는지예요. 판 것은 판 돈으로 셌어요.']); // 세 줄(한 줄씩 끊어 「산 비중」이 갈라지지 않게)
 export const glRateT = r => Math.abs(Math.round(r * 1000) / 10).toFixed(1) + '프로'; // 「2.5프로」 — 오르내림은 앞 모양(▲ · ▼ · ―)으로
 function glKRow(x, tot) {
   const r = x.v > 0 ? x.now / x.v - 1 : null, st = r == null ? 'none' : stOfD(Math.round(r * 1000));
@@ -697,7 +698,8 @@ export async function vGlance(X) {
   // 꾀별 나눔(본보기의 「상품별 분포」) — 서른여섯 꾀 모두(주문 1127-0938) · 꾀마다 산 돈(조각 · 산 비중) + 지금 값(들고 있는 것 + 판 돈 → 수익률)(주문 1127-1137)
   const TR = sellTrades(D), byK = new Map(), byKV = new Map(); for (const t of [...TR.hold, ...TR.sold]) { byK.set(t.k, (byK.get(t.k) ?? 0) + t.p0 * TR.q); byKV.set(t.k, (byKV.get(t.k) ?? 0) + t.p1 * TR.q); }
   const nCo = new Set(TR.hold.map(t => t.code)).size, DY = glDays(D), d1 = DY.length > 1 ? DY[DY.length - 1] : null, asOf = DY.length ? DY[DY.length - 1].d : typeof D.asOf === 'string' ? D.asOf : null; // 보유 종목 · 날마다 · 앞 장날 · 기준 날(주문 1126-2137)
-  const kTop = K36.map(k => [k, byK.get(k) ?? 0]).sort((a, b) => b[1] - a[1] || K36.indexOf(a[0]) - K36.indexOf(b[0])), kParts = kTop.map(([k, v], j) => ({name: nameOf(k), v, now: byKV.get(k) ?? 0, col: GL_COL36[j], k})); // 서른여섯 꾀 모두 — 산 돈 큰 차례(같으면 꾀 차례) · 산 적 없는 꾀도 0원으로(주문 1127-0938 · 1127-1137 「매수한 비중」 = 산 돈 몫 · 옛 판: 지금 값 큰 차례)
+  const kRate = k => ((byK.get(k) ?? 0) > 0 ? (byKV.get(k) ?? 0) / byK.get(k) - 1 : null); // 꾀 수익률 = 지금 값 ÷ 산 돈 − 1(산 적 없으면 null)
+  const kTop = K36.map(k => [k, byK.get(k) ?? 0, kRate(k)]).sort((a, b) => (a[2] == null) - (b[2] == null) || (b[2] ?? 0) - (a[2] ?? 0) || K36.indexOf(a[0]) - K36.indexOf(b[0])), kParts = kTop.map(([k, v], j) => ({name: nameOf(k), v, now: byKV.get(k) ?? 0, col: GL_COL36[j], k})); // 서른여섯 꾀 모두 — 수익률 높은 차례(같으면 꾀 차례 · 산 적 없는 꾀는 맨 끝 0원)(주문 1127-0938 · 1127-1137 「매수한 비중」 = 산 돈 몫 · 1127-1244 「배치를 수익률순으로」)
   const iTop = A.parts.filter(x => !x.cash && x.name !== GL_ETCN).sort((a, b) => b.v - a.v), iEtc = A.parts.filter(x => x.name === GL_ETCN).reduce((a, x) => a + x.v, 0) + iTop.slice(4).reduce((a, x) => a + x.v, 0), cashP = A.parts.find(x => x.cash);
   const iParts = [...iTop.slice(0, 4), ...(iEtc > 0 ? [{name: GL_ETCN, v: iEtc, col: GL_ETC}] : []), ...(cashP ? [cashP] : [])]; // 업종도 여섯 칸 — 큰 업종 넷 + 그 밖 업종 + 판 돈
   const VIEWS = {k: {label: '꾀별 분포', parts: kParts}, i: {label: '업종별 분포', parts: iParts}};

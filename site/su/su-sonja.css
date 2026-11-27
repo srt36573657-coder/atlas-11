@@ -1972,4 +1972,7 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-glkr { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; color: #20323A; white-space: nowrap; }
 #su .sj-glkrl { font-weight: 700; color: #3E5560; }
 #su .sj-gllegcap > span { display: block; }
+/* 수익률 색(주문 1127-1244 「수익은 빨강 화살펴 내림은 파랑으로 해」 — 이 줄에만 · 사장님 말씀) — 오름 ▲ 과 프로 = 빨강 · 내림 ▼ 과 프로 = 파랑 · 그대로 ― = 먹색 · 흰 바탕 글 대비 4.5 넘게 */
+#su .sj-glkr[data-st="up"] > .sj-shp, #su .sj-glkr[data-st="up"] > b { color: #D32F2F; }
+#su .sj-glkr[data-st="dn"] > .sj-shp, #su .sj-glkr[data-st="dn"] > b { color: #1565C0; }
 #su .sj-glkr > .sj-shp { width: auto; height: auto; border: 0; background: none; color: inherit; font-size: inherit; }
