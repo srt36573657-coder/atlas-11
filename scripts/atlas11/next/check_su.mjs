@@ -2103,6 +2103,44 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await ctx.close();
   }
 }
+{ // ㊺ 주문 1127-1714(사장님 2026-11-27(서울) 17:14 「손자 병법 전체를 … 정리 정돈 … 머스크라면 … 효율적인 구조로 … 에이전트 100개」) — 첫 정리: 긴 줄 접기
+  //   일꾼 100명이 모은 첫 정리 = 「위 일곱 펼침 · 나머지 서랍」 한 틀 — 꾀 모음 #/k 36줄 · 회사 모음 #/o · 정산 #/r/t 꾀마다 36줄은 위 일곱만 보이고, 장부 #/l 날짜별 펼친 날은 앞 스무 줄만 보임
+  //   줄은 한 목록 그대로(줄 수 = 자료 수 · 지우지 않음) · 단추 글(「8등부터 36등까지 더 보기」 · 「나머지 13곳 더 보기」 · 「8번째부터 36번째까지 더 보기」 · 「나머지 N줄 더 보기」) · 누르면 모두 보임 · 「다시 접기」 · 다시 누르면 접힘
+  //   누르는 곳 48 넘게 · 글 17 넘게 · 가로 넘침 0 · 오류 0 · 390 · 320
+  const W = '㊺ ', FOLDS = [['#/k', 'section.sj-krank ol.sj-krl', 7, /^8등부터 (\d+)등까지 더 보기$/, 'all'], ['#/o', 'section.sj-pks ol.sj-pkl', 7, /^나머지 (\d+)곳 더 보기$/, 'left'],
+    ['#/r/t', 'section.sj-st36 ol.sj-stl', 7, /^8번째부터 (\d+)번째까지 더 보기$/, 'all'], ['#/l', 'section.sj-ldf details.sj-ldd[open] > ol.sj-ldl', 20, /^나머지 (\d+)줄 더 보기$/, 'left']];
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    const look = sel => p.evaluate(sel => { const ol = document.querySelector('#su ' + sel); if (!ol) return null;
+      const lis = [...ol.children], b = ol.id ? document.querySelector('#su button.sj-f7b[aria-controls="' + ol.id + '"]') : null, r = b?.getBoundingClientRect();
+      return {id: ol.id, n: lis.length, li: lis.every(e => e.tagName === 'LI'), vis: lis.filter(e => e.getBoundingClientRect().height > 0).length, fold: ol.getAttribute('data-fold'), open: ol.hasAttribute('data-open'),
+        b: b ? {t: (b.textContent ?? '').trim(), h: Math.round(r.height), fs: parseFloat(getComputedStyle(b).fontSize), ex: b.getAttribute('aria-expanded'), dn: +b.getAttribute('data-n'), after: ol.nextElementSibling === b} : null,
+        wide: document.documentElement.scrollWidth <= innerWidth + 1}; }, sel);
+    const seen = []; let ok = true, why = '';
+    for (const [hh, sel, n0, sayRe, cnt] of FOLDS) {
+      await open(p, hh); await p.waitForTimeout(400);
+      const a = await look(sel); let good = !!a && a.li && a.wide;
+      if (good && a.n <= n0) good = a.vis === a.n && !a.b && a.fold == null; // 줄이 적은 날은 접지 않음
+      else if (good) {
+        const m = sayRe.exec(a.b?.t ?? ''), want = cnt === 'all' ? a.n : a.n - n0;
+        good = a.fold === String(n0) && !a.open && a.vis === n0 && !!a.b && a.b.after && a.b.ex === 'false' && a.b.dn === a.n - n0 && a.b.h >= 48 && a.b.fs >= 16.95 && !!m && +m[1] === want;
+        if (good) { await p.click('#su button.sj-f7b[aria-controls="' + a.id + '"]'); await p.waitForTimeout(250); const b2 = await look(sel);
+          good = !!b2 && b2.open && b2.vis === b2.n && b2.n === a.n && b2.b?.t === '다시 접기' && b2.b?.ex === 'true' && b2.wide;
+          await p.click('#su button.sj-f7b[aria-controls="' + a.id + '"]'); await p.waitForTimeout(250); const c2 = await look(sel);
+          good = good && !!c2 && !c2.open && c2.vis === n0 && c2.b?.t === a.b.t && c2.b?.ex === 'false';
+          seen.push([hh, a.n, a.vis, a.b.t, b2?.vis, c2?.vis]); }
+      }
+      if (!a || a.n > n0 || !good) seen.push([hh, a ? [a.n, a.vis, a.fold, a.b] : null]);
+      if (!good) { ok = false; why = why || JSON.stringify({hh, a}).slice(0, 700); }
+    }
+    check(ok && !errs.length, W + width + ' 가) 첫 정리 — 꾀 모음 · 회사 모음 · 정산 꾀마다 = 위 일곱만 보임 · 장부 날짜별 펼친 날 = 앞 스무 줄 · 줄은 한 목록 그대로 · 「더 보기」 단추 글 · 누르면 모두 · 「다시 접기」 · 48 · 17 · 넘침 0 · 오류 0',
+      (why || JSON.stringify(seen)).slice(0, 1500) + ' ' + JSON.stringify(errs.slice(0, 2)));
+    await ctx.close();
+  }
+}
 await browser.close();
 R.ok = R.counts.fail === 0;
 console.log(`손자병법 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);

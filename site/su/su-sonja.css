@@ -2041,3 +2041,7 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-glpkh { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 1.0625rem; }
 #su .sj-glpkk { font-weight: 700; color: #3E5560; }
 #su .sj-glpkt { margin: 0; font-size: 1.0625rem; line-height: 1.45; color: #3E5560; word-break: keep-all; }
+/* 긴 줄 접기(주문 1127-1714 · 일꾼 100명 머스크 정리) — 위 일곱(장부 날짜 칸은 스물)만 보이고 나머지는 「더 보기」 단추 한 번 */
+#su ol[data-fold="7"]:not([data-open]) > li:nth-child(n+8), #su ol[data-fold="20"]:not([data-open]) > li:nth-child(n+21) { display: none; }
+#su .sj-f7b { display: block; width: 100%; min-height: 56px; margin: 12px 0 4px; padding: 12px 16px; border: 2px solid #20323A; border-radius: 14px; background: #FFFFFF; color: #20323A; font: inherit; font-size: 18px; font-weight: 700; line-height: 1.4; text-align: center; cursor: pointer; }
+#su .sj-f7b[aria-expanded="true"] { background: #F3F8F6; }

@@ -30,6 +30,16 @@ export const KKOE = /^g(0[1-9]|[12]\d|3[0-6])$/;
 const K36 = Object.freeze(Array.from({length: 36}, (_, i) => 'g' + String(i + 1).padStart(2, '0')));
 const SETW = ['이김', '맞섬', '공격', '혼란', '연합', '패배']; // 여섯 묶음 머리 붓 글씨(묶음 이름은 자료 set 그대로)
 const NF = new Intl.NumberFormat('ko-KR');
+// 긴 줄 접기(주문 1127-1714 · 일꾼 100명 머스크 정리 — 「위 일곱 펼침 · 나머지 서랍」 한 틀) — 줄은 한 목록 그대로 · 위 몇 줄만 보이고 나머지는 「더 보기」 한 번
+export const FOLD7 = 7;
+let f7n = 0;
+export function fold7(ol, say, open = FOLD7) {
+  const n = ol.children.length; if (n <= open) return [ol, null];
+  ol.setAttribute('data-fold', String(open)); if (!ol.id) ol.id = 'sj-f7-' + (++f7n);
+  const b = h('button', {class: 'sj-f7b', type: 'button', 'aria-expanded': 'false', 'aria-controls': ol.id, 'data-n': String(n - open), text: say(open, n)});
+  b.addEventListener('click', () => { const on = !ol.hasAttribute('data-open'); ol.toggleAttribute('data-open', on); b.setAttribute('aria-expanded', String(on)); b.textContent = on ? '다시 접기' : say(open, n); });
+  return [ol, b];
+}
 const coUrl = c => '/atlas/data/co/' + c + '.json';
 
 /* ── 자료 ── */
@@ -266,7 +276,7 @@ export async function vKkoeAll(X) {
       head('차례', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '요즘 많이 오른 차례'}))),
       h('p', {class: 'sj-rule', text: (ST.rows.length ? mday(ST.rows.map(r => r.day).sort()[0]) + '부터 ' : '') + '날마다 꾀마다 고른 회사를 샀다고 치고 셌어요. 처음 넣은 100원이 지금 많이 늘어난 꾀가 1등이에요. 날마다 다시 줄을 세워요. 가짜 돈이에요.'}),
       M ? h('p', {class: 'sj-stmk', text: '▲는 앞 장날보다 오른 칸, ▼는 내린 칸, ―는 그대로예요.' + (nW ? ' 줄마다 지난 ' + nW + '일을 날마다 보여 줘요. 왼쪽이 ' + mday(M.days[M.days.length - nW]) + ', 오른쪽이 ' + mday(M.days[M.days.length - 1]) + '이에요.' : '')}) : null,
-      h('ol', {class: 'sj-kl sj-krl'}, ...K.map((x, i) => rankRow(g, x, i, M))),
+      ...fold7(h('ol', {class: 'sj-kl sj-krl'}, ...K.map((x, i) => rankRow(g, x, i, M))), (o, n) => (o + 1) + '등부터 ' + n + '등까지 더 보기'),
       endSeal('차례'))]
     : (() => { const sets = []; for (let i = 0; i < 6; i++) sets.push(K36.slice(i * 6, i * 6 + 6)); // 산 셈이 아직 없는 날 — 옛 여섯 묶음 그대로
       return sets.map((ks, i) => h('section', {class: 'sj-sec sj-kset', 'data-set': String(i + 1), 'aria-label': g.set[ks[0]]},
@@ -911,11 +921,11 @@ export async function vSettle36(X) {
       M ? h('p', {class: 'sj-st1', text: topSay(M, nameOf)}) : null, // 맨 위 한 줄(주문 1119-0243)
       M ? h('p', {class: 'sj-stmk', text: '▲는 앞 장날보다 오른 칸, ▼는 내린 칸이에요.'}) : null,
       meanCap(PM.bars), // 붓 막대 그림 뜻 — 줄 맨 위 한 번(주문 1116-1313)
-      h('ol', {class: 'sj-stl'}, ...K.map((x, i) => h('li', {class: 'sj-str', 'data-k': x.key, 'data-st': x.st},
+      ...fold7(h('ol', {class: 'sj-stl'}, ...K.map((x, i) => h('li', {class: 'sj-str', 'data-k': x.key, 'data-st': x.st},
         h('a', {class: 'sj-sta', href: '#/k/' + x.key, 'aria-label': (i + 1) + '번째 · ' + nameOf(x.key) + ' · ' + resText(x) + (M ? ' · ' + mvSay(M.move.get(x.key)) : '')},
           h('span', {class: 'sj-stn', text: String(i + 1)}), h('b', {class: 'sj-stk', text: nameOf(x.key)}), M ? mvMark(M.move.get(x.key)) : null, h('i', {'aria-hidden': 'true', text: '›'})),
         h('p', {class: 'sj-stv'}, h('span', {text: '산 돈 ' + won(x.cost)}), h('span', {class: 'sj-res', 'data-st': x.st}, shapeI(x.st), h('span', {text: resText(x)})), trackSpark(TK, x.key)), // 줄마다 쌓인 값 작은 꺾은선(주문 1119-0829)
-        bar(x)))),
+        bar(x)))), (o, n) => (o + 1) + '번째부터 ' + n + '번째까지 더 보기'),
       h('div', {class: 'sj-sttot', 'data-st': TT.st}, h('b', {text: '모두'}), h('span', {text: '산 돈 ' + won(TT.cost)}), h('span', {class: 'sj-res', 'data-st': TT.st}, shapeI(TT.st), h('span', {text: resText(TT)}))),
       h('p', {class: 'sj-safe', text: '가짜 돈으로 지난 기록을 센 표예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
       endSeal('셈')),
@@ -1021,7 +1031,7 @@ export async function vLedger(X) {
         return h('details', {class: 'sj-ldd', 'data-day': g.day, 'data-n': String(g.items.length), 'data-st': gs, open: i === op || null},
           h('summary', {}, h('span', {class: 'sj-ldds'}, h('b', {text: mday(g.day) ?? g.day}), h('span', {text: '회사 ' + g.items.length + '곳 · ' + g.times + '번 · 산 돈 ' + won(g.cost)})),
             h('span', {class: 'sj-res', 'data-st': gs}, shapeI(gs), h('span', {text: ledRes(g.cost, g.val, gs === 'one')})), chev()),
-          h('ol', {class: 'sj-ldl'}, ...g.items.map(x => row(x, 'day')))); })); return; }
+          ...fold7(h('ol', {class: 'sj-ldl'}, ...g.items.map(x => row(x, 'day'))), (o, n) => '나머지 ' + (n - o) + '줄 더 보기', 20)); })); return; }
       const TOP = 40, xs = V.items;
       list.replaceChildren(h('ol', {class: 'sj-ldl sj-ldl1'}, ...xs.slice(0, TOP).map(x => row(x, P.view))),
         xs.length > TOP ? h('details', {class: 'sj-drawer sj-ldmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '나머지 ' + (xs.length - TOP) + '줄도 펼치기'}), chev()), h('ol', {class: 'sj-ldl'}, ...xs.slice(TOP).map(x => row(x, P.view)))) : null);
@@ -1211,7 +1221,7 @@ export async function vPicks(X) {
     h('section', {class: 'sj-sec sj-pks', 'aria-label': '오늘 여러 꾀가 고른 회사', 'data-n': String(P.rows.length), 'data-rule': P.rule},
       head('곳', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '오늘 여러 꾀가 고른 회사'}), h('span', {class: 'sj-h2n', text: ' ' + P.rows.length + '곳'}))),
       h('p', {class: 'sj-dayl', text: (bd ? bd + ' 마지막 값으로 고른 회사예요. ' : '') + '꾀 두 가지 넘게 고른 곳만 적었어요. 꺾은선은 날마다 고른 꾀 수예요.'}),
-      P.rows.length ? h('ol', {class: 'sj-pkl'}, ...P.rows.map(row)) : h('p', {class: 'sj-tnone', text: '오늘은 꾀 두 가지 넘게 고른 회사가 없어요. 억지로 채우지 않았어요.'}),
+      ...(P.rows.length ? fold7(h('ol', {class: 'sj-pkl'}, ...P.rows.map(row)), (o, n) => '나머지 ' + (n - o) + '곳 더 보기') : [h('p', {class: 'sj-tnone', text: '오늘은 꾀 두 가지 넘게 고른 회사가 없어요. 억지로 채우지 않았어요.'})]),
       endSeal('곳')),
     P.rows.length ? h('section', {class: 'sj-sec sj-pkg', 'aria-label': '날마다 고른 꾀 수'},
       head('선', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '날마다 고른 꾀 수'})), true),
