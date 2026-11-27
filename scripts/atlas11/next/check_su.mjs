@@ -1858,7 +1858,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
         rows: document.querySelectorAll('#su .sj-glk').length, r0: txt(document.querySelector('#su .sj-glk .sj-glkt')), r0k: document.querySelector('#su .sj-glk')?.dataset.k ?? null,
         sh: sps.map(b => Math.round(b.getBoundingClientRect().height)), spOn: sps.filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.span), spT: sps.map(b => b.dataset.span + (b.disabled ? '-' : '')).join(' '), segIn: !!document.querySelector('#su section.sj-pf .sj-pfseg'), segBefore: document.querySelector('#su main > .sj-pfseg')?.nextElementSibling?.matches('section.sj-pf') ?? false, dots: document.querySelectorAll('#su .sj-pftr path.sj-pfdot').length, rec0: document.querySelector('#su nav.sj-rec a.sj-recon')?.getAttribute('href') ?? null, tab4: document.querySelector('#su .sj-tabs a.sj-tab[aria-current="page"]')?.getAttribute('href') ?? null, pathN: document.querySelector('#su .sj-pftr .sj-gltrp')?.getAttribute('data-n'), last: txt(document.querySelector('#su .sj-pflast b')),
         ys: document.querySelectorAll('#su .sj-pfy > span').length, xs: document.querySelectorAll('#su .sj-pfx > span').length,
-        text: txt(main), red: [...(main?.querySelectorAll('*') ?? [])].filter(e => { if (e.closest('.sj-glkr')) return false; const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length, // 꾀별 수익률 오름 빨강은 사장님 말씀(주문 1127-1244)이라 뺌
+        text: txt(main), red: [...(main?.querySelectorAll('*') ?? [])].filter(e => { if (e.closest('.sj-glkr') || e.closest('.sj-wkg[data-st="up"]')) return false; const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length, // 꾀별 수익률 오름 빨강은 사장님 말씀(주문 1127-1244)이라 뺌
         fs: [...fsOf('#su .sj-pf .sj-gllegi'), ...fsOf('#su .sj-pfsb'), ...fsOf('#su .sj-pfctr > *'), ...fsOf('#su text.sj-pfsl'), ...fsOf('#su .sj-pfy > span'), ...fsOf('#su .sj-pfx > span'), ...fsOf('#su .sj-glsp'), ...fsOf('#su .sj-pfint'), ...fsOf('#su .sj-glkh'), ...fsOf('#su .sj-glkt'), ...fsOf('#su .sj-glk2')], over: document.documentElement.scrollWidth - innerWidth};
     });
     const md = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일';
@@ -1919,7 +1919,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     check(g.rows === g.nk && g.r0k === g.k0 && (!g.best0 || g.r0.startsWith('가장 많이 고른 업종은 ' + g.best0[0] + ieyo(g.best0[0]) + ' · ') && g.r0.endsWith(' 가운데 ' + NFm.format(g.best0[1]) + '번')),
       W + width + ' 라) 꾀마다 많이 고른 업종 — 꾀 줄 = 산 꾀 수 · 첫 꾀 가장 많이 고른 업종 = 자료에서 셈', JSON.stringify({rows: g.rows, nk: g.nk, r0: g.r0, best0: g.best0}));
     check(!/%|매수|매도|추천/.test(g.text) && g.red === 0 && g.fs.length > 0 && g.fs.every(f => f >= 16.9) && g.over <= 0 && !errs.length,
-      W + width + ' 마) 「%」 · 매수 · 매도 · 추천 0 · 빨강 0(꾀별 수익률 오름 빨강은 사장님 말씀 · 주문 1127-1244) · 글 17 넘게 · 넘침 0 · 오류 0', JSON.stringify({red: g.red, fsMin: Math.min(...g.fs), over: g.over, errs: errs.slice(0, 2)}));
+      W + width + ' 마) 「%」 · 매수 · 매도 · 추천 0 · 빨강 0(꾀별 수익률 오름 빨강은 사장님 말씀 · 주문 1127-1244 · 7단 들머리 오른 수익 칸 · 주문 1127-1457) · 글 17 넘게 · 넘침 0 · 오류 0', JSON.stringify({red: g.red, fsMin: Math.min(...g.fs), over: g.over, errs: errs.slice(0, 2)}));
     await ctx.close();
   }
 }
@@ -2012,6 +2012,71 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       W + width + ' 나) 오늘의 투자 점검 — 글 셋 그대로(체크리스트 → 점검 · 매수 → 사지) · 누르면 표시 · 다시 열어도 그날은 남음 · 다시 누르면 지움 · 줄 48 넘게', JSON.stringify({th: g.th, items: g.items, p0, p1, p2, p3, bh: g.bh}));
     check(g.fs.length > 0 && g.fs.every(f => f >= 16.9) && g.red === 0 && !/%|매수|매도|추천/.test(g.text) && g.over <= 0 && !errs.length,
       W + width + ' 다) 인사 · 오늘의 기업 · 투자 점검 — 글 17 넘게 · 빨강 0 · 「%」 · 매수 · 매도 · 추천 0 · 넘침 0 · 오류 0', JSON.stringify({fsMin: Math.min(...g.fs), red: g.red, over: g.over, bad: (/%|매수|매도|추천/.exec(g.text) ?? [null])[0], errs: errs.slice(0, 2)}));
+    await ctx.close();
+  }
+}
+{ // ㊹ 주문 1127-1457(사장님 2026-11-27(서울) 14:57 「그리고 기록을 누르면 어떤 종목들 매매했고 얼마에 사서 얼마에 매도해서 얼마 수익났는지도 하고 7단 클릭 구조로 만들어」) — 7단 사고판 기록
+  //   한눈에 맨 위 = 7단 들머리(판 것 · 들고 있는 것 · 번 · 산 돈 → 판 돈/지금 · 수익률 · 늘고 준 돈 = 이 검사가 정산 자료에서 따로 셈) · #/l/t/s 부터 한 단씩 첫 줄을 눌러 7단까지
+  //   단마다 줄 = 따로 묶은 것과 같음(꾀 · 업종 · 종목 · 사고판 건 · 합) · 수익률 높은 차례(6단은 산 날 늦은 차례) · 7단 한 건 = 회사 · 꾀 · 업종 · 산 날 · 산 값 · 산 돈 · 판 날 · 판 값 · 판 돈 · 들고 있은 날 · 수익
+  //   일곱 단 길(지금 단 · 앞 단 고리) · 누르는 곳 48 넘게 · 글 17 넘게 · 「%」 · 매수 · 매도 · 추천 0 · 빨강은 오른 수익 칸만 · 넘침 0 · 오류 0 · 390 · 320
+  const W = '㊹ ', D44 = await J('/su/data/su21-settle.json').catch(() => null), KR44 = /^g(0[1-9]|[12]\d|3[0-6])$/, q44 = Number.isFinite(D44?.qty) ? D44.qty : 10;
+  const T44 = []; (D44?.buys ?? []).forEach((b, i) => { const x = D44?.sell?.s?.[i], k = D44?.kinds?.[b[1]]; if (!Array.isArray(b) || !Array.isArray(x) || !KR44.test(k ?? '') || !(b[3] > 0) || !(x[2] > 0)) return; T44.push({i, k, code: b[2], d0: b[0], p0: b[3], how: x[0], d1: x[1], p1: x[2], days: x[3]}); });
+  const ind44 = c => (typeof D44?.co?.[c]?.[1] === 'string' && D44.co[c][1].trim()) || '그 밖 업종', co44 = c => D44?.co?.[c]?.[0] ?? c;
+  const sum44 = L => { const c = L.reduce((a, t) => a + t.p0 * q44, 0), v = L.reduce((a, t) => a + t.p1 * q44, 0); return {n: L.length, c, v, d: v - c, r: c > 0 ? v / c - 1 : 0}; };
+  const rT44 = r => Math.abs(Math.round(r * 1000) / 10).toFixed(1) + '프로', st44 = d => (Math.round(d) > 0 ? 'up' : Math.round(d) < 0 ? 'dn' : 'eq');
+  const mtx44 = (m, held) => NFm.format(m.n) + '번 · 산 돈 ' + wonM(m.c) + ' → ' + (held ? '지금 ' : '판 돈 ') + wonM(m.v), md44 = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일';
+  const rowW = (href, m, held) => [href, mtx44(m, held), st44(m.d), rT44(m.r), movedM(m.d)];
+  const SOLD = T44.filter(t => t.how !== 'h'), HELD = T44.filter(t => t.how === 'h');
+  const grp44 = (L, key) => { const m = new Map(); for (const t of L) { const k = key(t); if (!m.has(k)) m.set(k, []); m.get(k).push(t); } return [...m.entries()].map(([k, G]) => [k, sum44(G)]); };
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    const look = () => p.evaluate(() => { const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), S = document.querySelector('#su section.sj-wk'), main = document.querySelector('#su main');
+      const rows = [...(S?.querySelectorAll('ol.sj-wkl a.sj-wkrow') ?? [])].map(a => [a.getAttribute('href'), txt(a.querySelector('.sj-wkm')), a.querySelector('.sj-wkg')?.dataset.st ?? '', txt(a.querySelector('.sj-wkg > b')), txt(a.querySelector('.sj-wkg > .sj-wkgm')), txt(a.querySelector('.sj-wkt > b'))]);
+      const path = [...(S?.querySelectorAll('ol.sj-wkp > li') ?? [])].map(li => [li.className, !!li.querySelector('a'), txt(li)]);
+      const taps = [...(S?.querySelectorAll('a.sj-wkrow, ol.sj-wkp a, a.sj-wkback') ?? [])].map(a => a.getBoundingClientRect().height);
+      const fs = [...(S?.querySelectorAll('*') ?? [])].filter(e => [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())).map(e => parseFloat(getComputedStyle(e).fontSize));
+      const red = [...(main?.querySelectorAll('*') ?? [])].filter(e => { if (e.closest('.sj-wkg[data-st="up"]') || e.closest('.sj-glkr')) return false; const m = /rgba?\((\d+), (\d+), (\d+)/.exec(getComputedStyle(e).color); return m && +m[1] > 170 && +m[2] < 90 && +m[3] < 90; }).length;
+      const upC = [...(S?.querySelectorAll('.sj-wkg[data-st="up"] > b') ?? [])].map(e => getComputedStyle(e).color), dnC = [...(S?.querySelectorAll('.sj-wkg[data-st="dn"] > b') ?? [])].map(e => getComputedStyle(e).color);
+      return {hash: location.hash, page: main?.dataset.page, lv: S?.dataset.lv ?? null, first: main?.firstElementChild === S, h1: txt(S?.querySelector('.sj-wkh1')), rows, path, taps, fs, red, upC, dnC,
+        dl: [...(S?.querySelectorAll('dl.sj-wkdl > *') ?? [])].map(txt), big: S?.querySelector('.sj-wkbig .sj-wkg') ? [S.querySelector('.sj-wkbig .sj-wkg').dataset.st, txt(S.querySelector('.sj-wkbig .sj-wkg > b')), txt(S.querySelector('.sj-wkbig .sj-wkgm'))] : null,
+        text: txt(main), over: document.documentElement.scrollWidth - innerWidth}; });
+    // 1 · 2단 — 한눈에 맨 위 들머리
+    await open(p, '#/l/a'); await p.waitForSelector('#su section.sj-wkin', {timeout: 20000}).catch(() => {});
+    const g0 = await look(), want0 = [rowW('#/l/t/s', sum44(SOLD), false), rowW('#/l/t/h', sum44(HELD), true)];
+    check(g0.first && g0.lv === '1' && JSON.stringify(g0.rows.map(r => r.slice(0, 5))) === JSON.stringify(want0) && g0.rows.map(r => r[5]).join(' ') === '판 것 들고 있는 것' && g0.taps.every(h => h >= 47.5) && !errs.length,
+      W + width + ' 가) 기록을 누르면(한눈에 맨 위) 7단 들머리 — 판 것 · 들고 있는 것(번 · 산 돈 → 판 돈 · 지금 · 수익률 · 늘고 준 돈 = 자료에서 따로 셈)', JSON.stringify({first: g0.first, lv: g0.lv, rows: g0.rows, want0, errs: errs.slice(0, 2)}).slice(0, 1500));
+    // 3단 → 7단 — 단마다 첫 줄을 누름(판 것 길)
+    const seen = [], segs = ['s']; let L = SOLD, ok = true, why = '';
+    const levels = [[t => t.k, k => k], [t => ind44(t.code), x => x], [t => t.code, c => c]];
+    for (let lv = 3; lv <= 7; lv++) {
+      await open(p, '#/l/t/' + segs.map(encodeURIComponent).join('/')); await p.waitForSelector('#su section.sj-wk', {timeout: 20000}).catch(() => {});
+      const g = await look(); seen.push({lv: g.lv, h1: g.h1, n: g.rows.length, taps: g.taps.length ? Math.min(...g.taps) : null, fs: g.fs.length ? Math.min(...g.fs) : null, over: g.over, red: g.red});
+      const pathOk = g.path.length === 7 && g.path.every((x, i) => (i + 1 < lv ? x[0] === 'sj-wkdone' && x[1] : i + 1 === lv ? x[0] === 'sj-wkon' && !x[1] : x[0] === 'sj-wknext' && !x[1])) && g.path[lv - 1][2].startsWith(lv + '단 ');
+      const tapOk = g.taps.every(h => h >= 47.5), fsOk = g.fs.every(f => f >= 16.9), colOk = g.upC.every(c => c === 'rgb(211, 47, 47)') && g.dnC.every(c => c === 'rgb(21, 101, 192)');
+      const base = !/%|매수|매도|추천/.test(g.text) && g.red === 0 && g.over <= 0 && g.page === 'walk' && g.lv === String(lv) && pathOk && tapOk && fsOk && colOk;
+      if (lv <= 5) { // 꾀 · 업종 · 종목 — 묶음 = 따로 묶은 것 · 수익률 높은 차례
+        const [key] = levels[lv - 3], G = grp44(L, key), byK = new Map(G.map(([k, m]) => [k, m]));
+        const hrefK = r => { const s = r[0].split('/'); try { return decodeURIComponent(s[s.length - 1]); } catch { return s[s.length - 1]; } };
+        const rowsOk = g.rows.length === G.length && g.rows.every(r => { const m = byK.get(hrefK(r)); return !!m && JSON.stringify(r.slice(1, 5)) === JSON.stringify(rowW('', m, false).slice(1)); }) && g.rows.every((r, i) => !i || byK.get(hrefK(g.rows[i - 1])).r >= byK.get(hrefK(r)).r - 1e-12);
+        if (!(base && rowsOk)) { ok = false; why = why || JSON.stringify({lv, base, pathOk, tapOk, fsOk, colOk, red: g.red, rows: g.rows.slice(0, 2), G: G.slice(0, 2).map(([k, m]) => rowW(k, m, false))}).slice(0, 900); }
+        const pick = g.rows[0] ? hrefK(g.rows[0]) : null; if (pick == null) { ok = false; why = why || 'no rows lv ' + lv; break; }
+        segs.push(pick); L = L.filter(t => key(t) === pick);
+      } else if (lv === 6) { // 사고판 건 — 산 날 늦은 차례(같으면 산 셈 차례)
+        const LL = [...L].sort((a, b) => b.d0.localeCompare(a.d0) || a.i - b.i), want = LL.map(t => ['#/l/t/' + [...segs, String(t.i)].map(encodeURIComponent).join('/'), ...rowW('', sum44([t]), false).slice(1)]);
+        const rowsOk = JSON.stringify(g.rows.map(r => r.slice(0, 5))) === JSON.stringify(want);
+        if (!(base && rowsOk)) { ok = false; why = why || JSON.stringify({lv, base, pathOk, rows: g.rows.slice(0, 2), want: want.slice(0, 2)}).slice(0, 900); }
+        segs.push(String(LL[0]?.i)); L = LL.slice(0, 1);
+      } else { // 7단 한 건
+        const t = L[0], m = sum44([t]), dlW = ['회사', co44(t.code) + ' · ' + t.code, '꾀 · 업종', null, '산 날 · 산 값', md44(t.d0) + ' · 한 주 ' + wonM(t.p0), '산 돈', wonM(t.p0 * q44) + '(' + q44 + '주)', '판 날 · 판 값', md44(t.d1) + ' · 한 주 ' + wonM(t.p1), '판 돈', wonM(t.p1 * q44) + '(' + q44 + '주)'];
+        const dlOk = g.dl.length === 14 && dlW.every((x, i) => x == null || g.dl[i] === x) && g.dl[3].endsWith(' · ' + ind44(t.code)) && g.dl[12] === '들고 있은 날' && g.dl[13].startsWith(t.days + '일 · ') && JSON.stringify(g.big) === JSON.stringify([st44(m.d), rT44(m.r), movedM(m.d)]);
+        if (!(base && dlOk)) { ok = false; why = why || JSON.stringify({lv, base, pathOk, dl: g.dl, dlW, big: g.big}).slice(0, 900); }
+      }
+    }
+    check(ok && !errs.length, W + width + ' 나) 3단 꾀 → 4단 업종 → 5단 종목 → 6단 사고판 건 → 7단 한 건 — 단마다 줄 = 따로 묶은 것 · 수익률 높은 차례 · 한 건 = 산 날 · 산 값 · 판 날 · 판 값 · 수익 · 일곱 단 길 · 48 · 17 · 빨강 · 파랑 · 「%」 · 매수 · 매도 0',
+      (why || JSON.stringify(seen)).slice(0, 1500) + ' ' + JSON.stringify(errs.slice(0, 2)));
     await ctx.close();
   }
 }
