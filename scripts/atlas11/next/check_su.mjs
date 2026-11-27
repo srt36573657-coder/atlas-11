@@ -1504,6 +1504,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await open(p, '#/');
     await p.waitForFunction(() => !document.querySelector('#su main.sj-page > section.sj-s36.sj-wait'), null, {timeout: 15000}).catch(() => {});
     // 격언 열 가지 접기(주문 1127-2148 · 사장님 2026-11-27(서울) 21:48 「어그래」 — 「첫 화면 격언 열 가지를 맨 위 그대로 두고, 눌러 펼치게 줄여 볼까요?」의 답) — 처음엔 첫째만 · 「나머지 격언 9가지 더 보기」 · 누르면 열 가지 · 「다시 접기」
+    await p.waitForSelector('#su section.sj-mind > .sj-gk > button.sj-f7b', {timeout: 15000}).catch(() => {}); // 접기 단추는 자바스크립트가 붙임 — 막 올린 뒤처럼 느릴 때 기다림(2026-11-28 03:12 진짜 사이트 검사에서 단추 전에 잼)
     const f0 = await p.evaluate(() => { const s = document.querySelector('#su main.sj-page[data-page="sonja"] > section.sj-mind'), ol = s?.querySelector(':scope > .sj-gk > ol.sj-gkl'), b = s?.querySelector(':scope > .sj-gk > button.sj-f7b'), r = b?.getBoundingClientRect();
       return {fold: ol?.getAttribute('data-fold') ?? null, n: ol?.children.length ?? 0, vis: ol ? [...ol.children].filter(li => li.getBoundingClientRect().height > 0).map(li => li.getAttribute('data-n')) : [], after: !!b && ol?.nextElementSibling === b,
         t: (b?.textContent ?? '').trim(), ex: b?.getAttribute('aria-expanded') ?? null, h: r ? Math.round(r.height) : 0, fs: b ? parseFloat(getComputedStyle(b).fontSize) : 0, top: s?.previousElementSibling?.matches?.('section.sj-todo') ?? false}; });
@@ -1531,7 +1532,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     for (const n of [1, 10]) {
       const sel = '#su section.sj-mind li.sj-gki[data-n="' + n + '"] > details.sj-gkd > summary.sj-gks';
       if (!(await p.$(sel))) { tap33.push(null); continue; }
-      await p.click(sel); await p.waitForTimeout(150);
+      if (!(await p.click(sel, {timeout: 8000}).then(() => true).catch(() => false))) { tap33.push({open: false, why: 'click'}); continue; } await p.waitForTimeout(150); // 못 누르면 이 검사만 실패(검사 전체가 멈추지 않게)
       const o = await p.evaluate(sel => { const d = document.querySelector(sel)?.parentElement, q = d?.querySelector(':scope > blockquote.sj-gkq'), qp = q?.querySelector('p'), c = q?.querySelector('cite'), r = q?.getBoundingClientRect();
         return {open: !!d?.open, q: (qp?.textContent ?? '').trim(), c: (c?.textContent ?? '').trim(), fs: qp ? parseFloat(getComputedStyle(qp).fontSize) : 0, cfs: c ? parseFloat(getComputedStyle(c).fontSize) : 0, h: r ? Math.round(r.height) : 0, right: r ? Math.round(r.right) : 0}; }, sel);
       await p.click(sel); await p.waitForTimeout(100);
