@@ -677,26 +677,38 @@ function glDaySec(R) {
     ol, more,
     h('p', {class: 'sj-gllead', text: '「그날 값」은 그날 들고 있던 것의 종가 값과 그때까지 판 돈을 더한 값이에요. 모두 가짜 돈이에요.'}));
 }
+/* 꾀별 이름표 한 줄(주문 1127-1137 · 사장님 2026-11-27(서울) 11:37 「매수한 비중이라고 표기하고 그래서 수익률이 얼마인지도 표기하라」 · docs/design/record-2026-11-27/order-1137.txt)
+   윗줄 = 점 · 꾀 이름 · 「산 비중 ○프로」(모든 산 돈 가운데 그 꾀가 쓴 몫 · 동그라미 조각과 같은 셈) · 아랫줄 = 「산 돈 ○원」 · 「수익률 ▲ ○프로」(그 꾀의 지금 값 ÷ 산 돈 − 1)
+   「매수」는 사이트 규칙대로 「산」 · 차례는 산 돈 큰 차례(수익률로 줄 세우지 않음) · 오른 것도 내린 것도 같은 크기 · 같은 모양(▲ · ▼ · ―) · 빨강 없음 */
+export const GL_KCAP = Object.freeze(['서른여섯 꾀 모두예요. 산 돈이 큰 차례예요.', '산 비중은 모든 산 돈에서 그 꾀가 쓴 몫이에요.', '수익률은 그 꾀가 쓴 돈이 지금 몇 프로 늘거나 줄었는지예요. 판 것은 판 돈으로 셌어요.']); // 세 줄(한 줄씩 끊어 「산 비중」이 갈라지지 않게)
+export const glRateT = r => Math.abs(Math.round(r * 1000) / 10).toFixed(1) + '프로'; // 「2.5프로」 — 오르내림은 앞 모양(▲ · ▼ · ―)으로
+function glKRow(x, tot) {
+  const r = x.v > 0 ? x.now / x.v - 1 : null, st = r == null ? 'none' : stOfD(Math.round(r * 1000));
+  return h('li', {class: 'sj-gllegi sj-glkl', 'data-part': x.name, 'data-k': x.k, 'data-st': st}, glDot(x.col), h('b', {text: x.name}),
+    h('span', {class: 'sj-pfsh', text: '산 비중 ' + glShare(x.v, tot) + '프로'}),
+    h('p', {class: 'sj-glkm'}, h('span', {class: 'sj-pfam', text: '산 돈 ' + glWonS(x.v) + '원'}),
+      r == null ? h('span', {class: 'sj-glkr', text: '산 적 없음'}) : h('span', {class: 'sj-glkr sj-res', 'data-st': st}, h('span', {class: 'sj-glkrl', text: '수익률'}), shapeI(st), h('b', {text: glRateT(r)}))));
+}
 export async function vGlance(X) {
   const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
   const A = D ? glanceOf(D) : null;
   if (!A || !A.n) return missPage(X, '한눈에', '사고 팔기 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
   const st = stOfD(A.diff);
-  // 꾀별 나눔(본보기의 「상품별 분포」) — 꾀마다 지금 값(들고 있는 것 + 판 돈) · 서른여섯 꾀 모두(주문 1127-0938)
-  const TR = sellTrades(D), byK = new Map(); for (const t of [...TR.hold, ...TR.sold]) byK.set(t.k, (byK.get(t.k) ?? 0) + t.p1 * TR.q);
+  // 꾀별 나눔(본보기의 「상품별 분포」) — 서른여섯 꾀 모두(주문 1127-0938) · 꾀마다 산 돈(조각 · 산 비중) + 지금 값(들고 있는 것 + 판 돈 → 수익률)(주문 1127-1137)
+  const TR = sellTrades(D), byK = new Map(), byKV = new Map(); for (const t of [...TR.hold, ...TR.sold]) { byK.set(t.k, (byK.get(t.k) ?? 0) + t.p0 * TR.q); byKV.set(t.k, (byKV.get(t.k) ?? 0) + t.p1 * TR.q); }
   const nCo = new Set(TR.hold.map(t => t.code)).size, DY = glDays(D), d1 = DY.length > 1 ? DY[DY.length - 1] : null, asOf = DY.length ? DY[DY.length - 1].d : typeof D.asOf === 'string' ? D.asOf : null; // 보유 종목 · 날마다 · 앞 장날 · 기준 날(주문 1126-2137)
-  const kTop = K36.map(k => [k, byK.get(k) ?? 0]).sort((a, b) => b[1] - a[1] || K36.indexOf(a[0]) - K36.indexOf(b[0])), kParts = kTop.map(([k, v], j) => ({name: nameOf(k), v, col: GL_COL36[j], k})); // 서른여섯 꾀 모두 — 지금 값 큰 차례(같으면 꾀 차례) · 산 적 없는 꾀도 0원으로(주문 1127-0938 · 옛 판: 큰 꾀 다섯 + 그 밖 꾀)
+  const kTop = K36.map(k => [k, byK.get(k) ?? 0]).sort((a, b) => b[1] - a[1] || K36.indexOf(a[0]) - K36.indexOf(b[0])), kParts = kTop.map(([k, v], j) => ({name: nameOf(k), v, now: byKV.get(k) ?? 0, col: GL_COL36[j], k})); // 서른여섯 꾀 모두 — 산 돈 큰 차례(같으면 꾀 차례) · 산 적 없는 꾀도 0원으로(주문 1127-0938 · 1127-1137 「매수한 비중」 = 산 돈 몫 · 옛 판: 지금 값 큰 차례)
   const iTop = A.parts.filter(x => !x.cash && x.name !== GL_ETCN).sort((a, b) => b.v - a.v), iEtc = A.parts.filter(x => x.name === GL_ETCN).reduce((a, x) => a + x.v, 0) + iTop.slice(4).reduce((a, x) => a + x.v, 0), cashP = A.parts.find(x => x.cash);
   const iParts = [...iTop.slice(0, 4), ...(iEtc > 0 ? [{name: GL_ETCN, v: iEtc, col: GL_ETC}] : []), ...(cashP ? [cashP] : [])]; // 업종도 여섯 칸 — 큰 업종 넷 + 그 밖 업종 + 판 돈
   const VIEWS = {k: {label: '꾀별 분포', parts: kParts}, i: {label: '업종별 분포', parts: iParts}};
   const insight = view => { const P = VIEWS[view].parts, tot = P.reduce((a, x) => a + x.v, 0), cash = P.find(x => x.cash), big = [...P].filter(x => !x.cash && !/^그 밖/.test(x.name)).sort((a, b) => b.v - a.v)[0];
-    return view === 'k' ? (big ? '지금 값이 가장 큰 꾀는 「' + big.name + '」' + glIeyo(big.name) + '. 모두의 ' + glShare(big.v, tot) + '프로예요.' : '')
+    return view === 'k' ? (big ? '산 돈이 가장 큰 꾀는 「' + big.name + '」' + glIeyo(big.name) + '. 모든 산 돈의 ' + glShare(big.v, tot) + '프로예요.' : '')
       : (cash ? '지금 값의 ' + glShare(cash.v, tot) + '프로는 판 돈이에요. ' : '') + (big ? '들고 있는 회사 가운데는 ' + josa(big.name, '이') + ' 가장 커요.' : ''); };
   const box = h('div', {class: 'sj-pfdo'}), leg = h('ul', {class: 'sj-glleg'}), legCap = h('p', {class: 'sj-gllegcap'}), ins = h('b', {class: 'sj-pfinb'}), sec = h('section', {class: 'sj-sec sj-pf sj-glal', 'aria-label': '자산 포트폴리오'});
   const show = view => { const P = VIEWS[view].parts, tot = P.reduce((a, x) => a + x.v, 0);
     box.replaceChildren(glDonut(P), h('div', {class: 'sj-pfctr', 'aria-hidden': 'true'}, h('span', {text: '총 자산'}), h('b', {text: glWonS(A.val)}), h('span', {class: 'sj-pfctrr', 'data-st': st, text: ({up: '▲', dn: '▼'}[st] ?? '') + glPp(A.r)})));
-    leg.replaceChildren(...P.map(x => h('li', {class: 'sj-gllegi', 'data-part': x.name, 'data-k': x.k ?? null}, glDot(x.col), h('b', {text: x.name}), h('span', {class: 'sj-pfsh', text: glShare(x.v, tot) + '프로'}), h('span', {class: 'sj-pfam', text: glWonS(x.v) + '원'}))));
-    legCap.hidden = view !== 'k'; legCap.textContent = view === 'k' ? '서른여섯 꾀 모두예요. 지금 값(들고 있는 것 + 판 돈)이 큰 차례예요.' : '';
+    leg.replaceChildren(...P.map(x => (view === 'k' ? glKRow(x, tot) : h('li', {class: 'sj-gllegi', 'data-part': x.name, 'data-k': x.k ?? null}, glDot(x.col), h('b', {text: x.name}), h('span', {class: 'sj-pfsh', text: glShare(x.v, tot) + '프로'}), h('span', {class: 'sj-pfam', text: glWonS(x.v) + '원'})))));
+    legCap.hidden = view !== 'k'; legCap.replaceChildren(...(view === 'k' ? GL_KCAP.map((x, i) => h('span', {text: x + (i < GL_KCAP.length - 1 ? ' ' : '')})) : []));
     ins.textContent = insight(view); sec.dataset.view = view;
     for (const b of segB) b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); };
   const segB = Object.entries(VIEWS).map(([v, o]) => { const b = h('button', {class: 'sj-pfsb', type: 'button', 'data-view': v, text: o.label}); b.addEventListener('click', () => show(v)); return b; });

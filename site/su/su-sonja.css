@@ -1964,7 +1964,12 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-pf[data-view="k"] .sj-pfdo, #su .sj-pf[data-view="k"] .sj-pfdo .sj-gldo { width: 180px; height: 180px; }
 #su .sj-gllegcap { justify-self: stretch; margin: 0; font-size: 1.0625rem; line-height: 1.45; color: #3E5560; word-break: keep-all; }
 #su .sj-pf[data-view="k"] .sj-glleg { justify-self: stretch; gap: 0; }
-#su .sj-pf[data-view="k"] .sj-gllegi { grid-template-columns: 16px minmax(0, 1fr) auto auto; column-gap: 8px; padding: 6px 0; border-bottom: 1px solid #E3EBEA; }
-#su .sj-pf[data-view="k"] .sj-gllegi > .sj-pfsh { grid-column: 3; grid-row: 1; }
-#su .sj-pf[data-view="k"] .sj-gllegi > .sj-pfam { grid-column: 4; grid-row: 1; min-width: 5.2em; text-align: right; color: #20323A; }
-@media (max-width: 359px) { #su .sj-pf[data-view="k"] .sj-gllegi { grid-template-columns: 16px minmax(0, 1fr) auto; } #su .sj-pf[data-view="k"] .sj-gllegi > .sj-pfam { grid-column: 2 / 4; grid-row: 2; min-width: 0; text-align: left; color: #3E5560; } }
+/* 꾀별 이름표 두 줄(주문 1127-1137 「매수한 비중이라고 표기하고 그래서 수익률이 얼마인지도」) — 윗줄 점 · 이름 · 산 비중 / 아랫줄 산 돈 · 수익률(좁으면 수익률이 다음 줄 오른쪽) */
+#su .sj-pf[data-view="k"] .sj-gllegi { grid-template-columns: 16px minmax(0, 1fr) auto; column-gap: 8px; row-gap: 2px; padding: 8px 0; border-bottom: 1px solid #E3EBEA; }
+#su .sj-pf[data-view="k"] .sj-gllegi > .sj-pfsh { grid-column: 3; grid-row: 1; justify-self: end; white-space: nowrap; }
+#su .sj-glkm { grid-column: 2 / 4; grid-row: 2; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; column-gap: 12px; row-gap: 2px; margin: 0; }
+#su .sj-glkm > .sj-pfam { color: #3E5560; white-space: nowrap; }
+#su .sj-glkr { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; color: #20323A; white-space: nowrap; }
+#su .sj-glkrl { font-weight: 700; color: #3E5560; }
+#su .sj-gllegcap > span { display: block; }
+#su .sj-glkr > .sj-shp { width: auto; height: auto; border: 0; background: none; color: inherit; font-size: inherit; }
