@@ -46,7 +46,7 @@ export function sjPage(m, lc = null) {
   const c = main.cloneNode(true); for (const e of c.querySelectorAll('svg, [aria-hidden="true"], [data-proper]')) e.remove();
   const left = hardLeft(c.textContent ?? '', []); main.dataset.hard = String(left.length); main.dataset.hardWords = left.join(','); main.dataset.glossed = '';
   const nx = m.next ? {href: m.next.href, k: m.next.k ?? (m.next.step ? m.next.step + ' / 5' : null), label: m.next.label} : null;
-  return {title: m.title ?? NAME, dom: [topBar(), m.rec == null ? null : recNav(m.rec), main, nx ? dockNav(m.step ?? null, nx) : null, tabNav(m.tab ?? -1, lc)].filter(Boolean)}; // 기록 탭 쪽은 맨 위 갈래 줄(주문 1124-1942)
+  return {title: m.title ?? NAME, dom: [topBar({lang: !quiz}), m.rec == null ? null : recNav(m.rec), main, nx ? dockNav(m.step ?? null, nx) : null, tabNav(m.tab ?? -1, lc)].filter(Boolean)}; // 기록 탭 쪽은 맨 위 갈래 줄(주문 1124-1942)
 }
 /** 찾지 못한 쪽 — 손자병법 판 · 처음으로 */
 export const missModel = t => ({title: '찾지 못했어요', h1: '찾지 못했어요', page: 'miss', tab: -1, say: t, body: [h('a', {class: 'sj-go', href: '#/'}, h('span', {text: '처음으로 · 오늘 시장 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))]});

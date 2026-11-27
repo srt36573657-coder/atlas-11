@@ -46,7 +46,7 @@ function findTop() {
   });
   return a;
 }
-export function topBar() {
+export function topBar(o = {}) { // o.lang === false = 「왜 사?」 질문 쪽처럼 첫 화면에 답이 다 보여야 하는 쪽(주문 1120-0001)은 한국어판에서 탭 줄을 빼고 그림(영어판에서는 늘 보임 — 돌아올 길)
   const big = bigText(h('button', {class: 'sj-btn sj-bigtext', type: 'button', 'aria-label': '글씨 크게', text: '글씨'}));
   return h('header', {class: 'sj-top'},
     h('a', {class: 'sj-brand', href: '#/', 'aria-label': NAME + ' 첫 쪽'}, h('img', {class: 'sj-brand-ic', src: '/su/su-icon.svg', alt: '', width: 32, height: 32, decoding: 'async'}), h('span', {class: 'sj-brand-t', text: NAME})), // 앱 얼굴 + 이름(주문 1124-1942 — 치지처럼 얼굴 하나 · 이름 하나)
@@ -55,7 +55,7 @@ export function topBar() {
       findTop(), // 회사 찾기 — 선물 옆(주문 1120-1705 · 사장님 17:05 「종목 찾기를 선물 옆에 배치」) · 회사 탭 맨 위 찾기 칸으로
       h('a', {id: 'giftBtn', class: 'sj-btn sj-gift', href: '/next/?su=guide#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}),
       sayTop(), big),
-    langTabs()); // 「한국어 · 영어」 탭(주문 1127-2320) — 머리 줄 안 맨 아래 한 줄
+    o.lang === false && langNow() !== 'en' ? null : langTabs()); // 「한국어 · 영어」 탭(주문 1127-2320) — 머리 줄 안 맨 아래 한 줄
 }
 /** 말 고르기 탭(주문 1127-2320 · 사장님 23:20 「영어 번역판으로도 상단에 탭을 만들어서」) — 고른 말은 이 휴대폰에 기억 · 누르면 다시 그림 */
 const langNow = () => { try { const q = new URLSearchParams(location.search).get('hl'); if (q === 'en' || q === 'ko') return q; } catch { /* 주소 */ } try { if (localStorage.getItem('su-lang') === 'en') return 'en'; } catch { /* 저장소 없음 */ } return 'ko'; };
