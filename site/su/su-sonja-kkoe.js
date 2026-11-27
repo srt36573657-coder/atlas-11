@@ -554,7 +554,7 @@ function trPxLine(PX, t) {
 function trRow(t, mode, nameOf, PX = null) {
   const st = stOfD(t.diff), sold = mode === 's';
   return h('li', {class: 'sj-trow', 'data-how': t.how, 'data-st': st, 'data-i': String(t.i)},
-    h('p', {class: 'sj-trh'}, h('b', {text: t.co}), h('span', {class: 'sj-trk', text: nameOf(t.k)})),
+    h('p', {class: 'sj-trh'}, h('b', {'data-proper': '', text: t.co}), h('span', {class: 'sj-trk', text: nameOf(t.k)})), // 회사 이름 = 남의 이름(영어판에서도 그대로 · 주문 1127-2320)
     h('p', {class: 'sj-trl', 'data-f': 'buy', text: '산 날 ' + mday(t.d0) + ' · 산 값 ' + won(t.p0)}),
     h('p', {class: 'sj-trl', 'data-f': 'sell', text: sold ? '판 날 ' + mday(t.d1) + ' · 판 값 ' + won(t.p1) : mday(t.d1) + ' 종가 ' + won(t.p1)}),
     h('p', {class: 'sj-trl', 'data-f': 'days', text: (sold ? '들고 있은 날 ' : '들고 있는 날 ') + t.days + '일 · ' + (sold ? (t.how === 'c' ? '88원 줄 밑으로 내려 팔았어요' : '정한 날(' + t.n + '일째)에 팔았어요') : '정한 날(' + t.n + '일째)까지 ' + Math.max(0, t.n - t.days) + '일')}),
@@ -600,7 +600,7 @@ const wkInd = D => c => (typeof D?.co?.[c]?.[1] === 'string' && D.co[c][1].trim(
 const wkRes = m => { const st = stOfD(m.d); return h('span', {class: 'sj-wkg sj-res', 'data-st': st}, shapeI(st), h('b', {text: glRateT(m.r)}), h('span', {class: 'sj-wkgm', text: moved(m.d)})); };
 function wkRow(href, title, sub, m, held) {
   return h('li', {class: 'sj-wki', 'data-st': stOfD(m.d)}, h('a', {class: 'sj-wkrow', href},
-    h('span', {class: 'sj-wkt'}, h('b', {text: title}), sub ? h('span', {class: 'sj-wks', text: sub}) : null),
+    h('span', {class: 'sj-wkt'}, h('b', {'data-proper': sub ? '' : null, text: title}), sub ? h('span', {class: 'sj-wks', text: sub}) : null), // sub(회사 번호)가 있으면 title = 회사 이름(남의 이름)
     h('span', {class: 'sj-wkm', text: NF.format(m.n) + '번 · 산 돈 ' + won(m.c) + ' → ' + (held ? '지금 ' : '판 돈 ') + won(m.v)}),
     wkRes(m), h('i', {class: 'sj-wkgo', 'aria-hidden': 'true', text: '›'})));
 }
@@ -637,7 +637,7 @@ export async function vWalk(X, rest = '') {
   else { const t = L[0], m = wkSum([t], q);
     body = h('div', {class: 'sj-wk1'},
       h('dl', {class: 'sj-wkdl'},
-        h('dt', {text: '회사'}), h('dd', {text: coOf(t.code) + ' · ' + t.code}),
+        h('dt', {text: '회사'}), h('dd', {'data-proper': '', text: coOf(t.code) + ' · ' + t.code}),
         h('dt', {text: '꾀 · 업종'}), h('dd', {text: nameOf(t.k) + ' · ' + ind(t.code)}),
         h('dt', {text: '산 날 · 산 값'}), h('dd', {text: mday(t.d0) + ' · 한 주 ' + won(t.p0)}),
         h('dt', {text: '산 돈'}), h('dd', {text: won(t.p0 * q) + '(' + q + '주)'}),
