@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-chx-1",
- "at": "2026-11-27T03:59:45.944Z",
+ "at": "2026-11-27T05:04:30.442Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-27",
  "pages": 87,
@@ -9,13 +9,13 @@
  "full": true,
  "seconds": 185,
  "time": {
-  "old": 159.3,
-  "new": 19.1,
-  "wall": 185.1,
+  "old": 159.2,
+  "new": 19.6,
+  "wall": 185.5,
   "opensOld": 698,
   "opensNew": 703,
-  "oldPct": 86,
-  "oldShare": 89.3
+  "oldPct": 85.8,
+  "oldShare": 89
  },
  "net": {
   "req": 2,
