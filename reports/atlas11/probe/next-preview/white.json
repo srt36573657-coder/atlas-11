@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-27T03:14:52.566Z",
+ "at": "2026-11-27T04:15:21.756Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 120,
    "blocks": {
-    "ess": 5769,
+    "ess": 5563,
     "find": 776,
-    "today": 3763,
-    "gdr": 5088,
-    "all": 5524
+    "today": 3641,
+    "gdr": 4908,
+    "all": 5319
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -182,12 +182,12 @@
     [
      1,
      "- b.num",
-     "29% 더"
+     "28% 더"
     ]
    ],
    "thumbTop": 711,
    "hero": {
-    "bottom": 1431,
+    "bottom": 1455,
     "h1Bottom": 196,
     "no": true,
     "noBottom": 251,
@@ -217,11 +217,11 @@
    "bodyLum": 1,
    "chars": 120,
    "blocks": {
-    "ess": 5671,
+    "ess": 5465,
     "find": 776,
-    "today": 3763,
-    "gdr": 5088,
-    "all": 5524
+    "today": 3641,
+    "gdr": 4908,
+    "all": 5319
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -386,12 +386,12 @@
     [
      1,
      "- b.num",
-     "29% 더"
+     "28% 더"
     ]
    ],
    "thumbTop": 711,
    "hero": {
-    "bottom": 1431,
+    "bottom": 1455,
     "h1Bottom": 196,
     "no": true,
     "noBottom": 251,
@@ -667,8 +667,8 @@
    }
   },
   "speed": {
-   "lcp": 2252,
-   "inp": 40,
+   "lcp": 2192,
+   "inp": 32,
    "cls": 0.006
   }
  },

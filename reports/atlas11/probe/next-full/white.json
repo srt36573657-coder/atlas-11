@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-27T01:43:53.974Z",
+ "at": "2026-11-27T03:41:09.853Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 120,
    "blocks": {
-    "ess": 5794,
+    "ess": 5588,
     "find": 776,
-    "today": 3763,
-    "gdr": 5088,
-    "all": 5524
+    "today": 3641,
+    "gdr": 4908,
+    "all": 5319
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -167,7 +167,7 @@
     [
      1,
      "- b.num",
-     "43% 더"
+     "41% 더"
     ],
     [
      1,
@@ -182,12 +182,12 @@
     [
      1,
      "- b.num",
-     "31% 더"
+     "28% 더"
     ]
    ],
    "thumbTop": 711,
    "hero": {
-    "bottom": 1431,
+    "bottom": 1455,
     "h1Bottom": 196,
     "no": true,
     "noBottom": 251,
@@ -217,11 +217,11 @@
    "bodyLum": 1,
    "chars": 120,
    "blocks": {
-    "ess": 5671,
+    "ess": 5695,
     "find": 776,
-    "today": 3763,
-    "gdr": 5088,
-    "all": 5524
+    "today": 3787,
+    "gdr": 5112,
+    "all": 5548
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -371,7 +371,7 @@
     [
      1,
      "- b.num",
-     "43% 더"
+     "41% 더"
     ],
     [
      1,
@@ -386,12 +386,12 @@
     [
      1,
      "- b.num",
-     "31% 더"
+     "28% 더"
     ]
    ],
    "thumbTop": 711,
    "hero": {
-    "bottom": 1431,
+    "bottom": 1455,
     "h1Bottom": 196,
     "no": true,
     "noBottom": 251,
@@ -667,14 +667,17 @@
    }
   },
   "speed": {
-   "lcp": 1240,
-   "inp": 56,
+   "lcp": 1344,
+   "inp": 32,
    "cls": 0.003
   }
  },
  "net": {
-  "retry": 0,
-  "why": {}
+  "retry": 3,
+  "why": {
+   "HTTP 403": 1,
+   "열기 실패": 2
+  }
  },
  "ok": true,
  "enforced": true
