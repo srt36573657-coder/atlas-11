@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-11-27T13:54:11.169Z",
+ "at": "2026-11-27T16:34:27.070Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-27",
  "companies": 2557,
@@ -31,15 +31,15 @@
    }
   }
  },
- "seconds": 924,
+ "seconds": 990,
  "time": {
-  "old": 199.5,
-  "new": 255.9,
-  "wall": 923.7,
+  "old": 311.7,
+  "new": 323.1,
+  "wall": 989.7,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 21.6,
-  "oldShare": 43.8
+  "oldPct": 31.5,
+  "oldShare": 49.1
  },
  "net": {
   "req": 2509,
