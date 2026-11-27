@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-27",
- "fetchedAt": "2026-11-27T08:10:47Z",
- "file": "reports/atlas11/context/2026-11-27/2026-11-27T08-10-47Z.json",
+ "fetchedAt": "2026-11-27T10:10:43Z",
+ "file": "reports/atlas11/context/2026-11-27/2026-11-27T10-10-43Z.json",
  "summary": {
   "day": "2026-11-27",
-  "fetchedAt": "2026-11-27T08:10:47Z",
+  "fetchedAt": "2026-11-27T10:10:43Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-27",
@@ -32,11 +32,11 @@
   "news": {
    "stocks": 365,
    "raw": 7215,
-   "distinct": 7155,
-   "republished": 60,
+   "distinct": 7157,
+   "republished": 58,
    "sameArticle": 0,
-   "stocksWithTodayNews": 185,
-   "todayDistinct": 1255
+   "stocksWithTodayNews": 190,
+   "todayDistinct": 1328
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-27",
-     "value": 1335.3,
-     "changePct": -0.65
+     "value": 1334.3,
+     "changePct": -0.72
     },
     "rows": 10
    },
@@ -241,6 +241,12 @@
    "corporateActions": 846,
    "recentActions": [
     {
+     "code": "445680",
+     "title": "큐리옥스바이오시스템즈(주) 전환사채권발행결정(제2회차)",
+     "publishedAt": "2026-11-27T18:00:39+09:00",
+     "word": "전환사채"
+    },
+    {
      "code": "066970",
      "title": "(주)엘앤에프 유상증자 또는 주식관련사채 등의 발행결과(자율공시)",
      "publishedAt": "2026-11-27T16:48:48+09:00",
@@ -305,12 +311,6 @@
      "title": "솔브레인 주식회사 자기주식 처분 결정",
      "publishedAt": "2026-11-26T17:01:17+09:00",
      "word": "자기주식"
-    },
-    {
-     "code": "036830",
-     "title": "솔브레인홀딩스(주) 자기주식 처분 결정",
-     "publishedAt": "2026-11-26T17:00:19+09:00",
-     "word": "자기주식"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-27",
-     "value": 1335.3,
+     "value": 1334.3,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
