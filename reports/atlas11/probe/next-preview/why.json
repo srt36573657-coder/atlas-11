@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-next-why-4",
- "when": "2026-11-26T13:16:04.150Z",
+ "when": "2026-11-27T01:20:15.402Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
  "quick": false,
- "gdrAsOf": "2026-11-25",
+ "gdrAsOf": "2026-11-26",
  "gdrVersion": "gdr-v2",
  "picks": 0,
  "stocks": {
@@ -17,12 +17,12 @@
  },
  "laterDays": {
   "in": [
-   "2026-10-29",
-   "2026-11-26"
+   "2026-10-30",
+   "2026-11-27"
   ],
   "out": [
-   "2026-08-25",
-   "2026-09-22"
+   "2026-08-26",
+   "2026-09-23"
   ]
  },
  "accept": {
@@ -34,7 +34,7 @@
    "coFiles": 2557,
    "coMissing": 0,
    "rowsChecked": 9,
-   "fileRows": 851
+   "fileRows": 852
   },
   "taps": {
    "모두 초록": 23,
@@ -73,12 +73,12 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 854,
+  "flowMs": 863,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
  },
- "sec": 54,
+ "sec": 52,
  "counts": {
   "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "맞댄 시작 화면": 70,
