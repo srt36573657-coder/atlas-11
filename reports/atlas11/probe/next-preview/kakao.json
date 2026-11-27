@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-27T10:41:01.879Z",
+ "at": "2026-11-27T13:13:35.952Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -14,7 +14,7 @@
  "units": {
   "total": 241,
   "mine": 241,
-  "hash": "a616bd4d1b36111c",
+  "hash": "604ddc2f6e975fea",
   "kinds": {
    "r": {
     "total": 241,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 121,
+ "seconds": 119,
  "counts": {
   "routes": 241,
-  "rows": 5209,
-  "btns": 5209,
-  "links": 6072,
+  "rows": 5213,
+  "btns": 5213,
+  "links": 6076,
   "clicks": 461,
   "fail": 0,
   "places": {
@@ -53,9 +53,9 @@
     "routes": 1
    },
    "hold.news": {
-    "rows": 144,
-    "btns": 144,
-    "surge": 142,
+    "rows": 149,
+    "btns": 149,
+    "surge": 147,
     "share": 2,
     "routes": 1
    },
@@ -74,10 +74,10 @@
     "routes": 1
    },
    "me.hist": {
-    "rows": 4,
-    "btns": 4,
+    "rows": 3,
+    "btns": 3,
     "surge": 0,
-    "share": 4,
+    "share": 3,
     "routes": 1
    },
    "why.rec": {
@@ -155,17 +155,17 @@
    },
    {
     "route": "#/sub",
-    "rows": 146,
-    "btns": 146,
-    "links": 146,
+    "rows": 151,
+    "btns": 151,
+    "links": 151,
     "clicked": "hold.news",
     "fail": 0
    },
    {
     "route": "#/me",
-    "rows": 5,
-    "btns": 5,
-    "links": 5,
+    "rows": 4,
+    "btns": 4,
+    "links": 4,
     "clicked": "hold.card",
     "fail": 0
    },
@@ -386,18 +386,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/%EA%B0%80%EA%B3%B5%EC%8B%9D%ED%92%88",
-    "rows": 41,
-    "btns": 41,
-    "links": 41,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/%EA%B5%90%EC%9C%A1",
     "rows": 42,
     "btns": 42,
     "links": 44,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/%EA%B0%80%EA%B3%B5%EC%8B%9D%ED%92%88",
+    "rows": 41,
+    "btns": 41,
+    "links": 41,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -410,18 +410,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/%EC%8B%9D%ED%92%88",
-    "rows": 61,
-    "btns": 61,
-    "links": 61,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/%EC%9D%8C%EB%A3%8C",
     "rows": 24,
     "btns": 24,
     "links": 24,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/%EC%8B%9D%ED%92%88",
+    "rows": 61,
+    "btns": 61,
+    "links": 61,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -546,18 +546,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/%EC%A1%B0%EC%84%A0",
-    "rows": 38,
-    "btns": 38,
-    "links": 38,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/%EB%B0%A9%EC%82%B0",
     "rows": 41,
     "btns": 41,
     "links": 41,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/%EC%A1%B0%EC%84%A0",
+    "rows": 38,
+    "btns": 38,
+    "links": 38,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -666,18 +666,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/%EC%9E%90%EB%8F%99%EC%B0%A8%EB%B6%80%ED%92%88",
-    "rows": 166,
-    "btns": 166,
-    "links": 174,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/%ED%99%94%ED%95%99",
     "rows": 82,
     "btns": 82,
     "links": 85,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/%EC%9E%90%EB%8F%99%EC%B0%A8%EB%B6%80%ED%92%88",
+    "rows": 166,
+    "btns": 166,
+    "links": 174,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -1074,7 +1074,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/222980",
+    "route": "#/w/457600",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1082,7 +1082,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/457600",
+    "route": "#/w/222980",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1098,7 +1098,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/435570",
+    "route": "#/w/000890",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1106,7 +1106,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/000890",
+    "route": "#/w/435570",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1234,7 +1234,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/443060",
+    "route": "#/w/347700",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1242,7 +1242,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/347700",
+    "route": "#/w/443060",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1298,7 +1298,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/181710",
+    "route": "#/w/307950",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1354,7 +1354,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/078590",
+    "route": "#/w/051630",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1362,7 +1362,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/051630",
+    "route": "#/w/078590",
     "rows": 6,
     "btns": 6,
     "links": 11,
