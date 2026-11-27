@@ -1106,6 +1106,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     for (const hh of ['#/', '#/k', '#/k/' + (ORD36[0] ?? 'g01'), '#/r/t']) {
       await open(p, hh);
       if (hh === '#/' && same) await p.waitForFunction(() => document.querySelector('#su main.sj-page > section.sj-s36:not(.sj-wait)'), null, {timeout: 15000}).catch(() => {});
+      await p.evaluate(() => { for (const b of document.querySelectorAll('#su button.sj-f7b[aria-expanded="false"]')) b.click(); }); // 접힌 긴 줄(주문 1127-1714 「더 보기」)은 펼친 뒤 잼 — 펼친 줄 그림도 화면 밖은 기다리고 내려 보면 한 번 놂
       const a = await p.evaluate(() => { const svgs = [...document.querySelectorAll('#su main svg.ik-anim')].filter(s => !s.closest('details:not([open])')), vh = innerHeight, below = svgs.filter(s => s.getBoundingClientRect().top > vh + 200), wraps = [...document.querySelectorAll('#su main svg.ik-anim g.ik-m')]; // 닫힌 서랍 안 그림은 열어야 보임(그때 놂)
         return {n: svgs.length, noM: svgs.filter(s => !s.querySelector('g.ik-m')).length, tr: wraps.filter(w => w.hasAttribute('transform')).length, st: wraps.filter(w => !/\bik-(s[1-7]|bq\d|tq\d+|aq\d)\b/.test(w.getAttribute('class') ?? '')).length,
           below: below.length, belowPlay: below.filter(s => s.classList.contains('ik-play')).length}; });
