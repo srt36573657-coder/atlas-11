@@ -515,17 +515,18 @@ function svExplain(SV, D, nameOf) {
   return h('section', {class: 'sj-sec sj-svx', 'aria-label': '사고 팔기 설명칸'},
     head('설명', '사고 팔기', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이렇게 사고 팔아요'}))),
     h('ol', {class: 'sj-svstep'}, ...SV_STEPS.map(([ic, t, say], i) => h('li', {class: 'sj-svst', 'data-step': String(i + 1)}, svIcon(ic), h('b', {text: (i + 1) + '. ' + t}), h('span', {text: say})))),
+    h('details', {class: 'sj-drawer sj-svmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '꾀마다 파는 날과 실제 보기'}), chev()), // 네 걸음만 펼치고 나머지는 서랍(주문 1127-1922 · 다음 정리 ⑤)
     h('div', {class: 'sj-svdays', 'aria-label': '꾀마다 파는 날'}, h('p', {class: 'sj-svdt', text: '꾀마다 파는 날'}),
       h('ul', {class: 'sj-svdl'}, ...[...byN.entries()].sort((a, b) => a[0] - b[0]).map(([n, c]) => h('li', {class: 'sj-svdr'}, h('b', {text: n + '일째'}), h('span', {text: '꾀 ' + c + '가지'})))),
       h('p', {class: 'sj-svdn', text: '파는 날은 지난 기록에서 그 꾀가 오른 뒤 절반이 끝난 날이에요. 기록이 모자란 꾀는 아무렇게나 고른 회사처럼 4일째예요.'})),
     exs.length ? h('h3', {class: 'sj-svh3', text: '실제 보기'}) : null,
     exs.length ? h('ol', {class: 'sj-svexs'}, ...exs) : h('p', {class: 'sj-svnote', text: '아직 판 셈이 없어요. 정한 날이 지나면 실제 보기가 생겨요.'}),
     exs.length ? h('p', {class: 'sj-svlg', text: '동그라미는 산 날, 네모는 판 날이에요. 가로줄은 산 값이고, 점선은 88원 줄이에요.'}) : null,
-    h('p', {class: 'sj-svnote', text: '정한 날에 종가 기록이 빠져 있으면, 다음 장날 종가로 팔아요.'}));
+    h('p', {class: 'sj-svnote', text: '정한 날에 종가 기록이 빠져 있으면, 다음 장날 종가로 팔아요.'})));
 }
 /** 산 회사 · 판 회사(주문 1125-1144 · 사장님 2026-11-25(서울) 11:44 「기록 탭에 말이야 그안안 탭을 두개 만들어줘 매수한종목 매동한 종목 그리고 언제 얼망에 매수해고 매도 했는지 그래서 보유기간은 몇일이였고 몇프로에 변동이 있었으며 수익은 어땠는지」)
  *  사고 팔기 셈(sell-v1 · 종가) 낱건 — 산 회사 = 아직 들고 있는 것('h') · 판 회사 = 판 것('d' 정한 날 · 'c' 88원 줄)
- *  줄마다 회사 · 꾀 · 산 날 · 산 값 · 판 날 · 판 값(들고 있으면 가장 늦은 종가) · 들고 있은 날(장날) · 변동(프로) · 늘고 준 돈(10주) · 판 까닭 · 새것 먼저 · 서른 개씩 */
+ *  줄마다 회사 · 꾀 · 산 날 · 산 값 · 판 날 · 판 값(들고 있으면 가장 늦은 종가) · 들고 있은 날(장날) · 변동(프로) · 늘고 준 돈(10주) · 판 까닭 · 새것 먼저 · 처음 일곱 개 · 「더 보기」마다 서른 개씩(주문 1127-1922) */
 export function sellTrades(D) {
   const SV = D?.sell, q = Number.isFinite(D?.qty) ? D.qty : 10;
   if (!SV || !Array.isArray(SV.s) || !Array.isArray(D.buys) || !Array.isArray(D.kinds)) return null;
@@ -542,7 +543,7 @@ export function sellTrades(D) {
   return {q, hold, sold, H: sum(hold), S: sum(sold), cut: SV.cut ?? 88};
 }
 export const pctText = r => { const v = Math.round(r * 1000) / 10; return !Number.isFinite(v) ? '' : v > 0 ? v.toFixed(1) + '프로 올랐어요' : v < 0 ? (-v).toFixed(1) + '프로 내렸어요' : '그대로예요'; };
-const TR_STEP = 30;
+const TR_STEP = 30, TR_FIRST = FOLD7; // 처음엔 일곱 줄(주문 1127-1922 · 같은 틀 「위 일곱」) · 「더 보기」마다 서른 줄
 function trRow(t, mode, nameOf) {
   const st = stOfD(t.diff), sold = mode === 's';
   return h('li', {class: 'sj-trow', 'data-how': t.how, 'data-st': st, 'data-i': String(t.i)},
@@ -559,7 +560,7 @@ export async function vTrades(X, mode = 's') {
   const L = sold ? TR.sold : TR.hold, M = sold ? TR.S : TR.H, st = stOfD(M.diff);
   const list = h('ol', {class: 'sj-trl0', 'aria-label': title + ' 목록'}), more = h('button', {class: 'sj-trmore', type: 'button'});
   let shown = 0;
-  const fill = () => { const end = Math.min(L.length, shown + TR_STEP); for (; shown < end; shown++) list.append(trRow(L[shown], mode, nameOf)); const left = L.length - shown; more.hidden = left <= 0; more.textContent = left > 0 ? Math.min(TR_STEP, left) + '개 더 보기 · 남은 ' + NF.format(left) + '개' : ''; };
+  const fill = () => { const end = Math.min(L.length, shown + (shown ? TR_STEP : TR_FIRST)); for (; shown < end; shown++) list.append(trRow(L[shown], mode, nameOf)); const left = L.length - shown; more.hidden = left <= 0; more.textContent = left > 0 ? Math.min(TR_STEP, left) + '개 더 보기 · 남은 ' + NF.format(left) + '개' : ''; };
   more.addEventListener('click', fill); fill();
   const kids = [
     pageHead({kick: '기록 · ' + (sold ? '판 회사' : '산 회사'), h1: sold ? '판 회사' : '산 회사 · 들고 있는 것', seal: sold ? '팖' : '삼', sealDn: st === 'dn',
@@ -894,7 +895,7 @@ export async function vGlance(X) {
       h('h2', {class: 'sj-pfh2', text: '꾀마다 많이 고른 업종'}),
       h('p', {class: 'sj-gllead', text: '막대 하나가 꾀 하나예요. 진한 칸이 길수록 그 꾀가 한 업종을 많이 골랐어요.'}),
       h('ul', {class: 'sj-glleg'}, ...keys.map(x => h('li', {class: 'sj-gllegi'}, glDot(x.col), h('b', {text: x.name})))),
-      h('ol', {class: 'sj-glks'}, ...A.kk.map(kkRow))),
+      ...fold7(h('ol', {class: 'sj-glks'}, ...A.kk.map(kkRow)), (o, n) => '나머지 꾀 ' + (n - o) + '가지 더 보기')), // 위 일곱만(주문 1127-1922 · 다음 정리 ③)
     endSec(day(T?.asOf?.board), gotOf(S))];
   return frame({title: '한눈에', page: 'glance', kids, tab: 4, rec: 0, next: {href: '#/l/b', label: '산 회사도 볼까?'}});
 }
@@ -1044,7 +1045,10 @@ export async function vLedger(X) {
     const sec = h('section', {class: 'sj-sec sj-ldf', 'aria-label': '거르개 열여덟', 'data-rule': 'ledger-filter-v1'},
       head('거', '제2장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '거르개 열여덟'}))),
       h('p', {class: 'sj-rule', text: '보기 · 기간 · 결과 · 차례에서 하나씩 고르면 아래 줄이 바로 바뀌어요. 고른 것은 이 휴대폰이 기억해 다음에도 그대로예요. 처음에는 줄어든 돈이 큰 것부터 보여요. 줄어든 것도 숨기지 않아요.'}),
-      grp('view', '보기', LEDGER_VIEWS), grp('span', '기간', LEDGER_SPANS), grp('res', '결과', LEDGER_RES), grp('sort', '차례', LEDGER_SORTS), h('div', {class: 'sj-ldsumr'}, sum, reset), mk, list, endSeal('거'));
+      grp('view', '보기', LEDGER_VIEWS),
+      h('details', {class: 'sj-drawer sj-ldfmore', 'data-n': String(LEDGER_SPANS.length + LEDGER_RES.length + LEDGER_SORTS.length)}, h('summary', {}, h('span', {class: 'sj-s1', text: '거르개 더 보기 — 기간 · 결과 · 차례'}), chev()), // 자주 쓰는 「보기」 셋만 펼치고 나머지 열다섯은 서랍(주문 1127-1922 · 일꾼 100명 다음 정리 ①) · 고른 것은 아래 한 줄에 늘 보임
+        grp('span', '기간', LEDGER_SPANS), grp('res', '결과', LEDGER_RES), grp('sort', '차례', LEDGER_SORTS)),
+      h('div', {class: 'sj-ldsumr'}, sum, reset), mk, list, endSeal('거'));
     draw(); return sec;
   };
   const findSec = () => { // 장부에서 회사 찾기(주문 1120-1804) — 이름 · 번호를 쓰면 그 회사를 산 날을 모두(날 · 꾀 · 주 · 산 값 → 지금)
