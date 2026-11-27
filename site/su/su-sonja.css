@@ -2018,3 +2018,11 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-wkbk { font-weight: 800; color: #20323A; }
 #su .sj-wkbig .sj-wkg { font-size: 1.25rem; }
 @media (max-width: 359px) { #su .sj-wkdl { grid-template-columns: minmax(0, 1fr); } #su .sj-wkdl > dd { margin-bottom: 4px; } }
+/* 업종별 분포 이름표(주문 1127-1554 「어 붙여」 — 무엇의 비중인지) — 꾀별과 같은 짜임(동그라미 위 · 이름표 아래 온 폭) · 윗줄 점 · 이름 · 지금 값 비중 / 아랫줄 지금 값(판 돈) */
+#su .sj-pf[data-view="i"] .sj-pfbody { grid-template-columns: minmax(0, 1fr); justify-items: center; row-gap: 10px; }
+#su .sj-pf[data-view="i"] .sj-pfbody > .sj-pfdo { position: static; }
+#su .sj-pf[data-view="i"] .sj-pfdo, #su .sj-pf[data-view="i"] .sj-pfdo .sj-gldo { width: 180px; height: 180px; }
+#su .sj-pf[data-view="i"] .sj-glleg { justify-self: stretch; gap: 0; }
+#su .sj-pf[data-view="i"] .sj-gllegi { grid-template-columns: 16px minmax(0, 1fr) auto; column-gap: 8px; row-gap: 2px; padding: 8px 0; border-bottom: 1px solid #E3EBEA; }
+#su .sj-pf[data-view="i"] .sj-gllegi > .sj-pfsh { justify-self: end; white-space: nowrap; }
+#su .sj-pf[data-view="i"] .sj-gllegi > .sj-pfam { grid-column: 2 / 4; grid-row: 2; }

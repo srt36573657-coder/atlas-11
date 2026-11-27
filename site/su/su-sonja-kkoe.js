@@ -788,6 +788,14 @@ function glKTrends(D, P) { // P = 꾀별 이름표 차례(kParts)
     h('ol', {class: 'sj-kgll'}, ...G.S.map(card)),
     h('p', {class: 'sj-gllead', text: '오른 꾀는 빨강, 내린 꾀는 파랑이에요. 모두 종가로 센 가짜 돈이에요.'}));
 }
+/* 업종별 이름표 한 줄(주문 1127-1554 · 사장님 2026-11-27(서울) 15:54 「어 붙여」 — 「업종별 분포에도 무엇의 비중인지 이름을 붙일까요?」의 답 · docs/design/record-2026-11-27/order-1554.txt)
+   윗줄 = 점 · 이름 · 「지금 값 비중 ○프로」(총 평가 금액 = 들고 있는 것 + 판 돈 에서 그 칸의 몫) · 아랫줄 = 「지금 값 ○원」(판 돈 칸은 「판 돈 ○원」) · 칸은 그대로(큰 업종 넷 + 그 밖 업종 + 판 돈) */
+export const GL_ICAP = Object.freeze(['들고 있는 회사의 업종 가운데 큰 넷과 그 밖 업종, 그리고 판 돈이에요.', '지금 값 비중은 총 평가 금액에서 그 칸이 차지하는 몫이에요.', '총 평가 금액은 들고 있는 것과 판 돈을 더한 값이에요.']);
+function glIRow(x, tot) {
+  return h('li', {class: 'sj-gllegi sj-glil', 'data-part': x.name}, glDot(x.col), h('b', {text: x.name}),
+    h('span', {class: 'sj-pfsh', text: '지금 값 비중 ' + glShare(x.v, tot) + '프로'}),
+    h('span', {class: 'sj-pfam', text: (x.cash ? '판 돈 ' : '지금 값 ') + glWonS(x.v) + '원'}));
+}
 function glKRow(x, tot) {
   const r = x.v > 0 ? x.now / x.v - 1 : null, st = r == null ? 'none' : stOfD(Math.round(r * 1000));
   return h('li', {class: 'sj-gllegi sj-glkl', 'data-part': x.name, 'data-k': x.k, 'data-st': st}, glDot(x.col), h('b', {text: x.name}),
@@ -814,8 +822,8 @@ export async function vGlance(X) {
   const box = h('div', {class: 'sj-pfdo'}), leg = h('ul', {class: 'sj-glleg'}), legCap = h('p', {class: 'sj-gllegcap'}), ins = h('b', {class: 'sj-pfinb'}), sec = h('section', {class: 'sj-sec sj-pf sj-glal', 'aria-label': '자산 포트폴리오'});
   const show = view => { const P = VIEWS[view].parts, tot = P.reduce((a, x) => a + x.v, 0);
     box.replaceChildren(glDonut(P), h('div', {class: 'sj-pfctr', 'aria-hidden': 'true'}, h('span', {text: '총 자산'}), h('b', {text: glWonS(A.val)}), h('span', {class: 'sj-pfctrr', 'data-st': st, text: ({up: '▲', dn: '▼'}[st] ?? '') + glPp(A.r)})));
-    leg.replaceChildren(...P.map(x => (view === 'k' ? glKRow(x, tot) : h('li', {class: 'sj-gllegi', 'data-part': x.name, 'data-k': x.k ?? null}, glDot(x.col), h('b', {text: x.name}), h('span', {class: 'sj-pfsh', text: glShare(x.v, tot) + '프로'}), h('span', {class: 'sj-pfam', text: glWonS(x.v) + '원'})))));
-    legCap.hidden = view !== 'k'; legCap.replaceChildren(...(view === 'k' ? GL_KCAP.map((x, i) => h('span', {text: x + (i < GL_KCAP.length - 1 ? ' ' : '')})) : []));
+    leg.replaceChildren(...P.map(x => (view === 'k' ? glKRow(x, tot) : glIRow(x, tot)))); // 업종별도 이름표(주문 1127-1554)
+    legCap.hidden = false; { const C = view === 'k' ? GL_KCAP : GL_ICAP; legCap.replaceChildren(...C.map((x, i) => h('span', {text: x + (i < C.length - 1 ? ' ' : '')}))); } // 업종별도 머리말(주문 1127-1554)
     ins.textContent = insight(view); sec.dataset.view = view;
     for (const b of segB) b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); };
   const segB = Object.entries(VIEWS).map(([v, o]) => { const b = h('button', {class: 'sj-pfsb', type: 'button', 'data-view': v, text: o.label}); b.addEventListener('click', () => show(v)); return b; });
