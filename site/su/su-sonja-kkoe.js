@@ -570,6 +570,76 @@ export async function vTrades(X, mode = 's') {
     endSec(day(T?.asOf?.board), gotOf(S))];
   return frame({title, page: sold ? 'sold' : 'held', kids, tab: 4, rec: sold ? 6 : 5, next: {href: '#/r/t', label: '두 셈 견줌도 볼까?'}});
 }
+/* ── 7단 사고판 기록(#/l/t · 주문 1127-1457 · 사장님 2026-11-27(서울) 14:57 「그리고 기록을 누르면 어떤 종목들 매매했고 얼마에 사서 얼마에 매도해서 얼마 수익났는지도 하고 7단 클릭 구조로 만들어」
+   · docs/design/record-2026-11-27/order-1457.txt) — 1단 기록 → 2단 판 것 · 들고 있는 것 → 3단 꾀 → 4단 업종 → 5단 종목 → 6단 사고판 건 → 7단 한 건(산 값 · 판 값 · 수익)
+   단마다 누르는 줄(48 넘게) · 위에 일곱 단 길(지금 단 · 앞 단은 눌러 돌아감) · 줄마다 몇 번 · 산 돈 → 판 돈(들고 있으면 지금 값) · 수익(▲ 빨강 · ▼ 파랑 · 프로 · 원)
+   차례 = 수익률 높은 차례(같으면 이름 차례) · 사고 팔기 셈(sell-v1 · 종가 · 10주 · 가짜 돈) · 「매수 · 매도」는 「산 · 판」 ── */
+export const WK7 = Object.freeze(['기록', '판 것 · 들고 있는 것', '꾀', '업종', '종목', '사고판 건', '한 건']);
+const wkHref = segs => '#/l/t' + segs.map(x => '/' + encodeURIComponent(x)).join('');
+export const wkSum = (L, q) => { const c = L.reduce((a, t) => a + t.p0 * q, 0), v = L.reduce((a, t) => a + t.p1 * q, 0); return {n: L.length, c, v, d: v - c, r: c > 0 ? v / c - 1 : 0}; };
+const wkInd = D => c => (typeof D?.co?.[c]?.[1] === 'string' && D.co[c][1].trim()) || '그 밖 업종';
+const wkRes = m => { const st = stOfD(m.d); return h('span', {class: 'sj-wkg sj-res', 'data-st': st}, shapeI(st), h('b', {text: glRateT(m.r)}), h('span', {class: 'sj-wkgm', text: moved(m.d)})); };
+function wkRow(href, title, sub, m, held) {
+  return h('li', {class: 'sj-wki', 'data-st': stOfD(m.d)}, h('a', {class: 'sj-wkrow', href},
+    h('span', {class: 'sj-wkt'}, h('b', {text: title}), sub ? h('span', {class: 'sj-wks', text: sub}) : null),
+    h('span', {class: 'sj-wkm', text: NF.format(m.n) + '번 · 산 돈 ' + won(m.c) + ' → ' + (held ? '지금 ' : '판 돈 ') + won(m.v)}),
+    wkRes(m), h('i', {class: 'sj-wkgo', 'aria-hidden': 'true', text: '›'})));
+}
+/** 묶기 — L 을 key 로 나눠 [key, 묶음, 셈] · 수익률 높은 차례(같으면 이름 차례) */
+const wkGroup = (L, key, q, name) => { const m = new Map(); for (const t of L) { const k = key(t); if (!m.has(k)) m.set(k, []); m.get(k).push(t); }
+  return [...m.entries()].map(([k, G]) => [k, G, wkSum(G, q)]).sort((a, b) => b[2].r - a[2].r || String(name(a[0])).localeCompare(String(name(b[0])))); };
+export async function vWalk(X, rest = '') {
+  const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = k => G.name[k] ?? '제' + kNo(k) + '계';
+  const TR = D ? sellTrades(D) : null;
+  if (!TR) return missPage(X, '7단 사고판 기록', '사고 팔기 장부를 받지 못했어요. 잠시 뒤 다시 열어 주세요.');
+  const q = TR.q, ind = wkInd(D), seg = String(rest ?? '').split('/').filter(Boolean).map(x => { try { return decodeURIComponent(x); } catch { return x; } }).slice(0, 5);
+  const [st, k, iv, code, ix] = seg, held = st === 'h';
+  // 단마다 거르기 — 맞는 것이 없으면 그 앞 단까지만
+  const LV = [[...TR.sold, ...TR.hold]];
+  if (st === 's' || st === 'h') LV.push(held ? TR.hold : TR.sold);
+  if (LV.length === 2 && k != null && KKOE.test(k)) LV.push(LV[1].filter(t => t.k === k));
+  if (LV.length === 3 && iv != null) LV.push(LV[2].filter(t => ind(t.code) === iv));
+  if (LV.length === 4 && code != null) LV.push(LV[3].filter(t => t.code === code));
+  if (LV.length === 5 && ix != null) LV.push(LV[4].filter(t => String(t.i) === ix));
+  while (LV.length > 1 && !LV[LV.length - 1].length) LV.pop();
+  const lv = LV.length - 1, segs = seg.slice(0, lv), L = LV[lv]; // lv 0 = 2단(판 것 · 들고 있는 것 고르기) … lv 5 = 7단(한 건)
+  const coOf = c => D.co?.[c]?.[0] ?? c, labels = [st === 'h' ? '들고 있는 것' : '판 것', lv >= 2 ? nameOf(k) : '', lv >= 3 ? iv : '', lv >= 4 ? coOf(code) : '', lv >= 5 && L[0] ? mday(L[0].d0) + ' 산 것' : ''];
+  const step = lv + 2, hrefs = Array.from({length: 6}, (_, i) => wkHref(seg.slice(0, i)));
+  const path = h('ol', {class: 'sj-wkp', 'aria-label': '일곱 단 길 — 지금 ' + step + '단'},
+    ...WK7.map((w, i) => { const on = i + 1 === step, done = i + 1 < step, t = (i + 1) + '단 ' + (i >= 1 && i <= lv ? labels[i - 1] : w);
+      return h('li', {class: on ? 'sj-wkon' : done ? 'sj-wkdone' : 'sj-wknext', 'aria-current': on ? 'step' : null}, done ? h('a', {href: i === 0 ? '#/l/a' : hrefs[i - 1], text: t}) : h('span', {text: t})); }));
+  const all = wkSum(L, q);
+  let body;
+  if (lv === 0) body = h('ol', {class: 'sj-wkl'}, wkRow(wkHref(['s']), '판 것', '정한 날이나 88원 줄 밑에서 판 것', wkSum(TR.sold, q), false), wkRow(wkHref(['h']), '들고 있는 것', '아직 들고 있는 것(그날 종가로 셈)', wkSum(TR.hold, q), true));
+  else if (lv === 1) body = h('ol', {class: 'sj-wkl'}, ...wkGroup(L, t => t.k, q, nameOf).map(([kk, , m]) => wkRow(wkHref([st, kk]), nameOf(kk), null, m, held)));
+  else if (lv === 2) body = h('ol', {class: 'sj-wkl'}, ...wkGroup(L, t => ind(t.code), q, x => x).map(([x, , m]) => wkRow(wkHref([st, k, x]), x, null, m, held)));
+  else if (lv === 3) body = h('ol', {class: 'sj-wkl'}, ...wkGroup(L, t => t.code, q, coOf).map(([c, , m]) => wkRow(wkHref([st, k, iv, c]), coOf(c), c, m, held)));
+  else if (lv === 4) body = h('ol', {class: 'sj-wkl'}, ...[...L].sort((a, b) => String(b.d0).localeCompare(String(a.d0)) || a.i - b.i).map(t => wkRow(wkHref([st, k, iv, code, String(t.i)]), mday(t.d0) + ' 산 것', held ? mday(t.d1) + ' 종가까지' : mday(t.d1) + ' 판 것', wkSum([t], q), held)));
+  else { const t = L[0], m = wkSum([t], q);
+    body = h('div', {class: 'sj-wk1'},
+      h('dl', {class: 'sj-wkdl'},
+        h('dt', {text: '회사'}), h('dd', {text: coOf(t.code) + ' · ' + t.code}),
+        h('dt', {text: '꾀 · 업종'}), h('dd', {text: nameOf(t.k) + ' · ' + ind(t.code)}),
+        h('dt', {text: '산 날 · 산 값'}), h('dd', {text: mday(t.d0) + ' · 한 주 ' + won(t.p0)}),
+        h('dt', {text: '산 돈'}), h('dd', {text: won(t.p0 * q) + '(' + q + '주)'}),
+        h('dt', {text: held ? '지금 값' : '판 날 · 판 값'}), h('dd', {text: mday(t.d1) + (held ? ' 종가 · 한 주 ' : ' · 한 주 ') + won(t.p1)}),
+        h('dt', {text: held ? '지금 값 모두' : '판 돈'}), h('dd', {text: won(t.p1 * q) + '(' + q + '주)'}),
+        h('dt', {text: held ? '들고 있는 날' : '들고 있은 날'}), h('dd', {text: t.days + '일 · ' + (held ? '정한 날(' + t.n + '일째)까지 ' + Math.max(0, t.n - t.days) + '일' : t.how === 'c' ? '88원 줄 밑으로 내려 팔았어요' : '정한 날(' + t.n + '일째)에 팔았어요')})),
+      h('p', {class: 'sj-wkbig', 'data-st': stOfD(m.d)}, h('span', {class: 'sj-wkbk', text: '수익'}), wkRes(m))); }
+  const title = step + '단 · ' + (lv === 0 ? '판 것 · 들고 있는 것' : labels[lv - 1]);
+  const kids = [
+    h('section', {class: 'sj-sec sj-wk', 'data-lv': String(step), 'data-n': String(L.length), 'aria-label': '7단 사고판 기록'},
+      h('p', {class: 'sj-k', text: '기록 · 7단 사고판 기록'}),
+      h('h1', {class: 'sj-wkh1', text: title}),
+      path,
+      lv < 5 ? h('p', {class: 'sj-wksum'}, h('span', {text: (lv === 0 ? '모두 ' : '이 안에 ') + NF.format(all.n) + '번 · 산 돈 ' + won(all.c) + ' → ' + (lv === 0 ? '판 돈과 지금 값 ' : held ? '지금 ' : '판 돈 ') + won(all.v)}), wkRes(all)) : null,
+      lv < 5 ? h('p', {class: 'sj-gllead', text: (lv === 0 ? '눌러서 한 단씩 들어가요. ' : '') + (lv < 4 ? '수익률이 높은 차례예요.' : '산 날이 늦은 것부터예요.')}) : null,
+      body,
+      lv > 0 ? h('a', {class: 'sj-go sj-wkback', href: hrefs[lv - 1]}, h('span', {text: '한 단 위로'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
+      h('p', {class: 'sj-note', text: '오르면 빨강 ▲, 내리면 파랑 ▼이에요. 모두 종가로 10주씩 샀다고 친 가짜 돈이에요.'})),
+    endSec(day(T?.asOf?.board), gotOf(S))];
+  return frame({title: '7단 사고판 기록', page: 'walk', kids, tab: 4, rec: 7, next: lv < 5 ? null : {href: '#/l/t', label: '처음 단으로 볼까?'}});
+}
 /* ── 한눈에(#/l/a · 주문 1125-2101 · 사장님 2026-11-25(서울) 20:52 「전체 투자 자산, 수익률, 자산 배분, 기간별 추이까지 한 화면에서 … 어떠한 꾀가 많이 골랐던 업종이 어떠한 분야였는지 그림으로도 한 눈에」 · 21:01 「응 한시간 이내 만들어」) ──
  *  사고 팔기 셈(sell-v1 · 종가 · 10주) 모두 — 들인 돈 · 지금 값(판 돈 + 들고 있는 회사 가장 늦은 종가) · 늘고 준 돈 · 프로
  *  지금 값 나눔 = 들고 있는 회사 업종별 + 판 돈(동그라미) · 지나온 흐름 = 쌓인 장부 전체(tt · 사기만 셈 · 기간 고르기) · 꾀마다 고른 업종(모든 산 셈 번수 · 막대 = 가장 많이 · 두 번째 · 나머지)
@@ -777,7 +847,11 @@ export async function vGlance(X) {
     s('svg', {class: 'sj-glkb', viewBox: '0 0 300 20', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, ...(() => { let x = 0; return r.segs.map(g => { const w = g.c / r.n * 300, e = s('rect', {x: x.toFixed(2), y: 0, width: Math.max(0, w - (r.segs.length > 1 ? 1.5 : 0)).toFixed(2), height: 20, rx: 3, fill: g.col, 'data-part': g.name}); x += w; return e; }); })()),
     h('p', {class: 'sj-glkt', text: r.best ? '가장 많이 고른 업종은 ' + r.best[0] + glIeyo(r.best[0]) + ' · ' + NF.format(r.n) + '번 가운데 ' + NF.format(r.best[1]) + '번' : '업종을 모르는 회사만 샀어요'}),
     r.next ? h('p', {class: 'sj-glk2', text: '두 번째는 ' + r.next[0] + glIeyo(r.next[0]) + ' · ' + NF.format(r.next[1]) + '번'}) : null);
-  const kids = [seg, sec, glTrend(D), glKTrends(D, kParts), glDaySec(DY), // 꾀마다 수익률 추이(주문 1127-1412) · 날마다 보기(주문 1126-2137)
+  const walk = h('section', {class: 'sj-sec sj-wk sj-wkin', 'data-lv': '1', 'aria-label': '7단 사고판 기록'}, // 기록을 누르면 바로 7단 길(주문 1127-1457 · 1단 기록 → 2단 판 것 · 들고 있는 것 …)
+    h('h2', {class: 'sj-pfh2', text: '7단 사고판 기록'}),
+    h('p', {class: 'sj-gllead', text: '어떤 회사를 얼마에 사서 얼마에 팔았는지, 눌러서 한 단씩 들어가요. 판 것 · 꾀 · 업종 · 종목 · 사고판 건 · 한 건 차례예요.'}),
+    h('ol', {class: 'sj-wkl'}, wkRow('#/l/t/s', '판 것', '정한 날이나 88원 줄 밑에서 판 것', wkSum(TR.sold, TR.q), false), wkRow('#/l/t/h', '들고 있는 것', '아직 들고 있는 것(그날 종가로 셈)', wkSum(TR.hold, TR.q), true)));
+  const kids = [walk, seg, sec, glTrend(D), glKTrends(D, kParts), glDaySec(DY), // 꾀마다 수익률 추이(주문 1127-1412) · 날마다 보기(주문 1126-2137)
     h('section', {class: 'sj-sec sj-glkk', 'data-n': String(A.kk.length), 'aria-label': '꾀마다 많이 고른 업종'},
       h('h2', {class: 'sj-pfh2', text: '꾀마다 많이 고른 업종'}),
       h('p', {class: 'sj-gllead', text: '막대 하나가 꾀 하나예요. 진한 칸이 길수록 그 꾀가 한 업종을 많이 골랐어요.'}),
