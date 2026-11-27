@@ -2244,6 +2244,37 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await ctx.close();
   }
 }
+{ // ㊽ 주문 1127-2306(사장님 2026-11-27(서울) 23:06 「그래 1시간 안에 작업 해」 — 「회사 줄마다 그 회사 값 꺾은선도 작게 붙여 볼까요?」의 답) — 회사 줄 값 꺾은선
+  //   꾀 사고판 회사(#/l/k/꾀) · 산 회사(#/l/b) · 판 회사(#/l/s) 줄마다 = 산 날부터 판 날(들고 있으면 가장 늦은 종가 날)까지 그 회사 종가 꺾은선 — 이 검사가 정산 자료(sell.px)에서 따로 셈:
+  //   종가 점 수 · 오름 빨강 · 내림 파랑(선만) · 종가가 하나뿐이면 그리지 않음 · 그림 이름 · 넘침 0 · 오류 0 · 390 · 320
+  const W = '㊽ ', D = await J('/su/data/su21-settle.json').catch(() => null), SV = D?.sell, PX = SV?.px, q = Number.isFinite(D?.qty) ? D.qty : 10, KR = /^g(0[1-9]|[12]\d|3[0-6])$/;
+  const want = i => { const b = D?.buys?.[i], x = SV?.s?.[i]; if (!Array.isArray(b) || !Array.isArray(x)) return null; const d = PX?.d ?? [], c = PX?.c?.[b[2]] ?? [], i0 = d.indexOf(b[0]), i1 = d.indexOf(x[1]);
+    let n = 0; if (i0 >= 0 && i1 >= i0) for (let j = i0; j <= i1; j++) if (Number.isFinite(c[j]) && c[j] > 0) n++; const dv = Math.round((x[2] - b[3]) * q); return {n: n >= 2 ? n : 0, st: dv > 0 ? 'up' : dv < 0 ? 'dn' : 'eq', co: D.co?.[b[2]]?.[0] ?? b[2]}; };
+  const T = (D?.buys ?? []).map((b, i) => [D?.kinds?.[b?.[1]], SV?.s?.[i]]).filter(([k, x]) => KR.test(k ?? '') && Array.isArray(x)).map(([k]) => k), cnt = {}; for (const k of T) cnt[k] = (cnt[k] ?? 0) + 1;
+  const kPick = Object.entries(cnt).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]?.[0] ?? 'g01';
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    const seen = {}; let ok = !!PX && Array.isArray(PX.d) && PX.d.length > 1, why = ok ? '' : 'no px';
+    for (const hh of ['#/l/k/' + kPick, '#/l/b', '#/l/s']) {
+      await open(p, hh); await p.waitForTimeout(400);
+      const rows = await p.evaluate(() => [...document.querySelectorAll('#su main.sj-page ol.sj-trl0 > li.sj-trow')].filter(li => li.getBoundingClientRect().height > 0).map(li => { const sv = li.querySelector(':scope > svg.sj-trsp');
+        return {i: +li.dataset.i, sv: sv ? {n: +sv.dataset.n, st: sv.dataset.st, lab: sv.getAttribute('aria-label') ?? '', line: !!sv.querySelector('path.sj-trspl'), base: !!sv.querySelector('line.sj-trspb'), h: Math.round(sv.getBoundingClientRect().height)} : null}; }));
+      const wide = await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1);
+      let drawn = 0;
+      for (const r of rows) { const w = want(r.i); if (!w) { ok = false; why = why || hh + ' no data ' + r.i; continue; }
+        const good = w.n ? !!r.sv && r.sv.n === w.n && r.sv.st === w.st && r.sv.line && r.sv.base && r.sv.h >= 40 && r.sv.lab.startsWith(w.co + ' 종가 꺾은선 — ') : !r.sv;
+        if (w.n) drawn++; if (!good) { ok = false; why = why || JSON.stringify({hh, r, w}).slice(0, 600); } }
+      seen[hh] = [rows.length, drawn]; if (!rows.length || !wide) { ok = false; why = why || hh + ' rows ' + rows.length + ' wide ' + wide; }
+    }
+    if (!Object.values(seen).some(([, dn]) => dn > 0)) { ok = false; why = why || 'no line drawn'; }
+    check(ok && !errs.length, W + width + ' 가) 회사 줄 값 꺾은선 — 꾀 사고판 회사 · 산 회사 · 판 회사 줄마다 산 날부터 판 날까지 종가(점 수 = 자료) · 산 값 점선 · 오름 빨강 · 내림 파랑 · 하나뿐이면 없음 · 넘침 0 · 오류 0',
+      (why || JSON.stringify(seen)).slice(0, 1500) + ' ' + JSON.stringify(errs.slice(0, 2)));
+    await ctx.close();
+  }
+}
 await browser.close();
 R.ok = R.counts.fail === 0;
 console.log(`손자병법 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);

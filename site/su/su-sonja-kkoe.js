@@ -534,13 +534,31 @@ export function sellTrades(D) {
 }
 export const pctText = r => { const v = Math.round(r * 1000) / 10; return !Number.isFinite(v) ? '' : v > 0 ? v.toFixed(1) + '프로 올랐어요' : v < 0 ? (-v).toFixed(1) + '프로 내렸어요' : '그대로예요'; };
 const TR_STEP = 30, TR_FIRST = FOLD7; // 처음엔 일곱 줄(주문 1127-1922 · 같은 틀 「위 일곱」) · 「더 보기」마다 서른 줄
-function trRow(t, mode, nameOf) {
+/** 회사 줄 값 꺾은선(주문 1127-2306) — 산 날부터 판 날(들고 있으면 가장 늦은 종가 날)까지 그 회사 종가 · 점선 = 산 값 · 끝 점 · 오르면 빨강 · 내리면 파랑 · 종가가 둘 넘을 때만 */
+export function trPxOf(PX, t) {
+  const d = PX?.d, c = PX?.c?.[t.code]; if (!Array.isArray(d) || !Array.isArray(c)) return null;
+  const i0 = d.indexOf(t.d0), i1 = d.indexOf(t.d1); if (i0 < 0 || i1 < i0) return null;
+  const pts = []; for (let i = i0; i <= i1; i++) if (fin(c[i]) && c[i] > 0) pts.push([i - i0, c[i]]);
+  return pts.length >= 2 ? {n: i1 - i0, pts} : null;
+}
+function trPxLine(PX, t) {
+  const S = trPxOf(PX, t); if (!S) return null;
+  const vs = [...S.pts.map(([, v]) => v), t.p0], lo = Math.min(...vs), hi = Math.max(...vs), span = hi - lo || 1, st = stOfD(t.diff);
+  const X = i => 6 + (S.n ? i / S.n : 0) * 288, Y = v => 40 - (v - lo) / span * 32, [lx, lv] = S.pts[S.pts.length - 1];
+  return s('svg', {class: 'sj-trsp', 'data-st': st, 'data-n': String(S.pts.length), viewBox: '0 0 300 48', preserveAspectRatio: 'none', role: 'img',
+      'aria-label': t.co + ' 종가 꺾은선 — ' + mday(t.d0) + ' ' + won(S.pts[0][1]) + '부터 ' + mday(t.d1) + ' ' + won(lv) + '까지 · 점선은 산 값 ' + won(t.p0)},
+    s('line', {class: 'sj-trspb', x1: 6, x2: 294, y1: Y(t.p0).toFixed(1), y2: Y(t.p0).toFixed(1)}),
+    s('path', {class: 'sj-trspl', d: S.pts.map(([i, v], j) => (j ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ')}),
+    s('path', {class: 'sj-trspd', d: 'M' + X(lx).toFixed(1) + ' ' + Y(lv).toFixed(1) + ' h0.01'}));
+}
+function trRow(t, mode, nameOf, PX = null) {
   const st = stOfD(t.diff), sold = mode === 's';
   return h('li', {class: 'sj-trow', 'data-how': t.how, 'data-st': st, 'data-i': String(t.i)},
     h('p', {class: 'sj-trh'}, h('b', {text: t.co}), h('span', {class: 'sj-trk', text: nameOf(t.k)})),
     h('p', {class: 'sj-trl', 'data-f': 'buy', text: '산 날 ' + mday(t.d0) + ' · 산 값 ' + won(t.p0)}),
     h('p', {class: 'sj-trl', 'data-f': 'sell', text: sold ? '판 날 ' + mday(t.d1) + ' · 판 값 ' + won(t.p1) : mday(t.d1) + ' 종가 ' + won(t.p1)}),
     h('p', {class: 'sj-trl', 'data-f': 'days', text: (sold ? '들고 있은 날 ' : '들고 있는 날 ') + t.days + '일 · ' + (sold ? (t.how === 'c' ? '88원 줄 밑으로 내려 팔았어요' : '정한 날(' + t.n + '일째)에 팔았어요') : '정한 날(' + t.n + '일째)까지 ' + Math.max(0, t.n - t.days) + '일')}),
+    trPxLine(PX, t), // 그 회사 값 꺾은선(주문 1127-2306)
     h('p', {class: 'sj-trr sj-res', 'data-st': st}, shapeI(st), h('b', {text: pctText(t.r)}), h('span', {class: 'sj-trm', text: moved(t.diff)})));
 }
 export async function vTrades(X, mode = 's') {
@@ -550,7 +568,7 @@ export async function vTrades(X, mode = 's') {
   const L = sold ? TR.sold : TR.hold, M = sold ? TR.S : TR.H, st = stOfD(M.diff);
   const list = h('ol', {class: 'sj-trl0', 'aria-label': title + ' 목록'}), more = h('button', {class: 'sj-trmore', type: 'button'});
   let shown = 0;
-  const fill = () => { const end = Math.min(L.length, shown + (shown ? TR_STEP : TR_FIRST)); for (; shown < end; shown++) list.append(trRow(L[shown], mode, nameOf)); const left = L.length - shown; more.hidden = left <= 0; more.textContent = left > 0 ? Math.min(TR_STEP, left) + '개 더 보기 · 남은 ' + NF.format(left) + '개' : ''; };
+  const fill = () => { const end = Math.min(L.length, shown + (shown ? TR_STEP : TR_FIRST)); for (; shown < end; shown++) list.append(trRow(L[shown], mode, nameOf, D?.sell?.px)); const left = L.length - shown; more.hidden = left <= 0; more.textContent = left > 0 ? Math.min(TR_STEP, left) + '개 더 보기 · 남은 ' + NF.format(left) + '개' : ''; };
   more.addEventListener('click', fill); fill();
   const kids = [
     pageHead({kick: '기록 · ' + (sold ? '판 회사' : '산 회사'), h1: sold ? '판 회사' : '산 회사 · 들고 있는 것', seal: sold ? '팖' : '삼', sealDn: st === 'dn',
@@ -828,7 +846,7 @@ export async function vKkoeTr(X, k) {
     h('section', {class: 'sj-sec sj-tr sj-ktl', 'data-k': k, 'data-n': String(L.length), 'aria-label': name + ' 사고판 회사'},
       h('h2', {class: 'sj-pfh2', text: '사고판 회사 · 들고 있는 회사'}),
       L.length ? h('p', {class: 'sj-gllead', text: '수익률이 높은 차례예요. 줄마다 산 날 · 산 값, 판 날 · 판 값(들고 있으면 가장 늦은 종가)이에요.'}) : null,
-      ...(L.length ? fold7(h('ol', {class: 'sj-trl0', 'aria-label': name + ' 사고판 회사 목록'}, ...L.map(x => trRow(x.t, x.m, nameOf))), (o, n) => '나머지 ' + (n - o) + '개 더 보기')
+      ...(L.length ? fold7(h('ol', {class: 'sj-trl0', 'aria-label': name + ' 사고판 회사 목록'}, ...L.map(x => trRow(x.t, x.m, nameOf, D?.sell?.px))), (o, n) => '나머지 ' + (n - o) + '개 더 보기')
         : [h('p', {class: 'sj-tnone', text: '이 꾀는 아직 산 회사가 없어요. 억지로 채우지 않았어요.'})]),
       h('a', {class: 'sj-go', href: '#/k/' + k}, h('span', {text: '이 꾀는 어떤 꾀일까?'}), h('i', {'aria-hidden': 'true', text: '›'}))),
     h('p', {class: 'sj-safe sj-sec', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),

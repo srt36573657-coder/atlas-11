@@ -220,7 +220,10 @@ export function sellsOf(B, buys, asOf, start = START) {
     });
     if (n) { tt.days.push(t); tt.c.push(Math.round(c)); tt.v.push(Math.round(v)); S36.forEach((_, j) => { tk.c[j].push(cK[j] > 0 ? Math.round(cK[j]) : null); tk.v[j].push(cK[j] > 0 ? Math.round(vK[j]) : null); }); }
   }
-  return {rule: SELL_RULE, cut: SELL_CUT, days: {...SELL_DAYS}, s, ex, tt, tk};
+  // 회사마다 날마다 종가(주문 1127-2306 · 사장님 2026-11-27(서울) 23:06 「그래 1시간 안에 작업 해」 — 「회사 줄마다 그 회사 값 꺾은선도 작게 붙여 볼까요?」의 답)
+  //   px = {d: 장날(start 부터), c: {회사: [날마다 종가 | null]}} — 산 셈이 있는 회사만 · 화면은 산 날부터 판 날(들고 있으면 가장 늦은 날)까지 이어 그림
+  const px = {d: [...tdays], c: Object.fromEntries([...new Set(buys.filter((b, i) => s[i]).map(b => b[2]))].sort().map(code => [code, tdays.map(t => (fin(B?.px?.[code]?.[t]) ? B.px[code][t] : null))]))};
+  return {rule: SELL_RULE, cut: SELL_CUT, days: {...SELL_DAYS}, s, ex, tt, tk, px};
 }
 /** 같은 날수로 재기(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 「다음에는 2번 「같은 날수로 재기」를 넣어 볼까요?」의 답 · 장부 잣대 2번)
  *  산 셈마다 산 날 뒤 1 · 5 · 20 장날의 값(그 회사의 그날까지 가장 늦은 값 · 판 날 뒤는 안 셈) — 「지금」은 산 날마다 지난 날수가 달라 견주기 어려움

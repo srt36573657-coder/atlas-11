@@ -2058,4 +2058,11 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-ktcs[data-st="up"] .sj-ktcp, #su .sj-ktcs[data-st="up"] .sj-ktcd { stroke: #D32F2F; }
 #su .sj-ktcs[data-st="dn"] .sj-ktcp, #su .sj-ktcs[data-st="dn"] .sj-ktcd { stroke: #1565C0; }
 #su .sj-ktcr { margin-top: 8px; font-size: 1.125rem; }
+/* 회사 줄 값 꺾은선(주문 1127-2306) — 산 날부터 판 날까지 종가 · 점선 = 산 값 · 오르면 빨강 · 내리면 파랑(선만 · 글 색은 그대로) */
+#su .sj-trsp { display: block; width: 100%; height: 52px; margin: 6px 0 2px; border-radius: 8px; background: #F4F8F7; }
+#su .sj-trsp .sj-trspb { stroke: #8FA6AC; stroke-width: 1; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
+#su .sj-trsp .sj-trspl { fill: none; stroke: #3E5560; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+#su .sj-trsp .sj-trspd { fill: none; stroke: #3E5560; stroke-width: 8; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+#su .sj-trsp[data-st="up"] .sj-trspl, #su .sj-trsp[data-st="up"] .sj-trspd { stroke: #D32F2F; }
+#su .sj-trsp[data-st="dn"] .sj-trspl, #su .sj-trsp[data-st="dn"] .sj-trspd { stroke: #1565C0; }
 
