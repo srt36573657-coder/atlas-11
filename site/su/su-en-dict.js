@@ -6,6 +6,7 @@ export const EX = Object.freeze({
 "선물": "Gift",
 "듣기": "Listen",
 "글씨": "Text size",
+"더 보기 — 찾기 · 선물 · 듣기 · 글씨 · 천사": "More — Search · Gift · Listen · Text size · Angel",
 "한눈에": "Overview",
 "장부": "Ledger",
 "정산": "Settlement",

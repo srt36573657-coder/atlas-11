@@ -623,7 +623,7 @@ test('그림 뜻 한 줄 — 그림마다 맨 위 · 꾀 서른여섯 · 쉬운 
   assert.ok(/meanCap\(PM\.land, 'figcaption'\), landPic\(/.test(sj) && /meanCap\(PM\.arrows, 'figcaption'\), arrowsPic\(k\)/.test(sj), '형세 그림 · 화살 열 맨 위');
   assert.equal(calls(sj + kk + wy, /sonmuPic\(\{w: 84/g), calls(sj + kk + wy, /meanCap\(PM\.sonmu\), h\('span', \{class: 'sj-saysp'/g), '손무 말 상자마다 그림 뜻');
   for (const w of ['book', 'castle', 'ledger']) assert.ok(new RegExp("meanCap\\(PM\\." + w + ", 'figcaption'\\), heroPic\\('" + w + "'\\)").test(kk), '쪽 머리 그림 ' + w);
-  assert.ok(/line \? meanCap\(PM\.ridge\) : null, line,/.test(kk) && /meanCap\(PM\.bars\),[^\n]*\n\s*h\('ol', \{class: 'sj-stl'\}/.test(kk), '회사 산세 · 정산 붓 막대 바로 위');
+  assert.ok(/line \? meanCap\(PM\.ridge\) : null, line,/.test(kk) && /meanCap\(PM\.bars\),[^\n]*\n\s*(?:\.\.\.fold7\()?h\('ol', \{class: 'sj-stl'\}/.test(kk), '회사 산세 · 정산 붓 막대 바로 위');
   assert.ok(/meanCap\(PM\.themes\),[^\n]*\n\s*h\('ol', \{class: 'sj-thl'\}/.test(sj), '첫 쪽 큰 갈래 붓 막대 바로 위(주문 1116-1601)');
   assert.ok(/capOf\(m\.ink\), m\.ink/.test(wy) && /capOf\(f\), f\)/.test(wy), '「왜 사?」 · 매매일지 그림 맨 위');
   assert.ok(/meanCap\(PM\.cover\)/.test(top) && src('index.html').includes('<section class="sj-cover" aria-label="손자병법 표지"><p class="sj-pm"><span class="sj-pmt">' + M.MEAN_TAG + '</span><b class="sj-pmb">' + M.PM.cover + '</b></p><div class="sj-artw">'), '표지 그림 뜻 = 첫 칠함 판 글 그대로');

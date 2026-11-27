@@ -12,7 +12,7 @@ import {NEED, ymd} from '/su/su-six.js';
 import {NAME, josa} from '/next/brand.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {hardLeft} from '/su/su-word.js'; // 풀이 없이 남은 어려운 낱말 셈(검사 · 보고가 main data-hard 를 셈 — 화면에는 안 붙임)
-import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap} from '/su/su-sonja-top.js';
+import {topBar, cover, stepDay, endSec as endLine, dockNav, tabNav, meanCap, SAFE} from '/su/su-sonja-top.js';
 import {MIX36, EQ36, NAME as KNAME, MEAN as KMEAN} from '/su/su-sonja-36.js'; // 여섯 식 · 꾀마다 섞은 식(주문 1116-2134 — 꾀 쪽 「이렇게 점수를 매겨요」)
 import {mktNow, mktWords, kst} from '/su/su-mkt.js'; // 지금 시장 한 줄(주문 1125-1359)
 import {stance3, STANCES, won100} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 — 수비 · 보편 · 공격 · 지난 같은 땅 기록으로만)
@@ -552,6 +552,100 @@ function todoSec() { // 누르면 표시 · 이 휴대폰에만 그날 하루(�
     h('h2', {class: 'sj-tdh', text: '오늘의 투자 점검'}), h('ul', {class: 'sj-tdl'}, ...items),
     h('p', {class: 'sj-tdn', text: '누르면 표시돼요. 이 휴대폰에만 오늘 하루 남아요.'}));
 }
+/* ── 잡스 판 첫 화면(주문 1128-0755 · 사장님 2026-11-28(서울) 07:55 「잡스가 인터페이스를 만들었다면 … 애플에 공식을 먼저 학습하라 … 먼저 샘플 3개를 제시하라」 · 08:17 「그래 1번으로 해 그런데 더 개선해 … 그 본질답게 개선하고 업그레이드」)
+ *  샘플 1 「하나씩 크게」 + 본질 8번 차례: 오늘(날 · 응원) → 격언(산수 그림 위 · 맨 위 그대로) → 오늘의 땅 → 오늘의 꾀 → 덜 잃은 꾀 셋(손실 먼저 — 가장 낮을 때를 먼저) → 사기 전에 멈춤(가장 큰 단추 · 본질 2) → 안전 한 줄
+ *  → 오늘 더 보기(인사 · 오늘의 기업 · 투자 점검 — 지우지 않고 한 번 더 누르면) → 표지 → 그 아래는 그대로
+ *  잡스 「백 가지에 아니오」(WWDC 1997) · 애플 공식 안내서 Simplicity 「Include just what's necessary」 · Hierarchy · 글 17 · 누르는 자리 48 */
+const WD7 = ['일', '월', '화', '수', '목', '금', '토'];
+export const jDate = (ms = Date.now()) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(kst(ms).day ?? ''); if (!m) return ''; const w = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).getUTCDay(); return +m[2] + '월 ' + +m[3] + '일 ' + WD7[w] + '요일'; };
+export function jHead() {
+  return h('section', {class: 'sj-sec sj-jh', 'aria-label': '오늘'}, h('p', {class: 'sj-jhk', text: jDate()}), h('h1', {class: 'sj-jht', text: '오늘'}), cheerLine());
+}
+function jLand(T, mkt) {
+  const x = okSun(T.sun) ? T.sun : null;
+  return h('section', {class: 'sj-sec sj-jl', 'aria-label': '오늘의 땅', ...(x ? {'data-land': x.land} : {})},
+    h('p', {class: 'sj-jk', text: '오늘의 땅'}),
+    x ? h('p', {class: 'sj-jlt', text: '지금은 ' + x.name + '이에요.'}) : null,
+    x && typeof x.do === 'string' ? h('p', {class: 'sj-jls', text: x.do}) : null,
+    mkt);
+}
+/** 꾀 하나의 날마다 값(정산과 같은 g.tr · 처음 넣은 100원) — {d0, d1, low, now} · 가장 낮을 때는 처음 100원도 셈 */
+export function trPath(g, k) {
+  const T = g?.tr, j = Number(String(k).slice(1)) - 1;
+  if (!T || !Array.isArray(T.days) || !Array.isArray(T.w) || T.days.length !== T.w.length || !(j >= 0 && j < 36)) return null;
+  const P = T.w.map((r, i) => (Array.isArray(r) && fin(r[j]) && r[j] > 0 ? {d: T.days[i], v: r[j] / 1e4} : null)).filter(Boolean);
+  if (P.length < 2) return null;
+  return {d0: P[0].d, d1: P.at(-1).d, low: Math.min(100, ...P.map(q => q.v)), now: P.at(-1).v};
+}
+const jWon = v => h('b', {class: 'sj-jv', 'data-m': v > 100.04 ? 'up' : v < 99.95 ? 'dn' : 'eq', text: w100(v / 100 - 1)});
+function jKkoe(T) {
+  const x = okSun(T.sun) ? T.sun : null, pk = x ? nowPick(x) : null;
+  const rows = Array.isArray(T?.sunLog?.rows) ? T.sunLog.rows : [], r = pk ? null : rows.filter(q => typeof q?.day === 'string' && LANDK.includes(q.land) && typeof KNAME[q.k] === 'string').at(-1) ?? null;
+  const from = pk ? 'now' : r ? 'log' : 'none', k = pk ? pk.k : r ? r.k : null;
+  const why = from === 'now' ? (pk.win ? '예전에 지금처럼 ' + x.name + '이었을 때, 아무 회사나 고른 것보다 덜 잃은 꾀예요.' : '예전에 지금처럼 ' + x.name + '이었을 때, 돈을 가장 덜 잃은 꾀예요.')
+    : from === 'log' ? '오늘 시장은 아직 세는 중이에요. 그래서 ' + mday(r.day) + '에 고른 꾀를 먼저 보여 드려요.' : '오늘 시장 모습을 다 세면, 예전에 그런 시장에서 덜 잃은 꾀를 여기에 크게 보여 드려요.';
+  if (!k) return h('section', {class: 'sj-sec sj-jkk', 'data-from': from, 'aria-label': '오늘의 꾀'}, h('p', {class: 'sj-jk', text: '오늘의 꾀'}), h('h2', {class: 'sj-jkt', text: '서른여섯 꾀'}), h('p', {class: 'sj-jks', text: why}), h('a', {class: 'sj-jbtn sj-jbtn2', href: '#/k', text: '서른여섯 꾀 보기'}));
+  const no = String(+k.slice(1));
+  return h('section', {class: 'sj-sec sj-jkk', 'data-from': from, 'data-k': k, 'aria-label': '오늘의 꾀'},
+    h('div', {class: 'sj-jkrow'},
+      h('div', {class: 'sj-jktx'}, h('p', {class: 'sj-jk', text: '오늘의 꾀 · 제' + no + '계'}), h('h2', {class: 'sj-jkt', text: KNAME[k]}), typeof KMEAN[k] === 'string' ? h('p', {class: 'sj-jkm', text: KMEAN[k]}) : null),
+      h('span', {class: 'sj-herostamp sj-jkst', 'aria-hidden': 'true'}, h('small', {text: '제'}), h('b', {text: no}), h('small', {text: '계'}))),
+    h('p', {class: 'sj-jks', text: why}),
+    h('p', {class: 'sj-jkr', 'data-wait': ''}),
+    h('a', {class: 'sj-jbtn sj-jbtn2', href: '#/k/' + k, text: '이 꾀 보기'}));
+}
+/** 오늘의 꾀 기록 한 줄 — 가장 낮을 때를 먼저(손실 먼저 · 본질 8) */
+function jRecFill(sec, g) {
+  const p = sec?.querySelector(':scope > .sj-jkr'); if (!p?.isConnected) return;
+  const e = sec.dataset.k ? trPath(g, sec.dataset.k) : null;
+  if (!e) { p.remove(); return; }
+  p.replaceChildren(h('span', {text: mday(e.d0) + '부터 ' + mday(e.d1) + '까지 가짜 돈 100원이 가장 낮을 때 '}), jWon(e.low), h('span', {text: ', 지금 '}), jWon(e.now), h('span', {text: '이에요.'}));
+  p.removeAttribute('data-wait');
+}
+function jTop3Wait() { return h('section', {class: 'sj-sec sj-j3', 'aria-label': '덜 잃은 꾀', 'data-wait': ''}, h('p', {class: 'sj-jk', text: '덜 잃은 꾀'}), h('p', {class: 'sj-j3w', text: '꾀 차례를 불러오고 있어요.'})); }
+/** 덜 잃은 꾀 셋 — 형세가 있으면 그 땅의 덜 잃은 차례(sun.rank) · 없으면 정산 기록에서 가장 낮을 때가 높은 꾀부터(손실 먼저) · 서른여섯 모두는 꾀 탭 */
+function jTop3Fill(sec, g, T) {
+  if (!sec?.isConnected) return;
+  const S = okSun(T.sun) ? T.sun : null;
+  let L = [], lead = '';
+  if (S && Array.isArray(S.rank)) {
+    L = S.rank.filter(r => typeof KNAME[r.k] === 'string').slice(0, 3).map(r => ({k: r.k, r}));
+    lead = '예전에 지금처럼 ' + S.name + '이었던 날들에 잃은 때가 적은 꾀부터예요.';
+  } else if (g && Array.isArray(g.kinds)) {
+    L = g.kinds.map(k => { const e = trPath(g, k); return e && typeof KNAME[k] === 'string' ? {k, e} : null; }).filter(Boolean).sort((a, b) => b.e.low - a.e.low || b.e.now - a.e.now).slice(0, 3);
+    lead = L.length ? mday(L[0].e.d0) + '부터 ' + mday(L[0].e.d1) + '까지 가짜 돈 100원이 가장 덜 내려간 꾀부터예요. 잃지 않는 것이 먼저예요.' : '';
+  }
+  sec.querySelector(':scope > .sj-j3w')?.remove();
+  if (!L.length) { sec.append(h('p', {class: 'sj-j3w', text: '꾀 차례 자료가 아직 없어요. 억지로 채우지 않았어요.'})); sec.removeAttribute('data-wait'); return; }
+  sec.append(h('p', {class: 'sj-j3l', text: lead}),
+    h('ol', {class: 'sj-j3o'}, ...L.map((q, i) => h('li', {class: 'sj-j3i', 'data-k': q.k},
+      h('a', {class: 'sj-j3a', href: '#/k/' + q.k},
+        h('span', {class: 'sj-j3n', text: String(i + 1)}),
+        h('span', {class: 'sj-j3b'}, h('b', {class: 'sj-j3t', text: KNAME[q.k]}),
+          q.e ? h('span', {class: 'sj-j3v'}, h('span', {text: '가장 낮을 때 '}), jWon(q.e.low), h('span', {text: ' · 지금 '}), jWon(q.e.now))
+            : h('span', {class: 'sj-j3v', text: '잃은 날 ' + q.r.n + '번 중 ' + q.r.lose + '번'})),
+        h('i', {'aria-hidden': 'true', text: '›'}))))),
+    h('a', {class: 'sj-jlink', href: '#/k'}, h('span', {text: '서른여섯 꾀 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+  sec.removeAttribute('data-wait');
+}
+/** 사기 전에 멈춤 — 첫 화면에서 가장 큰 단추(본질 2 「주식을 사기 전에 한 번 멈추게 한다」 · 「왜 사?」 열한 질문) */
+function jStop(lc) {
+  return h('section', {class: 'sj-sec sj-jst', 'aria-label': '사기 전에 멈춤'},
+    h('p', {class: 'sj-jk', text: '사기 전에'}),
+    h('h2', {class: 'sj-jstt', text: '사려는 회사가 있나요?'}),
+    h('p', {class: 'sj-jsts', text: '「왜 사?」 열한 가지를 하나씩 물어볼게요. 내 이유가 먼저예요.'}),
+    h('a', {class: 'sj-jbtn', href: lc ? '#/q/' + lc : '#/q', text: '멈추고 물어보기'}));
+}
+/** 오늘의 한 줄(옛 「오늘의 꾀 한 장」 셋째 장 · 주문 1126-1249) — 오늘 시장 글의 손자 말 · 없으면 격언 열 가지의 손자 말(날짜로 하나) · 「오늘 더 보기」 맨 끝 */
+function jWord(T) {
+  const x = okSun(T.sun) ? T.sun : null, M = MIND10[((Number(String(x?.day ?? T.asOf?.board ?? '').slice(8, 10)) || 1) - 1) % MIND10.length];
+  const qt = typeof x?.quote === 'string' ? {q: x.quote, p: x.pian ?? ''} : M ? {q: M.quote, p: M.pian} : null;
+  return qt ? h('section', {class: 'sj-sec sj-jword', 'aria-label': '오늘의 한 줄'}, h('p', {class: 'sj-jk', text: '오늘의 한 줄'}), h('p', {class: 'sj-jwq', text: '「' + qt.q + '」'}), h('p', {class: 'sj-jwp', text: '손자병법 ' + qt.p})) : null;
+}
+/** 오늘 더 보기 — 인사 · 오늘의 기업 · 투자 점검(주문 1126-1544 — 지우지 않고 한 번 더 누르면 · 샘플 1) */
+function jMore(...kids) {
+  return h('details', {class: 'sj-drawer sj-jmore'}, h('summary', {}, h('span', {class: 'sj-s1', text: '오늘 더 보기'}), h('span', {class: 'sj-s2', text: '인사 · 오늘의 기업 · 투자 점검 · 오늘의 한 줄'}), chev()), ...kids);
+}
 export async function vSonja(X, shell = null) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   if (!T) return null;
@@ -561,8 +655,13 @@ export async function vSonja(X, shell = null) {
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
   if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec());
   { const gl = main.querySelector(':scope > section.sj-mind ol.sj-gkl'); if (gl && !gl.parentElement.querySelector(':scope > button.sj-f7b')) { const [, b] = fold7(gl, (o, n) => '나머지 격언 ' + (n - o) + '가지 더 보기', 1); if (b) gl.after(b); } } // 격언 열 가지 = 맨 위 그대로 · 첫째만 보이고 「더 보기」(주문 1127-2148 · 사장님 21:48 「어그래」) — 먼저 칠한 판(index.html)도 data-fold=1 로 같은 꼴
-  { const old = main.querySelector(':scope > section.sj-hero'), hs = heroSec(T); if (old) old.remove(); if (hs) main.prepend(hs); }
-  { for (const e of main.querySelectorAll(':scope > section.sj-greet, :scope > section.sj-coday, :scope > section.sj-todo')) e.remove(); const hs = main.querySelector(':scope > section.sj-hero'), gr = greetSec(), cd = coDaySec(hs?.dataset.k ?? null), td = todoSec(); main.prepend(gr); (hs ?? gr).after(cd, td); } // 본보기 그림 차례 — 인사 → 오늘의 꾀 한 장 → 오늘의 기업 → 오늘의 투자 점검(주문 1126-1544) // 오늘의 꾀 한 장 — 첫 화면 맨 위(주문 1126-1249 · 격언 족자 위) // 주식 격언 열 가지 — 첫 화면 맨 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) · index.html 이 먼저 칠한 판이면 그대로
+  { // 잡스 판 차례(주문 1128-0755) — 오늘 → 격언 → 오늘의 땅 → 오늘의 꾀 → 덜 잃은 꾀 셋 → 사기 전에 멈춤 → 안전 한 줄 → 오늘 더 보기 → 표지 → 그 아래 그대로
+    for (const e of main.querySelectorAll(':scope > section.sj-hero, :scope > section.sj-greet, :scope > section.sj-coday, :scope > section.sj-todo, :scope > .sj-jh, :scope > .sj-jl, :scope > .sj-jkk, :scope > .sj-j3, :scope > .sj-jst, :scope > .sj-jsafe, :scope > .sj-jmore')) e.remove();
+    const kk = jKkoe(T), mind = main.querySelector(':scope > section.sj-mind');
+    main.prepend(jHead());
+    const J = [jLand(T, mktLine(T)), kk, jTop3Wait(), jStop(X.cur?.()?.code ?? null), h('p', {class: 'sj-safe sj-jsafe', text: SAFE}), jMore(greetSec(), coDaySec(kk.dataset.k ?? null), todoSec(), jWord(T))];
+    if (mind) mind.after(...J); else main.querySelector(':scope > .sj-jh').after(...J);
+  }
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
   const aw = main.querySelector(':scope > .sj-cover .sj-artw'); if (aw && !aw.querySelector(':scope > svg.sj-artfx')) aw.insertBefore(coverFilm(), aw.querySelector(':scope > .sj-hwa')); // 표지 영화 덧칠(주문 1116-2310 — 안개 · 새 · 금빛 반짝임 · 빛 한 줄기 11초)
   main.querySelector(':scope > .sj-cover > .sj-tc')?.remove(); // 오늘 시장 · 세 태세 칸(오늘 한 장 · 주문 1120-0001 · 1120-0728)을 지움 — 주문 1126-1748 사장님 17:48 「지금 첫번째 구역은 헷갈린다 삭제 하라」(먼저 칠한 옛 판의 자리도 뗌)
@@ -573,11 +672,12 @@ export async function vSonja(X, shell = null) {
   const after = async () => { // 꾀 칸(su21-s36.json) — 첫 칠함 뒤에 받아 채움 · 오늘의 기업도 같은 자료로(주문 1126-1544)
     const g = wait ? await X.get(D36).catch(() => null) : null, G = ok36(g, T) ? g : null; // 꾀 칸 자료가 없는 날(s36n 없음)은 부르지 않음 — 없는 파일을 부르면 화면 오류(미리 보기 sonja-today4 1/11)
     if (!main.isConnected) return;
-    coDayFill(main.querySelector(':scope > section.sj-coday'), G);
+    coDayFill(main.querySelector('section.sj-coday'), G); // 오늘 더 보기 안(잡스 판)
+    jRecFill(main.querySelector(':scope > section.sj-jkk'), G); jTop3Fill(main.querySelector(':scope > section.sj-j3'), G, T);
     if (wait?.isConnected) { if (G) wait.replaceWith(trickSec(G, T)); else wait.remove(); }
     hardOf(); main.removeAttribute('data-wait');
   };
-  const dock = dockNav(1, nextOf(T)), tabs = tabNav(0, X.cur?.()?.code ?? null), mkt = mktLine(T), cheer = cheerLine(); // 응원 한 줄 → 지금 시장 한 줄 — 머리 줄 바로 아래(주문 1125-2019 · 1125-1359)
-  if (keep) { const par = main.parentElement, old = par?.querySelector(':scope > .sj-mkt'), oc = par?.querySelector(':scope > .sj-cheer'); if (old) old.replaceWith(mkt); else main.before(mkt); if (oc) oc.replaceWith(cheer); else mkt.before(cheer); }
-  return {title: '오늘', keep, dom: [keep ? shell.top : topBar(), cheer, mkt, main, dock, tabs], rest: [dock, tabs], after}; // keep = 먼저 칠한 판에 이어 붙임(su.js 는 rest 만 붙임)
+  const dock = dockNav(1, nextOf(T)), tabs = tabNav(0, X.cur?.()?.code ?? null); // 응원 한 줄 · 지금 시장 한 줄은 main 안(잡스 판 — 오늘 · 오늘의 땅)
+  if (keep) for (const e of main.parentElement?.querySelectorAll(':scope > .sj-mkt, :scope > .sj-cheer') ?? []) e.remove();
+  return {title: '오늘', keep, dom: [keep ? shell.top : topBar(), main, dock, tabs], rest: [dock, tabs], after}; // keep = 먼저 칠한 판에 이어 붙임(su.js 는 rest 만 붙임)
 }

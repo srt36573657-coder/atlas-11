@@ -2070,3 +2070,89 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-langb { flex: 1 1 0; min-width: 0; min-height: 48px; padding: 0 8px; border: 1.5px solid #20323A; border-radius: 12px; background: #FFFFFF; color: #20323A; font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; }
 #su .sj-langb[aria-pressed="true"] { background: #20323A; color: #FFFFFF; }
 
+/* ── 잡스 판(주문 1128-0755 · 사장님 2026-11-28(서울) 07:55 「잡스가 인터페이스를 만들었다면 … 애플에 공식을 먼저 학습하라 … 먼저 샘플 3개를 제시하라」 · 08:23 「그래 1번으로 해 … 그 본질답게 개선하고 업그레이드」)
+   샘플 1 「하나씩 크게」 — 첫 화면 = 오늘 → 격언 → 오늘의 땅 → 오늘의 꾀 → 덜 잃은 꾀 셋 → 사기 전에 멈춤(가장 큰 단추) · 나머지는 한 번 더 누르면
+   애플 공식 안내서(Human Interface Guidelines · 2026-06-08 디자인 원칙) Simplicity 「Include just what's necessary」 · Hierarchy · 기본 글씨 17 · 누르는 자리 48 · 잡스 「백 가지에 아니오」(WWDC 1997)
+   빛깔 = 흰 바탕 · 먹색 글(#1D1D1F) · 황토 이름표(#8A5A12 · 흰 바탕 대비 5.9) · 빨강은 오름만 · 파랑은 내림만 ── */
+html.sj-on #su .sj-top { background: #FFFFFF; border-bottom: 1px solid #E5E5EA; box-shadow: none; flex-wrap: nowrap; gap: 8px; }
+html.sj-on #su .sj-top > .sj-lang { flex: none; display: flex; gap: 0; margin: 0 0 0 auto; padding: 0; border-radius: 13px; background: #EFEFF4; }
+html.sj-on #su .sj-top .sj-langb { flex: none; min-width: 52px; min-height: 48px; padding: 0 12px; border: 0; border-radius: 13px; background: transparent; color: #3A3A3C; font-size: 1.0625rem; font-weight: 600; box-shadow: none; }
+html.sj-on #su .sj-top .sj-langb[aria-pressed="true"] { background: #FFFFFF; color: #1D1D1F; font-weight: 800; box-shadow: inset 0 0 0 3px #EFEFF4, 0 1px 2px rgba(0, 0, 0, .12); }
+html.sj-on #su .sj-top > .sj-menu { flex: none; position: static; margin-left: 0; }
+html.sj-on #su .sj-top:not(:has(> .sj-lang)) > .sj-menu { margin-left: auto; }
+html.sj-on #su .sj-menu > summary.sj-menub { display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 48px; height: 48px; border-radius: 24px; background: #EFEFF4; list-style: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html.sj-on #su .sj-menu > summary.sj-menub::-webkit-details-marker { display: none; }
+html.sj-on #su .sj-menu > summary.sj-menub svg { width: 22px; height: 22px; fill: #1D1D1F; }
+html.sj-on #su .sj-menu > summary.sj-menub:focus-visible { outline: 3px solid #8A5A12; outline-offset: 2px; }
+html.sj-on #su .sj-menu[open] > summary.sj-menub { background: #1D1D1F; }
+html.sj-on #su .sj-menu[open] > summary.sj-menub svg { fill: #FFFFFF; }
+html.sj-on #su .sj-menu > .sj-tools { position: absolute; z-index: 40; top: calc(100% + 6px); right: max(12px, env(safe-area-inset-right, 0px)); display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; min-width: 200px; margin: 0; padding: 8px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 12px 32px rgba(0, 0, 0, .18), 0 0 0 1px rgba(0, 0, 0, .06); }
+html.sj-on #su .sj-menu > .sj-tools .sj-btn { justify-content: flex-start; width: 100%; min-height: 52px; padding: 0 14px; border: 0; border-radius: 12px; background: transparent; box-shadow: none; color: #1D1D1F; font-size: 1.0625rem; font-weight: 700; text-decoration: none; }
+html.sj-on #su .sj-menu > .sj-tools .sj-btn:hover, html.sj-on #su .sj-menu > .sj-tools .sj-btn:focus-visible { background: #F2F2F7; }
+html.sj-on #su .sj-menu > .sj-tools .sj-btn[aria-pressed="true"] { background: #1D1D1F; color: #FFFFFF; }
+@media (max-width: 370px) { html.sj-on #su .sj-top .sj-langb { padding: 0 9px; } html.sj-on #su .sj-top { gap: 6px; } }
+/* 아래 탭 — 흰 바탕 · 그림 위 글 아래 · 켜진 탭은 먹색 굵게(채운 네모 없음 · 애플 Tab bars 「Include tab labels」) */
+html.sj-on #su .sj-tabs { gap: 0; background: #FFFFFF; border-top: 1px solid #E5E5EA; box-shadow: none; }
+html.sj-on #su .sj-tab { flex-direction: column; gap: 1px; min-height: 56px; padding: 2px 0; border-radius: 0; background: transparent; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.2; }
+html.sj-on #su .sj-tab svg { width: 26px; height: 26px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html.sj-on #su .sj-tab.sj-cur { background: transparent; color: #1D1D1F; font-weight: 800; }
+html.sj-on #su .sj-tab.sj-cur svg { stroke-width: 2.4; }
+/* 첫 쪽 — 흰 판 위 큰 글 한 줄씩(칸 상자 없음) */
+html.sj-on #su main.sj-page[data-page="sonja"] { background-color: #FFFFFF; }
+html.sj-on #su main.sj-page[data-page="sonja"] > :is(.sj-jh, .sj-jl, .sj-jkk, .sj-j3) { margin: 0; padding: 18px 4px 0; border-radius: 0; background: transparent; box-shadow: none; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jh { padding-top: 14px; }
+html.sj-on #su .sj-jhk { margin: 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.3; }
+html.sj-on #su .sj-jht { margin: 2px 0 0; color: #1D1D1F; font-family: var(--sj-sans); font-size: 2.125rem; font-weight: 800; line-height: 1.2; letter-spacing: 0; }
+html.sj-on #su .sj-jh > .sj-cheer { margin-top: 12px; padding: 8px 14px; border-radius: 14px; min-height: 48px; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-mind { margin-top: 14px; }
+html.sj-on #su .sj-jk { margin: 0; color: #8A5A12; font-family: var(--sj-sans); font-size: 1.0625rem; font-weight: 800; line-height: 1.3; letter-spacing: 0; }
+html.sj-on #su .sj-jlt, html.sj-on #su .sj-jkt, html.sj-on #su .sj-jl:not(:has(.sj-jlt)) .sj-mktt { display: block; margin: 4px 0 0; color: #1D1D1F; font-family: var(--sj-sans); font-size: 1.75rem; font-weight: 800; line-height: 1.25; letter-spacing: 0; }
+html.sj-on #su .sj-jls, html.sj-on #su .sj-jkm { margin: 6px 0 0; color: #3A3A3C; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su .sj-jl > .sj-mkt { margin: 10px 0 0; padding: 0; min-height: 0; background: transparent; border: 0; }
+html.sj-on #su .sj-jl > .sj-mkt .sj-mktp { gap: 2px 8px; }
+html.sj-on #su .sj-jl > .sj-mkt :is(.sj-mkts, .sj-mktd) { color: #636366; font-size: 1.0625rem; font-weight: 600; }
+html.sj-on #su .sj-jl:not(:has(.sj-jlt)) > .sj-mkt { margin-top: 2px; align-items: flex-start; }
+html.sj-on #su .sj-jl:not(:has(.sj-jlt)) > .sj-mkt .sj-mktp { flex-direction: column; align-items: flex-start; }
+html.sj-on #su .sj-jl:not(:has(.sj-jlt)) > .sj-mkt .sj-mkti { margin-top: 14px; }
+html.sj-on #su .sj-jkrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+html.sj-on #su .sj-jktx { min-width: 0; }
+html.sj-on #su .sj-jkst { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; width: 76px; height: 76px; margin: 0; border-radius: 50%; background: #1D1D1F; color: #FFFFFF; line-height: 1.05; }
+html.sj-on #su .sj-jkst small { font-size: 1.0625rem; font-weight: 700; }
+html.sj-on #su .sj-jkst b { font-size: 1.625rem; font-weight: 800; }
+html.sj-on #su .sj-jks, html.sj-on #su .sj-j3l, html.sj-on #su .sj-j3w { margin: 10px 0 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su .sj-jkr { margin: 8px 0 0; color: #1D1D1F; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su .sj-jv { font-weight: 800; color: #1D1D1F; }
+html.sj-on #su .sj-jv[data-m="up"] { color: #1D1D1F; } /* 첫 화면은 손실 먼저 — 오른 값은 빨강 없이 먹색(검사 ⑪ 빨강 글 0 · 본질 8 「손실을 보지 않는 것이 먼저」) */
+html.sj-on #su .sj-jv[data-m="dn"] { color: #1565C0; }
+html.sj-on #su .sj-jbtn { display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 54px; margin-top: 16px; padding: 13px 20px; line-height: 28px; border-radius: 27px; background: #1D1D1F; color: #FFFFFF; font-size: 1.125rem; font-weight: 800; text-decoration: none; text-align: center; }
+html.sj-on #su .sj-jbtn2 { background: #EFEFF4; color: #1D1D1F; }
+html.sj-on #su .sj-jbtn:focus-visible { outline: 3px solid #8A5A12; outline-offset: 3px; }
+html.sj-on #su ol.sj-j3o { list-style: none; margin: 8px 0 0; padding: 0; }
+html.sj-on #su li.sj-j3i { margin: 0; border-bottom: 1px solid #E5E5EA; }
+html.sj-on #su a.sj-j3a { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; min-height: 64px; padding: 8px 2px; color: inherit; text-decoration: none; }
+html.sj-on #su .sj-j3n { color: #8A5A12; font-size: 1.375rem; font-weight: 800; text-align: center; }
+html.sj-on #su .sj-j3b { display: flex; flex-direction: column; min-width: 0; }
+html.sj-on #su .sj-j3t { color: #1D1D1F; font-size: 1.125rem; font-weight: 800; line-height: 1.35; }
+html.sj-on #su .sj-j3v { color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.45; }
+html.sj-on #su a.sj-j3a > i, html.sj-on #su a.sj-jlink > i { color: #8E8E93; font-style: normal; font-size: 1.375rem; font-weight: 700; }
+html.sj-on #su a.sj-jlink { display: flex; align-items: center; justify-content: space-between; min-height: 52px; color: #8A5A12; font-size: 1.0625rem; font-weight: 800; text-decoration: none; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jst { margin: 26px 0 0; padding: 20px 18px 20px; border-radius: 22px; background: #F2F2F7; box-shadow: none; }
+html.sj-on #su .sj-jstt { margin: 4px 0 0; color: #1D1D1F; font-size: 1.5rem; font-weight: 800; line-height: 1.3; }
+html.sj-on #su .sj-jsts { margin: 6px 0 0; color: #3A3A3C; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jsafe { margin: 16px 4px 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jmore { margin-top: 18px; }
+html.sj-on #su .sj-jword .sj-jwq { margin: 6px 0 0; color: #1D1D1F; font-family: var(--sj-serif); font-size: 1.25rem; font-weight: 700; line-height: 1.55; }
+html.sj-on #su .sj-jword .sj-jwp { margin: 4px 0 0; color: #636366; font-size: 1.0625rem; font-weight: 600; }
+/* 첫 화면 격언 족자를 한 장 크기로(샘플 1 격언 띠 · 열 가지 글 · 산수 그림 · 접기 그대로) — 풀이 두 줄은 첫 쪽에서만 숨김(격언 줄 꺾쇠가 누르면 펼쳐짐을 알림 · 맨 아래 안전 한 줄과 같은 뜻) */
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-mind { margin-top: 12px; padding: 12px 10px 10px; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-mind > .sj-k { margin: 0 0 0 4px; font-size: 1.0625rem; letter-spacing: .06em; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-mind .sj-gk { margin: 14px 2px 12px; padding: 16px 10px 12px; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-mind .sj-gkh { margin-bottom: 8px; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-mind .sj-gkh .sj-brush { font-size: 1.875rem; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-mind :is(.sj-gkhint, .sj-mnote) { display: none; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-mind .sj-f7b { margin: 10px 0 0; min-height: 50px; padding: 8px 14px; }
+/* 「오늘」 큰 제목 옆에 응원 한 줄(좁은 휴대폰은 아래 줄로) */
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jh { display: flex; flex-wrap: wrap; align-items: center; column-gap: 12px; }
+html.sj-on #su .sj-jh > .sj-jhk { flex: 1 0 100%; }
+html.sj-on #su .sj-jh > .sj-jht { flex: none; }
+html.sj-on #su .sj-jh > .sj-cheer { flex: 0 1 auto; margin: 4px 0 0 auto; }
