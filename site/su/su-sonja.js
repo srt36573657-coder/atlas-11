@@ -204,6 +204,16 @@ function sunSec(T) {
     endSeal('시장'));
 }
 export const chev = () => s('svg', {class: 'sj-chev', viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, s('path', {d: 'M5 9l7 7 7-7'}));
+// 긴 줄 접기(주문 1127-1714 · 일꾼 100명 머스크 정리 — 「위 일곱 펼침 · 나머지 서랍」 한 틀) — 줄은 한 목록 그대로 · 위 몇 줄만 보이고 나머지는 「더 보기」 한 번
+export const FOLD7 = 7;
+let f7n = 0; // 쪽마다 이 셈으로 단추와 줄을 잇는 이름(sj-f7-1 …)
+export function fold7(ol, say, open = FOLD7) {
+  const n = ol.children.length; if (n <= open) return [ol, null];
+  ol.setAttribute('data-fold', String(open)); if (!ol.id) ol.id = 'sj-f7-' + (++f7n);
+  const b = h('button', {class: 'sj-f7b', type: 'button', 'aria-expanded': 'false', 'aria-controls': ol.id, 'data-n': String(n - open), text: say(open, n)});
+  b.addEventListener('click', () => { const on = !ol.hasAttribute('data-open'); ol.toggleAttribute('data-open', on); b.setAttribute('aria-expanded', String(on)); b.textContent = on ? '다시 접기' : say(open, n); });
+  return [ol, b];
+}
 
 /* ── 3 덜 잃은 꾀 차례(꾀 칸 자료는 첫 칠함 뒤에 받음 — 느린 휴대폰 첫 화면) ── */
 function trickWait(T) {
@@ -550,6 +560,7 @@ export async function vSonja(X, shell = null) {
   const keep = !!shell?.main?.isConnected, main = keep ? shell.main : h('main', {class: 'sj-page', 'data-page': 'sonja', 'data-wait': ''}, cover(null)); // data-wait — 꾀 칸을 채우면 뗌(검사가 기다림)
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
   if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec());
+  { const gl = main.querySelector(':scope > section.sj-mind ol.sj-gkl'); if (gl && !gl.parentElement.querySelector(':scope > button.sj-f7b')) { const [, b] = fold7(gl, (o, n) => '나머지 격언 ' + (n - o) + '가지 더 보기', 1); if (b) gl.after(b); } } // 격언 열 가지 = 맨 위 그대로 · 첫째만 보이고 「더 보기」(주문 1127-2148 · 사장님 21:48 「어그래」) — 먼저 칠한 판(index.html)도 data-fold=1 로 같은 꼴
   { const old = main.querySelector(':scope > section.sj-hero'), hs = heroSec(T); if (old) old.remove(); if (hs) main.prepend(hs); }
   { for (const e of main.querySelectorAll(':scope > section.sj-greet, :scope > section.sj-coday, :scope > section.sj-todo')) e.remove(); const hs = main.querySelector(':scope > section.sj-hero'), gr = greetSec(), cd = coDaySec(hs?.dataset.k ?? null), td = todoSec(); main.prepend(gr); (hs ?? gr).after(cd, td); } // 본보기 그림 차례 — 인사 → 오늘의 꾀 한 장 → 오늘의 기업 → 오늘의 투자 점검(주문 1126-1544) // 오늘의 꾀 한 장 — 첫 화면 맨 위(주문 1126-1249 · 격언 족자 위) // 주식 격언 열 가지 — 첫 화면 맨 위(주문 1120-2116 · 23:21 「맨 위에 두어라」) · index.html 이 먼저 칠한 판이면 그대로
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));

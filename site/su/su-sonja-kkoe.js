@@ -16,7 +16,7 @@ import {STORY36, ACTS, STORY_TAG} from '/su/su-sonja-story.js'; // 그림 속 �
 import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin, funnel36, eqBox, trSpark} from '/su/su-sonja.js';
 import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날의 바탕 글(su21_s36.py 그대로)
 import {kkoePic, ridgePic, heroPic, brushBar, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 손무의 이야기: 제3장 꾀를 펼치다 · 제4장 성을 살피다 · 장부 · 병서)
-import {kkoeTile} from '/su/su-sonja.js';
+import {kkoeTile, fold7, FOLD7} from '/su/su-sonja.js'; // 긴 줄 접기 한 틀(주문 1127-1714 · 첫 쪽 격언도 같은 틀 — 주문 1127-2148)
 import {stance3, STANCES} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 · 꾀 쪽 맨 위 표지 — 주문 1120-0950)
 import {picksOf, monthLow, dayCounts} from '/su/su-picks.js';
 import {findBox} from '/su/su-find.js'; // 회사 찾기(주문 1120-1447 — 회사 탭 맨 위)
@@ -30,16 +30,6 @@ export const KKOE = /^g(0[1-9]|[12]\d|3[0-6])$/;
 const K36 = Object.freeze(Array.from({length: 36}, (_, i) => 'g' + String(i + 1).padStart(2, '0')));
 const SETW = ['이김', '맞섬', '공격', '혼란', '연합', '패배']; // 여섯 묶음 머리 붓 글씨(묶음 이름은 자료 set 그대로)
 const NF = new Intl.NumberFormat('ko-KR');
-// 긴 줄 접기(주문 1127-1714 · 일꾼 100명 머스크 정리 — 「위 일곱 펼침 · 나머지 서랍」 한 틀) — 줄은 한 목록 그대로 · 위 몇 줄만 보이고 나머지는 「더 보기」 한 번
-export const FOLD7 = 7;
-let f7n = 0;
-export function fold7(ol, say, open = FOLD7) {
-  const n = ol.children.length; if (n <= open) return [ol, null];
-  ol.setAttribute('data-fold', String(open)); if (!ol.id) ol.id = 'sj-f7-' + (++f7n);
-  const b = h('button', {class: 'sj-f7b', type: 'button', 'aria-expanded': 'false', 'aria-controls': ol.id, 'data-n': String(n - open), text: say(open, n)});
-  b.addEventListener('click', () => { const on = !ol.hasAttribute('data-open'); ol.toggleAttribute('data-open', on); b.setAttribute('aria-expanded', String(on)); b.textContent = on ? '다시 접기' : say(open, n); });
-  return [ol, b];
-}
 const coUrl = c => '/atlas/data/co/' + c + '.json';
 
 /* ── 자료 ── */

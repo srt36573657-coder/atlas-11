@@ -1502,6 +1502,14 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const W = '㉝ [' + width + (big ? ' · 큰 글씨' : '') + '] ';
     await open(p, '#/');
     await p.waitForFunction(() => !document.querySelector('#su main.sj-page > section.sj-s36.sj-wait'), null, {timeout: 15000}).catch(() => {});
+    // 격언 열 가지 접기(주문 1127-2148 · 사장님 2026-11-27(서울) 21:48 「어그래」 — 「첫 화면 격언 열 가지를 맨 위 그대로 두고, 눌러 펼치게 줄여 볼까요?」의 답) — 처음엔 첫째만 · 「나머지 격언 9가지 더 보기」 · 누르면 열 가지 · 「다시 접기」
+    const f0 = await p.evaluate(() => { const s = document.querySelector('#su main.sj-page[data-page="sonja"] > section.sj-mind'), ol = s?.querySelector(':scope > .sj-gk > ol.sj-gkl'), b = s?.querySelector(':scope > .sj-gk > button.sj-f7b'), r = b?.getBoundingClientRect();
+      return {fold: ol?.getAttribute('data-fold') ?? null, n: ol?.children.length ?? 0, vis: ol ? [...ol.children].filter(li => li.getBoundingClientRect().height > 0).map(li => li.getAttribute('data-n')) : [], after: !!b && ol?.nextElementSibling === b,
+        t: (b?.textContent ?? '').trim(), ex: b?.getAttribute('aria-expanded') ?? null, h: r ? Math.round(r.height) : 0, fs: b ? parseFloat(getComputedStyle(b).fontSize) : 0, top: s?.previousElementSibling?.matches?.('section.sj-todo') ?? false}; });
+    if (f0.after) { await p.click('#su section.sj-mind button.sj-f7b'); await p.waitForTimeout(200); }
+    const f1 = await p.evaluate(() => { const b = document.querySelector('#su section.sj-mind button.sj-f7b'), ol = document.querySelector('#su section.sj-mind ol.sj-gkl'); return {t: (b?.textContent ?? '').trim(), ex: b?.getAttribute('aria-expanded') ?? null, vis: ol ? [...ol.children].filter(li => li.getBoundingClientRect().height > 0).length : 0}; });
+    check(f0.fold === '1' && f0.n === 10 && JSON.stringify(f0.vis) === '["1"]' && f0.after && f0.t === '나머지 격언 9가지 더 보기' && f0.ex === 'false' && f0.h >= 48 && f0.fs >= 16.95 && f0.top && f1.t === '다시 접기' && f1.ex === 'true' && f1.vis === 10,
+      W + '격언 열 가지 접기(주문 1127-2148 · 21:48 「어그래」) — 자리는 그대로(오늘의 투자 점검 다음 · 표지 앞) · 처음엔 첫째만 보임 · 「나머지 격언 9가지 더 보기」 · 누르면 열 가지 모두 · 「다시 접기」 · 48 · 17', JSON.stringify({f0, f1}));
     const g = await p.evaluate(() => {
       const t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), main = document.querySelector('#su main.sj-page[data-page="sonja"]'), s = main?.querySelector(':scope > section.sj-mind');
       if (!s) return null;
