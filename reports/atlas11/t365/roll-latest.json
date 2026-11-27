@@ -1,64 +1,86 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-11-26T23:59:19.025Z",
- "kst": "2026-11-27 08:59",
+ "at": "2026-11-27T00:08:44.764Z",
+ "kst": "2026-11-27 09:08",
  "slot": null,
- "reason": "09:00 회차",
+ "reason": "지금 시장 09:04",
  "ci": true,
  "version": "ml-v1",
- "result": "실패",
- "served": "live",
- "why": "사이트 자료 멈춤: site_build: 365곳 마지막 종가 날 2026-11-26 이 고르는 날 2026-11-27 과 다름 — 지금 사이트 자료 그대로 다시 올림",
+ "result": "바꿈",
+ "served": "rolled",
+ "why": null,
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-qRSqFs/closes/20261126T235919Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-15D5RV/closes/20261127T000844Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261127",
-  "sec": 110,
+  "sec": 81,
   "firstErrors": []
  },
- "asOf": null,
- "base": null,
- "provisional": null,
- "roll": null,
- "digest": null,
- "in": null,
- "out": null,
- "counts": null,
+ "asOf": "2026-11-27",
+ "base": "2026-10-30",
+ "provisional": true,
+ "roll": {
+  "files": 1,
+  "added": 84310,
+  "mismatch": 0,
+  "rebased": 33
+ },
+ "digest": "2d3800fb7cc5c3be",
+ "in": [],
+ "out": [],
+ "counts": {
+  "picked": 56,
+  "mg": 27,
+  "ly": 32,
+  "both": 3,
+  "q": 1768
+ },
  "tiers": null,
  "kinds": null,
- "stay": null,
- "ruleChanged": null,
- "prevVersion": null,
- "buffer": null,
- "all": null,
- "top": null,
- "range": null,
+ "stay": 56,
+ "ruleChanged": false,
+ "prevVersion": "ml-v1",
+ "buffer": false,
+ "all": {
+  "chg": -3.56,
+  "up": 18,
+  "down": 38
+ },
+ "top": {
+  "short": "지주·유통",
+  "chg": -0.69,
+  "scope": "mkt"
+ },
+ "range": {
+  "eligible": 56,
+  "reused": false
+ },
  "market": {
   "schema": "atlas-market-read-1",
   "rule": "mr-v2",
   "n": 2557,
-  "asOf": "2026-11-26",
-  "base": "2026-10-29",
+  "asOf": "2026-11-27",
+  "base": "2026-10-30",
   "days": 20,
-  "provisional": false,
+  "provisional": true,
   "day": {
-   "date": "2026-11-26",
-   "prev": "2026-11-25",
-   "up": 1757,
-   "down": 635,
-   "flat": 162,
+   "date": "2026-11-27",
+   "prev": "2026-11-26",
+   "up": 1537,
+   "down": 803,
+   "flat": 214,
    "none": 3,
-   "avg": 1.75,
-   "cw": 2.24,
+   "avg": 0.62,
+   "cw": 0.52,
    "word": "넓게 오른 날"
   },
   "span": {
-   "up": 507,
-   "down": 1940,
-   "flat": 107,
-   "chg": -8.75,
-   "cwChg": -19.55,
+   "up": 651,
+   "down": 1804,
+   "flat": 99,
+   "chg": -5.78,
+   "cwChg": -15.08,
    "word": "넓게 내림",
    "size": "작은 · 중간 회사 쪽이 덜 내림"
   },
@@ -68,20 +90,26 @@
    "down": 10,
    "gain": [],
    "fade": [
+    "지주·유통",
+    "IT·통신",
+    "조선·방산",
     "소재·건설",
-    "전력·에너지"
+    "금융",
+    "전자부품",
+    "전력·에너지",
+    "반도체"
    ],
    "top": {
     "id": "hold",
     "short": "지주·유통",
-    "chg": -2.22,
-    "tr": "▶ 옆걸음"
+    "chg": -0.69,
+    "tr": "▶ 옆걸음 · 힘 빠짐"
    },
    "low": {
     "id": "semi",
     "short": "반도체",
-    "chg": -22.73,
-    "tr": "▼ 내림"
+    "chg": -17.14,
+    "tr": "▼ 내림 · 힘 빠짐"
    }
   },
   "vsPrev": {
@@ -91,10 +119,10 @@
    "prevTop": "지주·유통"
   },
   "lines": [
-   "11월 26일(목) 마감 값 — 모든 회사 2,557곳 가운데 1,757곳 오름 · 635곳 내림 → 넓게 오른 날",
-   "20거래일(10월 29일(목)부터) — 한 회사 한 표 −8.7% · 큰 회사는 크게 −19.5% → 작은 · 중간 회사 쪽이 덜 내림",
-   "가장 센 갈래 지주·유통 −2.2%(▶ 옆걸음) · 가장 약한 갈래 반도체 −22.7%",
-   "앞 회차(11월 26일(목))와 같은 값 — 하루 오른 곳 1,757곳 · 1등 갈래 지주·유통 그대로"
+   "11월 27일(금) 장 중 값(아직 바뀜) — 모든 회사 2,557곳 가운데 1,537곳 오름 · 803곳 내림 → 넓게 오른 날",
+   "20거래일(10월 30일(금)부터) — 한 회사 한 표 −5.8% · 큰 회사는 크게 −15.1% → 작은 · 중간 회사 쪽이 덜 내림",
+   "가장 센 갈래 지주·유통 −0.7%(▶ 옆걸음 · 힘 빠짐) · 가장 약한 갈래 반도체 −17.1%",
+   "앞 회차(11월 26일(목))와 견줌 — 하루 오른 곳 1,757곳 → 1,537곳 · 1등 갈래 그대로 지주·유통"
   ]
  },
  "inspect": {
@@ -102,7 +130,7 @@
   "nEach": 111,
   "fail": 0,
   "ok": true,
-  "ms": 489,
+  "ms": 675,
   "lenses": [
    {
     "key": "apple",
@@ -117,7 +145,7 @@
     "name": "구글",
     "n": 111,
     "fail": 0,
-    "things": 641907,
+    "things": 641930,
     "first": []
    },
    {
@@ -125,7 +153,7 @@
     "name": "클로드",
     "n": 111,
     "fail": 0,
-    "things": 482970,
+    "things": 483036,
     "first": []
    },
    {
@@ -133,33 +161,75 @@
     "name": "CIA",
     "n": 111,
     "fail": 0,
-    "things": 186296,
+    "things": 186429,
     "first": []
    }
   ]
  },
- "home": null,
- "homeFetch": null,
- "surge": null,
- "cal": null,
+ "home": {
+  "ok": true,
+  "kst": "2026-11-27 09:12",
+  "live": true,
+  "idx": true,
+  "flows": true,
+  "sectors": true,
+  "us": true,
+  "stale": {},
+  "errors": [],
+  "alerts": 0
+ },
+ "homeFetch": {
+  "ok": 10,
+  "failed": []
+ },
+ "surge": {
+  "kind": "carry",
+  "from": "2026-11-26T08:59:28.657Z",
+  "fromKst": "2026-11-26 17:59",
+  "fromSlot": "18:00",
+  "digest": "ee2354e821608886"
+ },
+ "cal": {
+  "version": "tr-v1",
+  "asOf": "2026-11-27",
+  "provisional": true,
+  "records": 82,
+  "cases": 761,
+  "N": 761,
+  "a": 176,
+  "b": 583,
+  "k": 0,
+  "n10": 2,
+  "m10": 2,
+  "alerts": [
+   [
+    "half",
+    1
+   ]
+  ]
+ },
  "verify": {
-  "pick": "멍거 · 린치 조건 따로 세기 — 고른 곳 56 · 멍거 27 · 린치 32 · 둘 다 3 · 틀림 0"
+  "pick": "멍거 · 린치 조건 따로 세기 — 고른 곳 56 · 멍거 27 · 린치 32 · 둘 다 3 · 틀림 0",
+  "site": "{\"checks\":162070,\"bad\":0,\"first\":[]}",
+  "range": "{\"checks\":15322,\"mcChecks\":184,\"skipped\":4,\"bad\":0,\"first\":[]}",
+  "cal": "{\"ok\":true,\"checks\":14786,\"bad\":0,\"asOf\":\"2026-11-27\",\"last\":\"2026-11-26\",\"cases\":761,\"first\":[]}",
+  "cond": "조건 찾기 따로 세기: 회사 2557 · 짝 100 · 맞댐 36526 · 틀림 0 · 기본 2557 → 493 → 11 → 2"
  },
  "steps": [
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 109.7
+   "sec": 80.7
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 3.1
+   "sec": 4.2
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 4.4
+   "sec": 5.9
   },
   {
    "name": "업종 정리",
@@ -169,17 +239,75 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 1.9
+   "sec": 2.3
   },
   {
    "name": "사이트 자료",
-   "code": 1,
-   "sec": 6.7
+   "code": 0,
+   "sec": 13.8
+  },
+  {
+   "name": "사이트 자료 따로 세기",
+   "code": 0,
+   "sec": 4.6
+  },
+  {
+   "name": "7단 범위 셈",
+   "code": 0,
+   "sec": 61.8
+  },
+  {
+   "name": "7단 범위 따로 세기",
+   "code": 0,
+   "sec": 38.8
+  },
+  {
+   "name": "첫 화면 원문 받기",
+   "code": 0,
+   "sec": 2.7
+  },
+  {
+   "name": "첫 화면 자료",
+   "code": 0,
+   "sec": 0
+  },
+  {
+   "name": "달력 셈",
+   "code": 0,
+   "sec": 7.2
+  },
+  {
+   "name": "달력 따로 세기",
+   "code": 0,
+   "sec": 3.9
+  },
+  {
+   "name": "조건 찾기 셈",
+   "code": 0,
+   "sec": 0.5
+  },
+  {
+   "name": "조건 찾기 따로 세기",
+   "code": 0,
+   "sec": 0.3
   },
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 0.5
+   "sec": 0.7
   }
- ]
+ ],
+ "cond": {
+  "version": "cd-v1",
+  "n": 2557,
+  "bytes": 184852,
+  "rise": 11,
+  "rc": 11,
+  "up": 3,
+  "x5": 213,
+  "q5": 11,
+  "f3": 1061,
+  "f3q": 18,
+  "noRank": 0
+ }
 }
