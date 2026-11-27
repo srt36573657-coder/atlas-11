@@ -206,17 +206,21 @@ export function sellsOf(B, buys, asOf, start = START) {
     return {kind, i, ser: tdays.slice(i0, i1 + 1).map(t => [t, fin(B?.px?.[code]?.[t]) ? B.px[code][t] : null])};
   }).filter(Boolean);
   // 날마다 사고 팔기 셈 모두(주문 1125-2248 · 한눈에 「수익률 추이」) — 장날마다 그날까지 산 것의 산 돈(c) · 값(v: 판 것 = 판 값 · 아직 들고 있음 = 그날까지 가장 늦은 종가 · 없으면 산 값) · 서른여섯 꾀만 · 10주
-  const tt = {days: [], c: [], v: []}, lastPx = new Map();
+  // 꾀마다 날마다(주문 1127-1412 · 사장님 2026-11-27(서울) 14:12 「꾀별로 꺾은선 그래프를 만들어 자료를 수집한 날부터 지금까지 수익률 변화를 꺾은선 그래프로 36개 전부 다해」)
+  //   tk = {k: 서른여섯 꾀, c: [꾀마다 [날마다 산 돈]], v: [꾀마다 [날마다 값]]} — tt 와 같은 날 · 같은 셈을 꾀마다 나눔(그날까지 산 셈이 없는 꾀는 null) · 꾀를 모두 더하면 tt 와 같음
+  const tt = {days: [], c: [], v: []}, tk = {k: [...S36], c: S36.map(() => []), v: S36.map(() => [])}, kAt = new Map(S36.map((k, j) => [KINDS.indexOf(k), j])), lastPx = new Map();
   for (const t of tdays) {
-    let c = 0, v = 0, n = 0;
-    buys.forEach(([d, , code, buy], i) => {
+    let c = 0, v = 0, n = 0; const cK = S36.map(() => 0), vK = S36.map(() => 0);
+    buys.forEach(([d, ki, code, buy], i) => {
       const x = s[i]; if (!x || !(buy > 0) || d > t) return;
       const px = B?.px?.[code]?.[t]; if (fin(px)) lastPx.set(i, px);
-      c += buy * QTY; v += (x[0] !== 'h' && x[1] <= t ? x[2] : lastPx.get(i) ?? buy) * QTY; n++;
+      const cb = buy * QTY, vb = (x[0] !== 'h' && x[1] <= t ? x[2] : lastPx.get(i) ?? buy) * QTY, j = kAt.get(ki);
+      c += cb; v += vb; n++;
+      if (j != null) { cK[j] += cb; vK[j] += vb; }
     });
-    if (n) { tt.days.push(t); tt.c.push(Math.round(c)); tt.v.push(Math.round(v)); }
+    if (n) { tt.days.push(t); tt.c.push(Math.round(c)); tt.v.push(Math.round(v)); S36.forEach((_, j) => { tk.c[j].push(cK[j] > 0 ? Math.round(cK[j]) : null); tk.v[j].push(cK[j] > 0 ? Math.round(vK[j]) : null); }); }
   }
-  return {rule: SELL_RULE, cut: SELL_CUT, days: {...SELL_DAYS}, s, ex, tt};
+  return {rule: SELL_RULE, cut: SELL_CUT, days: {...SELL_DAYS}, s, ex, tt, tk};
 }
 /** 같은 날수로 재기(주문 1124-0226 · 사장님 2026-11-24(서울) 02:26 「어 1시간 이내에 작업 해봐」 — 「다음에는 2번 「같은 날수로 재기」를 넣어 볼까요?」의 답 · 장부 잣대 2번)
  *  산 셈마다 산 날 뒤 1 · 5 · 20 장날의 값(그 회사의 그날까지 가장 늦은 값 · 판 날 뒤는 안 셈) — 「지금」은 산 날마다 지난 날수가 달라 견주기 어려움

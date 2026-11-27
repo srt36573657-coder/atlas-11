@@ -683,6 +683,41 @@ function glDaySec(R) {
    주문 1127-1244(사장님 2026-11-27(서울) 12:44 「배치를 수익률순으로 하고 수익은 빨강 화살펴 내림은 파랑으로 해」 · docs/design/record-2026-11-27/order-1244.txt) — 차례 = 수익률 높은 차례 · 오름 ▲ 과 그 프로 = 빨강 · 내림 ▼ 과 그 프로 = 파랑(이 줄에만 · 사장님 말씀) */
 export const GL_KCAP = Object.freeze(['서른여섯 꾀 모두예요. 수익률이 높은 차례예요.', '산 비중은 모든 산 돈에서 그 꾀가 쓴 몫이에요.', '수익률은 그 꾀가 쓴 돈이 지금 몇 프로 늘거나 줄었는지예요. 판 것은 판 돈으로 셌어요.']); // 세 줄(한 줄씩 끊어 「산 비중」이 갈라지지 않게)
 export const glRateT = r => Math.abs(Math.round(r * 1000) / 10).toFixed(1) + '프로'; // 「2.5프로」 — 오르내림은 앞 모양(▲ · ▼ · ―)으로
+/* ── 꾀마다 수익률 추이(주문 1127-1412 · 사장님 2026-11-27(서울) 14:12 「꾀별로 꺾은선 그래프를 만들어 자료를 수집한 날부터 지금까지 수익률 변화를 꺾은선 그래프로 36개 전부 다해」 · docs/design/record-2026-11-27/order-1412.txt)
+   자료 = 장부가 날마다 꾀마다 적은 sell.tk(산 돈 c · 그날 값 v — tt 와 같은 날 · 같은 셈 · 꾀를 모두 더하면 tt) · 그날 수익률 = v ÷ c − 1
+   그림 서른여섯 = 이름표와 같은 차례(수익률 높은 차례) · 눈금은 서른여섯 모두 같음(가장 크게 움직인 꾀에 맞춤 · 크기를 견줄 수 있게) · 가운데 점선 = 0
+   오른 꾀 = 빨강 꺾은선 · 내린 꾀 = 파랑(주문 1127-1244 와 같은 색) · 첫 산 날 전은 그리지 않음 · 그림 속 글 없음(글은 밖 · 17 넘게) ── */
+const glPctS = v => { const a = Math.round(v * 1000) / 10; return (a % 1 === 0 ? a.toFixed(0) : a.toFixed(1)) + '프로'; }; // 눈금 글(10프로 · 2.5프로)
+export function glKSeries(D, keys) { // → {days, mx, S: [{k, r: [날마다 수익률 | null]}]} · 자료가 없으면 null
+  const T = D?.sell?.tt, K = D?.sell?.tk;
+  if (!T || !K || !Array.isArray(T.days) || T.days.length < 2 || !Array.isArray(K.k) || K.k.length !== 36 || !Array.isArray(K.c) || !Array.isArray(K.v)) return null;
+  const at = new Map(K.k.map((k, j) => [k, j]));
+  const S = keys.map(k => { const j = at.get(k); return {k, r: T.days.map((d, i) => { const c = j == null ? null : K.c[j]?.[i], v = j == null ? null : K.v[j]?.[i]; return fin(c) && c > 0 && fin(v) ? v / c - 1 : null; })}; });
+  const top = Math.max(0, ...S.flatMap(o => o.r.filter(v => v != null).map(v => Math.abs(v))));
+  const mx = [0.01, 0.02, 0.03, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 1, 2, 5, 10].find(s => s >= top) ?? Math.ceil(top);
+  return {days: T.days, mx, S};
+}
+function glKTrends(D, P) { // P = 꾀별 이름표 차례(kParts)
+  const G = glKSeries(D, P.map(x => x.k)); if (!G) return null;
+  const N = G.days.length, X = i => 5 + i / (N - 1) * 140, Y = v => 32 - v / G.mx * 28, nm = new Map(P.map(x => [x.k, x.name]));
+  const card = ({k, r}) => {
+    const pts = r.map((v, i) => (v == null ? null : [X(i).toFixed(1), Y(v).toFixed(1)])).filter(Boolean), last = [...r].reverse().find(v => v != null) ?? null;
+    const st = last == null ? 'none' : stOfD(Math.round(last * 1000)), name = nm.get(k) ?? k;
+    return h('li', {class: 'sj-kglc', 'data-k': k, 'data-st': st, 'data-n': String(pts.length)},
+      h('p', {class: 'sj-kglh', text: name}),
+      last == null ? h('p', {class: 'sj-glkr sj-kglr', text: '산 적 없음'}) : h('p', {class: 'sj-glkr sj-res sj-kglr', 'data-st': st}, shapeI(st), h('b', {text: glRateT(last)})),
+      s('svg', {class: 'sj-kgls', viewBox: '0 0 150 64', preserveAspectRatio: 'none', role: 'img', 'aria-label': name + ' 날마다 수익률 — ' + mday(G.days[0]) + '부터 ' + mday(G.days[N - 1]) + '까지' + (last == null ? ' · 산 적 없음' : ' · 끝 ' + glPp(last))},
+        s('rect', {class: 'sj-kglb', x: 0, y: 0, width: 150, height: 64}), s('line', {class: 'sj-kglz', x1: 0, x2: 150, y1: 32, y2: 32}),
+        ...(pts.length ? [s('path', {class: 'sj-kglp', d: pts.map(([x, y], i) => (i ? 'L' : 'M') + x + ' ' + y).join(' ')}), s('path', {class: 'sj-kgld', d: 'M' + pts[pts.length - 1][0] + ' ' + pts[pts.length - 1][1] + ' l0 0'})] : [])));
+  };
+  return h('section', {class: 'sj-sec sj-kgl', 'data-n': String(G.S.length), 'data-mx': String(G.mx), 'aria-label': '꾀마다 수익률 추이'},
+    h('h2', {class: 'sj-pfh2', text: '꾀마다 수익률 추이'}),
+    h('p', {class: 'sj-gllead', text: '서른여섯 꾀마다 처음 산 날부터 장날마다 수익률을 그렸어요. 수익률이 높은 차례예요.'}),
+    h('p', {class: 'sj-gllead sj-kglk', text: '그림 서른여섯 개 모두 눈금이 같아요. 맨 위가 +' + glPctS(G.mx) + ', 점선이 0, 맨 아래가 -' + glPctS(G.mx) + '예요.'}),
+    h('p', {class: 'sj-gllead sj-kglx', text: '가로는 ' + mday(G.days[0]) + '부터 ' + mday(G.days[N - 1]) + '까지 장날 ' + NF.format(N) + '일이에요.'}),
+    h('ol', {class: 'sj-kgll'}, ...G.S.map(card)),
+    h('p', {class: 'sj-gllead', text: '오른 꾀는 빨강, 내린 꾀는 파랑이에요. 모두 종가로 센 가짜 돈이에요.'}));
+}
 function glKRow(x, tot) {
   const r = x.v > 0 ? x.now / x.v - 1 : null, st = r == null ? 'none' : stOfD(Math.round(r * 1000));
   return h('li', {class: 'sj-gllegi sj-glkl', 'data-part': x.name, 'data-k': x.k, 'data-st': st}, glDot(x.col), h('b', {text: x.name}),
@@ -742,7 +777,7 @@ export async function vGlance(X) {
     s('svg', {class: 'sj-glkb', viewBox: '0 0 300 20', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, ...(() => { let x = 0; return r.segs.map(g => { const w = g.c / r.n * 300, e = s('rect', {x: x.toFixed(2), y: 0, width: Math.max(0, w - (r.segs.length > 1 ? 1.5 : 0)).toFixed(2), height: 20, rx: 3, fill: g.col, 'data-part': g.name}); x += w; return e; }); })()),
     h('p', {class: 'sj-glkt', text: r.best ? '가장 많이 고른 업종은 ' + r.best[0] + glIeyo(r.best[0]) + ' · ' + NF.format(r.n) + '번 가운데 ' + NF.format(r.best[1]) + '번' : '업종을 모르는 회사만 샀어요'}),
     r.next ? h('p', {class: 'sj-glk2', text: '두 번째는 ' + r.next[0] + glIeyo(r.next[0]) + ' · ' + NF.format(r.next[1]) + '번'}) : null);
-  const kids = [seg, sec, glTrend(D), glDaySec(DY), // 날마다 보기(주문 1126-2137)
+  const kids = [seg, sec, glTrend(D), glKTrends(D, kParts), glDaySec(DY), // 꾀마다 수익률 추이(주문 1127-1412) · 날마다 보기(주문 1126-2137)
     h('section', {class: 'sj-sec sj-glkk', 'data-n': String(A.kk.length), 'aria-label': '꾀마다 많이 고른 업종'},
       h('h2', {class: 'sj-pfh2', text: '꾀마다 많이 고른 업종'}),
       h('p', {class: 'sj-gllead', text: '막대 하나가 꾀 하나예요. 진한 칸이 길수록 그 꾀가 한 업종을 많이 골랐어요.'}),

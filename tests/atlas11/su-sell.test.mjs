@@ -73,3 +73,17 @@ test('날마다 사고 팔기 셈 모두(sell.tt · 주문 1125-2248 한눈에 �
   assert.deepEqual(S.tt.c, [10000, 30000, 30000, 30000, 30000]);
   assert.deepEqual(S.tt.v, [10000, 31000, 30000, 31000, 34000]); // 11-17: A 판 값 1200 + B 1900 · 11-18: A 판 값 그대로 1200 + B 2200
 });
+
+test('꾀마다 날마다(sell.tk · 주문 1127-1412 꾀별 꺾은선) — tt 와 같은 날 · 꾀마다 산 돈 · 값 · 산 셈 없는 날은 null · 꾀를 모두 더하면 tt', () => {
+  const g01 = KINDS.indexOf('g01'), g05 = KINDS.indexOf('g05'), top = KINDS.indexOf('top3');
+  const B = {px: {A00001: {'2026-11-12': 1000, '2026-11-13': 1100, '2026-11-16': 900, '2026-11-17': 1200, '2026-11-18': 1300}, B00002: {'2026-11-13': 2000, '2026-11-16': 2100, '2026-11-17': 1900, '2026-11-18': 2200}}, mk: {}};
+  const buys = [['2026-11-12', g05, 'A00001', 1000], ['2026-11-13', g01, 'B00002', 2000], ['2026-11-12', top, 'A00001', 1000]];
+  const S = sellsOf(B, buys, '2026-11-18', '2026-11-12'), j1 = S36.indexOf('g01'), j5 = S36.indexOf('g05');
+  assert.deepEqual(S.tk.k, [...S36]); assert.equal(S.tk.c.length, 36); assert.ok(S.tk.c.every(a => a.length === S.tt.days.length));
+  assert.deepEqual(S.tk.c[j5], [10000, 10000, 10000, 10000, 10000]);
+  assert.deepEqual(S.tk.v[j5], [10000, 11000, 9000, 12000, 12000]); // 11-17 3일째에 판 값 1200 · 그 뒤 그대로
+  assert.deepEqual(S.tk.c[j1], [null, 20000, 20000, 20000, 20000]); // 11-12 에는 g01 산 셈 없음
+  assert.deepEqual(S.tk.v[j1], [null, 20000, 21000, 19000, 22000]);
+  assert.ok(S.tk.c.every((a, j) => j === j1 || j === j5 || a.every(x => x === null)));
+  S.tt.days.forEach((d, i) => { const sum = f => S.tk[f].reduce((a, x) => a + (x[i] ?? 0), 0); assert.equal(sum('c'), S.tt.c[i], d); assert.equal(sum('v'), S.tt.v[i], d); });
+});
