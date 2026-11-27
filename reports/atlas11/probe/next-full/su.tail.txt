@@ -1,4 +1,29 @@
-느린 4G 첫 화면 — 가장 큰 칠함 824ms · 무하 큰 그림 735ms
-실패 ㊾ 390 가) 영어판 — 맨 위 「한국어 · 영어」 탭(48 · 17 · 눌림) · 영어를 누르면 한눈에 · 꾀 사고판 회사 · 산 회사 · 판 회사 · 7단에 한국어 글 0 · 쪽 이름 영어 · 넘침 0 · 「한국어」로 돌아옴 · 오류 0 — {"hh":"#/l/a","lang":"en","title":"Overview · Sun Tzu","left":["Data as of Nov 27, 2026 · 받은 때 Nov 28 0시"],"wide":true,"t":[{"l":"ko","t":"Korean","on":"false","h":48,"fs":17},{"l":"en","t":"English","on":"true","h":48,"fs":17}]} []
-실패 ㊾ 320 가) 영어판 — 맨 위 「한국어 · 영어」 탭(48 · 17 · 눌림) · 영어를 누르면 한눈에 · 꾀 사고판 회사 · 산 회사 · 판 회사 · 7단에 한국어 글 0 · 쪽 이름 영어 · 넘침 0 · 「한국어」로 돌아옴 · 오류 0 — {"hh":"#/l/a","lang":"en","title":"Overview · Sun Tzu","left":["Data as of Nov 27, 2026 · 받은 때 Nov 28 0시"],"wide":true,"t":[{"l":"ko","t":"Korean","on":"false","h":48,"fs":17},{"l":"en","t":"English","on":"true","h":48,"fs":17}]} []
-손자병법 두 길 검사 — 통과 709 · 실패 2
+느린 4G 첫 화면 — 가장 큰 칠함 848ms · 무하 큰 그림 767ms
+실패 ㉝ [320] 격언 열 가지 접기(주문 1127-2148 · 21:48 「어그래」) — 자리는 그대로(오늘의 투자 점검 다음 · 표지 앞) · 처음엔 첫째만 보임 · 「나머지 격언 9가지 더 보기」 · 누르면 열 가지 모두 · 「다시 접기」 · 48 · 17 — {"f0":{"fold":"1","n":10,"vis":["1"],"after":false,"t":"","ex":null,"h":0,"fs":0,"top":false},"f1":{"t":"","ex":null,"vis":1}}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('#su section.sj-mind li.sj-gki[data-n="10"] > details.sj-gkd > summary.sj-gks')
+    - locator resolved to <summary class="sj-gks">…</summary>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    58 × waiting for element to be visible, enabled and stable
+       - element is not visible
+     - retrying click action
+       - waiting 500ms
+
+    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_su.mjs:1534:15 {
+  name: 'TimeoutError'
+}
+
+Node.js v22.23.5
