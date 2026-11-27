@@ -1,39 +1,39 @@
-합침: {"ok":true,"shards":3,"got":3,"units":{"total":2562,"mine":2562,"hash":"1876294baef63f85","kinds":{"c":{"total":2557,"mine":2557},"x":{"total":1,"mine":1},"w":{"total":4,"mine":4}}},"fails":0,"seconds":167,"secondsSum":497,"pieces":["1/3 ok 165s 854","2/3 ok 165s 854","3/3 ok 167s 854"],"problems":[]}
+합침: {"ok":true,"shards":3,"got":3,"units":{"total":2562,"mine":2562,"hash":"1876294baef63f85","kinds":{"c":{"total":2557,"mine":2557},"x":{"total":1,"mine":1},"w":{"total":4,"mine":4}}},"fails":0,"seconds":162,"secondsSum":480,"pieces":["1/3 ok 159s 854","2/3 ok 159s 854","3/3 ok 162s 854"],"problems":[]}
 ── past1/3 ──
 … 100곳 · 실패 0 · 23초
 … 200곳 · 실패 0 · 41초
 … 300곳 · 실패 0 · 59초
-… 400곳 · 실패 0 · 78초
-… 500곳 · 실패 0 · 97초
-… 600곳 · 실패 0 · 116초
-… 700곳 · 실패 0 · 134초
-… 800곳 · 실패 0 · 152초
-{"time":{"old":53.5,"new":122.1,"wall":165.1,"opensOld":8529,"opensNew":11099,"oldPct":32.4,"oldShare":30.4},"net":{"req":856,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-4단 지나온 길 맞대기 — 회사 853곳 · 기간 화면 2559 · 맞댄 칸 63950 · 숫자 낱말 138586 · 선 누르기 2558 · 폭 화면 30(세 폭 + 아주 큰 글씨 × 10곳) · 165초
+… 400곳 · 실패 0 · 77초
+… 500곳 · 실패 0 · 95초
+… 600곳 · 실패 0 · 112초
+… 700곳 · 실패 0 · 130초
+… 800곳 · 실패 0 · 147초
+{"time":{"old":48.9,"new":117.6,"wall":159.4,"opensOld":8529,"opensNew":11099,"oldPct":30.7,"oldShare":29.4},"net":{"req":856,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+4단 지나온 길 맞대기 — 회사 853곳 · 기간 화면 2559 · 맞댄 칸 63950 · 숫자 낱말 138586 · 선 누르기 2558 · 폭 화면 30(세 폭 + 아주 큰 글씨 × 10곳) · 159초
 알림(옛 쪽): 2 기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일 / 옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, "NaN". | Error: <rect> attribute y: Expected length, "NaN". | Error: <rect> attribute height: Expected length, "NaN". | Error: <linearGradient> attribu
 실패 0
 ── past2/3 ──
 … 100곳 · 실패 0 · 23초
 … 200곳 · 실패 0 · 41초
 … 300곳 · 실패 0 · 59초
-… 400곳 · 실패 0 · 78초
-… 500곳 · 실패 0 · 97초
-… 600곳 · 실패 0 · 115초
-… 700곳 · 실패 0 · 134초
-… 800곳 · 실패 0 · 152초
-{"time":{"old":53,"new":121.7,"wall":165,"opensOld":8519,"opensNew":11086,"oldPct":32.1,"oldShare":30.3},"net":{"req":855,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-4단 지나온 길 맞대기 — 회사 852곳 · 기간 화면 2556 · 맞댄 칸 63875 · 숫자 낱말 138384 · 선 누르기 2555 · 폭 화면 30(세 폭 + 아주 큰 글씨 × 10곳) · 165초
+… 400곳 · 실패 0 · 77초
+… 500곳 · 실패 0 · 94초
+… 600곳 · 실패 0 · 112초
+… 700곳 · 실패 0 · 130초
+… 800곳 · 실패 0 · 147초
+{"time":{"old":49,"new":117.3,"wall":159.1,"opensOld":8519,"opensNew":11086,"oldPct":30.8,"oldShare":29.5},"net":{"req":855,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+4단 지나온 길 맞대기 — 회사 852곳 · 기간 화면 2556 · 맞댄 칸 63875 · 숫자 낱말 138384 · 선 누르기 2555 · 폭 화면 30(세 폭 + 아주 큰 글씨 × 10곳) · 159초
 알림(옛 쪽): 2 기간 값 없음(옛 쪽 맞대기 건너뜀) 028080 20거래일 / 옛 쪽 화면 오류 028080 Error: <rect> attribute height: Expected length, "NaN". | Error: <rect> attribute y: Expected length, "NaN". | Error: <rect> attribute height: Expected length, "NaN". | Error: <linearGradient> attribu
 실패 0
 ── past3/3 ──
-… 100곳 · 실패 0 · 22초
+… 100곳 · 실패 0 · 23초
 … 200곳 · 실패 0 · 41초
 … 300곳 · 실패 0 · 59초
-… 400곳 · 실패 0 · 78초
-… 500곳 · 실패 0 · 97초
-… 600곳 · 실패 0 · 115초
-… 700곳 · 실패 0 · 133초
-… 800곳 · 실패 0 · 152초
-{"time":{"old":52.7,"new":121.1,"wall":167.2,"opensOld":8521,"opensNew":11097,"oldPct":31.5,"oldShare":30.3},"net":{"req":855,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-4단 지나온 길 맞대기 — 회사 852곳 · 기간 화면 2556 · 맞댄 칸 63900 · 숫자 낱말 138490 · 선 누르기 2556 · 폭 화면 60(세 폭 + 아주 큰 글씨 × 10곳) · 167초
+… 400곳 · 실패 0 · 77초
+… 500곳 · 실패 0 · 95초
+… 600곳 · 실패 0 · 113초
+… 700곳 · 실패 0 · 130초
+… 800곳 · 실패 0 · 148초
+{"time":{"old":49.5,"new":118,"wall":162.1,"opensOld":8521,"opensNew":11097,"oldPct":30.6,"oldShare":29.6},"net":{"req":855,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+4단 지나온 길 맞대기 — 회사 852곳 · 기간 화면 2556 · 맞댄 칸 63900 · 숫자 낱말 138490 · 선 누르기 2556 · 폭 화면 60(세 폭 + 아주 큰 글씨 × 10곳) · 162초
 실패 0
