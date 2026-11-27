@@ -106,6 +106,11 @@ try { if (localStorage.getItem('su-big-text') === '1') document.documentElement.
  *  애플 기기(아이폰 · 아이패드 · 맥)는 글꼴 차례 맨 앞이 기기 글꼴이라 프리텐다드를 쓰지 않음 → 글꼴 표도 받지 않음(사장님 2026-10-22 「애플 기기 = 애플 글꼴 · 그 밖 = 프리텐다드」) */
 const APPLE = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent ?? '');
 const fontsLater = () => { if (APPLE || document.querySelector('link[href="/app/fonts.css"]')) return; requestAnimationFrame(() => setTimeout(() => { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/app/fonts.css'; document.head.append(l); }, 0)); };
+// 영어판(주문 1127-2320 · 사장님 23:20 「이거 영어 번역판으로도 상단에 탭을 만들어서 만들어 알겠지」) — 맨 위 「한국어 · 영어」 탭(su-sonja-top.js langTabs) · 영어를 고른 때만 말 바꾸기 판(su-en.js)을 받음
+//   ?lang=en · ?lang=ko 로 들어와도 고름(이 휴대폰에 기억) · 한국어판은 그대로
+{ const q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'ko') { try { localStorage.setItem('su-lang', q); } catch { /* 저장소 없음 */ } } }
+const LANG_EN = (() => { try { return localStorage.getItem('su-lang') === 'en' || new URLSearchParams(location.search).get('lang') === 'en'; } catch { return new URLSearchParams(location.search).get('lang') === 'en'; } })();
+if (LANG_EN) { document.documentElement.lang = 'en'; import('/su/su-en.js').then(E => E.watchEn(document.getElementById('su'))).catch(() => {}); }
 window.addEventListener('hashchange', route);
 route().finally(fontsLater);
 /* 새 판이 올라가면 스스로 새로 고침(주문 1708 · 사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어!」 — 휴대폰이 전에 열어 둔 화면을 새로 받지 않고 그대로 보여 줌)

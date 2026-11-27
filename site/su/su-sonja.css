@@ -2065,4 +2065,8 @@ html.sj-on #su .sj-krr a.sj-ka .sj-krn { color: #FFFFFF; }
 #su .sj-trsp .sj-trspd { fill: none; stroke: #3E5560; stroke-width: 8; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 #su .sj-trsp[data-st="up"] .sj-trspl, #su .sj-trsp[data-st="up"] .sj-trspd { stroke: #D32F2F; }
 #su .sj-trsp[data-st="dn"] .sj-trspl, #su .sj-trsp[data-st="dn"] .sj-trspd { stroke: #1565C0; }
+/* 말 고르기 탭(주문 1127-2320) — 머리 줄 안 맨 아래 한 줄 · 둘이 반씩 · 고른 쪽은 먹색 */
+#su .sj-lang { flex: 1 0 100%; display: flex; gap: 6px; margin-top: 2px; }
+#su .sj-langb { flex: 1 1 0; min-width: 0; min-height: 48px; padding: 0 8px; border: 1.5px solid #20323A; border-radius: 12px; background: #FFFFFF; color: #20323A; font: inherit; font-size: 1.0625rem; font-weight: 700; cursor: pointer; }
+#su .sj-langb[aria-pressed="true"] { background: #20323A; color: #FFFFFF; }
 

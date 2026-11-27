@@ -54,7 +54,17 @@ export function topBar() {
       h('a', {class: 'sj-btn sj-angel', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'}), h('i', {'aria-hidden': 'true', text: '↗'})),
       findTop(), // 회사 찾기 — 선물 옆(주문 1120-1705 · 사장님 17:05 「종목 찾기를 선물 옆에 배치」) · 회사 탭 맨 위 찾기 칸으로
       h('a', {id: 'giftBtn', class: 'sj-btn sj-gift', href: '/next/?su=guide#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}),
-      sayTop(), big));
+      sayTop(), big),
+    langTabs()); // 「한국어 · 영어」 탭(주문 1127-2320) — 머리 줄 안 맨 아래 한 줄
+}
+/** 말 고르기 탭(주문 1127-2320 · 사장님 23:20 「영어 번역판으로도 상단에 탭을 만들어서」) — 고른 말은 이 휴대폰에 기억 · 누르면 다시 그림 */
+const langNow = () => { try { if (localStorage.getItem('su-lang') === 'en') return 'en'; } catch { /* 저장소 없음 */ } return new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'ko'; };
+function langTabs() {
+  const cur = langNow(), tab = (l, t) => { const b = h('button', {class: 'sj-langb', type: 'button', 'data-lang': l, 'aria-pressed': String(cur === l), text: t});
+    b.addEventListener('click', () => { if (langNow() === l) return; let kept = false; try { localStorage.setItem('su-lang', l); kept = localStorage.getItem('su-lang') === l; } catch { /* 저장소 없음 */ }
+      if (kept && !new URLSearchParams(location.search).get('lang')) location.reload(); else location.replace(location.pathname + '?lang=' + l + location.hash); });
+    return b; };
+  return h('div', {class: 'sj-lang', role: 'group', 'aria-label': '말 고르기 — 한국어 · 영어'}, tab('ko', '한국어'), tab('en', '영어'));
 }
 
 /** 걸음 표시 「1 / 5 · 오늘」(n = 1 ~ 5 · dd = 「11월 13일」 같은 자료 날 · 없으면 뒤에 붙임)

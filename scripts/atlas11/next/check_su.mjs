@@ -2275,6 +2275,40 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await ctx.close();
   }
 }
+{ // ㊾ 주문 1127-2320(사장님 2026-11-27(서울) 23:20 「이거 영어 번역판으로도 상단에 탭을 만들어서 만들어 알겠지」) — 영어판 첫 판(기록 탭 · 위아래 길잡이)
+  //   맨 위 머리 줄 안 「한국어 · 영어」 탭(48 넘게 · 17 넘게 · 고른 쪽 눌림) · 한국어판이 처음 · 「영어」를 누르면 다시 그려 영어(html lang=en)
+  //   영어판 = 한눈에 · 꾀 사고판 회사 · 산 회사 · 판 회사 · 7단 첫 쪽에 한국어 글 0(회사 이름 같은 남의 이름 data-proper 은 그대로) · 쪽 이름도 영어 · 넘침 0 · 오류 0 · 「한국어」를 누르면 한국어로 돌아옴 · 390 · 320
+  const W = '㊾ ', HANr = /[가-힣]/;
+  const tabsOf = p => p.evaluate(() => [...document.querySelectorAll('#su header.sj-top .sj-lang button.sj-langb')].map(b => { const r = b.getBoundingClientRect(); return {l: b.dataset.lang, t: (b.textContent ?? '').trim(), on: b.getAttribute('aria-pressed'), h: Math.round(r.height), fs: parseFloat(getComputedStyle(b).fontSize)}; }));
+  const leftOf = p => p.evaluate(() => { const H = /[가-힣]/, out = []; const w = document.createTreeWalker(document.getElementById('su'), NodeFilter.SHOW_TEXT); let n;
+    while ((n = w.nextNode())) { const t = n.nodeValue.trim(); if (t && H.test(t) && !n.parentElement.closest('[data-proper], script, style')) out.push(t.slice(0, 40)); }
+    return {lang: document.documentElement.lang, title: document.title, left: out, wide: document.documentElement.scrollWidth <= innerWidth + 1}; });
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    await open(p, '#/l/a'); await p.waitForTimeout(400);
+    const k0 = await tabsOf(p), kFirst = await p.evaluate(() => document.querySelector('#su section.sj-pf li.sj-glkl')?.dataset.k ?? 'g01');
+    const koOk = JSON.stringify(k0.map(x => [x.l, x.t, x.on])) === JSON.stringify([['ko', '한국어', 'true'], ['en', '영어', 'false']]) && k0.every(x => x.h >= 48 && x.fs >= 16.95);
+    await Promise.all([p.waitForNavigation({timeout: 15000}).catch(() => {}), p.click('#su header.sj-top button.sj-langb[data-lang="en"]')]); await p.waitForTimeout(1200);
+    await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); await p.waitForTimeout(800);
+    const seen = {}; let ok = koOk, why = koOk ? '' : 'ko tabs ' + JSON.stringify(k0);
+    for (const hh of ['#/l/a', '#/l/k/' + kFirst, '#/l/b', '#/l/s', '#/l/t']) {
+      await open(p, hh); await p.waitForTimeout(700);
+      const g = await leftOf(p), t = await tabsOf(p); seen[hh] = [g.left.length, g.title];
+      const good = g.lang === 'en' && g.left.length === 0 && !HANr.test(g.title) && g.wide && JSON.stringify(t.map(x => [x.l, x.t, x.on])) === JSON.stringify([['ko', 'Korean', 'false'], ['en', 'English', 'true']]) && t.every(x => x.h >= 48 && x.fs >= 16.95);
+      if (!good) { ok = false; why = why || JSON.stringify({hh, lang: g.lang, title: g.title, left: g.left.slice(0, 4), wide: g.wide, t}).slice(0, 700); }
+    }
+    await Promise.all([p.waitForNavigation({timeout: 15000}).catch(() => {}), p.click('#su header.sj-top button.sj-langb[data-lang="ko"]')]); await p.waitForTimeout(1200);
+    await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); await p.waitForTimeout(600);
+    const back = await p.evaluate(() => ({lang: document.documentElement.lang, h: (document.querySelector('#su .sj-recnav a[aria-current="page"], #su nav a[aria-current="page"]')?.textContent ?? '').trim(), ko: /[가-힣]/.test(document.querySelector('#su main')?.innerText ?? '')}));
+    if (!(back.lang !== 'en' && back.ko)) { ok = false; why = why || 'back ' + JSON.stringify(back); }
+    check(ok && !errs.length, W + width + ' 가) 영어판 — 맨 위 「한국어 · 영어」 탭(48 · 17 · 눌림) · 영어를 누르면 한눈에 · 꾀 사고판 회사 · 산 회사 · 판 회사 · 7단에 한국어 글 0 · 쪽 이름 영어 · 넘침 0 · 「한국어」로 돌아옴 · 오류 0',
+      (why || JSON.stringify(seen)).slice(0, 1500) + ' ' + JSON.stringify(errs.slice(0, 2)));
+    await ctx.close();
+  }
+}
 await browser.close();
 R.ok = R.counts.fail === 0;
 console.log(`손자병법 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);
