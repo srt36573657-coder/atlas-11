@@ -686,12 +686,31 @@ export const GL_SPAN = Object.freeze([['1개월', 21], ['3개월', 63], ['6개�
 export const glPp = r => { const v = Math.round(r * 1000) / 10; return (v > 0 ? '+' : v < 0 ? '-' : '') + Math.abs(v).toFixed(1) + '프로'; }; // 눈금 글(+1.0프로 · 0.0프로 · -2.5프로)
 export function glTT(D) { const T = D?.sell?.tt; if (!T || !Array.isArray(T.days)) return []; return T.days.map((d, i) => [d, T.c?.[i], T.v?.[i]]).filter(([d, c, v]) => typeof d === 'string' && fin(c) && c > 0 && fin(v)).map(([d, c, v]) => [d, v / c - 1]); }
 function glTrend(D) { // 최근 수익률 추이(보내 주신 본보기 그대로 — 제목 · 기간 넷 한 덩이 · 끝 값 말풍선 · 왼쪽 눈금 셋 · 옅은 가로줄 · 점 찍은 꺾은선과 밑 칠 · 아래 날짜) — 사고 팔기 셈 날마다(sell.tt)
-  const P = glTT(D);
+  // 점 누르기(주문 1127-1705 · 사장님 2026-11-27(서울) 17:05 「어」 — 「다음은 꺾은선의 점을 누르면 그날 숫자가 뜨게 할까요?」의 답 · docs/design/record-2026-11-27/order-1705.txt)
+  //   그림을 누르면 가장 가까운 장날 · 「앞 장날 · 뒤 장날」 단추(48 넘게) — 고른 날에 세로 줄 · 큰 점 · 아래 칸에 그날 수익률(▲ 빨강 · ▼ 파랑) · 늘고 준 돈 · 들인 돈 · 그날 값 · 처음엔 마지막 날
+  const T = D?.sell?.tt, P = !T || !Array.isArray(T.days) ? [] : T.days.map((d, i) => [d, T.c?.[i], T.v?.[i]]).filter(([d, c, v]) => typeof d === 'string' && fin(c) && c > 0 && fin(v)).map(([d, c, v]) => [d, v / c - 1, c, v]);
   if (P.length < 2) return h('section', {class: 'sj-sec sj-pftr', 'data-n': String(P.length)}, h('h2', {class: 'sj-pfh2', text: '최근 수익률 추이'}), h('p', {class: 'sj-gllead', text: '아직 쌓인 날이 이틀이 안 돼요.'}));
   const svg = s('svg', {class: 'sj-gltrs', viewBox: '0 0 300 150', preserveAspectRatio: 'none', 'aria-hidden': 'true'}), yl = h('div', {class: 'sj-pfy', 'aria-hidden': 'true'}), xl = h('div', {class: 'sj-pfx'}), last = h('p', {class: 'sj-pflast sj-res'}), cap = h('p', {class: 'sj-gltrc'});
+  const prev = h('button', {class: 'sj-glpkb', type: 'button', 'data-go': '-1', text: '‹ 앞 장날'}), next = h('button', {class: 'sj-glpkb', type: 'button', 'data-go': '1', text: '뒤 장날 ›'}), dayB = h('b', {class: 'sj-glpkd'});
+  const pkh = h('p', {class: 'sj-glpkh'}), pkt = h('p', {class: 'sj-glpkt'}), pick = h('div', {class: 'sj-glpk', 'aria-live': 'polite'}, h('div', {class: 'sj-glpkn', role: 'group', 'aria-label': '그날 보기'}, prev, dayB, next), pkh, pkt);
+  let L = P, sel = 0, X = () => 0, Y = () => 0;
+  const mark = () => { // 고른 날 — 세로 줄 · 큰 점 · 아래 칸
+    svg.querySelectorAll('.sj-glpkl, .sj-glpkc').forEach(e => e.remove());
+    const [d, r, c, v] = L[sel], x = X(sel).toFixed(1), y = Y(r).toFixed(1), st = stOfD(v - c);
+    svg.append(s('line', {class: 'sj-glpkl', x1: x, x2: x, y1: 0, y2: 150}), s('path', {class: 'sj-glpkc', d: 'M' + x + ' ' + y + ' l0 0'}));
+    pick.dataset.day = d; pick.dataset.i = String(sel);
+    dayB.textContent = mday(d) + '(' + glWk(d) + ')';
+    pkh.replaceChildren(h('span', {class: 'sj-glpkk', text: '수익률'}), h('span', {class: 'sj-wkg sj-res', 'data-st': st}, shapeI(st), h('b', {text: glRateT(r)}), h('span', {class: 'sj-wkgm', text: moved(v - c)})));
+    pkt.textContent = '들인 돈 ' + won(c) + ' · 그날 값 ' + won(v);
+    prev.disabled = sel <= 0; next.disabled = sel >= L.length - 1;
+  };
+  const go = i => { sel = Math.max(0, Math.min(L.length - 1, i)); mark(); };
+  prev.addEventListener('click', () => go(sel - 1)); next.addEventListener('click', () => go(sel + 1));
+  svg.addEventListener('click', e => { const q = svg.getBoundingClientRect(); if (!(q.width > 0)) return; const x = (e.clientX - q.left) / q.width * 300; go(L.length > 1 ? Math.round((x - 5) / 290 * (L.length - 1)) : 0); });
   const draw = ([t, n]) => {
-    const L = P.slice(-(n + 1)), vs = L.map(x => x[1]), mx = Math.max(-Math.min(0, ...vs), Math.max(0, ...vs)) || 0.01, y0 = -mx * 1.15, y1 = mx * 1.15; // 0 을 가운데에 — 가운데 눈금 「0.0프로」 = 점선(주문 1126-2137 · 일꾼 19 「점선이 0이라는데 눈금은 −0.7」)
-    const X = i => (L.length > 1 ? i / (L.length - 1) * 290 + 5 : 150), Y = v => 146 - (v - y0) / (y1 - y0) * 142, pts = L.map((x, i) => [X(i).toFixed(1), Y(x[1]).toFixed(1)]), line = pts.map(([x, y], i) => (i ? 'L' : 'M') + x + ' ' + y).join(' ');
+    L = P.slice(-(n + 1)); const vs = L.map(x => x[1]), mx = Math.max(-Math.min(0, ...vs), Math.max(0, ...vs)) || 0.01, y0 = -mx * 1.15, y1 = mx * 1.15; // 0 을 가운데에 — 가운데 눈금 「0.0프로」 = 점선(주문 1126-2137 · 일꾼 19 「점선이 0이라는데 눈금은 −0.7」)
+    X = i => (L.length > 1 ? i / (L.length - 1) * 290 + 5 : 150); Y = v => 146 - (v - y0) / (y1 - y0) * 142;
+    const pts = L.map((x, i) => [X(i).toFixed(1), Y(x[1]).toFixed(1)]), line = pts.map(([x, y], i) => (i ? 'L' : 'M') + x + ' ' + y).join(' ');
     svg.replaceChildren(s('rect', {class: 'sj-gltrbg', x: 0, y: 0, width: 300, height: 150}), ...[4, 75, 146].map(y => s('line', {class: 'sj-pfgrid', x1: 0, x2: 300, y1: y, y2: y})), s('line', {class: 'sj-gltr100', x1: 0, x2: 300, y1: Y(0).toFixed(1), y2: Y(0).toFixed(1)}),
       s('path', {class: 'sj-pfarea', d: line + ' L' + pts[pts.length - 1][0] + ' 150 L' + pts[0][0] + ' 150 Z'}), s('path', {class: 'sj-gltrp', d: line, 'data-n': String(L.length)}),
       ...pts.map(([x, y], i) => s('path', {class: 'sj-pfdot' + (i === pts.length - 1 ? ' sj-pfdot-end' : ''), d: 'M' + x + ' ' + y + ' l0 0'})));
@@ -701,13 +720,14 @@ function glTrend(D) { // 최근 수익률 추이(보내 주신 본보기 그대�
     last.dataset.st = st; last.replaceChildren(shapeI(st), h('b', {text: glPp(r)}));
     cap.textContent = mday(L[0][0]) + '부터 ' + mday(L[L.length - 1][0]) + '까지 · 장날 ' + L.length + '일 · ' + mday(L[L.length - 1][0]) + ' ' + pctText(r);
     for (const b of btns) b.setAttribute('aria-pressed', b.dataset.span === t ? 'true' : 'false');
+    go(L.length - 1); // 기간을 바꾸면 마지막 날부터
   };
   const btns = GL_SPAN.map(([t, n], j) => { const on = j === 0 || P.length - 1 > GL_SPAN[j - 1][1], b = h('button', {class: 'sj-glsp', type: 'button', 'data-span': t, text: t, disabled: on ? null : ''}); if (on) b.addEventListener('click', () => draw([t, n])); return b; });
   draw(GL_SPAN[0]);
   return h('section', {class: 'sj-sec sj-pftr', 'data-n': String(P.length), 'aria-label': '최근 수익률 추이'},
     h('div', {class: 'sj-pftrhd'}, h('h2', {class: 'sj-pfh2', text: '최근 수익률 추이'}), h('div', {class: 'sj-glsps', role: 'group', 'aria-label': '기간 고르기'}, ...btns)),
-    last, h('div', {class: 'sj-pfch'}, yl, svg, h('i', {class: 'sj-pfxs', 'aria-hidden': 'true'}), xl), cap,
-    h('p', {class: 'sj-gllead', text: '꾀 서른여섯이 사고 판 것을 날마다 모두 합쳐, 들인 돈보다 몇 프로 늘고 줄었는지 그렸어요. 점선이 0이에요. 쌓인 날보다 긴 기간 단추는 날이 쌓이면 눌려요.'}));
+    last, h('div', {class: 'sj-pfch'}, yl, svg, h('i', {class: 'sj-pfxs', 'aria-hidden': 'true'}), xl), cap, pick,
+    h('p', {class: 'sj-gllead', text: '꾀 서른여섯이 사고 판 것을 날마다 모두 합쳐, 들인 돈보다 몇 프로 늘고 줄었는지 그렸어요. 점선이 0이에요. 그림의 점이나 「앞 장날 · 뒤 장날」을 누르면 그날 숫자가 나와요. 쌓인 날보다 긴 기간 단추는 날이 쌓이면 눌려요.'}));
 }
 /* ── 날마다 보기 · 총 보유 금액 · 보유 종목(주문 1126-2137 · 사장님 2026-11-26(서울) 21:37 「총 매수 금액은 표기 되어 있는대 총 보유 금액은 표기가 되어 있지 않아 그리고 몇종목 보유하고 있는지
    수자가 나타나지 않고 있고 날짜별 표기와 기타등등은 에이전트 50개 가동해서 뭐가 더 필요한지 찾아내서 더 채워라」 — docs/design/record-2026-11-26/order-2137.txt · 일꾼 50명의 답 rec50-sum.md)
