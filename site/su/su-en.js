@@ -17,7 +17,8 @@ export function normNum(s) {
     .replace(/(\d{4})년 (\d{1,2})월 (\d{1,2})일(?:\(([월화수목금토일])\))?/g, (m, y, mo, d, w) => MON[+mo - 1] + ' ' + +d + ', ' + y + (w ? ' (' + WDAY[w] + ')' : ''))
     .replace(/(\d{1,2})월 (\d{1,2})일(?:\(([월화수목금토일])\))?/g, (m, mo, d, w) => MON[+mo - 1] + ' ' + +d + (w ? ' (' + WDAY[w] + ')' : ''))
     .replace(/(?:(\d[\d,]*(?:\.\d+)?)억\s?)?(?:(\d[\d,]*)만\s?)?(\d[\d,]*)?원/g, (m, e, man, r) => (e || man || r ? wonOf(e, man, r) : m))
-    .replace(/([+-]?\d[\d,]*(?:\.\d+)?)프로/g, '$1%');
+    .replace(/([+-]?\d[\d,]*(?:\.\d+)?)프로/g, '$1%')
+    .replace(/(\d{1,2})시 (\d{1,2})분/g, (m, h, mi) => h + ':' + mi.padStart(2, '0')).replace(/(\d{1,2})시(?![가-힣\d])/g, '$1:00'); // 받은 때 「11월 28일 0시」(한국 시각 · essence.js kstText)
 }
 const W = '₩[\\d,]+', P = '[+-]?[\\d.,]+%', N = '\\d[\\d,]*';
 /** 문장 틀 — 숫자를 바꾼 뒤의 글에 맞춤(처음부터 끝까지 맞을 때만) */
@@ -76,7 +77,8 @@ const RULES = [
   [new RegExp(`^(${N})번째 · (.+)$`), (m, a, t) => `Tab ${a} · ${EX[t] ?? t}`],
   [new RegExp(`^수익률 (${P}) · (${W}) (늘었어요|줄었어요)$`), (m, p, w, way) => `Return ${p} · ${signed(w, way)}`],
   [new RegExp(`^(.+?) 수익률$`), (m, d) => `Return on ${d}`],
-  [new RegExp(`^자료 (.+)$`), (m, d) => `Data as of ${d}`],
+  [new RegExp(`^자료 ([^·]+)$`), (m, d) => `Data as of ${d}`], // 「자료 … · 받은 때 …」는 조각마다(아래 · 나누기)
+  [new RegExp(`^받은 때 ([^·]+)$`), (m, t) => `Fetched ${t} (Korea time)`],
   [new RegExp(`^(.+?)부터 (.+?)까지 · 장날 (${N})일 · (.+?) (${P}) (올랐어요|내렸어요)$`), (m, a, b, n, d, p, way) => `${a} to ${b} · ${n} trading days · ${d} ${way === '올랐어요' ? 'up' : 'down'} ${p}`],
   [new RegExp(`^가로는 (.+?)부터 (.+?)까지 장날 (${N})일이에요\\.(.*)$`), (m, a, b, n, rest) => `Across: ${a} to ${b}, ${n} trading days.` + (rest.trim() ? ' Up is red, down is blue.' : '')],
   [new RegExp(`^모두 종가로 (${N})주씩 샀다고 친 가짜 돈이에요\\. 들고 있는 것은 가장 늦은 종가로 셌어요\\.$`), (m, n) => `All paper money: as if ${n} shares were bought at the closing price. Held stocks use the latest close.`],

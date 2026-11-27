@@ -2301,7 +2301,8 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       && oldGo !== '/su/' && leak0.lang !== 'en' && leak0.kept !== 'en';
     await Promise.all([p.waitForNavigation({timeout: 15000}).catch(() => {}), p.click('#su header.sj-top button.sj-langb[data-lang="en"]')]); await p.waitForTimeout(1200);
     await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); await p.waitForTimeout(800);
-    const seen = {}; let ok = koOk, why = koOk ? '' : 'ko tabs ' + JSON.stringify({k0, h0, oldGo, leak0});
+    const endEn = await p.evaluate(async () => { try { const E = await import('/su/su-en.js'); return ['자료 2026년 11월 27일(금) · 받은 때 11월 28일 0시', '자료 2026년 11월 27일 · 받은 때 11월 27일 23시', '자료 11월 27일'].map(x => E.enText(x)); } catch (e) { return ['오류 ' + e]; } }); // 끝 칸 「받은 때」는 진짜 사이트에만 나옴(시험 자료엔 없음) — 말 판으로 따로 봄
+    const seen = {endEn}; let ok = koOk && endEn.length === 3 && endEn.every(x => !HANr.test(x)), why = koOk ? '' : 'ko tabs ' + JSON.stringify({k0, h0, oldGo, leak0});
     for (const hh of ['#/l/a', '#/l/k/' + kFirst, '#/l/b', '#/l/s', '#/l/t']) {
       await open(p, hh); await p.waitForTimeout(700);
       const g = await leftOf(p), t = await tabsOf(p); seen[hh] = [g.left.length, g.title];
