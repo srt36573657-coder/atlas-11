@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-27T12:15:02.153Z",
+ "at": "2026-11-27T13:35:13.998Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 702,
+  "pass": 707,
   "fail": 0
  },
  "fails": [],
@@ -14,8 +14,8 @@
    "sun": true
   },
   "home": {
-   "screens": 17.77,
-   "links": 56
+   "screens": 16.3,
+   "links": 57
   },
   "t21": {
    "listed": 2557,
@@ -115,9 +115,9 @@
    "기관"
   ],
   "speed": {
-   "lcp": 912,
+   "lcp": 844,
    "cls": 0.996,
-   "pic": 772
+   "pic": 759
   },
   "white": {
    "light #/": {
