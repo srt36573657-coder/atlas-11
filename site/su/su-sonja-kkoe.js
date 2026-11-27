@@ -772,7 +772,7 @@ function glDaySec(R) {
    윗줄 = 점 · 꾀 이름 · 「산 비중 ○프로」(모든 산 돈 가운데 그 꾀가 쓴 몫 · 동그라미 조각과 같은 셈) · 아랫줄 = 「산 돈 ○원」 · 「수익률 ▲ ○프로」(그 꾀의 지금 값 ÷ 산 돈 − 1)
    「매수」는 사이트 규칙대로 「산」 · 오른 것도 내린 것도 같은 크기 · 같은 모양(▲ · ▼ · ―)
    주문 1127-1244(사장님 2026-11-27(서울) 12:44 「배치를 수익률순으로 하고 수익은 빨강 화살펴 내림은 파랑으로 해」 · docs/design/record-2026-11-27/order-1244.txt) — 차례 = 수익률 높은 차례 · 오름 ▲ 과 그 프로 = 빨강 · 내림 ▼ 과 그 프로 = 파랑(이 줄에만 · 사장님 말씀) */
-export const GL_KCAP = Object.freeze(['서른여섯 꾀 모두예요. 수익률이 높은 차례예요.', '산 비중은 모든 산 돈에서 그 꾀가 쓴 몫이에요.', '수익률은 그 꾀가 쓴 돈이 지금 몇 프로 늘거나 줄었는지예요. 판 것은 판 돈으로 셌어요.']); // 세 줄(한 줄씩 끊어 「산 비중」이 갈라지지 않게)
+export const GL_KCAP = Object.freeze(['서른여섯 꾀 모두예요. 수익률이 높은 차례예요.', '산 비중은 모든 산 돈에서 그 꾀가 쓴 몫이에요.', '수익률은 그 꾀가 쓴 돈이 지금 몇 프로 늘거나 줄었는지예요. 판 것은 판 돈으로 셌어요.', '꾀 줄을 누르면 그 꾀가 사고판 회사가 나와요.']); // 세 줄(한 줄씩 끊어 「산 비중」이 갈라지지 않게)
 export const glRateT = r => Math.abs(Math.round(r * 1000) / 10).toFixed(1) + '프로'; // 「2.5프로」 — 오르내림은 앞 모양(▲ · ▼ · ―)으로
 /* ── 꾀마다 수익률 추이(주문 1127-1412 · 사장님 2026-11-27(서울) 14:12 「꾀별로 꺾은선 그래프를 만들어 자료를 수집한 날부터 지금까지 수익률 변화를 꺾은선 그래프로 36개 전부 다해」 · docs/design/record-2026-11-27/order-1412.txt)
    자료 = 장부가 날마다 꾀마다 적은 sell.tk(산 돈 c · 그날 값 v — tt 와 같은 날 · 같은 셈 · 꾀를 모두 더하면 tt) · 그날 수익률 = v ÷ c − 1
@@ -787,6 +787,53 @@ export function glKSeries(D, keys) { // → {days, mx, S: [{k, r: [날마다 수
   const top = Math.max(0, ...S.flatMap(o => o.r.filter(v => v != null).map(v => Math.abs(v))));
   const mx = [0.01, 0.02, 0.03, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 1, 2, 5, 10].find(s => s >= top) ?? Math.ceil(top);
   return {days: T.days, mx, S};
+}
+/** 꾀 한 가지 사고판 회사(주문 1127-2155 · 사장님 2026-11-27(서울) 21:55 「여기를 클릭하면 어떤 종목을 매수 매도 했고 지금 보유하고 있는 종목들이 나오게 하고 언제 사고 얼마에 사서 얼마가 됐는지 그리고 꺾은선 그래프로 나오게 하고 수익이 높은 순으로 배열해라」)
+ *  #/l/k/g01 — 한눈에 꾀 줄을 누르면 · 맨 위 = 이 꾀 모두(산 돈 · 지금 값 · 수익률) · 꺾은선 = 이 꾀 날마다 수익률(sell.tk) · 줄 = 판 것 + 들고 있는 것을 수익률 높은 차례(같으면 늘어난 돈 · 산 날 늦은 차례) · 위 일곱 + 더 보기 */
+export const ktrRows = (TR, k) => [...TR.sold.map(t => ({t, m: 's'})), ...TR.hold.map(t => ({t, m: 'b'}))].filter(x => x.t.k === k)
+  .sort((a, b) => b.t.r - a.t.r || b.t.diff - a.t.diff || String(b.t.d0).localeCompare(String(a.t.d0)) || a.t.i - b.t.i);
+function ktrChart(D, k, name) {
+  const G = glKSeries(D, [k]); if (!G) return null;
+  const r = G.S[0].r, N = G.days.length, pts = r.map((v, i) => (v == null ? null : [i, v])).filter(Boolean); if (pts.length < 2) return null;
+  const top = Math.max(...pts.map(([, v]) => Math.abs(v))), mx = [0.01, 0.02, 0.03, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 1, 2, 5, 10].find(x => x >= top) ?? Math.ceil(top);
+  const X = i => 8 + i / (N - 1) * 304, Y = v => 64 - v / mx * 56, last = pts[pts.length - 1][1], st = stOfD(Math.round(last * 1000));
+  const d = pts.map(([i, v], j) => (j ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+  return h('section', {class: 'sj-sec sj-ktc', 'data-k': k, 'data-st': st, 'data-n': String(pts.length), 'data-mx': String(mx)},
+    h('h2', {class: 'sj-pfh2', text: '이 꾀 수익률 추이'}),
+    h('p', {class: 'sj-gllead', text: '날마다 이 꾀가 쓴 돈이 몇 프로 늘거나 줄었는지 이은 꺾은선이에요. 맨 위가 +' + glRateT(mx) + ', 점선이 0, 맨 아래가 -' + glRateT(mx) + '예요.'}),
+    s('svg', {class: 'sj-ktcs', 'data-st': st, viewBox: '0 0 320 128', preserveAspectRatio: 'none', role: 'img', 'aria-label': name + ' 날마다 수익률 — ' + mday(G.days[0]) + '부터 ' + mday(G.days[N - 1]) + '까지 · 끝 ' + (last < 0 ? '-' : '+') + glRateT(last)},
+      s('rect', {class: 'sj-ktcb', x: 0, y: 0, width: 320, height: 128, rx: 10}),
+      s('line', {class: 'sj-ktcz', x1: 8, x2: 312, y1: 64, y2: 64}),
+      s('path', {class: 'sj-ktcp', d}),
+      s('path', {class: 'sj-ktcd', d: 'M' + X(pts[pts.length - 1][0]).toFixed(1) + ' ' + Y(last).toFixed(1) + ' h0.01'})),
+    h('p', {class: 'sj-glkr sj-res sj-ktcr', 'data-st': st}, h('span', {class: 'sj-glkrl', text: mday(G.days[N - 1]) + ' 수익률'}), shapeI(st), h('b', {text: glRateT(last)})),
+    h('p', {class: 'sj-gllead', text: '가로는 ' + mday(G.days[0]) + '부터 ' + mday(G.days[N - 1]) + '까지 장날 ' + N + '일이에요. 오르면 빨강, 내리면 파랑이에요.'}));
+}
+export async function vKkoeTr(X, k) {
+  const [D, T, {S}] = await Promise.all([X.get(DST), load21(X.get), X.base()]), G = await g36Of(X, T), nameOf = kk => G.name[kk] ?? '제' + kNo(kk) + '계';
+  const TR = D ? sellTrades(D) : null;
+  if (!TR || !K36.includes(k)) return missPage(X, '꾀 사고판 회사', '이 꾀의 사고 팔기 장부를 찾지 못했어요. 한눈에에서 다시 눌러 주세요.');
+  const name = nameOf(k), L = ktrRows(TR, k), q = TR.q, cost = L.reduce((a, x) => a + x.t.p0 * q, 0), val = L.reduce((a, x) => a + x.t.p1 * q, 0), diff = val - cost, st = stOfD(diff);
+  const nS = L.filter(x => x.m === 's').length, nH = L.length - nS;
+  const kids = [
+    pageHead({kick: '기록 · 꾀 사고판 회사', h1: name, seal: '꾀', sealDn: st === 'dn',
+      say: '이 꾀가 사고판 회사와 아직 들고 있는 회사예요. 수익률이 높은 차례로 놓았어요.',
+      more: L.length ? [h('dl', {class: 'sj-money sj-trsum sj-ktsum', 'data-st': st},
+          h('dt', {text: '판 것 · 들고 있는 것'}), h('dd', {text: NF.format(nS) + '번 · ' + NF.format(nH) + '번'}),
+          h('dt', {text: '산 돈'}), h('dd', {text: won(cost)}),
+          h('dt', {text: '판 돈과 지금 값'}), h('dd', {text: won(val)})),
+        h('p', {class: 'sj-res sj-res-big', 'data-st': st}, shapeI(st), h('b', {text: '수익률 ' + (cost > 0 ? glRateT(val / cost - 1) : '0.0프로') + ' · ' + moved(diff)})),
+        h('p', {class: 'sj-note', text: '모두 종가로 10주씩 샀다고 친 가짜 돈이에요. 들고 있는 것은 가장 늦은 종가로 셌어요.'})] : []}),
+    ktrChart(D, k, name),
+    h('section', {class: 'sj-sec sj-tr sj-ktl', 'data-k': k, 'data-n': String(L.length), 'aria-label': name + ' 사고판 회사'},
+      h('h2', {class: 'sj-pfh2', text: '사고판 회사 · 들고 있는 회사'}),
+      L.length ? h('p', {class: 'sj-gllead', text: '수익률이 높은 차례예요. 줄마다 산 날 · 산 값, 판 날 · 판 값(들고 있으면 가장 늦은 종가)이에요.'}) : null,
+      ...(L.length ? fold7(h('ol', {class: 'sj-trl0', 'aria-label': name + ' 사고판 회사 목록'}, ...L.map(x => trRow(x.t, x.m, nameOf))), (o, n) => '나머지 ' + (n - o) + '개 더 보기')
+        : [h('p', {class: 'sj-tnone', text: '이 꾀는 아직 산 회사가 없어요. 억지로 채우지 않았어요.'})]),
+      h('a', {class: 'sj-go', href: '#/k/' + k}, h('span', {text: '이 꾀는 어떤 꾀일까?'}), h('i', {'aria-hidden': 'true', text: '›'}))),
+    h('p', {class: 'sj-safe sj-sec', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
+    endSec(day(T?.asOf?.board), gotOf(S))];
+  return frame({title: name + ' · 사고판 회사', page: 'ktr', kids, tab: 4, rec: 0, next: {href: '#/l/a', label: '한눈에로 돌아갈까?'}});
 }
 function glKTrends(D, P) { // P = 꾀별 이름표 차례(kParts)
   const G = glKSeries(D, P.map(x => x.k)); if (!G) return null;
@@ -819,7 +866,9 @@ function glIRow(x, tot) {
 }
 function glKRow(x, tot) {
   const r = x.v > 0 ? x.now / x.v - 1 : null, st = r == null ? 'none' : stOfD(Math.round(r * 1000));
-  return h('li', {class: 'sj-gllegi sj-glkl', 'data-part': x.name, 'data-k': x.k, 'data-st': st}, glDot(x.col), h('b', {text: x.name}),
+  return h('li', {class: 'sj-gllegi sj-glkl', 'data-part': x.name, 'data-k': x.k, 'data-st': st},
+    h('a', {class: 'sj-glka', href: '#/l/k/' + x.k, 'aria-label': x.name + ' · 이 꾀가 사고판 회사 보기'}), // 꾀 줄을 누르면 그 꾀가 사고판 회사(주문 1127-2155) — 줄 모양은 그대로 · 줄 전체가 누르는 곳
+    glDot(x.col), h('b', {text: x.name}),
     h('span', {class: 'sj-pfsh', text: '산 비중 ' + glShare(x.v, tot) + '프로'}),
     h('p', {class: 'sj-glkm'}, h('span', {class: 'sj-pfam', text: '산 돈 ' + glWonS(x.v) + '원'}),
       r == null ? h('span', {class: 'sj-glkr', text: '산 적 없음'}) : h('span', {class: 'sj-glkr sj-res', 'data-st': st}, h('span', {class: 'sj-glkrl', text: '수익률'}), shapeI(st), h('b', {text: glRateT(r)}))));

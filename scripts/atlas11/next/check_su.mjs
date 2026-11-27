@@ -1917,7 +1917,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const iP = [...iTopI.slice(0, 4), ...(iEtcI > 0 ? [{name: '그 밖 업종', v: iEtcI}] : []), ...(cashI > 0 ? [{name: '판 돈', v: cashI, cash: true}] : [])], totI = iP.reduce((a, x) => a + x.v, 0);
     const iW = iP.map(x => [x.name, '지금 값 비중 ' + (totI > 0 ? Math.round(x.v / totI * 100) : 0) + '프로', (x.cash ? '판 돈 ' : '지금 값 ') + wonSg(x.v) + '원']);
     const iCap = ['들고 있는 회사의 업종 가운데 큰 넷과 그 밖 업종, 그리고 판 돈이에요.', '지금 값 비중은 총 평가 금액에서 그 칸이 차지하는 몫이에요.', '총 평가 금액은 들고 있는 것과 판 돈을 더한 값이에요.'].join(' ');
-    const kCap = ['서른여섯 꾀 모두예요. 수익률이 높은 차례예요.', '산 비중은 모든 산 돈에서 그 꾀가 쓴 몫이에요.', '수익률은 그 꾀가 쓴 돈이 지금 몇 프로 늘거나 줄었는지예요. 판 것은 판 돈으로 셌어요.'].join(' ');
+    const kCap = ['서른여섯 꾀 모두예요. 수익률이 높은 차례예요.', '산 비중은 모든 산 돈에서 그 꾀가 쓴 몫이에요.', '수익률은 그 꾀가 쓴 돈이 지금 몇 프로 늘거나 줄었는지예요. 판 것은 판 돈으로 셌어요.', '꾀 줄을 누르면 그 꾀가 사고판 회사가 나와요.'].join(' '); // 넷째 줄 = 꾀 줄 누르기(주문 1127-2155)
     check(g.v0.view === 'k' && g.v0.leg === 36 && g.v0.arcs === 36 && JSON.stringify(g.v0.k36) === JSON.stringify(k36W) && g.v0.cap === kCap && g.v0.kfs.length >= 36 * 4 && g.v0.kfs.every(f => f >= 16.9) && g.v0.kcol.length === 36 && colOk
       && g.v1.view === 'i' && g.v1.on.length === 1 && g.v1.on[0] === 'i' && g.v1.leg >= 1 && g.v1.leg <= 10 && g.v1.arcs === g.v1.leg && g.v1.sum >= 96 && g.v1.sum <= 104 && JSON.stringify(g.v1.rows) === JSON.stringify(iW) && g.v1.cap === iCap && g.segH.length === 2 && g.segH.every(x => x >= 47.5) && g.ins.length > 0 && g.insH >= 47.5,
       W + width + ' 나) 나눔 고르기 둘(꾀별 → 업종별 · 업종별 이름표 「지금 값 비중」 · 「지금 값」 · 「판 돈」 · 머리말 = 자료에서 따로 셈 · 주문 1127-1554) · 꾀별 = 서른여섯 꾀 모두(조각 36 · 이름표 36 · 산 비중 · 산 돈 · 수익률 = 자료에서 따로 셈 · 주문 1127-1137 · 수익률 높은 차례 · 오름 빨강 · 내림 파랑 · 주문 1127-1244) · 업종별 조각 = 이름표 · 몫 합 100 안팎 · 단추 48 넘게 · 한 줄 알림', JSON.stringify({v0: {...g.v0, k36: g.v0.k36.slice(0, 3), kfs: Math.min(...g.v0.kfs), kh: [Math.min(...g.v0.kh), Math.max(...g.v0.kh)], kcol: g.v0.kcol.filter(x => !x || (x[0] === 'up' ? x[1] !== RED || x[2] !== RED : x[0] === 'dn' ? x[1] !== BLUE || x[2] !== BLUE : x[1] === RED || x[1] === BLUE)).slice(0, 2)}, k36W: k36W.slice(0, 3), bad: g.v0.k36.map((r, i) => (JSON.stringify(r) === JSON.stringify(k36W[i]) ? null : [i, r, k36W[i]])).filter(Boolean).slice(0, 2), v1: g.v1, segH: g.segH, ins: g.ins, insH: g.insH}).slice(0, 1500));
@@ -2192,6 +2192,55 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     if (!(e.d && e.steps > 0 && e.stepVis && e.days && e.ex && !e.daysVis && e2 && !e2.open && e2.t === '꾀마다 파는 날과 실제 보기' && e2.h >= 48 && e2.fs >= 16.95 && e2.wide)) { ok = false; why = why || 't ' + JSON.stringify(seen.t); }
     check(ok && !errs.length, W + width + ' 가) 다음 정리 — 장부 거르개 열다섯 서랍 · 산 회사 · 판 회사 처음 일곱 · 한눈에 꾀마다 업종 위 일곱 · 정산 파는 날과 실제 보기 서랍 · 48 · 17 · 넘침 0 · 오류 0',
       (why || JSON.stringify(seen)).slice(0, 1500) + ' ' + JSON.stringify(errs.slice(0, 2)));
+    await ctx.close();
+  }
+}
+{ // ㊼ 주문 1127-2155(사장님 2026-11-27(서울) 21:55 「여기를 클릭하면 어떤 종목을 매수 매도 했고 지금 보유하고 있는 종목들이 나오게 하고 언제 사고 얼마에 사서 얼마가 됐는지 그리고 꺾은선 그래프로 나오게 하고 수익이 높은 순으로 배열해라」)
+  //   한눈에 꾀 줄 서른여섯 = 줄 전체가 누르는 곳(#/l/k/꾀 · 48 넘게) · 누르면 그 꾀 쪽 — 이 검사가 정산 자료(su21-settle.json)에서 따로 셈:
+  //   판 것 · 들고 있는 것 수 · 산 돈 · 판 돈과 지금 값 · 수익률 · 늘고 준 돈 · 줄 = 수익률 높은 차례(같으면 늘어난 돈 · 산 날 늦은 차례) · 줄마다 회사 · 산 날 · 산 값 · 판 날 · 판 값(들고 있으면 종가) · 변동 · 늘고 준 돈
+  //   꺾은선 = 이 꾀 날마다 수익률(점 수 · 끝 오름 빨강 · 내림 파랑) · 위 일곱 + 「나머지 N개 더 보기」 · 48 · 17 · 넘침 0 · 오류 0 · 390 · 320
+  const W = '㊼ ', D = await J('/su/data/su21-settle.json').catch(() => null), SV = D?.sell, q = Number.isFinite(D?.qty) ? D.qty : 10, KR = /^g(0[1-9]|[12]\d|3[0-6])$/;
+  const pct = r => { const v = Math.round(r * 1000) / 10; return v > 0 ? v.toFixed(1) + '프로 올랐어요' : v < 0 ? (-v).toFixed(1) + '프로 내렸어요' : '그대로예요'; };
+  const rT = r => Math.abs(Math.round(r * 1000) / 10).toFixed(1) + '프로';
+  const T = []; (D?.buys ?? []).forEach((b, i) => { const x = SV?.s?.[i], k = D?.kinds?.[b?.[1]]; if (!Array.isArray(b) || !Array.isArray(x) || !KR.test(k ?? '') || !(b[3] > 0) || !(x[2] > 0)) return;
+    T.push({i, k, code: b[2], co: D.co?.[b[2]]?.[0] ?? b[2], d0: b[0], p0: b[3], how: x[0], d1: x[1], p1: x[2], days: x[3], n: SV.days?.[k], diff: (x[2] - b[3]) * q, r: x[2] / b[3] - 1}); });
+  const rowW = t => { const sold = t.how !== 'h'; return {co: t.co, l: ['산 날 ' + mdM(t.d0) + ' · 산 값 ' + wonM(t.p0), sold ? '판 날 ' + mdM(t.d1) + ' · 판 값 ' + wonM(t.p1) : mdM(t.d1) + ' 종가 ' + wonM(t.p1),
+    (sold ? '들고 있은 날 ' : '들고 있는 날 ') + t.days + '일 · ' + (sold ? (t.how === 'c' ? '88원 줄 밑으로 내려 팔았어요' : '정한 날(' + t.n + '일째)에 팔았어요') : '정한 날(' + t.n + '일째)까지 ' + Math.max(0, t.n - t.days) + '일')], r: pct(t.r), m: movedM(t.diff)}; };
+  const ofK = k => T.filter(t => t.k === k).sort((a, b) => b.r - a.r || b.diff - a.diff || String(b.d0).localeCompare(String(a.d0)) || a.i - b.i);
+  const serK = k => { const tt = SV?.tt, tk = SV?.tk, j = tk?.k?.indexOf(k) ?? -1; if (!tt || j < 0) return []; return tt.days.map((d, i) => { const c = tk.c[j]?.[i], v = tk.v[j]?.[i]; return c > 0 && Number.isFinite(v) ? v / c - 1 : null; }).filter(v => v != null); };
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    await open(p, '#/l/a'); await p.waitForTimeout(400);
+    const a = await p.evaluate(() => [...document.querySelectorAll('#su section.sj-pf li.sj-glkl')].map(li => { const x = li.querySelector(':scope > a.sj-glka'), r = x?.getBoundingClientRect(), rl = li.getBoundingClientRect();
+      return {k: li.dataset.k, name: (li.querySelector(':scope > b')?.textContent ?? '').trim(), href: x?.getAttribute('href') ?? null, lab: x?.getAttribute('aria-label') ?? '', h: r ? Math.round(r.height) : 0, cover: !!r && r.top <= rl.top + 1 && r.bottom >= rl.bottom - 1}; }));
+    const linkOk = a.length === 36 && a.every(x => KR.test(x.k ?? '') && x.href === '#/l/k/' + x.k && x.lab === x.name + ' · 이 꾀가 사고판 회사 보기' && x.h >= 48 && x.cover);
+    const pick = a.find(x => ofK(x.k).length > 7) ?? a[0];
+    let g = null, f2 = null;
+    if (pick) {
+      await p.click('#su section.sj-pf li.sj-glkl[data-k="' + pick.k + '"] > a.sj-glka'); await p.waitForTimeout(600);
+      await p.waitForSelector('#su main.sj-page[data-page="ktr"]', {timeout: 15000}).catch(() => {});
+      const look = () => p.evaluate(() => { const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), m = document.querySelector('#su main.sj-page[data-page="ktr"]'), sec = m?.querySelector('section.sj-ktl'), ol = sec?.querySelector('ol.sj-trl0'), b = sec?.querySelector('button.sj-f7b'), br = b?.getBoundingClientRect(), sv = m?.querySelector('section.sj-ktc svg.sj-ktcs');
+        const red = [...(m?.querySelectorAll('*') ?? [])].filter(e => e.getBoundingClientRect().height > 0 && getComputedStyle(e).color === 'rgb(211, 47, 47)').filter(e => !e.closest('.sj-res[data-st="up"], .sj-glkr[data-st="up"]')).length;
+        return {hash: location.hash, h1: txt(m?.querySelector('h1')), sum: [...(m?.querySelectorAll('dl.sj-ktsum dd') ?? [])].map(txt), big: txt(m?.querySelector('.sj-res-big b')), bigSt: m?.querySelector('.sj-res-big')?.dataset.st ?? '',
+          n: +(sec?.dataset.n ?? -1), rows: [...(ol?.children ?? [])].map(li => ({co: txt(li.querySelector('.sj-trh b')), l: [...li.querySelectorAll('.sj-trl')].map(txt), r: txt(li.querySelector('.sj-trr b')), m: txt(li.querySelector('.sj-trm'))})),
+          vis: ol ? [...ol.children].filter(li => li.getBoundingClientRect().height > 0).length : 0, fold: ol?.getAttribute('data-fold') ?? null, btn: b ? {t: txt(b), h: Math.round(br.height), fs: parseFloat(getComputedStyle(b).fontSize)} : null,
+          chart: sv ? {st: sv.dataset.st, n: +(sv.closest('section')?.dataset.n ?? -1), path: !!sv.querySelector('path.sj-ktcp')} : null, red, wide: document.documentElement.scrollWidth <= innerWidth + 1,
+          small: [...(m?.querySelectorAll('p, b, span, dt, dd, h1, h2, button') ?? [])].filter(e => e.textContent.trim() && e.getBoundingClientRect().height > 0 && parseFloat(getComputedStyle(e).fontSize) < 16.95).length}; });
+      g = await look();
+      if (g.btn) { await p.click('#su section.sj-ktl button.sj-f7b'); await p.waitForTimeout(250); f2 = await look(); }
+    }
+    const L = pick ? ofK(pick.k) : [], cost = L.reduce((x, t) => x + t.p0 * q, 0), val = L.reduce((x, t) => x + t.p1 * q, 0), diff = val - cost, nS = L.filter(t => t.how !== 'h').length, st = Math.round(diff) > 0 ? 'up' : Math.round(diff) < 0 ? 'dn' : 'eq';
+    const ser = pick ? serK(pick.k) : [], last = ser.length ? ser[ser.length - 1] : null, cst = last == null ? null : Math.round(last * 1000) > 0 ? 'up' : Math.round(last * 1000) < 0 ? 'dn' : 'eq';
+    const want = L.map(rowW);
+    const pageOk = !!g && g.hash === '#/l/k/' + pick.k && g.h1 === pick.name && g.n === L.length && JSON.stringify(g.sum) === JSON.stringify([NFm.format(nS) + '번 · ' + NFm.format(L.length - nS) + '번', wonM(cost), wonM(val)])
+      && g.big === '수익률 ' + (cost > 0 ? rT(val / cost - 1) : '0.0프로') + ' · ' + movedM(diff) && g.bigSt === st && JSON.stringify(g.rows) === JSON.stringify(want)
+      && (L.length > 7 ? g.fold === '7' && g.vis === 7 && g.btn?.t === '나머지 ' + (L.length - 7) + '개 더 보기' && g.btn.h >= 48 && g.btn.fs >= 16.95 && f2?.vis === L.length && f2?.btn?.t === '다시 접기' : g.vis === L.length && !g.btn)
+      && (ser.length >= 2 ? !!g.chart && g.chart.path && g.chart.n === ser.length && g.chart.st === cst : !g.chart) && g.red === 0 && g.wide && g.small === 0;
+    check(!!D && linkOk && pageOk && !errs.length, W + width + ' 가) 한눈에 꾀 줄 서른여섯을 누르면 그 꾀가 사고판 회사(#/l/k/꾀) — 줄 = 따로 센 값 · 수익률 높은 차례 · 산 날 · 산 값 · 판 날 · 판 값 · 종가 · 변동 · 늘고 준 돈 · 모두 · 꺾은선 · 위 일곱 + 더 보기 · 48 · 17 · 빨강은 오른 수익만 · 넘침 0 · 오류 0',
+      JSON.stringify({linkOk, bad: a.filter(x => !(x.href === '#/l/k/' + x.k && x.h >= 48 && x.cover)).slice(0, 2), pick: pick?.k, g: g ? {...g, rows: g.rows.slice(0, 2)} : null, want: want.slice(0, 2), sum: [nS, L.length - nS, wonM(cost), wonM(val)], cst, sn: ser.length, errs: errs.slice(0, 2)}).slice(0, 1500));
     await ctx.close();
   }
 }

@@ -67,6 +67,8 @@ async function route() {
     if (hh === '#/l/a') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vGlance(XS)); } // 한눈에(주문 1125-2101 · 기록 탭 맨 앞 갈래)
     if (hh === '#/l/b') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vTrades(XS, 'b')); } // 산 회사(주문 1125-1144 · 기록 탭 안 갈래 · 장부 옆)
     if (hh === '#/l/s') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vTrades(XS, 's')); } // 판 회사(주문 1125-1144 · #/r/s 는 지운 쪽 고리라 쓰지 않음)
+    const ktr = /^#\/l\/k\/(g(?:0[1-9]|[12]\d|3[0-6]))$/.exec(hh); // 꾀 한 가지 사고판 회사(주문 1127-2155 · 한눈에 꾀 줄을 누르면)
+    if (ktr) { const M = await kkoeM(); return await paintSj(hh, root, () => M.vKkoeTr(XS, ktr[1])); }
     const wk = /^#\/l\/t(?:\/(.*))?$/.exec(hh); // 7단 사고판 기록(주문 1127-1457 · 1단 기록 → 2단 판 것 · 들고 있는 것 → 3단 꾀 → 4단 업종 → 5단 종목 → 6단 사고판 건 → 7단 한 건)
     if (wk) { const M = await kkoeM(); return await paintSj(hh, root, () => M.vWalk(XS, wk[1] ?? '')); }
     if (hh === '#/o') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vPicks(XS)); } // 여러 꾀가 고른 회사(주문 1120-0950 · #/n 은 옛 쪽 이름이라 #/o)
