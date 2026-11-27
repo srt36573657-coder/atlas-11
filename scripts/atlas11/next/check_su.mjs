@@ -1352,6 +1352,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
 }
 { // ㉜ 주문 1120-1705(사장님 2026-11-20(마카오) 17:05 「종목 찾기를 선물 옆에 배치 … 날짜별로 어떤종목을 … 얼마나 … 어떻게 됐는지 그래프와 데이타로 … 하단에 … 탭 … 적당한 이름 … 모든 거래내역 추적하고 기록」)
   //   가) 맨 위 「찾기」 = 선물 바로 앞 · 보임 · #/o · 누르면 회사 탭 찾기 칸에 커서 · 세 폭(390 · 360 · 320)에서 머리 줄 한 줄(높이 그대로)
+  //      (주문 1127-2320 「한국어 · 영어」 탭은 머리 줄 아래 따로 한 줄 — 머리 줄 높이는 그 줄을 빼고 잼 · 탭은 ㊾)
   //   나) 장부(#/l · 탭 「장부」 켜짐) = 이 검사가 정산 장부(su21-settle.json buys · now · qty)로 따로 다시 셈 — 모두 산 돈 · 지금 · 산 날 수 · 회사 수 · 날마다(새 날 먼저 · 회사 곳 수 · 산 번 · 산 돈) · 회사마다 산 돈 차례(맨 위 스물)
   //       꺾은선 · 막대 그림 · 손실 먼저 한 줄 · 「%」 「매수」 「수익률」 0 · 앞날 아님 한 줄
   const W = '㉜ ';
@@ -1361,7 +1362,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     const p = await ctx.newPage();
     await open(p, '#/k');
     const t = await p.evaluate(() => { const a = document.querySelector('#su .sj-top .sj-tools a.sj-findtop'), g = document.getElementById('giftBtn'), top = document.querySelector('#su .sj-top'), r = a?.getBoundingClientRect(), rg = g?.getBoundingClientRect();
-      return {has: !!a, shown: !!a && getComputedStyle(a).display !== 'none' && (r?.width ?? 0) >= 47.5 && (r?.height ?? 0) >= 47.5, next: a?.nextElementSibling === g, row: !!r && !!rg && Math.abs(r.top - rg.top) < 2, href: a?.getAttribute('href') ?? '', txt: (a?.textContent ?? '').trim(), topH: Math.round(top?.getBoundingClientRect().height ?? 0), wide: document.documentElement.scrollWidth <= innerWidth + 1}; });
+      return {has: !!a, shown: !!a && getComputedStyle(a).display !== 'none' && (r?.width ?? 0) >= 47.5 && (r?.height ?? 0) >= 47.5, next: a?.nextElementSibling === g, row: !!r && !!rg && Math.abs(r.top - rg.top) < 2, href: a?.getAttribute('href') ?? '', txt: (a?.textContent ?? '').trim(), topH: (() => { const R = top?.getBoundingClientRect(), lg = top?.querySelector(':scope > .sj-lang'); if (!R) return 0; if (!lg) return Math.round(R.height); /* 「한국어 · 영어」 탭 한 줄(주문 1127-2320)은 머리 줄 아래 따로 — 그 줄은 빼고 잼 */ const rs = [...top.children].filter(c => c !== lg).map(c => c.getBoundingClientRect()).filter(r => r.height > 0); return Math.round(Math.max(...rs.map(r => r.bottom)) - R.top + parseFloat(getComputedStyle(top).paddingBottom)); })(), wide: document.documentElement.scrollWidth <= innerWidth + 1}; });
     let focus = null;
     if (t.has) { await p.click('#su .sj-top a.sj-findtop'); await p.waitForFunction(() => location.hash === '#/o' && document.activeElement?.matches?.('input.sj-findi'), null, {timeout: 12000}).catch(() => {});
       focus = await p.evaluate(() => ({hash: location.hash, active: document.activeElement?.matches?.('#su main.sj-page[data-page="picks"] input.sj-findi') ?? false})); }
@@ -2288,12 +2289,19 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await QUIET(ctx);
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+    await open(p, '#/'); await p.waitForTimeout(300);
+    const h0 = await tabsOf(p); // 첫 쪽(index.html 머리 줄)에도 탭
+    await p.goto(base + '/su/?lang=en#/', {waitUntil: 'networkidle'}).catch(() => {}); await p.waitForTimeout(500); // 옛 수르 길 ?lang= 은 그대로 옛 쪽 · 손자병법 말은 그대로(새는 것 0)
+    const oldGo = new URL(p.url()).pathname;
     await open(p, '#/l/a'); await p.waitForTimeout(400);
+    const leak0 = await p.evaluate(() => ({lang: document.documentElement.lang, kept: (() => { try { return localStorage.getItem('su-lang'); } catch { return 'x'; } })()}));
     const k0 = await tabsOf(p), kFirst = await p.evaluate(() => document.querySelector('#su section.sj-pf li.sj-glkl')?.dataset.k ?? 'g01');
-    const koOk = JSON.stringify(k0.map(x => [x.l, x.t, x.on])) === JSON.stringify([['ko', '한국어', 'true'], ['en', '영어', 'false']]) && k0.every(x => x.h >= 48 && x.fs >= 16.95);
+    const KO2 = JSON.stringify([['ko', '한국어', 'true'], ['en', '영어', 'false']]);
+    const koOk = JSON.stringify(k0.map(x => [x.l, x.t, x.on])) === KO2 && k0.every(x => x.h >= 48 && x.fs >= 16.95) && JSON.stringify(h0.map(x => [x.l, x.t, x.on])) === KO2 && h0.every(x => x.h >= 48 && x.fs >= 16.95)
+      && oldGo !== '/su/' && leak0.lang !== 'en' && leak0.kept !== 'en';
     await Promise.all([p.waitForNavigation({timeout: 15000}).catch(() => {}), p.click('#su header.sj-top button.sj-langb[data-lang="en"]')]); await p.waitForTimeout(1200);
     await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); await p.waitForTimeout(800);
-    const seen = {}; let ok = koOk, why = koOk ? '' : 'ko tabs ' + JSON.stringify(k0);
+    const seen = {}; let ok = koOk, why = koOk ? '' : 'ko tabs ' + JSON.stringify({k0, h0, oldGo, leak0});
     for (const hh of ['#/l/a', '#/l/k/' + kFirst, '#/l/b', '#/l/s', '#/l/t']) {
       await open(p, hh); await p.waitForTimeout(700);
       const g = await leftOf(p), t = await tabsOf(p); seen[hh] = [g.left.length, g.title];
@@ -2304,6 +2312,11 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await p.waitForSelector('#su main.sj-page', {timeout: 15000}).catch(() => {}); await p.waitForTimeout(600);
     const back = await p.evaluate(() => ({lang: document.documentElement.lang, h: (document.querySelector('#su .sj-recnav a[aria-current="page"], #su nav a[aria-current="page"]')?.textContent ?? '').trim(), ko: /[가-힣]/.test(document.querySelector('#su main')?.innerText ?? '')}));
     if (!(back.lang !== 'en' && back.ko)) { ok = false; why = why || 'back ' + JSON.stringify(back); }
+    await p.goto(base + '/su/?hl=en#/l/b', {waitUntil: 'networkidle'}).catch(() => {}); await p.waitForTimeout(1200); // 저장소 없는 휴대폰 길 ?hl=en
+    const hl1 = await p.evaluate(() => document.documentElement.lang);
+    await Promise.all([p.waitForNavigation({timeout: 15000}).catch(() => {}), p.click('#su header.sj-top button.sj-langb[data-lang="ko"]')]); await p.waitForTimeout(1200);
+    const hl2 = await p.evaluate(() => ({lang: document.documentElement.lang, q: location.search, hash: location.hash}));
+    if (!(hl1 === 'en' && hl2.lang !== 'en' && !/hl=/.test(hl2.q) && hl2.hash === '#/l/b')) { ok = false; why = why || 'hl ' + JSON.stringify({hl1, hl2}); }
     check(ok && !errs.length, W + width + ' 가) 영어판 — 맨 위 「한국어 · 영어」 탭(48 · 17 · 눌림) · 영어를 누르면 한눈에 · 꾀 사고판 회사 · 산 회사 · 판 회사 · 7단에 한국어 글 0 · 쪽 이름 영어 · 넘침 0 · 「한국어」로 돌아옴 · 오류 0',
       (why || JSON.stringify(seen)).slice(0, 1500) + ' ' + JSON.stringify(errs.slice(0, 2)));
     await ctx.close();

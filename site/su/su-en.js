@@ -125,6 +125,7 @@ export function enText(raw) {
   for (const [ko, en] of Object.entries(SECTORS)) if (ko.length > 1 && out.includes(ko)) out = out.split(ko).join(en);
   if (!HAN.test(out)) return out;
   for (const [ko, en] of PH) if (out.includes(ko)) out = out.split(ko).join(en);
+  if (HAN.test(out)) return s; // 다 못 옮기면 한국어 그대로(「today은」 같은 반쪽 글 0 — 아직 옮기지 않은 쪽)
   return out.replace(/\s+/g, ' ').replace(/\s([,.·])/g, '$1').trim();
 }
 const ATTRS = ['aria-label', 'placeholder', 'title', 'alt'];

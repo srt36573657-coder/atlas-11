@@ -106,11 +106,19 @@ try { if (localStorage.getItem('su-big-text') === '1') document.documentElement.
  *  애플 기기(아이폰 · 아이패드 · 맥)는 글꼴 차례 맨 앞이 기기 글꼴이라 프리텐다드를 쓰지 않음 → 글꼴 표도 받지 않음(사장님 2026-10-22 「애플 기기 = 애플 글꼴 · 그 밖 = 프리텐다드」) */
 const APPLE = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent ?? '');
 const fontsLater = () => { if (APPLE || document.querySelector('link[href="/app/fonts.css"]')) return; requestAnimationFrame(() => setTimeout(() => { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/app/fonts.css'; document.head.append(l); }, 0)); };
-// 영어판(주문 1127-2320 · 사장님 23:20 「이거 영어 번역판으로도 상단에 탭을 만들어서 만들어 알겠지」) — 맨 위 「한국어 · 영어」 탭(su-sonja-top.js langTabs) · 영어를 고른 때만 말 바꾸기 판(su-en.js)을 받음
-//   ?lang=en · ?lang=ko 로 들어와도 고름(이 휴대폰에 기억) · 한국어판은 그대로
-{ const q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'ko') { try { localStorage.setItem('su-lang', q); } catch { /* 저장소 없음 */ } } }
-const LANG_EN = (() => { try { return localStorage.getItem('su-lang') === 'en' || new URLSearchParams(location.search).get('lang') === 'en'; } catch { return new URLSearchParams(location.search).get('lang') === 'en'; } })();
+// 영어판(주문 1127-2320 · 사장님 23:20 「이거 영어 번역판으로도 상단에 탭을 만들어서 만들어 알겠지」) — 맨 위 「한국어 · 영어」 탭(su-sonja-top.js langTabs · 첫 쪽은 index.html 머리 줄) · 영어를 고른 때만 말 바꾸기 판(su-en.js)을 받음
+//   고른 말은 이 휴대폰에 기억(su-lang) · 저장소가 없는 휴대폰은 주소 ?hl=en · ?hl=ko 로 · ?lang= 은 옛 수르 길(su-data.js KEEP_Q · forwardTo)이라 쓰지 않음 · 한국어판은 그대로
+const HLq = () => { try { const q = new URLSearchParams(location.search).get('hl'); return q === 'en' || q === 'ko' ? q : null; } catch { return null; } };
+{ const q = HLq(); if (q) { try { localStorage.setItem('su-lang', q); } catch { /* 저장소 없음 — 주소로 */ } } }
+const LANG_EN = (() => { const q = HLq(); if (q) return q === 'en'; try { return localStorage.getItem('su-lang') === 'en'; } catch { return false; } })();
 if (LANG_EN) { document.documentElement.lang = 'en'; import('/su/su-en.js').then(E => E.watchEn(document.getElementById('su'))).catch(() => {}); }
+for (const b of document.querySelectorAll('#su .sj-langb')) b.setAttribute('aria-pressed', String(b.dataset.lang === (LANG_EN ? 'en' : 'ko'))); // 첫 쪽 머리 줄(index.html) 단추도 고른 말로
+document.addEventListener('click', e => { // 탭 누름은 여기 한 곳(첫 쪽 index.html 단추 · 다른 쪽 topBar 단추 같이) — 다른 말을 누르면 기억하고 다시 그림
+  const b = e.target?.closest?.('#su .sj-langb'), l = b?.dataset.lang; if (!b || (l !== 'en' && l !== 'ko') || (l === 'en') === LANG_EN) return;
+  let kept = false; try { localStorage.setItem('su-lang', l); kept = localStorage.getItem('su-lang') === l; } catch { /* 저장소 없음 */ }
+  const u = new URL(location.href); if (kept) u.searchParams.delete('hl'); else u.searchParams.set('hl', l);
+  if (u.href === location.href) location.reload(); else location.replace(u.href);
+});
 window.addEventListener('hashchange', route);
 route().finally(fontsLater);
 /* 새 판이 올라가면 스스로 새로 고침(주문 1708 · 사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어!」 — 휴대폰이 전에 열어 둔 화면을 새로 받지 않고 그대로 보여 줌)

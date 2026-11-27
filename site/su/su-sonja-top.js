@@ -58,12 +58,9 @@ export function topBar() {
     langTabs()); // 「한국어 · 영어」 탭(주문 1127-2320) — 머리 줄 안 맨 아래 한 줄
 }
 /** 말 고르기 탭(주문 1127-2320 · 사장님 23:20 「영어 번역판으로도 상단에 탭을 만들어서」) — 고른 말은 이 휴대폰에 기억 · 누르면 다시 그림 */
-const langNow = () => { try { if (localStorage.getItem('su-lang') === 'en') return 'en'; } catch { /* 저장소 없음 */ } return new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'ko'; };
-function langTabs() {
-  const cur = langNow(), tab = (l, t) => { const b = h('button', {class: 'sj-langb', type: 'button', 'data-lang': l, 'aria-pressed': String(cur === l), text: t});
-    b.addEventListener('click', () => { if (langNow() === l) return; let kept = false; try { localStorage.setItem('su-lang', l); kept = localStorage.getItem('su-lang') === l; } catch { /* 저장소 없음 */ }
-      if (kept && !new URLSearchParams(location.search).get('lang')) location.reload(); else location.replace(location.pathname + '?lang=' + l + location.hash); });
-    return b; };
+const langNow = () => { try { const q = new URLSearchParams(location.search).get('hl'); if (q === 'en' || q === 'ko') return q; } catch { /* 주소 */ } try { if (localStorage.getItem('su-lang') === 'en') return 'en'; } catch { /* 저장소 없음 */ } return 'ko'; };
+function langTabs() { // 누름은 su.js 한 곳(첫 쪽 index.html 머리 줄 단추와 같이) · 꼴은 index.html 머리 줄과 같음
+  const cur = langNow(), tab = (l, t) => h('button', {class: 'sj-langb', type: 'button', 'data-lang': l, 'aria-pressed': String(cur === l), text: t});
   return h('div', {class: 'sj-lang', role: 'group', 'aria-label': '말 고르기 — 한국어 · 영어'}, tab('ko', '한국어'), tab('en', '영어'));
 }
 
