@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-27T17:36:46.420Z",
+ "at": "2026-11-27T19:12:53.827Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 711,
@@ -115,9 +115,9 @@
    "기관"
   ],
   "speed": {
-   "lcp": 872,
+   "lcp": 864,
    "cls": 0.916,
-   "pic": 773
+   "pic": 770
   },
   "white": {
    "light #/": {
@@ -394,7 +394,7 @@
     "tc": [
      "#E8F1EE"
     ],
-    "darkMax": 0.014,
+    "darkMax": 0.013,
     "darkSel": "b.hpi-b.b1",
     "low": [],
     "lowN": 0
@@ -529,8 +529,8 @@
     "tc": [
      "#E8F1EE"
     ],
-    "darkMax": 0.014,
-    "darkSel": "b.hpi-b.b1",
+    "darkMax": 0,
+    "darkSel": "i",
     "low": [],
     "lowN": 0
    },
