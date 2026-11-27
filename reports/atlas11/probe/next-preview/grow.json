@@ -7,12 +7,12 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-27T01:07:52.741Z",
+ "at": "2026-11-27T01:25:13.829Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
   "mine": 2569,
-  "hash": "be0fa11fdbc7dfcc",
+  "hash": "22b726c064a08526",
   "kinds": {
    "c": {
     "total": 2557,
@@ -32,17 +32,17 @@
    }
   }
  },
- "seconds": 55,
- "secondsSum": 164,
+ "seconds": 57,
+ "secondsSum": 170,
  "time": {
-  "old": 131.2,
-  "new": 134.1,
-  "wall": 54.6,
-  "wallSum": 163.1,
+  "old": 139.2,
+  "new": 141.5,
+  "wall": 57,
+  "wallSum": 170.1,
   "opensOld": 7684,
   "opensNew": 10286,
-  "oldPct": 80.4,
-  "oldShare": 49.5
+  "oldPct": 81.8,
+  "oldShare": 49.6
  },
  "net": {
   "req": 3549,
@@ -66,7 +66,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "검사 · 브라우저 · 목록이 바뀜 | 바뀐 파일 855개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
+   "why": "검사 · 브라우저 · 목록이 바뀜 | 바뀐 파일 773개(/atlas/data/core.json · /atlas/data/surge.json · /atlas/data/comp.json)",
    "made": null,
    "inputs": 2596,
    "reads": 2557,
@@ -82,7 +82,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 54,
+   "seconds": 57,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -95,7 +95,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 55,
+   "seconds": 57,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -108,7 +108,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 55,
+   "seconds": 56,
    "mine": 856,
    "kinds": {
     "c": 852,
