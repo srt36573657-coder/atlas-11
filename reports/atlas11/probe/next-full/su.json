@@ -1,12 +1,29 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-28T01:32:06.087Z",
+ "at": "2026-11-28T03:26:33.410Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 712,
-  "fail": 0
+  "pass": 720,
+  "fail": 4
  },
- "fails": [],
+ "fails": [
+  [
+   "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
+   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795836658645"
+  ],
+  [
+   "㉙ 글 무너짐 [390] #/ — 글이 세로로 무너진 곳 · 옆으로 넘친 글 · 잘린 글 0(주문 1120-0358)",
+   "[[\"세로\",\"sj-page > sj-sec sj-j3\",358,11,\"null\"]]"
+  ],
+  [
+   "㉙ 글 무너짐 [320] #/ — 글이 세로로 무너진 곳 · 옆으로 넘친 글 · 잘린 글 0(주문 1120-0358)",
+   "[[\"세로\",\"sj-page > sj-sec sj-j3\",288,11,\"null\"]]"
+  ],
+  [
+   "㉙ 글 무너짐 [320 · 큰 글씨] #/ — 글이 세로로 무너진 곳 · 옆으로 넘친 글 · 잘린 글 0(주문 1120-0358)",
+   "[[\"세로\",\"sj-page > sj-sec sj-j3\",288,11,\"null\"]]"
+  ]
+ ],
  "m": {
   "data": {
    "fk": "g18",
@@ -14,8 +31,8 @@
    "sun": true
   },
   "home": {
-   "screens": 16.17,
-   "links": 56
+   "screens": 16.7,
+   "links": 57
   },
   "t21": {
    "listed": 2557,
@@ -32,6 +49,7 @@
      "sj-jkk",
      "sj-j3",
      "sj-jst",
+     "sj-jnot",
      "sj-jsafe",
      "sj-jmore",
      "sj-cover",
@@ -118,9 +136,9 @@
    "기관"
   ],
   "speed": {
-   "lcp": 820,
-   "cls": 0.941,
-   "pic": 753
+   "lcp": 932,
+   "cls": 0.916,
+   "pic": 852
   },
   "white": {
    "light #/": {
@@ -1029,5 +1047,5 @@
    }
   }
  },
- "ok": true
+ "ok": false
 }
