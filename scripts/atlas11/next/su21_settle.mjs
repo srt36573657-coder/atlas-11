@@ -39,10 +39,13 @@ export const S36 = Object.freeze(Array.from({length: 36}, (_, i) => 'g' + String
 export const OVL = 'ovl';
 export const KINDS = Object.freeze(['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext', ...S36, OVL]);
 /** 꾀 다섯 이상만 사기(주문 1128-2046 · 사장님 2026-11-28(서울) 20:46 「앞으로 매수 조건을 꾀가 5가지 이상만 있는 조건에 종목을 매수 한다」 · 21:31 「맞아」 — docs/design/buy5-2026-11-28/order-2046.txt)
- *  11월 30일(다음 장날) 판부터 — 같은 날 서른여섯 꾀 가운데 다섯 이상이 고른 회사만 산 셈 · 사는 양은 그대로 꾀마다 10주(꾀 여섯이 고르면 60주) · 꾀 넷 이하가 고른 회사는 안 삼
- *  파는 날(꾀마다 정한 날)과 88원 규칙은 그대로(sell-v1) · 지난 기록과 들고 있는 것은 그대로(그 전 날은 지금껏처럼 꾀가 고른 회사 모두)
- *  장부(s36)에는 지금처럼 꾀가 고른 회사를 모두 적음(값도 모두 적음) — 사는 셈(siteSettle)만 거름 · 다른 묶음(조용한 힘 · 겹친 곳 따위)은 그대로 */
-export const BUY5_FROM = '2026-11-30', BUY5_NEED = 5;
+ *  11월 30일 종가부터 — 같은 날(한 판) 서른여섯 꾀 가운데 다섯 이상이 고른 회사만 산 셈 · 사는 양은 그대로 꾀마다 10주(꾀 여섯이 고르면 60주) · 꾀 넷 이하가 고른 회사는 안 삼
+ *  사는 날 = 판 날의 다음 장날 종가(주문 1128-2351 · 사장님 2026-11-28(서울) 23:51 「평일 저녁이 아니라 오후 1시에 카톡으로 당일 매수할 종목을 카톡으로 보내는 시스템을 만들어」 —
+ *    꾀는 장이 끝난 뒤 그날 종가까지로 고름 → 다음 장날 오후 1시 카톡으로 알림 → 그날 종가로 삼 · docs/design/buy-kakao-2026-11-28/order-2351.txt)
+ *    11월 27일 판(금)의 꾀 다섯 이상 회사 = 11월 30일(월) 종가로 삼 · 11월 30일 판부터는 같은 날 꾀 산 셈 없음
+ *  파는 날(꾀마다 정한 날 · 산 다음 장날이 1일째)과 88원 규칙은 그대로(sell-v1) · 지난 기록과 들고 있는 것은 그대로(11월 27일 판까지는 지금껏처럼 그날 종가로 꾀가 고른 회사 모두)
+ *  장부(s36)에는 지금처럼 꾀가 고른 회사를 모두 적음(값도 모두 적음) — 사는 셈(siteSettle)만 바꿈 · 다른 묶음(조용한 힘 · 겹친 곳 따위)은 그대로 */
+export const BUY5_FROM = '2026-11-30', BUY5_NEED = 5, BUY5_ON = 'next'; // 첫 사는 날 · 꾀 수 · 다음 장날 종가
 /** 그날 꾀 다섯 이상이 고른 회사 — x = 그날 묶음 목록 {묶음: [번호…]} · 꾀마다 한 번만 셈 */
 export function pick5(x, need = BUY5_NEED) {
   const n = new Map();
@@ -159,19 +162,26 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
 
 /** 화면 자료 — 산 셈(날 · 묶음 · 번호 · 산 값) · 지금(회사마다 오늘 판 날까지 가장 늦은 값 · 그 날) · 묶음 첫날 · 다시 센 날 끝 · 못 센 수 */
 export function siteSettle(B, L, asOf, days, start = START) {
-  const buys = [], miss = Object.fromEntries(KINDS.map(k => [k, 0])), from = {}, now = {}, pk = {}; // pk = 꾀가 고른 곳(11월 30일 판부터 — 산 셈은 꾀 다섯 이상만이라 「여러 꾀가 고른 회사」 · 회사 쪽 날마다 꾀 수는 이것으로 셈)
+  const buys = [], miss = Object.fromEntries(KINDS.map(k => [k, 0])), from = {}, now = {}, pk = {}; // pk = 꾀가 고른 곳(11월 30일 판부터 — 꾀 산 셈은 다음 장날 · 꾀 다섯 이상만이라 「여러 꾀가 고른 회사」 · 회사 쪽 날마다 꾀 수는 이것으로 셈)
+  const tdays = tradeDays(B, asOf, start), nextOf = d => tdays.find(t => t > d) ?? null; // 다음 장날(장부 값 날 — sellsOf 와 같은 장날)
   for (const [d, x] of Object.entries(L)) {
     if (asOf && d > asOf) continue;
-    const ok5 = d >= BUY5_FROM ? pick5(x) : null; // 꾀 다섯 이상만 사기(주문 1128-2046) — 11월 30일 판부터 · 꾀 넷 이하가 고른 회사는 안 삼
-    if (ok5) { const g = Object.fromEntries(S36.filter(k => Array.isArray(x[k]) && x[k].length).map(k => [k, [...x[k]]])); if (Object.keys(g).length) pk[d] = g; }
+    const late = d >= BUY5_FROM; // 이 판부터는 같은 날 꾀 산 셈 없음 — 꾀 다섯 이상만 다음 장날 종가로(주문 1128-2046 · 1128-2351)
+    if (late) { const g = Object.fromEntries(S36.filter(k => Array.isArray(x[k]) && x[k].length).map(k => [k, [...x[k]]])); if (Object.keys(g).length) pk[d] = g; }
     KINDS.forEach((k, i) => {
+      if (late && S36.includes(k)) return;
       for (const code of x[k] ?? []) {
-        if (ok5 && S36.includes(k) && !ok5.has(code)) continue;
         const v = B.px?.[code]?.[d];
         if (!fin(v)) { miss[k]++; continue; }
         buys.push([d, i, code, v]); from[k] ??= d;
       }
     });
+    const nd = nextOf(d); // 판 날 d 의 꾀 다섯 이상 회사 → 다음 장날 nd 종가(nd 가 11월 30일 뒤이고 장부 값이 있을 때 · 아직이면 다음 셈에)
+    if (nd && nd >= BUY5_FROM && (!asOf || nd <= asOf)) {
+      const ok5 = pick5(x);
+      for (const k of S36) { const i = KINDS.indexOf(k);
+        for (const code of new Set(Array.isArray(x[k]) ? x[k] : [])) { if (!ok5.has(code)) continue; const v = B.px?.[code]?.[nd]; if (!fin(v)) { miss[k]++; continue; } buys.push([nd, i, code, v]); from[k] ??= nd; } }
+    }
   }
   for (const code of new Set(buys.map(b => b[2]))) {
     const last = Object.entries(B.px[code]).filter(([d]) => !asOf || d <= asOf).sort(([a], [b]) => a.localeCompare(b)).pop();
@@ -179,7 +189,7 @@ export function siteSettle(B, L, asOf, days, start = START) {
   }
   const replay = Object.entries(days?.days ?? {}).filter(([d, x]) => x?.how === 'replay' && d >= start).map(([d]) => d).sort();
   return {schema: SCHEMA, qty: B.qty, asOf: asOf ?? null, start, kinds: [...KINDS], from, replayTo: replay[replay.length - 1] ?? null,
-    co: Object.fromEntries([...new Set([...buys.map(b => b[2]), ...Object.values(pk).flatMap(g => Object.values(g).flat())])].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, buy5: {from: BUY5_FROM, need: BUY5_NEED}, pk, now, miss, mk: mkLevels(B, asOf, start), hz: horizons(B, buys, asOf, start), sell: sellsOf(B, buys, asOf, start)}; // sell = 사고 팔기(주문 1125-0049)
+    co: Object.fromEntries([...new Set([...buys.map(b => b[2]), ...Object.values(pk).flatMap(g => Object.values(g).flat())])].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, buy5: {from: BUY5_FROM, need: BUY5_NEED, on: BUY5_ON}, pk, now, miss, mk: mkLevels(B, asOf, start), hz: horizons(B, buys, asOf, start), sell: sellsOf(B, buys, asOf, start)}; // sell = 사고 팔기(주문 1125-0049)
 }
 /** 사고 팔기(주문 1125-0049 · 사장님 2026-11-25(서울) 00:40 「이제는 매수 와 매도를 하자 · 매수는 지금처럼 하고 매도는 꾀에서 오르는 기준을 잡았잖아 그 기준 날짜로 팔고 … 매수 할때보다 12프로 하락이면 자동으로 팔게」
  *    · 00:45 「숫자로 이야기해봐」 · 00:49 「그래 이렇게 하고 … 모든 거래는 종가 기준으로 거래를 하는 것이다」 — docs/design/sell-2026-11-25/order-0049.txt)
@@ -206,8 +216,10 @@ export function sellOne(px, tdays, i0, buy, n) {
 }
 /** 산 셈마다 사고 팔기 — 꾀(g01 ~ g36)가 산 셈만(다른 묶음은 null) · 장날 = 장부 값 날 ∪ 판 전체 하루 몫 날(horizons 와 같음)
  *  {rule, cut, days, s: [산 셈 차례대로 [how, 날, 값, 며칠째] | null], ex: 실제 보기 셋(정한 날 바로 그날 판 것 — 오른 것 · 안 오른 것 / 88원 줄에서 판 것 · 종가가 하루도 안 빠진 것 · 가장 이른 산 날 · 꾀 차례 · 번호 차례로 하나씩 · 산 날부터 판 날까지 종가)} */
+/** 장날 = 장부 값 날 ∪ 판 전체 하루 몫 날(첫날 뒤 · 판 날까지) — 사고 팔기 · 다음 장날 사기가 같은 장날을 씀 */
+export const tradeDays = (B, asOf, start = START) => [...new Set([...Object.values(B?.px ?? {}).flatMap(m => Object.keys(m ?? {})), ...Object.keys(B?.mk ?? {})])].filter(d => DAY.test(d) && d >= start && (!asOf || d <= asOf)).sort();
 export function sellsOf(B, buys, asOf, start = START) {
-  const tdays = [...new Set([...Object.values(B?.px ?? {}).flatMap(m => Object.keys(m ?? {})), ...Object.keys(B?.mk ?? {})])].filter(d => DAY.test(d) && d >= start && (!asOf || d <= asOf)).sort();
+  const tdays = tradeDays(B, asOf, start);
   const at = new Map(tdays.map((d, i) => [d, i]));
   const s = buys.map(([d, ki, code, buy]) => { const n = SELL_DAYS[KINDS[ki]]; return n ? sellOne(B?.px?.[code], tdays, at.get(d), buy, n) : null; });
   const order = s.map((x, i) => [x, i]).filter(([x]) => x).sort(([, a], [, b]) => buys[a][0].localeCompare(buys[b][0]) || buys[a][1] - buys[b][1] || buys[a][2].localeCompare(buys[b][2]));

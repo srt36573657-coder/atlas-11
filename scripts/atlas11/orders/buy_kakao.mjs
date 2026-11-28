@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// 살 차례 카톡(주문 1128-2342 · 사장님 2026-11-28(서울) 23:42 「뭘 매수할 예정인지 내 카톡으로 메세지 보내는 시스템 구축해」)
-//   장부(reports/atlas11/su21/settle.json s36 — 장이 끝난 날마다 꾀마다 그날 고른 회사를 한 번 적음 · 올리기 작업이 적음)에서
-//   그날 꾀 다섯 이상이 함께 고른 회사(주문 1128-2046 · su21_settle.mjs BUY5_FROM · BUY5_NEED · pick5 — 사고팔 탭 살 차례와 같은 셈)를 골라
+// 오늘 살 회사 카톡(주문 1128-2342 · 사장님 2026-11-28(서울) 23:42 「뭘 매수할 예정인지 내 카톡으로 메세지 보내는 시스템 구축해」
+//   · 23:51 「평일 저녁이 아니라 오후 1시에 카톡으로 당일 매수할 종목을 카톡으로 보내는 시스템을 만들어 설명도 자세히 해가지고」 — 주문 1128-2351)
+//   꾀는 장이 끝난 뒤 그날 종가까지로 고름 → 장부(reports/atlas11/su21/settle.json s36)에 그날 저녁 적힘 → 다음 장날 오후 1시에 이 글로 알림 → 장부는 그날 종가로 삼(su21_settle.mjs BUY5_ON next)
+//   오늘(장날) 앞 장날 판에서 꾀 다섯 이상이 함께 고른 회사(주문 1128-2046 · BUY5_NEED · pick5 — 사고팔 탭 살 차례와 같은 셈)를 골라
 //   카톡 「나에게 보내기」 글 묶음(한 통 200자 안)을 JSON 한 줄로 냄 — 보내기는 예약 작업의 카톡 도구가 함 · 이 파일은 글만 만듦(kakao_digest.mjs 와 같은 꼴)
-//   상태: buy(살 회사 있음) · none(꾀 다섯 이상이 고른 회사 없음 — 그렇다고 한 통) · holiday(장이 쉬는 날 — 0통) · wait(오늘 장부가 아직 안 옴 — 0통 · 예약 작업이 기다렸다 다시 부름)
+//   상태: buy(살 회사 있음) · none(꾀 다섯 이상이 고른 회사 없음 — 그렇다고 한 통) · holiday(장이 쉬는 날 — 0통) · stale(앞 장날 장부가 없음 — 그렇다고 한 통)
 //   쓰는 법: node scripts/atlas11/orders/buy_kakao.mjs [--day YYYY-MM-DD(기본 오늘 · 한국 날)] [--ledger 파일] [--cal 파일] [--ops 파일] [--sample]
 //   글은 쉬운 말 · 수익률 없음 · 앞날을 맞히지 않고 사고팔기를 권하지 않는다는 줄 · 장부는 가짜 돈
 import fs from 'node:fs';
@@ -24,10 +25,15 @@ export const mdw = d => { const [y, m, dd] = d.split('-').map(Number); return `$
 
 /** 그날이 장이 여는 날인가 — true · false · null(모름)
  *  ① 장 달력(public/data/rolling-calendar.json)이 그날까지 덮으면 그 sessions ② 오늘 매일 작업 기록(reports/atlas11/operations/latest.json)의 1_calendar session ③ 토 · 일은 쉼 */
+export const covers = (cal, day) => !!cal && Array.isArray(cal.sessions) && DAY.test(cal.coverageEnd ?? '') && day <= cal.coverageEnd && day >= (cal.coverageStart ?? '');
+/** a 와 b 사이(둘 다 뺌) 평일 */
+export const weekdaysBetween = (a, b) => { const out = []; for (let x = Date.parse(a + 'T00:00:00Z') + 864e5; x < Date.parse(b + 'T00:00:00Z'); x += 864e5) { const w = new Date(x).getUTCDay(); if (w !== 0 && w !== 6) out.push(new Date(x).toISOString().slice(0, 10)); } return out; };
+/** 앞 장날 — 장 달력이 덮으면 그 sessions 에서 · 아니면 null */
+export const prevSession = (day, cal) => (covers(cal, day) ? [...cal.sessions].filter(d => DAY.test(d) && d < day).sort().pop() ?? null : null);
 export function isSession(day, {cal = null, ops = null} = {}) {
   const wd = new Date(day + 'T00:00:00Z').getUTCDay();
   if (wd === 0 || wd === 6) return false;
-  if (cal && Array.isArray(cal.sessions) && DAY.test(cal.coverageEnd ?? '') && day <= cal.coverageEnd && day >= (cal.coverageStart ?? '')) return cal.sessions.includes(day);
+  if (covers(cal, day)) return cal.sessions.includes(day);
   const s = (ops?.dayKST === day && Array.isArray(ops?.steps)) ? ops.steps.find(x => x?.step === '1_calendar') : null;
   if (s && typeof s.session === 'boolean' && s.day === day) return s.session;
   return null;
@@ -55,26 +61,26 @@ export function pack(lines, max = MAX) {
   return out;
 }
 
-/** 카톡 글 묶음 — {ok, day, state, n, lots, kn, messages} */
-export function buildKakao({B, day, cal = null, ops = null, sample = false, need = BUY5_NEED, from = BUY5_FROM, today = kstDay()}) {
-  const head = `📋 손자병법 살 차례${sample ? ' [보기]' : ''} · ${mdw(day)}`, tail = ['가짜 돈 장부예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.', '자세히 · ' + LINK];
-  const ses = isSession(day, {cal, ops}), L = buyList(B, day, need), when = day === today ? '오늘' : '이날';
-  if (!L) {
-    if (ses === false) return {ok: true, day, state: 'holiday', n: 0, lots: 0, kn: 0, messages: []};
-    return {ok: true, day, state: 'wait', n: 0, lots: 0, kn: 0, session: ses, messages: [], why: '그날 장부(s36)가 아직 없음'};
-  }
-  const lines = [head];
-  if (day < from) lines.push(`이날 장부는 꾀가 고른 회사를 모두 샀어요. ${mdw(from).split(' ')[0]}부터는 아래처럼 꾀 ${NUMW[need] ?? need} 이상이 고른 회사만 사요.`);
+/** 카톡 글 묶음 — {ok, day(오늘 · 사는 날), board(앞 장날 판), state, n, lots, kn, messages}
+ *  오늘 = 장날이면 오늘 앞의 가장 늦은 장부 판(앞 장날이어야 함)에서 꾀 다섯 이상이 고른 회사 = 오늘 종가로 살 회사 */
+export function buildKakao({B, day, cal = null, ops = null, sample = false, need = BUY5_NEED, from = BUY5_FROM}) {
+  const nw = NUMW[need] ?? need, head = `📋 손자병법 오늘 살 회사${sample ? ' [보기]' : ''} · ${mdw(day)}`, tail = ['가짜 돈 장부예요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.', '자세히 · ' + LINK];
+  if (isSession(day, {cal, ops}) === false) return {ok: true, day, board: null, state: 'holiday', n: 0, lots: 0, kn: 0, messages: []};
+  const bd = Object.keys(B?.s36 ?? {}).filter(d => DAY.test(d) && d < day).sort().pop() ?? null, pv = prevSession(day, cal);
+  const fresh = !!bd && (pv ? bd === pv : weekdaysBetween(bd, day).every(d => typeof cal?.holidays?.[d] === 'string')); // 달력이 오늘을 안 덮으면 — 사이 평일이 모두 알려진 쉬는 날일 때만
+  if (!fresh) return {ok: true, day, board: bd, state: 'stale', n: 0, lots: 0, kn: 0, prev: pv, why: '앞 장날 장부 판이 없음', messages: [head + '\n앞 장날 장부가 아직 오지 않아서 오늘 살 회사를 못 셌어요.']};
+  const L = buyList(B, bd, need), lines = [head];
+  if (day < from) lines.push(`이날 장부는 꾀가 고른 회사를 그날 종가로 모두 샀어요. ${mdw(from).split(' ')[0]}부터 아래처럼 사요.`);
   if (!L.rows.length) {
-    lines.push(`${when}은 꾀 ${NUMW[need] ?? need} 이상이 함께 고른 회사가 없어요. 그래서 사지 않아요.`);
+    lines.push(`${mdw(bd)} 장이 끝난 뒤 꾀 ${nw} 이상이 함께 고른 회사가 없어요. 그래서 오늘은 사지 않아요.`);
     if (L.kn < S36.length) lines.push(`꾀 ${L.kn}가지 자료로 셌어요.`);
-    return {ok: true, day, state: 'none', n: 0, lots: 0, kn: L.kn, messages: pack([...lines, '', ...tail])};
+    return {ok: true, day, board: bd, state: 'none', n: 0, lots: 0, kn: L.kn, messages: pack([...lines, '', ...tail])};
   }
-  lines.push(`${when} 종가로 꾀 ${NUMW[need] ?? need} 이상이 함께 고른 회사 ${L.rows.length}곳을 사요.`, '');
+  lines.push(`오늘 종가로 꾀 ${nw} 이상이 함께 고른 회사 ${L.rows.length}곳을 사요.`, `${mdw(bd)} 장이 끝난 뒤 꾀가 고른 회사예요.`, '');
   L.rows.forEach((r, i) => lines.push(`${i + 1}. ${r.name} · 꾀 ${r.n}`));
   lines.push('', `고른 꾀마다 10주씩, 모두 ${L.lots}번 사요.`);
   if (L.kn < S36.length) lines.push(`꾀 ${L.kn}가지 자료로 셌어요.`);
-  return {ok: true, day, state: 'buy', n: L.rows.length, lots: L.lots, kn: L.kn, messages: pack([...lines, ...tail])};
+  return {ok: true, day, board: bd, state: 'buy', n: L.rows.length, lots: L.lots, kn: L.kn, messages: pack([...lines, ...tail])};
 }
 
 function main() {

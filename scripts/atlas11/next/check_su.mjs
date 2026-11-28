@@ -1276,8 +1276,8 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   check(!tagBad.length, W + '가) 꾀 쪽 맨 위 세 태세 표지 — 검사가 sun.rank 로 따로 센 세 태세와 같은 꾀 · 같은 태세 · 다른 꾀에는 없음(첫 쪽 칸은 주문 1126-1748 로 지움)', JSON.stringify({st30, tagBad}).slice(0, 400));
   const D30 = await J('/su/data/su21-settle.json').catch(() => null), G30 = T0?.s36n && G0?.schema === 'su21-s36-1' && Array.isArray(G0?.kinds) && G0.kinds.length === 36 ? G0 : null;
   const KK = /^g(0[1-9]|[12]\d|3[0-6])$/, CD = /^[0-9A-Z]{6}$/, seen = new Map(), add = (d, c, k) => { const m = seen.get(d) ?? new Map(); seen.set(d, m); (m.get(c) ?? m.set(c, new Set()).get(c)).add(k); };
-  const PK30 = D30?.pk && typeof D30.pk === 'object' && !Array.isArray(D30.pk) ? D30.pk : {}; // 11월 30일 판부터는 산 셈이 꾀 다섯 이상만 — 그날들은 고른 곳(pk)으로 셈(주문 1128-2046)
-  for (const b of Array.isArray(D30?.buys) ? D30.buys : []) { const k = D30.kinds?.[b?.[1]]; if (KK.test(String(k)) && /^\d{4}-\d{2}-\d{2}$/.test(String(b[0])) && CD.test(String(b[2])) && !PK30[b[0]]) add(b[0], b[2], k); }
+  const PK30 = D30?.pk && typeof D30.pk === 'object' && !Array.isArray(D30.pk) ? D30.pk : {}, F30 = D30?.buy5?.on === 'next' && /^\d{4}-\d{2}-\d{2}$/.test(String(D30?.buy5?.from ?? '')) ? D30.buy5.from : null; // 11월 30일 판부터는 산 셈이 꾀 다섯 이상만 · 다음 장날 — 그날들은 고른 곳(pk)으로 셈(주문 1128-2046 · 1128-2351)
+  for (const b of Array.isArray(D30?.buys) ? D30.buys : []) { const k = D30.kinds?.[b?.[1]]; if (KK.test(String(k)) && /^\d{4}-\d{2}-\d{2}$/.test(String(b[0])) && CD.test(String(b[2])) && !PK30[b[0]] && !(F30 && b[0] >= F30)) add(b[0], b[2], k); }
   for (const [d, x] of Object.entries(PK30)) for (const [k, L] of Object.entries(x ?? {})) if (KK.test(k) && Array.isArray(L)) for (const c of L) if (CD.test(String(c))) add(d, String(c), k);
   const td = G30?.asOf?.board;
   if (td && G30?.lists && ![...seen.keys()].some(d => d > td)) { const m = new Map(); for (const [k, L] of Object.entries(G30.lists)) if (KK.test(k) && Array.isArray(L)) for (const c of L) { const code = String(c?.code ?? ''); if (CD.test(code)) (m.get(code) ?? m.set(code, new Set()).get(code)).add(k); } if (m.size) seen.set(td, m); }
@@ -2410,7 +2410,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
 { // 51 주문 1128-1501(사장님 2026-11-28(서울) 15:01 「가운데 테이블 하나 만들어 … 매수 매도 할 종목 … 두 개의 탭」 · 16:09 「꾀 옆 그리고 멈춤 사이에 탭을 만들어 그곳에 넣어」 · 16:11 「7개 종목만 사는 게 아니라 꾀별로 다 사는 거잖아 … 이것부터 정의하고」)
   //   가) 아래 탭 다섯 — 「사고팔」은 꾀와 멈춤 사이(#/d) · 켜짐 · 첫 쪽에는 표 없음 · 탭 둘(살 차례 · 팔 차례 · 48 · 17 넘게 · 처음은 살 차례)
   //   나) 살 차례 = 주문 1128-2046(20:46 「앞으로 매수 조건을 꾀가 5가지 이상만 있는 조건에 종목을 매수 한다」 · 21:31 「맞아」) — 같은 날 꾀 다섯 이상이 고른 회사만 · 고른 꾀가 많은 회사부터 · 줄마다 고른 꾀 이름 · 누르면 「왜 사?」 — 이 검사가 꾀 칸 자료로 따로 센 것과 같음
-  //   바) 장부 — 11월 30일 판부터 꾀 산 셈은 모두 그날 꾀 다섯 이상이 산 회사(꾀마다 10주) · 정산 자료 buy5 = {from 11월 30일 · need 5}
+  //   바) 장부 — 11월 30일 종가부터 꾀 산 셈은 모두 앞 장날 판에서 꾀 다섯 이상이 고른 회사(꾀마다 10주 · 주문 1128-2351 다음 장날) · 같은 날 꾀 산 셈 없음 · 정산 자료 buy5 = {from 11월 30일 · need 5 · on next}
   //   다) 팔 차례 = 장부가 들고 있는 것 가운데 다음 장날이 정한 날인 것 모두(sell-v1) · 꾀별 · 지금 값이 낮은 것부터 · 누르면 회사 쪽 — 장부 자료로 따로 센 것과 같음
   //   라) 낱말 매수 · 매도 · 추천 0 · 글 17 넘게 · 넘침 0 · 오류 0 · 마) 375 첫 쪽 머리 줄 「⋯」가 화면 안(사장님 16:09 사진 — 오른쪽 끝 잘림)
   const W = '51 ', J51 = u => fetch(base + u).then(r => (r.ok ? r.json() : null)).catch(() => null), [G51, S51] = await Promise.all([J51('/su/data/su21-s36.json'), J51('/su/data/su21-settle.json')]);
@@ -2425,12 +2425,17 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   const led5 = (() => { if (!S51 || !Array.isArray(S51.buys) || !Array.isArray(S51.kinds)) return null; const by = new Map();
     for (const b of S51.buys) { const k = Array.isArray(b) ? S51.kinds[b[1]] : null; if (!KN51.test(String(k)) || !(String(b[0]) >= FROM51)) continue; const key = b[0] + ' ' + b[2]; by.set(key, new Set([...(by.get(key) ?? []), k])); }
     const bad = [...by].filter(([, ks]) => ks.size < NEED51).map(([key, ks]) => key + ' 꾀 ' + ks.size);
-    const PK = S51.pk && typeof S51.pk === 'object' && !Array.isArray(S51.pk) ? S51.pk : {}; // 고른 곳(그날 꾀마다 모두) — 산 셈은 이 가운데 꾀 다섯 이상인 곳 모두(값이 있으면)
+    const PK = S51.pk && typeof S51.pk === 'object' && !Array.isArray(S51.pk) ? S51.pk : {}; // 고른 곳(그날 꾀마다 모두 · 11월 30일 판부터)
+    const TD = Array.isArray(S51.sell?.px?.d) ? S51.sell.px.d : [], prevOf = d => TD.filter(x => x < d).pop() ?? null; // 장날(사고 팔기와 같은 장날)
+    const picksOn = d => { if (d >= FROM51) return PK[d] ?? null; const g = {}; for (const b of S51.buys) { const k = Array.isArray(b) ? S51.kinds[b[1]] : null; if (b[0] === d && KN51.test(String(k))) (g[k] = g[k] ?? []).push(b[2]); } return Object.keys(g).length ? g : null; }; // 11월 27일 판까지는 그날 산 셈 = 고른 곳
     for (const d of Object.keys(PK)) if (d < FROM51) bad.push('고른 곳이 11월 30일 전 ' + d);
-    for (const key of by.keys()) if (!PK[key.slice(0, 10)]) bad.push('고른 곳 없음 ' + key.slice(0, 10));
-    for (const [d, x] of Object.entries(PK)) { const cnt = new Map(); for (const [k, L] of Object.entries(x ?? {})) if (KN51.test(k) && Array.isArray(L)) for (const c of new Set(L)) cnt.set(c, [...(cnt.get(c) ?? []), k]);
-      for (const [c, ks] of cnt) { const got = by.get(d + ' ' + c); if (ks.length >= NEED51 ? got && (got.size !== ks.length || ks.some(k => !got.has(k))) : !!got) bad.push(d + ' ' + c + ' 고른 꾀 ' + ks.length + ' · 산 꾀 ' + (got?.size ?? 0)); }
-      for (const key of by.keys()) if (key.startsWith(d + ' ') && !cnt.has(key.slice(11))) bad.push('안 고른 곳을 삼 ' + key); }
+    for (const nd of new Set([...by.keys()].map(x => x.slice(0, 10)))) {
+      const pd = prevOf(nd), x = pd ? picksOn(pd) : null;
+      if (!x) { bad.push('앞 장날 고른 곳 없음 ' + nd + ' ← ' + pd); continue; }
+      const cnt = new Map(); for (const [k, L] of Object.entries(x)) if (KN51.test(k) && Array.isArray(L)) for (const c of new Set(L)) cnt.set(c, [...(cnt.get(c) ?? []), k]);
+      for (const [c, ks] of cnt) { const got = by.get(nd + ' ' + c); if (ks.length >= NEED51 ? got && (got.size !== ks.length || ks.some(k => !got.has(k))) : !!got) bad.push(nd + ' ' + c + ' 앞 판(' + pd + ') 고른 꾀 ' + ks.length + ' · 산 꾀 ' + (got?.size ?? 0)); }
+      for (const key of by.keys()) if (key.startsWith(nd + ' ') && !cnt.has(key.slice(11))) bad.push('앞 판에서 안 고른 곳을 삼 ' + key);
+    }
     return {days: new Set([...by.keys()].map(x => x.slice(0, 10))).size, pk: Object.keys(PK).length, lots: [...by.values()].reduce((a, s) => a + s.size, 0), bad, rule: JSON.stringify(S51.buy5 ?? null)}; })();
   const wantSell = (() => { const sl = S51?.sell; if (!sl || !Array.isArray(sl.s) || !Array.isArray(S51.buys) || !Array.isArray(S51.kinds)) return null; let hold = 0; const by = {};
     S51.buys.forEach((b, i) => { const x = sl.s[i], k = Array.isArray(b) ? S51.kinds[b[1]] : null; if (!Array.isArray(x) || x[0] !== 'h' || !(b[3] > 0) || typeof x[2] !== 'number' || !Number.isFinite(x[2]) || !KN51.test(String(k))) return; hold++;
@@ -2463,7 +2468,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
         && (wantBuy.before ? /11월 30일 종가부터/.test(a.p1.tt5) : !a.p1.tt5) && (wantBuy.G.length || /꾀 다섯 이상이 함께 고른 회사가 없어요/.test(a.p1.w))
       : !a.p1.G.length && /억지로 채우지 않았어요/.test(a.p1.w),
       W + width + ' 나) 살 차례 — 같은 날 꾀 다섯 이상이 고른 회사만 · 고른 꾀가 많은 회사부터 · 줄마다 고른 꾀 이름(꾀 칸 자료로 따로 센 것 그대로 · ' + (wantBuy ? wantBuy.G.length + '곳 · ' + wantBuy.n + '번 · 고른 회사 ' + wantBuy.all + '곳' : '자료 없음') + ') · 누르면 「왜 사?」 · 48 넘게', JSON.stringify({got: gb.slice(0, 3), want: wb.slice(0, 3), n: a.p1.n, co: a.p1.co, all: a.p1.all, tt5: a.p1.tt5, diff: gb.findIndex((x, i) => x !== wb[i])}).slice(0, 700));
-    if (width === 390) check(S51 ? !!led5 && led5.bad.length === 0 && led5.rule === JSON.stringify({from: FROM51, need: NEED51}) : /받지 못했어요/.test(a.p2.w), W + '바) 장부 — 11월 30일 판부터 꾀 산 셈은 모두 그날 꾀 다섯 이상이 산 회사(꾀마다 10주 · 그 전 날은 그대로) · 정산 자료 buy5', JSON.stringify(led5 && {days: led5.days, pk: led5.pk, lots: led5.lots, bad: led5.bad.slice(0, 4), rule: led5.rule}));
+    if (width === 390) check(S51 ? !!led5 && led5.bad.length === 0 && led5.rule === JSON.stringify({from: FROM51, need: NEED51, on: 'next'}) : /받지 못했어요/.test(a.p2.w), W + '바) 장부 — 11월 30일 종가부터 꾀 산 셈은 모두 앞 장날 판에서 꾀 다섯 이상이 고른 회사(꾀마다 10주 · 다음 장날 종가 · 그 전 날은 그대로) · 정산 자료 buy5', JSON.stringify(led5 && {days: led5.days, pk: led5.pk, lots: led5.lots, bad: led5.bad.slice(0, 4), rule: led5.rule}));
     await p.click('#su main.sj-page[data-page="deal"] button#sj-dt2').catch(() => {});
     await p.waitForTimeout(300);
     const b = await look();
