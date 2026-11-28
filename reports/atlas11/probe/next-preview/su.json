@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-28T04:10:10.115Z",
+ "at": "2026-11-28T06:14:14.863Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 654,
+  "pass": 662,
   "fail": 0
  },
  "fails": [],
@@ -14,8 +14,8 @@
    "sun": false
   },
   "home": {
-   "screens": 3.96,
-   "links": 15
+   "screens": 4.28,
+   "links": 17
   },
   "t21": {
    "listed": 2557,
@@ -31,6 +31,7 @@
      "sj-jl",
      "sj-jkk",
      "sj-j3",
+     "sj-jtt",
      "sj-jst",
      "sj-jnot",
      "sj-jsafe",
@@ -99,9 +100,9 @@
    "주식"
   ],
   "speed": {
-   "lcp": 2380,
+   "lcp": 2428,
    "cls": 0.916,
-   "pic": 2288
+   "pic": 2316
   },
   "white": {
    "light #/": {
