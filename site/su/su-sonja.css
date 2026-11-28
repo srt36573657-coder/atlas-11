@@ -2227,3 +2227,22 @@ html.sj-on #su svg.sj-j3ten .sj-j3t1 { fill: #1565C0; }
 html.sj-on #su svg.sj-j3ten .sj-j3t0 { fill: #FFFFFF; stroke: #8E8E93; stroke-width: 1.2; }
 html.sj-on #su .sj-j3kd.sj-j3kq { border-radius: 2px; }
 @media (max-width: 370px) { html.sj-on #su svg.sj-j3ten { width: 64px; height: 12px; } }
+/* 가짜 돈이 사고팔 차례(주문 1128-1501) — 탭 둘 · 줄 일곱 · 빨강 없음 */
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jtt { margin: 0; padding: 22px 4px 0; border-radius: 0; background: transparent; box-shadow: none; }
+html.sj-on #su .sj-jttt { margin: 4px 0 0; color: #1D1D1F; font-size: 1.5rem; font-weight: 800; line-height: 1.3; }
+html.sj-on #su .sj-ttnote { margin: 6px 0 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su .sj-tts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: 12px 0 0; padding: 3px; border-radius: 14px; background: #EFEFF4; }
+html.sj-on #su button.sj-ttb { min-height: 48px; margin: 0; padding: 0 8px; border: 0; border-radius: 11px; background: transparent; color: #3A3A3C; font: inherit; font-size: 1.125rem; font-weight: 700; cursor: pointer; }
+html.sj-on #su button.sj-ttb[aria-selected="true"] { background: #FFFFFF; color: #1D1D1F; font-weight: 800; box-shadow: 0 1px 2px rgba(0, 0, 0, .12); }
+html.sj-on #su button.sj-ttb:focus-visible { outline: 3px solid #8A5A12; outline-offset: 2px; }
+html.sj-on #su .sj-ttp[hidden] { display: none; }
+html.sj-on #su .sj-ttl, html.sj-on #su .sj-ttw { margin: 12px 0 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su ol.sj-tto { list-style: none; margin: 6px 0 0; padding: 0; }
+html.sj-on #su li.sj-tti { margin: 0; border-bottom: 1px solid #E5E5EA; }
+html.sj-on #su a.sj-tta { display: grid; grid-template-columns: 28px minmax(0, 1fr) 14px; align-items: center; column-gap: 12px; min-height: 64px; padding: 8px 2px; color: inherit; text-decoration: none; }
+html.sj-on #su .sj-ttn { color: #8A5A12; font-size: 1.375rem; font-weight: 800; text-align: center; }
+html.sj-on #su .sj-ttx { display: flex; flex-direction: column; min-width: 0; }
+html.sj-on #su .sj-ttnm { color: #1D1D1F; font-size: 1.125rem; font-weight: 800; line-height: 1.35; overflow-wrap: anywhere; }
+html.sj-on #su .sj-ttsub { color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.45; }
+html.sj-on #su a.sj-tta > i { color: #8E8E93; font-style: normal; font-size: 1.375rem; font-weight: 700; }
+@media (max-width: 370px) { html.sj-on #su a.sj-tta { grid-template-columns: 24px minmax(0, 1fr) 12px; column-gap: 8px; } }
