@@ -2222,3 +2222,8 @@ html.sj-on[lang="en"] #su .sj-top .sj-brand-t { display: none; } html.sj-on[lang
 html.sj-on #su input.sj-pzi::-webkit-search-cancel-button, html.sj-on #su input.sj-pzi::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
 @media (max-width: 370px) { html.sj-on #su .sj-top .sj-brand { min-width: 48px; justify-content: center; } html.sj-on[lang="en"] #su .sj-top .sj-brand { display: none; } }
 html.sj-on #su .sj-j3key { align-items: flex-start; } html.sj-on #su .sj-j3kd { margin-top: 7px; }
+html.sj-on #su svg.sj-j3ten { display: block; width: 84px; height: 14px; overflow: visible; }
+html.sj-on #su svg.sj-j3ten .sj-j3t1 { fill: #1565C0; }
+html.sj-on #su svg.sj-j3ten .sj-j3t0 { fill: #FFFFFF; stroke: #8E8E93; stroke-width: 1.2; }
+html.sj-on #su .sj-j3kd.sj-j3kq { border-radius: 2px; }
+@media (max-width: 370px) { html.sj-on #su svg.sj-j3ten { width: 64px; height: 12px; } }

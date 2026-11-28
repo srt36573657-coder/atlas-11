@@ -596,6 +596,13 @@ export function dipLine(v, lo, hi) {
     s('polyline', {class: 'sj-j3pl', points: v.map((x, i) => r1(X(i)) + ',' + r1(Y(x))).join(' ')}),
     low < 99.95 ? s('circle', {class: 'sj-j3lo', cx: r1(X(k)), cy: r1(Y(low)), r: 4}) : null);
 }
+/** 열 칸(형세 차례일 때 · 공부 서른 6 「백 번 중 몇 번」 자연 빈도) — 지난 같은 땅에서 잃은 몫을 열 칸에 파랑으로 · 나머지는 먹 테두리 · 빨강 없음 · 글(잃은 날 ○번 중 ○번)이 정확한 수 */
+export function tenCells(lose, n) {
+  if (!Number.isInteger(n) || n <= 0 || !Number.isInteger(lose) || lose < 0 || lose > n) return null;
+  const k = Math.round(lose / n * 10);
+  return s('svg', {class: 'sj-j3ten', viewBox: '0 0 100 14', role: 'img', focusable: 'false', 'data-k': String(k), 'aria-label': '잃은 날 ' + n + '번 중 ' + lose + '번 — 열 칸에 ' + k + '칸'},
+    ...Array.from({length: 10}, (_, i) => s('rect', {class: i < k ? 'sj-j3t1' : 'sj-j3t0', x: i * 10 + 0.75, y: 0.75, width: 8.5, height: 12.5, rx: 2})));
+}
 function jKkoe(T) {
   const x = okSun(T.sun) ? T.sun : null, pk = x ? nowPick(x) : null;
   const rows = Array.isArray(T?.sunLog?.rows) ? T.sunLog.rows : [], r = pk ? null : rows.filter(q => typeof q?.day === 'string' && LANDK.includes(q.land) && typeof KNAME[q.k] === 'string').at(-1) ?? null;
@@ -637,17 +644,18 @@ function jTop3Fill(sec, g, T) {
   if (!L.length) { sec.append(h('p', {class: 'sj-j3w', text: '꾀 차례 자료가 아직 없어요. 억지로 채우지 않았어요.'})); sec.removeAttribute('data-wait'); return; }
   const VV = L.flatMap(q => (Array.isArray(q.e?.v) ? q.e.v : [])), lo0 = VV.length ? Math.min(100, ...VV) : null, hi0 = VV.length ? Math.max(100, ...VV) : null;
   const pad = fin(lo0) && fin(hi0) ? Math.max(0.5, (2 - (hi0 - lo0)) / 2) : 0, lo = fin(lo0) ? lo0 - (hi0 - lo0 < 2 ? pad : 0) : null, hi = fin(hi0) ? hi0 + (hi0 - lo0 < 2 ? pad : 0) : null; // 세 줄 같은 잣대 · 너무 납작하면 위아래 1원씩
-  sec.append(h('p', {class: 'sj-j3l', text: lead}),
+  sec.append(...[h('p', {class: 'sj-j3l', text: lead}), // 빈 칸(null)은 빼고 붙임 — DOM append 는 null 을 「null」 글로 붙임(틀림 285)
     h('ol', {class: 'sj-j3o'}, ...L.map((q, i) => h('li', {class: 'sj-j3i', 'data-k': q.k},
       h('a', {class: 'sj-j3a', href: '#/k/' + q.k},
         h('span', {class: 'sj-j3n', text: String(i + 1)}),
         h('span', {class: 'sj-j3b'}, h('b', {class: 'sj-j3t', text: KNAME[q.k]}),
           q.e ? h('span', {class: 'sj-j3v'}, h('span', {text: '가장 낮을 때 '}), jWon(q.e.low), h('span', {text: ' · 지금 '}), jWon(q.e.now))
             : h('span', {class: 'sj-j3v', text: '잃은 날 ' + q.r.n + '번 중 ' + q.r.lose + '번'})),
-        q.e ? dipLine(q.e.v, lo, hi) : null,
+        q.e ? dipLine(q.e.v, lo, hi) : tenCells(q.r?.lose, q.r?.n),
         h('i', {'aria-hidden': 'true', text: '›'}))))),
-    L.some(q => q.e) ? h('p', {class: 'sj-j3key'}, h('i', {class: 'sj-j3kd', 'aria-hidden': 'true'}), h('span', {text: '파란 점은 가장 낮을 때, 점선은 처음 100원이에요.'})) : null,
-    h('a', {class: 'sj-jlink', href: '#/k'}, h('span', {text: '서른여섯 꾀 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+    L.some(q => q.e) ? h('p', {class: 'sj-j3key'}, h('i', {class: 'sj-j3kd', 'aria-hidden': 'true'}), h('span', {text: '파란 점은 가장 낮을 때, 점선은 처음 100원이에요.'}))
+      : h('p', {class: 'sj-j3key'}, h('i', {class: 'sj-j3kd sj-j3kq', 'aria-hidden': 'true'}), h('span', {text: '파란 칸은 열 번 가운데 잃은 번이에요.'})),
+    h('a', {class: 'sj-jlink', href: '#/k'}, h('span', {text: '서른여섯 꾀 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))].filter(Boolean));
   sec.removeAttribute('data-wait');
 }
 /** 사기 전에 멈춤 문 — 첫 화면에서 가장 큰 칸(본질 2 「주식을 사기 전에 한 번 멈추게 한다」 · 「왜 사?」 열한 질문)
