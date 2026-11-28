@@ -2250,4 +2250,8 @@ html.sj-on #su .sj-dcv { color: #636366; font-weight: 600; }
 html.sj-on #su b.sj-dv { font-weight: 800; color: #3A3A3C; }
 html.sj-on #su b.sj-dv[data-m="up"] { color: #D32F2F; }
 html.sj-on #su b.sj-dv[data-m="dn"] { color: #1565C0; }
-@media (max-width: 370px) { html.sj-on #su .sj-dgs, html.sj-on #su ul.sj-dgl { padding-left: 0; } }
+/* 살 차례 — 꾀 다섯 이상이 고른 회사(주문 1128-2046) · 줄마다 고른 꾀 이름 */
+html.sj-on #su p.sj-dgk { margin: 8px 0 0; padding-left: 34px; color: #3A3A3C; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+html.sj-on #su .sj-dgkl { color: #8A5A12; font-weight: 800; }
+html.sj-on #su p.sj-tt5 { color: #8A5A12; font-weight: 700; }
+@media (max-width: 370px) { html.sj-on #su .sj-dgs, html.sj-on #su ul.sj-dgl, html.sj-on #su p.sj-dgk { padding-left: 0; } }

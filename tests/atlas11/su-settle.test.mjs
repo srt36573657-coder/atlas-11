@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK, SUN_TRACK, sealSun, checkSun, sunPick, MK_MIN, mkLevels, trackTotal, horizons, HZ_KS} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, S36, START, BUY5_FROM, BUY5_NEED, pick5, emptySettle, okSettle, listsOf, stepSettle, siteSettle, runsOf, markRuns, rank36, trackDays, sealTrack, checkTrack, trackDiff, trackSite, trackAll, readTrack, ZERO, TRACK, SUN_TRACK, sealSun, checkSun, sunPick, MK_MIN, mkLevels, trackTotal, horizons, HZ_KS} from '../../scripts/atlas11/next/su21_settle.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import {forwardTo} from '../../site/su/su-data.js';
@@ -162,6 +162,27 @@ test('서른여섯 꾀(주문 1113-2224 「36가지 유형 … 정산하고 연�
   assert.ok(Object.values(so.lists).every(x => Object.keys(x).every(k => !k.startsWith('t_'))), '산 셈에 특징 열하나 0');
 });
 
+test('꾀 다섯 이상만 사기(주문 1128-2046 「앞으로 매수 조건을 꾀가 5가지 이상만 있는 조건에 종목을 매수 한다」 · 「맞아」) — 11월 30일 판부터 · 꾀마다 10주 · 그 전 날은 그대로 · 다른 묶음은 그대로', () => {
+  assert.equal(BUY5_FROM, '2026-11-30'); assert.equal(BUY5_NEED, 5);
+  const D0 = '2026-11-27', D1 = '2026-11-30', A = '000010', Bc = '000020', Q = '000030';
+  const day = (a, b) => Object.fromEntries(S36.slice(0, 6).map((k, i) => [k, [...(i < a ? [A] : []), ...(i < b ? [Bc] : [])]]).filter(([, cs]) => cs.length)); // A = 꾀 다섯(g01 ~ g05) · Bc = 꾀 넷(g01 ~ g04)
+  const L = {[D0]: {...day(5, 4), quiet: [Q]}, [D1]: {...day(5, 4), quiet: [Q]}};
+  const book = {...emptySettle(), px: {[A]: {[D0]: 1000, [D1]: 1010}, [Bc]: {[D0]: 2000, [D1]: 2020}, [Q]: {[D0]: 3000, [D1]: 3030}}, co: {}};
+  const S = siteSettle(book, L, D1, {days: {}}, '2026-11-12');
+  const on = (d, code) => S.buys.filter(b => b[0] === d && b[2] === code).map(b => KINDS[b[1]]);
+  assert.deepEqual(on(D0, A), ['g01', 'g02', 'g03', 'g04', 'g05']); assert.deepEqual(on(D0, Bc), ['g01', 'g02', 'g03', 'g04'], '11월 27일은 그대로 — 꾀가 고른 회사 모두');
+  assert.deepEqual(on(D1, A), ['g01', 'g02', 'g03', 'g04', 'g05'], '11월 30일 — 꾀 다섯이 고른 회사는 꾀마다 10주(다섯 번)');
+  assert.deepEqual(on(D1, Bc), [], '꾀 넷이 고른 회사는 안 삼');
+  assert.deepEqual(on(D1, Q), ['quiet'], '다른 묶음은 그대로');
+  assert.ok(S.buys.filter(b => b[0] === D1 && b[2] === A).every(b => b[3] === 1010), '그날 종가');
+  assert.deepEqual(S.buy5, {from: '2026-11-30', need: 5});
+  assert.deepEqual(S.pk, {[D1]: {g01: [A, Bc], g02: [A, Bc], g03: [A, Bc], g04: [A, Bc], g05: [A]}}, '고른 곳(11월 30일 판부터만) — 꾀마다 그날 고른 곳 모두');
+  assert.ok(Bc in S.co, '고른 곳 이름도 실음(사지 않은 회사)');
+  assert.deepEqual([...pick5({g01: [A, A], g02: [A], g03: [A], g04: [A], quiet: [A, A, A]})], [], '꾀마다 한 번 · 다른 묶음은 안 셈');
+  assert.deepEqual([...pick5({g01: [A], g02: [A], g03: [A], g04: [A], g05: [A], g06: [Bc]})], [A]);
+  const src = fs.readFileSync(new URL('../../scripts/atlas11/next/su21_settle.mjs', import.meta.url), 'utf8');
+  assert.ok(src.includes("(B.s36[td] ??= {})[k] = cs;"), '장부에는 지금처럼 꾀가 고른 회사를 모두 적음(사는 셈만 거름)');
+});
 test('며칠째(주문 1114-0151 「301 게 이게 며칠째 이렇게 됐는지도 좀 기록」) — 장부 서른여섯 꾀 · 조용한 힘 기록으로 회사마다 이어진 날 · 첫 발견 · 기록 첫날까지면 since · 판 날이 같을 때만 붙임', () => {
   const B = {...emptySettle(),
     s36: {'2026-11-12': {g01: ['000001', '000002'], g13: ['000009']}, '2026-11-13': {g01: ['000001', '000003']}, '2026-11-16': {g01: ['000001', '000003', '000004'], g13: ['000009']}},

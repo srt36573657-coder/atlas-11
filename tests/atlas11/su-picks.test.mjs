@@ -47,3 +47,15 @@ test('한 달 값 — 손실 먼저(가장 낮을 때 → 지금)', () => {
   assert.equal(monthLow([100]), null);
   assert.equal(monthLow([100, 0]), null);
 });
+
+test('11월 30일 판부터 — 산 셈은 꾀 다섯 이상만(주문 1128-2046) · 날마다 꾀 수는 고른 곳(pk)으로 셈', () => {
+  const kinds = ['top3', 'g01', 'g02', 'g03', 'g04', 'g05', 'g06'], A = '000010', B = '000020';
+  const D = {kinds, co: {[A]: ['가회사', '갈래'], [B]: ['나회사', null]}, buys: [['2026-11-27', 1, B, 100], ['2026-11-27', 2, B, 100], ...[1, 2, 3, 4, 5].map(i => ['2026-11-30', i, A, 100])],
+    pk: {'2026-11-30': {g01: [A, B], g02: [A, B], g03: [A], g04: [A], g05: [A], g06: [B]}}};
+  const {days, cnt} = dayCounts(D, null);
+  assert.deepEqual(days, ['2026-11-27', '2026-11-30']);
+  assert.equal(cnt.get('2026-11-27').get(B), 2, '그 전 날은 산 셈으로');
+  assert.equal(cnt.get('2026-11-30').get(A), 5); assert.equal(cnt.get('2026-11-30').get(B), 3, '사지 않은 곳도 고른 꾀 수 그대로(산 셈이 아니라 고른 곳)');
+  const P = picksOf(D, null);
+  assert.deepEqual(P.rows.map(r => [r.code, r.now, r.n]), [[A, 5, [0, 5]], [B, 3, [2, 3]]]);
+});
