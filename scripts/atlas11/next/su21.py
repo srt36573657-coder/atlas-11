@@ -508,6 +508,18 @@ def _now_out():
     return {'at': NOWJ.get('at'), 'day': NOWJ['day'], 'hm': NOWJ.get('hm'), 'open': bool(NOWJ.get('open')), 'prov': NCOL is not None, 'board': b['asOf'],
             'index': ix, 'flows': fl, 'unit': '억원', 'n': pr.get('n'), 'of': pr.get('of'), 'src': '네이버 증권 · 장이 열리는 날 한국 시각 오전 9시부터 오후 3시까지 한 시간마다 받음'}
 out['now'] = _now_out()
+# 오후 1시 꾀(주문 1129-0018 · 사장님 2026-11-29(서울) 00:18 「꾀를 고를 시각을 오후 1시로 변경하고 … 매수할 종목 카톡은 2시에 보내고 … 당일 종가로 매수 하게 하자」 · 00:21 「응」
+#   — docs/design/noon-pick-2026-11-29/order-0018.txt) — 지금 시장 값(NOWJ · 판 날 다음 장날 · 장중)이 오후 1시대(13:00 ~ 13:59)면 그 값을 오늘 칸으로 붙여 서른여섯 꾀를 다시 셈
+#   거래량 꾀 다섯은 1시에 하루 거래량이 없어 뺌(vol=None → 빈 목록 · 꾀 서른하나) · 그때 값이 없는 회사는 앞 장날 종가 그대로(값이 80% 넘게 있을 때만 — NCOL)
+#   → su21-s36.json noon {day, hm, at, lists} · 정산 장부(su21_settle.mjs)가 그날 처음 한 번 적고 그날 종가로 삼(꾀 다섯 이상 · 꾀마다 10주)
+NOON = None
+if NCOL is not None and isinstance(NOWJ.get('hm'), str) and '13:00' <= NOWJ['hm'] <= '13:59':
+    try:
+        _ncol = _np.where(_np.isfinite(NCOL), NCOL, PM[:, CTX.T])
+        _nr = S36.lists36(CODES, IXc, _np.hstack([PM[:, :CTX.T + 1], _ncol[:, None]]), CTX.T + 1, capv, vol=None, dates=DATES[:CTX.T + 1] + [NOWJ['day']], late=late)
+        NOON = {'day': NOWJ['day'], 'hm': NOWJ['hm'], 'at': NOWJ.get('at'), 'rule': S36.RULE_ID, 'lists': {k: [str(c) for c in (L or [])] for k, L in _nr['lists'].items()}}
+    except Exception as e:
+        print('오후 1시 꾀 셈 실패:', repr(e)[:200], file=sys.stderr); NOON = None
 # 크게 덜 잃는 일곱(주문 1117-1731 · 사장님 2026-11-17(마카오) 17:31 「응」 — docs/design/sonja-wise2-2026-11-17/order-1720.txt) — 오늘 꾀들이 고른 곳 가운데 두 꾀 넘게 · 덜 흔들린 차례 · 업종 둘까지
 #   지난 기록 = 형세 셈(su21_sun)이 지난 날마다 같은 법으로 다시 골라 센 값(첫 화면 자료를 가볍게 — 꾀 칸 자료 su21-s36.json 에 둠)
 CALM = S36.calm7(CODES, IXc, PM, CTX.T, S36R['lists']) if PM is not None else []
@@ -524,6 +536,7 @@ json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding=
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-s36-1', 'asOf': {'board': b['asOf'], 'data': _vday}, 'rule': S36.RULE_ID, 'k': S36.K, 'kinds': S36.KINDS, 'han': S36.HAN, 'name': S36.NAME, 'mean': S36.MEAN, 'say': S36.SAY,
            'set': S36.SETOF, 'by': S36.BY, 'lists': {k: [{'code': c, 'name': nm(c)} for c in L] for k, L in S36R['lists'].items()}, 'why': S36R['why'],
+           'noon': ({**NOON, 'names': {c: nm(c) for L in NOON['lists'].values() for c in L}} if NOON else None), # 오후 1시 꾀(주문 1129-0018)
            # 주문 1114-0325(사장님 2026-11-14 03:25 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 꾀 칸 회사 단추마다 한 달 꺾은선 = 42칸과 같은 값(판 21 마지막 값 c · 그날 마지막 값 close · 판 날 date)
            #   같은 회사가 여러 꾀에 들어도 한 번만(회사 번호 → 값 · 꾀 칸 자료를 가볍게 — 그림을 그린 뒤에 받음)
            'line': {c: line36(c) for c in sorted({c for L in S36R['lists'].values() for c in L} | {c for c, _, _ in OV}) if c in B},

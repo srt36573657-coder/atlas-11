@@ -1,7 +1,7 @@
 /* 여러 꾀가 고른 회사(주문 1120-0950 · 사장님 2026-11-20(마카오) 09:50 「36가지 종목 중 많이 추천된 순서대로 정리 … 별도의 분석 페이지 … 데이터 추적 시스템 … 꺾은선 그래프」)
    「추천 횟수」 = 그날 서른여섯 꾀 가운데 그 회사를 고른 꾀의 수(화면 글은 「꾀 ○가지가 골랐어요」 — 「추천」이라는 말을 쓰지 않음)
    날마다 기록 = 정산 장부(su21-settle.json buys — 올리기 작업이 장이 끝난 날마다 꾀마다 그날 고른 곳을 한 번 적고 고치지 않음) · 오늘 = 꾀 칸 자료(su21-s36.json lists)
-   11월 30일 판부터는 산 셈(buys)이 꾀 다섯 이상이 고른 곳만이고 다음 장날에 사서(주문 1128-2046 · 1128-2351) 그날들은 고른 곳(su21-settle.json pk — 꾀마다 그날 고른 곳 모두)으로 셈 · 11월 30일 뒤 꾀 산 셈은 세지 않음(앞 판의 회사)
+   11월 30일 판부터는 산 셈(buys)이 오후 1시 꾀 다섯 이상이 고른 곳만이라(주문 1128-2046 · 1129-0018) 그날들은 장이 끝난 뒤 고른 곳(su21-settle.json pk — 꾀마다 그날 고른 곳 모두)으로 셈 · 11월 30일 뒤 꾀 산 셈은 세지 않음
    차례 = 오늘 고른 꾀 수가 많은 차례(같으면 지난 날들 합 · 이름) — 수익 차례가 아님 · 앞날을 맞히지 않음 · 사고팔기를 권하지 않음
    이 파일은 다른 파일을 부르지 않음(시험 tests/atlas11/su-picks.test.mjs 가 바로 읽음) */
 export const PICKS_RULE = 'picks-v1';
@@ -10,7 +10,7 @@ const KK = /^g(0[1-9]|[12]\d|3[0-6])$/, CODE = /^[0-9A-Z]{6}$/, DAY = /^\d{4}-\d
 export function dayCounts(D, g) {
   const kinds = Array.isArray(D?.kinds) ? D.kinds : [], seen = new Map(), names = {}, add = (d, c, k) => { const m = seen.get(d) ?? new Map(); seen.set(d, m); (m.get(c) ?? m.set(c, new Set()).get(c)).add(k); };
   const pk = D?.pk && typeof D.pk === 'object' && !Array.isArray(D.pk) ? D.pk : {}; // 고른 곳(11월 30일 판부터 · 주문 1128-2046) — 그날은 산 셈 대신 이것
-  const F5 = D?.buy5?.on === 'next' && DAY.test(String(D?.buy5?.from ?? '')) ? D.buy5.from : null; // 다음 장날 사기(주문 1128-2351) — 이날부터 꾀 산 셈은 앞 판의 회사
+  const F5 = (D?.buy5?.on === 'next' || D?.buy5?.on === 'noon') && DAY.test(String(D?.buy5?.from ?? '')) ? D.buy5.from : null; // 오후 1시 꾀로 사기(주문 1129-0018) — 이날부터 꾀 산 셈은 오후 1시 꾀 다섯 이상(장이 끝난 뒤 고른 곳이 아님)
   for (const b of Array.isArray(D?.buys) ? D.buys : []) {
     if (!Array.isArray(b) || !DAY.test(String(b[0])) || !KK.test(String(kinds[b[1]])) || !CODE.test(String(b[2])) || pk[b[0]] || (F5 && b[0] >= F5)) continue;
     add(b[0], b[2], kinds[b[1]]);

@@ -40,12 +40,13 @@ export const OVL = 'ovl';
 export const KINDS = Object.freeze(['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext', ...S36, OVL]);
 /** 꾀 다섯 이상만 사기(주문 1128-2046 · 사장님 2026-11-28(서울) 20:46 「앞으로 매수 조건을 꾀가 5가지 이상만 있는 조건에 종목을 매수 한다」 · 21:31 「맞아」 — docs/design/buy5-2026-11-28/order-2046.txt)
  *  11월 30일 종가부터 — 같은 날(한 판) 서른여섯 꾀 가운데 다섯 이상이 고른 회사만 산 셈 · 사는 양은 그대로 꾀마다 10주(꾀 여섯이 고르면 60주) · 꾀 넷 이하가 고른 회사는 안 삼
- *  사는 날 = 판 날의 다음 장날 종가(주문 1128-2351 · 사장님 2026-11-28(서울) 23:51 「평일 저녁이 아니라 오후 1시에 카톡으로 당일 매수할 종목을 카톡으로 보내는 시스템을 만들어」 —
- *    꾀는 장이 끝난 뒤 그날 종가까지로 고름 → 다음 장날 오후 1시 카톡으로 알림 → 그날 종가로 삼 · docs/design/buy-kakao-2026-11-28/order-2351.txt)
- *    11월 27일 판(금)의 꾀 다섯 이상 회사 = 11월 30일(월) 종가로 삼 · 11월 30일 판부터는 같은 날 꾀 산 셈 없음
+ *  고르는 때 = 장날 오후 1시(주문 1129-0018 · 사장님 2026-11-29(서울) 00:18 「꾀를 고를 시각을 오후 1시로 변경하고 말이야 매수할 종목 카톡은 2시에 보내고 3시에 찾아낸 종목을 당일 종가로 매수 하게 하자」 · 00:21 「응」
+ *    — docs/design/noon-pick-2026-11-29/order-0018.txt · 옛 판 주문 1128-2351 「다음 장날 종가」는 이것으로 바뀜)
+ *    su21.py 가 지금 시장 값(13:00 ~ 13:59)으로 다시 센 서른여섯 꾀(거래량 꾀 다섯은 뺌) = su21-s36.json noon → 장부 noon 에 그날 처음 한 번 적음 → 그날 종가로 삼
+ *    11월 30일부터 · 장이 끝난 뒤 고른 꾀(s36)는 지금처럼 모두 적지만(여러 꾀가 고른 회사 · 며칠째 · 꾀 기록 자료) 11월 30일 판부터는 사지 않음
  *  파는 날(꾀마다 정한 날 · 산 다음 장날이 1일째)과 88원 규칙은 그대로(sell-v1) · 지난 기록과 들고 있는 것은 그대로(11월 27일 판까지는 지금껏처럼 그날 종가로 꾀가 고른 회사 모두)
  *  장부(s36)에는 지금처럼 꾀가 고른 회사를 모두 적음(값도 모두 적음) — 사는 셈(siteSettle)만 바꿈 · 다른 묶음(조용한 힘 · 겹친 곳 따위)은 그대로 */
-export const BUY5_FROM = '2026-11-30', BUY5_NEED = 5, BUY5_ON = 'next'; // 첫 사는 날 · 꾀 수 · 다음 장날 종가
+export const BUY5_FROM = '2026-11-30', BUY5_NEED = 5, BUY5_ON = 'noon', NOON_HM = /^13:[0-5]\d$/; // 첫 사는 날 · 꾀 수 · 오후 1시에 고른 회사를 그날 종가로 · 고르는 때(13:00 ~ 13:59)
 /** 그날 꾀 다섯 이상이 고른 회사 — x = 그날 묶음 목록 {묶음: [번호…]} · 꾀마다 한 번만 셈 */
 export function pick5(x, need = BUY5_NEED) {
   const n = new Map();
@@ -58,7 +59,7 @@ const fin = v => typeof v === 'number' && Number.isFinite(v) && v > 0;
 const readJson = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
 const readGz = f => { try { return JSON.parse(zlib.gunzipSync(fs.readFileSync(f)).toString('utf8')); } catch { return null; } };
 
-export const emptySettle = () => ({schema: BOOK_SCHEMA, qty: QTY, note: '정산 장부 — 조용한 힘 일곱(그날 판) · 서른여섯 꾀 일곱씩(그날 판) · 겹친 곳(그날 판) · 회사마다 날마다 마지막 값 · 한 번 적은 날 · 값은 고치지 않음', quiet: {}, s36: {}, ovl: {}, px: {}, co: {}});
+export const emptySettle = () => ({schema: BOOK_SCHEMA, qty: QTY, note: '정산 장부 — 조용한 힘 일곱(그날 판) · 서른여섯 꾀 일곱씩(그날 판) · 겹친 곳(그날 판) · 회사마다 날마다 마지막 값 · 한 번 적은 날 · 값은 고치지 않음', quiet: {}, s36: {}, ovl: {}, noon: {}, px: {}, co: {}});
 /** 장부 꼴 맞대기 */
 export function okSettle(B) {
   return !!B && B.schema === BOOK_SCHEMA && B.qty === QTY && B.quiet && typeof B.quiet === 'object' && B.px && typeof B.px === 'object' && B.co && typeof B.co === 'object'
@@ -68,7 +69,9 @@ export function okSettle(B) {
     && (B.s36 == null || (typeof B.s36 === 'object' && Object.entries(B.s36).every(([d, x]) => DAY.test(d) && x && typeof x === 'object'
       && Object.entries(x).every(([k, cs]) => S36.includes(k) && Array.isArray(cs) && cs.every(c => CODE.test(c))))))
     && (B.ovl == null || (typeof B.ovl === 'object' && Object.entries(B.ovl).every(([d, cs]) => DAY.test(d) && Array.isArray(cs) && cs.every(c => CODE.test(c))))) // 겹친 곳(주문 1114-0802)
-    && (B.mk == null || (typeof B.mk === 'object' && Object.entries(B.mk).every(([d, f]) => DAY.test(d) && fin(f)))); // 판 전체 하루 몫(주문 1123-2358)
+    && (B.mk == null || (typeof B.mk === 'object' && Object.entries(B.mk).every(([d, f]) => DAY.test(d) && fin(f)))) // 판 전체 하루 몫(주문 1123-2358)
+    && (B.noon == null || (typeof B.noon === 'object' && Object.entries(B.noon).every(([d, r]) => DAY.test(d) && r && typeof r === 'object' && NOON_HM.test(String(r.hm ?? '')) && r.g && typeof r.g === 'object'
+      && Object.entries(r.g).every(([k, cs]) => S36.includes(k) && Array.isArray(cs) && cs.every(c => CODE.test(c)))))); // 오후 1시 꾀(주문 1129-0018)
 }
 const indOf = c => c?.group?.industry ?? c?.group?.label ?? c?.ind ?? null;
 
@@ -90,13 +93,14 @@ export function listsOf({days, sbook, su, suNext, quiet, s36 = {}, ovl = {}, sta
 export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, s36 = null, start = START, cal = []}) { // cal = 장이 열린 날(atlas/data/days.json dates · 판 전체 하루 몫의 21 장날 — 주문 1123-2358)
   const B = JSON.parse(JSON.stringify(okSettle(book0) ? book0 : emptySettle()));
   B.s36 ??= {}; B.ovl ??= {};
-  let added = null, added36 = [], addedO = null;
+  let added = null, added36 = [], addedO = null, addedN = null;
   // ⓪ 첫날 전 기록은 지움(주문 1112-2042) — 조용한 힘 · 값(이름은 ② 뒤에 쓰는 회사만 남김)
   const cut = {quiet: Object.keys(B.quiet).filter(d => d < start).length, px: Object.values(B.px).reduce((a, m) => a + Object.keys(m).filter(d => d < start).length, 0)};
   if (B.t11) { cut.t11 = Object.keys(B.t11).length; delete B.t11; } // 주문 1113-2224 「11 가지로 하지 말고」 — 특징 열하나 기록은 지움
   B.quiet = Object.fromEntries(Object.entries(B.quiet).filter(([d]) => d >= start));
   B.s36 = Object.fromEntries(Object.entries(B.s36).filter(([d]) => d >= start));
   B.ovl = Object.fromEntries(Object.entries(B.ovl).filter(([d]) => d >= start));
+  B.noon = Object.fromEntries(Object.entries(B.noon ?? {}).filter(([d]) => d >= start));
   for (const code of Object.keys(B.px)) { B.px[code] = Object.fromEntries(Object.entries(B.px[code]).filter(([d]) => d >= start)); if (!Object.keys(B.px[code]).length) delete B.px[code]; }
   // ① 조용한 힘 일곱 — 그날 판(su21.json asOf.board)으로 한 번 적음(먼저 적은 날은 그대로) · su21 판 날 = 오늘 판 날일 때만(묵은 su21 로 지난 날을 적지 않음 — 11-13 08:59 묵은 판이 11월 6일을 적은 일)
   const sd = su?.asOf?.board, q = (su?.lists?.quiet ?? []).map(c => c?.code).filter(c => CODE.test(c ?? ''));
@@ -113,8 +117,15 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
     const oc = (s36.ovl?.rule && Array.isArray(s36.ovl.list) ? s36.ovl.list : []).map(x => x?.code).filter(c => CODE.test(c ?? ''));
     if (oc.length && !B.ovl[td]) { B.ovl[td] = oc; addedO = td; B.ovl = Object.fromEntries(Object.keys(B.ovl).sort().map(d => [d, B.ovl[d]])); }
   }
+  // ①'' 오후 1시 꾀(주문 1129-0018) — su21-s36.json noon(지금 시장 13:00 ~ 13:59 값으로 다시 센 서른여섯 꾀 · 거래량 꾀 다섯 뺌) · 판 날 뒤의 장중 날 · 11월 30일부터 · 그날 처음 한 번(먼저 적은 날은 그대로 · 고치지 않음)
+  const nn = s36?.noon;
+  if (nn && typeof nn === 'object' && DAY.test(nn.day ?? '') && nn.day >= start && nn.day >= BUY5_FROM && nn.day > (board?.asOf ?? '') && NOON_HM.test(String(nn.hm ?? '')) && nn.lists && typeof nn.lists === 'object' && !B.noon[nn.day]) {
+    const g = {}; for (const k of S36) { const cs = [...new Set((Array.isArray(nn.lists[k]) ? nn.lists[k] : []).map(String).filter(c => CODE.test(c)))]; if (cs.length) g[k] = cs; }
+    B.noon[nn.day] = {hm: nn.hm, at: typeof nn.at === 'string' ? nn.at : null, g}; addedN = nn.day;
+    B.noon = Object.fromEntries(Object.keys(B.noon).sort().map(d => [d, B.noon[d]]));
+  }
   const L = listsOf({days, sbook, su, suNext, quiet: B.quiet, s36: B.s36, ovl: B.ovl, start});
-  const need = new Set(Object.values(L).flatMap(x => Object.values(x).flat()));
+  const need = new Set([...Object.values(L).flatMap(x => Object.values(x).flat()), ...Object.values(B.noon).flatMap(r => Object.values(r.g ?? {}).flat())]); // 오후 1시 꾀가 고른 회사도 값 · 이름을 적음(그날 종가로 사려면)
   for (const code of Object.keys(B.co)) if (!need.has(code)) { delete B.co[code]; cut.co = (cut.co ?? 0) + 1; }
   // ② 이름 · 업종 — 오늘 판 → 저장된 판(늦은 날 먼저) → 그대로
   const co = new Map((board?.companies ?? []).map(c => [c.code, c]));
@@ -157,16 +168,15 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
     }
   }
   B.mk = Object.fromEntries(Object.keys(B.mk).sort().map(d => [d, B.mk[d]]));
-  return {book: B, added, added36, addedO, lists: L, cut};
+  return {book: B, added, added36, addedO, addedN, lists: L, cut};
 }
 
 /** 화면 자료 — 산 셈(날 · 묶음 · 번호 · 산 값) · 지금(회사마다 오늘 판 날까지 가장 늦은 값 · 그 날) · 묶음 첫날 · 다시 센 날 끝 · 못 센 수 */
 export function siteSettle(B, L, asOf, days, start = START) {
-  const buys = [], miss = Object.fromEntries(KINDS.map(k => [k, 0])), from = {}, now = {}, pk = {}; // pk = 꾀가 고른 곳(11월 30일 판부터 — 꾀 산 셈은 다음 장날 · 꾀 다섯 이상만이라 「여러 꾀가 고른 회사」 · 회사 쪽 날마다 꾀 수는 이것으로 셈)
-  const tdays = tradeDays(B, asOf, start), nextOf = d => tdays.find(t => t > d) ?? null; // 다음 장날(장부 값 날 — sellsOf 와 같은 장날)
+  const buys = [], miss = Object.fromEntries(KINDS.map(k => [k, 0])), from = {}, now = {}, pk = {}; // pk = 장이 끝난 뒤 꾀가 고른 곳(11월 30일 판부터 — 꾀 산 셈은 오후 1시 꾀 다섯 이상만이라 「여러 꾀가 고른 회사」 · 회사 쪽 날마다 꾀 수는 이것으로 셈)
   for (const [d, x] of Object.entries(L)) {
     if (asOf && d > asOf) continue;
-    const late = d >= BUY5_FROM; // 이 판부터는 같은 날 꾀 산 셈 없음 — 꾀 다섯 이상만 다음 장날 종가로(주문 1128-2046 · 1128-2351)
+    const late = d >= BUY5_FROM; // 이 판부터는 장이 끝난 뒤 고른 꾀로 사지 않음 — 오후 1시 꾀 다섯 이상만 그날 종가로(주문 1128-2046 · 1129-0018 · 아래)
     if (late) { const g = Object.fromEntries(S36.filter(k => Array.isArray(x[k]) && x[k].length).map(k => [k, [...x[k]]])); if (Object.keys(g).length) pk[d] = g; }
     KINDS.forEach((k, i) => {
       if (late && S36.includes(k)) return;
@@ -176,20 +186,23 @@ export function siteSettle(B, L, asOf, days, start = START) {
         buys.push([d, i, code, v]); from[k] ??= d;
       }
     });
-    const nd = nextOf(d); // 판 날 d 의 꾀 다섯 이상 회사 → 다음 장날 nd 종가(nd 가 11월 30일 뒤이고 장부 값이 있을 때 · 아직이면 다음 셈에)
-    if (nd && nd >= BUY5_FROM && (!asOf || nd <= asOf)) {
-      const ok5 = pick5(x);
-      for (const k of S36) { const i = KINDS.indexOf(k);
-        for (const code of new Set(Array.isArray(x[k]) ? x[k] : [])) { if (!ok5.has(code)) continue; const v = B.px?.[code]?.[nd]; if (!fin(v)) { miss[k]++; continue; } buys.push([nd, i, code, v]); from[k] ??= nd; } }
-    }
   }
+  // 오후 1시 꾀 다섯 이상(주문 1129-0018) — 그날 종가로 고른 꾀마다 10주(장부 값이 있을 때 · 장이 아직이면 다음 셈에)
+  const noon = Object.fromEntries(Object.entries(B.noon ?? {}).filter(([d, r]) => DAY.test(d) && d >= start && d >= BUY5_FROM && r?.g).sort(([a], [b]) => (a < b ? -1 : 1)).map(([d, r]) => [d, {hm: r.hm, g: r.g}]));
+  for (const [d, r] of Object.entries(noon)) {
+    if (asOf && d > asOf) continue;
+    const ok5 = pick5(r.g);
+    for (const k of S36) { const i = KINDS.indexOf(k);
+      for (const code of new Set(Array.isArray(r.g[k]) ? r.g[k] : [])) { if (!ok5.has(code)) continue; const v = B.px?.[code]?.[d]; if (!fin(v)) { miss[k]++; continue; } buys.push([d, i, code, v]); from[k] ??= d; } }
+  }
+  buys.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)); // 날 차례(같은 날은 넣은 차례 그대로)
   for (const code of new Set(buys.map(b => b[2]))) {
     const last = Object.entries(B.px[code]).filter(([d]) => !asOf || d <= asOf).sort(([a], [b]) => a.localeCompare(b)).pop();
     now[code] = [last[1], last[0]];
   }
   const replay = Object.entries(days?.days ?? {}).filter(([d, x]) => x?.how === 'replay' && d >= start).map(([d]) => d).sort();
   return {schema: SCHEMA, qty: B.qty, asOf: asOf ?? null, start, kinds: [...KINDS], from, replayTo: replay[replay.length - 1] ?? null,
-    co: Object.fromEntries([...new Set([...buys.map(b => b[2]), ...Object.values(pk).flatMap(g => Object.values(g).flat())])].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, buy5: {from: BUY5_FROM, need: BUY5_NEED, on: BUY5_ON}, pk, now, miss, mk: mkLevels(B, asOf, start), hz: horizons(B, buys, asOf, start), sell: sellsOf(B, buys, asOf, start)}; // sell = 사고 팔기(주문 1125-0049)
+    co: Object.fromEntries([...new Set([...buys.map(b => b[2]), ...Object.values(pk).flatMap(g => Object.values(g).flat()), ...Object.values(noon).flatMap(r => Object.values(r.g).flat())])].sort().map(c => [c, B.co[c] ?? [c, null]])), buys, buy5: {from: BUY5_FROM, need: BUY5_NEED, on: BUY5_ON}, pk, noon, now, miss, mk: mkLevels(B, asOf, start), hz: horizons(B, buys, asOf, start), sell: sellsOf(B, buys, asOf, start)}; // sell = 사고 팔기(주문 1125-0049)
 }
 /** 사고 팔기(주문 1125-0049 · 사장님 2026-11-25(서울) 00:40 「이제는 매수 와 매도를 하자 · 매수는 지금처럼 하고 매도는 꾀에서 오르는 기준을 잡았잖아 그 기준 날짜로 팔고 … 매수 할때보다 12프로 하락이면 자동으로 팔게」
  *    · 00:45 「숫자로 이야기해봐」 · 00:49 「그래 이렇게 하고 … 모든 거래는 종가 기준으로 거래를 하는 것이다」 — docs/design/sell-2026-11-25/order-0049.txt)
@@ -398,7 +411,7 @@ function main() {
   const s36 = readJson(path.join(su, 'su21-s36.json')); // 서른여섯 꾀(주문 1113-2224 · su21.py 가 씀 · 없으면 그날은 적지 않음)
   if (!board || !Array.isArray(board.companies)) { console.error('판을 못 읽음'); process.exit(1); }
   const stored = storedBoards(boardsDir), cal = calF ? readJson(calF)?.dates ?? [] : []; // 장이 열린 날(판 전체 하루 몫 21 장날 · 며칠째)
-  const {book, added, added36, addedO, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36, cal});
+  const {book, added, added36, addedO, addedN, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36, cal});
   const site = siteSettle(book, lists, board.asOf, days);
   // 날마다 기록(주문 1119-0829) — 올리기 작업(--keep)만 덧붙임 · 지문이 끊겼으면 덧붙이지 않음 · 화면은 적은 줄 + 아직 안 적은 날(지금 센 값)
   const trackF = path.join(path.dirname(bookF), 'settle-track.jsonl'), T0 = readTrack(trackF), TD = trackDays(book, site), broken = T0 === null ? -1 : checkTrack(T0).length;
@@ -429,6 +442,7 @@ function main() {
     + ' · 첫날 ' + START + (cut.quiet || cut.px || cut.co ? ` · 첫날 전 기록 지움(조용한 힘 ${cut.quiet}날 · 값 ${cut.px}개 · 이름 ${cut.co ?? 0}곳)` : '') + (cut.t11 ? ` · 특징 열하나 기록 지움(${cut.t11}날)` : '')
     + (added ? ' · 조용한 힘 새로 적음 ' + added : '') + (added36.length ? ' · 서른여섯 꾀 새로 적음 ' + board.asOf + '(' + added36.length + '꾀)' : ' · 서른여섯 꾀 새로 적은 꾀 0(판 ' + (s36?.asOf?.board ?? '없음') + ' · 자료 ' + (s36?.asOf?.data ?? '없음') + ')')
     + (addedO ? ' · 겹친 곳 새로 적음 ' + addedO + '(' + book.ovl[addedO].length + '곳)' : '')
+    + (addedN ? ' · 오후 1시 꾀 새로 적음 ' + addedN + ' ' + book.noon[addedN].hm + '(꾀 ' + Object.keys(book.noon[addedN].g).length + '가지)' : '')
     + ' · 첫 쪽 기록 ' + U.length + '줄' + (sunAdded ? '(새로 ' + sunAdded + ')' : '') + (sunBroken ? ' · 첫 쪽 기록 지문 끊김 ' + sunBroken : '') + ' · 날마다 기록 ' + T.length + '줄' + (sealed.length ? '(새로 ' + sealed.join(' · ') + ')' : '') + (broken ? ' · 지문 끊김 ' + broken : '') + (diff.length ? ' · 다시 센 값 다름 ' + diff.join(' · ') : '') + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)') + ' · 며칠째 꾀 ' + M.n36 + '곳 · 조용한 힘 ' + M.nq + '곳 · 겹친 곳 ' + M.no + '곳');
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

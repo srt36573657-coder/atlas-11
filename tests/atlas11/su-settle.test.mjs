@@ -162,32 +162,52 @@ test('서른여섯 꾀(주문 1113-2224 「36가지 유형 … 정산하고 연�
   assert.ok(Object.values(so.lists).every(x => Object.keys(x).every(k => !k.startsWith('t_'))), '산 셈에 특징 열하나 0');
 });
 
-test('꾀 다섯 이상만 사기(주문 1128-2046 「앞으로 매수 조건을 꾀가 5가지 이상만 있는 조건에 종목을 매수 한다」 · 「맞아」) · 다음 장날 종가(주문 1128-2351 「오후 1시에 … 당일 매수할 종목」) — 11월 27일 판까지는 그대로 · 다른 묶음은 그대로', () => {
+test('꾀 다섯 이상만 사기(주문 1128-2046) · 오후 1시 꾀를 그날 종가로(주문 1129-0018 「꾀를 고를 시각을 오후 1시로 … 당일 종가로 매수」 · 「응」) — 11월 27일 판까지는 그대로 · 다른 묶음은 그대로', () => {
   assert.equal(BUY5_FROM, '2026-11-30'); assert.equal(BUY5_NEED, 5);
   const D0 = '2026-11-27', D1 = '2026-11-30', D2 = '2026-12-01', A = '000010', Bc = '000020', Q = '000030';
-  const day = (a, b) => Object.fromEntries(S36.slice(0, 6).map((k, i) => [k, [...(i < a ? [A] : []), ...(i < b ? [Bc] : [])]]).filter(([, cs]) => cs.length)); // A = 꾀 다섯(g01 ~ g05) · Bc = 꾀 넷(g01 ~ g04)
+  const day = (a, b) => Object.fromEntries(S36.slice(0, 6).map((k, i) => [k, [...(i < a ? [A] : []), ...(i < b ? [Bc] : [])]]).filter(([, cs]) => cs.length)); // A = 꾀 a 개 · Bc = 꾀 b 개
   const L = {[D0]: {...day(5, 4), quiet: [Q]}, [D1]: {...day(5, 4), quiet: [Q]}};
-  const book = {...emptySettle(), px: {[A]: {[D0]: 1000, [D1]: 1010, [D2]: 1020}, [Bc]: {[D0]: 2000, [D1]: 2020, [D2]: 2040}, [Q]: {[D0]: 3000, [D1]: 3030, [D2]: 3060}}, co: {}};
+  const noonG = {g01: [Bc], g02: [Bc], g03: [Bc], g04: [Bc], g05: [Bc], g06: [A]}; // 오후 1시 — Bc 꾀 다섯 · A 꾀 하나
+  const book = {...emptySettle(), noon: {[D1]: {hm: '13:03', at: null, g: noonG}}, px: {[A]: {[D0]: 1000, [D1]: 1010, [D2]: 1020}, [Bc]: {[D0]: 2000, [D1]: 2020, [D2]: 2040}, [Q]: {[D0]: 3000, [D1]: 3030, [D2]: 3060}}, co: {}};
   const S = siteSettle(book, L, D2, {days: {}}, '2026-11-12');
   const on = (d, code) => S.buys.filter(b => b[0] === d && b[2] === code).map(b => KINDS[b[1]]);
   const G5 = ['g01', 'g02', 'g03', 'g04', 'g05'];
   assert.deepEqual(on(D0, A), G5); assert.deepEqual(on(D0, Bc), ['g01', 'g02', 'g03', 'g04'], '11월 27일 판은 그날 종가로 꾀가 고른 회사 모두(지난 기록 그대로)');
-  assert.deepEqual(on(D1, A), G5, '11월 27일 판의 꾀 다섯 이상 회사 → 다음 장날 11월 30일 종가로 꾀마다 10주');
-  assert.ok(S.buys.filter(b => b[0] === D1 && b[2] === A).every(b => b[3] === 1010), '11월 30일 종가');
-  assert.deepEqual(on(D1, Bc), [], '꾀 넷이 고른 회사는 안 삼');
-  assert.deepEqual(on(D2, A), G5, '11월 30일 판 → 다음 장날 12월 1일 종가(같은 날 꾀 산 셈 없음)');
-  assert.deepEqual(on(D1, Q), ['quiet'], '다른 묶음은 그대로(그날 종가)'); assert.deepEqual(on(D2, Q), [], '판이 없는 날은 다른 묶음도 없음');
-  assert.equal(S.buys.filter(b => b[0] === D1 && /^g\d\d$/.test(KINDS[b[1]])).length, 5, '11월 30일 꾀 산 셈 = 11월 27일 판 꾀 다섯 이상만');
-  const S1 = siteSettle(book, L, D1, {days: {}}, '2026-11-12');
-  assert.deepEqual(S1.buys.filter(b => b[0] > D0 && /^g\d\d$/.test(KINDS[b[1]])).map(b => b[0] + ' ' + b[2]), Array(5).fill(D1 + ' ' + A), '11월 30일 판의 회사는 다음 장날 값이 올 때까지 기다림');
-  assert.deepEqual(S.buy5, {from: '2026-11-30', need: 5, on: 'next'});
-  assert.deepEqual(S.pk, {[D1]: {g01: [A, Bc], g02: [A, Bc], g03: [A, Bc], g04: [A, Bc], g05: [A]}}, '고른 곳(11월 30일 판부터만) — 꾀마다 그날 고른 곳 모두');
-  assert.ok(Bc in S.co, '고른 곳 이름도 실음(사지 않은 회사)');
+  assert.deepEqual(on(D1, Bc), G5, '11월 30일 — 오후 1시에 꾀 다섯이 고른 회사를 그날 종가로 꾀마다 10주');
+  assert.ok(S.buys.filter(b => b[0] === D1 && b[2] === Bc).every(b => b[3] === 2020), '그날 종가');
+  assert.deepEqual(on(D1, A), [], '장이 끝난 뒤 고른 꾀(A 꾀 다섯)로는 안 삼 · 오후 1시 꾀 하나뿐');
+  assert.deepEqual(on(D2, A).concat(on(D2, Bc)), [], '오후 1시 꾀가 없는 날은 안 삼');
+  assert.deepEqual(on(D1, Q), ['quiet'], '다른 묶음은 그대로(그날 종가)');
+  assert.ok(S.buys.every((b, i) => !i || S.buys[i - 1][0] <= b[0]), '산 셈은 날 차례');
+  const S1 = siteSettle(book, L, D0, {days: {}}, '2026-11-12');
+  assert.equal(S1.buys.filter(b => b[0] === D1).length, 0, '장이 끝나기 전(판 날이 11월 27일) — 오후 1시 꾀는 그날 종가가 올 때까지 기다림');
+  assert.deepEqual(S1.noon, {[D1]: {hm: '13:03', g: noonG}}, '화면 자료에는 오늘 오후 1시 꾀가 먼저 보임');
+  assert.deepEqual(S.buy5, {from: '2026-11-30', need: 5, on: 'noon'});
+  assert.deepEqual(S.pk, {[D1]: {g01: [A, Bc], g02: [A, Bc], g03: [A, Bc], g04: [A, Bc], g05: [A]}}, '장이 끝난 뒤 고른 곳(11월 30일 판부터만) — 꾀마다 그날 고른 곳 모두');
+  assert.ok(Bc in S.co && A in S.co, '고른 곳 이름도 실음');
   assert.deepEqual([...pick5({g01: [A, A], g02: [A], g03: [A], g04: [A], quiet: [A, A, A]})], [], '꾀마다 한 번 · 다른 묶음은 안 셈');
   assert.deepEqual([...pick5({g01: [A], g02: [A], g03: [A], g04: [A], g05: [A], g06: [Bc]})], [A]);
   const src = fs.readFileSync(new URL('../../scripts/atlas11/next/su21_settle.mjs', import.meta.url), 'utf8');
-  assert.ok(src.includes("(B.s36[td] ??= {})[k] = cs;"), '장부에는 지금처럼 꾀가 고른 회사를 모두 적음(사는 셈만 바꿈)');
+  assert.ok(src.includes("(B.s36[td] ??= {})[k] = cs;"), '장부에는 지금처럼 장이 끝난 뒤 꾀가 고른 회사를 모두 적음');
 });
+
+test('오후 1시 꾀 적기(주문 1129-0018) — su21-s36.json noon · 13:00 ~ 13:59 · 판 날 뒤 장중 날 · 11월 30일부터 · 그날 처음 한 번 · 고른 회사 이름도 적음', () => {
+  const B0 = '2026-11-27', T = '2026-11-30', A = '000010', N = '000099';
+  const board = {asOf: B0, companies: [{code: A, name: '가회사', date: B0, close: 1000}, {code: N, name: '나회사', date: B0, close: 500}]};
+  const su = {asOf: {board: '2026-11-06'}, lists: {}};
+  const s36 = (hm, day = T, lists = {g01: [A, N], g02: [N], g08: []}) => ({rule: 's36-v2', asOf: {board: B0, data: B0}, lists: {}, noon: {day, hm, at: '2026-11-30T04:03:00Z', lists}});
+  const r1 = stepSettle(null, {su, board, stored: {}, sbook: {days: []}, days: {days: {}}, s36: s36('13:03'), start: '2026-11-12'});
+  assert.equal(r1.addedN, T); assert.deepEqual(r1.book.noon[T], {hm: '13:03', at: '2026-11-30T04:03:00Z', g: {g01: [A, N], g02: [N]}}, '빈 꾀(거래량 꾀)는 적지 않음');
+  assert.equal(r1.book.co[N]?.[0], '나회사', '오후 1시에만 고른 회사도 이름을 적음(그날 종가로 사려면 값 · 이름이 필요)');
+  assert.ok(okSettle(r1.book), '장부 꼴');
+  const r2 = stepSettle(r1.book, {su, board, stored: {}, sbook: {days: []}, days: {days: {}}, s36: s36('13:45', T, {g01: [A]}), start: '2026-11-12'});
+  assert.equal(r2.addedN, null); assert.deepEqual(r2.book.noon[T].g, {g01: [A, N], g02: [N]}, '그날 처음 한 번 — 먼저 적은 것은 그대로');
+  for (const [hm, day, why] of [['14:03', T, '오후 2시 값은 안 적음'], ['12:59', T, '1시 전 값은 안 적음'], ['13:03', B0, '판 날(장이 끝난 날)은 안 적음'], ['13:03', '2026-11-27', '11월 30일 전은 안 적음']]) {
+    const r = stepSettle(null, {su, board, stored: {}, sbook: {days: []}, days: {days: {}}, s36: s36(hm, day), start: '2026-11-12'});
+    assert.equal(r.addedN, null, why); assert.deepEqual(r.book.noon, {}, why);
+  }
+});
+
 test('며칠째(주문 1114-0151 「301 게 이게 며칠째 이렇게 됐는지도 좀 기록」) — 장부 서른여섯 꾀 · 조용한 힘 기록으로 회사마다 이어진 날 · 첫 발견 · 기록 첫날까지면 since · 판 날이 같을 때만 붙임', () => {
   const B = {...emptySettle(),
     s36: {'2026-11-12': {g01: ['000001', '000002'], g13: ['000009']}, '2026-11-13': {g01: ['000001', '000003']}, '2026-11-16': {g01: ['000001', '000003', '000004'], g13: ['000009']}},

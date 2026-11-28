@@ -264,7 +264,7 @@ export async function vKkoeAll(X) {
   const nW = rated ? Math.max(0, ...K.map(x => weekOf(M, x.key)?.length ?? 0)) : 0;
   const body = rated ? [h('section', {class: 'sj-sec sj-krank', 'aria-label': '요즘 많이 오른 차례', 'data-n': String(K.length), 'data-days': String(nW)},
       head('차례', '제1장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '요즘 많이 오른 차례'}))),
-      h('p', {class: 'sj-rule', text: (ST.rows.length ? mday(ST.rows.map(r => r.day).sort()[0]) + '부터 ' : '') + '날마다 꾀마다 고른 회사를 샀다고 치고 셌어요. 11월 30일부터는 꾀 다섯 이상이 함께 고른 회사를 다음 장날 종가로 사요. 처음 넣은 100원이 지금 많이 늘어난 꾀가 1등이에요. 날마다 다시 줄을 세워요. 가짜 돈이에요.'}),
+      h('p', {class: 'sj-rule', text: (ST.rows.length ? mday(ST.rows.map(r => r.day).sort()[0]) + '부터 ' : '') + '날마다 꾀마다 고른 회사를 샀다고 치고 셌어요. 11월 30일부터는 오후 1시에 꾀 다섯 이상이 함께 고른 회사를 그날 종가로 사요. 처음 넣은 100원이 지금 많이 늘어난 꾀가 1등이에요. 날마다 다시 줄을 세워요. 가짜 돈이에요.'}),
       M ? h('p', {class: 'sj-stmk', text: '▲는 앞 장날보다 오른 칸, ▼는 내린 칸, ―는 그대로예요.' + (nW ? ' 줄마다 지난 ' + nW + '일을 날마다 보여 줘요. 왼쪽이 ' + mday(M.days[M.days.length - nW]) + ', 오른쪽이 ' + mday(M.days[M.days.length - 1]) + '이에요.' : '')}) : null,
       ...fold7(h('ol', {class: 'sj-kl sj-krl'}, ...K.map((x, i) => rankRow(g, x, i, M))), (o, n) => (o + 1) + '등부터 ' + n + '등까지 더 보기'),
       endSeal('차례'))]
@@ -327,7 +327,7 @@ export async function vKkoe(X, k) {
       endSeal('곳')),
     me ? h('section', {class: 'sj-sec sj-kst', 'aria-label': '이 꾀 정산', 'data-st': me.st},
       head('셈', '제4장', h('h2', {class: 'sj-h2'}, h('span', {class: 'sj-brush', text: '이 꾀 정산'})), true),
-      h('p', {class: 'sj-lead', text: (mday(ST.rows.map(x => x.day).sort()[0]) ? mday(ST.rows.map(x => x.day).sort()[0]) + '부터 ' : '') + '날마다 이 꾀가 고른 회사를 10주씩 샀다고 치고 셌어요. 11월 30일부터는 꾀 다섯 이상이 함께 고른 회사를 다음 장날 종가로 사요. 진짜 돈이 아니에요.'}),
+      h('p', {class: 'sj-lead', text: (mday(ST.rows.map(x => x.day).sort()[0]) ? mday(ST.rows.map(x => x.day).sort()[0]) + '부터 ' : '') + '날마다 이 꾀가 고른 회사를 10주씩 샀다고 치고 셌어요. 11월 30일부터는 오후 1시에 꾀 다섯 이상이 함께 고른 회사를 그날 종가로 사요. 진짜 돈이 아니에요.'}),
       h('dl', {class: 'sj-money'}, h('dt', {text: '산 돈'}), h('dd', {text: won(me.cost)}), h('dt', {text: '지금'}), h('dd', {text: me.n ? won(me.val) : SAID.none})),
       h('p', {class: 'sj-res', 'data-st': me.st}, shapeI(me.st), h('b', {text: resText(me)})),
       TK ? kkoeTrack(TK, k) : null, // 이 꾀의 쌓인 값 꺾은선(주문 1119-1005)
@@ -468,7 +468,7 @@ function svCompare(SV, nameOf) {
         svBar('buy', '사기만', g.valB - g.cost, mxK), svBar('sell', '사고 팔기', g.valS - g.cost, mxK))))));
 }
 const SV_STEPS = Object.freeze([
-  ['buy', '사요', '장이 끝난 뒤 꾀 다섯 이상이 함께 고른 회사를, 다음 장날 장이 끝날 때 값(종가)으로 꾀마다 10주 사요. 11월 30일부터예요. 그 전에는 꾀가 고른 회사를 그날 종가로 모두 샀어요.'], // 주문 1128-2046 · 1128-2351
+  ['buy', '사요', '장날 오후 1시 값으로 꾀 다섯 이상이 함께 고른 회사를, 그날 장이 끝날 때 값(종가)으로 꾀마다 10주 사요. 11월 30일부터예요. 그 전에는 장이 끝난 뒤 꾀가 고른 회사를 그날 종가로 모두 샀어요.'], // 주문 1128-2046 · 1129-0018
   ['count', '날을 세요', '산 다음 장날이 1일째예요. 꾀마다 파는 날이 정해져 있어요.'],
   ['day', '정한 날에 팔아요', '정한 날이 되면 그날 종가로 팔아요. 올랐든 안 올랐든 팔아요.'],
   ['cut', '많이 내리면 바로 팔아요', '100원에 산 것이 88원 이하로 마감하면, 정한 날 전이라도 그날 종가로 팔아요.']]);
@@ -966,7 +966,7 @@ export async function vSettle36(X) {
   const bar = x => brushBar(rateOf(x), mx); // 붓 막대 — 늘면 오른쪽 먹 획 · 줄면 왼쪽 남빛 획(주문 1116-0118)
   const kids = [
     pageHead({kick: '정산 · 가짜 돈으로 해 본 셈', h1: '서른여섯 꾀 정산', seal: '셈', sealDn: TT.st === 'dn', pic: h('figure', {class: 'sj-ink sj-herofig'}, meanCap(PM.ledger, 'figcaption'), heroPic('ledger')),
-      say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 회사를 10주씩 샀다고 치고 셌어요. 11월 30일부터는 꾀 다섯 이상이 함께 고른 회사를 다음 장날 종가로 사요. 진짜 돈이 아니에요. 돈이 줄어든 꾀도 숨기지 않아요.',
+      say: (first ? mday(first) + '부터 ' : '') + '날마다 서른여섯 꾀가 고른 회사를 10주씩 샀다고 치고 셌어요. 11월 30일부터는 오후 1시에 꾀 다섯 이상이 함께 고른 회사를 그날 종가로 사요. 진짜 돈이 아니에요. 돈이 줄어든 꾀도 숨기지 않아요.',
       more: [h('dl', {class: 'sj-money sj-money-big', 'data-st': TT.st}, h('dt', {text: '산 돈'}), h('dd', {text: won(TT.cost)}), h('dt', {text: '지금'}), h('dd', {text: TT.n ? won(TT.val) : SAID.none})),
         h('p', {class: 'sj-res sj-res-big', 'data-st': TT.st}, shapeI(TT.st), h('b', {text: resText(TT)})),
         h('p', {class: 'sj-note', text: (first ? mday(first) + '부터 · ' : '') + '산 횟수 ' + NF.format(rows.length) + '번 · 고른 날 ' + NF.format(TT.days) + '일' + (ST.miss ? ' · 값이 없어 못 센 ' + NF.format(ST.miss) + '번' : '') + (ST.asOf ? ' · ' + mday(ST.asOf) + ' 값까지' : '')})]}),
@@ -1265,11 +1265,19 @@ function pickChart(P) {
 }
 /* ── 사고팔 탭(주문 1128-1501 · 사장님 2026-11-28(서울) 15:01 「가운데 테이블 … 두 개의 탭」 · 16:09 「꾀 옆 그리고 멈춤 사이에 탭을 만들어 그곳에 넣어」 · 16:11 「7개 종목만 사는 게 아니라 꾀별로 다 사는 거잖아 … 이것부터 정의하고」)
  *  살 차례 = 주문 1128-2046(20:46 「앞으로 매수 조건을 꾀가 5가지 이상만 있는 조건에 종목을 매수 한다」 · 21:31 「맞아」) — 같은 날 서른여섯 꾀 가운데 다섯 이상이 고른 회사만 · 그 회사를 고른 꾀마다 10주씩(꾀 여섯이면 60주)
- *    · 11월 30일 종가부터(정산 su21-settle.json buy5 · su21_settle.mjs BUY5_FROM) · 장이 끝난 뒤 고른 회사를 다음 장날 종가로 삼(주문 1128-2351 · 오후 1시 카톡) · 고른 꾀가 많은 회사부터 · 줄마다 고른 꾀 이름 · 회사를 누르면 「왜 사?」
+ *    · 11월 30일부터 장날 오후 1시 값으로 고른 꾀(정산 su21-settle.json noon · 주문 1129-0018 · 거래량 꾀 다섯 뺌)에서 꾀 다섯 이상 회사를 그날 종가로 삼 · 오후 2시 카톡 · 고른 꾀가 많은 회사부터 · 줄마다 고른 꾀 이름 · 회사를 누르면 「왜 사?」
  *  팔 차례 = 장부가 들고 있는 것 가운데 다음 장날이 정한 날인 것 모두(그날 종가로 팖 · sell-v1) · 88원 아래로 마치면 정한 날 전이라도 팖 — 회사마다 지금 값 · 낮은 것부터(손실 먼저) */
 const dv = r => h('b', {class: 'sj-dv', 'data-m': r > 100.04 ? 'up' : r < 99.95 ? 'dn' : 'eq', text: w100(r / 100 - 1)});
 const NUMW = Object.freeze({3: '셋', 4: '넷', 5: '다섯', 6: '여섯', 7: '일곱', 8: '여덟', 9: '아홉'});
-export const BUY5 = Object.freeze({from: '2026-11-30', need: 5, on: 'next'}); // su21_settle.mjs BUY5_FROM · BUY5_NEED · BUY5_ON 과 같음(정산 자료 buy5 가 있으면 그것) · on next = 다음 장날 종가(주문 1128-2351)
+export const BUY5 = Object.freeze({from: '2026-11-30', need: 5, on: 'noon'}); // su21_settle.mjs BUY5_FROM · BUY5_NEED · BUY5_ON 과 같음(정산 자료 buy5 가 있으면 그것) · on noon = 오후 1시에 고른 회사를 그날 종가로(주문 1129-0018)
+/** 오후 1시 꾀(정산 자료 noon 가장 늦은 날) → buy5Of 가 받는 꼴 {kinds, name, lists} · 회사 이름은 정산 자료 co */
+export function noonOf(D, g) {
+  const days = D?.noon && typeof D.noon === 'object' && !Array.isArray(D.noon) ? Object.keys(D.noon).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d) && D.noon[d]?.g).sort() : [], day = days.at(-1) ?? null;
+  if (!day || !g || !Array.isArray(g.kinds)) return null;
+  const r = D.noon[day], nm = c => (Array.isArray(D.co?.[c]) && typeof D.co[c][0] === 'string' && D.co[c][0].trim() ? D.co[c][0].trim() : c);
+  return {day, hm: typeof r.hm === 'string' ? r.hm : null, kn: Object.values(r.g).filter(L => Array.isArray(L) && L.length).length, g: {kinds: g.kinds, name: g.name, lists: Object.fromEntries(Object.entries(r.g).map(([k, cs]) => [k, (Array.isArray(cs) ? cs : []).map(c => ({code: String(c), name: nm(String(c))}))]))}};
+}
+const hmSay = hm => { const m = /^(\d{2}):(\d{2})$/.exec(hm ?? ''); if (!m) return '1시'; const h = +m[1] % 12 || 12; return h + '시' + (+m[2] ? ' ' + (+m[2]) + '분' : ''); };
 export function buy5Of(g, need = BUY5.need) {
   if (!g || !Array.isArray(g.kinds)) return null;
   const by = new Map();
@@ -1296,7 +1304,7 @@ export function sellGroups(D) {
 }
 export async function vDeal(X) {
   const [T, D, {S}] = await Promise.all([load21(X.get), X.get(DST).catch(() => null), X.base()]), g = await g36Of(X, T), gg = g.fallback ? null : g, nm = k => g.name?.[k] ?? k;
-  const R5 = D?.buy5 && /^\d{4}-\d{2}-\d{2}$/.test(String(D.buy5.from ?? '')) && Number.isInteger(D.buy5.need) ? D.buy5 : BUY5, B = buy5Of(gg, R5.need), V = sellGroups(D), bd = mday(gg?.asOf?.board), sd = mday(V?.asOf), nw = n => NUMW[n] ?? String(n), nx = R5.on === 'next';
+  const R5 = D?.buy5 && /^\d{4}-\d{2}-\d{2}$/.test(String(D.buy5.from ?? '')) && Number.isInteger(D.buy5.need) ? D.buy5 : BUY5, NO = noonOf(D, gg), B = buy5Of(NO?.g ?? null, R5.need), V = sellGroups(D), bd = mday(gg?.asOf?.board), sd = mday(V?.asOf), nw = n => NUMW[n] ?? String(n);
   const chipS = c => h('li', {}, h('a', {class: 'sj-dc', href: '#/c/' + c.code, 'aria-label': c.name + ' — 회사 쪽'}, h('b', {'data-proper': '', text: c.name}), h('span', {class: 'sj-dcv'}, h('span', {text: ' 100원이 '}), dv(c.r))));
   const row5 = (x, i) => h('li', {class: 'sj-dg', 'data-code': x.code, 'data-n': String(x.ks.length)},
     h('p', {class: 'sj-dgh'}, h('span', {class: 'sj-dgn', text: String(i + 1)}), h('a', {class: 'sj-dc', href: '#/q/' + x.code, 'aria-label': x.name + ' — 사기 전에 「왜 사?」'}, h('b', {'data-proper': '', text: x.name})),
@@ -1307,13 +1315,14 @@ export async function vDeal(X) {
     h('ul', {class: 'sj-dgl'}, ...x.L.map(chipS)));
   const b1 = h('button', {type: 'button', class: 'sj-ttb', role: 'tab', id: 'sj-dt1', 'aria-selected': 'true', 'aria-controls': 'sj-dp1', text: '살 차례'});
   const b2 = h('button', {type: 'button', class: 'sj-ttb', role: 'tab', id: 'sj-dt2', 'aria-selected': 'false', 'aria-controls': 'sj-dp2', text: '팔 차례'});
-  const p1 = h('div', {class: 'sj-ttp', role: 'tabpanel', id: 'sj-dp1', 'aria-labelledby': 'sj-dt1', 'data-n': B ? String(B.n) : '', 'data-co': B ? String(B.G.length) : '', 'data-all': B ? String(B.all) : '', 'data-need': String(R5.need)},
-    ...(B && B.all ? [h('p', {class: 'sj-ttl', text: nx ? (bd ? bd + ' ' : '') + '장이 끝난 뒤 꾀 ' + nw(R5.need) + ' 이상이 함께 고른 회사예요. 다음 장날 종가로, 고른 꾀마다 10주씩 사요.' : (bd ? bd + ' ' : '') + '종가로 꾀 ' + nw(R5.need) + ' 이상이 함께 고른 회사만 사요. 그 회사를 고른 꾀마다 10주씩이에요.'}),
-      h('p', {class: 'sj-ttl', text: B.G.length ? (nx ? '' : '이날은 ') + B.G.length + '곳을 모두 ' + B.n + '번 사요. 꾀 ' + nw(R5.need - 1) + ' 이하가 고른 회사 ' + (B.all - B.G.length) + '곳은 사지 않아요.' : '꾀 ' + nw(R5.need - 1) + ' 이하가 고른 회사 ' + B.all + '곳은 사지 않아요.'}),
-      ...(String(gg?.asOf?.board ?? '') < R5.from ? [h('p', {class: 'sj-ttl sj-tt5', text: '이 규칙은 ' + (mday(R5.from) || R5.from) + ' 종가부터예요. 그 전에는 꾀가 고른 회사를 그날 종가로 모두 샀어요.'})] : []),
+  const p1 = h('div', {class: 'sj-ttp', role: 'tabpanel', id: 'sj-dp1', 'aria-labelledby': 'sj-dt1', 'data-n': B ? String(B.n) : '', 'data-co': B ? String(B.G.length) : '', 'data-all': B ? String(B.all) : '', 'data-need': String(R5.need), 'data-day': NO?.day ?? '', 'data-kn': NO ? String(NO.kn) : ''},
+    ...(NO && B ? [h('p', {class: 'sj-ttl', text: (mday(NO.day) ? mday(NO.day) + ' ' : '') + '오후 ' + hmSay(NO.hm) + ' 값으로 꾀 ' + nw(R5.need) + ' 이상이 함께 고른 회사예요. 그날 종가로, 고른 꾀마다 10주씩 사요.'}),
+      h('p', {class: 'sj-ttl', text: B.G.length ? B.G.length + '곳을 모두 ' + B.n + '번 사요. 꾀 ' + nw(R5.need - 1) + ' 이하가 고른 회사 ' + (B.all - B.G.length) + '곳은 사지 않아요.' : '꾀 ' + nw(R5.need - 1) + ' 이하가 고른 회사 ' + B.all + '곳은 사지 않아요.'}),
+      h('p', {class: 'sj-ttl', text: '오후 1시에는 거래량을 보는 꾀 다섯을 빼고 골라요. 회사를 고른 꾀는 ' + NO.kn + '가지예요. 다음 고르기도 장날 오후 1시예요.'}),
       ...(B.G.length ? [h('p', {class: 'sj-ttl', text: '고른 꾀가 많은 회사가 맨 위예요. 회사를 누르면 「왜 사?」 질문으로 가요.'}), h('ol', {class: 'sj-dgo'}, ...B.G.map(row5))]
-        : [h('p', {class: 'sj-ttw', text: '이날은 꾀 ' + nw(R5.need) + ' 이상이 함께 고른 회사가 없어요. 그래서 ' + (nx ? '다음 장날에 ' : '') + '사지 않아요.'})])]
-      : [h('p', {class: 'sj-ttw', text: '꾀가 고른 회사 자료가 아직 없어요. 억지로 채우지 않았어요.'})]));
+        : [h('p', {class: 'sj-ttw', text: '이날은 꾀 ' + nw(R5.need) + ' 이상이 함께 고른 회사가 없어요. 그래서 사지 않아요.'})])]
+      : [h('p', {class: 'sj-ttl sj-tt5', text: '이 규칙은 ' + (mday(R5.from) || R5.from) + ' 종가부터예요. 그 전에는 장이 끝난 뒤 꾀가 고른 회사를 그날 종가로 모두 샀어요.'}),
+        h('p', {class: 'sj-ttw', text: (mday(R5.from) || R5.from) + '부터 장날 오후 1시에 꾀가 회사를 골라요. 꾀 ' + nw(R5.need) + ' 이상이 함께 고른 회사를 그날 종가로 사요. 아직 고른 날이 없어요.'})]));
   const p2 = h('div', {class: 'sj-ttp', role: 'tabpanel', id: 'sj-dp2', 'aria-labelledby': 'sj-dt2', hidden: true, 'data-n': V ? String(V.n) : '', 'data-hold': V ? String(V.hold) : ''},
     ...(!V ? [h('p', {class: 'sj-ttw', text: '가짜 돈 장부 자료를 받지 못했어요. 억지로 채우지 않았어요.'})]
       : [h('p', {class: 'sj-ttl', text: (sd ? sd + ' 기준 ' : '') + '가짜 돈으로 들고 있는 것은 ' + V.hold + '개예요. 그 가운데 다음 장날이 정한 날인 것 ' + V.n + '개를 그날 종가로 팔아요.'}),
