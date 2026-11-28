@@ -1092,7 +1092,10 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
         JSON.stringify(diff.map(x => [x, gc[x], want?.[x]])).slice(0, 400));
       pageRules(await measure(p), W + '다) 회사 쪽 #/c/' + c);
     }
-    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / ') + (bad4.length ? ' · 막힌 응답 ' + bad4.slice(0, 3).join(' / ') : ''));
+    // 진짜 사이트가 검사 브라우저의 같은 쪽 주소(/su/?v=…)를 한 번 더 받을 때 잠깐 403 으로 막은 것은 사이트 잘못이 아님 — 쪽은 그대로 떠서 아래 검사가 모두 돎(2026-11-27 11:46 · 11-28 12:24 · 13:32 같은 자리 · 다른 검사 next 도 「HTTP 403」은 다시 엶)
+    //   막힌 응답이 모두 이 쪽 주소이고 지금 쪽에 #su 가 있을 때만 그 한 줄을 뺌 · 자료 · 그림 같은 다른 파일의 403 은 그대로 걸림
+    const nav403 = bad4.length > 0 && bad4.every(x => x.startsWith('403 ' + base + '/su/?v=')) && await p.evaluate(() => !!document.querySelector('#su main.sj-page')).catch(() => false), errsK = nav403 ? errs.filter(e => !/status of 403/.test(e)) : errs;
+    check(!errsK.length, W + '화면 오류 0' + (nav403 ? '(쪽 열기 403 은 다시 열어 받음)' : ''), errsK.slice(0, 3).join(' / ') + (bad4.length ? ' · 막힌 응답 ' + bad4.slice(0, 3).join(' / ') : ''));
     await ctx.close();
   }
   // ㉖ 주문 1116-0209(사장님 2026-11-16(마카오) 01:09 「에이전트 100개 동원해서 지금 그린그림들이 상황애 맞게 3단애서 7간으로 자연스럽게 움직이게 …」 · 01:12 「응」) — 먹그림 움직임
