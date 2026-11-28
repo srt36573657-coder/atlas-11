@@ -132,7 +132,10 @@ export function enText(raw) {
 }
 const ATTRS = ['aria-label', 'placeholder', 'title', 'alt'];
 function enNode(n) {
-  if (n.nodeType === 3) { if (HAN.test(n.nodeValue) && !n.parentElement?.closest('script,style,[data-en-keep]')) { const v = enText(n.nodeValue), w = (/^\s/.test(n.nodeValue) ? ' ' : '') + v + (/\s$/.test(n.nodeValue) ? ' ' : ''); if (w !== n.nodeValue) n.nodeValue = w; } return; }
+  if (n.nodeType === 3) { // 못 옮긴 글(enText 가 받은 그대로 돌려줌)은 손대지 않음 — 앞뒤 빈칸을 다시 붙이면 글이 한 칸씩 늘며 지켜보기가 끝없이 돎(첫 쪽 「한 달 전 100원이 」 · 틀림 282)
+    const raw = n.nodeValue; if (!HAN.test(raw) || n.parentElement?.closest('script,style,[data-en-keep]')) return;
+    const v = enText(raw); if (v === raw) return;
+    const w = (/^\s/.test(raw) ? ' ' : '') + String(v).trim() + (/\s$/.test(raw) ? ' ' : ''); if (w !== raw) n.nodeValue = w; return; }
   if (n.nodeType !== 1 || n.matches('script,style,[data-en-keep]')) return;
   for (const a of ATTRS) { const v = n.getAttribute(a); if (v && HAN.test(v)) { const e = enText(v); if (e !== v) n.setAttribute(a, e); } } // 바뀔 때만(같은 값을 다시 넣으면 지켜보기가 끝없이 돎)
   for (const c of n.childNodes) enNode(c);

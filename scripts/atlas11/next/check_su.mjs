@@ -2329,6 +2329,20 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
       (why || JSON.stringify(seen)).slice(0, 1500) + ' ' + JSON.stringify(errs.slice(0, 2)));
     await ctx.close();
   }
+  { // ㊾ 마) 영어판에서 쪽이 굳지 않음(틀림 282 — 못 옮긴 글의 앞뒤 빈칸을 다시 붙여 글이 한 칸씩 늘며 지켜보기가 끝없이 돌아 첫 쪽 · 멈춤 · 일지 · 분석 · 회사 쪽이 굳었음) — 쪽마다 5초 안에 답 · 1초 사이 글 길이 그대로
+    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), bad = [];
+    for (const hh of ['#/', '#/k', '#/k/g01', '#/q', '#/j', '#/r/t', '#/l', '#/l/d', '#/o', '#/l/a', '#/l/t']) {
+      await p.goto(base + '/su/?hl=en' + hh, {waitUntil: 'domcontentloaded', timeout: 30000}).catch(() => {});
+      await p.waitForTimeout(2500);
+      const len = () => Promise.race([p.evaluate(() => (document.documentElement.lang === 'en' ? document.getElementById('su')?.textContent.length ?? -1 : -2)).catch(() => -3), new Promise(r => setTimeout(() => r('굳음'), 5000))]);
+      const a = await len(); if (a !== '굳음') await p.waitForTimeout(1000); const b = a === '굳음' ? '굳음' : await len();
+      if (a === '굳음' || b === '굳음' || a !== b || a < 0) bad.push(hh + ' ' + a + '→' + b);
+    }
+    check(!bad.length, W + '마) 영어판 열한 쪽 — 굳지 않음(5초 안에 답) · 글 길이 그대로(못 옮긴 글은 손대지 않음 · 틀림 282)', bad.join(' | '));
+    await ctx.close().catch(() => {});
+  }
 }
 await browser.close();
 R.ok = R.counts.fail === 0;
