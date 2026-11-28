@@ -2156,3 +2156,15 @@ html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jh { display: flex; flex-wr
 html.sj-on #su .sj-jh > .sj-jhk { flex: 1 0 100%; }
 html.sj-on #su .sj-jh > .sj-jht { flex: none; }
 html.sj-on #su .sj-jh > .sj-cheer { flex: 0 1 auto; margin: 4px 0 0 auto; }
+/* 탭 넷(잡스 판 · 주문 1128-0755 — 오늘 · 꾀 · 멈춤 · 기록 · 회사 찾기는 머리 줄 「⋯」) */
+html.sj-on #su .sj-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* ── 잡스 판 안쪽 쪽들(주문 1128-0755 — 첫 쪽부터 마지막 쪽까지 같은 모양 · 샘플 1 꾀 화면) — 흰 판 · 쪽 이름은 큰 고딕 · 황토 이름표 · 칸 상자 대신 가는 줄
+   쪽 머리 수채화 띠(꾸밈 · 그림 뜻 없는 배경)는 뺌 — 애플 공식 안내서 Delight 「Don't mistake delight for decoration」 · 그림 뜻이 붙은 그림은 그대로 ── */
+html.sj-on #su main.sj-page:not([data-page="sonja"]) { background-color: #FFFFFF; margin-top: 0; }
+html.sj-on #su main.sj-page:not([data-page="sonja"]) > section.sj-ph::before { content: none; display: none; }
+html.sj-on #su main.sj-page:not([data-page="sonja"]) > :is(.sj-sec, .sj-ph) { margin-top: 0; border-radius: 0; background: transparent; box-shadow: none; border-top: 1px solid #E5E5EA; padding: 20px 4px 24px; }
+html.sj-on #su main.sj-page:not([data-page="sonja"]) > .sj-ph { border-top: 0; padding-top: 12px; }
+html.sj-on #su main.sj-page:not([data-page="sonja"]) .sj-ph .sj-land { font-family: var(--sj-sans); font-weight: 800; font-size: 2.125rem; line-height: 1.2; letter-spacing: 0; color: #1D1D1F; }
+html.sj-on #su main.sj-page:not([data-page="sonja"]) .sj-ph > .sj-k { color: #8A5A12; font-family: var(--sj-sans); font-size: 1.0625rem; font-weight: 800; letter-spacing: 0; }
+html.sj-on #su main.sj-page:not([data-page="sonja"]) .sj-ph .sj-step { color: #636366; font-family: var(--sj-sans); letter-spacing: 0; }
+@media (max-width: 370px) { html.sj-on #su main.sj-page:not([data-page="sonja"]) .sj-ph .sj-land { font-size: 1.5rem; } } /* 좁은 휴대폰 — 쪽 이름이 오른쪽 도장 옆에서 세로로 무너지지 않게(검사 ㉙) */

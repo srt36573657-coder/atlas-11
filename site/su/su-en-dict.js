@@ -150,6 +150,7 @@ export const EX = Object.freeze({
 "다른 길": "Other routes",
 "다음 화면": "Next screen",
 "탭 — 오늘 · 꾀 · 회사 · 멈춤 · 기록": "Tabs — Today · Stratagems · Companies · Pause · Records",
+"탭 — 오늘 · 꾀 · 멈춤 · 기록": "Tabs — Today · Ploys · Pause · Records",
 "기록 · 꾀 사고판 회사": "Records · companies traded by stratagem",
 "이 꾀가 사고판 회사와 아직 들고 있는 회사예요. 수익률이 높은 차례로 놓았어요.": "Companies this stratagem traded and still holds. Ordered by highest return.",
 "판 것 · 들고 있는 것": "Sold · Held",

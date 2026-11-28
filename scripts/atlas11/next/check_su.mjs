@@ -306,7 +306,7 @@ for (const width of [390, 360, 320]) {
         foot: [...document.querySelectorAll('#su main > .su-src .su-srcl a')].map(a => [a.getAttribute('href'), a.querySelector('span')?.textContent ?? ''])};
     });
     const STEP5 = ['오늘', '꾀', '회사', '「왜 사?」', '내 매매일지']; // 다섯 화면 이름(화면 코드 STEP5 를 쓰지 않고 따로 적음 · 주문 1115-2328)
-    const TAB5 = '오늘 꾀 회사 멈춤 기록', TAB5L = '탭 — 오늘 · 꾀 · 회사 · 멈춤 · 기록', PAGE3 = ['sonja', 'kkoe', 'co', 'why', 'journal'], CUR3 = [0, 1, -1, 3, 4]; // 회사 쪽은 탭 밖(켜진 탭 0) · 탭 여섯(주문 1120-1220 — 「회사」 탭 = 여러 꾀가 고른 회사 · 셋째)
+    const TAB5 = '오늘 꾀 멈춤 기록', TAB5L = '탭 — 오늘 · 꾀 · 멈춤 · 기록', PAGE3 = ['sonja', 'kkoe', 'co', 'why', 'journal'], CUR3 = [0, 1, -1, 2, 3]; // 잡스 판(주문 1128-0755) — 탭 넷 · 옛 「회사」 탭은 머리 줄 「⋯」 찾기로 // 회사 쪽은 탭 밖(켜진 탭 0) · 탭 여섯(주문 1120-1220 — 「회사」 탭 = 여러 꾀가 고른 회사 · 셋째)
     const FOOTW = JSON.stringify([['/su/privacy.html', '개인정보 처리방침'], ['/next/?su=back#/help', '고객센터']]);
     await open(p, '#/');
     const seen = [], STEPS9 = FC ? [0, 1, 2, 3, 4] : [0, 1, 3, 4]; // 꾀가 고른 곳이 없는 날(꾀 칸 자료 없음)은 꾀 → 「왜 사?」로 바로(회사 화면을 건너뜀)
@@ -321,8 +321,8 @@ for (const width of [390, 360, 320]) {
         check(sj.prog.length === 5 && sj.prog.every((c, i) => c === (i === k ? 'sj-pcur' : i < k ? 'sj-pdone' : '')) && sj.progL === '다섯 화면 가운데 ' + (k + 1) + '번째', W + '⑨ 이야기 막대 점 다섯 · 지금 화면 ' + (k + 1) + ' — ' + sj.h1, JSON.stringify([sj.prog, sj.progL]));
         check(sj.order, W + '⑨ 쪽 차례 — ' + (k === 0 ? '인사 → 오늘의 꾀 → 오늘의 기업 → 오늘의 투자 점검 → 주식 격언 열 가지 → 표지 → 형세 보고 → 덜 잃은 꾀 차례 → 자세히 → 끝 줄' : k === 1 ? '머리 → 고르는 법 → 같은 땅 기록 → 오늘 닮은 곳 → 정산 → 앞뒤 꾀 → 끝 줄' : '머리 · 한 달 꺾은선 → 고른 꾀 → 사기 전에 멈춤 → 끝 줄') + ' — ' + sj.h1, sj.kids.join(' '));
         check(sj.lastIsSrc && JSON.stringify(sj.foot) === FOOTW, W + '⑨ 맨 아래 출처 · 조사 날짜 · 꼭 있어야 할 길 둘 — ' + sj.h1, JSON.stringify(sj.foot));
-        check(sj.tabs.length === 5 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
-          W + '⑨ 탭 다섯 오늘 · 꾀 · 회사 · 멈춤 · 기록(주문 1124-1942 치지 짜임 — 장부 · 정산 · 분석 · 일지는 기록 탭 안 갈래 · 옛 주문 1115-2328 · 1120-1220 · 1120-1705 · 1124-0432) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
+        check(sj.tabs.length === 4 && sj.tabs.map(t => t.t).join(' ') === TAB5 && sj.tabs.filter(t => t.cur).length === (CUR3[k] < 0 ? 0 : 1) && (CUR3[k] < 0 || sj.tabs[CUR3[k]].cur) && sj.tabsL === TAB5L,
+          W + '⑨ 탭 넷 오늘 · 꾀 · 멈춤 · 기록(잡스 판 · 주문 1128-0755 — 회사 찾기는 머리 줄 「⋯」 · 주문 1124-1942 치지 짜임 — 장부 · 정산 · 분석 · 일지는 기록 탭 안 갈래 · 옛 주문 1115-2328 · 1120-1220 · 1120-1705 · 1124-0432) · ' + (CUR3[k] < 0 ? '회사 쪽은 켜진 탭 0' : '「' + TAB5.split(' ')[CUR3[k]] + '」 켜짐') + ' — ' + sj.h1, JSON.stringify(sj.tabs) + ' ' + sj.tabsL);
         if (k === 0) { check(sj.moreShut && sj.ess === 3, W + '⑩ 「자세히」는 눌러야 열림 · 그 안 본질 세 줄 — ' + sj.h1, JSON.stringify({shut: sj.moreShut, ess: sj.ess})); check(sj.art, W + '⑪ 표지 붓 글씨 그림이 열림', '');
           // ⑫ 오늘 시장 · 세 태세 칸 지움(주문 1126-1748 · 사장님 2026-11-26(서울) 17:48 「지금 첫번째 구역은 헷갈린다 삭제 하라」 — 옛 ⑫ 오늘 한 장 · ⑫-2 세 태세 · 꾀 쪽 표지는 ㉚ 이 따로 셈)
           const tcN = await p.evaluate(() => document.querySelectorAll('#su main.sj-page .sj-tc, #su main.sj-page .sj-tcst').length);
@@ -354,8 +354,8 @@ for (const width of [390, 360, 320]) {
       check(m.moving >= 1, W + '⑨ 큰 그림이 움직임 — ' + m.h1, '움직임 ' + m.anim);
       check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? /확인 필요$/.test(t.v) : t.v && !t.v.includes('확인 필요'))), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
-      const curW = k === 3 ? 3 : 4; // 「왜 사?」 = 멈춤 · 매매일지 = 일지(탭 여섯 — 주문 1120-1220)
-      check(m.tabs.length === 5 && m.tabs.map(t => t.t).join(' ') === TAB5 && m.tabs.filter(t => t.cur).length === 1 && m.tabs[curW].cur && m.tabsL === TAB5L, W + '⑨ 탭 다섯(옛 틀도 같은 다섯 · 주문 1115-2328) · 「' + TAB5.split(' ')[curW] + '」 켜짐 — ' + m.h1, JSON.stringify(m.tabs) + ' ' + m.tabsL);
+      const curW = k === 3 ? 2 : 3; // 잡스 판 탭 넷(주문 1128-0755) // 「왜 사?」 = 멈춤 · 매매일지 = 일지(탭 여섯 — 주문 1120-1220)
+      check(m.tabs.length === 4 && m.tabs.map(t => t.t).join(' ') === TAB5 && m.tabs.filter(t => t.cur).length === 1 && m.tabs[curW].cur && m.tabsL === TAB5L, W + '⑨ 탭 넷(옛 틀도 같은 넷 · 잡스 판 주문 1128-0755) · 「' + TAB5.split(' ')[curW] + '」 켜짐 — ' + m.h1, JSON.stringify(m.tabs) + ' ' + m.tabsL);
       check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
       check(m.pro.has && !m.pro.open && m.pro.rows >= 3, W + '⑩ 전문가용 자세히 — 눌러야 열림 — ' + m.h1, JSON.stringify(m.pro));
       check(Number.isFinite(m.hard), W + '⑩ 어려운 낱말 셈 — ' + m.h1, String(m.hard) + ' ' + m.hardWords);
@@ -1287,8 +1287,8 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   const rowsOk = o.rows.every((r, i) => CD.test(r.c ?? '') && r.n >= 2 && r.n === cntOf(days[days.length - 1], r.c) && (!want || want.get(r.c) === r.n) && r.href === '#/c/' + r.c && r.say === '꾀 ' + r.n + '가지가 골랐어요.' && r.sp && r.fs >= 16.95
     && (!r.m || /^한 달 가운데 가장 낮을 때 100원이 [\d.]+원/.test(r.m)) && (i === 0 || o.rows[i - 1].n >= r.n));
   check(o.main && o.rule === 'picks-v1' && rowsOk && (want ? o.rows.length === want.size : o.rows.length === 20) && (!o.rows.length || (o.chart && o.legend === Math.min(5, o.rows.length)))
-    && o.wide && /앞날을 맞히지 않고/.test(o.safe) && !/%|추천|사세요|사라|1등|대박|급등|수익률/.test(o.text) && o.tab === '회사',
-    W + '나) 여러 꾀가 고른 회사(#/o · 탭 「회사」 — 주문 1120-1220) — 이 검사가 장부로 다시 센 꾀 수와 같음 · 많이 고른 차례 · 줄마다 꺾은선 · 손실 먼저 · 「추천」 「%」 0 · 앞날 아님 한 줄',
+    && o.wide && /앞날을 맞히지 않고/.test(o.safe) && !/%|추천|사세요|사라|1등|대박|급등|수익률/.test(o.text) && o.tab === '', // 잡스 판 탭 넷(주문 1128-0755) — 이 쪽은 머리 줄 「⋯」 찾기로 가는 쪽(켜진 탭 0)
+    W + '나) 여러 꾀가 고른 회사(#/o · 머리 줄 「⋯」 찾기로 · 켜진 탭 0 — 잡스 판 · 주문 1120-1220) — 이 검사가 장부로 다시 센 꾀 수와 같음 · 많이 고른 차례 · 줄마다 꺾은선 · 손실 먼저 · 「추천」 「%」 0 · 앞날 아님 한 줄',
     JSON.stringify({days: days.length, want: want ? want.size : 'many', got: o.rows.slice(0, 6).map(r => [r.c, r.n, r.say.slice(0, 12)]), chart: o.chart, legend: o.legend, wide: o.wide, tab: o.tab}).slice(0, 500));
   if (o.rows.length) { // 다) 회사 쪽 날마다 고른 꾀 수 꺾은선(주문 1120-1040) — 이 검사가 다시 센 날마다 꾀 수와 같음
     const r0 = o.rows[0], wantN = days.map(d => cntOf(d, r0.c));
@@ -1586,7 +1586,7 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
   await open(p, '#/l');
   const tbL = await p.evaluate(() => { const a = [...document.querySelectorAll('#su .sj-tabs a.sj-tab')], b = a.find(x => x.textContent.trim() === '기록'), r = b?.getBoundingClientRect();
     return {n: a.length, cur: a.find(x => x.getAttribute('aria-current') === 'page')?.textContent.trim() ?? '', href: b?.getAttribute('href') ?? '', last: a.at(-1) === b, w: r ? Math.round(r.width) : 0, h: r ? Math.round(r.height) : 0, sw: document.querySelectorAll('#su nav.sj-ldsw').length}; });
-  check(tbL.n === 5 && tbL.cur === '기록' && tbL.href === '#/l/a' && tbL.last && tbL.w >= 47.5 && tbL.h >= 47.5 && tbL.sw === 0, W + '나) 아래 탭 맨 끝 「기록」(주문 1124-1942 치지 짜임 — 분석은 기록 탭 안 갈래 · 옛 주문 1124-0432 · 주문 1126-0229 기록 탭은 한눈에부터) — #/l/a · 48 넘게 · 장부 쪽은 「기록」 켜짐 · 옛 단추 둘 0', JSON.stringify(tbL));
+  check(tbL.n === 4 && tbL.cur === '기록' && tbL.href === '#/l/a' && tbL.last && tbL.w >= 47.5 && tbL.h >= 47.5 && tbL.sw === 0, W + '나) 아래 탭 맨 끝 「기록」(주문 1124-1942 치지 짜임 — 분석은 기록 탭 안 갈래 · 옛 주문 1124-0432 · 주문 1126-0229 기록 탭은 한눈에부터) — #/l/a · 48 넘게 · 장부 쪽은 「기록」 켜짐 · 옛 단추 둘 0', JSON.stringify(tbL));
   await open(p, '#/l/d');
   await p.waitForSelector('#su main.sj-page[data-page="fall"]', {timeout: 15000}).catch(() => {});
   const g = await p.evaluate(() => { const m = document.querySelector('#su main.sj-page[data-page="fall"]'), t = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
@@ -1662,16 +1662,16 @@ const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '
     await open(p, hash);
     await p.waitForSelector('#su nav.sj-rec', {timeout: 15000}).catch(() => {});
     const g = await look(), nm = RECN[k];
-    check(g.tabs === '오늘 꾀 회사 멈춤 기록' && g.tabOn === '기록' && g.hid === 0 && g.tabBox.every(b => b[0] >= 47.5 && b[1] >= 47.5) && g.tabsW && g.wide,
-      W + '가) ' + nm + ' 쪽(' + hash + ') — 아래 탭 다섯 오늘 · 꾀 · 회사 · 멈춤 · 기록 · 「기록」 켜짐 · 숨긴 탭 0 · 칸마다 48 · 320 폭에서 옆으로 밀 일 없음', JSON.stringify({tabs: g.tabs, on: g.tabOn, hid: g.hid, box: g.tabBox, tabsW: g.tabsW, wide: g.wide}));
+    check(g.tabs === '오늘 꾀 멈춤 기록' && g.tabOn === '기록' && g.hid === 0 && g.tabBox.every(b => b[0] >= 47.5 && b[1] >= 47.5) && g.tabsW && g.wide,
+      W + '가) ' + nm + ' 쪽(' + hash + ') — 아래 탭 넷 오늘 · 꾀 · 멈춤 · 기록(잡스 판) · 「기록」 켜짐 · 숨긴 탭 0 · 칸마다 48 · 320 폭에서 옆으로 밀 일 없음', JSON.stringify({tabs: g.tabs, on: g.tabOn, hid: g.hid, box: g.tabBox, tabsW: g.tabsW, wide: g.wide}));
     check(g.navN === 1 && g.recs === REC && JSON.stringify(g.hrefs) === JSON.stringify(RECH) && g.on.length === 1 && g.on[0] === nm && g.recBox.every(b => b[1] >= 47.5 && b[0] >= 47.5) && g.fs.every(f => f >= 16.9) && g.under && g.onVis,
       W + '나) ' + nm + ' 쪽 맨 위 기록 갈래 줄 여섯(장부 · 정산 · 분석 · 일지 · 산 회사 · 판 회사 — 세 칸 두 줄) · 「' + nm + '」 켜짐 · 칸마다 48 · 글씨 17 넘게 · 머리 줄 바로 아래', JSON.stringify({n: g.navN, recs: g.recs, hrefs: g.hrefs, on: g.on, box: g.recBox, fs: g.fs, under: g.under}));
   }
-  for (const [hash, nm] of [['#/', '오늘'], ['#/k', '꾀'], ['#/o', '회사'], ['#/q', '멈춤']]) {
+  for (const [hash, nm] of [['#/', '오늘'], ['#/k', '꾀'], ['#/o', ''], ['#/q', '멈춤']]) { // 잡스 판(주문 1128-0755) — 탭 넷 · 「여러 꾀가 고른 회사」(#/o)는 머리 줄 「⋯」 찾기로 가는 쪽(켜진 탭 0)
     await open(p, hash);
     await p.waitForSelector('#su .sj-tabs a.sj-tab', {timeout: 15000}).catch(() => {});
     const g = await look();
-    check(g.tabs === '오늘 꾀 회사 멈춤 기록' && g.tabOn === nm && g.navN === 0 && g.tabsW && g.wide, W + '다) ' + nm + ' 쪽(' + hash + ') — 탭 「' + nm + '」 켜짐 · 기록 갈래 줄은 기록 탭 쪽에만 · 옆으로 밀 일 없음', JSON.stringify({tabs: g.tabs, on: g.tabOn, nav: g.navN, tabsW: g.tabsW, wide: g.wide}));
+    check(g.tabs === '오늘 꾀 멈춤 기록' && g.tabOn === nm && g.navN === 0 && g.tabsW && g.wide, W + '다) ' + (nm || '여러 꾀가 고른 회사') + ' 쪽(' + hash + ') — ' + (nm ? '탭 「' + nm + '」 켜짐' : '켜진 탭 0') + ' · 기록 갈래 줄은 기록 탭 쪽에만 · 옆으로 밀 일 없음', JSON.stringify({tabs: g.tabs, on: g.tabOn, nav: g.navN, tabsW: g.tabsW, wide: g.wide}));
   }
   await open(p, '#/l');
   await p.waitForSelector('#su nav.sj-rec a.sj-recb', {timeout: 15000}).catch(() => {});
