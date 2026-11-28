@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-range-check-1",
- "at": "2026-11-28T04:49:41.581Z",
+ "at": "2026-11-28T05:31:57.584Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-27",
  "rangeAsOf": "2026-11-27",
@@ -69,13 +69,13 @@
  },
  "seconds": 298,
  "time": {
-  "old": 127.9,
-  "new": 165.5,
-  "wall": 298.3,
+  "old": 131.7,
+  "new": 161.8,
+  "wall": 297.8,
   "opensOld": 5130,
   "opensNew": 10405,
-  "oldPct": 42.9,
-  "oldShare": 43.6
+  "oldPct": 44.2,
+  "oldShare": 44.9
  },
  "net": {
   "req": 11,
