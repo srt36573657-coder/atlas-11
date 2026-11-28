@@ -558,14 +558,22 @@ function todoSec() { // 누르면 표시 · 이 휴대폰에만 그날 하루(�
  *  잡스 「백 가지에 아니오」(WWDC 1997) · 애플 공식 안내서 Simplicity 「Include just what's necessary」 · Hierarchy · 글 17 · 누르는 자리 48 */
 const WD7 = ['일', '월', '화', '수', '목', '금', '토'];
 export const jDate = (ms = Date.now()) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(kst(ms).day ?? ''); if (!m) return ''; const w = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).getUTCDay(); return +m[2] + '월 ' + +m[3] + '일 ' + WD7[w] + '요일'; };
+/* ── 잡스 판 둘째(주문 1128-1038 · 사장님 10:38 「… 이 손자 병법이 무엇을 하는 곳인지 그 본질이 무엇인지 … 그 본질답게 … 혁신적이면서 직관적이면서 깊이가 있는 방법으로 해 에이전트 30개 공부시킨 이후 만들어봐」)
+ *  본질 한 줄 = 「사기 전에 한 번 멈추는 곳」(공부 서른 17 — 열자마자 무엇을 하는 곳인지 · 다) 안) · 멈춤 문 = 회사 이름 칸(13 · 28) · 바닥 먼저 꺾은선(16 · 6 · 8)
+ *  우리가 하지 않는 일(1 · 30) · 오늘은 여기까지(26 조용한 기술) · 땅 기호(29) — 모두 docs/design/jobs-2026-11-28/study30.md */
+export const JID = '사기 전에 한 번 멈추는 곳이에요.';
+export const SAFE_MORE = '넣은 돈을 잃을 수 있어요. 고르는 것은 내 몫이에요.'; // 안전 한 줄 덧붙임(공부 서른 20 — 원금 손실 · 결정은 본인)
 export function jHead() {
-  return h('section', {class: 'sj-sec sj-jh', 'aria-label': '오늘'}, h('p', {class: 'sj-jhk', text: jDate()}), h('h1', {class: 'sj-jht', text: '오늘'}), cheerLine());
+  return h('section', {class: 'sj-sec sj-jh', 'aria-label': '오늘'}, h('p', {class: 'sj-jhk', text: jDate()}), h('h1', {class: 'sj-jht', text: '오늘'}), cheerLine(), h('p', {class: 'sj-jid', text: JID}));
 }
+/** 땅 기호 — 먹 한 획(빨강 · 파랑은 쓰지 않음 · 첫 화면에 빨강 없음) · 내림 물결 · 흔들림 기운 깃발 · 오름 봉우리 · 쏠림 한쪽 봉우리 · 잔잔 호수 */
+const LAND_D = Object.freeze({fall: 'M4 14 q5 -5 10 0 t10 0 t10 0 M4 24 q5 -5 10 0 t10 0 t10 0 M28 4 v12 m-4 -4 l4 4 4 -4', shake: 'M10 34 V6 M10 6 l18 4 -18 8', rise: 'M2 32 L14 14 L20 22 L28 8 L38 32 Z', narrow: 'M2 32 L30 6 L34 32 Z M2 32 H38', calm: 'M4 22 H36 M8 28 H32 M12 16 q8 -6 16 0'});
+export const landMark = land => (LAND_D[land] ? s('svg', {class: 'sj-jlm', viewBox: '0 0 40 40', 'aria-hidden': 'true', focusable: 'false', 'data-land': land}, s('path', {d: LAND_D[land]})) : null);
 function jLand(T, mkt) {
   const x = okSun(T.sun) ? T.sun : null;
   return h('section', {class: 'sj-sec sj-jl', 'aria-label': '오늘의 땅', ...(x ? {'data-land': x.land} : {})},
     h('p', {class: 'sj-jk', text: '오늘의 땅'}),
-    x ? h('p', {class: 'sj-jlt', text: '지금은 ' + x.name + '이에요.'}) : null,
+    x ? h('div', {class: 'sj-jlrow'}, landMark(x.land), h('p', {class: 'sj-jlt', text: '지금은 ' + x.name + '이에요.'})) : null,
     x && typeof x.do === 'string' ? h('p', {class: 'sj-jls', text: x.do}) : null,
     mkt);
 }
@@ -575,9 +583,19 @@ export function trPath(g, k) {
   if (!T || !Array.isArray(T.days) || !Array.isArray(T.w) || T.days.length !== T.w.length || !(j >= 0 && j < 36)) return null;
   const P = T.w.map((r, i) => (Array.isArray(r) && fin(r[j]) && r[j] > 0 ? {d: T.days[i], v: r[j] / 1e4} : null)).filter(Boolean);
   if (P.length < 2) return null;
-  return {d0: P[0].d, d1: P.at(-1).d, low: Math.min(100, ...P.map(q => q.v)), now: P.at(-1).v};
+  return {d0: P[0].d, d1: P.at(-1).d, low: Math.min(100, ...P.map(q => q.v)), now: P.at(-1).v, v: [100, ...P.map(q => q.v)]};
 }
 const jWon = v => h('b', {class: 'sj-jv', 'data-m': v > 100.04 ? 'up' : v < 99.95 ? 'dn' : 'eq', text: w100(v / 100 - 1)});
+/** 바닥 먼저 꺾은선(공부 서른 16 「바닥 먼저」 · 6 · 8 손실 먼저) — 처음 100원 점선 · 먹 선 · 가장 낮은 때만 파란 점(내림 색) · 빨강 없음 · 세 줄 모두 같은 잣대(같은 높이 = 같은 원) */
+export function dipLine(v, lo, hi) {
+  if (!Array.isArray(v) || v.length < 2 || !fin(lo) || !fin(hi) || !(hi > lo)) return null;
+  const W = 96, H = 40, P = 4, X = i => P + i * (W - 2 * P) / (v.length - 1), Y = x => P + (hi - x) / (hi - lo) * (H - 2 * P), r1 = x => Math.round(x * 10) / 10;
+  const k = v.reduce((a, x, i) => (x < v[a] ? i : a), 0), low = v[k];
+  return s('svg', {class: 'sj-j3sp', viewBox: '0 0 ' + W + ' ' + H, role: 'img', focusable: 'false', 'aria-label': '처음 100원에서 가장 낮을 때 ' + w100(low / 100 - 1) + ' · 지금 ' + w100(v.at(-1) / 100 - 1)},
+    s('line', {class: 'sj-j3b0', x1: P, x2: W - P, y1: r1(Y(100)), y2: r1(Y(100))}),
+    s('polyline', {class: 'sj-j3pl', points: v.map((x, i) => r1(X(i)) + ',' + r1(Y(x))).join(' ')}),
+    low < 99.95 ? s('circle', {class: 'sj-j3lo', cx: r1(X(k)), cy: r1(Y(low)), r: 4}) : null);
+}
 function jKkoe(T) {
   const x = okSun(T.sun) ? T.sun : null, pk = x ? nowPick(x) : null;
   const rows = Array.isArray(T?.sunLog?.rows) ? T.sunLog.rows : [], r = pk ? null : rows.filter(q => typeof q?.day === 'string' && LANDK.includes(q.land) && typeof KNAME[q.k] === 'string').at(-1) ?? null;
@@ -617,6 +635,8 @@ function jTop3Fill(sec, g, T) {
   }
   sec.querySelector(':scope > .sj-j3w')?.remove();
   if (!L.length) { sec.append(h('p', {class: 'sj-j3w', text: '꾀 차례 자료가 아직 없어요. 억지로 채우지 않았어요.'})); sec.removeAttribute('data-wait'); return; }
+  const VV = L.flatMap(q => (Array.isArray(q.e?.v) ? q.e.v : [])), lo0 = VV.length ? Math.min(100, ...VV) : null, hi0 = VV.length ? Math.max(100, ...VV) : null;
+  const pad = fin(lo0) && fin(hi0) ? Math.max(0.5, (2 - (hi0 - lo0)) / 2) : 0, lo = fin(lo0) ? lo0 - (hi0 - lo0 < 2 ? pad : 0) : null, hi = fin(hi0) ? hi0 + (hi0 - lo0 < 2 ? pad : 0) : null; // 세 줄 같은 잣대 · 너무 납작하면 위아래 1원씩
   sec.append(h('p', {class: 'sj-j3l', text: lead}),
     h('ol', {class: 'sj-j3o'}, ...L.map((q, i) => h('li', {class: 'sj-j3i', 'data-k': q.k},
       h('a', {class: 'sj-j3a', href: '#/k/' + q.k},
@@ -624,17 +644,57 @@ function jTop3Fill(sec, g, T) {
         h('span', {class: 'sj-j3b'}, h('b', {class: 'sj-j3t', text: KNAME[q.k]}),
           q.e ? h('span', {class: 'sj-j3v'}, h('span', {text: '가장 낮을 때 '}), jWon(q.e.low), h('span', {text: ' · 지금 '}), jWon(q.e.now))
             : h('span', {class: 'sj-j3v', text: '잃은 날 ' + q.r.n + '번 중 ' + q.r.lose + '번'})),
+        q.e ? dipLine(q.e.v, lo, hi) : null,
         h('i', {'aria-hidden': 'true', text: '›'}))))),
+    L.some(q => q.e) ? h('p', {class: 'sj-j3key'}, h('i', {class: 'sj-j3kd', 'aria-hidden': 'true'}), h('span', {text: '파란 점은 가장 낮을 때, 점선은 처음 100원이에요.'})) : null,
     h('a', {class: 'sj-jlink', href: '#/k'}, h('span', {text: '서른여섯 꾀 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
   sec.removeAttribute('data-wait');
 }
-/** 사기 전에 멈춤 — 첫 화면에서 가장 큰 단추(본질 2 「주식을 사기 전에 한 번 멈추게 한다」 · 「왜 사?」 열한 질문) */
-function jStop(lc) {
+/** 사기 전에 멈춤 문 — 첫 화면에서 가장 큰 칸(본질 2 「주식을 사기 전에 한 번 멈추게 한다」 · 「왜 사?」 열한 질문)
+ *  잡스 판 둘째(주문 1128-1038 · 공부 서른 13 「사려던 회사 이름 칸 하나」 · 28 「단추를 입력칸으로」): 회사 이름을 쓰면 아래에 회사 줄 → 누르면 그 회사로 바로 열한 질문
+ *  회사 없이도 물어볼 수 있음 · 회사 목록은 칸을 처음 누를 때만 받음(첫 화면을 무겁게 하지 않음) · 멈춘 날이 있으면 조용히 한 줄(이어진 날은 세지 않음 · 상 없음) */
+export const GATE_MAX = 5;
+/** 멈춘 날 수 — su-stops.js 와 같은 열쇠 · 같은 셈(날짜가 다른 날만 · 첫 화면은 파일 하나를 덜 받으려고 여기서 셈 · 시험 su.test.mjs 가 맞댐) */
+export const STOP_KEY1 = 'su-stops-v1';
+export const stopN = () => { try { const x = JSON.parse(localStorage.getItem(STOP_KEY1) || '[]'); return Array.isArray(x) ? new Set(x.filter(r => r && /^\d{4}-\d{2}-\d{2}$/.test(String(r.day ?? ''))).map(r => r.day)).size : 0; } catch { return 0; } };
+function jStop(cur, get) {
+  const lc = typeof cur?.code === 'string' && /^[0-9A-Z]{6}$/.test(cur.code) ? cur.code : null, ln = lc && typeof cur.name === 'string' && cur.name.trim() ? cur.name.trim() : null;
+  let M = null, F = null, wait = null, ticket = 0; // 회사 목록 · 찾기 셈(su-find-core.js)은 칸을 처음 누를 때만 받음 — 첫 화면 가장 큰 그림이 늦지 않게
+  const need = () => (M ? Promise.resolve(M) : (wait ??= Promise.all([import('/su/su-find-core.js'), typeof get === 'function' ? Promise.resolve(get('/atlas/data/mkt.json')).catch(() => null) : null]).then(([m, j]) => { F = m.findCo; M = j && j.companies ? j : null; wait = null; return M; }).catch(() => { wait = null; return null; })));
+  const inp = h('input', {class: 'sj-pzi', type: 'search', name: 'q', placeholder: '회사 이름이나 번호', 'aria-label': '사려는 회사 — 이름이나 번호를 쓰면 아래에 회사가 나와요', enterkeyhint: 'go', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false'});
+  const list = h('ol', {class: 'sj-pzl', 'aria-live': 'polite'}), note = h('p', {class: 'sj-pzn', hidden: true});
+  const row = x => h('li', {class: 'sj-pzr', 'data-code': x.code}, h('a', {class: 'sj-pza', href: '#/q/' + x.code, 'aria-label': x.name + ' — 사기 전에 멈추고 물어보기'},
+    h('span', {class: 'sj-pzt'}, h('b', {'data-proper': '', text: x.name}), h('span', {class: 'sj-pzc', text: x.code})), h('span', {class: 'sj-pzg', text: '물어보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+  const run = async () => {
+    const q = inp.value.trim(), my = ++ticket;
+    if (!q) { list.replaceChildren(); note.hidden = true; return; }
+    const D = await need(); if (my !== ticket) return;
+    const hits = D && F ? F(D, q, GATE_MAX) : [];
+    list.replaceChildren(...hits.map(row));
+    note.hidden = !!hits.length; note.textContent = D ? '「' + q + '」 — 찾는 회사가 없어요. 이름을 조금 다르게 써 보세요.' : '회사 목록을 받지 못했어요. 아래 「회사 없이 물어보기」로도 할 수 있어요.';
+  };
+  inp.addEventListener('input', run);
+  inp.addEventListener('focus', () => { need(); }, {once: true});
+  const form = h('form', {class: 'sj-pzf', role: 'search', 'aria-label': '사려는 회사 찾기'}, inp);
+  form.addEventListener('submit', e => { e.preventDefault(); const a = list.querySelector('a.sj-pza'); if (a) location.hash = a.getAttribute('href'); else run(); });
+  const n = stopN();
   return h('section', {class: 'sj-sec sj-jst', 'aria-label': '사기 전에 멈춤'},
     h('p', {class: 'sj-jk', text: '사기 전에'}),
     h('h2', {class: 'sj-jstt', text: '사려는 회사가 있나요?'}),
-    h('p', {class: 'sj-jsts', text: '「왜 사?」 열한 가지를 하나씩 물어볼게요. 내 이유가 먼저예요.'}),
-    h('a', {class: 'sj-jbtn', href: lc ? '#/q/' + lc : '#/q', text: '멈추고 물어보기'}));
+    h('p', {class: 'sj-jsts', text: '이름을 쓰고 누르면 「왜 사?」 열한 가지를 하나씩 물어볼게요. 내 이유가 먼저예요.'}),
+    form, list, note,
+    ln ? h('a', {class: 'sj-jbtn sj-pzo', href: '#/q/' + lc}, h('span', {'data-proper': '', text: ln}), h('span', {text: ' 멈추고 물어보기'})) : null,
+    h('a', {class: 'sj-jbtn' + (ln ? ' sj-jbtn2' : '') + ' sj-pzo0', href: '#/q', text: '회사 없이 물어보기'}),
+    n ? h('p', {class: 'sj-jstn', text: '이 휴대폰에서 사기 전에 멈춘 날 ' + n + '번이에요. 이어진 날은 세지 않아요.'}) : null);
+}
+/** 우리가 하지 않는 일 · 오늘은 여기까지(공부 서른 1 「덜어낸 것 칸」 · 30 속이지 않는 약속 · 26 조용한 기술 「끝이 있는 앱」) — 첫 화면 꼭 볼 것의 끝 */
+export const NOT4 = Object.freeze(['사고팔기를 권하지 않아요.', '앞날을 맞히지 않아요.', '날마다 오라고 주는 상이 없어요.', '「왜 사?」 답과 매매일지는 이 휴대폰에만 남아요.']);
+export const JEND = '오늘 볼 것은 여기까지예요. 아래는 더 알고 싶을 때만 보세요.';
+function jNot() {
+  return h('section', {class: 'sj-sec sj-jnot', 'aria-label': '우리가 하지 않는 일'},
+    h('p', {class: 'sj-jk', text: '우리가 하지 않는 일'}),
+    h('ul', {class: 'sj-jnl'}, ...NOT4.map(t => h('li', {text: t}))),
+    h('p', {class: 'sj-jend', text: JEND}));
 }
 /** 오늘의 한 줄(옛 「오늘의 꾀 한 장」 셋째 장 · 주문 1126-1249) — 오늘 시장 글의 손자 말 · 없으면 격언 열 가지의 손자 말(날짜로 하나) · 「오늘 더 보기」 맨 끝 */
 function jWord(T) {
@@ -655,11 +715,11 @@ export async function vSonja(X, shell = null) {
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
   if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec());
   { const gl = main.querySelector(':scope > section.sj-mind ol.sj-gkl'); if (gl && !gl.parentElement.querySelector(':scope > button.sj-f7b')) { const [, b] = fold7(gl, (o, n) => '나머지 격언 ' + (n - o) + '가지 더 보기', 1); if (b) gl.after(b); } } // 격언 열 가지 = 맨 위 그대로 · 첫째만 보이고 「더 보기」(주문 1127-2148 · 사장님 21:48 「어그래」) — 먼저 칠한 판(index.html)도 data-fold=1 로 같은 꼴
-  { // 잡스 판 차례(주문 1128-0755) — 오늘 → 격언 → 오늘의 땅 → 오늘의 꾀 → 덜 잃은 꾀 셋 → 사기 전에 멈춤 → 안전 한 줄 → 오늘 더 보기 → 표지 → 그 아래 그대로
-    for (const e of main.querySelectorAll(':scope > section.sj-hero, :scope > section.sj-greet, :scope > section.sj-coday, :scope > section.sj-todo, :scope > .sj-jh, :scope > .sj-jl, :scope > .sj-jkk, :scope > .sj-j3, :scope > .sj-jst, :scope > .sj-jsafe, :scope > .sj-jmore')) e.remove();
+  { // 잡스 판 차례(주문 1128-0755 · 둘째 1128-1038) — 오늘(날 · 응원 · 본질 한 줄) → 격언 → 오늘의 땅 → 오늘의 꾀 → 덜 잃은 꾀 셋(바닥 먼저) → 사기 전에 멈춤 문 → 우리가 하지 않는 일 · 오늘은 여기까지 → 안전 한 줄 → 오늘 더 보기 → 표지 → 그 아래 그대로
+    for (const e of main.querySelectorAll(':scope > section.sj-hero, :scope > section.sj-greet, :scope > section.sj-coday, :scope > section.sj-todo, :scope > .sj-jh, :scope > .sj-jl, :scope > .sj-jkk, :scope > .sj-j3, :scope > .sj-jst, :scope > .sj-jnot, :scope > .sj-jsafe, :scope > .sj-jmore')) e.remove();
     const kk = jKkoe(T), mind = main.querySelector(':scope > section.sj-mind');
     main.prepend(jHead());
-    const J = [jLand(T, mktLine(T)), kk, jTop3Wait(), jStop(X.cur?.()?.code ?? null), h('p', {class: 'sj-safe sj-jsafe', text: SAFE}), jMore(greetSec(), coDaySec(kk.dataset.k ?? null), todoSec(), jWord(T))];
+    const J = [jLand(T, mktLine(T)), kk, jTop3Wait(), jStop(X.cur?.() ?? null, X.get), jNot(), h('p', {class: 'sj-safe sj-jsafe', text: SAFE + ' ' + SAFE_MORE}), jMore(greetSec(), coDaySec(kk.dataset.k ?? null), todoSec(), jWord(T))];
     if (mind) mind.after(...J); else main.querySelector(':scope > .sj-jh').after(...J);
   }
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));

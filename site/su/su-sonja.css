@@ -2168,3 +2168,57 @@ html.sj-on #su main.sj-page:not([data-page="sonja"]) .sj-ph .sj-land { font-fami
 html.sj-on #su main.sj-page:not([data-page="sonja"]) .sj-ph > .sj-k { color: #8A5A12; font-family: var(--sj-sans); font-size: 1.0625rem; font-weight: 800; letter-spacing: 0; }
 html.sj-on #su main.sj-page:not([data-page="sonja"]) .sj-ph .sj-step { color: #636366; font-family: var(--sj-sans); letter-spacing: 0; }
 @media (max-width: 370px) { html.sj-on #su main.sj-page:not([data-page="sonja"]) .sj-ph .sj-land { font-size: 1.5rem; } } /* 좁은 휴대폰 — 쪽 이름이 오른쪽 도장 옆에서 세로로 무너지지 않게(검사 ㉙) */
+/* 잡스 판 둘째(주문 1128-1038 · study30.md) */
+html.sj-on #su .sj-jh > .sj-jid { flex: 1 0 100%; margin: 12px 0 0; color: #1D1D1F; font-size: 1.25rem; font-weight: 800; line-height: 1.4; }
+html.sj-on #su .sj-jlrow { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+html.sj-on #su .sj-jlrow > .sj-jlt { margin: 0; }
+html.sj-on #su svg.sj-jlm { flex: none; width: 44px; height: 44px; fill: none; stroke: #1D1D1F; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+html.sj-on #su a.sj-j3a { grid-template-columns: 28px minmax(0, 1fr) auto 14px; }
+html.sj-on #su svg.sj-j3sp { display: block; width: 84px; height: 36px; overflow: visible; }
+html.sj-on #su svg.sj-j3sp .sj-j3b0 { stroke: #AEAEB2; stroke-width: 1.5; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+html.sj-on #su svg.sj-j3sp .sj-j3pl { fill: none; stroke: #1D1D1F; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+html.sj-on #su svg.sj-j3sp .sj-j3lo { fill: #1565C0; stroke: #FFFFFF; stroke-width: 2; vector-effect: non-scaling-stroke; }
+html.sj-on #su .sj-j3key { display: flex; align-items: center; gap: 8px; margin: 10px 0 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.45; }
+html.sj-on #su .sj-j3kd { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #1565C0; }
+html.sj-on #su form.sj-pzf { margin: 14px 0 0; }
+html.sj-on #su input.sj-pzi { -webkit-appearance: none; appearance: none; display: block; width: 100%; box-sizing: border-box; min-height: 56px; margin: 0; padding: 0 18px; border: 2px solid #1D1D1F; border-radius: 16px; background: #FFFFFF; color: #1D1D1F; font: inherit; font-size: 1.25rem; font-weight: 700; }
+html.sj-on #su input.sj-pzi::placeholder { color: #6E6E73; font-weight: 600; opacity: 1; }
+html.sj-on #su input.sj-pzi:focus-visible { outline: 3px solid #8A5A12; outline-offset: 2px; }
+html.sj-on #su ol.sj-pzl { list-style: none; margin: 8px 0 0; padding: 0; border-radius: 16px; background: #FFFFFF; overflow: hidden; }
+html.sj-on #su ol.sj-pzl:empty { display: none; }
+html.sj-on #su li.sj-pzr + li.sj-pzr { border-top: 1px solid #E5E5EA; }
+html.sj-on #su a.sj-pza { display: grid; grid-template-columns: minmax(0, 1fr) auto 14px; align-items: center; column-gap: 10px; min-height: 56px; padding: 8px 16px; color: #1D1D1F; text-decoration: none; }
+html.sj-on #su .sj-pzt { display: flex; flex-direction: column; min-width: 0; }
+html.sj-on #su .sj-pzt > b { font-size: 1.125rem; font-weight: 800; line-height: 1.35; overflow-wrap: anywhere; }
+html.sj-on #su .sj-pzc { color: #636366; font-size: 1.0625rem; font-weight: 600; }
+html.sj-on #su .sj-pzg { color: #8A5A12; font-size: 1.0625rem; font-weight: 800; }
+html.sj-on #su a.sj-pza > i { color: #8E8E93; font-style: normal; font-size: 1.375rem; font-weight: 700; }
+html.sj-on #su .sj-pzn { margin: 8px 0 0; color: #3A3A3C; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su .sj-jst > a.sj-pzo0 { margin-top: 12px; }
+html.sj-on #su .sj-jst > a.sj-pzo + a.sj-pzo0 { margin-top: 10px; }
+html.sj-on #su .sj-jst > a.sj-pzo0:not(.sj-jbtn2) { background: #FFFFFF; color: #1D1D1F; box-shadow: inset 0 0 0 1.5px #C7C7CC; }
+html.sj-on #su .sj-jstn { margin: 12px 0 0; color: #3A3A3C; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jnot { margin: 0; padding: 22px 4px 0; border-radius: 0; background: transparent; box-shadow: none; }
+html.sj-on #su ul.sj-jnl { list-style: none; display: grid; gap: 6px; margin: 8px 0 0; padding: 0; }
+html.sj-on #su ul.sj-jnl > li { display: flex; align-items: baseline; gap: 10px; color: #1D1D1F; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+html.sj-on #su ul.sj-jnl > li::before { content: ''; flex: none; width: 10px; height: 2px; background: #8A5A12; transform: translateY(-5px); }
+html.sj-on #su .sj-jend { margin: 16px 0 0; padding: 14px 16px; border-radius: 14px; background: #F2F2F7; color: #1D1D1F; font-size: 1.125rem; font-weight: 700; line-height: 1.5; }
+#su .sj-page .su-nobuy { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin-top: 14px; padding: 10px 16px; border: 1.5px solid #1D1D1F; border-radius: 4px; background: #FFFFFF; color: #1D1D1F; font: inherit; font-size: 1.1875rem; font-weight: 800; cursor: pointer; }
+#su .sj-page .su-nobuy:focus-visible { outline: 3px solid #8A5A12; outline-offset: 2px; }
+#su .sj-page .su-stops .su-ft { margin-bottom: 4px; }
+@media (max-width: 370px) {
+  html.sj-on #su a.sj-j3a { grid-template-columns: 24px minmax(0, 1fr) auto 12px; column-gap: 8px; }
+  html.sj-on #su svg.sj-j3sp { width: 64px; height: 32px; }
+}
+/* 금빛 선물 늘 보임(주문 0338 · 틀림 283) */
+html.sj-on #su .sj-top > a.sj-gift { flex: none; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 56px; min-height: 48px; margin: 0; padding: 0 14px; border: 0; border-radius: 24px; background: #F6EEDC; color: #7A4E0E; font-size: 1.0625rem; font-weight: 800; text-decoration: none; box-shadow: inset 0 0 0 1.5px #E2CFA6; }
+html.sj-on #su .sj-top > a.sj-gift:focus-visible { outline: 3px solid #8A5A12; outline-offset: 2px; }
+html.sj-on #su .sj-top:not(:has(> .sj-lang)) > a.sj-gift { margin-left: auto; }
+@media (max-width: 370px) { html.sj-on #su .sj-top .sj-brand-t { display: none; } html.sj-on #su .sj-top > a.sj-gift { min-width: 52px; padding: 0 10px; } }
+html.sj-on #su .sj-top:has(> a.sj-gift) > .sj-menu { margin-left: 0; }
+@media (max-width: 370px) { html.sj-on #su .sj-top .sj-brand-ic { display: block; } }
+html.sj-on[lang="en"] #su .sj-top .sj-brand-t { display: none; } html.sj-on[lang="en"] #su .sj-top .sj-brand { min-width: 48px; justify-content: center; }
+@media (max-width: 370px) { html.sj-on[lang="en"] #su .sj-top .sj-langb { padding: 0 6px; } html.sj-on[lang="en"] #su .sj-top { gap: 4px; } }
+html.sj-on #su input.sj-pzi::-webkit-search-cancel-button, html.sj-on #su input.sj-pzi::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+@media (max-width: 370px) { html.sj-on #su .sj-top .sj-brand { min-width: 48px; justify-content: center; } html.sj-on[lang="en"] #su .sj-top .sj-brand { display: none; } }
+html.sj-on #su .sj-j3key { align-items: flex-start; } html.sj-on #su .sj-j3kd { margin-top: 7px; }

@@ -6,6 +6,7 @@ import {NEED, val, eQuizResult, eJournal} from '/su/su-six.js';
 import {h} from '/su/su-fig.js';
 import {whyPic, journalPic, groupInk, tallyInk} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0300 — 옛 꽃잎 · 시간 줄 · 기둥 · 막대 그림을 지우고 손자병법 판으로)
 import {tally} from '/next/tally.js'; // 합계 칸 신호(① 멈춤 · 약속) — 예전 앱 「왜 사?」와 같은 한 곳
+import {readStops, saveStop, stopDays} from '/su/su-stops.js'; // 「오늘은 안 사요」 멈춘 날(주문 1128-1038 · 이 휴대폰에만 · 신호 안 보냄 · 이어진 날은 세지 않음)
 
 const cache = new Map();
 const get = url => { if (!cache.has(url)) cache.set(url, fetch(url).then(r => (r.ok ? r.json() : null)).catch(() => null)); return cache.get(url); };
@@ -172,6 +173,22 @@ export async function vQuiz(code0, X) {
   /* 답 = 다음(주문 1120-0001 · 참모 서른여섯 2차 표 d09 「한 돌 한 판」 13표 — 누름 22번 → 11번 · 앞 답의 한마디는 다음 질문 맨 위 · 11번째 답이면 바로 결과) */
   const choose = (i, k) => { Q.ans[i] = k; if (i === WHY_QS.length - 1) finish(); else { Q.i = i + 1; redraw(); } };
   const SEEN = '앞 답 한마디';
+  /* 「오늘은 안 사요」(주문 1128-1038 · 사장님 10:38 「… 본질답게 … 혁신적이면서 직관적이면서 깊이가 있는 방법으로」 · 공부 서른 7 「안 산 날 장부」 · 9 「큰 단추는 오늘은 안 산다」 · 10 「그만둔 횟수는 덜 잃은 날」 · 26 「오늘은 여기까지」)
+     질문 어디서든 · 끝 화면에서도 · 누르면 멈춘 날 한 줄을 이 휴대폰에만 남기고 조용한 끝 화면 · 이어진 날은 세지 않음 · 상 · 폭죽 없음 */
+  const nobuy = q => btn('su-nobuy', [h('span', {text: '오늘은 안 사요'})], () => { Q.back = Q.i; Q.stopOk = saveStop({code, name, q}); Q.i = 'stop'; redraw(); });
+  const stopped = () => {
+    const L = readStops(), n = Q.stopOk && L ? stopDays(L) : null;
+    const big = val(n, '번', '사기 전에 멈춘 날', {누가: '나', 언제: '오늘', 어디서: '이 휴대폰', 무엇을: (name ? name + ' · ' : '') + '오늘은 안 사기로 했어요', 어떻게: '「오늘은 안 사요」를 누른 날만 세요. 같은 날은 한 번이에요.', 왜: '안 사는 것도 내 돈을 지키는 일이에요.'},
+      {mean: n ? '이 휴대폰에서 사기 전에 멈춘 날이 ' + n + '번이라는 뜻이에요. 이어진 날은 세지 않아요.' : '이 기기는 기록을 남길 수 없어요. 그래도 오늘 멈춘 것은 그대로예요.'});
+    return {title: '오늘은 안 사요', tab: 3, step: 4, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 멈춤', h1: '오늘은 안 사요', big,
+      seal: '멈춤', ink: whyPic(tonesNow(), null), say: '오늘은 사지 않기로 했어요. 안 사는 것도 내 돈을 지키는 일이에요.',
+      act: [h('a', {class: 'su-ask su-ask1 su-calm', href: '#/'}, h('b', {text: '오늘은 여기까지'}), h('span', {text: '처음 쪽으로 돌아가요.'})),
+        btn('su-qback', [h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: '질문으로 돌아가기'})], () => { Q.i = Number.isInteger(Q.back) ? Q.back : Q.J ? 'res' : 0; redraw(); })],
+      body: [h('p', {class: 'su-note', text: '멈춘 날은 이 휴대폰에만 남아요. 밖으로 보내지 않아요. 이어서 며칠인지는 세지 않고, 상도 주지 않아요.'}),
+        h('a', {class: 'su-ask', href: '#/j'}, h('b', {text: '내 매매일지 보기'}), h('span', {text: '멈춘 날과 쌓인 답이 한곳에 있어요.'}))],
+      pro: [{k: '멈춘 날', v: n == null ? NEED : n + '번', how: '「오늘은 안 사요」를 누른 서울 날짜 수 · 같은 날 여러 번 눌러도 하루 · 이 휴대폰에만'}],
+      next: {href: '#/j', label: '내 기록은 몇 번?', step: 5}, asOf, S, note: '멈춘 날과 답은 이 휴대폰에만 남아요.'};
+  };
   const finish = () => {
     const J = judgeWhy(Q.ans), v = WHY_V[J.verdict], ok = Number.isFinite(c?.price) && c.price > 0;
     Q.J = J;
@@ -194,7 +211,8 @@ export async function vQuiz(code0, X) {
       act: [ch ? h('div', {class: 'su-reply su-prev ' + ch[0], role: 'status'}, h('p', {class: 'su-rk'}, h('i', {'aria-hidden': 'true', text: SHAPE[ch[0]]}), h('b', {text: SEEN + ' · ' + TONE_W[ch[0]]})), h('p', {class: 'su-rt2', text: ch[2]})) : null,
         h('ul', {class: 'su-ans', 'aria-label': '답 셋 · 누르면 바로 다음 질문'}, WHY_A[i].map(([tone, label], k) => h('li', {}, // 누르는 곳은 질문 바로 아래 · 첫 화면 안(주문 1120-0001)
           btn('su-a' + (a === k ? ' on' : ''), [h('i', {class: 'su-shape ' + tone, 'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label})], () => choose(i, k))))),
-        i > 0 ? btn('su-qback', [h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: '앞 질문'})], () => { Q.i = i - 1; redraw(); }) : null],
+        i > 0 ? btn('su-qback', [h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: '앞 질문'})], () => { Q.i = i - 1; redraw(); }) : null,
+        nobuy(i + 1)], // 질문 어디서든 그만두기(공부 서른 9 · 10 · 28 — 그만둔 것은 실패가 아니라 멈춘 날)
       body: [h('p', {class: 'su-qwhy', text: WHY_WHY[i]}), h('p', {class: 'su-note', text: '답을 누르면 바로 다음 질문으로 가요. 고친 답은 「앞 질문」에서 다시 골라요.'})],
       next: {href: '#/j', label: '내 기록은 몇 번?', step: 5}, asOf, S, note: '답은 이 휴대폰에만 남아요.'};
   };
@@ -220,10 +238,10 @@ export async function vQuiz(code0, X) {
         h('p', {class: 'su-note', text: Q.saved ? '오늘 답을 매매일지에 날짜와 함께 쌓았어요. 한 달 뒤에 「그날 정한 대로 했어?」를 물어요.' : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),
         h('a', {class: 'su-ask', href: '#/j'}, h('b', {text: '내 매매일지 보기'}), h('span', {text: '쌓인 답과 한 달 뒤 약속이 한곳에 있어요.'})),
         btn('su-qback su-again', [h('i', {'aria-hidden': 'true', text: '↺'}), h('span', {text: '다시 하기'})], () => { Q.i = 0; Q.ans.fill(null); Q.J = null; redraw(); })],
-      act: [h('a', {class: 'su-ask su-ask1', href: '#/j'}, h('b', {text: '내 매매일지 보기'}))], // 누르는 곳 하나는 그림 바로 아래
+      act: [h('a', {class: 'su-ask su-ask1', href: '#/j'}, h('b', {text: '내 매매일지 보기'})), nobuy(12)], // 누르는 곳 하나는 그림 바로 아래 · 답을 다 하고도 안 사기로 했으면 「오늘은 안 사요」(주문 1128-1038)
       next: {href: '#/j', label: '내 기록은 몇 번?', step: 5}, asOf, S, note: '답과 기록은 이 휴대폰에만 남아요.'};
   };
-  const model = () => (Q.i === 'res' ? result() : ask());
+  const model = () => (Q.i === 'res' ? result() : Q.i === 'stop' ? stopped() : ask());
   return model();
 }
 
@@ -267,11 +285,14 @@ export async function vJournal(X) {
   const kept = full.filter(r => r.kept?.a === 'yes').length, asked = full.filter(r => r.kept?.a === 'yes' || r.kept?.a === 'no').length;
   const avg = {}; for (const [n] of WHY_GROUPS) { const v = full.map(r => r.groups?.[n]).filter(Number.isFinite); avg[n] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }
   const e = eJournal({recs: full, due: dues.length, kept, asked, lastDay: full[0] ? dayOf(full[0]) : null});
+  const SL = readStops(), sd = SL ? stopDays(SL) : 0; // 「오늘은 안 사요」 멈춘 날(주문 1128-1038 · 이어진 날은 세지 않음)
   return {title: '매매일지', tab: 4, rec: 4, step: 5, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
     seal: '일지', ink: journalPic(inkItems(metas)), say: [e.say].flat().filter(Boolean).slice(0, 2).join(' '),
     figs: full.length ? [tallyInk([{name: VSHORT.rest, v: vc.rest}, {name: VSHORT.wait, v: vc.wait}, {name: VSHORT.go, v: vc.go}]), groupFig(groupRowsOf(avg))] : [whyPic(new Array(WHY_QS.length).fill(null), null)], // 기록이 없으면 빈 돌 열하나(판정 칸은 첫 기록 뒤에)
     act: dues.length ? [dueBox(dues, X)] : null, // 한 달 전 약속 — 답할 것이 있을 때만 그림 바로 아래(누르는 곳 · 주문 1023 [2] 3)
     body: [
+      h('section', {class: 'su-why su-stops', 'aria-label': '사기 전에 멈춘 날'}, h('h2', {class: 'su-ft', text: '사기 전에 멈춘 날 ' + sd + '번'}),
+        h('p', {class: 'su-note', text: sd ? '「왜 사?」에서 「오늘은 안 사요」를 누른 날이에요. 안 산 날도 내 돈을 지킨 날이에요. 이어서 며칠인지는 세지 않아요.' : '「왜 사?」 질문 어디서든 「오늘은 안 사요」를 누르면 그날이 여기에 남아요. 이어서 며칠인지는 세지 않아요.'})),
       full.length ? h('section', {class: 'su-why', 'aria-label': '쌓인 기록'}, h('h2', {class: 'su-ft', text: '쌓인 기록 ' + full.length + '번'}),
         h('p', {class: 'su-note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 물어요. 그다음 한 달 뒤 값을 보여 줘요. 같은 때 코스피와 모든 회사 가운데 값도 함께 보여 줘요.'}),
         h('ol', {class: 'su-jl'}, shown.map((m, i) => recCard(m.r, m.W, laters[i]))),
@@ -279,7 +300,7 @@ export async function vJournal(X) {
         full.length > 30 ? h('p', {class: 'su-note', text: '새 기록 서른 줄만 보여요. 나머지 ' + (full.length - 30) + '줄도 지우지 않고 그대로 있어요.'}) : null) : null,
       full.length ? h('a', {class: 'su-ask', href: '#/r/t'}, h('b', {text: '서른여섯 꾀 정산과 함께 보기'}), h('span', {text: '한 달 뒤 값을, 꾀마다 10주씩 샀다고 친 결과와 비교해 봐요.'})) : null, // 옛 꽃 기록 단추(주문 1115-2328 — 꽃 쪽은 지움)
       can ? null : h('p', {class: 'su-note', text: '이 기기는 기록을 남길 수 없어요.'})],
-    pro: [{k: '쌓인 기록', v: full.length + '번', how: '이 휴대폰에만 남아요. 틀린 것도 지우지 않아요. 최근 200줄까지 남고, 저장 공간을 비우면 사라져요.'}, {k: '판정 · 쉬어 · 반만 · 준비됨', v: vc.rest + ' · ' + vc.wait + ' · ' + vc.go, how: '「왜 사?」 결과 판정을 센 값 · 쉬어 간 날은 싸우지 않고 지킨 날이에요'},
+    pro: [{k: '사기 전에 멈춘 날', v: sd + '번', how: '「오늘은 안 사요」를 누른 서울 날짜 수 · 같은 날 여러 번 눌러도 하루 · 이 휴대폰에만'}, {k: '쌓인 기록', v: full.length + '번', how: '이 휴대폰에만 남아요. 틀린 것도 지우지 않아요. 최근 200줄까지 남고, 저장 공간을 비우면 사라져요.'}, {k: '판정 · 쉬어 · 반만 · 준비됨', v: vc.rest + ' · ' + vc.wait + ' · ' + vc.go, how: '「왜 사?」 결과 판정을 센 값 · 쉬어 간 날은 싸우지 않고 지킨 날이에요'},
       {k: '한 달 뒤 물은 기록 · 못 한 기록 · 한 기록', v: asked + ' · ' + (asked - kept) + ' · ' + kept, how: '한 달은 장이 열린 날 스무 번이에요. 달력으로 서른 날이 먼저 지나면 그날까지예요. 한 달이 지난 기록에만 물어요. 지금 물을 기록은 ' + dues.length + '번이에요.'},
       ...WHY_GROUPS.map(([n]) => ({k: n + ' 묶음 평균', v: Number.isFinite(avg[n]) ? String(Math.round(avg[n] * 10) / 10) : NEED, how: '기록마다 묶음 점수의 평균 · 준비된 만큼'})),
       ...full.slice(0, 30).map(r => ({k: (dayOf(r) ?? NEED) + (r.name ? ' · ' + r.name : ''), v: (readyOfRec(r) ?? NEED) + ' / ' + WHY_MAX + ' · ' + (shownV(r.verdict) ?? NEED), how: '그날 값 ' + (r.price > 0 ? won(r.price) : NEED) + ' · 빨간 답 ' + (Number.isFinite(r.reds) ? r.reds : NEED) + ' · 한 달 뒤 ' + (r.kept ? (r.kept.a === 'yes' ? '정한 대로 함' : '못 함') : '아직')}))],

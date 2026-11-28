@@ -47,15 +47,15 @@ function findTop() {
   return a;
 }
 /** 잡스 판(주문 1128-0755 · 사장님 2026-11-28(서울) 07:55 「잡스가 인터페이스를 만들었다면 … 애플에 공식을 먼저 학습하라 … 먼저 샘플 3개를 제시하라」 · 08:17 「그래 1번으로 해 … 그 본질답게 개선하고 업그레이드」)
- *  머리 줄 한 줄 = 이름 · 「한국어 · 영어」 · 「⋯」(천사 · 찾기 · 선물 · 듣기 · 글씨는 한 번 더 누르면 — 지우지 않음 · 찾기는 선물 바로 앞 그대로 · 주문 1120-1705)
+ *  머리 줄 한 줄 = 이름 · 「한국어 · 영어」 · 금빛 「선물」(늘 보임 — 주문 0338 「모든 쪽 위 막대에 금빛 선물 단추」 · 2035 「선물하기가 안 보여」 · 틀림 283 — 첫 판에서 「⋯」 안에 넣어 선물 검사가 깨졌음) · 「⋯」(찾기 · 천사 · 듣기 · 글씨 — 찾기는 「⋯」 맨 앞 · 선물 바로 옆 · 주문 1120-1705)
  *  애플 공식 안내서(Human Interface Guidelines 2026-06-08 · Simplicity 「Include just what's necessary」) · 잡스 「백 가지에 아니오」 */
-export const MORE_LABEL = '더 보기 — 찾기 · 선물 · 듣기 · 글씨 · 천사';
+export const MORE_LABEL = '더 보기 — 찾기 · 듣기 · 글씨 · 천사';
 export function moreMenu(tools) {
   const d = h('details', {class: 'sj-menu'},
     h('summary', {class: 'sj-menub', 'aria-label': MORE_LABEL},
       s('svg', {viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false'}, s('circle', {cx: 5, cy: 12, r: 2}), s('circle', {cx: 12, cy: 12, r: 2}), s('circle', {cx: 19, cy: 12, r: 2}))),
     tools);
-  d.addEventListener('click', e => { if (e.target?.closest?.('a, button')) d.open = false; }); // 고르면 닫힘(찾기 · 선물 · 듣기 · 글씨 · 천사)
+  d.addEventListener('click', e => { if (e.target?.closest?.('a, button')) d.open = false; }); // 고르면 닫힘(찾기 · 듣기 · 글씨 · 천사)
   return d;
 }
 export function topBar(o = {}) { // o.lang === false = 「왜 사?」 질문 쪽처럼 첫 화면에 답이 다 보여야 하는 쪽(주문 1120-0001)은 한국어판에서 탭 줄을 빼고 그림(영어판에서는 늘 보임 — 돌아올 길)
@@ -63,10 +63,10 @@ export function topBar(o = {}) { // o.lang === false = 「왜 사?」 질문 쪽
   return h('header', {class: 'sj-top'},
     h('a', {class: 'sj-brand', href: '#/', 'aria-label': NAME + ' 첫 쪽'}, h('img', {class: 'sj-brand-ic', src: '/su/su-icon.svg', alt: '', width: 32, height: 32, decoding: 'async'}), h('span', {class: 'sj-brand-t', text: NAME})), // 앱 얼굴 + 이름
     o.lang === false && langNow() !== 'en' ? null : langTabs(), // 「한국어 · 영어」(주문 1127-2320) — 이름 옆 한 줄(잡스 판 · 주문 1128-0755)
+    h('a', {id: 'giftBtn', class: 'sj-btn sj-gift', href: '#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}), // 금빛 선물 단추 — 머리 줄에 늘 보임(주문 0338 · 검사 check_gift ① · 누르면 상품권 방 /next/#/gift — su-data.js forwardTo)
     moreMenu(h('div', {class: 'sj-tools'},
+      findTop(), // 회사 찾기 — 선물 바로 옆 「⋯」 맨 앞(주문 1120-1705 · 사장님 17:05 「종목 찾기를 선물 옆에 배치」) · 회사 탭 맨 위 찾기 칸으로
       h('a', {class: 'sj-btn sj-angel', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'}), h('i', {'aria-hidden': 'true', text: '↗'})),
-      findTop(), // 회사 찾기 — 선물 옆(주문 1120-1705 · 사장님 17:05 「종목 찾기를 선물 옆에 배치」) · 회사 탭 맨 위 찾기 칸으로
-      h('a', {id: 'giftBtn', class: 'sj-btn sj-gift', href: '/next/?su=guide#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}),
       sayTop(), big)));
 }
 /** 말 고르기 탭(주문 1127-2320 · 사장님 23:20 「영어 번역판으로도 상단에 탭을 만들어서」) — 고른 말은 이 휴대폰에 기억 · 누르면 다시 그림 */
