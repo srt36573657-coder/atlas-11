@@ -2157,7 +2157,7 @@ html.sj-on #su .sj-jh > .sj-jhk { flex: 1 0 100%; }
 html.sj-on #su .sj-jh > .sj-jht { flex: none; }
 html.sj-on #su .sj-jh > .sj-cheer { flex: 0 1 auto; margin: 4px 0 0 auto; }
 /* 탭 넷(잡스 판 · 주문 1128-0755 — 오늘 · 꾀 · 멈춤 · 기록 · 회사 찾기는 머리 줄 「⋯」) */
-html.sj-on #su .sj-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+html.sj-on #su .sj-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); } /* 탭 다섯(주문 1128-1501 · 16:09 「꾀 옆 그리고 멈춤 사이에 탭」) */
 /* ── 잡스 판 안쪽 쪽들(주문 1128-0755 — 첫 쪽부터 마지막 쪽까지 같은 모양 · 샘플 1 꾀 화면) — 흰 판 · 쪽 이름은 큰 고딕 · 황토 이름표 · 칸 상자 대신 가는 줄
    쪽 머리 수채화 띠(꾸밈 · 그림 뜻 없는 배경)는 뺌 — 애플 공식 안내서 Delight 「Don't mistake delight for decoration」 · 그림 뜻이 붙은 그림은 그대로 ── */
 html.sj-on #su main.sj-page:not([data-page="sonja"]) { background-color: #FFFFFF; margin-top: 0; }
@@ -2214,7 +2214,8 @@ html.sj-on #su .sj-jend { margin: 16px 0 0; padding: 14px 16px; border-radius: 1
 html.sj-on #su .sj-top > a.sj-gift { flex: none; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 56px; min-height: 48px; margin: 0; padding: 0 14px; border: 0; border-radius: 24px; background: #F6EEDC; color: #7A4E0E; font-size: 1.0625rem; font-weight: 800; text-decoration: none; box-shadow: inset 0 0 0 1.5px #E2CFA6; }
 html.sj-on #su .sj-top > a.sj-gift:focus-visible { outline: 3px solid #8A5A12; outline-offset: 2px; }
 html.sj-on #su .sj-top:not(:has(> .sj-lang)) > a.sj-gift { margin-left: auto; }
-@media (max-width: 370px) { html.sj-on #su .sj-top .sj-brand-t { display: none; } html.sj-on #su .sj-top > a.sj-gift { min-width: 52px; padding: 0 10px; } }
+@media (max-width: 430px) { html.sj-on #su .sj-top .sj-brand-t { display: none; } html.sj-on #su .sj-top .sj-brand { min-width: 48px; justify-content: center; } } /* 사장님 2026-11-28(서울) 16:09 첫 쪽 사진 — 375 휴대폰에서 「⋯」가 오른쪽 끝에 잘림 → 430 아래는 이름 글을 숨기고 앱 얼굴만 */
+@media (max-width: 370px) { html.sj-on #su .sj-top > a.sj-gift { min-width: 52px; padding: 0 10px; } }
 html.sj-on #su .sj-top:has(> a.sj-gift) > .sj-menu { margin-left: 0; }
 @media (max-width: 370px) { html.sj-on #su .sj-top .sj-brand-ic { display: block; } }
 html.sj-on[lang="en"] #su .sj-top .sj-brand-t { display: none; } html.sj-on[lang="en"] #su .sj-top .sj-brand { min-width: 48px; justify-content: center; }
@@ -2228,21 +2229,25 @@ html.sj-on #su svg.sj-j3ten .sj-j3t0 { fill: #FFFFFF; stroke: #8E8E93; stroke-wi
 html.sj-on #su .sj-j3kd.sj-j3kq { border-radius: 2px; }
 @media (max-width: 370px) { html.sj-on #su svg.sj-j3ten { width: 64px; height: 12px; } }
 /* 가짜 돈이 사고팔 차례(주문 1128-1501) — 탭 둘 · 줄 일곱 · 빨강 없음 */
-html.sj-on #su main.sj-page[data-page="sonja"] > .sj-jtt { margin: 0; padding: 22px 4px 0; border-radius: 0; background: transparent; box-shadow: none; }
-html.sj-on #su .sj-jttt { margin: 4px 0 0; color: #1D1D1F; font-size: 1.5rem; font-weight: 800; line-height: 1.3; }
-html.sj-on #su .sj-ttnote { margin: 6px 0 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
-html.sj-on #su .sj-tts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: 12px 0 0; padding: 3px; border-radius: 14px; background: #EFEFF4; }
+html.sj-on #su .sj-tts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: 4px 0 0; padding: 3px; border-radius: 14px; background: #EFEFF4; }
 html.sj-on #su button.sj-ttb { min-height: 48px; margin: 0; padding: 0 8px; border: 0; border-radius: 11px; background: transparent; color: #3A3A3C; font: inherit; font-size: 1.125rem; font-weight: 700; cursor: pointer; }
 html.sj-on #su button.sj-ttb[aria-selected="true"] { background: #FFFFFF; color: #1D1D1F; font-weight: 800; box-shadow: 0 1px 2px rgba(0, 0, 0, .12); }
 html.sj-on #su button.sj-ttb:focus-visible { outline: 3px solid #8A5A12; outline-offset: 2px; }
 html.sj-on #su .sj-ttp[hidden] { display: none; }
-html.sj-on #su .sj-ttl, html.sj-on #su .sj-ttw { margin: 12px 0 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
-html.sj-on #su ol.sj-tto { list-style: none; margin: 6px 0 0; padding: 0; }
-html.sj-on #su li.sj-tti { margin: 0; border-bottom: 1px solid #E5E5EA; }
-html.sj-on #su a.sj-tta { display: grid; grid-template-columns: 28px minmax(0, 1fr) 14px; align-items: center; column-gap: 12px; min-height: 64px; padding: 8px 2px; color: inherit; text-decoration: none; }
-html.sj-on #su .sj-ttn { color: #8A5A12; font-size: 1.375rem; font-weight: 800; text-align: center; }
-html.sj-on #su .sj-ttx { display: flex; flex-direction: column; min-width: 0; }
-html.sj-on #su .sj-ttnm { color: #1D1D1F; font-size: 1.125rem; font-weight: 800; line-height: 1.35; overflow-wrap: anywhere; }
-html.sj-on #su .sj-ttsub { color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.45; }
-html.sj-on #su a.sj-tta > i { color: #8E8E93; font-style: normal; font-size: 1.375rem; font-weight: 700; }
-@media (max-width: 370px) { html.sj-on #su a.sj-tta { grid-template-columns: 24px minmax(0, 1fr) 12px; column-gap: 8px; } }
+html.sj-on #su .sj-ttl, html.sj-on #su .sj-ttw, html.sj-on #su .sj-dgw { margin: 12px 0 0; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.5; }
+/* 사고팔 쪽(#/d · 주문 1128-1501 · 16:09 · 16:11) — 꾀 한 줄에 그 꾀가 산 회사 모두 · 회사는 누르는 칩(48 넘게) · 오름 빨강 · 내림 파랑(안쪽 쪽만 · 첫 쪽엔 빨강 없음) */
+html.sj-on #su ol.sj-dgo { list-style: none; margin: 8px 0 0; padding: 0; }
+html.sj-on #su li.sj-dg { margin: 0; padding: 14px 0 12px; border-top: 1px solid #E5E5EA; }
+html.sj-on #su p.sj-dgh { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; row-gap: 2px; margin: 0; }
+html.sj-on #su .sj-dgn { min-width: 26px; color: #8A5A12; font-size: 1.25rem; font-weight: 800; }
+html.sj-on #su .sj-dgt { color: #1D1D1F; font-size: 1.1875rem; font-weight: 800; line-height: 1.35; overflow-wrap: anywhere; }
+html.sj-on #su .sj-dgs { flex-basis: 100%; padding-left: 34px; color: #636366; font-size: 1.0625rem; font-weight: 600; line-height: 1.45; }
+html.sj-on #su ul.sj-dgl { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 10px 0 0; padding: 0 0 0 34px; }
+html.sj-on #su ul.sj-dgl > li { margin: 0; min-width: 0; max-width: 100%; }
+html.sj-on #su a.sj-dc { display: inline-flex; flex-wrap: wrap; align-items: center; column-gap: 2px; min-height: 48px; max-width: 100%; padding: 6px 14px; border: 1px solid #D8D2C4; border-radius: 12px; background: #FFFFFF; color: #1D1D1F; font-size: 1.0625rem; font-weight: 700; line-height: 1.3; text-decoration: none; overflow-wrap: anywhere; }
+html.sj-on #su a.sj-dc:focus-visible { outline: 3px solid #8A5A12; outline-offset: 2px; }
+html.sj-on #su .sj-dcv { color: #636366; font-weight: 600; }
+html.sj-on #su b.sj-dv { font-weight: 800; color: #3A3A3C; }
+html.sj-on #su b.sj-dv[data-m="up"] { color: #D32F2F; }
+html.sj-on #su b.sj-dv[data-m="dn"] { color: #1565C0; }
+@media (max-width: 370px) { html.sj-on #su .sj-dgs, html.sj-on #su ul.sj-dgl { padding-left: 0; } }

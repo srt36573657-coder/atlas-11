@@ -16,7 +16,7 @@ import {STORY36, ACTS, STORY_TAG} from '/su/su-sonja-story.js'; // 그림 속 �
 import {D36, DST, load21, n36of, okSun, sp36, rec36, chip, spark, head, endSeal, chev, mday, ym, day, w100, monOf, MONW, none36, fin, funnel36, eqBox, trSpark} from '/su/su-sonja.js';
 import {base36} from '/su/su-sonja-36.js'; // 꾀 칸 자료를 못 받은 날의 바탕 글(su21_s36.py 그대로)
 import {kkoePic, ridgePic, heroPic, brushBar, sonmuPic} from '/su/su-sonja-ink.js'; // 먹그림(주문 1116-0118 — 손무의 이야기: 제3장 꾀를 펼치다 · 제4장 성을 살피다 · 장부 · 병서)
-import {kkoeTile, fold7, FOLD7} from '/su/su-sonja.js'; // 긴 줄 접기 한 틀(주문 1127-1714 · 첫 쪽 격언도 같은 틀 — 주문 1127-2148)
+import {kkoeTile, fold7, FOLD7, trPath} from '/su/su-sonja.js'; // 긴 줄 접기 한 틀(주문 1127-1714 · 첫 쪽 격언도 같은 틀 — 주문 1127-2148)
 import {stance3, STANCES} from '/su/su-stance.js'; // 세 태세(주문 1120-0728 · 꾀 쪽 맨 위 표지 — 주문 1120-0950)
 import {picksOf, monthLow, dayCounts} from '/su/su-picks.js';
 import {findBox} from '/su/su-find.js'; // 회사 찾기(주문 1120-1447 — 회사 탭 맨 위)
@@ -1262,6 +1262,61 @@ function pickChart(P) {
     h('p', {class: 'sj-pkcd', 'aria-hidden': 'true'}, h('span', {text: mday(P.days[0]) ?? ''}), h('span', {text: mday(P.days[n - 1]) ?? ''})),
     h('ul', {class: 'sj-pkcl'}, ...R.map((r, j) => h('li', {'data-j': String(j + 1)}, h('i', {class: 'sj-pkck ' + PKC[j] + 'k', 'aria-hidden': 'true'}), h('span', {'data-proper': '', text: r.name}), h('span', {text: ' · 오늘 꾀 ' + r.now + '가지'})))),
     n < 2 ? h('p', {class: 'sj-note', text: '아직 하루치예요. 장이 끝난 날마다 한 점씩 늘어요.'}) : null);
+}
+/* ── 사고팔 탭(주문 1128-1501 · 사장님 2026-11-28(서울) 15:01 「가운데 테이블 … 두 개의 탭」 · 16:09 「꾀 옆 그리고 멈춤 사이에 탭을 만들어 그곳에 넣어」 · 16:11 「7개 종목만 사는 게 아니라 꾀별로 다 사는 거잖아 … 이것부터 정의하고」)
+ *  살 차례 = 그날 꾀마다 고른 회사 모두(꾀 하나에 많아야 일곱 곳 · 꾀마다 따로 10주씩 종가) · 꾀 줄은 장부 기록(처음 100원이 지금 몇 원)이 높은 꾀부터 · 줄마다 그 꾀가 산 회사 모두
+ *  팔 차례 = 장부가 들고 있는 것 가운데 다음 장날이 정한 날인 것 모두(그날 종가로 팖 · sell-v1) · 88원 아래로 마치면 정한 날 전이라도 팖 — 회사마다 지금 값 · 낮은 것부터(손실 먼저) */
+const dv = r => h('b', {class: 'sj-dv', 'data-m': r > 100.04 ? 'up' : r < 99.95 ? 'dn' : 'eq', text: w100(r / 100 - 1)});
+export function buyGroups(g) {
+  if (!g || !Array.isArray(g.kinds)) return null;
+  const G = g.kinds.filter(k => /^g(0[1-9]|[12]\d|3[0-6])$/.test(k) && typeof g.name?.[k] === 'string').map(k => {
+    const seen = new Set(), L = (Array.isArray(g.lists?.[k]) ? g.lists[k] : []).filter(c => /^[0-9A-Z]{6}$/.test(String(c?.code ?? '')) && typeof c?.name === 'string' && c.name.trim() && !seen.has(c.code) && seen.add(c.code)).map(c => ({code: c.code, name: c.name.trim()}));
+    return {k, e: trPath(g, k), L};
+  }).sort((a, b) => (b.e ? b.e.now : -1e9) - (a.e ? a.e.now : -1e9) || (a.k < b.k ? -1 : 1));
+  return {G, n: G.reduce((a, x) => a + x.L.length, 0), co: new Set(G.flatMap(x => x.L.map(c => c.code))).size, kn: G.filter(x => x.L.length).length};
+}
+export function sellGroups(D) {
+  const sl = D?.sell, B = D?.buys, K = D?.kinds; if (!sl || !Array.isArray(sl.s) || !Array.isArray(B) || !Array.isArray(K)) return null;
+  const by = new Map(); let hold = 0;
+  B.forEach((b, i) => { const x = sl.s[i], k = Array.isArray(b) ? K[b[1]] : null; if (!Array.isArray(x) || x[0] !== 'h' || !(b[3] > 0) || !fin(x[2]) || !/^g(0[1-9]|[12]\d|3[0-6])$/.test(String(k))) return; hold++;
+    const n = Number.isInteger(sl.days?.[k]) ? sl.days[k] : null; if (n == null || !Number.isInteger(x[3]) || n - x[3] !== 1) return;
+    const nm = Array.isArray(D.co?.[b[2]]) && typeof D.co[b[2]][0] === 'string' ? D.co[b[2]][0] : b[2];
+    (by.get(k) ?? by.set(k, []).get(k)).push({code: b[2], name: nm, r: x[2] / b[3] * 100, d: b[0]}); });
+  const G = [...by.entries()].map(([k, L]) => ({k, L: L.sort((a, b) => a.r - b.r || (a.code < b.code ? -1 : 1))})).sort((a, b) => a.L[0].r - b.L[0].r || (a.k < b.k ? -1 : 1));
+  return {G, n: G.reduce((a, x) => a + x.L.length, 0), hold, asOf: D.asOf ?? null};
+}
+export async function vDeal(X) {
+  const [T, D, {S}] = await Promise.all([load21(X.get), X.get(DST).catch(() => null), X.base()]), g = await g36Of(X, T), gg = g.fallback ? null : g, nm = k => g.name?.[k] ?? k;
+  const B = buyGroups(gg), V = sellGroups(D), bd = mday(gg?.asOf?.board), sd = mday(V?.asOf);
+  const chipB = c => h('li', {}, h('a', {class: 'sj-dc', href: '#/q/' + c.code, 'aria-label': c.name + ' — 사기 전에 「왜 사?」'}, h('b', {'data-proper': '', text: c.name})));
+  const chipS = c => h('li', {}, h('a', {class: 'sj-dc', href: '#/c/' + c.code, 'aria-label': c.name + ' — 회사 쪽'}, h('b', {'data-proper': '', text: c.name}), h('span', {class: 'sj-dcv'}, h('span', {text: ' 100원이 '}), dv(c.r))));
+  const groupB = (x, i) => h('li', {class: 'sj-dg', 'data-k': x.k, 'data-n': String(x.L.length), 'data-v': x.e ? String(Math.round(x.e.now * 100) / 100) : ''},
+    h('p', {class: 'sj-dgh'}, h('span', {class: 'sj-dgn', text: String(i + 1)}), h('b', {class: 'sj-dgt', text: nm(x.k)}),
+      h('span', {class: 'sj-dgs'}, x.e ? h('span', {text: '이 꾀 100원이 '}) : h('span', {text: '이 꾀 기록 없음'}), x.e ? dv(x.e.now) : null, h('span', {text: ' · ' + x.L.length + '곳'}))),
+    x.L.length ? h('ul', {class: 'sj-dgl'}, ...x.L.map(chipB)) : h('p', {class: 'sj-dgw', text: '이날 고른 회사가 없어요.'}));
+  const groupS = (x, i) => h('li', {class: 'sj-dg', 'data-k': x.k, 'data-n': String(x.L.length), 'data-r': String(Math.round(x.L[0].r * 100) / 100)},
+    h('p', {class: 'sj-dgh'}, h('span', {class: 'sj-dgn', text: String(i + 1)}), h('b', {class: 'sj-dgt', text: nm(x.k)}), h('span', {class: 'sj-dgs', text: x.L.length + '곳 · ' + (g.name?.[x.k] ? '정한 날이 다음 장날' : '')})),
+    h('ul', {class: 'sj-dgl'}, ...x.L.map(chipS)));
+  const b1 = h('button', {type: 'button', class: 'sj-ttb', role: 'tab', id: 'sj-dt1', 'aria-selected': 'true', 'aria-controls': 'sj-dp1', text: '살 차례'});
+  const b2 = h('button', {type: 'button', class: 'sj-ttb', role: 'tab', id: 'sj-dt2', 'aria-selected': 'false', 'aria-controls': 'sj-dp2', text: '팔 차례'});
+  const p1 = h('div', {class: 'sj-ttp', role: 'tabpanel', id: 'sj-dp1', 'aria-labelledby': 'sj-dt1', 'data-n': B ? String(B.n) : '', 'data-co': B ? String(B.co) : ''},
+    ...(B && B.n ? [h('p', {class: 'sj-ttl', text: (bd ? bd + ' ' : '') + '종가로 꾀마다 고른 회사를 모두 10주씩 사요. 꾀 ' + B.kn + '가지가 ' + B.n + '번 사요. 회사로는 ' + B.co + '곳이에요.'}),
+      h('p', {class: 'sj-ttl', text: '지난 기록에서 많이 오른 꾀가 맨 위예요. 회사를 누르면 「왜 사?」 질문으로 가요.'}),
+      h('ol', {class: 'sj-dgo'}, ...B.G.map(groupB))]
+      : [h('p', {class: 'sj-ttw', text: '꾀가 고른 회사 자료가 아직 없어요. 억지로 채우지 않았어요.'})]));
+  const p2 = h('div', {class: 'sj-ttp', role: 'tabpanel', id: 'sj-dp2', 'aria-labelledby': 'sj-dt2', hidden: true, 'data-n': V ? String(V.n) : '', 'data-hold': V ? String(V.hold) : ''},
+    ...(!V ? [h('p', {class: 'sj-ttw', text: '가짜 돈 장부 자료를 받지 못했어요. 억지로 채우지 않았어요.'})]
+      : [h('p', {class: 'sj-ttl', text: (sd ? sd + ' 기준 ' : '') + '가짜 돈으로 들고 있는 것은 ' + V.hold + '개예요. 그 가운데 다음 장날이 정한 날인 것 ' + V.n + '개를 그날 종가로 팔아요.'}),
+        h('p', {class: 'sj-ttl', text: '88원 아래로 마치면 정한 날 전이라도 그날 팔아요. 지금 값이 낮은 것부터예요.'}),
+        V.n ? h('ol', {class: 'sj-dgo'}, ...V.G.map(groupS)) : h('p', {class: 'sj-ttw', text: '다음 장날에 정한 날이 되는 것이 없어요.'})]));
+  const show = n => { b1.setAttribute('aria-selected', String(n === 1)); b2.setAttribute('aria-selected', String(n === 2)); p1.hidden = n !== 1; p2.hidden = n !== 2; };
+  b1.addEventListener('click', () => show(1)); b2.addEventListener('click', () => show(2));
+  const kids = [
+    pageHead({kick: '가짜 돈 장부', h1: '사고팔 차례', seal: '장', say: '가짜 돈 장부가 하는 일이에요. 내 돈으로 사고팔기를 권하지 않아요.'}),
+    h('section', {class: 'sj-sec sj-deal', 'aria-label': '살 차례와 팔 차례'}, h('div', {class: 'sj-tts', role: 'tablist', 'aria-label': '살 차례와 팔 차례'}, b1, b2), p1, p2),
+    h('p', {class: 'sj-safe sj-sec', text: '지난 기록을 센 것이에요. 앞날을 맞히지 않고, 사고팔기를 권하지 않아요.'}),
+    endSec(day(gg?.asOf?.board ?? T?.asOf?.board), gotOf(S))];
+  return frame({title: '사고팔 차례', page: 'deal', kids, tab: 5, lc: X.cur?.()?.code ?? null, next: {href: '#/q', label: '사기 전에 멈추고 물어볼까?'}});
 }
 export async function vPicks(X) {
   const [T, D, {S}] = await Promise.all([load21(X.get), X.get(DST).catch(() => null), X.base()]), g = await g36Of(X, T);

@@ -658,86 +658,6 @@ function jTop3Fill(sec, g, T) {
     h('a', {class: 'sj-jlink', href: '#/k'}, h('span', {text: '서른여섯 꾀 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))].filter(Boolean));
   sec.removeAttribute('data-wait');
 }
-/* ── 가짜 돈이 사고팔 차례(주문 1128-1501 · 사장님 2026-11-28(서울) 15:01 「가운데 테이블 하나 만들어 … 매수 매도 할 종목 … 적절한 단어 … 종가를 가지고 사잖아 … 가장 상승을 할 종목을 맨 위에 … 매도를 빨리 하라 할 놈 두 개의 탭」 · 15:05 「어 올려」)
- *  자리 = 덜 잃은 꾀 셋 바로 아래 · 탭 둘 — 살 차례(꾀가 고른 회사 · 그날 종가로 10주 · 지난 기록에서 많이 오른 꾀부터) · 팔 차례(장부가 들고 있는 것 · 100원이 88원에 가까운 것부터 — 손실 먼저 · sell-v1)
- *  앞날을 맞히지 않음 — 「가장 오를 회사」 대신 지난 기록 차례 · 낱말 매수 · 매도 · 추천 안 씀 · 팔 차례 자료(su21-settle.json)는 탭을 처음 누를 때만 받음(첫 화면을 무겁게 하지 않음) */
-export const TT_N = 7;
-/** 살 차례 — 꾀마다 고른 회사 · 꾀는 장부 기록(trPath now · 처음 100원)이 높은 차례 · 같은 회사는 한 줄(고른 꾀 수) · 기록 없는 꾀는 뒤 */
-export function buyTurn(G) {
-  if (!G || !Array.isArray(G.kinds)) return null;
-  const ks = G.kinds.filter(k => typeof KNAME[k] === 'string' && Array.isArray(G.lists?.[k]) && G.lists[k].length).map(k => ({k, e: trPath(G, k)}))
-    .sort((a, b) => (b.e ? b.e.now : -1e9) - (a.e ? a.e.now : -1e9) || (a.k < b.k ? -1 : 1));
-  const seen = new Map(), out = [];
-  for (const {k, e} of ks) for (const c of G.lists[k]) {
-    const code = String(c?.code ?? ''); if (!/^[0-9A-Z]{6}$/.test(code) || typeof c?.name !== 'string' || !c.name.trim()) continue;
-    if (seen.has(code)) { seen.get(code).n++; continue; }
-    const r = {code, name: c.name.trim(), k, e, n: 1}; seen.set(code, r); out.push(r);
-  }
-  return out;
-}
-/** 팔 차례 — 장부가 아직 들고 있는 것(sell.s how 'h') · 산 값 100원이 지금 몇 원(88원에 가까운 것부터) · 같은 회사는 한 줄(가장 낮은 것) */
-export function sellTurn(S) {
-  const sl = S?.sell, B = S?.buys, K = S?.kinds; if (!sl || !Array.isArray(sl.s) || !Array.isArray(B) || !Array.isArray(K)) return null;
-  const all = [];
-  B.forEach((b, i) => { const x = sl.s[i], k = Array.isArray(b) ? K[b[1]] : null; if (!Array.isArray(x) || x[0] !== 'h' || !(b[3] > 0) || !fin(x[2]) || x[2] <= 0 || typeof KNAME[k] !== 'string') return;
-    const n = Number.isInteger(sl.days?.[k]) ? sl.days[k] : null, nm = Array.isArray(S.co?.[b[2]]) && typeof S.co[b[2]][0] === 'string' ? S.co[b[2]][0] : null;
-    all.push({code: b[2], name: nm, k, d: b[0], v: x[2], day: Number.isInteger(x[3]) ? x[3] : 0, left: n != null && Number.isInteger(x[3]) ? Math.max(0, n - x[3]) : null, r: x[2] / b[3] * 100}); });
-  all.sort((a, b) => a.r - b.r || (a.left ?? 99) - (b.left ?? 99) || (a.code < b.code ? -1 : a.code > b.code ? 1 : 0));
-  const seen = new Set(); return all.filter(r => r.name && !seen.has(r.code) && seen.add(r.code));
-}
-function jTabWait() {
-  const b1 = h('button', {type: 'button', class: 'sj-ttb', role: 'tab', id: 'sj-tt1', 'aria-selected': 'true', 'aria-controls': 'sj-ttp1', text: '살 차례'});
-  const b2 = h('button', {type: 'button', class: 'sj-ttb', role: 'tab', id: 'sj-tt2', 'aria-selected': 'false', 'aria-controls': 'sj-ttp2', text: '팔 차례'});
-  return h('section', {class: 'sj-sec sj-jtt', 'aria-label': '가짜 돈이 사고팔 차례', 'data-wait': ''},
-    h('p', {class: 'sj-jk', text: '가짜 돈 장부'}),
-    h('h2', {class: 'sj-jttt', text: '가짜 돈이 사고팔 차례'}),
-    h('p', {class: 'sj-ttnote', text: '가짜 돈 장부가 하는 일이에요. 내 돈으로 사고팔기를 권하지 않아요.'}),
-    h('div', {class: 'sj-tts', role: 'tablist', 'aria-label': '살 차례와 팔 차례'}, b1, b2),
-    h('div', {class: 'sj-ttp', role: 'tabpanel', id: 'sj-ttp1', 'aria-labelledby': 'sj-tt1', 'data-wait': ''}, h('p', {class: 'sj-ttw', text: '가짜 돈 장부를 불러오고 있어요.'})),
-    h('div', {class: 'sj-ttp', role: 'tabpanel', id: 'sj-ttp2', 'aria-labelledby': 'sj-tt2', hidden: true, 'data-wait': ''}, h('p', {class: 'sj-ttw', text: '누르면 가짜 돈 장부를 불러와요.'})));
-}
-const ttRow = (i, href, label, name, sub, val, extra) => h('li', {class: 'sj-tti', ...extra},
-  h('a', {class: 'sj-tta', href, 'aria-label': label},
-    h('span', {class: 'sj-ttn', text: String(i + 1)}),
-    h('span', {class: 'sj-ttx'}, h('b', {class: 'sj-ttnm', 'data-proper': '', text: name}), h('span', {class: 'sj-ttsub'}, h('span', {text: sub}), val)),
-    h('i', {'aria-hidden': 'true', text: '›'})));
-function ttBuyFill(p, G) {
-  const L = buyTurn(G), dd = mday(G?.asOf?.board);
-  if (!L || !L.length) { p.replaceChildren(h('p', {class: 'sj-ttw', text: '꾀가 고른 회사 자료가 아직 없어요. 억지로 채우지 않았어요.'})); p.removeAttribute('data-wait'); return; }
-  p.replaceChildren(
-    h('p', {class: 'sj-ttl', text: (dd ? dd + ' ' : '') + '종가로 꾀마다 10주씩 사는 회사예요. 지난 기록에서 많이 오른 꾀가 고른 회사부터예요.'}),
-    h('ol', {class: 'sj-tto'}, ...L.slice(0, TT_N).map((r, i) => ttRow(i, '#/q/' + r.code, r.name + ' — 사기 전에 「왜 사?」', r.name, KNAME[r.k] + (r.n > 1 ? ' · 꾀 ' + r.n + '개가 고름' : '') + (r.e ? ' · 이 꾀 100원이 ' : ' · 이 꾀 기록 없음'), r.e ? jWon(r.e.now) : null,
-      {'data-code': r.code, 'data-k': r.k, 'data-v': r.e ? String(Math.round(r.e.now * 100) / 100) : ''}))),
-    h('a', {class: 'sj-jlink', href: '#/o'}, h('span', {text: '꾀가 고른 회사 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
-  p.removeAttribute('data-wait');
-}
-function ttSellFill(p, S) {
-  const L = sellTurn(S);
-  if (!L) { p.replaceChildren(h('p', {class: 'sj-ttw', text: '가짜 돈 장부 자료를 받지 못했어요. 억지로 채우지 않았어요.'})); p.removeAttribute('data-wait'); return; }
-  if (!L.length) { p.replaceChildren(h('p', {class: 'sj-ttw', text: '지금 가짜 돈으로 들고 있는 회사가 없어요.'})); p.removeAttribute('data-wait'); return; }
-  p.replaceChildren(
-    h('p', {class: 'sj-ttl', text: '가짜 돈으로 들고 있다가 곧 파는 회사예요. 산 값 100원이 88원에 가까운 것부터예요.'}),
-    h('ol', {class: 'sj-tto'}, ...L.slice(0, TT_N).map((r, i) => ttRow(i, '#/c/' + r.code, r.name + ' — 회사 쪽', r.name, KNAME[r.k] + ' · ' + (r.day > 0 ? r.day + '일째' : '마지막 장날에 삼') + (r.left ? ' · 정한 날까지 ' + r.left + '일' : '') + ' · 산 값 100원이 ', jWon(r.r),
-      {'data-code': r.code, 'data-k': r.k, 'data-r': String(Math.round(r.r * 100) / 100)}))),
-    h('p', {class: 'sj-ttnote', text: '88원 아래로 마치거나 정한 날이 되면 그날 종가로 판 셈이에요.'}),
-    h('a', {class: 'sj-jlink', href: '#/l/b'}, h('span', {text: '가짜 돈이 산 회사 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
-  p.removeAttribute('data-wait');
-}
-/** 두 탭 채우기 — 살 차례는 꾀 칸 자료(G)로 바로 · 팔 차례는 처음 누를 때 장부(su21-settle.json)를 받아 채움 */
-function jTabFill(sec, G, get) {
-  if (!sec?.isConnected) return;
-  const [b1, b2] = sec.querySelectorAll('button.sj-ttb'), p1 = sec.querySelector(':scope > #sj-ttp1'), p2 = sec.querySelector(':scope > #sj-ttp2');
-  if (!b1 || !b2 || !p1 || !p2) return;
-  ttBuyFill(p1, G);
-  let asked = false;
-  const show = n => {
-    b1.setAttribute('aria-selected', String(n === 1)); b2.setAttribute('aria-selected', String(n === 2)); p1.hidden = n !== 1; p2.hidden = n !== 2;
-    if (n === 2 && !asked) { asked = true; p2.replaceChildren(h('p', {class: 'sj-ttw', text: '가짜 돈 장부를 불러오고 있어요.'}));
-      Promise.resolve(typeof get === 'function' ? get(DST) : null).catch(() => null).then(S => { if (p2.isConnected) ttSellFill(p2, S); }); }
-  };
-  b1.addEventListener('click', () => show(1)); b2.addEventListener('click', () => show(2));
-  sec.removeAttribute('data-wait');
-}
 /** 사기 전에 멈춤 문 — 첫 화면에서 가장 큰 칸(본질 2 「주식을 사기 전에 한 번 멈추게 한다」 · 「왜 사?」 열한 질문)
  *  잡스 판 둘째(주문 1128-1038 · 공부 서른 13 「사려던 회사 이름 칸 하나」 · 28 「단추를 입력칸으로」): 회사 이름을 쓰면 아래에 회사 줄 → 누르면 그 회사로 바로 열한 질문
  *  회사 없이도 물어볼 수 있음 · 회사 목록은 칸을 처음 누를 때만 받음(첫 화면을 무겁게 하지 않음) · 멈춘 날이 있으면 조용히 한 줄(이어진 날은 세지 않음 · 상 없음) */
@@ -803,11 +723,11 @@ export async function vSonja(X, shell = null) {
   main.setAttribute('data-board', T.asOf?.board ?? ''); main.setAttribute('data-wait', '');
   if (!main.querySelector(':scope > section.sj-mind')) main.prepend(mindSec());
   { const gl = main.querySelector(':scope > section.sj-mind ol.sj-gkl'); if (gl && !gl.parentElement.querySelector(':scope > button.sj-f7b')) { const [, b] = fold7(gl, (o, n) => '나머지 격언 ' + (n - o) + '가지 더 보기', 1); if (b) gl.after(b); } } // 격언 열 가지 = 맨 위 그대로 · 첫째만 보이고 「더 보기」(주문 1127-2148 · 사장님 21:48 「어그래」) — 먼저 칠한 판(index.html)도 data-fold=1 로 같은 꼴
-  { // 잡스 판 차례(주문 1128-0755 · 둘째 1128-1038 · 1128-1501) — 오늘(날 · 응원 · 본질 한 줄) → 격언 → 오늘의 땅 → 오늘의 꾀 → 덜 잃은 꾀 셋(바닥 먼저) → 가짜 돈이 사고팔 차례(탭 둘) → 사기 전에 멈춤 문 → 우리가 하지 않는 일 · 오늘은 여기까지 → 안전 한 줄 → 오늘 더 보기 → 표지 → 그 아래 그대로
+  { // 잡스 판 차례(주문 1128-0755 · 둘째 1128-1038 · 1128-1501) — 오늘(날 · 응원 · 본질 한 줄) → 격언 → 오늘의 땅 → 오늘의 꾀 → 덜 잃은 꾀 셋(바닥 먼저) → 사기 전에 멈춤 문 → 우리가 하지 않는 일 · 오늘은 여기까지 → 안전 한 줄 → 오늘 더 보기 → 표지 → 그 아래 그대로
     for (const e of main.querySelectorAll(':scope > section.sj-hero, :scope > section.sj-greet, :scope > section.sj-coday, :scope > section.sj-todo, :scope > .sj-jh, :scope > .sj-jl, :scope > .sj-jkk, :scope > .sj-j3, :scope > .sj-jtt, :scope > .sj-jst, :scope > .sj-jnot, :scope > .sj-jsafe, :scope > .sj-jmore')) e.remove();
     const kk = jKkoe(T), mind = main.querySelector(':scope > section.sj-mind');
     main.prepend(jHead());
-    const J = [jLand(T, mktLine(T)), kk, jTop3Wait(), jTabWait(), jStop(X.cur?.() ?? null, X.get), jNot(), h('p', {class: 'sj-safe sj-jsafe', text: SAFE + ' ' + SAFE_MORE}), jMore(greetSec(), coDaySec(kk.dataset.k ?? null), todoSec(), jWord(T))];
+    const J = [jLand(T, mktLine(T)), kk, jTop3Wait(), jStop(X.cur?.() ?? null, X.get), jNot(), h('p', {class: 'sj-safe sj-jsafe', text: SAFE + ' ' + SAFE_MORE}), jMore(greetSec(), coDaySec(kk.dataset.k ?? null), todoSec(), jWord(T))];
     if (mind) mind.after(...J); else main.querySelector(':scope > .sj-jh').after(...J);
   }
   const step = main.querySelector(':scope > .sj-cover .sj-step'); if (step && dd && !step.querySelector('.sj-stepd')) step.append(stepDay(dd));
@@ -821,7 +741,7 @@ export async function vSonja(X, shell = null) {
     const g = wait ? await X.get(D36).catch(() => null) : null, G = ok36(g, T) ? g : null; // 꾀 칸 자료가 없는 날(s36n 없음)은 부르지 않음 — 없는 파일을 부르면 화면 오류(미리 보기 sonja-today4 1/11)
     if (!main.isConnected) return;
     coDayFill(main.querySelector('section.sj-coday'), G); // 오늘 더 보기 안(잡스 판)
-    jRecFill(main.querySelector(':scope > section.sj-jkk'), G); jTop3Fill(main.querySelector(':scope > section.sj-j3'), G, T); jTabFill(main.querySelector(':scope > section.sj-jtt'), G, X.get); // 가짜 돈이 사고팔 차례(주문 1128-1501)
+    jRecFill(main.querySelector(':scope > section.sj-jkk'), G); jTop3Fill(main.querySelector(':scope > section.sj-j3'), G, T);
     if (wait?.isConnected) { if (G) wait.replaceWith(trickSec(G, T)); else wait.remove(); }
     hardOf(); main.removeAttribute('data-wait');
   };

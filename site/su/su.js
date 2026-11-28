@@ -71,6 +71,7 @@ async function route() {
     if (ktr) { const M = await kkoeM(); return await paintSj(hh, root, () => M.vKkoeTr(XS, ktr[1])); }
     const wk = /^#\/l\/t(?:\/(.*))?$/.exec(hh); // 7단 사고판 기록(주문 1127-1457 · 1단 기록 → 2단 판 것 · 들고 있는 것 → 3단 꾀 → 4단 업종 → 5단 종목 → 6단 사고판 건 → 7단 한 건)
     if (wk) { const M = await kkoeM(); return await paintSj(hh, root, () => M.vWalk(XS, wk[1] ?? '')); }
+    if (hh === '#/d') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vDeal(XS)); } // 사고팔 차례(주문 1128-1501 · 16:09 「꾀 옆 그리고 멈춤 사이에 탭을 만들어 그곳에 넣어」)
     if (hh === '#/o') { const M = await kkoeM(); return await paintSj(hh, root, () => M.vPicks(XS)); } // 여러 꾀가 고른 회사(주문 1120-0950 · #/n 은 옛 쪽 이름이라 #/o)
     if (q || hh === '#/j') { // 「왜 사?」 · 매매일지 — 손자병법 판(주문 1116-0300 · 옛 틀을 지움) · 걸음 4 / 5 · 5 / 5
       const [W, Y] = await Promise.all([sjWhy(), whyM()]), X = whyX(W);
