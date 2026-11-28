@@ -1,27 +1,15 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-28T03:26:33.410Z",
+ "at": "2026-11-28T04:34:25.261Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 720,
-  "fail": 4
+  "pass": 725,
+  "fail": 1
  },
  "fails": [
   [
    "㉕ 손자병법 다른 쪽 [390] 화면 오류 0",
-   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795836658645"
-  ],
-  [
-   "㉙ 글 무너짐 [390] #/ — 글이 세로로 무너진 곳 · 옆으로 넘친 글 · 잘린 글 0(주문 1120-0358)",
-   "[[\"세로\",\"sj-page > sj-sec sj-j3\",358,11,\"null\"]]"
-  ],
-  [
-   "㉙ 글 무너짐 [320] #/ — 글이 세로로 무너진 곳 · 옆으로 넘친 글 · 잘린 글 0(주문 1120-0358)",
-   "[[\"세로\",\"sj-page > sj-sec sj-j3\",288,11,\"null\"]]"
-  ],
-  [
-   "㉙ 글 무너짐 [320 · 큰 글씨] #/ — 글이 세로로 무너진 곳 · 옆으로 넘친 글 · 잘린 글 0(주문 1120-0358)",
-   "[[\"세로\",\"sj-page > sj-sec sj-j3\",288,11,\"null\"]]"
+   "Failed to load resource: the server responded with a status of 403 () · 막힌 응답 403 https://aaa7377.com/su/?v=1795840730818"
   ]
  ],
  "m": {
@@ -136,9 +124,9 @@
    "기관"
   ],
   "speed": {
-   "lcp": 932,
+   "lcp": 844,
    "cls": 0.916,
-   "pic": 852
+   "pic": 762
   },
   "white": {
    "light #/": {
